@@ -4,8 +4,6 @@ class ManualDocumentBuilder
   end
 
   def call(attrs)
-    defaults.merge(attrs)
-
     factory.call(defaults.merge(attrs))
   end
 
