@@ -64,7 +64,6 @@ SpecialistPublisherWiring = DependencyContainer.new do
     }
   }
 
-  define_instance(:artefacts) { Artefact }
   define_singleton(:panopticon_api) do
     GdsApi::Panopticon.new(Plek.current.find("panopticon"), PANOPTICON_API_CREDENTIALS)
   end
@@ -138,7 +137,6 @@ SpecialistPublisherWiring = DependencyContainer.new do
   define_singleton(:id_generator) { SecureRandom.method(:uuid) }
 
   define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
-  define_singleton(:attachment_factory) { Attachment.method(:new) }
 
   define_factory(:cma_case_builder) {
     SpecialistDocumentBuilder.new(
