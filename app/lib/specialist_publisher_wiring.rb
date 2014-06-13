@@ -366,9 +366,4 @@ SpecialistPublisherWiring = DependencyContainer.new do
     FinderSchema.new(Rails.root.join("schemas/cma-cases.json"))
   }
 
-  define_singleton(:url_maker) {
-    require "url_maker"
-    UrlMaker.new(plek: Plek.current)
-  }
-
 end
