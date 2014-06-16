@@ -5,7 +5,8 @@ class WithdrawDocumentService
     @context = context
   end
 
-  def call
+  def call(document)
+    @document = document
     withdraw
     persist
     notify_listeners
@@ -15,7 +16,7 @@ class WithdrawDocumentService
 
   private
 
-  attr_reader :document_repository, :listeners, :context
+  attr_reader :document_repository, :listeners, :context, :document
 
   def withdraw
     document.withdraw!
@@ -27,13 +28,5 @@ class WithdrawDocumentService
 
   def notify_listeners
     listeners.each { |l| l.call(document) }
-  end
-
-  def document
-    @document ||= document_repository.fetch(document_id)
-  end
-
-  def document_id
-    context.params.fetch("id")
   end
 end

@@ -2,11 +2,6 @@ class SpecialistDocumentsController < ApplicationController
 
   before_filter :authorize_user_org
 
-  rescue_from(KeyError) do
-    # TODO: Remove use of exceptions for flow control.
-    redirect_to(manuals_path, flash: { error: "Document not found" })
-  end
-
   def index
     documents = services.list_documents(self).call
 
@@ -16,7 +11,7 @@ class SpecialistDocumentsController < ApplicationController
   def show
     document = services.show_document(self).call
 
-    render(:show, locals: { document: document })
+    render_or_not_found(:show, document)
   end
 
   def new
@@ -28,7 +23,7 @@ class SpecialistDocumentsController < ApplicationController
   def edit
     document = services.show_document(self).call
 
-    render(:edit, locals: { document: cma_form(document) })
+    render_or_not_found(:edit, cma_form(document))
   end
 
   def create
@@ -44,10 +39,10 @@ class SpecialistDocumentsController < ApplicationController
   def update
     document = services.update_document(self).call
 
-    if document.valid?
+    if document && document.valid?
       redirect_to(specialist_document_path(document))
     else
-      render(:edit, locals: {document: document})
+      render_or_not_found(:edit, document)
     end
   end
 
@@ -70,6 +65,14 @@ class SpecialistDocumentsController < ApplicationController
   end
 
 protected
+
+  def render_or_not_found(action, document)
+    if document
+      render(action, locals: { document: document })
+    else
+      redirect_to(manuals_path, flash: { error: "Document not found" })
+    end
+  end
 
   def cma_form(document)
     CmaCaseForm.new(document)

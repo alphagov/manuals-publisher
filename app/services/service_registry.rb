@@ -1,5 +1,4 @@
 require "list_documents_service"
-require "show_document_service"
 require "preview_document_service"
 require "new_document_service"
 require "publish_document_service"
@@ -45,18 +44,24 @@ class ServiceRegistry
   end
 
   def show_document(context)
-    ShowDocumentService.new(
+    DocumentFinder.new(
       document_repository,
+      ->(document) { document },
       context,
     )
   end
 
   def preview_document(context)
-    PreviewDocumentService.new(
+    DocumentFinder.new(
       document_repository,
-      document_builder,
-      document_renderer,
+      PreviewDocumentService.new(
+        document_repository,
+        document_builder,
+        document_renderer,
+        context,
+      ),
       context,
+      service_accepts_nil_document: true,
     )
   end
 
@@ -70,25 +75,37 @@ class ServiceRegistry
   end
 
   def publish_document(context)
-    PublishDocumentService.new(
+    DocumentFinder.new(
       document_repository,
-      observers.document_publication,
+      PublishDocumentService.new(
+        document_repository,
+        observers.document_publication,
+        context,
+      ),
       context,
     )
   end
 
   def update_document(context)
-    UpdateDocumentService.new(
+    DocumentFinder.new(
       document_repository,
-      [],
+      UpdateDocumentService.new(
+        document_repository,
+        [],
+        context,
+      ),
       context,
     )
   end
 
   def withdraw_document(context)
-    WithdrawDocumentService.new(
+    DocumentFinder.new(
       document_repository,
-      withdrawal_listeners,
+      WithdrawDocumentService.new(
+        document_repository,
+        withdrawal_listeners,
+        context,
+      ),
       context,
     )
   end
