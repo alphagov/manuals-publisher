@@ -39,7 +39,6 @@ SpecialistPublisherWiring = DependencyContainer.new do
       document_renderer: get(:specialist_document_renderer),
 
       manual_repository_factory: get(:manual_repository_factory),
-      manual_builder: get(:manual_builder),
 
       observers: get(:observers),
     )
