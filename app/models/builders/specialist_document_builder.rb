@@ -1,5 +1,5 @@
 class SpecialistDocumentBuilder
-  def initialize(specialist_document_factory, id_generator)
+  def initialize(specialist_document_factory, id_generator = SecureRandom)
     @document_factory = specialist_document_factory
     @id_generator = id_generator
   end
@@ -17,7 +17,7 @@ class SpecialistDocumentBuilder
   attr_reader :document_factory, :id_generator
 
   def new_document_id
-    id_generator.call
+    id_generator.uuid
   end
 
   def editions

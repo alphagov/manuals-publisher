@@ -117,14 +117,11 @@ SpecialistPublisherWiring = DependencyContainer.new do
     }
   }
 
-  define_singleton(:id_generator) { SecureRandom.method(:uuid) }
-
   define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
 
   define_factory(:cma_case_builder) {
     SpecialistDocumentBuilder.new(
       get(:validatable_cma_case_factory),
-      get(:id_generator),
     )
   }
 
@@ -154,7 +151,7 @@ SpecialistPublisherWiring = DependencyContainer.new do
       get(:validated_manual_document_factory_factory)
         .call(manual)
         .call(
-          get(:id_generator).call,
+          SecureRandom.uuid,
           [],
         ).update(attrs.reverse_merge(defaults))
     }
