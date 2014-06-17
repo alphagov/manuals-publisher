@@ -1,4 +1,4 @@
-require 'gds_api/panopticon'
+require "gds_api/panopticon"
 
 class PanopticonRegisterer
   def initialize(dependencies)
