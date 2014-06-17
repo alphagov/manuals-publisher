@@ -2,10 +2,10 @@ require "spec_helper"
 
 describe SpecialistDocumentBuilder do
   subject(:builder) {
-    SpecialistDocumentBuilder.new(document_factory, randomizer)
+    SpecialistDocumentBuilder.new(document_factory, id_generator)
   }
 
-  let(:randomizer)        { double(:randomizer, uuid: document_id) }
+  let(:id_generator)        { double(:id_generator, call: document_id) }
   let(:document_factory)  { double(:document_factory, call: document) }
 
   let(:document_id)       { double(:document_id) }
@@ -16,7 +16,7 @@ describe SpecialistDocumentBuilder do
     it "generates an id" do
       builder.call(attrs)
 
-      expect(randomizer).to have_received(:uuid)
+      expect(id_generator).to have_received(:call)
     end
 
     it "creates a new document" do

@@ -1,5 +1,4 @@
 require "dependency_container"
-require "securerandom"
 require "specialist_document_repository"
 require "builders/specialist_document_builder"
 require "panopticon_registerer"
@@ -47,7 +46,7 @@ SpecialistPublisherWiring = DependencyContainer.new do
   define_factory(:manual_builder) {
     ->(attrs) {
       default = {
-        id: SecureRandom.uuid,
+        id: IdGenerator.call,
         slug: get(:manual_slug_generator).call(attrs.fetch(:title)),
         summary: "",
         state: "draft",
@@ -151,7 +150,7 @@ SpecialistPublisherWiring = DependencyContainer.new do
       get(:validated_manual_document_factory_factory)
         .call(manual)
         .call(
-          SecureRandom.uuid,
+          IdGenerator.call,
           [],
         ).update(attrs.reverse_merge(defaults))
     }
