@@ -4,11 +4,12 @@ require "specialist_document_header_extractor"
 
 describe SpecialistDocumentHeaderExtractor do
   subject(:header_extractor) {
-    SpecialistDocumentHeaderExtractor.new(parser, doc)
+    SpecialistDocumentHeaderExtractor.new(doc, parser_klass)
   }
 
   let(:doc)     { double(:doc, body: doc_body, attributes: doc_attributes) }
-  let(:parser)  { double(:parser, call: header_metadata) }
+  let(:parser_klass) { double(:parser_klass, new: parser) }
+  let(:parser)  { double(:parser, structured_headers: header_metadata) }
 
   let(:doc_body)          { double(:doc_body) }
   let(:doc_attributes)    { { body: doc_body } }
@@ -25,7 +26,8 @@ describe SpecialistDocumentHeaderExtractor do
     it "parses the document body with the govspeak parser" do
       header_extractor.headers
 
-      expect(parser).to have_received(:call).with(doc_body)
+      expect(parser_klass).to have_received(:new).with(doc_body)
+      expect(parser).to have_received(:structured_headers)
     end
 
     it "returns header metadata from Govspeak" do

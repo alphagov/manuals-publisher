@@ -188,51 +188,15 @@ SpecialistPublisherWiring = DependencyContainer.new do
     }
   }
 
-  define_instance(:markdown_renderer) {
-    SpecialistDocumentAttachmentProcessor.method(:new)
-  }
-
-  define_instance(:govspeak_html_converter) {
-    ->(string) {
-      Govspeak::Document.new(string).to_html
-    }
-  }
-
-  define_instance(:govspeak_header_extractor) {
-    ->(string) {
-      Govspeak::Document.new(string).structured_headers
-    }
-  }
-
-  define_instance(:specialist_document_govspeak_to_html_renderer) {
-    ->(doc) {
-      SpecialistDocumentGovspeakToHTMLRenderer.new(
-        get(:govspeak_html_converter),
-        doc,
-      )
-    }
-  }
-
-  define_instance(:specialist_document_govspeak_header_extractor) {
-    ->(doc) {
-      SpecialistDocumentHeaderExtractor.new(
-        get(:govspeak_header_extractor),
-        doc,
-      )
-    }
-  }
-
   define_instance(:specialist_document_renderer) {
     ->(doc) {
-      pipeline = [
-        get(:markdown_renderer),
-        get(:specialist_document_govspeak_header_extractor),
-        get(:specialist_document_govspeak_to_html_renderer),
-      ]
-
-      pipeline.reduce(doc) { |doc, next_renderer|
-        next_renderer.call(doc)
-      }
+      [
+        SpecialistDocumentAttachmentProcessor,
+        SpecialistDocumentHeaderExtractor,
+        SpecialistDocumentGovspeakToHTMLRenderer,
+      ].reduce(doc) do |doc, renderer_klass|
+        renderer_klass.new(doc)
+      end
     }
   }
 
@@ -340,7 +304,8 @@ SpecialistPublisherWiring = DependencyContainer.new do
   }
 
   define_singleton(:finder_api_notifier) {
-    FinderAPINotifier.new(get(:finder_api), get(:markdown_renderer))
+    FinderAPINotifier.new(get(:finder_api),
+                          SpecialistDocumentAttachmentProcessor.method(:new))
   }
 
   define_singleton(:finder_schema) {
