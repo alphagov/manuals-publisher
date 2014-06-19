@@ -2,14 +2,11 @@ require "spec_helper"
 
 describe SpecialistDocumentBuilder do
   subject(:builder) {
-    SpecialistDocumentBuilder.new(
-      document_factory,
-      id_generator,
-    )
+    SpecialistDocumentBuilder.new(document_factory, id_generator)
   }
 
+  let(:id_generator)        { double(:id_generator, call: document_id) }
   let(:document_factory)  { double(:document_factory, call: document) }
-  let(:id_generator)      { double(:id_generator, call: document_id) }
 
   let(:document_id)       { double(:document_id) }
   let(:attrs)             { double(:attrs) }

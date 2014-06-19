@@ -5,8 +5,8 @@ require "specialist_document_govspeak_to_html_renderer"
 describe SpecialistDocumentGovspeakToHTMLRenderer do
   let(:renderer) {
     SpecialistDocumentGovspeakToHTMLRenderer.new(
-      govspeak_html_converter,
       document,
+      govspeak_html_converter,
     )
   }
 
@@ -23,9 +23,8 @@ describe SpecialistDocumentGovspeakToHTMLRenderer do
     }
   }
 
-  let(:govspeak_html_converter) {
-    double(:govspeak_converter, call: converted_body)
-  }
+  let(:converter_instance) { double(:converter, to_html: converted_body)}
+  let(:govspeak_html_converter) { double(:govspeak_converter, new: converter_instance) }
 
   let(:document_body) { double(:document_body) }
   let(:converted_body) { double(:converted_body) }
@@ -40,7 +39,8 @@ describe SpecialistDocumentGovspeakToHTMLRenderer do
     it "converts the document body" do
       renderer.body
 
-      expect(govspeak_html_converter).to have_received(:call).with(document_body)
+      expect(govspeak_html_converter).to have_received(:new).with(document_body)
+      expect(converter_instance).to have_received(:to_html)
     end
 
     it "returns the converted body" do

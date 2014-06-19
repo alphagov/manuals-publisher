@@ -1,5 +1,5 @@
 class SpecialistDocumentBuilder
-  def initialize(specialist_document_factory, id_generator)
+  def initialize(specialist_document_factory, id_generator = IdGenerator)
     @document_factory = specialist_document_factory
     @id_generator = id_generator
   end
