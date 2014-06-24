@@ -12,8 +12,11 @@ class ServiceRegistry
 
   def initialize(dependencies)
     @document_builder = dependencies.fetch(:document_builder)
+    @aaib_report_builder = dependencies.fetch(:aaib_report_builder)
     @document_repository = dependencies.fetch(:document_repository)
+    @aaib_report_repository = dependencies.fetch(:aaib_report_repository)
     @creation_listeners = dependencies.fetch(:creation_listeners)
+    @aaib_report_creation_listeners = dependencies.fetch(:aaib_report_creation_listeners)
     @withdrawal_listeners = dependencies.fetch(:withdrawal_listeners)
     @document_renderer = dependencies.fetch(:document_renderer)
     @manual_repository_factory = dependencies.fetch(:manual_repository_factory)
@@ -32,6 +35,12 @@ class ServiceRegistry
     )
   end
 
+  def list_aaib_reports(context)
+    ListDocuments.new(
+      aaib_report_repository,
+    )
+  end
+
   def new_document(context, deps = {})
     send("new_#{deps.fetch(:document_type)}", context)
   end
@@ -44,8 +53,26 @@ class ServiceRegistry
     )
   end
 
+  def new_aaib_report(context)
+    NewDocumentService.new(
+      aaib_report_builder,
+      context,
+      "aaib_report"
+    )
+  end
+
   def create_document(context, deps = {})
     send("create_#{deps.fetch(:document_type)}", context)
+  end
+
+  def create_aaib_report(context)
+    CreateDocumentService.new(
+      aaib_report_builder,
+      aaib_report_repository,
+      aaib_report_creation_listeners,
+      context,
+      "aaib_report",
+    )
   end
 
   def create_cma_case(context)
@@ -60,6 +87,13 @@ class ServiceRegistry
 
   def show_document(context, deps = {})
     send("show_#{deps.fetch(:document_type)}", context)
+  end
+
+  def show_aaib_report(context)
+    ShowDocumentService.new(
+      aaib_report_repository,
+      context,
+    )
   end
 
   def show_cma_case(context)
@@ -102,6 +136,14 @@ class ServiceRegistry
   def update_cma_case(context)
     UpdateDocumentService.new(
       document_repository,
+      [],
+      context,
+    )
+  end
+
+  def update_aaib_report(context)
+    UpdateDocumentService.new(
+      aaib_report_repository,
       [],
       context,
     )
@@ -250,6 +292,7 @@ class ServiceRegistry
   attr_reader(
     :aaib_report_builder,
     :aaib_report_repository,
+    :aaib_report_creation_listeners,
     :creation_listeners,
     :document_builder,
     :document_renderer,

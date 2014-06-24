@@ -93,6 +93,8 @@ protected
     case current_organisation_slug
     when "competition-and-markets-authority"
       CmaCaseForm.new(document)
+    when "air-accidents-investigation-branch"
+      AaibReportForm.new(document)
     end
   end
 
