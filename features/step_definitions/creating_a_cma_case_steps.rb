@@ -1,5 +1,5 @@
-Given(/^I am logged in as a CMA editor$/) do
-  login_as(:cma_editor)
+Given(/^I am logged in as a "(.*?)" editor$/) do |editor_type|
+  login_as(:"#{editor_type.downcase}_editor")
 
   # WARNING: These must be stubbed before the first request takes place
   stub_out_panopticon
@@ -16,7 +16,7 @@ When(/^I create a CMA case$/) do
     opened_date: "2014-01-01"
   }
 
-  create_cma_case(@cma_fields)
+  create_document(@cma_fields)
 end
 
 When(/^I create a CMA case without one of the required fields$/) do
@@ -26,7 +26,7 @@ When(/^I create a CMA case without one of the required fields$/) do
     opened_date: "2014-01-01"
   }
 
-  create_cma_case(@cma_fields)
+  create_document(@cma_fields)
 end
 
 When(/^I publish a new CMA case$/) do
@@ -40,16 +40,16 @@ When(/^I publish a new CMA case$/) do
     opened_date: "2014-01-01"
   }
 
-  create_cma_case(@cma_fields, publish: true)
+  create_document(@cma_fields, publish: true)
 end
 
 When(/^I edit a CMA case$/) do
   @new_title = "Edited Example CMA Case"
-  edit_cma_case(@document_title, title: @new_title)
+  edit_document(@document_title, title: @new_title)
 end
 
 Then(/^the CMA case should have been updated$/) do
-  check_for_new_title
+  check_for_new_title(@new_title)
 end
 
 Given(/^two CMA cases exist$/) do
@@ -67,12 +67,12 @@ Given(/^a draft CMA case exists$/) do
     opened_date: "2014-01-01"
   }
 
-  create_cma_case(@cma_fields, publish: false)
+  create_document(@cma_fields, publish: false)
 end
 
 Then(/^the CMA case has been created$/) do
-  check_cma_case_exists_with(@cma_fields)
-  check_slug_registered_with_panopticon(@slug)
+  check_document_exists_with(@cma_fields)
+  check_slug_registered_with_panopticon_with_correct_organisation(@slug, ["competition-and-markets-authority"])
 end
 
 Then(/^I should see an error message about a missing field$/) do
@@ -80,13 +80,13 @@ Then(/^I should see an error message about a missing field$/) do
 end
 
 Then(/^the CMA case should not have been created$/) do
-  check_cma_case_does_not_exist_with(@cma_fields)
+  check_document_does_not_exist_with(@cma_fields)
 end
 
 Then(/^the CMA cases should be in the publisher case index in the correct order$/) do
   visit specialist_documents_path
 
-  check_for_cma_cases("Specialist Document 2", "Specialist Document 1")
+  check_for_documents("Specialist Document 2", "Specialist Document 1")
 end
 
 When(/^I make changes and preview the CMA case$/) do
@@ -113,7 +113,7 @@ Given(/^a published CMA case exists$/) do
 
   @slug = "cma-cases/original-cma-case-title"
 
-  create_cma_case(@cma_fields, publish: true)
+  create_document(@cma_fields, publish: true)
 end
 
 When(/^I change the CMA case title and re-publish$/) do
@@ -122,7 +122,7 @@ When(/^I change the CMA case title and re-publish$/) do
 end
 
 Then(/^the title has been updated$/) do
-  check_for_cma_cases(@updated_title)
+  check_for_documents(@updated_title)
 end
 
 Then(/^the URL slug remains unchanged$/) do
@@ -130,7 +130,7 @@ Then(/^the URL slug remains unchanged$/) do
 end
 
 When(/^I create another case with the same slug$/) do
-  create_cma_case(@cma_fields)
+  create_document(@cma_fields)
 end
 
 Then(/^I should see an error message about the duplicate slug$/) do
@@ -147,7 +147,7 @@ When(/^I start creating a new CMA case$/) do
     opened_date: "2014-01-01",
   }
 
-  create_cma_case(@cma_fields, save: false)
+  create_document(@cma_fields, save: false)
 end
 
 When(/^I preview the case$/) do
