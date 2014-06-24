@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def finder_schema
-    SpecialistPublisherWiring.get(:finder_schema)
+    SpecialistPublisherWiring.get(:"#{document_type}_finder_schema")
   end
   helper_method :finder_schema
 
@@ -36,5 +36,9 @@ class ApplicationController < ActionController::Base
 
   def current_organisation_slug
     current_user.organisation_slug
+  end
+
+  def document_type
+    ALLOWED_ORG_DOCS[current_organisation_slug.to_sym]
   end
 end
