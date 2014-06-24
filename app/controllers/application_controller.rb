@@ -24,8 +24,13 @@ class ApplicationController < ActionController::Base
     SpecialistPublisherWiring.get(:services)
   end
 
+  ALLOWED_ORG_DOCS = {
+    :"competition-and-markets-authority" => "cma_case",
+    :"air-accidents-investigation-branch" => "aaib_report",
+  }
+
   def user_can_edit_documents?
-    current_user.organisation_slug == "competition-and-markets-authority"
+    ALLOWED_ORG_DOCS.has_key?(current_organisation_slug.to_sym)
   end
   helper_method :user_can_edit_documents?
 
