@@ -1,14 +1,14 @@
 require "delegate"
 
 class SpecialistDocumentGovspeakToHTMLRenderer < SimpleDelegator
-
-  def initialize(govspeak_html_converter, document)
-    @govspeak_html_converter = govspeak_html_converter
+  def initialize(document, converter = Govspeak::Document)
+    @document = document
+    @converter = converter
     super(document)
   end
 
   def body
-    govspeak_html_converter.call(document.body)
+    converter.new(document.body).to_html
   end
 
   def attributes
@@ -18,10 +18,5 @@ class SpecialistDocumentGovspeakToHTMLRenderer < SimpleDelegator
   end
 
 private
-
-  attr_reader :govspeak_html_converter
-
-  def document
-    __getobj__
-  end
+  attr_reader :converter, :document
 end

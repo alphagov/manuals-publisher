@@ -2,14 +2,13 @@ require "delegate"
 require "active_support/core_ext/hash"
 
 class SpecialistDocumentHeaderExtractor < SimpleDelegator
-
-  def initialize(header_parser, doc)
-    @header_parser = header_parser
+  def initialize(doc, parser = Govspeak::Document)
+    @parser = parser
     super(doc)
   end
 
   def headers
-    header_parser.call(doc.body)
+    parser.new(doc.body).structured_headers
   end
 
   def attributes
@@ -19,10 +18,7 @@ class SpecialistDocumentHeaderExtractor < SimpleDelegator
   end
 
 private
-
-  attr_reader(
-    :header_parser,
-  )
+  attr_reader :parser
 
   def doc
     __getobj__
