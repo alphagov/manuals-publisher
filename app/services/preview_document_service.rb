@@ -6,7 +6,8 @@ class PreviewDocumentService
     @context = context
   end
 
-  def call
+  def call(existing_document)
+    @existing_document = existing_document
     document.update(document_params)
 
     document_renderer.call(document).body
@@ -19,25 +20,18 @@ class PreviewDocumentService
     :document_builder,
     :document_renderer,
     :context,
+    :existing_document,
   )
 
   def document
-    document_id ? existing_document : ephemeral_document
+    existing_document || ephemeral_document
   end
 
   def ephemeral_document
     document_builder.call(document_params)
   end
 
-  def existing_document
-    @existing_document ||= document_repository.fetch(document_id)
-  end
-
   def document_params
     context.params.fetch("specialist_document")
-  end
-
-  def document_id
-    context.params.fetch("id", nil)
   end
 end

@@ -5,7 +5,8 @@ class PublishDocumentService
     @context = context
   end
 
-  def call
+  def call(document)
+    @document = document
     publish
     persist
 
@@ -14,7 +15,7 @@ class PublishDocumentService
 
   private
 
-  attr_reader :document_repository, :listeners, :context
+  attr_reader :document_repository, :listeners, :context, :document
 
   def publish
     document.publish!
@@ -30,13 +31,5 @@ class PublishDocumentService
     listeners.each do |listener|
       listener.call(document)
     end
-  end
-
-  def document
-    @document ||= document_repository.fetch(document_id)
-  end
-
-  def document_id
-    context.params.fetch("id")
   end
 end

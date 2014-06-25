@@ -5,7 +5,8 @@ class UpdateDocumentService
     @context = context
   end
 
-  def call
+  def call(document)
+    @document = document
     document.update(new_attributes)
 
     if document.valid?
@@ -16,9 +17,8 @@ class UpdateDocumentService
     document
   end
 
-  private
-
-  attr_reader :repo, :listeners, :context
+private
+  attr_reader :repo, :listeners, :document, :context
 
   def persist
     repo.store(document)
@@ -32,13 +32,5 @@ class UpdateDocumentService
 
   def new_attributes
     context.params.fetch("specialist_document", {})
-  end
-
-  def document
-    @document ||= repo.fetch(document_id)
-  end
-
-  def document_id
-    context.params.fetch("id")
   end
 end
