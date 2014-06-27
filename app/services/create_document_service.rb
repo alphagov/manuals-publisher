@@ -1,6 +1,6 @@
 class CreateDocumentService
   def initialize(builder, repo, listeners, context)
-    @builder = builder
+    @builder = builder;
     @repo = repo
     @listeners = listeners
     @context = context
@@ -30,6 +30,5 @@ class CreateDocumentService
   def attributes
     context.params
       .fetch("specialist_document", {})
-      .merge(document_type: "cma_case")
   end
 end

@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def finder_schema
-    SpecialistPublisherWiring.get(:finder_schema)
+    SpecialistPublisherWiring.get(:"#{document_type}_finder_schema")
   end
   helper_method :finder_schema
 
@@ -24,12 +24,21 @@ class ApplicationController < ActionController::Base
     SpecialistPublisherWiring.get(:services)
   end
 
+  ALLOWED_ORG_DOCS = {
+    :"competition-and-markets-authority" => "cma_case",
+    :"air-accidents-investigation-branch" => "aaib_report",
+  }
+
   def user_can_edit_documents?
-    current_user.organisation_slug == "competition-and-markets-authority"
+    ALLOWED_ORG_DOCS.has_key?(current_organisation_slug.to_sym)
   end
   helper_method :user_can_edit_documents?
 
   def current_organisation_slug
     current_user.organisation_slug
+  end
+
+  def document_type
+    ALLOWED_ORG_DOCS[current_organisation_slug.to_sym]
   end
 end

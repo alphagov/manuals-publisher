@@ -8,31 +8,46 @@ class SpecialistDocumentsController < ApplicationController
   end
 
   def index
-    documents = services.list_documents(self).call
+    documents = services.list_documents(
+      self,
+      document_type: document_type,
+    ).call
 
     render(:index, locals: { documents: documents })
   end
 
   def show
-    document = services.show_document(self).call
+    document = services.show_document(
+      self,
+      document_type: document_type,
+    ).call
 
     render(:show, locals: { document: document })
   end
 
   def new
-    document = services.new_document(self).call
+    document = services.new_document(
+      self,
+      document_type: document_type,
+    ).call
 
-    render(:new, locals: { document: cma_form(document) })
+    render(:new, locals: { document: form_object_for(document) })
   end
 
   def edit
-    document = services.show_document(self).call
+    document = services.show_document(
+      self,
+      document_type: document_type,
+    ).call
 
-    render(:edit, locals: { document: cma_form(document) })
+    render(:edit, locals: { document: form_object_for(document) })
   end
 
   def create
-    document = services.create_document(self).call
+    document = services.create_document(
+      self,
+      document_type: document_type,
+    ).call
 
     if document.valid?
       redirect_to(specialist_document_path(document))
@@ -42,7 +57,10 @@ class SpecialistDocumentsController < ApplicationController
   end
 
   def update
-    document = services.update_document(self).call
+    document = services.update_document(
+      self,
+      document_type: document_type,
+    ).call
 
     if document.valid?
       redirect_to(specialist_document_path(document))
@@ -71,8 +89,13 @@ class SpecialistDocumentsController < ApplicationController
 
 protected
 
-  def cma_form(document)
-    CmaCaseForm.new(document)
+  def form_object_for(document)
+    case current_organisation_slug
+    when "competition-and-markets-authority"
+      CmaCaseForm.new(document)
+    when "air-accidents-investigation-branch"
+      AaibReportForm.new(document)
+    end
   end
 
   def authorize_user_org

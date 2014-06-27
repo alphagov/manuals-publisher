@@ -11,9 +11,12 @@ require "show_manual_document_service"
 class ServiceRegistry
 
   def initialize(dependencies)
-    @document_builder = dependencies.fetch(:document_builder)
+    @cma_case_builder = dependencies.fetch(:cma_case_builder)
+    @aaib_report_builder = dependencies.fetch(:aaib_report_builder)
     @document_repository = dependencies.fetch(:document_repository)
+    @aaib_report_repository = dependencies.fetch(:aaib_report_repository)
     @creation_listeners = dependencies.fetch(:creation_listeners)
+    @aaib_report_creation_listeners = dependencies.fetch(:aaib_report_creation_listeners)
     @withdrawal_listeners = dependencies.fetch(:withdrawal_listeners)
     @document_renderer = dependencies.fetch(:document_renderer)
     @manual_repository_factory = dependencies.fetch(:manual_repository_factory)
@@ -22,29 +25,74 @@ class ServiceRegistry
     @observers = dependencies.fetch(:observers)
   end
 
-  def list_documents(context)
+  def list_documents(context, deps = {})
+    send("list_#{deps.fetch(:document_type).pluralize}", context)
+  end
+
+  def list_cma_cases(context)
     ListDocuments.new(
       document_repository,
     )
   end
 
-  def new_document(context)
+  def list_aaib_reports(context)
+    ListDocuments.new(
+      aaib_report_repository,
+    )
+  end
+
+  def new_document(context, deps = {})
+    send("new_#{deps.fetch(:document_type)}", context)
+  end
+
+  def new_cma_case(context)
     NewDocumentService.new(
-      document_builder,
+      cma_case_builder,
       context,
     )
   end
 
-  def create_document(context)
+  def new_aaib_report(context)
+    NewDocumentService.new(
+      aaib_report_builder,
+      context,
+    )
+  end
+
+  def create_document(context, deps = {})
+    send("create_#{deps.fetch(:document_type)}", context)
+  end
+
+  def create_aaib_report(context)
     CreateDocumentService.new(
-      document_builder,
+      aaib_report_builder,
+      aaib_report_repository,
+      aaib_report_creation_listeners,
+      context,
+    )
+  end
+
+  def create_cma_case(context)
+    CreateDocumentService.new(
+      cma_case_builder,
       document_repository,
       creation_listeners,
       context,
     )
   end
 
-  def show_document(context)
+  def show_document(context, deps = {})
+    send("show_#{deps.fetch(:document_type)}", context)
+  end
+
+  def show_aaib_report(context)
+    ShowDocumentService.new(
+      aaib_report_repository,
+      context,
+    )
+  end
+
+  def show_cma_case(context)
     ShowDocumentService.new(
       document_repository,
       context,
@@ -54,7 +102,7 @@ class ServiceRegistry
   def preview_document(context)
     PreviewDocumentService.new(
       document_repository,
-      document_builder,
+      cma_case_builder,
       document_renderer,
       context,
     )
@@ -63,7 +111,7 @@ class ServiceRegistry
   def preview_manual_document(context)
     PreviewManualDocumentService.new(
       manual_repository(context),
-      document_builder,
+      cma_case_builder,
       document_renderer,
       context,
     )
@@ -77,9 +125,21 @@ class ServiceRegistry
     )
   end
 
-  def update_document(context)
+  def update_document(context, deps = {})
+    send("update_#{deps.fetch(:document_type)}", context)
+  end
+
+  def update_cma_case(context)
     UpdateDocumentService.new(
       document_repository,
+      [],
+      context,
+    )
+  end
+
+  def update_aaib_report(context)
+    UpdateDocumentService.new(
+      aaib_report_repository,
       [],
       context,
     )
@@ -226,14 +286,16 @@ class ServiceRegistry
   end
 
   attr_reader(
-    :observers,
-    :document_builder,
-    :document_repository,
+    :aaib_report_builder,
+    :aaib_report_repository,
+    :aaib_report_creation_listeners,
     :creation_listeners,
-    :withdrawal_listeners,
+    :cma_case_builder,
     :document_renderer,
-
-    :manual_repository_factory,
+    :document_repository,
     :manual_builder,
+    :manual_repository_factory,
+    :observers,
+    :withdrawal_listeners,
   )
 end

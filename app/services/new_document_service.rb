@@ -11,6 +11,7 @@ class NewDocumentService
 
   attr_reader(
     :document_builder,
+    :document_type,
   )
 
   def initial_params

@@ -80,7 +80,7 @@ module AttachmentHelpers
   end
 
   def create_case_with_attachment(document_title, attachment_title)
-    create_cma_case(
+    create_document(
       title: document_title,
       summary: "Eget urna mollis ornare vel eu leo.",
       body: ("Praesent commodo cursus magna, vel scelerisque nisl consectetur et." * 10),

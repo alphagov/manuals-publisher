@@ -1,12 +1,9 @@
-class CmaCase < Document
+class AaibReport < Document
   def self.extra_field_names
     [
-      :opened_date,
-      :closed_date,
-      :case_type,
-      :case_state,
-      :market_sector,
-      :outcome_type,
+      :date_of_occurrence,
+      :aircraft_category,
+      :report_type,
     ]
   end
 

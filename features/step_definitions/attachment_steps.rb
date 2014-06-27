@@ -1,7 +1,7 @@
 Given(/^there is an existing draft case$/) do
   @document_title = "Nullam quis risus"
 
-  create_cma_case(
+  create_document(
     title: @document_title,
     summary: "Eget urna mollis ornare vel eu leo.",
     body: ("Praesent commodo cursus magna, vel scelerisque nisl consectetur et." * 10),
