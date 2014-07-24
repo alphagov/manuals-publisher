@@ -1,11 +1,12 @@
 require "document_republisher"
 
-Given(/^some published and draft specialist documents exist$/) do
+Given(/^some published, withdrawn and draft specialist documents exist$/) do
   stub_panopticon
   stub_finder_api
   stub_rummager
 
   seed_cases(1, state: "draft")
+  seed_cases(1, state: "withdrawn")
   @published_documents = seed_cases(2, state: "published")
 
   reset_panopticon_stubs_and_messages

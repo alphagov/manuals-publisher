@@ -34,9 +34,10 @@ When(/^I publish a new CMA case$/) do
   create_cma_case(@cma_fields, publish: true)
 end
 
-When(/^I edit a CMA case$/) do
+When(/^I edit the CMA case$/) do
   @new_title = "Edited Example CMA Case"
   edit_cma_case(@document_title, title: @new_title)
+  @document_title = @new_title
 end
 
 Then(/^the CMA case should have been updated$/) do

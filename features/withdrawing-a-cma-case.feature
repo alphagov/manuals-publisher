@@ -5,8 +5,14 @@ Feature: Withdrawing a CMA case
 
   Background:
     Given I am logged in as a "CMA" editor
-    And a published CMA case exists
 
   Scenario: Withdraw a CMA case
-    When I withdraw a CMA case
+    Given a published CMA case exists
+    When I withdraw the CMA case
     Then the CMA case should be withdrawn
+
+  Scenario: Withdraw a CMA case with a draft
+    Given a published CMA case exists
+    When I edit the CMA case
+    And I withdraw the CMA case
+    Then the CMA case should be withdrawn with a new draft
