@@ -78,7 +78,7 @@ Then(/^the CMA case has been created$/) do
 end
 
 Then(/^the CMA case should not have been created$/) do
-  check_document_does_not_exist_with(@cma_fields)
+  check_document_does_not_exist_with(:cma_case, @document_title)
 end
 
 Then(/^the CMA cases should be in the publisher case index in the correct order$/) do

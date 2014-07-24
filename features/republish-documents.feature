@@ -1,5 +1,5 @@
 Feature: Script to republish published documents
-  the `bin/rerender_published_documents` script should regenerate the
+  the `bin/republish_documents` script should regenerate the
   RenderedSpecialistDocument for every published edition
 
   Scenario: Republish all published documents

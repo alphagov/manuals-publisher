@@ -26,7 +26,7 @@ When(/^I create a AAIB report with invalid fields$/) do
 end
 
 Then(/^the AAIB report should not have been created$/) do
-  check_document_does_not_exist_with(@aaib_fields)
+  check_document_does_not_exist_with(:aaib_report, @document_title)
 end
 
 Given(/^two AAIB reports exist$/) do
