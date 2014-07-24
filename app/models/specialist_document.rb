@@ -23,7 +23,7 @@ class SpecialistDocument
 
   def_delegators :latest_edition, *edition_attributes
 
-  attr_reader :id, :editions, :latest_edition
+  attr_reader :id, :editions
 
   def initialize(slug_generator, edition_factory, id, editions)
     @slug_generator = slug_generator
@@ -31,7 +31,6 @@ class SpecialistDocument
     @id = id
     @editions = editions
     @editions.push(create_first_edition) if @editions.empty?
-    @latest_edition = @editions.last
   end
 
   def minor_update?
@@ -74,8 +73,7 @@ class SpecialistDocument
     if draft?
       latest_edition.assign_attributes(params)
     else
-      @latest_edition = new_draft(params)
-      editions.push(@latest_edition)
+      editions.push(new_draft(params))
     end
 
     nil
