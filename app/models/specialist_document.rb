@@ -82,7 +82,11 @@ class SpecialistDocument
   end
 
   def published?
-    editions.any?(&:published?)
+    if latest_edition.archived?
+      false
+    else
+      editions.any?(&:published?)
+    end
   end
 
   def draft?

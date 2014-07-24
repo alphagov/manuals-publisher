@@ -18,7 +18,6 @@ describe SpecialistDocument do
   let(:published_slug)      { double(:published_slug) }
   let(:slug_generator)      { double(:slug_generator, call: slug) }
   let(:edition_factory)     { double(:edition_factory, call: new_edition) }
-  let(:new_edition)         { double(:new_edition, published?: false, draft?: true, assign_attributes: nil, version_number: 2) }
   let(:attachments)         { double(:attachments) }
 
   let(:extra_fields) {
@@ -42,6 +41,18 @@ describe SpecialistDocument do
   }
 
   let(:attachments_proxy) { double(:attachments_proxy, to_a: attachments) }
+
+  let(:new_edition) {
+    double(
+      :new_edition,
+      edition_messages.merge(
+        published?: false,
+        draft?: true,
+        archived?: false,
+        version_number: 2,
+      )
+    )
+  }
 
   let(:draft_edition_v1) {
     double(:draft_edition_v1,
@@ -622,6 +633,64 @@ describe SpecialistDocument do
         doc.withdraw!
 
         expect(published_edition_v1).to have_received(:archive)
+      end
+    end
+  end
+
+  describe "#published?" do
+    context "with a single draft edition" do
+      let(:editions) { [draft_edition_v1] }
+
+      it "should be false" do
+        expect(doc).not_to be_published
+      end
+    end
+
+    context "with a single published edition" do
+      let(:editions) { [published_edition_v1] }
+
+      it "should be true" do
+        expect(doc).to be_published
+      end
+    end
+
+    context "with a single withdrawn edition" do
+      let(:editions) { [withdrawn_edition_v2] }
+
+      it "should be false" do
+        expect(doc).not_to be_published
+      end
+    end
+
+    context "with published and draft editions" do
+      let(:editions) { [published_edition_v1, draft_edition_v2] }
+
+      it "should be true" do
+        expect(doc).to be_published
+      end
+    end
+
+    context "with published and withdrawn editions" do
+      let(:editions) { [published_edition_v1, withdrawn_edition_v2] }
+
+      it "should be false" do
+        expect(doc).not_to be_published
+      end
+    end
+
+    context "with withdrawn and draft editions" do
+      let(:editions) { [withdrawn_edition_v2, draft_edition_v1] }
+
+      it "should be false" do
+        expect(doc).not_to be_published
+      end
+    end
+
+    context "with withdrawn and published editions" do
+      let(:editions) { [withdrawn_edition_v2, published_edition_v1] }
+
+      it "should be true" do
+        expect(doc).to be_published
       end
     end
   end
