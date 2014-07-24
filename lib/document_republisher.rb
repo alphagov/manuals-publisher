@@ -1,8 +1,6 @@
 require "gds_api/exceptions"
 
 class DocumentRepublisher
-  class MultiplePublishedEditionsError < RuntimeError; end
-
   def initialize(repository_listeners_map)
     @repositories = repository_listeners_map
   end
@@ -20,13 +18,13 @@ private
   attr_reader :repositories
 
   def republish(document, document_factory, listeners)
-    editions = document.editions.select { |e| e.published? }
-    raise MultiplePublishedEditionsError if editions.size > 1
     puts "== Republishing document: '#{document.slug}' / '#{document.id}'"
 
-    factoried_document = document_factory.call(editions.first.document_id, editions)
+    edition = document.editions.select(&:published?).last
+    factoried_document = document_factory.call(document.id, [edition])
+
     listeners.each { |o| o.call(factoried_document) }
-  rescue GdsApi::HTTPErrorResponse, MultiplePublishedEditionsError
+  rescue GdsApi::HTTPErrorResponse
     puts "## ERRORED Republishing: '#{document.slug}' / '#{document.id}'"
     puts "=== message: #{$!.message}"
   end
