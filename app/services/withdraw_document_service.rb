@@ -19,6 +19,7 @@ private
 
   def withdraw
     document.withdraw!
+    document_repository.store(document)
   end
 
   def persist

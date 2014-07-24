@@ -60,15 +60,15 @@ SpecialistPublisherWiring = DependencyContainer.new do
   }
 
   define_singleton(:aaib_report_repository) do
-    SpecialistDocumentRepository.new(
-      specialist_document_editions: SpecialistDocumentEdition.where(document_type: "aaib_report"),
+    DocumentRepository.new(
+      collection: DocumentRecord.where(document_type: "aaib_report"),
       document_factory: get(:validatable_aaib_report_factory),
     )
   end
 
   define_singleton(:cma_case_repository) do
-    SpecialistDocumentRepository.new(
-      specialist_document_editions: SpecialistDocumentEdition.where(document_type: "cma_case"),
+    DocumentRepository.new(
+      collection: DocumentRecord.where(document_type: "cma_case"),
       document_factory: get(:validatable_cma_case_factory),
     )
   end
@@ -84,8 +84,8 @@ SpecialistPublisherWiring = DependencyContainer.new do
     ->(manual) {
       document_factory = get(:validated_manual_document_factory_factory).call(manual)
 
-      SpecialistDocumentRepository.new(
-        specialist_document_editions: SpecialistDocumentEdition.where(document_type: "manual"),
+      DocumentRepository.new(
+        collection: DocumentRecord.where(document_type: "manual"),
         document_factory: document_factory,
       )
     }
@@ -125,7 +125,7 @@ SpecialistPublisherWiring = DependencyContainer.new do
     }
   }
 
-  define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
+  define_singleton(:edition_factory) { DocumentRecord::Edition.method(:new) }
 
   define_factory(:cma_case_builder) {
     CmaCaseBuilder.new(
