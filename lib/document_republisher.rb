@@ -31,6 +31,6 @@ private
 
   def all_documents(repo)
     @documents ||= {}
-    @documents[repo] ||= repo.all.lazy.select(&:published?)
+    @documents[repo] ||= repo.all.select(&:published?)
   end
 end

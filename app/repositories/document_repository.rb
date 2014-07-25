@@ -25,7 +25,6 @@ class DocumentRepository
   def all(limit = count, offset = 0)
     collection
       .all_by_updated_at(limit, offset)
-      .lazy
       .map(&method(:build_document))
   end
   alias_method :all_by_updated_at_desc, :all
