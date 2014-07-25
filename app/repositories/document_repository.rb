@@ -22,11 +22,13 @@ class DocumentRepository
     build_document(record) if record
   end
 
-  def all
+  def all(limit = count, offset = 0)
     collection
-      .all_by_updated_at
+      .all_by_updated_at(limit, offset)
+      .lazy
       .map(&method(:build_document))
   end
+  alias_method :all_by_updated_at_desc, :all
 
   def store(document)
     record = collection.find_or_initialize_by(document_id: document.id)
@@ -49,6 +51,10 @@ class DocumentRepository
 
   def slug_unique?(document)
     collection.slug_taken_by_another_document?(document.slug, document.id)
+  end
+
+  def count
+    collection.count
   end
 
 private

@@ -16,8 +16,10 @@ class DocumentRecord
     first(conditions: attributes)
   end
 
-  def self.all_by_updated_at
+  def self.all_by_updated_at(limit, offset = 0)
     order_by([:updated_at, :desc])
+      .limit(limit)
+      .skip(offset)
   end
 
   def self.slug_taken_by_another_document?(slug, document_id)
