@@ -8,10 +8,24 @@ class RepositoryPaginator
     apply_pipeline(repo.all(limit, offset))
   end
 
-  def map(*args, &block)
-    pipeline.push([:map, block])
+  lazy_methods = %i(
+    chunk
+    drop
+    drop_while
+    map
+    reject
+    select
+    take
+    take_while
+    zip
+  )
 
-    self
+  lazy_methods.each do |m|
+    define_method(m) do |*args, &block|
+      pipeline.push([m, args, block])
+
+      self
+    end
   end
 
   def count
@@ -23,8 +37,8 @@ private
   attr_reader :repo, :pipeline
 
   def apply_pipeline(results)
-    pipeline.reduce(results) { |collection, (op, func)|
-      collection.public_send(op, &func)
+    pipeline.reduce(results) { |collection, (op, args, func)|
+      collection.public_send(op, *args, &func)
     }
   end
 end
