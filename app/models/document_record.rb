@@ -20,6 +20,13 @@ class DocumentRecord
     order_by([:updated_at, :desc])
   end
 
+  def self.slug_taken_by_another_document?(slug, document_id)
+    where(
+      :slug => slug,
+      :document_id.ne => document_id,
+    ).empty?
+  end
+
   def new_or_existing_draft_edition
     if latest_edition && latest_edition.state == "draft"
       latest_edition

@@ -17,14 +17,14 @@ class DocumentRepository
   end
 
   def [](id)
-    record = collection.where(document_id: id).first
+    record = collection.find_by(document_id: id)
 
     build_document(record) if record
   end
 
   def all
     collection
-      .order_by([:updated_at, :desc])
+      .all_by_updated_at
       .map(&method(:build_document))
   end
 
@@ -48,10 +48,7 @@ class DocumentRepository
   end
 
   def slug_unique?(document)
-    !collection.where(
-      :slug => document.slug,
-      :document_id.ne => document.id,
-    ).exists?
+    collection.slug_taken_by_another_document?(document.slug, document.id)
   end
 
 private
