@@ -3,16 +3,18 @@ require "spec_helper"
 describe SpecialistDocumentBuilder do
   subject(:builder) {
     SpecialistDocumentBuilder.new(
-      document_factory,
-      id_generator,
+      factory: document_factory,
+      id_generator: id_generator,
+      document_type: document_type,
     )
   }
 
   let(:document_factory)  { double(:document_factory, call: document) }
   let(:id_generator)      { double(:id_generator, call: document_id) }
+  let(:document_type)     { double(:document_type) }
 
   let(:document_id)       { double(:document_id) }
-  let(:attrs)             { double(:attrs) }
+  let(:attrs)             { { "some_key" => "some value" } }
   let(:document)          { double(:document, update: nil) }
 
   describe "#call" do
@@ -32,7 +34,14 @@ describe SpecialistDocumentBuilder do
     it "updates the document with the attributes" do
       builder.call(attrs)
 
-      expect(document).to have_received(:update).with(attrs)
+      expect(document).to have_received(:update).with(hash_including(attrs))
+    end
+
+    it "adds the document type to the attributes" do
+      builder.call(attrs)
+
+      expect(document).to have_received(:update)
+        .with(hash_including(document_type: document_type))
     end
   end
 end

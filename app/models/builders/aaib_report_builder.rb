@@ -1,10 +1,8 @@
 require "builders/specialist_document_builder"
 
 class AaibReportBuilder < SpecialistDocumentBuilder
-
-  def call(attrs)
-    attrs.merge!(document_type: "aaib_report")
-    super(attrs)
+private
+  def document_type
+    "aaib_report"
   end
-
 end
