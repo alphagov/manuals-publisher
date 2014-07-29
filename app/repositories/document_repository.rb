@@ -1,4 +1,3 @@
-require "fetchable"
 
 class DocumentRepository
   include Fetchable
@@ -45,6 +44,12 @@ class DocumentRepository
     # through a PublishedDocumentRepository instead of this hack.
     sync_edition_states(document, record)
 
+    # save all the attachments without assining to the document
+    # as this causes a double save
+    document.attachments.each do |attachment|
+      attachment.save! unless attachment.persisted?
+    end
+
     record.save!
   end
 
@@ -75,7 +80,6 @@ private
       slug: document.slug,
       extra_fields: document.extra_fields,
       document_type: document.document_type,
-      attachments: document.attachments,
       change_note: document.change_note,
       minor_update: document.minor_update,
     }

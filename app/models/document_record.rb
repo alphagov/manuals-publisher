@@ -8,9 +8,23 @@ class DocumentRecord
   field :document_type, type: String
   field :slug, type: String
 
+  validates :document_id, presence: true
+  validates :document_type, presence: true
+  validates :slug, presence: true
+
   embeds_many :editions,
     class_name: "DocumentRecord::Edition",
     cascade_callbacks: true
+
+  embeds_many :attachments,
+    cascade_callbacks: true
+
+  def build_attachment(attributes)
+    $attached = true
+    attachments.build(attributes.merge(
+      filename: attributes.fetch(:file).original_filename
+    ))
+  end
 
   def self.find_by(attributes)
     first(conditions: attributes)
@@ -74,11 +88,10 @@ private
     field :minor_update, type: Boolean
     field :version_number, type: Integer
 
-    # We don't make use of the relationship but Mongiod can't save the
-    # timestamps properly without it.
-    embedded_in "DocumentRecord"
+    validates :document_type, presence: true
+    validates :slug, presence: true
 
-    embeds_many :attachments #, cascade_callbacks: true
+    embedded_in :document, class_name: "DocumentRecord"
 
     def publish
       self.state = "published" if draft?
@@ -101,9 +114,11 @@ private
     end
 
     def build_attachment(attributes)
-      attachments.build(attributes.merge(
-        filename: attributes.fetch(:file).original_filename
-      ))
+      document.build_attachment(attributes)
+    end
+
+    def attachments
+      document && document.attachments || []
     end
 
     def save!
