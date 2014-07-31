@@ -113,6 +113,15 @@ private
       state == "archived"
     end
 
+    # Editions created outside the context of a document (see the edition factory)
+    # will not have the normal reference back to their containing document. This
+    # becomes a problem when calling build attachment, which deleagtes back up
+    # to the document. Making no assumption about the document and finding it
+    # each time means it will alwayes be available.
+    def document
+      @document ||= DocumentRecord.where(document_id: document_id).first
+    end
+
     def build_attachment(attributes)
       document.build_attachment(attributes)
     end

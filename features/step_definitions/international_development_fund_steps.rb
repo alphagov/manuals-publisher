@@ -23,7 +23,7 @@ When(/^I create a International Development Fund with invalid fields$/) do
 end
 
 Then(/^the International Development Fund should not have been created$/) do
-  check_document_does_not_exist_with(@idf_fields)
+  check_no_document_created(:international_development_fund)
 end
 
 Given(/^a draft International Development Fund exists$/) do
@@ -63,7 +63,7 @@ Given(/^two International Development Funds exist$/) do
 end
 
 Then(/^the International Development Funds should be in the publisher IDF index in the correct order$/) do
-  visit international_development_funds_path
+  go_to_international_development_fund_index
 
   check_for_documents("International Development Fund 2", "International Development Fund 1")
 end

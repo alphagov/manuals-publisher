@@ -24,7 +24,7 @@ RSpec.describe "DFID import" do
     SpecialistPublisherWiring.get(:international_development_fund_repository)
   }
   let(:imported_report) {
-    repo.all.last
+    repo.all.first
   }
 
   context "with a successful import" do

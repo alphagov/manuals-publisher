@@ -1,7 +1,7 @@
 class AbstractDocumentsController < ApplicationController
   before_filter :authorize_user
 
-  rescue_from("SpecialistDocumentRepository::NotFoundError") do
+  rescue_from("DocumentRepository::NotFoundError") do
     redirect_to(index_path, flash: { error: "Document not found" })
   end
 

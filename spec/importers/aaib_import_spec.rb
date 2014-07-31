@@ -39,7 +39,7 @@ RSpec.describe "AAIB import" do
     SpecialistPublisherWiring.get(:aaib_report_repository)
   }
   let(:imported_report) {
-    repo.all.last
+    repo.all.first
   }
 
   context "with a successful import" do

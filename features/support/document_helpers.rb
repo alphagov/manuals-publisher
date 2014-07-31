@@ -29,9 +29,10 @@ module DocumentHelpers
       .with(hash_including(slug: slug, organisation_ids: organisation_ids))
   end
 
-  def check_document_does_not_exist_with(type, title)
+  def check_no_document_created(type)
     send(:"go_to_#{type}_index")
-    expect(page).not_to have_css("li.document", title)
+
+    expect(page).not_to have_css("ul.document-list li")
   end
 
   def check_for_unchanged_slug(title, expected_slug)

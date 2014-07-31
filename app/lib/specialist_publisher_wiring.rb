@@ -74,8 +74,8 @@ SpecialistPublisherWiring = DependencyContainer.new do
   end
 
   define_singleton(:international_development_fund_repository) do
-    SpecialistDocumentRepository.new(
-      specialist_document_editions: SpecialistDocumentEdition.where(document_type: "international_development_fund"),
+    DocumentRepository.new(
+      collection: DocumentRecord.where(document_type: "international_development_fund"),
       document_factory: get(:validatable_international_development_fund_factory),
     )
   end
@@ -183,8 +183,8 @@ SpecialistPublisherWiring = DependencyContainer.new do
 
   define_factory(:international_development_fund_builder) {
     InternationalDevelopmentFundBuilder.new(
-      get(:validatable_international_development_fund_factory),
-      IdGenerator,
+      factory: get(:validatable_international_development_fund_factory),
+      id_generator: IdGenerator,
     )
   }
 

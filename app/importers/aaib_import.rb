@@ -74,7 +74,7 @@ module AaibImport
 
     def report_builder
       AaibReportBuilder.new(
-        ->(*args) {
+        factory: ->(*args) {
           SlugUniquenessValidator.new(
             repo,
             null_validator(
@@ -82,7 +82,7 @@ module AaibImport
             )
           )
         },
-        IdGenerator,
+        id_generator: IdGenerator,
       )
     end
 
