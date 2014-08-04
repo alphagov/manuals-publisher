@@ -42,6 +42,9 @@ class ManualChangeNoteDatabaseExporter
   end
 
   def publication_history
-    publication_logs.with_slug_prefix(manual.slug)
+    publication_logs
+      .where_publishing_completed
+      .with_slug_prefix(manual.slug)
+      .order(:created_at)
   end
 end

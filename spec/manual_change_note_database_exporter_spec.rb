@@ -36,7 +36,7 @@ RSpec.describe ManualChangeNoteDatabaseExporter do
   let(:publication_log_timestamp)   { double(:publication_log_timestamp, utc: utc_publication_log_timestamp) }
 
   let(:publication_logs_collection) {
-    double(:publication_logs_collection, with_slug_prefix: [])
+    double(:publication_logs_collection, with_slug_prefix: [], where_publishing_completed: [])
   }
 
   let(:manual) {
@@ -52,16 +52,24 @@ RSpec.describe ManualChangeNoteDatabaseExporter do
   let(:change_note_slug) { "guidance/a-manual/updates" }
 
   describe "#call" do
+    let(:scoped_collection) { double(:scoped_collection) }
+
     before do
-      allow(publication_logs_collection).to receive(:with_slug_prefix)
+      allow(publication_logs_collection).to receive(:where_publishing_completed)
+        .and_return(scoped_collection)
+      allow(scoped_collection).to receive(:with_slug_prefix)
+        .and_return(scoped_collection)
+      allow(scoped_collection).to receive(:order)
         .and_return(manual_publication_logs)
     end
 
     it "retrieves the publication history for the manual" do
       exporter.call
 
-      expect(publication_logs_collection).to have_received(:with_slug_prefix)
+      expect(publication_logs_collection).to have_received(:where_publishing_completed)
+      expect(scoped_collection).to have_received(:with_slug_prefix)
         .with(manual_slug)
+      expect(scoped_collection).to have_received(:order).with(:created_at)
     end
 
     it "upserts the change note record with change note and manual slug" do
