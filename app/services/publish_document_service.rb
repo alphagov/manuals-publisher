@@ -18,6 +18,7 @@ class PublishDocumentService
 
   def publish
     document.publish!
+    document_repository.store(document)
 
     listeners.each { |o| o.call(document) }
   end

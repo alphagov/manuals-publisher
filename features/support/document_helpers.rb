@@ -29,8 +29,10 @@ module DocumentHelpers
       .with(hash_including(slug: slug, organisation_ids: organisation_ids))
   end
 
-  def check_document_does_not_exist_with(attributes)
-    refute SpecialistDocumentEdition.exists?(conditions: attributes)
+  def check_no_document_created(type)
+    send(:"go_to_#{type}_index")
+
+    expect(page).not_to have_css("ul.document-list li")
   end
 
   def check_for_unchanged_slug(title, expected_slug)
@@ -79,18 +81,6 @@ module DocumentHelpers
 
   def check_rendered_document_contains_header_meta_data(document)
     expect(document.details["headers"].first).to include("text" => "Header")
-  end
-
-  def check_for_correctly_archived_editions(document_attrs)
-    latest_edition = SpecialistDocumentEdition.where(document_attrs).first
-    editions = SpecialistDocumentEdition.where(document_id: latest_edition.document_id)
-    previous_editions = editions.to_a - latest_edition.to_a
-
-    expect(latest_edition).to be_published
-
-    previous_editions.each do |edition|
-      expect(edition).to be_archived
-    end
   end
 
   def check_document_is_withdrawn(slug, document_title)
@@ -213,4 +203,8 @@ module DocumentHelpers
     expect(page).to have_content("#{field} cannot include invalid HTML or JavaScript")
   end
 
+  def check_document_state(type, title, expected_state)
+    go_to_show_page_for_document(type, title)
+    page.should have_content(expected_state)
+  end
 end

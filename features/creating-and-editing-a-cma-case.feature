@@ -28,7 +28,7 @@ Feature: Creating and editing a CMA case
 
   Scenario: Edit a draft CMA case
     Given a draft CMA case exists
-    When I edit a CMA case
+    When I edit the CMA case
     Then the CMA case should have been updated
 
   Scenario: Change the title of a previously published document

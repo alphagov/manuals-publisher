@@ -19,4 +19,3 @@ Feature: Publishing an AAIB Report
     When I publish a new AAIB report
     And I edit the AAIB report and republish
     Then the amended document should be published
-    And previous editions should be archived

@@ -5,7 +5,8 @@ class DocumentMetadataDecorator < SimpleDelegator
   end
 
   def update(attrs)
-    extra_attrs = attrs.slice(*extra_field_names)
+    extra_attrs = attrs
+      .select { |k, _| extra_field_names.map(&:to_s).include?(k.to_s) }
 
     data = attrs
       .except(*extra_field_names)

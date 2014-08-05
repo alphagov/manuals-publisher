@@ -20,7 +20,6 @@ require "specialist_document_attachment_processor"
 require "specialist_document_database_exporter"
 require "specialist_document_govspeak_to_html_renderer"
 require "specialist_document_header_extractor"
-require "specialist_document_repository"
 require "validators/aaib_report_validator"
 require "validators/change_note_validator"
 require "validators/cma_case_validator"
@@ -61,22 +60,22 @@ SpecialistPublisherWiring = DependencyContainer.new do
   }
 
   define_singleton(:aaib_report_repository) do
-    SpecialistDocumentRepository.new(
-      specialist_document_editions: SpecialistDocumentEdition.where(document_type: "aaib_report"),
+    DocumentRepository.new(
+      collection: DocumentRecord.where(document_type: "aaib_report"),
       document_factory: get(:validatable_aaib_report_factory),
     )
   end
 
   define_singleton(:cma_case_repository) do
-    SpecialistDocumentRepository.new(
-      specialist_document_editions: SpecialistDocumentEdition.where(document_type: "cma_case"),
+    DocumentRepository.new(
+      collection: DocumentRecord.where(document_type: "cma_case"),
       document_factory: get(:validatable_cma_case_factory),
     )
   end
 
   define_singleton(:international_development_fund_repository) do
-    SpecialistDocumentRepository.new(
-      specialist_document_editions: SpecialistDocumentEdition.where(document_type: "international_development_fund"),
+    DocumentRepository.new(
+      collection: DocumentRecord.where(document_type: "international_development_fund"),
       document_factory: get(:validatable_international_development_fund_factory),
     )
   end
@@ -85,8 +84,8 @@ SpecialistPublisherWiring = DependencyContainer.new do
     ->(manual) {
       document_factory = get(:validated_manual_document_factory_factory).call(manual)
 
-      SpecialistDocumentRepository.new(
-        specialist_document_editions: SpecialistDocumentEdition.where(document_type: "manual"),
+      DocumentRepository.new(
+        collection: DocumentRecord.where(document_type: "manual"),
         document_factory: document_factory,
       )
     }
@@ -147,12 +146,12 @@ SpecialistPublisherWiring = DependencyContainer.new do
     }
   }
 
-  define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
+  define_singleton(:edition_factory) { DocumentRecord::Edition.method(:new) }
 
   define_factory(:cma_case_builder) {
     CmaCaseBuilder.new(
-      get(:validatable_cma_case_factory),
-      IdGenerator,
+      factory: get(:validatable_cma_case_factory),
+      id_generator: IdGenerator,
     )
   }
 
@@ -175,8 +174,8 @@ SpecialistPublisherWiring = DependencyContainer.new do
 
   define_factory(:aaib_report_builder) {
     AaibReportBuilder.new(
-      get(:validatable_aaib_report_factory),
-      IdGenerator,
+      factory: get(:validatable_aaib_report_factory),
+      id_generator: IdGenerator,
     )
   }
 
@@ -205,8 +204,8 @@ SpecialistPublisherWiring = DependencyContainer.new do
 
   define_factory(:international_development_fund_builder) {
     InternationalDevelopmentFundBuilder.new(
-      get(:validatable_international_development_fund_factory),
-      IdGenerator,
+      factory: get(:validatable_international_development_fund_factory),
+      id_generator: IdGenerator,
     )
   }
 

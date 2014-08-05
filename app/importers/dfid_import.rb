@@ -68,13 +68,13 @@ module DfidImport
 
     def report_builder
       InternationalDevelopmentFundBuilder.new(
-        ->(*args) {
+        factory: ->(*args) {
           SlugUniquenessValidator.new(
             repo,
             SpecialistPublisherWiring.get(:validatable_international_development_fund_factory).call(*args),
           )
         },
-        IdGenerator,
+        id_generator: IdGenerator,
       )
     end
 

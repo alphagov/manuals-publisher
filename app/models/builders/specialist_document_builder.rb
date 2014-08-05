@@ -1,14 +1,24 @@
 class SpecialistDocumentBuilder
-  def initialize(specialist_document_factory, id_generator)
-    @document_factory = specialist_document_factory
-    @id_generator = id_generator
+  def initialize(dependencies)
+    @document_factory = dependencies.fetch(:factory)
+    @id_generator = dependencies.fetch(:id_generator)
+    @document_type = dependencies.fetch(:document_type) { document_type }
   end
 
   def call(attrs)
+    attrs = attrs.stringify_keys
+
     document_factory
-      .call(new_document_id, editions)
+      .call(
+        new_document_id,
+        editions,
+      )
       .tap { |d|
-        d.update(attrs)
+        d.update(
+          attrs.merge(
+            document_type: document_type,
+          )
+        )
       }
   end
 
@@ -22,5 +32,9 @@ class SpecialistDocumentBuilder
 
   def editions
     []
+  end
+
+  def document_type
+    @document_type || raise(NotImplementedError)
   end
 end

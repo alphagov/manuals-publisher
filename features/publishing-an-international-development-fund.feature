@@ -23,4 +23,3 @@ Feature: Publishing an International Development Fund
     When I publish a new International Development Fund
     And I edit the International Development Fund and republish
     Then the amended document should be published
-    And previous editions should be archived

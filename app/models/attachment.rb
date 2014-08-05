@@ -9,7 +9,7 @@ class Attachment
   field :filename
   attaches :file, with_url_field: true, update_existing: true
 
-  embedded_in :specialist_document_edition
+  embedded_in :document_record_edition, class_name: "DocumentRecord::Edition"
 
   validates_with SafeHtml
 

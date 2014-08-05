@@ -1,7 +1,5 @@
 Then(/^the CMA case should be in draft$/) do
-  expect(
-    cma_case_repository.all.last
-  ).to be_draft
+  expect(page).to have_content("Publication state draft")
 end
 
 When(/^I publish the CMA case$/) do
@@ -22,8 +20,4 @@ end
 
 Then(/^the amended document should be published$/) do
   check_for_published_document_with(@amended_document_attributes)
-end
-
-Then(/^previous editions should be archived$/) do
-  check_for_correctly_archived_editions(@amended_document_attributes)
 end
