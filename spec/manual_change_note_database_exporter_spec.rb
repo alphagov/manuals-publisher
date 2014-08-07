@@ -55,9 +55,7 @@ RSpec.describe ManualChangeNoteDatabaseExporter do
     let(:scoped_collection) { double(:scoped_collection) }
 
     before do
-      allow(publication_logs_collection).to receive(:where_publishing_completed)
-        .and_return(scoped_collection)
-      allow(scoped_collection).to receive(:with_slug_prefix)
+      allow(publication_logs_collection).to receive(:with_slug_prefix)
         .and_return(scoped_collection)
       allow(scoped_collection).to receive(:order)
         .and_return(manual_publication_logs)
@@ -66,8 +64,7 @@ RSpec.describe ManualChangeNoteDatabaseExporter do
     it "retrieves the publication history for the manual" do
       exporter.call
 
-      expect(publication_logs_collection).to have_received(:where_publishing_completed)
-      expect(scoped_collection).to have_received(:with_slug_prefix)
+      expect(publication_logs_collection).to have_received(:with_slug_prefix)
         .with(manual_slug)
       expect(scoped_collection).to have_received(:order).with(:created_at)
     end

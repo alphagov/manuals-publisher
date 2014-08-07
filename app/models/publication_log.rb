@@ -1,3 +1,5 @@
+require "state_machine"
+
 class PublicationLog
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -14,5 +16,4 @@ class PublicationLog
   alias_attribute :published_at, :created_at
 
   scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
-  scope :where_publishing_completed, where(document_state: "published")
 end
