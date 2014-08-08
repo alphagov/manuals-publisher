@@ -20,6 +20,19 @@ module ApplicationHelper
 
   end
 
+  def publication_task_state(task)
+    formatted_time = nice_time_format(task.updated_at)
+
+    case task.state
+    when "queued", "processing"
+      "This manual was sent for publishing at #{formatted_time}. It should be published shortly.".html_safe
+    when "finished"
+      "This manual was last published at #{formatted_time}".html_safe
+    when "aborted"
+      "This manual was sent for publishing at #{formatted_time}, but something went wrong. Our team has been notified.".html_safe
+    end
+  end
+
   def nav_link_to(text, href)
     link_to(text, href)
   end
