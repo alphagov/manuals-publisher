@@ -1,5 +1,5 @@
 require "fast_spec_helper"
-require "publish_manual_service"
+require "manuals/publish_manual_service"
 
 RSpec.describe PublishManualService do
 
