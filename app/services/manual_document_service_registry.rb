@@ -1,8 +1,8 @@
-require "preview_manual_document_service"
-require "create_manual_document_service"
-require "update_manual_document_service"
-require "show_manual_document_service"
-require "new_manual_document_service"
+require "manual_documents/preview_manual_document_service"
+require "manual_documents/create_manual_document_service"
+require "manual_documents/update_manual_document_service"
+require "manual_documents/show_manual_document_service"
+require "manual_documents/new_manual_document_service"
 
 class ManualDocumentServiceRegistry
   def preview(context)

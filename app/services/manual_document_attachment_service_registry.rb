@@ -1,7 +1,7 @@
-require "create_manual_document_attachment_service"
-require "update_manual_document_attachment_service"
-require "show_manual_document_attachment_service"
-require "new_manual_document_attachment_service"
+require "manual_document_attachments/create_manual_document_attachment_service"
+require "manual_document_attachments/update_manual_document_attachment_service"
+require "manual_document_attachments/show_manual_document_attachment_service"
+require "manual_document_attachments/new_manual_document_attachment_service"
 
 class ManualDocumentAttachmentServiceRegistry
   def create(context)
