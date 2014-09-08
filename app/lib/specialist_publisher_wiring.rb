@@ -411,6 +411,12 @@ SpecialistPublisherWiring = DependencyContainer.new do
     }
   }
 
+  define_instance(:manual_renderer) {
+    ->(man) {
+      get(:govspeak_to_html_renderer).call(man)
+    }
+  }
+
   define_instance(:specialist_document_renderer) {
     ->(doc) {
       pipeline = [
