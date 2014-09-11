@@ -101,5 +101,31 @@ private
 
   def organisation
     @organisation ||= organisations_api.organisation(manual.attributes.fetch(:organisation_slug))
+  rescue GdsApi::HTTPErrorResponse => error
+    error_message = "Organisations API responded with #{error.code}"
+
+    case error.code.to_i
+    when (400..499)
+      raise ClientError.new(error_message, error)
+    when (500..599)
+      raise ServerError.new(error_message, error)
+    else
+      raise HTTPError.new(error_message, error)
+    end
+  end
+
+  class HTTPError < StandardError
+    attr_reader :original_exception
+
+    def initialize(message, original_exception = nil)
+      super(message)
+      @original_exception = original_exception
+    end
+  end
+
+  class ClientError < HTTPError
+  end
+
+  class ServerError < HTTPError
   end
 end

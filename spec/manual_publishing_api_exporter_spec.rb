@@ -1,5 +1,6 @@
 require "fast_spec_helper"
 
+require "gds-api-adapters"
 require "manual_publishing_api_exporter"
 
 describe ManualPublishingAPIExporter do
@@ -13,6 +14,7 @@ describe ManualPublishingAPIExporter do
     )
   }
 
+  let(:error_double) { double(:error) }
   let(:export_recipent) { double(:export_recipent, put_content_item: nil) }
   let(:organisations_api) {
     double(
@@ -158,5 +160,15 @@ describe ManualPublishingAPIExporter do
         }
       )
     )
+  end
+
+  it "raises a ::ClientError if a 4xx error is raised by the organisation API" do
+    allow(organisations_api).to receive(:organisation).and_raise(GdsApi::HTTPNotFound.new(404))
+    expect { subject.call }.to raise_error(ManualPublishingAPIExporter::ClientError)
+  end
+
+  it "raises a ::ServerError if a 5xx error is raised by the organisation API" do
+    allow(organisations_api).to receive(:organisation).and_raise(GdsApi::HTTPNotFound.new(500))
+    expect { subject.call }.to raise_error(ManualPublishingAPIExporter::ServerError)
   end
 end
