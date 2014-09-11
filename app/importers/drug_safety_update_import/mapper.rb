@@ -1,4 +1,4 @@
-model DsuImport
+module DrugSafetyUpdateImport
   class Mapper
     def initialize(document_creator, repo)
       @document_creator = document_creator
@@ -40,29 +40,25 @@ model DsuImport
     end
 
     def massage(data)
-
-      # TODO this should be functionally requivalent to just returning data
-      # or not even massaging the data in the first place
       data.merge({
-        "title" => data["title"]
-        # title_with_date_if_not_present(data),
+        "title" => data["title"],
+        # "title" => title_with_date_if_not_present(data),
         # "aircraft_category" => aircraft_categories(data["aircraft_categories"]),
-        "aircraft_category" => data["aircraft_categories"]
-        "registration" => data["registrations"],
-        "aircraft_type" => data["aircraft_types"],
-        "report_type" => data["report_type"],
-        # report_type(data),
-        # "body" => body_substitutions(data["body"]),
+        # "registration" => data["registrations"],
+        # "aircraft_type" => data["aircraft_types"],
+        # "report_type" => report_type(data),
+        "assets" => [],
+        "label" => "kitten",
         "body" => data["body"],
       })
     end
 
     def body_substitutions(body)
-      raise "Deprecated body_substitutions: SW"
-      body.dup.tap do |new_body|
+       raise "body_substitutions called; shouldn't be needed"
+       body.dup.tap do |new_body|
         {
-          "![PDF icon](http://www.----.gov.uk/sites/m---/_shared/ico_pdf.gif)" => "",
-          "![file icon](http://www.----.gov.uk/_shared/icon_pdf.gif)" => "",
+          "![PDF icon](http://www.aaib.gov.uk/sites/maib/_shared/ico_pdf.gif)" => "",
+          "![file icon](http://www.aaib.gov.uk/_shared/icon_pdf.gif)" => "",
           /^ +/ => "",
         }.each do |search, replace|
           new_body.gsub!(search, replace)
@@ -97,7 +93,6 @@ model DsuImport
     end
 
     def report_type(data)
-      raise "Deprecated: report_type: SW"
       case data["report_type"]
       when "" then "field-investigation"
       when "correspondence investigation" then "correspondence-investigation"
@@ -127,15 +122,7 @@ model DsuImport
 
     def desired_keys
       %w(
-        aircraft_category
-        aircraft_type
         body
-        date_of_occurrence
-        location
-        registration_string
-        registration
-        report_type
-        summary
         title
       )
     end

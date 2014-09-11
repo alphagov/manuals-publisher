@@ -1,8 +1,8 @@
-require "dsu_import/mapper"
-require "dsu_import/attachment_mapper"
+require "drug_safety_update_import/mapper"
+require "drug_safety_update_import/attachment_mapper"
 require "document_import"
 
-module DsuImport
+module DrugSafetyUpdateImport
   def self.call(data_files_dir, attachments_dir)
     DependencyContainer.new(
       data_files_dir,
@@ -65,7 +65,7 @@ module DsuImport
           CreateDocumentService.new(
             report_builder,
             repo,
-            DsuReportObserversRegistry.new.creation,
+            DrugSafetyUpdateObserversRegistry.new.creation,
             attrs,
           ).call
         },
@@ -74,12 +74,12 @@ module DsuImport
     end
 
     def report_builder
-      DsuReportBuilder.new(
+      DrugSafetyUpdateReportBuilder.new(
         ->(*args) {
           SlugUniquenessValidator.new(
             repo,
             null_validator(
-              SpecialistPublisherWiring.get(:dsu_report_factory).call(*args),
+              SpecialistPublisherWiring.get(:drug_safety_update_factory).call(*args),
             )
           )
         },
@@ -88,7 +88,7 @@ module DsuImport
     end
 
     def repo
-      SpecialistPublisherWiring.get(:dsu_report_repository)
+      SpecialistPublisherWiring.get(:drug_safety_update_repository)
     end
 
     def null_validator(thing)

@@ -1,7 +1,7 @@
 require "validators/attachment_snippet_in_body_validator"
 require "document_import/attachment_helpers"
 
-module DsuImport
+module DrugSafetyUpdateImport
   class AttachmentMapper
     include ::DocumentImport::AttachmentHelpers
 
@@ -15,7 +15,10 @@ module DsuImport
       document = import_mapper.call(data)
 
       if document.valid?
-        data["assets"].each do |asset_data|
+        puts "Document apparently valid, attaching assets"
+        puts data["_assets"]
+        puts "^^^"
+        data["_assets"].each do |asset_data|
           attach_asset(document, asset_data, data)
         end
 
