@@ -15,9 +15,6 @@ module DrugSafetyUpdateImport
       document = import_mapper.call(data)
 
       if document.valid?
-        puts "Document apparently valid, attaching assets"
-        puts data["_assets"]
-        puts "^^^"
         data["_assets"].each do |asset_data|
           attach_asset(document, asset_data, data)
         end
