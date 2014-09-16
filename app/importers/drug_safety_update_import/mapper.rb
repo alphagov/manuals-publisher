@@ -7,31 +7,11 @@ module DrugSafetyUpdateImport
 
     def call(raw_data)
       document = document_creator.call(desired_attributes(raw_data))
-      if document.valid?
-        document
-      elsif document.errors.keys == [:slug]
-        destroy_newer_version_or_raise(document)
-      else
-        document
-      end
+      document
     end
 
   private
     attr_reader :document_creator, :repo
-
-    def destroy_newer_version_or_raise(document)
-      other_document = repo.first_by_slug(document.slug)
-      if document == most_recent(document, other_document)
-        other_document.destroy
-        document
-      else
-        raise DocumentImport::HasNewerVersionError, "#{document.slug}"
-      end
-    end
-
-    def most_recent(doc1, doc2)
-      [doc1, doc2].sort_by { |d| Date.parse(d.date_of_occurrence) }.last
-    end
 
     def desired_attributes(data)
       massage(data)
