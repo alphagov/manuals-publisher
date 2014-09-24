@@ -22,82 +22,9 @@ module DrugSafetyUpdateImport
     def massage(data)
       data.merge({
         "title" => data["title"],
-        # "title" => title_with_date_if_not_present(data),
-        # "aircraft_category" => aircraft_categories(data["aircraft_categories"]),
-        # "registration" => data["registrations"],
-        # "aircraft_type" => data["aircraft_types"],
-        # "report_type" => report_type(data),
         "assets" => [],
-        "label" => "kitten",
         "body" => data["body"],
       })
-    end
-
-    def body_substitutions(body)
-       raise "body_substitutions called; shouldn't be needed"
-       body.dup.tap do |new_body|
-        {
-          "![PDF icon](http://www.aaib.gov.uk/sites/maib/_shared/ico_pdf.gif)" => "",
-          "![file icon](http://www.aaib.gov.uk/_shared/icon_pdf.gif)" => "",
-          /^ +/ => "",
-        }.each do |search, replace|
-          new_body.gsub!(search, replace)
-        end
-      end
-    end
-
-    def title_with_date_if_not_present(data)
-      occurrence = Date.parse(data.fetch("date_of_occurrence"))
-      title = data.fetch("title")
-
-      date_from_title = safe_parse_date(title)
-
-      if fuzzy_date_match(date_from_title, occurrence)
-        title
-      else
-        "#{title}, #{occurrence.strftime("%-d %B %Y")}"
-      end
-    rescue TypeError => e
-      raise "Date cannot be nil"
-    end
-
-    def fuzzy_date_match(date1, date2)
-      date1.is_a?(Date) && date2.is_a?(Date) &&
-        [date1.month, date1.year] == [date2.month, date2.year]
-    end
-
-    def safe_parse_date(string)
-      Date.parse(string)
-    rescue ArgumentError
-      nil
-    end
-
-    def report_type(data)
-      case data["report_type"]
-      when "" then "field-investigation"
-      when "correspondence investigation" then "correspondence-investigation"
-      when "field investigation" then "field-investigation"
-      when "formal report" then "formal-report"
-      when "overseas occurrence" then "field-investigation"
-      when "special bulletin" then "special-bulletin"
-      when "uncategorised" then "pre-1997-monthly-report"
-      else raise "Unknown report type: #{data["report_type"]}"
-      end
-    end
-
-    def aircraft_categories(categories)
-      categories.map { |c| aircraft_category(c) }
-    end
-
-    def aircraft_category(category)
-      case category
-      when "Commercial Air Transport - Fixed Wing" then "commercial-fixed-wing"
-      when "Commercial Air Transport - Rotorcraft" then "commercial-rotorcraft"
-      when "General Aviation - Fixed Wing" then "general-aviation-fixed-wing"
-      when "General Aviation - Rotorcraft" then "general-aviation-rotorcraft"
-      when "Sport Aviation/Balloons" then "sport-aviation-and-balloons"
-      else raise "Unknown aircraft category: #{category}"
-      end
     end
 
     def desired_keys
