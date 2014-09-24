@@ -31,6 +31,7 @@ module DrugSafetyUpdateImport
       %w(
         body
         title
+	therapeutic_area
       )
     end
   end

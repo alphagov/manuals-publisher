@@ -74,7 +74,7 @@ module DrugSafetyUpdateImport
     end
 
     def report_builder
-      DrugSafetyUpdateReportBuilder.new(
+      DrugSafetyUpdateBuilder.new(
         ->(*args) {
           SlugUniquenessValidator.new(
             repo,
