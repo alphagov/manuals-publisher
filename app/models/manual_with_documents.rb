@@ -12,6 +12,10 @@ class ManualWithDocuments < SimpleDelegator
     @documents.to_enum
   end
 
+  def remove_document(document)
+    @documents = @documents.reject { |d| d == document }
+  end
+
   def build_document(attributes)
     document = document_builder.call(
       self,
