@@ -1,3 +1,5 @@
+require "destroy_manual_document_service"
+
 class ManualDocumentsController < ApplicationController
   def show
     manual, document = services.show(self).call
@@ -28,6 +30,15 @@ class ManualDocumentsController < ApplicationController
         document: ManualDocumentViewAdapter.new(manual, document),
       })
     end
+  end
+
+  def destroy
+    manual, document = services.destroy(self).call
+    flash[:notice] = "Manual document deleted successfully"
+    redirect_to(manual_path(manual))
+  rescue AlreadyPublishedError => e
+    flash[:error] = e.message
+    redirect_to(manual_document_path(e.manual, e.document))
   end
 
   def edit

@@ -34,6 +34,10 @@ class SpecialistDocument
     @latest_edition = @editions.last
   end
 
+  def destroy_latest_edition
+    latest_edition.destroy
+  end
+
   def minor_update?
     !!minor_update
   end
@@ -131,13 +135,13 @@ class SpecialistDocument
     end
   end
 
-protected
-
-  attr_reader :slug_generator, :edition_factory
-
   def never_published?
     !published?
   end
+
+protected
+
+  attr_reader :slug_generator, :edition_factory
 
   def new_edition_defaults
     {

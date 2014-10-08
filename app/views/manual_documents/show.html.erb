@@ -17,4 +17,9 @@
 
 <div class="actions">
   <%= link_to("Edit section", edit_manual_document_path(manual, document), class: 'action-link') %>
+  <% if document.never_published? %>
+    <%= form_tag(manual_document_path(manual, document), method: :delete) do %>
+      <button name='submit' class="btn btn-danger">Delete</button>
+    <% end -%>
+  <% end -%>
 </div>

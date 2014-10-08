@@ -35,7 +35,7 @@ SpecialistPublisher::Application.routes.draw do
   get "/specialist-documents/(*path)", to: redirect { |params, _| "/cma-cases/#{params[:path]}" }
 
   resources :manuals, except: :destroy do
-    resources :documents, except: :destroy, path: "sections", controller: "ManualDocuments" do
+    resources :documents, path: "sections", controller: "ManualDocuments" do
       resources :attachments, controller: :manual_document_attachments, only: [:new, :create, :edit, :update]
 
       # This is for persisted manual documents
