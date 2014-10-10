@@ -10,8 +10,10 @@ class AbstractDocumentPublicationAlertFormatter
     raise NotImplementedError
   end
 
-  def identifier
-    "#{Plek.current.find("finder-frontend")}/#{slug_prefix}.atom"
+  def tags
+    document.extra_fields.merge(
+      document_type: document.document_type
+    )
   end
 
   def subject
