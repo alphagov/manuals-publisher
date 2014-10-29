@@ -139,29 +139,22 @@ module DocumentHelpers
       slug,
       fields.except(:body),
     )
-    check_delivery_api_notified_of_publish(slug, fields.fetch(:title))
+    check_email_alert_api_ntofied_of_publish
   end
 
-  def check_delivery_api_notified_of_publish(slug, title)
-    slug_prefix = slug.split("/").first
-    finder_url = "#{Plek.current.find("finder-frontend")}/#{slug_prefix}.atom"
-
-    expect(fake_delivery_api).to have_received(:topic)
+  def check_email_alert_api_ntofied_of_publish
+    expect(fake_email_alert_api).to have_received(:send_alert)
       .with(
-        finder_url,
-        anything,
-      )
-    expect(fake_delivery_api).to have_received(:notify)
-      .with(
-        finder_url,
-        /#{title}/,
-        /#{slug}/,
+        hash_including(
+          "subject",
+          "body",
+          "tags",
+        )
       )
   end
 
   def check_delivery_api_is_not_notified_of_publish
-    expect(fake_delivery_api).to_not have_received(:topic)
-    expect(fake_delivery_api).to_not have_received(:notify)
+    expect(fake_email_alert_api).to_not have_received(:send_alert)
   end
 
   def check_document_published_to_content_api(slug, fields)
