@@ -13,7 +13,7 @@ class AbstractDocumentPublicationAlertFormatter
 
   def tags
     arrayified_extra_fields.merge(
-      format: [document.document_type]
+      format: [document.document_type.dasherize]
     )
   end
 
