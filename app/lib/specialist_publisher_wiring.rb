@@ -339,7 +339,7 @@ SpecialistPublisherWiring = DependencyContainer.new do
     ->(document) {
       RummagerIndexer.new.add(
         CmaCaseIndexableFormatter.new(
-          MarkdownAttachmentProcessor.new(document)
+          MarkdownAttachmentProcessor.new(document),
         )
       )
     }
