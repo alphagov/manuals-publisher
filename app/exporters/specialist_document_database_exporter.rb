@@ -63,7 +63,7 @@ private
 
   def document_metadata
     {
-      published_at: document.previous_major_updated_at,
+      published_at: published_at,
     }
   end
 
@@ -89,13 +89,20 @@ private
   end
 
   def serialised_change_notes
-    publication_logs
-      .change_notes_for(document.slug)
+    publication_log_entries
       .map { |publication|
         {
           note: publication.change_note,
           public_timestamp: publication.published_at.utc,
         }
       }
+  end
+
+  def publication_log_entries
+    publication_logs.change_notes_for(document.slug)
+  end
+
+  def published_at
+    publication_log_entries.any? ? publication_log_entries.last.published_at : document.updated_at
   end
 end

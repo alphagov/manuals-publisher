@@ -14,7 +14,8 @@ describe SpecialistDocumentDatabaseExporter do
   }
 
   let(:document_slug) { double(:document_slug) }
-  let(:publication_logs) { double(:publication_logs, change_notes_for: []) }
+  let(:publication_log_entry) { double(:publication_log_entry, published_at: Time.now, change_note: "Change is good!") }
+  let(:publication_logs) { double(:publication_logs, change_notes_for: [publication_log_entry]) }
   let(:export_recipent) { double(:export_recipent, create_or_update_by_slug!: nil) }
   let(:document_renderer) { double(:document_renderer, call: rendered_document) }
   let(:finder_schema) {
@@ -23,14 +24,12 @@ describe SpecialistDocumentDatabaseExporter do
     end
   }
 
-  let(:previous_major_updated_at) { double(:previous_major_updated_at) }
-  let(:newly_published_time) { double(:newly_published_time) }
+  let(:updated_at) { double(:updated_at) }
   let(:document) {
     double(:document,
       slug: document_slug,
       minor_update?: false,
-      previous_major_updated_at: previous_major_updated_at,
-      updated_at: newly_published_time,
+      updated_at: updated_at,
     )
   }
 
@@ -99,12 +98,11 @@ describe SpecialistDocumentDatabaseExporter do
 
     expect(export_recipent).to have_received(:create_or_update_by_slug!).with(
       hash_including(
-        details: {
+        details: hash_including({
           case_type: "ca98-and-civil-cartels",
           case_type_label: "CA98 and civil cartels",
           headers: header_metadata,
-          change_history: []
-        }
+        })
       )
     )
   end
