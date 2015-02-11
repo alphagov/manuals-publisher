@@ -21,6 +21,6 @@ RSpec.describe EsiFundIndexableFormatter do
   it_should_behave_like "a specialist document indexable formatter"
 
   it "should have a type of european_structural_investment_fund" do
-    expect(formatter.type).to eq("european_structural_investment_fund")
+    expect(formatter.type).to eq("esi_fund")
   end
 end
