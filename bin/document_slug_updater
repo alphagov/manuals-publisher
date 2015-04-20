@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require File.expand_path("../../config/environment", __FILE__)
+require "specialist_publisher"
+
+def strip_leading_slash(path)
+  path.sub(%r{\A/}, "")
+end
+
+slug     = strip_leading_slash(ARGV.fetch(0))
+new_slug = strip_leading_slash(ARGV.fetch(1))
+
+edition = SpecialistDocumentEdition.published.where(slug: slug).last
+raise(ArgumentError, "No published document for #{slug}") unless edition
+
+doc_type = edition.document_type
+document_id = edition.document_id
+services = SpecialistPublisher.document_services(doc_type)
+
+puts "Changing #{slug} to #{new_slug}"
+
+puts "Withdrawing #{slug}"
+services.withdraw(document_id).call
+
+puts "Creating a new draft to republish"
+edition.update_attribute(:slug, new_slug)
+
+puts "Republishing as #{new_slug}"
+services.publish(document_id).call
