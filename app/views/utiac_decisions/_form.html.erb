@@ -1,0 +1,25 @@
+<div class="col-md-8">
+  <%= form_for document do |f| %>
+    <%= render partial: "shared/form_errors", locals: { object: document } %>
+    <%= render partial: "shared/form_fields", locals: { f: f } %>
+    <%= render partial: "shared/form_preview" %>
+
+    <%= f.select :country_guidance, f.object.facet_options(:country_guidance), {}, { class: 'form-control' } %>
+    <%= f.select :country, f.object.facet_options(:country), {}, { class: 'form-control' } %>
+    <%= f.select :decision_reported, f.object.facet_options(:decision_reported), {}, { class: 'form-control' } %>
+    <%= f.select :judges, f.object.facet_options(:judges), {}, { class: 'select2', multiple: true, data: {placeholder: 'Select judges'} } %>
+
+
+    <%= f.text_field :promulgation_date, placeholder: '2015-04-23', class: 'form-control' %>
+
+    <%= render partial: "specialist_documents/minor_major_update_fields", locals: { f: f, document: document } %>
+
+    <div class="actions">
+      <button name="save" class="btn btn-success">Save as draft</button>
+    </div>
+  <% end %>
+</div>
+
+<%= render partial: "specialist_documents/attachments_form", locals: { document: document } %>
+
+<%= render partial: "specialist_documents/js_preview", locals: { document: document, form_namespace: "utiac_decision" } %>

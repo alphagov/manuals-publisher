@@ -1,0 +1,12 @@
+{
+  "content_id": "480b9023-8614-4d82-bc28-f856813db484",
+  "base_path": "/utiac-decisions",
+  "format_name": "Upper Tribunal Immigration and Asylum Chamber decision",
+  "name": "Upper Tribunal Immigration and Asylum Chamber decisions",
+  "beta": true,
+  "filter": {
+    "document_type": "utiac_decision"
+  },
+  "show_summaries": true,
+  "organisations": ["db2c5331-e960-4807-9ac7-89f1fceda883"]
+}
