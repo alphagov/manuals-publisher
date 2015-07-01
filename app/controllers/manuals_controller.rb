@@ -115,7 +115,19 @@ private
   end
 
   def services
-    @services ||= OrganisationalManualServiceRegistry.new(
+    if current_user_is_gds_editor?
+      gds_editor_services
+    else
+      organisational_services
+    end
+  end
+
+  def gds_editor_services
+    ManualServiceRegistry.new
+  end
+
+  def organisational_services
+    OrganisationalManualServiceRegistry.new(
       organisation_slug: current_organisation_slug,
     )
   end
