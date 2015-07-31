@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require File.expand_path("../../config/environment", __FILE__)
+require "specialist_publisher"
+
+begin
+  document_id = ARGV.fetch(0)
+  new_slug = ARGV.fetch(1)
+rescue KeyError
+  $stderr.puts "usage: #{File.basename(__FILE__)} document_id new_slug"
+  exit(1)
+end
+
+if new_slug.starts_with?("/")
+  $stderr.puts "Slug should not start with a slash."
+  exit(1)
+end
+
+# find the last published edition for this document
+edition = SpecialistDocumentEdition.where(document_id: document_id).last
+
+unless edition
+  $stderr.puts "Could not find a SpecialistDocumentEdition for document ID #{document_id}"
+  exit(1)
+end
+
+unless edition.published?
+  $stderr.puts "Only published documents can have a slug rename."
+  exit(1)
+end
+
+# first, withdraw the document
+services = SpecialistPublisher.document_services(edition.document_type)
+services.withdraw(edition.document_id).call
+
+# withdrawal will update the edition (change the state to "archived")
+edition.reload
+
+# set the new slug and change the state back to published again.
+edition.update_attributes!(slug: new_slug, state: "published")
+
+# calling `republish` will not send out email alerts.
+services = SpecialistPublisher.document_services(edition.document_type)
+services.republish(edition.document_id).call
