@@ -124,12 +124,6 @@ SpecialistPublisherWiring ||= DependencyContainer.new do
       get(:validatable_document_factories).utiac_decision_factory)
   }
 
-  define_factory(:manual_publish_task_builder) {
-    ManualPublishTaskBuilder.new(
-      collection: ManualPublishTask,
-    )
-  }
-
   define_instance(:markdown_attachment_renderer) {
     MarkdownAttachmentProcessor.method(:new)
   }
