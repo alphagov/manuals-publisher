@@ -1,4 +1,3 @@
-require "formatters/utiac_decision_artefact_formatter"
 require "formatters/utiac_decision_indexable_formatter"
 require "formatters/utiac_decision_publication_alert_formatter"
 require "markdown_attachment_processor"
