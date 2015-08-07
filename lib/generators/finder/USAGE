@@ -1,0 +1,39 @@
+Description:
+    Generates a new specialist document finder.
+
+Example:
+    bundle exec rails g finder utiac-decision \
+        --title="UTIAC Decisions" \
+        --document-attributes=country,country_guidance,decision_reported,judges,promulgation_date \
+        --attribute_placeholders=",,,Select judges,2015-04-23" \
+        --rummager-types=identifier,identifier,identifier,searchable_identifiers,date \
+        --organisation-slug=upper-tribunal-immigration-and-asylum-chamber \
+        --display-name="Upper Tribunal Immigration and Asylum Chamber decisions" \
+        --display-description="Find decisions by the Upper Tribunal Immigration and Asylum Chamber" \
+        --document-noun=decision \
+        --content-id=480b9023-8614-4d82-bc28-f856813db484 \
+        --organisation-id=db2c5331-e960-4807-9ac7-89f1fceda883
+
+    This will:
+      create  app/models/utiac_decision.rb
+      insert  app/controllers/application_controller.rb
+      create  app/controllers/utiac_decisions_controller.rb
+      create  app/exporters/formatters/utiac_decision_indexable_formatter.rb
+      create  app/exporters/formatters/utiac_decision_publication_alert_formatter.rb
+      create  app/models/validators/utiac_decision_validator.rb
+      create  app/view_adapters/utiac_decision_view_adapter.rb
+      insert  app/view_adapters/view_adapter_registry.rb
+      create  app/views/utiac_decisions/_form.html.erb
+      insert  app/lib/permission_checker.rb
+      create  app/observers/utiac_decision_observers_registry.rb
+      insert  app/lib/specialist_publisher.rb
+      insert  app/lib/specialist_publisher_wiring.rb
+      insert  app/lib/specialist_publisher_wiring.rb
+      create  finders/metadata/utiac_decisions.json
+      create  spec/exporters/formatters/utiac_decision_indexable_formatter_spec.rb
+      create  spec/models/utiac_decision_spec.rb
+      insert  app/models/document_factory_registry.rb
+      insert  app/models/document_factory_registry.rb
+      insert  app/models/document_factory_registry.rb
+      insert  /Users/rob/govuk/rummager/config/schema/indexes/mainstream.json
+      insert  /Users/rob/govuk/govuk_content_models/app/models/artefact.rb

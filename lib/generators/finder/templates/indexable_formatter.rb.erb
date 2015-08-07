@@ -1,0 +1,18 @@
+require "formatters/abstract_specialist_document_indexable_formatter"
+
+class <%= class_name %>IndexableFormatter < AbstractSpecialistDocumentIndexableFormatter
+  def type
+    "<%= name.underscore %>"
+  end
+
+private
+  def extra_attributes
+    {<% @document_attributes.each do |attribute| %>
+      <%= attribute %>: entity.<%= attribute %>,<% end %>
+    }
+  end
+
+  def organisation_slugs
+    ["<%= options[:organisation_slug] %>"]
+  end
+end
