@@ -41,6 +41,10 @@ FactoryGirl.define do
     organisation_slug "rail-accident-investigation-branch"
   end
 
+  factory :utiac_editor, parent: :editor do
+    organisation_slug "upper-tribunal-immigration-and-asylum-chamber"
+  end
+
   factory :dvsa_editor, parent: :editor do
     organisation_slug "driver-and-vehicle-standards-agency"
   end

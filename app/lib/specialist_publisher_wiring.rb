@@ -119,6 +119,11 @@ SpecialistPublisherWiring ||= DependencyContainer.new do
       get(:validatable_document_factories).vehicle_recalls_and_faults_alert_factory)
   }
 
+  define_factory(:utiac_decision_builder) {
+    SpecialistDocumentBuilder.new("utiac_decision",
+      get(:validatable_document_factories).utiac_decision_factory)
+  }
+
   define_instance(:markdown_attachment_renderer) {
     MarkdownAttachmentProcessor.method(:new)
   }
@@ -240,6 +245,10 @@ SpecialistPublisherWiring ||= DependencyContainer.new do
 
   define_singleton(:raib_report_finder_schema) {
     FinderSchema.new(Rails.root.join("finders/schemas/raib-reports.json"))
+  }
+
+  define_singleton(:utiac_decision_finder_schema) {
+    FinderSchema.new(Rails.root.join("finders/schemas/utiac-decisions.json"))
   }
 
   define_singleton(:vehicle_recalls_and_faults_alert_finder_schema) {

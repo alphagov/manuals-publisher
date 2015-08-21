@@ -34,6 +34,7 @@ private
     "maib_report" => MaibReportObserversRegistry,
     "medical_safety_alert" => MedicalSafetyAlertObserversRegistry,
     "raib_report" => RaibReportObserversRegistry,
+    "utiac_decision" => UtiacDecisionObserversRegistry,
     "vehicle_recalls_and_faults_alert" => VehicleRecallsAndFaultsAlertObserversRegistry,
   }.freeze
 
