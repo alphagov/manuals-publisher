@@ -300,7 +300,7 @@ INSERT
     }
 
     schema_file = "../rummager/config/schema/document_types/#{name.underscore}.json"
-    create_file schema_file, JSON.pretty_generate(hash)
+    create_file schema_file, "#{JSON.pretty_generate(hash)}\n"
   end
 
   def add_to_field_definitions_in_rummager
