@@ -304,25 +304,25 @@ INSERT
   end
 
   def add_to_field_definitions_in_rummager
-    definitions_file = "../rummager/config/schema/field_definitions.json"
-    hash = JSON.parse( File.open(definitions_file).read )
-
-    new_attributes = []
-
-    @document_attributes.each_with_index do |a,i|
-      if !hash.has_key?(a)
-        new_attributes << [a, @rummager_types[i]]
+    case self.behavior
+    when :invoke
+      definitions_file = "../rummager/config/schema/field_definitions.json"
+      hash = JSON.parse( File.open(definitions_file).read )
+      new_attributes = []
+      @document_attributes.each_with_index do |a,i|
+        new_attributes << [a, @rummager_types[i]] unless hash.has_key?(a)
       end
-    end
+      definitions = {}
+      new_attributes.each do |attribute, type|
+        definitions[attribute] = { type: type }
+      end
+      definitions_json = ",\n  " + JSON.pretty_generate(definitions).sub('{','').chomp('}').strip
 
-    definitions = {}
-    new_attributes.each do |attribute, type|
-      definitions[attribute] = { type: type}
-    end
-
-    inject_into_file definitions_file,
-      before: "\n}\n" do
-        ",\n  " + JSON.pretty_generate(definitions).sub('{','').chomp('}').strip
+      inject_into_file definitions_file, before: "\n}\n" do
+        definitions_json
+      end
+    when :revoke
+      # not revokable
     end
   end
 
