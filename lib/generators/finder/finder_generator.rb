@@ -31,6 +31,9 @@ class FinderGenerator < Rails::Generators::NamedBase
   class_option :organisation_id, desc: "id for finder organisation",
       type: :string, required: true
 
+  class_option :preview_only, desc: "true if only want finder in a preview environment",
+      type: :boolean
+
   def setup_allowed_values
     hash = JSON.parse( File.open("./finders/schemas/#{name.pluralize}.json").read )
     allowed_values = {}
@@ -211,21 +214,24 @@ INSERT
   end
 
   def create_metadata
-    create_file "finders/metadata/#{plural_name}.json", <<-FILE
-{
-  "content_id": "#{options[:content_id]}",
-  "base_path": "/#{name.pluralize}",
-  "format_name": "#{options[:display_name].singularize}",
-  "name": "#{options[:display_name]}",
-  "description": "#{options[:display_description]}",
-  "beta": true,
-  "filter": {
-    "document_type": "#{name.underscore}"
-  },
-  "show_summaries": true,
-  "organisations": ["#{options[:organisation_id]}"]
-}
-FILE
+    metadata = {
+      content_id: "#{options[:content_id]}",
+      base_path: "/#{name.pluralize}",
+      format_name: "#{options[:display_name].singularize}",
+      name: "#{options[:display_name]}",
+      description: "#{options[:display_description]}",
+      beta: true,
+      filter: {
+        document_type: "#{name.underscore}"
+      },
+      show_summaries: true,
+      organisations: ["#{options[:organisation_id]}"]
+    }
+
+    metadata.merge!(preview_only: true) if options[:preview_only]
+
+    metadata_file = "finders/metadata/#{plural_name}.json"
+    create_file metadata_file, "#{JSON.pretty_generate(metadata)}\n"
   end
 
   def create_indexable_formatter_spec
