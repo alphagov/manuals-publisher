@@ -1,3 +1,37 @@
+module FinderGeneratorHelper
+  def self.add_and_sort_hash hash, key, value
+    hash = hash.merge(key => value)
+    hash = hash.sort_by { |k,v| k }
+    mappings = hash.map {|k,v| %Q|    "#{k}" => #{v},|}.join("\n")
+  end
+
+  def self.add_mapping file, key, value, generator, map_name, hash
+    mappings = add_and_sort_hash hash, key, value
+
+    generator.gsub_file file, /  #{map_name} = \{\n.+  \}\.freeze\n/m do
+      "  #{map_name} = {\n" + mappings + "\n  }.freeze\n"
+    end
+  end
+
+  def self.remove_mapping file, key, value, generator
+    mapping = %[    "#{key}" => #{value},\n]
+    generator.behavior = :invoke # need to do this for gsub_file to work
+    generator.gsub_file file, mapping, ""
+    generator.gsub_file file, mapping.sub(",",""), ""
+    generator.behavior = :revoke # reset to revoke
+  end
+
+  def self.update_mapping file, key, value, generator, map_name, hash
+    case generator.behavior
+    when :invoke
+      FinderGeneratorHelper::add_mapping file, key, value, generator, map_name, hash
+    when :revoke
+      FinderGeneratorHelper::remove_mapping file, key, value, generator
+    end
+  end
+
+end
+
 class FinderGenerator < Rails::Generators::NamedBase
   source_root File.expand_path("../templates", __FILE__)
 
@@ -112,12 +146,12 @@ FILE
   end
 
   def add_to_view_adapter_registry
-    inject_into_file "app/view_adapters/view_adapter_registry.rb",
-      before: "   }.fetch(type)\n" do
-      <<-INSERT
-      "#{name.underscore}" => #{class_name}ViewAdapter,
-INSERT
-    end
+    FinderGeneratorHelper::update_mapping "app/view_adapters/view_adapter_registry.rb",
+      name.underscore,
+      "#{class_name}ViewAdapter",
+      self,
+      "VIEW_ADAPTER_MAP",
+      ViewAdapterRegistry::VIEW_ADAPTER_MAP
   end
 
   def create_view
@@ -183,29 +217,12 @@ INSERT
   end
 
   def add_to_specialist_publisher
-    file = "app/lib/specialist_publisher.rb"
-    key = name.underscore
-    observer_registry = "#{class_name}ObserversRegistry"
-
-    case behavior
-    when :invoke
-      load file unless defined? SpecialistPublisher::OBSERVER_MAP
-
-      map = SpecialistPublisher::OBSERVER_MAP
-      map = map.merge(key => observer_registry)
-      map = map.sort_by { |k,v| k }
-      mappings = map.map {|k,v| %Q|    "#{k}" => #{v},|}.join("\n")
-
-      gsub_file file, /  OBSERVER_MAP = \{\n.+  \}\.freeze\n/m do
-        "  OBSERVER_MAP = {\n" + mappings + "\n  }.freeze\n"
-      end
-    when :revoke
-      mapping = %[    "#{key}" => #{observer_registry},\n]
-      self.behavior = :invoke # need to do this for gsub_file to work
-      gsub_file file, mapping, ""
-      gsub_file file, mapping.sub(",",""), ""
-      self.behavior = :revoke # reset to revoke
-    end
+    FinderGeneratorHelper::update_mapping "app/lib/specialist_publisher.rb",
+      name.underscore,
+      "#{class_name}ObserversRegistry",
+      self,
+      "OBSERVER_MAP",
+      SpecialistPublisher::OBSERVER_MAP
   end
 
   def add_to_specialist_publisher_wiring
