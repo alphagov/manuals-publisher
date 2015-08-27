@@ -1,0 +1,24 @@
+require "formatters/<%= name.underscore %>_indexable_formatter"
+require "formatters/<%= name.underscore %>_publication_alert_formatter"
+require "markdown_attachment_processor"
+
+class <%= class_name %>ObserversRegistry < AbstractSpecialistDocumentObserversRegistry
+
+private
+  def finder_schema
+    SpecialistPublisherWiring.get(:<%= name.underscore %>_finder_schema)
+  end
+
+  def format_document_for_indexing(document)
+    <%= class_name %>IndexableFormatter.new(
+      MarkdownAttachmentProcessor.new(document)
+    )
+  end
+
+  def publication_alert_formatter(document)
+    <%= class_name %>PublicationAlertFormatter.new(
+      url_maker: url_maker,
+      document: document,
+    )
+  end
+end
