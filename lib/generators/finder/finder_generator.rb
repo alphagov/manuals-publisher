@@ -183,11 +183,28 @@ INSERT
   end
 
   def add_to_specialist_publisher
-    inject_into_file "app/lib/specialist_publisher.rb",
-      after: "  OBSERVER_MAP = {\n" do
-      <<-INSERT
-    "#{name.underscore}" => #{class_name}ObserversRegistry,
-INSERT
+    file = "app/lib/specialist_publisher.rb"
+    key = name.underscore
+    observer_registry = "#{class_name}ObserversRegistry"
+
+    case behavior
+    when :invoke
+      load file unless defined? SpecialistPublisher::OBSERVER_MAP
+
+      map = SpecialistPublisher::OBSERVER_MAP
+      map = map.merge(key => observer_registry)
+      map = map.sort_by { |k,v| k }
+      mappings = map.map {|k,v| %Q|    "#{k}" => #{v},|}.join("\n")
+
+      gsub_file file, /  OBSERVER_MAP = \{\n.+  \}\.freeze\n/m do
+        "  OBSERVER_MAP = {\n" + mappings + "\n  }.freeze\n"
+      end
+    when :revoke
+      mapping = %[    "#{key}" => #{observer_registry},\n]
+      self.behavior = :invoke # need to do this for gsub_file to work
+      gsub_file file, mapping, ""
+      gsub_file file, mapping.sub(",",""), ""
+      self.behavior = :revoke # reset to revoke
     end
   end
 
@@ -310,7 +327,7 @@ INSERT
   end
 
   def add_to_field_definitions_in_rummager
-    case self.behavior
+    case behavior
     when :invoke
       definitions_file = "../rummager/config/schema/field_definitions.json"
       hash = JSON.parse( File.open(definitions_file).read )
