@@ -6,12 +6,6 @@ Feature: Creating and editing a CMA case
   Background:
     Given I am logged in as a "CMA" editor
 
-  Scenario: Create a new CMA case
-    When I create a CMA case
-    Then the CMA case has been created
-    And the document should be sent to content preview
-    And I should see a link to preview the document
-
   Scenario: Cannot create a CMA case with invalid fields
     When I create a CMA case with invalid fields
     Then I should see error messages about missing fields
@@ -27,12 +21,6 @@ Feature: Creating and editing a CMA case
   Scenario: Can view a list of all cases in the publisher
     Given two CMA cases exist
     Then the CMA cases should be in the publisher case index in the correct order
-
-  Scenario: Edit a draft CMA case
-    Given a draft CMA case exists
-    When I edit a CMA case
-    Then the CMA case should have been updated
-    And the document should be sent to content preview
 
   Scenario: Change the title of a previously published document
     Given a published CMA case exists

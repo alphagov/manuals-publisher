@@ -6,12 +6,6 @@ Feature: Creating and editing an AAIB Report
   Background:
     Given I am logged in as a "AAIB" editor
 
-  Scenario: Create a new AAIB report
-    When I create a AAIB report
-    Then the AAIB report has been created
-    And the AAIB report should be in draft
-    And the document should be sent to content preview
-
   Scenario: Cannot create a AAIB report with invalid fields
     When I create a AAIB report with invalid fields
     Then I should see error messages about missing fields
@@ -27,9 +21,3 @@ Feature: Creating and editing an AAIB Report
   Scenario: Can view a list of all AAIB reports in the publisher
     Given two AAIB reports exist
     Then the AAIB reports should be in the publisher report index in the correct order
-
-  Scenario: Edit a draft AAIB report
-    Given a draft AAIB report exists
-    When I edit a AAIB report
-    Then the AAIB report should have been updated
-    And the document should be sent to content preview

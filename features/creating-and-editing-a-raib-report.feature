@@ -6,12 +6,6 @@ Feature: Publishing a RAIB Report
   Background:
     Given I am logged in as a "RAIB" editor
 
-  Scenario: Create a new RAIB report
-    When I create a RAIB report
-    Then the RAIB report has been created
-    And the RAIB report should be in draft
-    And the document should be sent to content preview
-
   Scenario: Cannot create a RAIB report with invalid fields
     When I create a RAIB report with invalid fields
     Then I should see error messages about missing fields
@@ -27,9 +21,3 @@ Feature: Publishing a RAIB Report
   Scenario: Can view a list of all RAIB reports in the publisher
     Given two RAIB reports exist
     Then the RAIB reports should be in the publisher report index in the correct order
-
-  Scenario: Edit a draft RAIB report
-    Given a draft RAIB report exists
-    When I edit a RAIB report
-    Then the RAIB report should have been updated
-    And the document should be sent to content preview
