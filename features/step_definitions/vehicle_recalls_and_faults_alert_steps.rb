@@ -61,7 +61,7 @@ Given(/^two Vehicle Recalls and Faults alerts exist$/) do
   end
 end
 
-Then(/^the Vehicle Recalls and Faults alerts should be in the publisher CSG index$/) do
+Then(/^the Vehicle Recalls and Faults alerts should be in the publisher document index in the correct order$/) do
   visit vehicle_recalls_and_faults_alerts_path
 
   check_for_documents("Example fault 0", "Example fault 1")

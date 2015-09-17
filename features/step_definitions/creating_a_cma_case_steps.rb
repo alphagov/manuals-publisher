@@ -72,7 +72,7 @@ Then(/^the CMA case should not have been created$/) do
   check_document_does_not_exist_with(@document_fields)
 end
 
-Then(/^the CMA cases should be in the publisher case index in the correct order$/) do
+Then(/^the CMA cases should be in the publisher document index in the correct order$/) do
   visit cma_cases_path
 
   check_for_documents(*@documents.map(&:title))

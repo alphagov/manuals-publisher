@@ -61,7 +61,7 @@ Given(/^two Countryside Stewardship Grants exist$/) do
   create_countryside_stewardship_grant(@document_fields)
 end
 
-Then(/^the Countryside Stewardship Grants should be in the publisher CSG index in the correct order$/) do
+Then(/^the Countryside Stewardship Grants should be in the publisher document index in the correct order$/) do
   visit countryside_stewardship_grants_path
 
   check_for_documents("Countryside Stewardship Grant 2", "Countryside Stewardship Grant 1")

@@ -66,7 +66,7 @@ Given(/^two RAIB reports exist$/) do
   create_raib_report(@document_fields)
 end
 
-Then(/^the RAIB reports should be in the publisher report index in the correct order$/) do
+Then(/^the RAIB reports should be in the publisher document index in the correct order$/) do
   visit raib_reports_path
 
   check_for_documents("RAIB report 2", "RAIB report 1")

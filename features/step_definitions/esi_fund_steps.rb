@@ -62,7 +62,7 @@ Given(/^two ESI Funds exist$/) do
   create_esi_fund(@document_fields)
 end
 
-Then(/^the ESI Funds should be in the publisher CSG index in the correct order$/) do
+Then(/^the ESI Funds should be in the publisher document index in the correct order$/) do
   visit esi_funds_path
 
   check_for_documents("ESI Fund 2", "ESI Fund 1")

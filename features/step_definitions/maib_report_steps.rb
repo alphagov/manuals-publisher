@@ -66,7 +66,7 @@ Given(/^two MAIB reports exist$/) do
   create_maib_report(@document_fields)
 end
 
-Then(/^the MAIB reports should be in the publisher report index in the correct order$/) do
+Then(/^the MAIB reports should be in the publisher document index in the correct order$/) do
   visit maib_reports_path
 
   check_for_documents("MAIB report 2", "MAIB report 1")
