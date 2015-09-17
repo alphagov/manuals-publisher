@@ -6,13 +6,6 @@ Feature: Creating and editing a CMA case
   Background:
     Given I am logged in as a "CMA" editor
 
-  Scenario: Cannot create a CMA case with invalid fields
-    When I create a CMA case with invalid fields
-    Then I should see error messages about missing fields
-    And I should see an error message about an invalid date field "Opened date"
-    And I should see an error message about a "Body" field containing javascript
-    And the CMA case should not have been created
-
   Scenario: Create a CMA case with a clashing slug
     Given a published CMA case exists
     When I create another case with the same slug

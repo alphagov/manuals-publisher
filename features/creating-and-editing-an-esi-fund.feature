@@ -6,18 +6,6 @@ So that I can add them to the ESI Funds finder
 Background:
 Given I am logged in as a "DCLG" editor
 
-Scenario: Cannot create an ESI Fund with invalid fields
-  When I create an ESI Fund with invalid fields
-  Then I should see error messages about missing fields
-  And I should see an error message about an invalid date field "Closing date"
-  And I should see an error message about a "Body" field containing javascript
-  And the ESI Fund should not have been created
-
-Scenario: Cannot edit an ESI Fund without entering required fields
-  Given a draft ESI Fund exists
-  When I edit an ESI Fund and remove required fields
-  Then the ESI Fund should not have been updated
-
 Scenario: Can view a list of all ESI Funds in the publisher
   Given two ESI Funds exist
   Then the ESI Funds should be in the publisher CSG index in the correct order
