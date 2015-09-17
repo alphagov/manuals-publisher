@@ -7,7 +7,7 @@ Background:
 Given I am logged in as a "DCLG" editor
 
 Scenario: can create a new ESI Fund in draft
-  When I create an ESI Fund
+  When I create a ESI Fund
   Then the ESI Fund should be in draft
 
 Scenario: can publish a draft ESI Fund

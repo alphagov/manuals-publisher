@@ -16,12 +16,25 @@ When(/^I try to save a Vehicle Recall alert with invalid HTML and no title$/) do
   create_vehicle_recalls_and_faults_alert(@invalid_fields)
 end
 
+Then(/^the Vehicle Recalls and Faults alert has been created$/) do
+  check_document_exists_with(:vehicle_recalls_and_faults_alert, @document_fields)
+end
+
 Then(/^the Vehicle Recall alert is not persisted$/) do
   check_document_does_not_exist_with(@document_fields)
 end
 
-Given(/^a draft of a Vehicle Recalls and Faults alert exists$/) do
+Given(/^a draft Vehicle Recalls and Faults alert exists$/) do
   create_a_draft_of_vehicle_fault_alert
+end
+
+When(/^I edit a Vehicle Recalls and Faults alert$/) do
+  @new_title = "Edited Example Vehicle Recall"
+  edit_vehicle_recalls_and_faults_alert(@document_title, title: @new_title)
+end
+
+Then(/^the Vehicle Recalls and Faults alert should have been updated$/) do
+  check_for_new_document_title(:vehicle_recalls_and_faults_alert, @new_title)
 end
 
 When(/^I edit the Vehicle Recalls and Faults alert and remove summary$/) do

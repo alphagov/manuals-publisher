@@ -19,7 +19,7 @@ Feature: Creating and editing a Vehicle Recalls and Faults alert
     And the Vehicle Recall alert is not persisted
 
   Scenario: Providing invalid inputs when editing an alert
-    Given a draft of a Vehicle Recalls and Faults alert exists
+    Given a draft Vehicle Recalls and Faults alert exists
     When I edit the Vehicle Recalls and Faults alert and remove summary
     Then the Vehicle Recalls and Faults alert should show an error for the summary
 

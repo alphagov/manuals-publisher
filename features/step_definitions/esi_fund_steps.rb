@@ -1,4 +1,4 @@
-When(/^I create an ESI Fund$/) do
+When(/^I create a ESI Fund$/) do
   @document_title = "Example ESI Fund"
   @slug = "european-structural-investment-funds/example-esi-fund"
   @document_fields = {
@@ -68,7 +68,7 @@ Then(/^the ESI Funds should be in the publisher CSG index in the correct order$/
   check_for_documents("ESI Fund 2", "ESI Fund 1")
 end
 
-When(/^I edit an ESI Fund$/) do
+When(/^I edit a ESI Fund$/) do
   @new_title = "Edited Example ESI Fund"
   edit_esi_fund(@document_title, title: @new_title)
 end
