@@ -5,8 +5,3 @@ Feature: Publishing a RAIB Report
 
   Background:
     Given I am logged in as a "RAIB" editor
-
-  Scenario: Can view a list of all RAIB reports in the publisher
-    Given two RAIB reports exist
-    Then the RAIB reports should be in the publisher report index in the correct order
-

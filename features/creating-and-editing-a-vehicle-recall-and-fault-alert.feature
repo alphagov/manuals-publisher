@@ -10,7 +10,3 @@ Feature: Creating and editing a Vehicle Recalls and Faults alert
     Given a draft Vehicle Recalls and Faults alert exists
     When I edit the Vehicle Recalls and Faults alert and remove summary
     Then the Vehicle Recalls and Faults alert should show an error for the summary
-
-  Scenario: Viewing a list of all Vehicle Recalls and Faults alerts in the publisher
-    Given two Vehicle Recalls and Faults alerts exist
-    Then the Vehicle Recalls and Faults alerts should be in the publisher CSG index

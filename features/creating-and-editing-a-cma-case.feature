@@ -11,10 +11,6 @@ Feature: Creating and editing a CMA case
     When I create another case with the same slug
     Then I see a warning about slug clash at publication
 
-  Scenario: Can view a list of all cases in the publisher
-    Given two CMA cases exist
-    Then the CMA cases should be in the publisher case index in the correct order
-
   Scenario: Change the title of a previously published document
     Given a published CMA case exists
     When I change the CMA case title and re-publish

@@ -5,8 +5,3 @@ Feature: Publishing an MAIB Report
 
   Background:
     Given I am logged in as a "MAIB" editor
-
-  Scenario: Can view a list of all MAIB reports in the publisher
-    Given two MAIB reports exist
-    Then the MAIB reports should be in the publisher report index in the correct order
-
