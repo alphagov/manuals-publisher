@@ -13,6 +13,7 @@ end
 When(/^I create a Medical Safety Alert with invalid fields$/) do
   @document_fields = {
     body: "<script>alert('Oh noes!)</script>",
+    issued_date: "bad_date"
   }
   create_medical_safety_alert(@document_fields)
 end

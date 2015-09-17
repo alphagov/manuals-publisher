@@ -6,7 +6,7 @@ Then(/^I should see that Vehicle Recalls and Faults alert$/) do
   check_vehicle_recalls_and_faults_alert_exists_with(@document_fields)
 end
 
-When(/^I try to save a Vehicle Recall alert with invalid HTML and no title$/) do
+When(/^I create a Vehicle Recalls and Faults alert with invalid fields$/) do
   @invalid_fields = {
     title: nil,
     summary: nil,
@@ -14,6 +14,10 @@ When(/^I try to save a Vehicle Recall alert with invalid HTML and no title$/) do
     alert_issue_date: "99-99/99"
   }
   create_vehicle_recalls_and_faults_alert(@invalid_fields)
+end
+
+Then(/^the Vehicle Recalls and Faults alert should not have been created$/) do
+  expect(page).to have_content("Summary can't be blank")
 end
 
 Then(/^the Vehicle Recalls and Faults alert has been created$/) do

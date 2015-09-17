@@ -14,7 +14,7 @@ Then(/^the ESI Fund has been created$/) do
   check_esi_fund_exists_with(@document_fields)
 end
 
-When(/^I create an ESI Fund with invalid fields$/) do
+When(/^I create a ESI Fund with invalid fields$/) do
   @document_fields = {
     body: "<script>alert('Oh noes!)</script>",
     closing_date: "2016/01/01",
