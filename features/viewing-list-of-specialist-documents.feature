@@ -20,3 +20,4 @@ Feature: Viewing specialist documents
       | RAIB         | RAIB reports                      |
       | DFID         | International Development Funds   |
       | DVSA         | Vehicle Recalls and Faults alerts |
+      | UTAAC        | "UTAAC decisions"                 |
