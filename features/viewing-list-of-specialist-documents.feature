@@ -11,6 +11,7 @@ Feature: Viewing specialist documents
     Examples:
       | organisation | documents                         |
       | AAIB         | AAIB reports                      |
+      | AST          | "Asylum support decisions"        |
       | CMA          | CMA cases                         |
       | DEFRA        | Countryside Stewardship Grants    |
       | MHRA         | Drug Safety Updates               |

@@ -27,6 +27,15 @@ module TribunalDecisionHelpers
 
   def tribunal_decision_fields_for(type)
     case type
+    when :asylum_support_decision
+      {
+        "Category" => "Section 95 (asylum-seekers)",
+        "Sub-category" => "Section 95 - jurisdiction",
+        "Judges" => "Bashir, S",
+        "Decision date" => "2015-02-02",
+        "Landmark" => "Landmark",
+        "Reference number" => "1234"
+      }
     when :utaac_decision
       {
         "Category" => "Benefits for children",
