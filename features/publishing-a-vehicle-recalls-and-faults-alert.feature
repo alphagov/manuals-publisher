@@ -11,7 +11,7 @@ Feature: Publishing Vehicle Recalls and Faults alerts
     Then the Vehicle Recalls and Faults alert should be in draft
 
   Scenario: Publishing a draft of a Vehicle Recalls and Faults alert
-    Given a draft of a Vehicle Recalls and Faults alert exists
+    Given a draft Vehicle Recalls and Faults alert exists
     When I publish the Vehicle Recalls and Faults alert
     Then the Vehicle Recalls and Faults alert should be published
 
@@ -28,7 +28,7 @@ Feature: Publishing Vehicle Recalls and Faults alerts
     And previous editions should be archived
 
   Scenario: Sending an email alert on first publish
-    Given a draft of a Vehicle Recalls and Faults alert exists
+    Given a draft Vehicle Recalls and Faults alert exists
     When I publish the Vehicle Recalls and Faults alert
     Then a publication notification should have been sent
 

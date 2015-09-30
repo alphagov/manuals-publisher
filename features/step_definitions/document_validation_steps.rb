@@ -4,7 +4,7 @@ Then(/^I should see error messages about missing fields$/) do
 end
 
 Then(/^I should see an error message about an invalid date field "(.*)"$/) do |field|
-  check_for_invalid_date_error(field)
+  check_for_invalid_date_error(field) unless field == "N/A"
 end
 
 Then(/^I should see an error message about a "(.*?)" field containing javascript$/) do |field|

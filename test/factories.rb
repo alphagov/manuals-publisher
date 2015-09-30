@@ -45,6 +45,14 @@ FactoryGirl.define do
     organisation_slug "driver-and-vehicle-standards-agency"
   end
 
+  factory :ast_editor, parent: :editor do
+    organisation_slug "first-tier-tribunal-asylum-support"
+  end
+
+  factory :utaac_editor, parent: :editor do
+    organisation_slug "upper-tribunal-administrative-appeals-chamber"
+  end
+
   factory :generic_writer, parent: :user do
     organisation_slug "ministry-of-tea"
   end
@@ -73,4 +81,5 @@ FactoryGirl.define do
       }
     end
   end
+
 end

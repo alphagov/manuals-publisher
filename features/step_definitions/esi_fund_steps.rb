@@ -1,4 +1,4 @@
-When(/^I create an ESI Fund$/) do
+When(/^I create a ESI Fund$/) do
   @document_title = "Example ESI Fund"
   @slug = "european-structural-investment-funds/example-esi-fund"
   @document_fields = {
@@ -14,7 +14,7 @@ Then(/^the ESI Fund has been created$/) do
   check_esi_fund_exists_with(@document_fields)
 end
 
-When(/^I create an ESI Fund with invalid fields$/) do
+When(/^I create a ESI Fund with invalid fields$/) do
   @document_fields = {
     body: "<script>alert('Oh noes!)</script>",
     closing_date: "2016/01/01",
@@ -62,13 +62,13 @@ Given(/^two ESI Funds exist$/) do
   create_esi_fund(@document_fields)
 end
 
-Then(/^the ESI Funds should be in the publisher CSG index in the correct order$/) do
+Then(/^the ESI Funds should be in the publisher document index in the correct order$/) do
   visit esi_funds_path
 
   check_for_documents("ESI Fund 2", "ESI Fund 1")
 end
 
-When(/^I edit an ESI Fund$/) do
+When(/^I edit a ESI Fund$/) do
   @new_title = "Edited Example ESI Fund"
   edit_esi_fund(@document_title, title: @new_title)
 end

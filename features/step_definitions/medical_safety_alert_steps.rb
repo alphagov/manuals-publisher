@@ -13,6 +13,7 @@ end
 When(/^I create a Medical Safety Alert with invalid fields$/) do
   @document_fields = {
     body: "<script>alert('Oh noes!)</script>",
+    issued_date: "bad_date"
   }
   create_medical_safety_alert(@document_fields)
 end
@@ -51,7 +52,7 @@ Given(/^two Medical Safety Alerts exist$/) do
   create_medical_safety_alert(@document_fields)
 end
 
-Then(/^the Medical Safety Alerts should be in the publisher MSA index in the correct order$/) do
+Then(/^the Medical Safety Alerts should be in the publisher document index in the correct order$/) do
   visit medical_safety_alerts_path
 
   check_for_documents("Example Medical Safety Alert", "Example Medical Safety Alert 2")

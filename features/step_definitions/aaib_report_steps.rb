@@ -46,7 +46,7 @@ Given(/^two AAIB reports exist$/) do
   create_aaib_report(@document_fields)
 end
 
-Then(/^the AAIB reports should be in the publisher report index in the correct order$/) do
+Then(/^the AAIB reports should be in the publisher document index in the correct order$/) do
   visit aaib_reports_path
 
   check_for_documents("AAIB Report 2", "AAIB Report 1")

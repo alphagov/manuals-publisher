@@ -61,7 +61,7 @@ Given(/^two International Development Funds exist$/) do
   create_international_development_fund(@document_fields)
 end
 
-Then(/^the International Development Funds should be in the publisher IDF index in the correct order$/) do
+Then(/^the International Development Funds should be in the publisher document index in the correct order$/) do
   visit international_development_funds_path
 
   check_for_documents("International Development Fund 2", "International Development Fund 1")

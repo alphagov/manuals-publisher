@@ -76,7 +76,7 @@ Given(/^two Drug Safety Updates exist$/) do
   create_drug_safety_update(@document_fields)
 end
 
-Then(/^the Drug Safety Updates should be in the publisher DSU index in the correct order$/) do
+Then(/^the Drug Safety Updates should be in the publisher document index in the correct order$/) do
   visit drug_safety_updates_path
 
   check_for_documents("Example Drug Safety Update 1", "Example Drug Safety Update 2")
