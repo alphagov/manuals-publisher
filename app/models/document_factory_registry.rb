@@ -208,7 +208,7 @@ class DocumentFactoryRegistry
         UtaacDecisionValidator.new(
           UtaacDecision.new(
             SpecialistDocument.new(
-              SlugGenerator.new(prefix: "utaac-decisions"),
+              SlugGenerator.new(prefix: "administrative-appeals-tribunal-decisions"),
               *args,
             ),
           )
