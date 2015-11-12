@@ -8,31 +8,7 @@
 <% content_for :app_title, "GOV.UK Specialist Publisher" %>
 
 <% content_for :navbar_items do %>
-  <li><%= nav_link_to 'Manuals', '/manuals' %></li>
 
-  <% if current_user_is_gds_editor? %>
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-        <% if current_finder %>
-          <%= current_finder[:title] %>
-        <% else %>
-          Finders
-        <% end %>
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu">
-  <% end %>
-
-  <% finders.each do |key, value| %>
-    <% if current_user_can_edit?(value[:document_type]) %>
-      <li><%= nav_link_to value[:title], "/#{key}" %></li>
-    <% end %>
-  <% end %>
-
-  <% if current_user_is_gds_editor? %>
-      </ul>
-    </li>
-  <% end %>
 <% end %>
 
 <% content_for :navbar_right do %>
@@ -44,7 +20,7 @@
   <% flash.each do |type, msg| %>
     <%= content_tag :div, msg, class: "alert #{bootstrap_class_for(type)}" %>
   <% end -%>
-  <%= render(:partial => 'shared/breadcrumbs') %>
+
   <%= yield %>
   <script>
     $(document).ready(function() {
