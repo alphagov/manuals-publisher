@@ -1,6 +1,6 @@
 When(/^I create a UTAAC decision$/) do
   @document_title = "Example UTAAC decision"
-  @slug = "utaac-decisions/example-utaac-decision"
+  @slug = "administrative-appeals-tribunal-decisions/example-utaac-decision"
   @document_fields = utaac_decision_fields(title: @document_title)
 
   create_utaac_decision(@document_fields)
@@ -44,7 +44,7 @@ end
 
 Given(/^a draft UTAAC decision exists$/) do
   @document_title = "Example UTAAC decision"
-  @slug = "utaac-decisions/example-utaac-decision"
+  @slug = "administrative-appeals-tribunal-decisions/example-utaac-decision"
   @document_fields = utaac_decision_fields(title: @document_title)
   @rummager_fields = utaac_decision_rummager_fields(title: @document_title)
 
@@ -72,7 +72,7 @@ Given(/^there is a published UTAAC decision with an attachment$/) do
   @document_title = "Example UTAAC decision"
   @attachment_title = "My attachment"
 
-  @slug = "utaac-decisions/example-utaac-decision"
+  @slug = "administrative-appeals-tribunal-decisions/example-utaac-decision"
   @document_fields = utaac_decision_fields(title: @document_title)
 
   create_utaac_decision(@document_fields, publish: true)
@@ -81,7 +81,7 @@ end
 
 Given(/^a published UTAAC decision exists$/) do
   @document_title = "Example UTAAC decision"
-  @slug = "utaac-decisions/example-utaac-decision"
+  @slug = "administrative-appeals-tribunal-decisions/example-utaac-decision"
   @document_fields = utaac_decision_fields(title: @document_title)
 
   create_utaac_decision(@document_fields, publish: true)
@@ -114,7 +114,7 @@ end
 
 When(/^I publish a new UTAAC decision$/) do
   @document_title = "Example UTAAC decision"
-  @slug = "utaac-decisions/example-utaac-decision"
+  @slug = "administrative-appeals-tribunal-decisions/example-utaac-decision"
   @document_fields = utaac_decision_fields(title: @document_title)
   @rummager_fields = utaac_decision_rummager_fields(title: @document_title)
 

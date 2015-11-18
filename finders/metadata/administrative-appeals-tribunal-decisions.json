@@ -1,0 +1,23 @@
+{
+  "content_id": "e9e7fcff-bb0d-4723-af25-9f78d730f6f8",
+  "base_path": "/administrative-appeals-tribunal-decisions",
+  "format_name": "Administrative appeals tribunal decision",
+  "name": "Administrative appeals tribunal decisions",
+  "description": "Find decisions on appeals to the Upper Tribunal (Administrative Appeals Chamber), including social security and child support appeals.",
+  "beta": true,
+  "filter": {
+    "document_type": "utaac_decision"
+  },
+  "show_summaries": true,
+  "organisations": [
+    "4c2e325a-2d95-442b-856a-e7fb9f9e3cf8"
+  ],
+  "signup_content_id": "13e59efa-6c0d-48e8-a0b9-092b62cdc912",
+  "signup_copy": "You'll get an email each time a decision is updated or a new decision is published.",
+  "subscription_list_title_prefix": {
+    "singular": "Upper Tribunal Administrative Appeals Chamber decisions with the following category: ",
+    "plural": "Upper Tribunal Administrative Appeals Chamber decisions with the following categories: "
+  },
+  "summary": "<p>Find decisions on appeals to the Upper Tribunal (Administrative Appeals Chamber), including social security and child support appeals.</p><p>Includes decisions after [month year]. Find details of <a rel=\"external\" href=\"http://www.osscsc.gov.uk/Aspx/default.aspx\">older cases.</a></p>",
+  "pre_production": true
+}

@@ -65,7 +65,7 @@ module DocumentHelpers
       "raib-reports" => "raib_report",
       "countryside-stewardship-grants" => "countryside_stewardship_grant",
       "tax-and-chancery-tribunal-decisions" => "tax_tribunal_decision",
-      "utaac-decisions" => "utaac_decision",
+      "administrative-appeals-tribunal-decisions" => "utaac_decision",
       "vehicle-recalls-faults" => "vehicle_recalls_and_faults_alert",
     }
 

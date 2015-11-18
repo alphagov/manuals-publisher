@@ -276,7 +276,7 @@ SpecialistPublisherWiring ||= DependencyContainer.new do
   }
 
   define_singleton(:utaac_decision_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/utaac-decisions.json"))
+    FinderSchema.new(Rails.root.join("finders/schemas/administrative-appeals-tribunal-decisions.json"))
   }
 
   define_singleton(:tax_tribunal_decision_finder_schema) {
