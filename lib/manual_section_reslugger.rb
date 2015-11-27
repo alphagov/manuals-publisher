@@ -13,9 +13,9 @@ class ManualSectionReslugger
   def call
     validate
 
-    withdraw_section
     update_slug
     publish_manual
+    redirect_section
   end
 
   private
@@ -59,10 +59,11 @@ class ManualSectionReslugger
     raise Error.new("Manual Section already exists in content store") if section
   end
 
-  def withdraw_section
-    PublishingAPIWithdrawer.new(
+  def redirect_section
+    PublishingAPIRedirecter.new(
       publishing_api: SpecialistPublisherWiring.get(:publishing_api),
       entity: current_section,
+      redirect_to_location: "/#{full_new_section_slug}"
     ).call
   end
 
