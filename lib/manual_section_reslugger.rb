@@ -36,7 +36,7 @@ class ManualSectionReslugger
   end
 
   def validate_current_section_in_database
-    raise Error.new("Manual Section does not exist in database") if current_section.nil?
+    raise Error.new("Manual Section does not exist in database") if current_section_edition.nil?
   end
 
   def validate_current_section_in_content_store
@@ -62,15 +62,39 @@ class ManualSectionReslugger
   def redirect_section
     PublishingAPIRedirecter.new(
       publishing_api: SpecialistPublisherWiring.get(:publishing_api),
-      entity: current_section,
+      entity: current_section_edition,
       redirect_to_location: "/#{full_new_section_slug}"
     ).call
   end
 
   def update_slug
-    current_section.update_attribute(:slug, full_new_section_slug)
-    #Manual only republishes documents that have exported_at set to nil
-    current_section.update_attribute(:exported_at, nil)
+    new_edition_for_slug_change.update_attribute(:slug, full_new_section_slug)
+  end
+
+  def new_edition_for_slug_change
+    manual, document = ManualDocumentServiceRegistry.new.update(context_for_section_edition_update).call
+    document.latest_edition
+  end
+
+  FakeController = Struct.new(:params)
+
+  def context_for_section_edition_update
+    params_hash = {
+      "id" => current_section_edition.document_id,
+      "document" => {
+        title: current_section_edition.title,
+        summary: current_section_edition.summary,
+        body: current_section_edition.body,
+        minor_update: false,
+        change_note: change_note
+      },
+      "manual_id" => manual.manual_id
+    }
+    FakeController.new(params_hash)
+  end
+
+  def change_note
+    "Updated section slug from #{@current_section_slug} to #{@new_section_slug}"
   end
 
   def publish_manual
@@ -81,8 +105,8 @@ class ManualSectionReslugger
     @manual ||= ManualRecord.where(slug: @manual_slug).last
   end
 
-  def current_section
-    @current_section ||= section_in_database(full_current_section_slug)
+  def current_section_edition
+    @current_section_edition ||= section_in_database(full_current_section_slug)
   end
 
   def current_section_in_content_store
