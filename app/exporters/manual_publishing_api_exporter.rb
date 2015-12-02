@@ -52,6 +52,7 @@ private
       ],
       details: details_data,
       locale: "en",
+      links: links_data,
     }
   end
 
@@ -76,6 +77,12 @@ private
       organisations: [
         organisation_info
       ]
+    }
+  end
+
+  def links_data
+    {
+      organisations: [organisation.details.content_id],
     }
   end
 
