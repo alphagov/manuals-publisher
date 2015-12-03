@@ -46,6 +46,9 @@ private
         ],
       },
       locale: "en",
+      links: {
+        organisations: [organisation.details.content_id],
+      },
     }
   end
 

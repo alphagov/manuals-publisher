@@ -21,7 +21,7 @@ describe ManualSectionPublishingAPIExporter do
     double(:organisation,
       web_url: "https://www.gov.uk/government/organisations/cabinet-office",
       title: "Cabinet Office",
-      details: double(:org_details, abbreviation: "CO"),
+      details: double(:org_details, abbreviation: "CO", content_id: "d94d63a5-ce8e-40a1-ab4c-4956eab27259"),
     )
   }
 
@@ -100,6 +100,19 @@ describe ManualSectionPublishingAPIExporter do
               web_url: "https://www.gov.uk/government/organisations/cabinet-office",
             }
           ],
+        }
+      )
+    )
+  end
+
+  it "exports links for the document" do
+    subject.call
+
+    expect(export_recipent).to have_received(:call).with(
+      "/guidance/my-first-manual/first-section",
+      hash_including(
+        links: {
+          organisations: ["d94d63a5-ce8e-40a1-ab4c-4956eab27259"],
         }
       )
     )
