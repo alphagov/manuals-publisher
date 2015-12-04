@@ -9,7 +9,7 @@ class PermissionChecker
         ministry-of-justice
         hm-courts-and-tribunals-service
         first-tier-tribunal-asylum-support
-        )
+      )
     when "cma_case"
       ["competition-and-markets-authority"]
     when "aaib_report"
@@ -23,13 +23,13 @@ class PermissionChecker
         ministry-of-justice
         hm-courts-and-tribunals-service
         employment-appeal-tribunal
-        )
+      )
     when "employment_tribunal_decision"
       %w(
         ministry-of-justice
         hm-courts-and-tribunals-service
         employment-tribunal
-        )
+      )
     when "esi_fund"
       %w(
         department-for-communities-and-local-government
@@ -48,13 +48,13 @@ class PermissionChecker
         ministry-of-justice
         hm-courts-and-tribunals-service
         upper-tribunal-tax-and-chancery-chamber
-        )
+      )
     when "utaac_decision"
       %w(
         ministry-of-justice
         hm-courts-and-tribunals-service
         upper-tribunal-administrative-appeals-chamber
-        )
+      )
     when "vehicle_recalls_and_faults_alert"
       ["driver-and-vehicle-standards-agency"]
     end
