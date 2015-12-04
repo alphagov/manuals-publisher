@@ -5,7 +5,11 @@ class PermissionChecker
   def self.owning_organisations_for_format(format)
     case format
     when "asylum_support_decision"
-      ["first-tier-tribunal-asylum-support"]
+      %w(
+        ministry-of-justice
+        hm-courts-and-tribunals-service
+        first-tier-tribunal-asylum-support
+        )
     when "cma_case"
       ["competition-and-markets-authority"]
     when "aaib_report"
@@ -15,9 +19,17 @@ class PermissionChecker
     when "drug_safety_update", "medical_safety_alert"
       ["medicines-and-healthcare-products-regulatory-agency"]
     when "employment_appeal_tribunal_decision"
-      ["employment-appeal-tribunal"]
+      %w(
+        ministry-of-justice
+        hm-courts-and-tribunals-service
+        employment-appeal-tribunal
+        )
     when "employment_tribunal_decision"
-      ["employment-tribunal"]
+      %w(
+        ministry-of-justice
+        hm-courts-and-tribunals-service
+        employment-tribunal
+        )
     when "esi_fund"
       %w(
         department-for-communities-and-local-government
@@ -32,9 +44,17 @@ class PermissionChecker
     when "countryside_stewardship_grant"
       ["natural-england"]
     when "tax_tribunal_decision"
-      ["upper-tribunal-tax-and-chancery-chamber"]
+      %w(
+        ministry-of-justice
+        hm-courts-and-tribunals-service
+        upper-tribunal-tax-and-chancery-chamber
+        )
     when "utaac_decision"
-      ["upper-tribunal-administrative-appeals-chamber"]
+      %w(
+        ministry-of-justice
+        hm-courts-and-tribunals-service
+        upper-tribunal-administrative-appeals-chamber
+        )
     when "vehicle_recalls_and_faults_alert"
       ["driver-and-vehicle-standards-agency"]
     end
