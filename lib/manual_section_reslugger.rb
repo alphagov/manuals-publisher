@@ -2,6 +2,7 @@ require "gds_api/content_store"
 require "manual_service_registry"
 
 class ManualSectionReslugger
+  RUMMAGER_FORMAT = "manual_section"
   class Error < RuntimeError; end
 
   def initialize(manual_slug, current_section_slug, new_section_slug)
@@ -16,6 +17,7 @@ class ManualSectionReslugger
     update_slug
     publish_manual
     redirect_section
+    remove_old_section_from_rummager
   end
 
   private
@@ -143,5 +145,10 @@ class ManualSectionReslugger
 
   def full_section_slug(slug)
     "#{manual_record.slug}/#{slug}"
+  end
+
+  def remove_old_section_from_rummager
+    rummager = SpecialistPublisherWiring.get(:rummager_api)
+    rummager.delete_document(RUMMAGER_FORMAT, "/#{full_current_section_slug}")
   end
 end
