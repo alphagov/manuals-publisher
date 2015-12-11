@@ -4,7 +4,7 @@
   "format_name": "Asylum support tribunal decision",
   "name": "Asylum support tribunal decisions",
   "description": "Find decisions on appeals against the Home Office heard by the First-tier Tribunal (Asylum Support).",
-  "beta": true,
+  "phase": "beta",
   "filter": {
     "document_type": "asylum_support_decision"
   },
