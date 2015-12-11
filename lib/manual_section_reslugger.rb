@@ -27,7 +27,7 @@ class ManualSectionReslugger
   end
 
   def validate_manual
-    raise Error.new("Manual not found for manual_slug `#{manual_slug}`") if manual.nil?
+    raise Error.new("Manual not found for manual_slug `#{manual_slug}`") if manual_record.nil?
   end
 
   def validate_current_section
@@ -88,7 +88,7 @@ class ManualSectionReslugger
         minor_update: false,
         change_note: change_note
       },
-      "manual_id" => manual.manual_id
+      "manual_id" => manual_record.manual_id
     }
     FakeController.new(params_hash)
   end
@@ -98,11 +98,19 @@ class ManualSectionReslugger
   end
 
   def publish_manual
-    ManualServiceRegistry.new.queue_publish(manual.manual_id).call
+    ManualServiceRegistry.new.publish(manual_record.manual_id, manual_version_number).call
   end
 
-  def manual
-    @manual ||= ManualRecord.where(slug: @manual_slug).last
+  def manual_record
+    @manual_record ||= ManualRecord.where(slug: @manual_slug).last
+  end
+
+  def manual_version_number
+    manual_repository.fetch(manual_record.manual_id).version_number
+  end
+
+  def manual_repository
+    SpecialistPublisherWiring.get(:repository_registry).manual_repository
   end
 
   def current_section_edition
@@ -134,6 +142,6 @@ class ManualSectionReslugger
   end
 
   def full_section_slug(slug)
-    "#{manual.slug}/#{slug}"
+    "#{manual_record.slug}/#{slug}"
   end
 end
