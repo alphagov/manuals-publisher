@@ -4,7 +4,7 @@
   "format_name": "Tax and Chancery tribunal decision",
   "name": "Tax and Chancery tribunal decisions",
   "description": "Find decisions on tax, financial services, pensions, charity and land registration appeals to the Upper Tribunal (Tax and Chancery Chamber).",
-  "beta": true,
+  "phase": "beta",
   "filter": {
     "document_type": "tax_tribunal_decision"
   },
