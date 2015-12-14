@@ -1,0 +1,44 @@
+#!/usr/bin/env ruby
+
+require File.expand_path("../../config/environment", __FILE__)
+require "manual_section_reslugger"
+require "logger"
+
+def usage
+  $stderr.puts %Q{
+USAGE: #{File.basename(__FILE__)} (manual_slug, old_manual_section_slug, new_manual_section_slug)
+
+manual_slug:
+  slug of manual (eg 'guidance/countryside-stewardship-manual')
+
+old_manual_section_slug:
+  current slug of section to be renamed (eg '8-terms-and-conditions')
+
+new_manual_section_slug:
+  new slug for section (eg '8-scheme-requirements-and-procedures')
+
+}
+  exit(1)
+end
+
+def logger
+  @logger ||= begin
+    logger = Logger.new(STDOUT)
+    logger.formatter = Logger::Formatter.new
+    logger
+  end
+end
+
+usage unless ARGV.count >= 3
+manual_slug = ARGV[0]
+current_slug = ARGV[1]
+new_slug = ARGV[2]
+
+logger.info "Renaming manual document slug"
+
+begin
+  ManualSectionReslugger.new(manual_slug, current_slug, new_slug).call
+  logger.info "Republishing of manual section complete."
+rescue ManualSectionReslugger::Error => e
+  logger.error(e)
+end
