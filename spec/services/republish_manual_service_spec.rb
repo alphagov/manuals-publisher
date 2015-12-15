@@ -41,7 +41,7 @@ RSpec.describe RepublishManualService do
 
     it "republishes the manual" do
       subject.call
-      expect(listener).to have_received(:call).with(manual)
+      expect(listener).to have_received(:call).with(manual, :republish)
     end
 
     it "updates the manuals tags" do
