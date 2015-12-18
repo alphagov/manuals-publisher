@@ -1,7 +1,6 @@
 require "spec_helper"
 
 require "validators/utaac_decision_validator"
-require_relative "tribunal_decision_sub_category_relates_to_parent_validator_spec"
 
 RSpec.describe UtaacDecisionValidator do
 
