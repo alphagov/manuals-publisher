@@ -1,5 +1,3 @@
-require "formatters/abstract_specialist_document_indexable_formatter"
-
 RSpec.shared_examples_for "a specialist document indexable formatter" do
   describe "last update" do
     let(:public_updated_at) { double(:public_updated_at) }

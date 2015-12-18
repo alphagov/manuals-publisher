@@ -1,6 +1,5 @@
 require "spec_helper"
 require "formatters/aaib_report_indexable_formatter"
-require_relative "tribunal_decision_indexable_formatter_spec"
 
 RSpec.describe AsylumSupportDecisionIndexableFormatter do
   let(:sub_category) { [double] }
