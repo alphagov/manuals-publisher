@@ -7,7 +7,7 @@ gem "airbrake", "3.1.15"
 gem "faraday", "0.9.0"
 gem "fetchable", "1.0.0"
 gem "foreman", "0.74.0"
-gem "gds-sso", "10.0.0"
+gem "gds-sso", "~> 11.2"
 gem "generic_form_builder", "0.11.0"
 gem 'govuk_admin_template', '3.0.0'
 gem "kaminari", "0.16.1"
@@ -31,7 +31,7 @@ end
 if ENV["CONTENT_MODELS_DEV"]
   gem "govuk_content_models", :path => "../govuk_content_models"
 else
-  gem "govuk_content_models", "28.7.0"
+  gem "govuk_content_models", "~> 32.1"
 end
 
 if ENV["API_DEV"]
