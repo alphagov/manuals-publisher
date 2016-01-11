@@ -4,4 +4,5 @@ require File.expand_path("../../config/environment", __FILE__)
 require "cli_manual_deleter"
 
 manual_slug = ARGV.any? ? ARGV.fetch(0) : nil
-CliManualDeleter.new(manual_slug).call
+manual_id = ARGV.any? ? ARGV.fetch(1, nil) : nil
+CliManualDeleter.new(manual_slug, manual_id: manual_id).call

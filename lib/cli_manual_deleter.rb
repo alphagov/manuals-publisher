@@ -1,6 +1,7 @@
 class CliManualDeleter
-  def initialize(manual_slug, stdin: STDIN, stdout: STDOUT)
+  def initialize(manual_slug, manual_id: nil, stdin: STDIN, stdout: STDOUT)
     @manual_slug = manual_slug
+    @manual_id = manual_id
     @stdin = stdin
     @stdout = stdout
   end
@@ -14,10 +15,15 @@ class CliManualDeleter
   end
 
 private
-  attr_reader :manual_slug, :stdin, :stdout
+  attr_reader :manual_slug, :manual_id, :stdin, :stdout
 
   def find_manual_record
-    manual_records = ManualRecord.where(slug: manual_slug)
+    if manual_id
+      manual_records = ManualRecord.where(manual_id: manual_id)
+    else
+      manual_records = ManualRecord.where(slug: manual_slug)
+    end
+
     validate_manual_records(manual_records)
 
     manual_records.first.tap do |manual_record|
