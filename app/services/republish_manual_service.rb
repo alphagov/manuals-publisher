@@ -21,7 +21,7 @@ private
 
   def notify_listeners
     update_manual_with_tags
-    listeners.each { |l| l.call(manual) }
+    listeners.each { |l| l.call(manual, :republish) }
   end
 
   def manual

@@ -44,7 +44,7 @@ class ManualObserversRegistry
 
 private
   def publication_logger
-    ->(manual) {
+    ->(manual, _: nil) {
       manual.documents.each do |doc|
         next unless doc.needs_exporting?
 
@@ -59,7 +59,7 @@ private
   end
 
   def rummager_exporter
-    ->(manual) {
+    ->(manual, _ = nil) {
       indexer = RummagerIndexer.new
 
       indexer.add(
@@ -78,7 +78,7 @@ private
   end
 
   def rummager_withdrawer
-    ->(manual) {
+    ->(manual, _ = nil) {
       indexer = RummagerIndexer.new
 
       indexer.delete(
@@ -97,7 +97,7 @@ private
   end
 
   def publishing_api_exporter
-    ->(manual) {
+    ->(manual, action = nil) {
       manual_renderer = SpecialistPublisherWiring.get(:manual_renderer)
       ManualPublishingAPIExporter.new(
         publishing_api.method(:put_content_item),
@@ -109,7 +109,7 @@ private
 
       document_renderer = SpecialistPublisherWiring.get(:manual_document_renderer)
       manual.documents.each do |document|
-        next unless document.needs_exporting?
+        next if !document.needs_exporting? && action != :republish
 
         ManualSectionPublishingAPIExporter.new(
           publishing_api.method(:put_content_item),
@@ -125,7 +125,7 @@ private
   end
 
   def publishing_api_draft_exporter
-    ->(manual) {
+    ->(manual, _ = nil) {
       manual_renderer = SpecialistPublisherWiring.get(:manual_renderer)
       ManualPublishingAPIExporter.new(
         publishing_api.method(:put_draft_content_item),
@@ -138,7 +138,7 @@ private
   end
 
   def publishing_api_withdrawer
-    ->(manual) {
+    ->(manual, _ = nil) {
       PublishingAPIWithdrawer.new(
         publishing_api: publishing_api,
         entity: manual,
