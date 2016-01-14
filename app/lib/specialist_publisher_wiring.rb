@@ -228,7 +228,10 @@ SpecialistPublisherWiring ||= DependencyContainer.new do
   }
 
   define_singleton(:publishing_api) {
-    GdsApi::PublishingApi.new(Plek.new.find("publishing-api"))
+    GdsApi::PublishingApi.new(
+      Plek.new.find("publishing-api"),
+      bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
+    )
   }
 
   define_singleton(:aaib_report_finder_schema) {

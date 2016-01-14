@@ -48,7 +48,7 @@ describe PublishingApiFinderPublisher do
 
     before do
       allow(GdsApi::PublishingApi).to receive(:new)
-        .with(Plek.new.find("publishing-api"))
+        .with(Plek.new.find("publishing-api"), { bearer_token: "example" })
         .and_return(publishing_api)
     end
 
