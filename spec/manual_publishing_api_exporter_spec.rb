@@ -32,6 +32,7 @@ describe ManualPublishingAPIExporter do
     [
       double(
         :document,
+        id: "60023f27-0657-4812-9339-264f1c0fd90d",
         attributes: document_attributes,
         minor_update?: false,
       )
@@ -172,6 +173,7 @@ describe ManualPublishingAPIExporter do
       hash_including(
         links: {
           organisations: ["d94d63a5-ce8e-40a1-ab4c-4956eab27259"],
+          sections: ["60023f27-0657-4812-9339-264f1c0fd90d"],
         }
       )
     )

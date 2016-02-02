@@ -28,6 +28,7 @@ describe ManualSectionPublishingAPIExporter do
   let(:manual) {
     double(
       :manual,
+      id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       attributes: {
         slug: manual_slug,
         organisation_slug: "cabinet-office",
@@ -113,6 +114,7 @@ describe ManualSectionPublishingAPIExporter do
       hash_including(
         links: {
           organisations: ["d94d63a5-ce8e-40a1-ab4c-4956eab27259"],
+          manual: ["52ab9439-95c8-4d39-9b83-0a2050a0978b"],
         }
       )
     )
