@@ -65,12 +65,12 @@ describe CmaCase do
       "links" => {
         "available_translations" => [
           {
-            "content_id" => "957eb4ec-089b-4f71-ba2a-dc69ac8919ea",
-            "title" => "Competition and Markets Authority",
-            "base_path" => "/government/organisations/competition-and-markets-authority",
+            "content_id" => "602be505-4cf4-4f8c-8bfc-7bc4b63a7f47",
+            "title" => "Drug Safety Update",
+            "base_path" => "/drug-safety-update",
             "description" => nil,
-            "api_url" => "https://www.gov.uk/api/content/government/organisations/competition-and-markets-authority",
-            "web_url" => "https://www.gov.uk/government/organisations/competition-and-markets-authority",
+            "api_url" => "https://www.gov.uk/api/content/drug-safety-update",
+            "web_url" => "https://www.gov.uk/drug-device-alerts",
             "locale" => "en"
           }
         ]
