@@ -15,7 +15,7 @@ gem "logstasher", "0.4.8"
 gem "mongoid", "2.5.2"
 gem "mongoid_rails_migrations", "1.0.0"
 gem "multi_json", "1.10.0"
-gem "plek", "1.7.0"
+gem "plek", "1.12.0"
 gem "quiet_assets", "1.0.3"
 gem "rack", "~> 1.4.6" # explicitly requiring patched version re: CVE-2015-3225
 gem "sidekiq", "3.2.1"
@@ -37,7 +37,7 @@ end
 if ENV["API_DEV"]
   gem "gds-api-adapters", :path => "../gds-api-adapters"
 else
-  gem "gds-api-adapters", "23.1.0"
+  gem "gds-api-adapters", "28.0.1"
 end
 
 group :development do
