@@ -110,7 +110,7 @@ describe AaibReport do
     Timecop.freeze(Time.parse("2015-12-18 10:12:26 UTC"))
   end
 
-  context "#all" do
+  describe "#all" do
     it "returns all AAIB Reports" do
       expect(described_class.all.length).to be(@aaib_reports.length)
     end
@@ -124,7 +124,7 @@ describe AaibReport do
     end
   end
 
-  context "#find" do
+  describe "#find" do
     it "returns a AAIB Report" do
       content_id = @aaib_reports[0]["content_id"]
       aaib_report = described_class.find(content_id)
@@ -137,7 +137,7 @@ describe AaibReport do
     end
   end
 
-  context "#save!" do
+  describe "#save!" do
     it "saves the AAIB Report" do
       stub_any_publishing_api_put_content
       stub_any_publishing_api_put_links
@@ -163,7 +163,7 @@ describe AaibReport do
     end
   end
 
-  context "#publish!" do
+  describe "#publish!" do
     it "publishes the AAIB Report" do
       stub_publishing_api_publish(@aaib_reports[0]["content_id"], {})
       stub_any_rummager_post
