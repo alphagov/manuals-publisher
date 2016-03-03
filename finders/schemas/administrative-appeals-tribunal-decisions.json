@@ -807,38 +807,6 @@
           "value": "employment-and-support-allowance-post-28-3-11-wca-activity-1-mobilising-unaided"
         },
         {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 10: consciousness during waking moments",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-10-consciousness-during-waking-moments"
-        },
-        {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 11: learning tasks",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-11-learning-tasks"
-        },
-        {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 12: awareness of everyday hazards",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-12-awareness-of-everyday-hazards"
-        },
-        {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 13: initiating and completing personal action",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-13-initiating-and-completing-personal-action"
-        },
-        {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 14: coping with change",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-14-coping-with-change"
-        },
-        {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 15: getting about",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-15-getting-about"
-        },
-        {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 16: coping with social engagement",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-16-coping-with-social-engagement"
-        },
-        {
-          "label": "Employment and support allowance - Post 28.3.11 WCA activity 17: appropriateness of behaviour with other people",
-          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-17-appropriateness-of-behaviour-with-other-people"
-        },
-        {
           "label": "Employment and support allowance - Post 28.3.11 WCA activity 2: standing and sitting",
           "value": "employment-and-support-allowance-post-28-3-11-wca-activity-2-standing-and-sitting"
         },
@@ -869,6 +837,74 @@
         {
           "label": "Employment and support allowance - Post 28.3.11 WCA activity 9: absence or loss of bowel/bladder control",
           "value": "employment-and-support-allowance-post-28-3-11-wca-activity-9-absence-or-loss-of-bowel-bladder-control"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 10 :consiousness during waking moments",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-10-consiousness-during-waking-moments"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 11: learning tasks",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-11-learning-tasks"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 12: awareness of everyday hazards",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-12-awareness-of-everyday-hazards"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 13: initiating and completing personal action",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-13-initiating-and-completing-personal-action"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 14: coping with change",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-14-coping-with-change"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 15: getting about",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-15-getting-about"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 16: coping with social engagement",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-16-coping-with-social-engagement"
+        },
+        {
+          "label": "Employment and support allowance - Post 28.3.11 WCA activity 17: appropriateness of behaviour with other people",
+          "value": "employment-and-support-allowance-post-28-3-11-wca-activity-17-appropriateness-of-behaviour-with-other-people"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 1: walking",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-1-walking"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 2: standing and sitting",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-2-standing-and-sitting"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 3: bending or kneeling",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-3-bending-or-kneeling"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 4: reaching",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-4-reaching"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 5: picking up and moving",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-5-picking-up-and-moving"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 6: manual dexterity",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-6-manual-dexterity"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 7: speech",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-7-speech"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 8: hearing",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-8-hearing"
+        },
+        {
+          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 9: vision",
+          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-9-vision"
         },
         {
           "label": "Employment and support allowance - Pre 28.3.11 WCA activity 10: continence",
@@ -911,48 +947,12 @@
           "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-19-coping-with-social-situations"
         },
         {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 2: standing and sitting",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-2-standing-and-sitting"
-        },
-        {
           "label": "Employment and support allowance - Pre 28.3.11 WCA activity 20: propriety of behaviour",
           "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-20-propriety-of-behaviour"
         },
         {
           "label": "Employment and support allowance - Pre 28.3.11 WCA activity 21: dealing with other people",
           "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-21-dealing-with-other-people"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 3: bending or kneeling",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-3-bending-or-kneeling"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 4: reaching",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-4-reaching"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 5: picking up and moving",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-5-picking-up-and-moving"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 6: manual dexterity",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-6-manual-dexterity"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 7: speech",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-7-speech"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 8: hearing",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-8-hearing"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 WCA activity 9: vision",
-          "value": "employment-and-support-allowance-pre-28-3-11-wca-activity-9-vision"
-        },
-        {
-          "label": "Employment and support allowance - Pre 28.3.11 Work Capability Assessment (WCA) activity 1: walking",
-          "value": "employment-and-support-allowance-pre-28-3-11-work-capability-assessment-wca-activity-1-walking"
         },
         {
           "label": "Employment and support allowance - Regulation 29",
@@ -1075,22 +1075,6 @@
           "value": "human-rights-law-application-of-human-rights-act"
         },
         {
-          "label": "Human rights law - article 10 (freedom of expression)",
-          "value": "human-rights-law-article-10-freedom-of-expression"
-        },
-        {
-          "label": "Human rights law - article 12 (right to marry)",
-          "value": "human-rights-law-article-12-right-to-marry"
-        },
-        {
-          "label": "Human rights law - article 13 (redress)",
-          "value": "human-rights-law-article-13-redress"
-        },
-        {
-          "label": "Human rights law - article 14 (non-discrimination)",
-          "value": "human-rights-law-article-14-non-discrimination"
-        },
-        {
           "label": "Human rights law - article 3 (torture)",
           "value": "human-rights-law-article-3-torture"
         },
@@ -1107,6 +1091,22 @@
           "value": "human-rights-law-article-9-freedom-of-thought"
         },
         {
+          "label": "Human rights law - article 10 (freedom of expression)",
+          "value": "human-rights-law-article-10-freedom-of-expression"
+        },
+        {
+          "label": "Human rights law - article 12 (right to marry)",
+          "value": "human-rights-law-article-12-right-to-marry"
+        },
+        {
+          "label": "Human rights law - article 13 (redress)",
+          "value": "human-rights-law-article-13-redress"
+        },
+        {
+          "label": "Human rights law - article 14 (non-discrimination)",
+          "value": "human-rights-law-article-14-non-discrimination"
+        },
+        {
           "label": "Human rights law - other",
           "value": "human-rights-law-other"
         },
@@ -1119,36 +1119,16 @@
           "value": "human-rights-law-protocol-1-protection-of-property"
         },
         {
-          "label": "Incapacity benefits -  activity 3: sitting",
-          "value": "incapacity-benefits-activity-3-sitting"
-        },
-        {
           "label": "Incapacity benefits - activity 1: walking",
           "value": "incapacity-benefits-activity-1-walking"
         },
         {
-          "label": "Incapacity benefits - activity 10: speech",
-          "value": "incapacity-benefits-activity-10-speech"
-        },
-        {
-          "label": "Incapacity benefits - activity 11: hearing",
-          "value": "incapacity-benefits-activity-11-hearing"
-        },
-        {
-          "label": "Incapacity benefits - activity 12: vision",
-          "value": "incapacity-benefits-activity-12-vision"
-        },
-        {
-          "label": "Incapacity benefits - activity 13: continence",
-          "value": "incapacity-benefits-activity-13-continence"
-        },
-        {
-          "label": "Incapacity benefits - activity 14: consciousness",
-          "value": "incapacity-benefits-activity-14-consciousness"
-        },
-        {
           "label": "Incapacity benefits - activity 2: stairs",
           "value": "incapacity-benefits-activity-2-stairs"
+        },
+        {
+          "label": "Incapacity benefits -  activity 3: sitting",
+          "value": "incapacity-benefits-activity-3-sitting"
         },
         {
           "label": "Incapacity benefits - activity 4: standing",
@@ -1173,6 +1153,26 @@
         {
           "label": "Incapacity benefits - activity 9: reaching",
           "value": "incapacity-benefits-activity-9-reaching"
+        },
+        {
+          "label": "Incapacity benefits - activity 10: speech",
+          "value": "incapacity-benefits-activity-10-speech"
+        },
+        {
+          "label": "Incapacity benefits - activity 11: hearing",
+          "value": "incapacity-benefits-activity-11-hearing"
+        },
+        {
+          "label": "Incapacity benefits - activity 12: vision",
+          "value": "incapacity-benefits-activity-12-vision"
+        },
+        {
+          "label": "Incapacity benefits - activity 13: continence",
+          "value": "incapacity-benefits-activity-13-continence"
+        },
+        {
+          "label": "Incapacity benefits - activity 14: consciousness",
+          "value": "incapacity-benefits-activity-14-consciousness"
         },
         {
           "label": "Incapacity benefits - attending medical examination",
@@ -1523,10 +1523,6 @@
           "value": "personal-independence-payment-daily-living-activities-activity-1-preparing-food"
         },
         {
-          "label": "Personal independence payment – daily living activities - Activity 10: making budgeting decisions",
-          "value": "personal-independence-payment-daily-living-activities-activity-10-making-budgeting-decisions"
-        },
-        {
           "label": "Personal independence payment – daily living activities - Activity 2: taking nutrition",
           "value": "personal-independence-payment-daily-living-activities-activity-2-taking-nutrition"
         },
@@ -1557,6 +1553,10 @@
         {
           "label": "Personal independence payment – daily living activities - Activity 9: engaging with other people face to face",
           "value": "personal-independence-payment-daily-living-activities-activity-9-engaging-with-other-people-face-to-face"
+        },
+        {
+          "label": "Personal independence payment – daily living activities - Activity 10: making budgeting decisions",
+          "value": "personal-independence-payment-daily-living-activities-activity-10-making-budgeting-decisions"
         },
         {
           "label": "Personal independence payment – mobility activities - Mobility activity 1: planning and following journeys",
@@ -1745,6 +1745,18 @@
         {
           "label": "Special educational needs - special educational provision - naming school",
           "value": "special-educational-needs-special-educational-provision-naming-school"
+        },
+        {
+          "label": "Special educational needs - failure to prepare an EHC plan under Children & Families Act 2014",
+          "value": "special-educational-needs-failure-to-prepare-an-ehc-plan-under-children-families-act-2014"
+        },
+        {
+          "label": "Special educational needs - special educational provision - naming school or other institution in EHC plan",
+          "value": "special-educational-needs-special-educational-provision-naming-school-or-other-institution-in-ehc-plan"
+        },
+        {
+          "label": "Special educational needs - ceasing to maintain EHC plan",
+          "value": "special-educational-needs-ceasing-to-maintain-ehc-plan"
         },
         {
           "label": "Special educational needs - special educational provision - other",
