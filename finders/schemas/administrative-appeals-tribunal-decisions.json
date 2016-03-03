@@ -2,8 +2,8 @@
   "document_noun": "decision",
   "facets": [
     {
-      "key": "tribunal_decision_category",
-      "name": "Category",
+      "key": "tribunal_decision_categories",
+      "name": "Categories",
       "type": "text",
       "preposition": "categorised as",
       "display_as_result_metadata": false,
@@ -260,15 +260,15 @@
       ]
     },
     {
-      "key": "tribunal_decision_category_name",
-      "name": "Category name",
+      "key": "tribunal_decision_categories_name",
+      "name": "Categories name",
       "type": "text",
       "display_as_result_metadata": true,
       "filterable": false
     },
     {
-      "key": "tribunal_decision_sub_category",
-      "name": "Sub-category",
+      "key": "tribunal_decision_sub_categories",
+      "name": "Sub-categories",
       "type": "text",
       "preposition": "sub-categorised as",
       "display_as_result_metadata": false,
@@ -2037,8 +2037,8 @@
       ]
     },
     {
-      "key": "tribunal_decision_sub_category_name",
-      "name": "Sub-category name",
+      "key": "tribunal_decision_sub_categories_name",
+      "name": "Sub-categories name",
       "type": "text",
       "display_as_result_metadata": true,
       "filterable": false
