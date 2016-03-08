@@ -8,5 +8,6 @@
   "filter": {
     "document_type": "vehicle_recalls_and_faults_alert"
   },
-  "organisations": []
+  "organisations": [],
+  "pre_production": true
 }
