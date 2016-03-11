@@ -82,6 +82,12 @@ FactoryGirl.define do
     organisation_slug "government-digital-service"
   end
 
+  factory :manual_record do
+    sequence(:manual_id) {|_| SecureRandom.uuid }
+    sequence(:slug) {|n| "test-manual-record-#{n}" }
+    sequence(:organisation_slug) {|n| "test-manual-organistion-#{n}" }
+  end
+
   factory :specialist_document_edition do
     sequence(:slug) {|n| "test-specialist-document-#{n}" }
     sequence(:title) {|n| "Test Specialist Document #{n}" }

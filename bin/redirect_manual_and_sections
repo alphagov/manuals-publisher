@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require File.expand_path("../../config/environment", __FILE__)
+require "specialist_publisher"
+require "manual_and_sections_redirecter"
+
+def usage
+  STDERR.puts %(
+USAGE:
+
+  ./#{File.basename(__FILE__)} base_path destination
+  )
+end
+
+unless ARGV.size == 2
+  usage
+  exit 1
+end
+
+base_path = ARGV.fetch(0)
+destination = ARGV.fetch(1)
+
+ManualAndSectionsRedirecter.new(
+  base_path: base_path,
+  destination: destination,
+).redirect
