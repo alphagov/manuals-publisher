@@ -12,6 +12,8 @@ class DocumentPresenter
       base_path: document.base_path,
       title: document.title,
       description: document.summary,
+      document_type: document.document_type,
+      schema_name: document.schema_name,
       format: "specialist_document",
       publishing_app: "specialist-publisher",
       rendering_app: "specialist-frontend",
