@@ -12,6 +12,5 @@ class EmploymentAppealTribunalDecisionValidator < SimpleDelegator
   validates :tribunal_decision_categories, presence: true
   validates :tribunal_decision_decision_date, presence: true, date: true
   validates :tribunal_decision_landmark, presence: true
-  validates :tribunal_decision_sub_categories, presence: true
 
 end
