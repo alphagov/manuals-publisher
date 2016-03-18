@@ -1,5 +1,5 @@
 require "spec_helper"
-require "formatters/aaib_report_indexable_formatter"
+require "formatters/utaac_decision_indexable_formatter"
 
 RSpec.describe UtaacDecisionIndexableFormatter do
   let(:document) {
