@@ -57,8 +57,8 @@ module UtaacDecisionHelpers
       title: "Lorem ipsum",
       summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
       body: "## Link to attachement:",
-      "Category" => "Benefits for children",
-      "Sub-category" => "Benefits for children - child benefit",
+      "Categories" => "Benefits for children",
+      "Sub-categories" => "Benefits for children - child benefit",
       "Judges" => "Angus, R",
       "Decision date" => "2015-02-02",
       "Hidden indexable content" => "## Header" + ("\n\nPraesent commodo cursus magna, vel scelerisque nisl consectetur et." * 10)
@@ -69,14 +69,14 @@ module UtaacDecisionHelpers
     fields = utaac_decision_fields(overrides)
     fields.delete(:body)
     fields.delete("Hidden indexable content")
-    category = fields.delete("Category")
-    sub_category = fields.delete("Sub-category")
+    categories = fields.delete("Categories")
+    sub_categories = fields.delete("Sub-categories")
     judges = fields.delete("Judges")
 
-    fields[:tribunal_decision_category] = category.parameterize
-    fields[:tribunal_decision_category_name] = category
-    fields[:tribunal_decision_sub_category] = sub_category.parameterize
-    fields[:tribunal_decision_sub_category_name] = sub_category
+    fields[:tribunal_decision_categories] = [categories.parameterize]
+    fields[:tribunal_decision_categories_name] = [categories]
+    fields[:tribunal_decision_sub_categories] = [sub_categories.parameterize]
+    fields[:tribunal_decision_sub_categories_name] = [sub_categories]
     fields[:tribunal_decision_judges] = [judges.parameterize]
     fields[:tribunal_decision_judges_name] = [judges]
     fields[:tribunal_decision_decision_date] = fields.delete("Decision date")
