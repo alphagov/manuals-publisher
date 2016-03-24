@@ -1,6 +1,7 @@
 require 'gds_api/publishing_api_v2'
 require 'gds_api/rummager'
 require 'gds_api/asset_manager'
+require 'gds_api/email_alert_api'
 
 module SpecialistPublisher
 
@@ -29,3 +30,7 @@ SpecialistPublisher.register_service(:asset_api, GdsApi::AssetManager.new(
   bearer_token: ENV['ASSET_MANAGER_BEARER_TOKEN'] || '12345678'
 ))
 
+SpecialistPublisher.register_service(:email_alert_api, GdsApi::EmailAlertApi.new(
+  Plek.current.find('email-alert-api'),
+  bearer_token: ENV['EMAIL_ALERT_API_BEARER_TOKEN'] || 'example123'
+))

@@ -217,6 +217,7 @@ class Document
         base_path,
         indexable_document.to_json,
       )
+      email_alert_api.send_alert({})
 
       publish_request.code == 200 && rummager_request.code == 200
     rescue GdsApi::HTTPErrorResponse => e
@@ -232,6 +233,10 @@ private
 
   def self.attachments(payload)
     payload.details.attachments.map{|attachment|Attachment.new(attachment)}
+  end
+
+  def email_alert_api
+    SpecialistPublisher.services(:email_alert_api)
   end
 
   def rummager
