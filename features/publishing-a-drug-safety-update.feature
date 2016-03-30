@@ -27,7 +27,7 @@ Feature: Publishing an Drug Safety Update
     Then the amended document should be published
     And previous editions should be archived
 
-  Scenario: Sends an email alert on first publish
+  Scenario: Does not send an email alert on first publish
     Given a draft Drug Safety Update exists
     When I publish the Drug Safety Update
     Then a publication notification should not have been sent
@@ -38,7 +38,7 @@ Feature: Publishing an Drug Safety Update
     And I edit the document without a change note
     Then I see an error requesting that I provide a change note
 
-  Scenario: Sends an email alert on a major update and updates logs
+  Scenario: Major update do not send emails but it does updates logs
     Given a published Drug Safety Update exists
     Then a publication notification should not have been sent
     And the publish should have been logged 1 time
