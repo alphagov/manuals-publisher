@@ -2,7 +2,7 @@ require "spec_helper"
 require "formatters/aaib_report_indexable_formatter"
 
 RSpec.describe AsylumSupportDecisionIndexableFormatter do
-  let(:sub_category) { [double] }
+  let(:sub_category) { double }
   let(:document) {
     double(
       :asylum_support_decision,
