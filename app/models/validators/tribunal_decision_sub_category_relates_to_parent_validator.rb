@@ -29,9 +29,7 @@ class TribunalDecisionSubCategoryRelatesToParentValidator < ActiveModel::EachVal
   end
 
   def validate_sub_category(validator, attribute, sub_category)
-    if sub_category.size > 1
-      validator.errors.add attribute, "change to a single sub-category"
-    elsif !prefixed_by_parent_category?(sub_category.first, validator)
+    if !prefixed_by_parent_category?(sub_category, validator)
       message = if category_has_sub_categories?(validator)
                   "change to be a sub-category of '#{category_label(validator)}' or change category"
                 else
