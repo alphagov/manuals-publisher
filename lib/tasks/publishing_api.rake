@@ -8,4 +8,15 @@ namespace :publishing_api do
 
     PublishingApiFinderPublisher.new(finder_loader.finders).call
   end
+
+  # Find the manual by base_path from content store.
+  # Publish a redirect for the manual.
+  # Iterate through links[sections], publish a redirect per section.
+  desc "Redirect manual and sections"
+  task :redirect_manual_and_sections, [:base_path, :destination] => :environment do |task, args|
+    ManualAndSectionsRedirecter.new(
+      base_path: args[:base_path],
+      destination: args[:destination]
+    ).redirect
+  end
 end
