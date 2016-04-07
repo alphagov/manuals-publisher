@@ -38,12 +38,28 @@ describe ManualSectionPublishingAPIExporter do
 
   let(:manual_slug) { "guidance/my-first-manual" }
 
+  let(:attachments) { [double("Attachment", attributes: {
+                         'content_id' => "0aa1aa33-36b9-4677-a643-52b9034a1c32",
+                         'file_url' => "https://assets.digital.cabinet-office.gov.uk/media/56e7fc15ed915d037a000004/introduction-section-image.jpg",
+                         'title' => "introduction section image",
+                         'created_at' => "2015-02-11T13:45:00.000+00:00",
+                         'updated_at' => "2015-02-13T13:45:00.000+00:00"
+                       }),
+                       double("Attachment", attributes: {
+                         'content_id' => "130d2b69-e32f-437f-9caa-89a4246fbe39",
+                         'file_url' => "https://assets.digital.cabinet-office.gov.uk/media/56e7fc15ed915d037a000004/introduction-section-pdf.pdf",
+                         'title' => "introduction section pdf",
+                         'created_at' => "2015-02-11T13:45:00.000+00:00",
+                         'updated_at' => "2015-02-13T13:45:00.000+00:00"
+                       })] }
+
   let(:document) {
     double(
       :document,
       id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       minor_update?: true,
       attributes: {:body => "##Some heading\nmanual section body"},
+      attachments: attachments
     )
   }
 
@@ -91,7 +107,35 @@ describe ManualSectionPublishingAPIExporter do
       "/guidance/my-first-manual/first-section",
       hash_including(
         details: {
-          body: "<h1>Some heading</h1>\nsection body",
+          body:
+            [
+              {
+                :content_type=>"text/govspeak",
+                :content=>"##Some heading\nmanual section body"
+              },
+              {
+                :content_type=>"text/html",
+                :content=>"<h1>Some heading</h1>\nmanual section body"
+              }
+            ],
+          attachments: [
+            {
+              content_id: "0aa1aa33-36b9-4677-a643-52b9034a1c32",
+              url: "https://assets.digital.cabinet-office.gov.uk/media/56e7fc15ed915d037a000004/introduction-section-image.jpg",
+              title: "introduction section image",
+              content_type: 'application/jpg',
+              created_at: "2015-02-11T13:45:00.000+00:00",
+              updated_at: "2015-02-13T13:45:00.000+00:00"
+            },
+            {
+              content_id: "130d2b69-e32f-437f-9caa-89a4246fbe39",
+              url: "https://assets.digital.cabinet-office.gov.uk/media/56e7fc15ed915d037a000004/introduction-section-pdf.pdf",
+              title: "introduction section pdf",
+              content_type: 'application/pdf',
+              created_at: "2015-02-11T13:45:00.000+00:00",
+              updated_at: "2015-02-13T13:45:00.000+00:00"
+            }
+          ],
           manual: {
             base_path: "/guidance/my-first-manual",
           },
