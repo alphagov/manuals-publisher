@@ -43,6 +43,7 @@ describe ManualSectionPublishingAPIExporter do
       :document,
       id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       minor_update?: true,
+      attributes: {:body => "##Some heading\nmanual section body"},
     )
   }
 
@@ -51,7 +52,7 @@ describe ManualSectionPublishingAPIExporter do
       title: "Document title",
       summary: "This is the first section",
       slug: "guidance/my-first-manual/first-section",
-      body: "<h1>Some heading</h1>\nsection body",
+      body: "<h1>Some heading</h1>\nmanual section body",
       updated_at: Time.new(2013, 12, 31, 12, 0, 0),
     }
   }

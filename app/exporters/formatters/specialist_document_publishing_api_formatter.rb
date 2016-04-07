@@ -21,7 +21,16 @@ class SpecialistDocumentPublishingAPIFormatter
       details: {
         metadata: metadata,
         change_history: change_history,
-        body: rendered_document.attributes[:body]
+        body: [
+          {
+            content_type: "text/html",
+            content: rendered_document.attributes[:body]
+          },
+          {
+            content_type: "text/govspeak",
+            content: specialist_document.body
+          }
+        ]
       }.merge(headers),
       routes: [
         path: base_path,

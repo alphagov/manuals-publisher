@@ -36,15 +36,7 @@ private
           type: "exact",
         }
       ],
-      details: {
-        body: rendered_document_attributes.fetch(:body),
-        manual: {
-          base_path: "/#{manual.attributes.fetch(:slug)}",
-        },
-        organisations: [
-          organisation_info
-        ],
-      },
+      details: details,
       locale: "en",
       links: {
         organisations: [organisation.details.content_id],
@@ -53,6 +45,27 @@ private
     }
   end
 
+  def details
+    {
+      body: [
+        {
+          content_type: "text/govspeak",
+          content: document.attributes.fetch(:body)
+        },
+        {
+          content_type: "text/html",
+          content: rendered_document_attributes.fetch(:body)
+        }
+      ],
+      manual: {
+        base_path: "/#{manual.attributes.fetch(:slug)}",
+      },
+      organisations: [
+        organisation_info
+      ],
+    }
+  end
+  
   def update_type
     document.minor_update? ? "minor" : "major"
   end

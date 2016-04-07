@@ -84,8 +84,15 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
 
       it { should be_valid_against_schema("specialist_document") }
 
-      it "should convert the body from govspeak to html" do
-        expect(presented["details"]["body"]).to eq(%{<h2 id="heading-2">Heading 2</h2>\n\n<p>Paragraph</p>\n})
+      it "should store both govspeak and html in the body" do
+        expect(presented["details"]["body"]).to eq([{
+                                                      "content_type"=>"text/html",
+                                                      "content"=>"<h2 id=\"heading-2\">Heading 2</h2>\n\n<p>Paragraph</p>\n"
+                                                    },
+                                                    {
+                                                      "content_type"=>"text/govspeak",
+                                                      "content"=>"## Heading 2\n\nParagraph"
+                                                    }])
       end
     end
 
