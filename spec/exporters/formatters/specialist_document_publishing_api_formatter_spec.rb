@@ -54,6 +54,16 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
     )
   }
 
+  let(:attachment) { double(Attachment, attributes: {
+    'content_id' => "0aa1aa33-36b9-4677-a643-52b9034a1c32",
+    'file_url' => "https://assets.digital.cabinet-office.gov.uk/media/56e7fc15ed915d037a000004/introduction-section-image.jpg",
+    'title' => "specialist document image",
+    'created_at' => "2015-02-11T13:45:00.000+00:00",
+    'updated_at' => "2015-02-13T13:45:00.000+00:00"
+    },
+    snippet:  "[InlineAttachment: introduction section image]")
+  }
+
   let(:body) { "" }
 
   let(:state) { "published" }
@@ -62,6 +72,8 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
 
   context "a CMA Case document" do
     it "should generate a hash which is valid against the specialist_document schema" do
+      allow_any_instance_of(AaibReport).to receive(:attachments).and_return([attachment])
+
       expect(presented).to be_valid_against_schema("specialist_document")
     end
 
@@ -79,20 +91,35 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
       expect(presented).not_to include("access_limited")
     end
 
+    it "should include attachments" do
+      allow_any_instance_of(AaibReport).to receive(:attachments).and_return([attachment])
+
+      expect(presented["details"]["attachments"]).to eq([{
+        "content_id"=>"0aa1aa33-36b9-4677-a643-52b9034a1c32",
+        "title"=>"specialist document image",
+        "url"=>"https://assets.digital.cabinet-office.gov.uk/media/56e7fc15ed915d037a000004/introduction-section-image.jpg",
+        "updated_at"=>"2015-02-13T13:45:00.000+00:00",
+        "created_at"=>"2015-02-11T13:45:00.000+00:00",
+        "content_type"=>"application/jpg"
+       }])
+    end
+
     context "with a body containing some govspeak" do
       let(:body) { "## Heading 2\n\nParagraph" }
 
       it { should be_valid_against_schema("specialist_document") }
 
       it "should store both govspeak and html in the body" do
-        expect(presented["details"]["body"]).to eq([{
-                                                      "content_type"=>"text/html",
-                                                      "content"=>"<h2 id=\"heading-2\">Heading 2</h2>\n\n<p>Paragraph</p>\n"
-                                                    },
-                                                    {
-                                                      "content_type"=>"text/govspeak",
-                                                      "content"=>"## Heading 2\n\nParagraph"
-                                                    }])
+        expect(presented["details"]["body"]).to eq([
+         {
+           "content_type"=>"text/html",
+           "content"=>"<h2 id=\"heading-2\">Heading 2</h2>\n\n<p>Paragraph</p>\n"
+         },
+         {
+           "content_type"=>"text/govspeak",
+           "content"=>"## Heading 2\n\nParagraph"
+         }
+       ])
       end
     end
 
