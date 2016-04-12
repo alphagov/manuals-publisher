@@ -8,7 +8,7 @@ When(/^I run the deletion script$/) do
 end
 
 When(/^I confirm deletion/) do
-  allow(@stdin).to receive(:gets).and_return("Yes")
+  allow(@stdin).to receive(:gets).and_return("y")
   @deleter.call
 end
 

@@ -15,7 +15,7 @@ When(/^I run the manual section removal script$/) do
 end
 
 When(/^I confirm removal$/) do
-  allow(@stdin).to receive(:gets).and_return("Yes")
+  allow(@stdin).to receive(:gets).and_return("y")
   @remover.call
 end
 

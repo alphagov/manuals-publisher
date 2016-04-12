@@ -69,7 +69,7 @@ private
   end
 
   def attachments
-    document.attachments.map{|attachment| attachment_json_builder(attachment.attributes) }
+    document.attachments.map {|attachment| attachment_json_builder(attachment.attributes) }
   end
 
   def build_content_type(file_url)

@@ -141,11 +141,13 @@ describe ManualPublishingAPIExporter do
         details: {
           body: [
             {
-              :content_type=>"text/govspeak",
-              :content=>"#Some heading\nmanual body"
+              content_type: "text/govspeak",
+              content: "#Some heading\nmanual body",
             },
-            {:content_type=>"text/html",
-             :content=>"<h1>Some heading</h1>\nmanual body"}
+            {
+              content_type: "text/html",
+              content: "<h1>Some heading</h1>\nmanual body",
+            },
           ],
           child_section_groups: [
             {
