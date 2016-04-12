@@ -48,10 +48,10 @@ private
     log "Manual to be deleted: #{manual_record.slug}"
     log "Organisation: #{manual_record.organisation_slug}"
     log "This manual has #{number_of_sections} sections, and was last edited at #{manual_record.updated_at}"
-    log "Type 'Yes' to proceed and delete this manual or anything else to exit:"
+    log "Type 'y' to proceed and delete this manual or anything else to exit:"
 
     response = stdin.gets
-    unless response.strip.downcase == "yes"
+    unless response.strip.downcase == "y"
       raise "Quitting"
     end
   end
