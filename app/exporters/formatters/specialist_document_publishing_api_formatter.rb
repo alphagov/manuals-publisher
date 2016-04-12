@@ -33,7 +33,7 @@ class SpecialistDocumentPublishingAPIFormatter
   private
 
   def details
-    {
+    details_hash = {
       metadata: metadata,
       change_history: change_history,
       body: [
@@ -46,13 +46,13 @@ class SpecialistDocumentPublishingAPIFormatter
           content: specialist_document.attributes.fetch(:body)
         }
       ]
-    }.tap do |details_hash|
-      details_hash[:attachments] = attachments if specialist_document.attachments.present?
-    end.merge(headers)
+    }
+    details_hash[:attachments] = attachments if specialist_document.attachments.present?
+    details_hash.merge(headers)
   end
 
   def attachments
-    specialist_document.attachments.map{|attachment| attachment_json_builder(attachment.attributes) }
+    specialist_document.attachments.map {|attachment| attachment_json_builder(attachment.attributes) }
   end
 
   def build_content_type(file_url)
