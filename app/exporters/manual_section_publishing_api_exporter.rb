@@ -36,20 +36,56 @@ private
           type: "exact",
         }
       ],
-      details: {
-        body: rendered_document_attributes.fetch(:body),
-        manual: {
-          base_path: "/#{manual.attributes.fetch(:slug)}",
-        },
-        organisations: [
-          organisation_info
-        ],
-      },
+      details: details,
       locale: "en",
       links: {
         organisations: [organisation.details.content_id],
         manual: [manual.id],
       },
+    }
+  end
+
+  def details
+    {
+      body: [
+        {
+          content_type: "text/govspeak",
+          content: document.attributes.fetch(:body)
+        },
+        {
+          content_type: "text/html",
+          content: rendered_document_attributes.fetch(:body)
+        }
+      ],
+      manual: {
+        base_path: "/#{manual.attributes.fetch(:slug)}",
+      },
+      organisations: [
+        organisation_info
+      ],
+    }.tap do |details_hash|
+      details_hash[:attachments] = attachments if document.attachments.present?
+    end
+  end
+
+  def attachments
+    document.attachments.map{|attachment| attachment_json_builder(attachment.attributes) }
+  end
+
+  def build_content_type(file_url)
+    return unless file_url
+    extname = File.extname(file_url).delete(".")
+    "application/#{extname}"
+  end
+
+  def attachment_json_builder(attributes)
+    {
+      content_id: attributes.fetch("content_id", SecureRandom.uuid),
+      title: attributes.fetch("title", nil),
+      url: attributes.fetch("file_url", nil),
+      updated_at: attributes.fetch("updated_at", nil),
+      created_at: attributes.fetch("created_at", nil),
+      content_type: build_content_type(attributes.fetch("file_url", nil))
     }
   end
 

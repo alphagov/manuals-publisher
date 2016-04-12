@@ -15,7 +15,7 @@ describe ManualPublishingAPIExporter do
   }
 
   let(:export_recipent) { double(:export_recipent, call: nil) }
-  let(:manual_renderer) { ->(_) { double(:rendered_manual, attributes: manual_attributes) } }
+  let(:manual_renderer) { ->(_) { double(:rendered_manual, attributes: rendered_manual_attributes) } }
 
   let(:manual) {
     double(
@@ -56,6 +56,17 @@ describe ManualPublishingAPIExporter do
   }
 
   let(:manual_attributes) {
+    {
+      title: "My first manual",
+      summary: "This is my first manual",
+      body: "#Some heading\nmanual body",
+      slug: "guidance/my-first-manual",
+      updated_at: Time.new(2013, 12, 31, 12, 0, 0),
+      organisation_slug: "cabinet-office",
+    }
+  }
+
+  let(:rendered_manual_attributes) {
     {
       title: "My first manual",
       summary: "This is my first manual",
@@ -128,7 +139,14 @@ describe ManualPublishingAPIExporter do
       "/guidance/my-first-manual",
       hash_including(
         details: {
-          body: "<h1>Some heading</h1>\nmanual body",
+          body: [
+            {
+              :content_type=>"text/govspeak",
+              :content=>"#Some heading\nmanual body"
+            },
+            {:content_type=>"text/html",
+             :content=>"<h1>Some heading</h1>\nmanual body"}
+          ],
           child_section_groups: [
             {
               title: "Contents",

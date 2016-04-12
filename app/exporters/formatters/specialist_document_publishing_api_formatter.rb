@@ -18,11 +18,7 @@ class SpecialistDocumentPublishingAPIFormatter
       update_type: update_type,
       locale: "en",
       public_updated_at: public_updated_at,
-      details: {
-        metadata: metadata,
-        change_history: change_history,
-        body: rendered_document.attributes[:body]
-      }.merge(headers),
+      details: details,
       routes: [
         path: base_path,
         type: "exact"
@@ -35,6 +31,46 @@ class SpecialistDocumentPublishingAPIFormatter
   end
 
   private
+
+  def details
+    {
+      metadata: metadata,
+      change_history: change_history,
+      body: [
+        {
+          content_type: "text/html",
+          content: rendered_document.attributes.fetch(:body)
+        },
+        {
+          content_type: "text/govspeak",
+          content: specialist_document.attributes.fetch(:body)
+        }
+      ]
+    }.tap do |details_hash|
+      details_hash[:attachments] = attachments if specialist_document.attachments.present?
+    end.merge(headers)
+  end
+
+  def attachments
+    specialist_document.attachments.map{|attachment| attachment_json_builder(attachment.attributes) }
+  end
+
+  def build_content_type(file_url)
+    return unless file_url
+    extname = File.extname(file_url).delete(".")
+    "application/#{extname}"
+  end
+
+  def attachment_json_builder(attributes)
+    {
+      content_id: attributes.fetch("content_id", SecureRandom.uuid),
+      title: attributes.fetch("title", nil),
+      url: attributes.fetch("file_url", nil),
+      updated_at: attributes.fetch("updated_at", nil),
+      created_at: attributes.fetch("created_at", nil),
+      content_type: build_content_type(attributes.fetch("file_url", nil))
+    }
+  end
 
   def rendered_document
     @rendered_document ||= specialist_document_renderer.call(specialist_document)

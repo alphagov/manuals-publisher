@@ -30,7 +30,7 @@ private
   end
 
   def user_confirmed?
-    user_response == "Yes"
+    user_response == "y"
   end
 
   def user_response
@@ -42,7 +42,7 @@ private
 ### PLEASE CONFIRM -------------------------------------
 You want to remove the section '#{section.title}' from the manual '#{manual.title}'.
 This manual was last edited at #{manual.updated_at} and belongs to #{manual.organisation_slug}.
-Type 'Yes' to proceed and remove this manual section or type anything else to exit:
+Type 'y' to proceed and remove this manual section or type anything else to exit:
     )
   end
 

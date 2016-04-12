@@ -66,7 +66,16 @@ private
 
   def details_data
     {
-      body: rendered_manual_attributes.fetch(:body),
+      body: [
+        {
+          content_type: "text/govspeak",
+          content: manual.attributes.fetch(:body)
+        },
+        {
+          content_type: "text/html",
+          content: rendered_manual_attributes.fetch(:body)
+        }
+      ],
       child_section_groups: [
         {
           title: "Contents",
