@@ -3,7 +3,7 @@
 
 # Beyond Rails version 3.2.22, this initializer should be removed if the
 # vulnerability's been patched.
-unless Rails::VERSION::STRING == "3.2.22.1"
+unless Rails::VERSION::STRING == "3.2.22.2"
   raise "Check monkey patch for CVE-2015-3226 is still needed"
 end
 
