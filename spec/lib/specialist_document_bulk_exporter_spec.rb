@@ -1,15 +1,25 @@
 require "spec_helper"
 require "lib/specialist_document_bulk_exporter"
+require "sidekiq/testing"
 
 describe SpecialistDocumentBulkExporter do
   let(:exporter) {
     double("SpecialistDocumentPublishingAPIExporter", new: double(call: {}))
   }
 
+  let(:worker) {
+    PublishSpecialistDocumentWorker
+  }
+
+  before do
+    Sidekiq::Testing.fake!
+  end
+
   subject {
     described_class.new(
       "cma_case",
-      exporter: exporter
+      exporter: exporter,
+      worker: worker
     )
   }
 
@@ -49,9 +59,8 @@ describe SpecialistDocumentBulkExporter do
     )
   }
 
-  it "sends the most recent published and draft edition to publishing-api" do
+  it "adds draft and published specialist-documents to sidekiq queue" do
     subject.call
-    expect(exporter).to have_received(:new).with(anything, anything, false).once
-    expect(exporter).to have_received(:new).with(anything, anything, true).once
+    expect(worker.jobs.size).to eq(2)
   end
 end

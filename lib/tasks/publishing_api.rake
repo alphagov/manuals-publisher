@@ -24,7 +24,6 @@ namespace :publishing_api do
     SpecialistPublisher.document_types.each do |type|
       SpecialistDocumentBulkExporter.new(
         type,
-        formatter: MigrationSpecialistDocumentPublishingAPIFormatter,
         logger: Logger.new(STDOUT)
       ).call
     end
