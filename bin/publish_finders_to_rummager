@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require File.expand_path("../../config/environment", __FILE__)
+require "specialist_publisher"
+require "rummager_finder_publisher"
+require "multi_json"
+
+metadatas = Dir.glob("finders/metadata/**/*.json").map do |file_path|
+  {
+    file: MultiJson.load(File.read(file_path)),
+    timestamp: File.mtime(file_path)
+  }
+end
+
+RummagerFinderPublisher.new(metadatas).call
