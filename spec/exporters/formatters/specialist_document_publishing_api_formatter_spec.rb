@@ -36,8 +36,7 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
   }
 
   let(:edition) {
-    FactoryGirl.create(
-      :specialist_document_edition,
+    create(:specialist_document_edition,
       document_id: SecureRandom.uuid,
       document_type: "cma_case",
       updated_at: 2.days.ago,
@@ -192,9 +191,9 @@ END_OF_GOVSPEAK
     context "in draft state" do
       let(:state) { "draft" }
 
-      let!(:cma_editor) { FactoryGirl.create(:cma_editor) }
-      let!(:aaib_editor) { FactoryGirl.create(:aaib_editor) }
-      let!(:gds_editor) { FactoryGirl.create(:gds_editor) }
+      let!(:cma_editor) { create(:cma_editor) }
+      let!(:aaib_editor) { create(:aaib_editor) }
+      let!(:gds_editor) { create(:gds_editor) }
 
       it "includes an access_limited hash" do
         expect(presented).to include("access_limited")

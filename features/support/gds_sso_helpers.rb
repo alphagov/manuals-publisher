@@ -2,9 +2,10 @@ require "warden/test/helpers"
 
 module GdsSsoHelpers
   include Warden::Test::Helpers
+  include FactoryGirl::Syntax::Methods
 
   def login_as(user_type)
-    user = FactoryGirl.create(user_type.to_sym)
+    user = create(user_type.to_sym)
     GDS::SSO.test_user = user
     super(user) # warden
   end
