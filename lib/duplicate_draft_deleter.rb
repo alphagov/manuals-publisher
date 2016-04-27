@@ -3,11 +3,12 @@ require "gds_api/publishing_api_v2"
 class DuplicateDraftDeleter
   def call
     duplicated_editions_not_in_publishing_api = duplicated_editions.reject {|data| in_publishing_api?(data[:content_id]) }
+    content_ids = duplicated_editions_not_in_publishing_api.map { |data| data[:content_id] }
+    editions_to_delete = SpecialistDocumentEdition.where(:document_id.in => content_ids)
 
-    puts "The following #{duplicated_editions_not_in_publishing_api.count} unpublished drafts are being deleted:"
-    duplicated_editions_not_in_publishing_api.each do |data|
-      puts [data[:slug], data[:content_id], data[:state], data[:created_at]].join(",")
-      edition = SpecialistDocumentEdition.where(document_id: data[:content_id]).first
+    puts "The following #{editions_to_delete.count} editions are unknown to Publishing API and will be deleted:"
+    editions_to_delete.each do |edition|
+      puts [edition[:slug], edition[:document_id], edition[:state], edition[:created_at]].join(",")
       edition.delete
     end
   end
