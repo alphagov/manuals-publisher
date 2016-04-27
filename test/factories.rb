@@ -88,6 +88,7 @@ FactoryGirl.define do
     summary "My summary"
     body "My body"
     document_type "cma_case"
+    document_id "document-id-1"
     extra_fields do
       {
         opened_date: "2013-04-20",
