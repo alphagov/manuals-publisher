@@ -118,6 +118,10 @@ module ApplicationHelper
     }
   end
 
+  def finders_sorted_by_title
+    finders.sort_by {|_, value| value[:title] }
+  end
+
 private
   def publish_text_hash(document)
     {

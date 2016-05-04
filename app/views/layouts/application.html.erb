@@ -23,7 +23,7 @@
       <ul class="dropdown-menu" role="menu">
   <% end %>
 
-  <% finders.each do |key, value| %>
+  <% finders_sorted_by_title.each do |key, value| %>
     <% if current_user_can_edit?(value[:document_type]) %>
       <li><%= nav_link_to value[:title], "/#{key}" %></li>
     <% end %>
