@@ -11,10 +11,11 @@ RSpec.describe "Republishing documents", type: :feature do
       )
     end
 
-    it "should NOT push to Publishing API as draft-content" do
+    it "should NOT push to Publishing API" do
       SpecialistPublisher.document_services("aaib_report").republish_all.call
 
       assert_publishing_api_put("http://publishing-api.dev.gov.uk/draft-content/a/b", {}, 0)
+      assert_publishing_api_put("http://publishing-api.dev.gov.uk/content/a/b", {}, 0)
       expect(fake_rummager).not_to have_received(:add_document)
     end
   end
@@ -41,5 +42,24 @@ RSpec.describe "Republishing documents", type: :feature do
       expect(fake_rummager).to have_received(:add_document)
                                  .with(@document.document_type, "/c/d", hash_including(rummager_fields))
     end
+  end
+
+  context "for withdrawn documents" do
+    before do
+      create(:specialist_document_edition,
+             document_type: "aaib_report",
+             state: "archived",
+             slug: "e/f",
+      )
+    end
+
+    it "should NOT push to Publishing API" do
+      SpecialistPublisher.document_services("aaib_report").republish_all.call
+
+      assert_publishing_api_put("http://publishing-api.dev.gov.uk/draft-content/e/f", {}, 0)
+      assert_publishing_api_put("http://publishing-api.dev.gov.uk/content/e/f", {}, 0)
+      expect(fake_rummager).not_to have_received(:add_document)
+    end
+
   end
 end
