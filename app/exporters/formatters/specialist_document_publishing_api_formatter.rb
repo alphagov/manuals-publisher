@@ -10,7 +10,8 @@ class SpecialistDocumentPublishingAPIFormatter
   def call
     {
       content_id: specialist_document.id,
-      format: "specialist_document",
+      schema_name: "specialist_document",
+      document_type: specialist_document.document_type,
       publishing_app: "specialist-publisher",
       rendering_app: "specialist-frontend",
       title: rendered_document.attributes.fetch(:title),
