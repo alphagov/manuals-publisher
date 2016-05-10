@@ -1,5 +1,7 @@
 module DocumentHelpers
   def create_document(type, fields, save: true, publish: false)
+    @document_type = type
+
     visit send(:"new_#{type}_path")
     fill_in_fields(fields)
 
@@ -39,7 +41,8 @@ module DocumentHelpers
     attributes = {
       title: fields[:title],
       description: fields[:summary],
-      format: "specialist_document",
+      schema_name: "specialist_document",
+      document_type: @document_type.to_s,
       publishing_app: "specialist-publisher",
       rendering_app: "specialist-frontend",
     }
