@@ -1,7 +1,7 @@
 require "spec_helper"
 require "sidekiq/testing"
 
-RSpec.describe "Saving invalid documents", type: :feature do
+RSpec.describe "Republishing manuals", type: :feature do
   before do
     Sidekiq::Testing.inline!
     login_as(:generic_editor)

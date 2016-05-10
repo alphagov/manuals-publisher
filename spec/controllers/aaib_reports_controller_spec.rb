@@ -46,8 +46,7 @@ describe AaibReportsController, type: :controller do
     before do
       login_as_stub_user
       allow_any_instance_of(PermissionChecker).to receive(:can_edit?).and_return(true)
-      @edition = FactoryGirl.create(
-        :specialist_document_edition,
+      @edition = create(:specialist_document_edition,
         document_id: "document-id-1",
         document_type: "aaib_report",
         updated_at: 2.days.ago
