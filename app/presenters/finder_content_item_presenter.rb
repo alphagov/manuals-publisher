@@ -1,7 +1,8 @@
 class FinderContentItemPresenter < Struct.new(:metadata, :schema, :timestamp)
   def exportable_attributes
     {
-      "format" => format,
+      "schema_name" => "finder",
+      "document_type" => "finder",
       "content_id" => content_id,
       "title" => title,
       "description" => description,
@@ -50,10 +51,6 @@ private
       facets: schema.fetch("facets", []),
       default_order: metadata.fetch("default_order", nil),
     }.reject {|_, value| value.nil?}
-  end
-
-  def format
-    "finder"
   end
 
   def related
