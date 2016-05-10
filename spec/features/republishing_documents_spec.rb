@@ -14,8 +14,8 @@ RSpec.describe "Republishing documents", type: :feature do
     it "should NOT push to Publishing API" do
       SpecialistPublisher.document_services("aaib_report").republish_all.call
 
-      assert_publishing_api_put("http://publishing-api.dev.gov.uk/draft-content/a/b", {}, 0)
-      assert_publishing_api_put("http://publishing-api.dev.gov.uk/content/a/b", {}, 0)
+      assert_publishing_api_put_item("/a/b", {}, 0)
+      assert_publishing_api_put_draft_item("/a/b", {}, 0)
       expect(fake_rummager).not_to have_received(:add_document)
     end
   end
@@ -38,7 +38,7 @@ RSpec.describe "Republishing documents", type: :feature do
        indexable_content: @document.body,
        organisations: ["air-accidents-investigation-branch"]}
 
-      assert_publishing_api_put("http://publishing-api.dev.gov.uk/content/c/d")
+      assert_publishing_api_put_item("/c/d")
       expect(fake_rummager).to have_received(:add_document)
                                  .with(@document.document_type, "/c/d", hash_including(rummager_fields))
     end
@@ -56,8 +56,8 @@ RSpec.describe "Republishing documents", type: :feature do
     it "should NOT push to Publishing API" do
       SpecialistPublisher.document_services("aaib_report").republish_all.call
 
-      assert_publishing_api_put("http://publishing-api.dev.gov.uk/draft-content/e/f", {}, 0)
-      assert_publishing_api_put("http://publishing-api.dev.gov.uk/content/e/f", {}, 0)
+      assert_publishing_api_put_item("/e/f", {}, 0)
+      assert_publishing_api_put_draft_item("/e/f", {}, 0)
       expect(fake_rummager).not_to have_received(:add_document)
     end
 
