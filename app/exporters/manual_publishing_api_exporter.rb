@@ -33,7 +33,8 @@ private
   def exportable_attributes
     {
       content_id: manual.id,
-      format: "manual",
+      schema_name: "manual",
+      document_type: "manual",
       title: rendered_manual_attributes.fetch(:title),
       description: rendered_manual_attributes.fetch(:summary),
       public_updated_at: rendered_manual_attributes.fetch(:updated_at).iso8601,
