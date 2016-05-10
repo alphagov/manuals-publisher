@@ -190,7 +190,8 @@ module ManualHelpers
 
   def check_manual_document_is_published_to_publishing_api(slug, draft: false)
     attributes = {
-      "format" => "manual_section",
+      "schema_name" => "manual_section",
+      "document_type" => "manual_section",
       "rendering_app" => "manuals-frontend",
       "publishing_app" => "specialist-publisher",
     }
