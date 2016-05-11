@@ -1,7 +1,8 @@
 class FinderSignupContentItemPresenter < Struct.new(:metadata, :timestamp)
   def exportable_attributes
     {
-      "format" => format,
+      "schema_name" => "finder_email_signup",
+      "document_type" => "finder_email_signup",
       "content_id" => content_id,
       "title" => title,
       "description" => description,
@@ -34,10 +35,6 @@ private
 
   def description
     metadata.fetch("signup_copy", nil)
-  end
-
-  def format
-    "finder_email_signup"
   end
 
   def related
