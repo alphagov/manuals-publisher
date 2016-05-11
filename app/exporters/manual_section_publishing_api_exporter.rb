@@ -23,7 +23,8 @@ private
   def exportable_attributes
     {
       content_id: document.id,
-      format: "manual_section",
+      schema_name: "manual_section",
+      document_type: "manual_section",
       title: rendered_document_attributes.fetch(:title),
       description: rendered_document_attributes.fetch(:summary),
       public_updated_at: rendered_document_attributes.fetch(:updated_at).iso8601,

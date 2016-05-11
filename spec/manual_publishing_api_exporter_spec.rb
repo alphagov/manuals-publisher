@@ -111,7 +111,8 @@ describe ManualPublishingAPIExporter do
       "/guidance/my-first-manual",
       hash_including(
         content_id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        format: "manual",
+        schema_name: "manual",
+        document_type: "manual",
         title: "My first manual",
         description: "This is my first manual",
         public_updated_at: Time.new(2013, 12, 31, 12, 0, 0).iso8601,

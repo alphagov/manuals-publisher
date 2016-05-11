@@ -88,7 +88,8 @@ describe ManualSectionPublishingAPIExporter do
       "/guidance/my-first-manual/first-section",
       hash_including(
         content_id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
-        format: "manual_section",
+        schema_name: "manual_section",
+        document_type: "manual_section",
         title: "Document title",
         description: "This is the first section",
         public_updated_at: Time.new(2013, 12, 31, 12, 0, 0).iso8601,
