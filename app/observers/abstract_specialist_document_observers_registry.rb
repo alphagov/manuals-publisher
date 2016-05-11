@@ -32,6 +32,12 @@ class AbstractSpecialistDocumentObserversRegistry
     ]
   end
 
+  def draft_republication
+    [
+      publishing_api_exporter,
+    ]
+  end
+
   def withdrawal
     [
       publishing_api_withdrawer,

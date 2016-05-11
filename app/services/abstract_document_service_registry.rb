@@ -75,7 +75,8 @@ class AbstractDocumentServiceRegistry
   def republish(document_id)
     RepublishDocumentService.new(
       document_repository: document_repository,
-      listeners: observers.republication,
+      published_listeners: observers.republication,
+      draft_listeners: observers.draft_republication,
       document_id: document_id,
     )
   end

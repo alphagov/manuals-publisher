@@ -1,23 +1,34 @@
 class RepublishDocumentService
-  def initialize(document_repository:, listeners: [], document_id:)
+  def initialize(document_repository:, published_listeners: [], draft_listeners: [], document_id:)
     @document_repository = document_repository
-    @listeners = listeners
+    @published_listeners = published_listeners
+    @draft_listeners = draft_listeners
     @document_id = document_id
   end
 
   def call
     if document.published?
-      notify_listeners
+      notify_published_listeners
+    elsif  document.draft?
+      notify_draft_listeners
     end
 
     document
   end
 
 private
-  attr_reader :document_repository, :listeners, :document_id
+  attr_reader :document_repository, :published_listeners, :draft_listeners, :document_id
 
-  def notify_listeners
+  def notify_listeners(listeners)
     listeners.each { |l| l.call(document) }
+  end
+
+  def notify_draft_listeners
+    notify_listeners(draft_listeners)
+  end
+
+  def notify_published_listeners
+    notify_listeners(published_listeners)
   end
 
   def document
