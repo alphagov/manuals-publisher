@@ -76,6 +76,10 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
       expect(presented).to be_valid_against_schema("specialist_document")
     end
 
+    it "should include a short cache time" do
+      expect(presented["details"]["max_cache_time"]).to eq 10
+    end
+
     it "should include the relevant metadata in the details hash" do
       fields = %w(case_type case_state market_sector opened_date document_type)
       expect(presented["details"]["metadata"].keys).to eq(fields)

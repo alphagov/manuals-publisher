@@ -46,7 +46,8 @@ class SpecialistDocumentPublishingAPIFormatter
           content_type: "text/govspeak",
           content: specialist_document.attributes.fetch(:body)
         }
-      ]
+      ],
+      max_cache_time: 10,
     }
     details_hash[:attachments] = attachments if specialist_document.attachments.present?
     details_hash.merge(headers)

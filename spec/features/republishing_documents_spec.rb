@@ -56,7 +56,8 @@ RSpec.describe "Republishing documents", type: :feature do
                   "body" => [{"content_type" => "text/html",
                               "content" => "<p>My body</p>\n"},
                              {"content_type" => "text/govspeak",
-                              "content" => "My body"}]},
+                              "content" => "My body"}],
+                  "max_cache_time" => 10},
         routes: [{"path" => "/" + @document.slug,
                   "type" => "exact"}]}
 
