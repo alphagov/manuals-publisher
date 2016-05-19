@@ -84,7 +84,7 @@ class AbstractDocumentServiceRegistry
   def republish_all
     -> {
       document_repository.all.each do |document|
-        republish(document.id).call
+        RepublishDocumentWorker.perform_async(document.id, document.document_type)
       end
     }
   end
