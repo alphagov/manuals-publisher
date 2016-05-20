@@ -1,5 +1,6 @@
 require "spec_helper"
 require "sidekiq/testing"
+Sidekiq::Testing.inline!
 
 RSpec.describe "Republishing documents", type: :feature do
   let(:public_timestamp) { "2016-05-11 10:56:07" }
@@ -55,6 +56,7 @@ RSpec.describe "Republishing documents", type: :feature do
 
   after do
     Timecop.return
+    Sidekiq::Worker.clear_all
   end
 
   context "for drafts" do
@@ -63,6 +65,13 @@ RSpec.describe "Republishing documents", type: :feature do
         document_type: "aaib_report",
         state: "draft",
         slug: "a/b",
+      )
+
+      create(:specialist_document_edition,
+             document_id: "document_id_2",
+             document_type: "aaib_report",
+             state: "draft",
+             slug: "a/bc",
       )
     end
 
@@ -73,6 +82,14 @@ RSpec.describe "Republishing documents", type: :feature do
       assert_publishing_api_put_draft_item("/a/b", request_json_matching(publishing_api_fields))
       expect(fake_rummager).not_to have_received(:add_document)
                                  .with(@document.document_type, "/a/b", hash_including(rummager_fields))
+    end
+
+    it "should add job to worker queue when republishing all documents" do
+      Sidekiq::Testing.fake! do
+        SpecialistPublisher.document_services("aaib_report").republish_all.call
+
+        expect(RepublishDocumentWorker.jobs.size).to eq(2)
+      end
     end
   end
 
@@ -109,6 +126,5 @@ RSpec.describe "Republishing documents", type: :feature do
       assert_publishing_api_put_draft_item("/e/f", {}, 0)
       expect(fake_rummager).not_to have_received(:add_document)
     end
-
   end
 end
