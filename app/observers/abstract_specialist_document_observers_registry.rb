@@ -4,6 +4,10 @@ require "publishing_api_withdrawer"
 require "formatters/specialist_document_publishing_api_formatter"
 
 class AbstractSpecialistDocumentObserversRegistry
+  def initialize(organisation_content_ids)
+    @organisation_content_ids = organisation_content_ids
+  end
+
   def creation
     [
       publishing_api_exporter,
@@ -46,12 +50,15 @@ class AbstractSpecialistDocumentObserversRegistry
   end
 
 private
+  attr_reader :organisation_content_ids
+
   def publishing_api_exporter
     ->(document) {
       rendered_document = SpecialistDocumentPublishingAPIFormatter.new(
         document,
         specialist_document_renderer: SpecialistPublisherWiring.get(:specialist_document_renderer),
-        publication_logs: PublicationLog
+        publication_logs: PublicationLog,
+        links: format_links_for_publishing_api(document)
       )
 
       SpecialistDocumentPublishingAPIExporter.new(
@@ -89,6 +96,12 @@ private
 
   def format_document_for_indexing(document)
     raise NotImplementedError
+  end
+
+  def format_links_for_publishing_api(document)
+    {
+      organisations: organisation_content_ids
+    }
   end
 
   def email_alert_api

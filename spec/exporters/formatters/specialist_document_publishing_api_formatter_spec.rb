@@ -13,7 +13,8 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
     described_class.new(
       document,
       specialist_document_renderer: specialist_document_renderer,
-      publication_logs: publication_logs
+      publication_logs: publication_logs,
+      links: { "organisations" => ["0aa1aa33-36b9-4677-a643-52b9034a1c33"] }
     )
   }
 
@@ -105,6 +106,10 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
         "created_at" => "2015-02-11T13:45:00.000+00:00",
         "content_type" => "application/jpg",
        }])
+    end
+
+    it "should include a links hash" do
+      expect(presented).to include("links")
     end
 
     context "with a body containing some govspeak" do
