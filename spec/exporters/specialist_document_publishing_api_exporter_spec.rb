@@ -21,7 +21,8 @@ describe SpecialistDocumentPublishingAPIExporter do
       update_type: "major",
       locale: "en",
       public_updated_at: Time.now,
-      details: {}
+      details: {},
+      links: {"organisations" => ["38eb5d8f-2d89-480c-8655-e2e7ac23f8f4"]}
     }
   }
 

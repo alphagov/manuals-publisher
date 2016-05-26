@@ -29,7 +29,10 @@ RSpec.describe "Republishing documents", type: :feature do
                 "max_cache_time" => 10,
       },
       routes: [{"path" => "/" + @document.slug,
-                "type" => "exact"}]
+                "type" => "exact"}],
+      links: {
+        "organisations" => ["38eb5d8f-2d89-480c-8655-e2e7ac23f8f4"]
+      }
     }
   end
 
