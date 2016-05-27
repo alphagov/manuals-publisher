@@ -53,12 +53,13 @@ private
   attr_reader :organisation_content_ids
 
   def publishing_api_exporter
-    ->(document) {
+    ->(document, update_type = nil) {
       rendered_document = SpecialistDocumentPublishingAPIFormatter.new(
         document,
         specialist_document_renderer: SpecialistPublisherWiring.get(:specialist_document_renderer),
         publication_logs: PublicationLog,
-        links: format_links_for_publishing_api(document)
+        links: format_links_for_publishing_api(document),
+        update_type: update_type
       )
 
       SpecialistDocumentPublishingAPIExporter.new(
@@ -79,7 +80,7 @@ private
   end
 
   def rummager_exporter
-    ->(document) {
+    ->(document, _ = nil) {
       RummagerIndexer.new.add(
         format_document_for_indexing(document)
       )

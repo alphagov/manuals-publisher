@@ -20,7 +20,7 @@ private
   attr_reader :document_repository, :published_listeners, :draft_listeners, :document_id
 
   def notify_listeners(listeners)
-    listeners.each { |l| l.call(document) }
+    listeners.each { |l| l.call(document, "republish") }
   end
 
   def notify_draft_listeners

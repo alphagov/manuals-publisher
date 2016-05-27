@@ -13,7 +13,7 @@ RSpec.describe "Republishing documents", type: :feature do
       rendering_app: "specialist-frontend",
       title: @document.title,
       description: @document.summary,
-      update_type: "major",
+      update_type: "republish",
       locale: "en",
       public_updated_at: "2016-05-11T10:56:07+00:00",
       details: {"metadata" => {"opened_date" => "2013-04-20", # These nested hashes use Strings as keys because Symbols gives a false negative in the request_json_matching matcher.
