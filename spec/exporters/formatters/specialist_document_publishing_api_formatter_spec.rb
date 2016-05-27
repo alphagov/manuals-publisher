@@ -14,9 +14,12 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
       document,
       specialist_document_renderer: specialist_document_renderer,
       publication_logs: publication_logs,
-      links: { "organisations" => ["0aa1aa33-36b9-4677-a643-52b9034a1c33"] }
+      links: { "organisations" => ["0aa1aa33-36b9-4677-a643-52b9034a1c33"] },
+      update_type: update_type,
     )
   }
+
+  let(:update_type) { nil }
 
   let(:publication_logs) { class_double("PublicationLog", change_notes_for: [publication_log]) }
 
@@ -210,6 +213,14 @@ END_OF_GOVSPEAK
 
       it "includes uids of departmental editors and GDS editors" do
         expect(presented["access_limited"]["users"]).to eq([cma_editor.uid, gds_editor.uid])
+      end
+    end
+
+    context "with a specified update_type" do
+      let(:update_type) { "republish" }
+
+      it "includes the specified update_type" do
+        expect(presented["update_type"]).to eq("republish")
       end
     end
   end
