@@ -89,9 +89,9 @@ RSpec.describe "Republishing documents", type: :feature do
 
     it "should add job to worker queue when republishing all documents" do
       Sidekiq::Testing.fake! do
-        SpecialistPublisher.document_services("aaib_report").republish_all.call
-
-        expect(RepublishDocumentWorker.jobs.size).to eq(2)
+        expect {
+          SpecialistPublisher.document_services("aaib_report").republish_all.call
+        }.to change(RepublishDocumentWorker.jobs, :size).by(2)
       end
     end
   end
