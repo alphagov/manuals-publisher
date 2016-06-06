@@ -8,7 +8,10 @@ class RepublishDocumentWorker
     queue: "bulk_republishing",
   )
 
-  def perform(document_id, type)
+  def perform(document_id, type, params = {})
+    GdsApi::GovukHeaders.set_header(:govuk_request_id, params["request_id"])
+    GdsApi::GovukHeaders.set_header(:x_govuk_authenticated_user, params["authenticated_user"])
+
     services = SpecialistPublisher.document_services(type)
     services.republish(document_id).call
   end

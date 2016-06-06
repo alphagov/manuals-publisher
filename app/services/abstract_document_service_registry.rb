@@ -84,7 +84,11 @@ class AbstractDocumentServiceRegistry
   def republish_all
     -> {
       document_repository.all.each do |document|
-        RepublishDocumentWorker.perform_async(document.id, document.document_type)
+        RepublishDocumentWorker.perform_async(
+          document.id,
+          document.document_type,
+          govuk_header_params
+        )
       end
     }
   end
@@ -117,6 +121,13 @@ private
 
   def document_builder
     @builder
+  end
+
+  def govuk_header_params
+    {
+      request_id: GdsApi::GovukHeaders.headers[:govuk_request_id],
+      authenticated_user: GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user],
+    }
   end
 
   attr_reader :observers
