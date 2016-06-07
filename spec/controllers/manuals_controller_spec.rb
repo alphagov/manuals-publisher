@@ -11,6 +11,10 @@ describe ManualsController, type: :controller do
       post :publish, id: manual_id
     end
 
+    after do
+      GdsApi::GovukHeaders.clear_headers
+    end
+
     it "redirects to the manual's show page" do
       expect(response).to redirect_to manual_path(id: manual_id)
     end
@@ -21,6 +25,10 @@ describe ManualsController, type: :controller do
 
     it "does not publish the manual" do
       expect(ManualsController).not_to have_received(:publish)
+    end
+
+    it "sets the authenticated user header" do
+      expect(GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user]).to match(/uid-\d+/)
     end
   end
 end
