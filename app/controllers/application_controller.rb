@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   extend Forwardable
 
   before_filter :require_signin_permission!
+  before_filter :set_authenticated_user_header
 
   protect_from_forgery with: :exception
 
@@ -118,5 +119,11 @@ class ApplicationController < ActionController::Base
 
   def permission_checker
     @permission_checker ||= PermissionChecker.new(current_user)
+  end
+
+  def set_authenticated_user_header
+    if current_user && GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user].nil?
+      GdsApi::GovukHeaders.set_header(:x_govuk_authenticated_user, current_user.uid)
+    end
   end
 end

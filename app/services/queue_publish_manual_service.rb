@@ -8,7 +8,7 @@ class QueuePublishManualService
 
   def call
     task = create_publish_task(manual)
-    worker.perform_async(task.to_param)
+    worker.perform_async(task.to_param, govuk_header_params)
     manual
   end
 
@@ -31,4 +31,10 @@ private
     @manual ||= repository.fetch(manual_id)
   end
 
+  def govuk_header_params
+    {
+      request_id: GdsApi::GovukHeaders.headers[:govuk_request_id],
+      authenticated_user: GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user],
+    }
+  end
 end
