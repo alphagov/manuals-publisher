@@ -98,4 +98,11 @@ FactoryGirl.define do
       }
     end
   end
+
+  factory :specialist_document do
+    slug_generator {"some"}
+    id {"some"}
+    editions {"s"}
+    initialize_with { new(slug_generator, id, editions) }
+  end
 end

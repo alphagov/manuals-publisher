@@ -129,4 +129,74 @@ RSpec.describe "Republishing documents", type: :feature do
       expect(fake_rummager).not_to have_received(:add_document)
     end
   end
+
+  context "for published documents with new draft" do
+    before do
+      slug_generator = double(:slug_generator)
+      latest_draft_doc = create(
+          :specialist_document_edition,
+          document_id: "document_id_2",
+          document_type: "aaib_report",
+          state: "draft",
+          slug: "g/h")
+      edition_doc = create(
+          :specialist_document_edition,
+          document_id: "document_id_1",
+          document_type: "aaib_report",
+          state: "published",
+          slug: "g/h")
+      @document = build(:specialist_document,
+                         slug_generator: slug_generator,
+                         id: 123,
+                         editions: [edition_doc, latest_draft_doc])
+    end
+
+    it "should get state for frontend" do
+      expect(@document.draft?).to eq(true)
+      expect(@document.withdrawn?).to eq(false)
+      expect(@document.published?).to eq(true)
+      expect(ApplicationHelper.state_for_frontend(@document).first).to eq("published with new draft")
+    end
+
+    it "should push to Publishing API as content" do
+      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      assert_publishing_api_put_item("/g/h", {}, 1)
+      assert_publishing_api_put_draft_item("/g/h", {}, 1)
+      expect(fake_rummager).to have_received(:add_document)
+    end
+  end
+
+  context "for withdrawn documents with new draft" do
+    before do
+      slug_generator = double(:slug_generator)
+      latest_draft_doc = create(:specialist_document_edition,
+                                document_id: "document_id_2",
+                                document_type: "aaib_report",
+                                state: "draft",
+                                slug: "i/j")
+      edition_doc = create(:specialist_document_edition,
+                           document_id: "document_id_1",
+                           document_type: "aaib_report",
+                           state: "archived",
+                           slug: "i/j")
+      @document = build(:specialist_document,
+                        slug_generator: slug_generator,
+                        id: 123,
+                        editions: [edition_doc, latest_draft_doc])
+    end
+
+    it "should get state for frontend" do
+      expect(@document.draft?).to eq(true)
+      expect(@document.withdrawn?).to eq(true)
+      expect(@document.published?).to eq(false)
+      expect(ApplicationHelper.state_for_frontend(@document).first).to eq("withdrawn with new draft")
+    end
+
+    it "should not push to Publishing API as content" do
+      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      assert_publishing_api_put_item("/i/j", {}, 0)
+      assert_publishing_api_put_draft_item("/i/j", {}, 1)
+      expect(fake_rummager).not_to have_received(:add_document)
+    end
+  end
 end

@@ -2,6 +2,13 @@
 
 module ApplicationHelper
   def state(document)
+    state, classes = state_for_frontend(document)
+
+    content_tag(:span, state, class: classes).html_safe
+
+  end
+
+  def state_for_frontend(document)
     state = document.publication_state
 
     if %w(published withdrawn).include?(state) && document.draft?
@@ -13,10 +20,10 @@ module ApplicationHelper
     else
       classes = "label label-default"
     end
-
-    content_tag(:span, state, class: classes).html_safe
-
+    [state, classes]
   end
+
+  module_function :state_for_frontend
 
   def show_preview?(item)
     if item.respond_to?(:documents)
