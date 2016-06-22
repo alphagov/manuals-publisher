@@ -24,7 +24,6 @@ private
       description: description,
       link: link,
       indexable_content: indexable_content,
-      organisations: organisation_slugs,
       public_timestamp: public_timestamp,
     }
   end
@@ -55,9 +54,5 @@ private
 
   def public_timestamp
     entity.updated_at
-  end
-
-  def organisation_slugs
-    raise NotImplementedError
   end
 end

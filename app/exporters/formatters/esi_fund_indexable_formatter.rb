@@ -16,8 +16,4 @@ private
       closing_date: entity.closing_date
     }
   end
-
-  def organisation_slugs
-    []
-  end
 end

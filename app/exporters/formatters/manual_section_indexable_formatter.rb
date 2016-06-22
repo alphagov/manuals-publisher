@@ -42,8 +42,4 @@ private
   def public_timestamp
     nil
   end
-
-  def organisation_slugs
-    [manual.organisation_slug]
-  end
 end

@@ -56,9 +56,6 @@ describe RummagerFinderPublisher do
             "link" => "/first-finder",
             "format" => "finder",
             "public_timestamp" => "2015-01-05T10:45:10.000+00:00",
-            "specialist_sectors" => [
-              "business-tax/paye",
-            ]
           })
 
         expect(rummager).to receive(:add_document)
@@ -68,10 +65,6 @@ describe RummagerFinderPublisher do
             "link" => "/second-finder",
             "format" => "finder",
             "public_timestamp" => "2015-02-14T11:43:23.000+00:00",
-            "specialist_sectors" => [
-              "competition/mergers",
-              "competition/markets",
-            ],
           })
 
         RummagerFinderPublisher.new(metadata, logger: test_logger).call

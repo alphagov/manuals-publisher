@@ -13,8 +13,4 @@ private
       railway_type: entity.railway_type,
     }
   end
-
-  def organisation_slugs
-    ["rail-accident-investigation-branch"]
-  end
 end

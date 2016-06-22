@@ -13,8 +13,4 @@ private
       issued_date: entity.issued_date,
     }
   end
-
-  def organisation_slugs
-    ["medicines-and-healthcare-products-regulatory-agency"]
-  end
 end

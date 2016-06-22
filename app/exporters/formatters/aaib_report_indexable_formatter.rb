@@ -16,8 +16,4 @@ private
       registration: entity.registration,
     }
   end
-
-  def organisation_slugs
-    ["air-accidents-investigation-branch"]
-  end
 end

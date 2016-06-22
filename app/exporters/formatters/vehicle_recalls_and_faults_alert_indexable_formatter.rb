@@ -19,8 +19,4 @@ private
       build_end_date: entity.build_end_date,
     }
   end
-
-  def organisation_slugs
-    ["driver-and-vehicle-standards-agency"]
-  end
 end

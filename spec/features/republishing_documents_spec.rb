@@ -42,7 +42,6 @@ RSpec.describe "Republishing documents", type: :feature do
       description: @document.summary,
       link: "/" + @document.slug,
       indexable_content: @document.body,
-      organisations: ["air-accidents-investigation-branch"],
       public_timestamp: public_timestamp,
       aircraft_category: nil,
       report_type: nil,
