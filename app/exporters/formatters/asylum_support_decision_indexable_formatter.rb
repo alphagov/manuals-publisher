@@ -21,8 +21,4 @@ private
       tribunal_decision_sub_category_name: expand_value(:tribunal_decision_sub_category).first,
     }
   end
-
-  def organisation_slugs
-    ["first-tier-tribunal-asylum-support"]
-  end
 end

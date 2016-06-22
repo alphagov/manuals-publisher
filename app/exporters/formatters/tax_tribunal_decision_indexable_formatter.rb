@@ -14,8 +14,4 @@ private
       tribunal_decision_decision_date: entity.tribunal_decision_decision_date,
     }
   end
-
-  def organisation_slugs
-    ["upper-tribunal-tax-and-chancery-chamber"]
-  end
 end

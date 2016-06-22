@@ -18,8 +18,4 @@ private
       tribunal_decision_sub_categories_name: expand_value(:tribunal_decision_sub_categories),
     }
   end
-
-  def organisation_slugs
-    ["employment-appeal-tribunal"]
-  end
 end

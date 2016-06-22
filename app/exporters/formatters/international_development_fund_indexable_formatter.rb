@@ -15,8 +15,4 @@ private
       value_of_funding: entity.value_of_funding,
     }
   end
-
-  def organisation_slugs
-    ["department-for-international-development"]
-  end
 end

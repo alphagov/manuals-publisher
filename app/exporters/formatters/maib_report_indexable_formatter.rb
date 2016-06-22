@@ -13,8 +13,4 @@ private
       vessel_type: entity.vessel_type,
     }
   end
-
-  def organisation_slugs
-    ["marine-accident-investigation-branch"]
-  end
 end

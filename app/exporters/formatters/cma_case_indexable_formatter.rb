@@ -16,8 +16,4 @@ private
       closed_date: entity.closed_date,
     }
   end
-
-  def organisation_slugs
-    ["competition-and-markets-authority"]
-  end
 end

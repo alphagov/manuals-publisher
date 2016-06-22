@@ -14,12 +14,4 @@ class CountrysideStewardshipGrantIndexableFormatter < AbstractSpecialistDocument
       funding_amount: entity.funding_amount,
     }
   end
-
-  def organisation_slugs
-    %w(
-      natural-england
-      department-for-environment-food-rural-affairs
-      forestry-commission
-    )
-  end
 end
