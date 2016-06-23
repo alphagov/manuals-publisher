@@ -16,6 +16,7 @@ RSpec.describe "Republishing documents", type: :feature do
       update_type: "republish",
       locale: "en",
       public_updated_at: "2016-05-11T10:56:07+00:00",
+      last_edited_at: "2016-05-11T10:56:07+00:00",
       details: {"metadata" => {"opened_date" => "2013-04-20", # These nested hashes use Strings as keys because Symbols gives a false negative in the request_json_matching matcher.
                                "market_sector" => "some-market-sector",
                                "case_type" => "a-case-type",
@@ -86,6 +87,11 @@ RSpec.describe "Republishing documents", type: :feature do
                                  .with(@document.document_type, "/a/b", hash_including(rummager_fields))
     end
 
+    it "should send public_updated_at as last_edited_at timestamp" do
+      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      assert_publishing_api_put_draft_item("/a/b", request_json_matching(last_edited_at: "2016-05-11T10:56:07+00:00"))
+    end
+
     it "should add job to worker queue when republishing all documents" do
       Sidekiq::Testing.fake! do
         expect {
@@ -109,6 +115,11 @@ RSpec.describe "Republishing documents", type: :feature do
       assert_publishing_api_put_item("/c/d", request_json_matching(publishing_api_fields))
       expect(fake_rummager).to have_received(:add_document)
                                  .with(@document.document_type, "/c/d", hash_including(rummager_fields))
+    end
+
+    it "should send public_updated_at as last_edited_at timestamp" do
+      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      assert_publishing_api_put_item("/c/d", request_json_matching(last_edited_at: "2016-05-11T10:56:07+00:00"))
     end
   end
 

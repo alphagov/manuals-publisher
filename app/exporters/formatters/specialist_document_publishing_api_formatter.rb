@@ -21,6 +21,7 @@ class SpecialistDocumentPublishingAPIFormatter
       update_type: update_type,
       locale: "en",
       public_updated_at: public_updated_at,
+      last_edited_at: public_updated_at,
       details: details,
       routes: [
         path: base_path,
