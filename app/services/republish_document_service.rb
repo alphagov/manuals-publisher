@@ -8,9 +8,9 @@ class RepublishDocumentService
 
   def call
     if document.published?
-      notify_published_listeners
+      notify_published_listeners #calls [publishing_api_exporter, rummager]
     elsif  document.draft?
-      notify_draft_listeners
+      notify_draft_listeners # [publishing_api_exporter]
     end
 
     document
