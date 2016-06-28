@@ -21,7 +21,7 @@ class SpecialistDocumentPublishingAPIFormatter
       update_type: update_type,
       locale: "en",
       public_updated_at: public_updated_at,
-      last_edited_at: public_updated_at,
+      last_edited_at: updated_at,
       details: details,
       routes: [
         path: base_path,
@@ -90,6 +90,10 @@ class SpecialistDocumentPublishingAPIFormatter
     # Editions only get a public_updated_at when they are published, so field
     # can be blank.
     specialist_document.public_updated_at || specialist_document.updated_at
+  end
+
+  def updated_at
+    specialist_document.updated_at
   end
 
   def update_type

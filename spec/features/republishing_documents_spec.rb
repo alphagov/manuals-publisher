@@ -87,7 +87,7 @@ RSpec.describe "Republishing documents", type: :feature do
                                  .with(@document.document_type, "/a/b", hash_including(rummager_fields))
     end
 
-    it "should send public_updated_at as last_edited_at timestamp" do
+    it "should send updated_at as last_edited_at timestamp" do
       SpecialistPublisher.document_services("aaib_report").republish_all.call
       assert_publishing_api_put_draft_item("/a/b", request_json_matching(last_edited_at: "2016-05-11T10:56:07+00:00"))
     end
@@ -117,7 +117,7 @@ RSpec.describe "Republishing documents", type: :feature do
                                  .with(@document.document_type, "/c/d", hash_including(rummager_fields))
     end
 
-    it "should send public_updated_at as last_edited_at timestamp" do
+    it "should send updated_at as last_edited_at timestamp" do
       SpecialistPublisher.document_services("aaib_report").republish_all.call
       assert_publishing_api_put_item("/c/d", request_json_matching(last_edited_at: "2016-05-11T10:56:07+00:00"))
     end
