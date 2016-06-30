@@ -19,16 +19,14 @@ class RepublishDocumentService
 private
   attr_reader :document_repository, :published_listeners, :draft_listeners, :document_id
 
-  def notify_listeners(listeners)
-    listeners.each { |l| l.call(document, "republish") }
-  end
-
+  # We should only pass an update_type of "republish" through for published
+  # documents. Otherwise, we clobber the user's update_type for the draft.
   def notify_draft_listeners
-    notify_listeners(draft_listeners)
+    draft_listeners.each { |l| l.call(document) }
   end
 
   def notify_published_listeners
-    notify_listeners(published_listeners)
+    published_listeners.each { |l| l.call(document, "republish") }
   end
 
   def document

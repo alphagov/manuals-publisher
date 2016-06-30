@@ -13,27 +13,27 @@ RSpec.describe "Republishing documents", type: :feature do
       rendering_app: "specialist-frontend",
       title: @document.title,
       description: @document.summary,
-      update_type: "republish",
+      update_type: "major",
       locale: "en",
       public_updated_at: "2016-05-11T10:56:07+00:00",
       last_edited_at: "2016-05-11T10:56:07+00:00",
-      details: {"metadata" => {"opened_date" => "2013-04-20", # These nested hashes use Strings as keys because Symbols gives a false negative in the request_json_matching matcher.
-                               "market_sector" => "some-market-sector",
-                               "case_type" => "a-case-type",
-                               "case_state" => "open",
-                               "document_type" => @document.document_type},
-                "change_history" => [],
-                "body" => [{"content_type" => "text/html",
-                            "content" => "<p>My body</p>\n"},
-                           {"content_type" => "text/govspeak",
-                            "content" => "My body"}],
-                "max_cache_time" => 10,
+      routes: [{"path" => "/" + @document.slug, "type" => "exact"}],
+      links: { "organisations" => ["38eb5d8f-2d89-480c-8655-e2e7ac23f8f4"] },
+      details: {
+        "metadata" => {
+          "opened_date" => "2013-04-20", # These nested hashes use Strings as keys because Symbols gives a false negative in the request_json_matching matcher.
+          "market_sector" => "some-market-sector",
+          "case_type" => "a-case-type",
+          "case_state" => "open",
+          "document_type" => @document.document_type
+        },
+        "change_history" => [],
+        "body" => [
+          {"content_type" => "text/html", "content" => "<p>My body</p>\n"},
+          {"content_type" => "text/govspeak", "content" => "My body"}
+        ],
+        "max_cache_time" => 10,
       },
-      routes: [{"path" => "/" + @document.slug,
-                "type" => "exact"}],
-      links: {
-        "organisations" => ["38eb5d8f-2d89-480c-8655-e2e7ac23f8f4"]
-      }
     }
   end
 
@@ -110,8 +110,9 @@ RSpec.describe "Republishing documents", type: :feature do
       )
     end
 
-    it "should push to Publishing API as content" do
+    it "should push to Publishing API as content with a 'republish' update_type" do
       SpecialistPublisher.document_services("aaib_report").republish_all.call
+      publishing_api_fields[:update_type] = "republish"
       assert_publishing_api_put_item("/c/d", request_json_matching(publishing_api_fields))
       expect(fake_rummager).to have_received(:add_document)
                                  .with(@document.document_type, "/c/d", hash_including(rummager_fields))
@@ -149,13 +150,13 @@ RSpec.describe "Republishing documents", type: :feature do
           document_id: "document_id_2",
           document_type: "aaib_report",
           state: "draft",
-          slug: "g/h")
+          slug: "g/draft")
       edition_doc = create(
           :specialist_document_edition,
           document_id: "document_id_1",
           document_type: "aaib_report",
           state: "published",
-          slug: "g/h")
+          slug: "g/published")
       @document = build(:specialist_document,
                          slug_generator: slug_generator,
                          id: 123,
@@ -171,8 +172,13 @@ RSpec.describe "Republishing documents", type: :feature do
 
     it "should push to Publishing API as content" do
       SpecialistPublisher.document_services("aaib_report").republish_all.call
-      assert_publishing_api_put_item("/g/h", {}, 1)
-      assert_publishing_api_put_draft_item("/g/h", {}, 1)
+
+      assert_publishing_api_put_item("/g/published", { update_type: "republish" }, 1)
+      assert_publishing_api_put_draft_item("/g/draft", { update_type: "major" }, 1)
+
+      assert_publishing_api_put_item("/g/draft", {}, 0)
+      assert_publishing_api_put_draft_item("/g/published", {}, 0)
+
       expect(fake_rummager).to have_received(:add_document)
     end
   end
