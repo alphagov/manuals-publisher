@@ -1,23 +1,26 @@
 class RepublishDocumentService
-  def initialize(document_repository:, published_listeners: [], draft_listeners: [], document_id:)
+  def initialize(document_repository:, published_listeners: [], draft_listeners: [], withdrawn_listeners: [], document_id:)
     @document_repository = document_repository
     @published_listeners = published_listeners
     @draft_listeners = draft_listeners
+    @withdrawn_listeners = withdrawn_listeners
     @document_id = document_id
   end
 
   def call
+    notify_withdrawn_listeners if document.withdrawn?
+
     if document.published?
-      notify_published_listeners #calls [publishing_api_exporter, rummager]
+      notify_published_listeners # calls [publishing_api_exporter, rummager]
     elsif  document.draft?
-      notify_draft_listeners # [publishing_api_exporter]
+      notify_draft_listeners # calls [publishing_api_exporter]
     end
 
     document
   end
 
 private
-  attr_reader :document_repository, :published_listeners, :draft_listeners, :document_id
+  attr_reader :document_repository, :published_listeners, :draft_listeners, :withdrawn_listeners, :document_id
 
   # We should only pass an update_type of "republish" through for published
   # documents. Otherwise, we clobber the user's update_type for the draft.
@@ -27,6 +30,10 @@ private
 
   def notify_published_listeners
     published_listeners.each { |l| l.call(document, "republish") }
+  end
+
+  def notify_withdrawn_listeners
+    withdrawn_listeners.each { |l| l.call(document) }
   end
 
   def document

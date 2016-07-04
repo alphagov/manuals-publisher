@@ -77,6 +77,7 @@ class AbstractDocumentServiceRegistry
       document_repository: document_repository,
       published_listeners: observers.republication,
       draft_listeners: observers.draft_republication,
+      withdrawn_listeners: observers.withdrawn_republication,
       document_id: document_id,
     )
   end

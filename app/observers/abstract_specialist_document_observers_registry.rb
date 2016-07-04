@@ -42,6 +42,13 @@ class AbstractSpecialistDocumentObserversRegistry
     ]
   end
 
+  def withdrawn_republication
+    [
+      publishing_api_exporter(true),
+      publishing_api_draft_unpublisher,
+    ]
+  end
+
   def withdrawal
     [
       publishing_api_withdrawer,
@@ -52,7 +59,7 @@ class AbstractSpecialistDocumentObserversRegistry
 private
   attr_reader :organisation_content_ids
 
-  def publishing_api_exporter
+  def publishing_api_exporter(force_draft = false)
     ->(document, update_type = nil) {
       rendered_document = SpecialistDocumentPublishingAPIFormatter.new(
         document,
@@ -65,7 +72,7 @@ private
       SpecialistDocumentPublishingAPIExporter.new(
         publishing_api,
         rendered_document,
-        document.draft?
+        force_draft || document.draft?
       ).call
     }
   end
@@ -76,6 +83,12 @@ private
         publishing_api: publishing_api,
         entity: document,
       ).call
+    }
+  end
+
+  def publishing_api_draft_unpublisher
+    ->(document) {
+      publishing_api_v2.unpublish(document.id, type: "gone", allow_draft: true)
     }
   end
 
@@ -143,5 +156,9 @@ private
 
   def publishing_api
     SpecialistPublisherWiring.get(:publishing_api)
+  end
+
+  def publishing_api_v2
+    SpecialistPublisherWiring.get(:publishing_api_v2)
   end
 end
