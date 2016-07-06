@@ -1,8 +1,11 @@
 require "spec_helper"
+require "gds_api/test_helpers/publishing_api_v2"
 require "sidekiq/testing"
 Sidekiq::Testing.inline!
 
 RSpec.describe "Republishing documents", type: :feature do
+  include GdsApi::TestHelpers::PublishingApiV2
+
   let(:public_timestamp) { "2016-05-11 10:56:07" }
   let(:publishing_api_fields) do
     {
@@ -130,14 +133,22 @@ RSpec.describe "Republishing documents", type: :feature do
              document_type: "aaib_report",
              state: "archived",
              slug: "e/f",
+             document_id: "some-content-id",
       )
     end
 
-    it "should NOT push to Publishing API" do
+    it "should unpublish using the allow_draft flag" do
+      stub_any_publishing_api_call
+
       SpecialistPublisher.document_services("aaib_report").republish_all.call
 
       assert_publishing_api_put_item("/e/f", {}, 0)
-      assert_publishing_api_put_draft_item("/e/f", {}, 0)
+      assert_publishing_api_put_draft_item("/e/f", {}, 1)
+
+      assert_publishing_api_unpublish(
+        "some-content-id", { "type" => "gone", "allow_draft" => true }
+      )
+
       expect(fake_rummager).not_to have_received(:add_document)
     end
   end
@@ -190,12 +201,12 @@ RSpec.describe "Republishing documents", type: :feature do
                                 document_id: "document_id_2",
                                 document_type: "aaib_report",
                                 state: "draft",
-                                slug: "i/j")
+                                slug: "i/j/draft")
       edition_doc = create(:specialist_document_edition,
                            document_id: "document_id_1",
                            document_type: "aaib_report",
                            state: "archived",
-                           slug: "i/j")
+                           slug: "i/j/archived")
       @document = build(:specialist_document,
                         slug_generator: slug_generator,
                         id: 123,
@@ -209,10 +220,20 @@ RSpec.describe "Republishing documents", type: :feature do
       expect(ApplicationHelper.state_for_frontend(@document).first).to eq("withdrawn with new draft")
     end
 
-    it "should not push to Publishing API as content" do
+    it "should push to Publishing API and then unpublish the draft" do
+      stub_any_publishing_api_call
+
       SpecialistPublisher.document_services("aaib_report").republish_all.call
+
       assert_publishing_api_put_item("/i/j", {}, 0)
-      assert_publishing_api_put_draft_item("/i/j", {}, 1)
+
+      assert_publishing_api_put_draft_item("/i/j/archived", {}, 1)
+      assert_publishing_api_unpublish(
+        "document_id_1", { "type" => "gone", "allow_draft" => true }
+      )
+
+      assert_publishing_api_put_draft_item("/i/j/draft", {}, 1)
+
       expect(fake_rummager).not_to have_received(:add_document)
     end
   end
