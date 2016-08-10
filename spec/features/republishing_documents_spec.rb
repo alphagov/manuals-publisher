@@ -36,6 +36,7 @@ RSpec.describe "Republishing documents", type: :feature do
           {"content_type" => "text/govspeak", "content" => "My body"}
         ],
         "max_cache_time" => 10,
+        "temporary_update_type" => false,
       },
     }
   end
