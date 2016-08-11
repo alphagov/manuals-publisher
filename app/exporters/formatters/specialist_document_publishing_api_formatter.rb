@@ -52,6 +52,7 @@ class SpecialistDocumentPublishingAPIFormatter
         }
       ],
       max_cache_time: 10,
+      temporary_update_type: false,
     }
     details_hash[:attachments] = attachments if specialist_document.attachments.present?
     details_hash.merge(headers)
