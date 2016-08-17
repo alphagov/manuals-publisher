@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "3.2.22.2"
+gem "rails", "3.2.22.3"
 
 # Alphabetical order please :)
 gem "airbrake", "3.1.15"
