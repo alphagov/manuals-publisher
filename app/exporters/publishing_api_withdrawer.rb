@@ -21,6 +21,7 @@ private
 
   def exportable_attributes
     {
+      schema_name: "gone",
       format: "gone",
       publishing_app: "specialist-publisher",
       update_type: "major",
