@@ -85,7 +85,7 @@ RSpec.describe SpecialistDocumentPublishingAPIFormatter do
     end
 
     it "should include the relevant metadata in the details hash" do
-      fields = %w(case_type case_state market_sector opened_date document_type)
+      fields = %w(case_type case_state market_sector opened_date)
       expect(presented["details"]["metadata"].keys).to eq(fields)
     end
 

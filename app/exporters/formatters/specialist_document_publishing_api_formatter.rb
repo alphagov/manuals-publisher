@@ -84,7 +84,7 @@ class SpecialistDocumentPublishingAPIFormatter
   end
 
   def metadata
-    rendered_document.extra_fields.merge(document_type: specialist_document.document_type)
+    rendered_document.extra_fields
   end
 
   def public_updated_at
