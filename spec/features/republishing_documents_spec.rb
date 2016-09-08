@@ -28,7 +28,6 @@ RSpec.describe "Republishing documents", type: :feature do
           "market_sector" => "some-market-sector",
           "case_type" => "a-case-type",
           "case_state" => "open",
-          "document_type" => @document.document_type
         },
         "change_history" => [],
         "body" => [
