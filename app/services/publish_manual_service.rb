@@ -1,5 +1,3 @@
-require "tag_fetcher"
-
 class PublishManualService
   def initialize(dependencies)
     @manual_id = dependencies.fetch(:manual_id)
@@ -10,7 +8,6 @@ class PublishManualService
 
   def call
     if versions_match?
-      update_manual_with_tags
       publish
       notify_listeners
       persist
@@ -39,19 +36,6 @@ private
 
   def publish
     manual.publish
-  end
-
-  def tags
-    TagFetcher.new(manual).tags.map { |t|
-      {
-        type: t.details.type,
-        slug: t.slug,
-      }
-    }
-  end
-
-  def update_manual_with_tags
-    manual.update({tags: tags})
   end
 
   def persist

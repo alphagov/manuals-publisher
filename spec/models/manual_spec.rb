@@ -13,7 +13,6 @@ describe Manual do
       organisation_slug: organisation_slug,
       state: state,
       updated_at: updated_at,
-      tags: []
     )
   }
 
@@ -64,7 +63,6 @@ describe Manual do
         state: state,
         updated_at: updated_at,
         version_number: 0,
-        tags: [],
       )
     end
   end
