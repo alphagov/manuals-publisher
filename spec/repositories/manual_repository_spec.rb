@@ -34,7 +34,6 @@ describe ManualRepository do
       body: "body",
       organisation_slug: "organisation_slug",
       slug: manual_slug,
-      tags: []
     }
   }
 
@@ -49,7 +48,6 @@ describe ManualRepository do
       :"slug=" => nil,
       latest_edition: nil,
       save!: nil,
-      tags: [],
     )
   }
 
