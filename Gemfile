@@ -75,5 +75,5 @@ group :test do
 end
 
 group :development, :test do
-  gem "jasmine-rails"
+  gem "jasmine-rails", "~> 0.13.0"
 end
