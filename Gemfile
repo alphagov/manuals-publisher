@@ -68,7 +68,7 @@ group :test do
   gem "webmock", "~> 1.17.4"
   gem "rspec", "3.2.0"
   gem "rspec-rails", "3.2.0"
-  gem "rubocop"
+  gem "rubocop", "~> 0.24.1"
   gem "simplecov"
   gem "timecop"
   gem "govuk-content-schema-test-helpers", "1.3.0"
