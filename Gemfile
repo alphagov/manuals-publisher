@@ -58,7 +58,7 @@ gem "pry", group: [:development, :test]
 gem "awesome_print", group: [:development, :test]
 
 group :test do
-  gem "cucumber", "1.3.16"
+  gem "cucumber", "1.3.20"
   gem "cucumber-rails", "1.4.0", require: false
   gem "launchy"
   gem "factory_girl", "4.3.0"
