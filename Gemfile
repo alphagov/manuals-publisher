@@ -65,7 +65,7 @@ group :test do
   gem "database_cleaner", "1.2.0"
   gem "poltergeist", "1.5.0"
   gem "phantomjs", ">= 1.9.7.1"
-  gem "webmock", "~> 1.17.4"
+  gem "webmock", "~> 1.24.6"
   gem "rspec", "3.2.0"
   gem "rspec-rails", "3.2.0"
   gem "rubocop", "~> 0.24.1"
