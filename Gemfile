@@ -20,7 +20,7 @@ gem "quiet_assets", "1.0.3"
 gem "rack", "~> 1.4.6" # explicitly requiring patched version re: CVE-2015-3225
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
-gem "unicorn", "4.8.2"
+gem "unicorn", "4.8.3"
 
 if ENV["GOVSPEAK_DEV"]
   gem "govspeak", :path => "../govspeak"
