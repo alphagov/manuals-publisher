@@ -1,5 +1,3 @@
-# Warning: This repository is deprecated. It has been replaced with [manuals-publisher](https://github.com/alphagov/manuals-publisher). Please update your git remote.
-
 [![Code Climate](https://codeclimate.com/github/alphagov/specialist-publisher.png)](https://codeclimate.com/github/alphagov/specialist-publisher)
 
 # Specialist publisher
