@@ -35,6 +35,10 @@ ManualsPublisher::Application.configure do
   # Version of your assets, change this if you want to expire all your assets.
   config.assets.version = "1.0"
 
+  # Your secret key is used for verifying the integrity of signed cookies.
+  # If you change this key, all old signed cookies will become invalid!
+  config.secret_token = ENV["SECRET_TOKEN"]
+
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
