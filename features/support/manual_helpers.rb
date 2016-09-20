@@ -172,7 +172,7 @@ module ManualHelpers
       "schema_name" => "manual",
       "document_type" => "manual",
       "rendering_app" => "manuals-frontend",
-      "publishing_app" => "specialist-publisher",
+      "publishing_app" => "manuals-publisher",
     }.merge(extra_attributes)
     if draft
       assert_publishing_api_put_draft_item("/#{slug}", request_json_including(attributes))
@@ -186,7 +186,7 @@ module ManualHelpers
       "schema_name" => "manual_section",
       "document_type" => "manual_section",
       "rendering_app" => "manuals-frontend",
-      "publishing_app" => "specialist-publisher",
+      "publishing_app" => "manuals-publisher",
     }
     if draft
       assert_publishing_api_put_draft_item("/#{slug}", attributes)
@@ -299,7 +299,7 @@ module ManualHelpers
   def check_manual_is_withdrawn_from_publishing_api(manual_slug, attributes_for_documents)
     gone_item = {
       "format" => "gone",
-      "publishing_app" => "specialist-publisher",
+      "publishing_app" => "manuals-publisher",
     }
 
     assert_publishing_api_put_item("/#{manual_slug}", gone_item)
