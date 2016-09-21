@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 RSpec.shared_examples_for "tribunal decision hidden_indexable_content" do
 

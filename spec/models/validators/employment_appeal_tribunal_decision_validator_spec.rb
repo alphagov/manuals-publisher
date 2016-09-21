@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 require "validators/employment_appeal_tribunal_decision_validator"
 

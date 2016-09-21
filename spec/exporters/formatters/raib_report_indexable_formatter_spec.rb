@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 require "formatters/raib_report_indexable_formatter"
 
 RSpec.describe RaibReportIndexableFormatter do

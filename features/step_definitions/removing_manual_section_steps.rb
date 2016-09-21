@@ -21,7 +21,7 @@ end
 
 When(/^I refuse removal$/) do
   allow(@stdin).to receive(:gets).and_return("No")
-  expect { @remover.call }.to raise_error
+  expect { @remover.call }.to raise_error(CliManualSectionRemover::NoUserConfirmation)
 end
 
 Then(/^the manual section is removed$/) do

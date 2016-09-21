@@ -14,7 +14,7 @@ end
 
 task default: [
   "rubocop",
-  "spec:javascript",
   "spec",
   "cucumber",
+  "spec:javascript",
   ]
