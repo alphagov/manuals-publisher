@@ -1,7 +1,7 @@
 class SpecialistDocumentPublishingAPIFormatter
   attr_reader :specialist_document, :specialist_document_renderer, :publication_logs, :links
 
-  def initialize(specialist_document, specialist_document_renderer:, publication_logs:, links: links, update_type:)
+  def initialize(specialist_document, specialist_document_renderer:, publication_logs:, links: self.links, update_type:)
     @specialist_document = specialist_document
     @specialist_document_renderer = specialist_document_renderer
     @publication_logs = publication_logs

@@ -70,6 +70,7 @@ group :test do
   gem "rspec-rails", "3.2.0"
   gem "rubocop", "~> 0.24.1"
   gem "simplecov"
+  gem 'test-unit', "~> 3.0"
   gem "timecop"
   gem "govuk-content-schema-test-helpers", "1.3.0"
 end
