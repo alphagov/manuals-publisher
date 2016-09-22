@@ -29,6 +29,6 @@ private
   end
 
   def finder_schema
-    SpecialistPublisherWiring.get(:drug_safety_update_finder_schema)
+    ManualsPublisherWiring.get(:drug_safety_update_finder_schema)
   end
 end

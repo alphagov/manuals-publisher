@@ -22,7 +22,7 @@ class CountrysideStewardshipGrantViewAdapter < DocumentViewAdapter
   private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:countryside_stewardship_grant_finder_schema)
+    ManualsPublisherWiring.get(:countryside_stewardship_grant_finder_schema)
   end
 
 end

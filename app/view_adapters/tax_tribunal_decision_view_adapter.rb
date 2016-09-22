@@ -22,6 +22,6 @@ class TaxTribunalDecisionViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:tax_tribunal_decision_finder_schema)
+    ManualsPublisherWiring.get(:tax_tribunal_decision_finder_schema)
   end
 end

@@ -21,6 +21,6 @@ class RaibReportViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:raib_report_finder_schema)
+    ManualsPublisherWiring.get(:raib_report_finder_schema)
   end
 end

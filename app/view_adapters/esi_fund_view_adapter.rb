@@ -23,7 +23,7 @@ class EsiFundViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:esi_fund_finder_schema)
+    ManualsPublisherWiring.get(:esi_fund_finder_schema)
   end
 
 end

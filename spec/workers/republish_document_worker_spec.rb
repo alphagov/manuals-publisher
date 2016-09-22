@@ -16,7 +16,7 @@ RSpec.describe RepublishDocumentWorker do
   end
 
   it "place job in bulk republishing queue" do
-    expect(SpecialistPublisher).to receive(:document_services)
+    expect(ManualsPublisher).to receive(:document_services)
       .and_return(double(:service, republish: double(:thing, call: nil)))
 
     Sidekiq::Testing.inline! do

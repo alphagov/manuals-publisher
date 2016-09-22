@@ -6,7 +6,7 @@ require "new_manual_document_service"
 require "list_manual_documents_service"
 require "reorder_manual_documents_service"
 require "remove_manual_document_service"
-require "specialist_publisher_wiring"
+require "manuals_publisher_wiring"
 
 class AbstractManualDocumentServiceRegistry
   def preview(context)
@@ -78,11 +78,11 @@ class AbstractManualDocumentServiceRegistry
 
 private
   def document_renderer
-    SpecialistPublisherWiring.get(:specialist_document_renderer)
+    ManualsPublisherWiring.get(:specialist_document_renderer)
   end
 
   def manual_document_builder
-    SpecialistPublisherWiring.get(:manual_document_builder)
+    ManualsPublisherWiring.get(:manual_document_builder)
   end
 
   def manual_repository
@@ -90,7 +90,7 @@ private
   end
 
   def organisation(slug)
-    SpecialistPublisherWiring.get(:organisation_fetcher).call(slug)
+    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
   end
 
   def publishing_api_draft_manual_exporter
@@ -98,7 +98,7 @@ private
       ManualPublishingAPIExporter.new(
         publishing_api.method(:put_draft_content_item),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        SpecialistPublisherWiring.get(:manual_renderer),
+        ManualsPublisherWiring.get(:manual_renderer),
         PublicationLog,
         manual
       ).call
@@ -110,7 +110,7 @@ private
       ManualSectionPublishingAPIExporter.new(
         publishing_api.method(:put_draft_content_item),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        SpecialistPublisherWiring.get(:manual_document_renderer),
+        ManualsPublisherWiring.get(:manual_document_renderer),
         manual,
         manual_document
       ).call
@@ -118,11 +118,11 @@ private
   end
 
   def manual_document_renderer
-    SpecialistPublisherWiring.get(:manual_document_renderer)
+    ManualsPublisherWiring.get(:manual_document_renderer)
   end
 
   def publishing_api
-    SpecialistPublisherWiring.get(:publishing_api)
+    ManualsPublisherWiring.get(:publishing_api)
   end
 
   def organisations_api

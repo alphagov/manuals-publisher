@@ -83,7 +83,7 @@ RSpec.describe "Republishing documents", type: :feature do
     end
 
     it "should push to Publishing API as draft-content" do
-      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      ManualsPublisher.document_services("aaib_report").republish_all.call
 
       assert_publishing_api_put_item("/a/b", {}, 0)
       assert_publishing_api_put_draft_item("/a/b", request_json_matching(publishing_api_fields))
@@ -92,14 +92,14 @@ RSpec.describe "Republishing documents", type: :feature do
     end
 
     it "should send updated_at as last_edited_at timestamp" do
-      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      ManualsPublisher.document_services("aaib_report").republish_all.call
       assert_publishing_api_put_draft_item("/a/b", request_json_matching(last_edited_at: "2016-05-11T10:56:07+00:00"))
     end
 
     it "should add job to worker queue when republishing all documents" do
       Sidekiq::Testing.fake! do
         expect {
-          SpecialistPublisher.document_services("aaib_report").republish_all.call
+          ManualsPublisher.document_services("aaib_report").republish_all.call
         }.to change(RepublishDocumentWorker.jobs, :size).by(2)
       end
     end
@@ -115,7 +115,7 @@ RSpec.describe "Republishing documents", type: :feature do
     end
 
     it "should push to Publishing API as content with a 'republish' update_type" do
-      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      ManualsPublisher.document_services("aaib_report").republish_all.call
       publishing_api_fields[:update_type] = "republish"
       assert_publishing_api_put_item("/c/d", request_json_matching(publishing_api_fields))
       expect(fake_rummager).to have_received(:add_document)
@@ -123,7 +123,7 @@ RSpec.describe "Republishing documents", type: :feature do
     end
 
     it "should send updated_at as last_edited_at timestamp" do
-      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      ManualsPublisher.document_services("aaib_report").republish_all.call
       assert_publishing_api_put_item("/c/d", request_json_matching(last_edited_at: "2016-05-11T10:56:07+00:00"))
     end
   end
@@ -141,7 +141,7 @@ RSpec.describe "Republishing documents", type: :feature do
     it "should unpublish using the allow_draft flag" do
       stub_any_publishing_api_call
 
-      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      ManualsPublisher.document_services("aaib_report").republish_all.call
 
       assert_publishing_api_put_item("/e/f", {}, 0)
       assert_publishing_api_put_draft_item("/e/f", {}, 1)
@@ -183,7 +183,7 @@ RSpec.describe "Republishing documents", type: :feature do
     end
 
     it "should push to Publishing API as content" do
-      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      ManualsPublisher.document_services("aaib_report").republish_all.call
 
       assert_publishing_api_put_item("/g/published", { update_type: "republish" }, 1)
       assert_publishing_api_put_draft_item("/g/draft", { update_type: "major" }, 1)
@@ -224,7 +224,7 @@ RSpec.describe "Republishing documents", type: :feature do
     it "should push to Publishing API and then unpublish the draft" do
       stub_any_publishing_api_call
 
-      SpecialistPublisher.document_services("aaib_report").republish_all.call
+      ManualsPublisher.document_services("aaib_report").republish_all.call
 
       assert_publishing_api_put_item("/i/j", {}, 0)
 

@@ -63,7 +63,7 @@ private
     ->(document, update_type = nil) {
       rendered_document = SpecialistDocumentPublishingAPIFormatter.new(
         document,
-        specialist_document_renderer: SpecialistPublisherWiring.get(:specialist_document_renderer),
+        specialist_document_renderer: ManualsPublisherWiring.get(:specialist_document_renderer),
         publication_logs: PublicationLog,
         links: format_links_for_publishing_api(document),
         update_type: update_type
@@ -119,7 +119,7 @@ private
   end
 
   def email_alert_api
-    SpecialistPublisherWiring.get(:email_alert_api)
+    ManualsPublisherWiring.get(:email_alert_api)
   end
 
   def publication_alert_exporter
@@ -155,10 +155,10 @@ private
   end
 
   def publishing_api
-    SpecialistPublisherWiring.get(:publishing_api)
+    ManualsPublisherWiring.get(:publishing_api)
   end
 
   def publishing_api_v2
-    SpecialistPublisherWiring.get(:publishing_api_v2)
+    ManualsPublisherWiring.get(:publishing_api_v2)
   end
 end

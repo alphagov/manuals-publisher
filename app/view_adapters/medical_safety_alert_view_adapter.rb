@@ -18,7 +18,7 @@ class MedicalSafetyAlertViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:medical_safety_alert_finder_schema)
+    ManualsPublisherWiring.get(:medical_safety_alert_finder_schema)
   end
 
 end

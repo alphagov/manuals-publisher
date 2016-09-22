@@ -3,7 +3,7 @@
 
 require File.expand_path("../config/application", __FILE__)
 
-SpecialistPublisher::Application.load_tasks
+ManualsPublisher::Application.load_tasks
 
 task :rubocop do
   system("bin/rubocop")

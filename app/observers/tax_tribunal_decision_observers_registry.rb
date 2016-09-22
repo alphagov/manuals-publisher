@@ -6,7 +6,7 @@ class TaxTribunalDecisionObserversRegistry < AbstractSpecialistDocumentObservers
 
 private
   def finder_schema
-    SpecialistPublisherWiring.get(:tax_tribunal_decision_finder_schema)
+    ManualsPublisherWiring.get(:tax_tribunal_decision_finder_schema)
   end
 
   def format_document_for_indexing(document)

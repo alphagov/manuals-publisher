@@ -26,6 +26,6 @@ class VehicleRecallsAndFaultsAlertViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:vehicle_recalls_and_faults_alert_finder_schema)
+    ManualsPublisherWiring.get(:vehicle_recalls_and_faults_alert_finder_schema)
   end
 end

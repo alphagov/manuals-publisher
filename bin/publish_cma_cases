@@ -10,9 +10,9 @@
 #    $ ./bin/publish_cma_cases < file_with_ids.txt
 
 require File.expand_path("../../config/environment", __FILE__)
-require "specialist_publisher"
+require "manuals_publisher"
 
-repository = SpecialistPublisherWiring.get(:repository_registry).for_type("cma_case")
+repository = ManualsPublisherWiring.get(:repository_registry).for_type("cma_case")
 
 def public_update_at_timestamp_for_document(document)
   date_of_relevance = document.closed_date.presence || document.opened_date.presence
@@ -20,8 +20,8 @@ def public_update_at_timestamp_for_document(document)
 end
 
 def publish_document(document_id, public_updated_at:)
-  repo = SpecialistPublisherWiring.get(:repository_registry).for_type("cma_case")
-  builder = SpecialistPublisherWiring.get(:cma_case_builder)
+  repo = ManualsPublisherWiring.get(:repository_registry).for_type("cma_case")
+  builder = ManualsPublisherWiring.get(:cma_case_builder)
   observers = CmaCaseObserversRegistry.new.republication
 
   public_updated_at_setter = Proc.new { |document|

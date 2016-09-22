@@ -39,11 +39,11 @@ class AttachmentsController < ApplicationController
 
 private
   def view_adapter(document)
-    SpecialistPublisher.view_adapter(document)
+    ManualsPublisher.view_adapter(document)
   end
 
   def services
-    SpecialistPublisher.attachment_services(document_type)
+    ManualsPublisher.attachment_services(document_type)
   end
 
   def edit_path(document)

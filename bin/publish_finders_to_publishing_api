@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require File.expand_path("../../config/environment", __FILE__)
-require "specialist_publisher"
+require "manuals_publisher"
 
 require "publishing_api_finder_publisher"
 require "publishing_api_finder_loader"

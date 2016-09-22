@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require File.expand_path("../../config/environment", __FILE__)
-require "specialist_publisher"
+require "manuals_publisher"
 
 def usage
   $stderr.puts %Q{
@@ -9,7 +9,7 @@ USAGE: #{File.basename(__FILE__)} (format ...)(document_id) (date)
 
 1. available formats:
 
-  #{SpecialistPublisher.document_types.sort.join("\n  ")}
+  #{ManualsPublisher.document_types.sort.join("\n  ")}
 
 2. document_id:
   To find document_id, login to specialist-publisher in production, go to document page and copy document_id from url.
@@ -32,14 +32,14 @@ rescue ArgumentError
   usage
 end
 
-unless SpecialistPublisher.document_types.include?(document_type)
-  raise ArgumentError, "please select document type among available formats provided:\n\n  #{SpecialistPublisher.document_types.sort.join("\n  ")}"
+unless ManualsPublisher.document_types.include?(document_type)
+  raise ArgumentError, "please select document type among available formats provided:\n\n  #{ManualsPublisher.document_types.sort.join("\n  ")}"
 end
 unless document_id.length > 30 && document_id.length < 40
   raise ArgumentError, "document_id invalid"
 end
 
-repository = SpecialistPublisherWiring.get(:repository_registry).for_type(document_type.to_sym)
+repository = ManualsPublisherWiring.get(:repository_registry).for_type(document_type.to_sym)
 document = repository.fetch(document_id)
 unless document.published?
   raise "This document isn't published, so I am refusing to change the public_updated_at and publish it in case it shouldn't be published."
@@ -55,6 +55,6 @@ document.update(public_updated_at: date)
 document.publish!
 repository.store(document)
 
-SpecialistPublisher.document_services(document_type).republish(document_id).call
+ManualsPublisher.document_services(document_type).republish(document_id).call
 
 puts "#{document_type} item timestamp updated to #{date}."

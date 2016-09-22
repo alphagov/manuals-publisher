@@ -1,6 +1,6 @@
-require "specialist_publisher"
+require "manuals_publisher"
 
-SpecialistPublisher::Application.routes.draw do
+ManualsPublisher::Application.routes.draw do
   mount JasmineRails::Engine => "/specs" if defined?(JasmineRails::Engine)
   mount GovukAdminTemplate::Engine, at: "/style-guide"
   if Rails.env.development?
@@ -8,7 +8,7 @@ SpecialistPublisher::Application.routes.draw do
     mount Sidekiq::Web => "/sidekiq"
   end
 
-  document_types = SpecialistPublisher.document_types.map(&:pluralize)
+  document_types = ManualsPublisher.document_types.map(&:pluralize)
 
   document_types.each do |type|
     type_slug = type.to_s.gsub("_", "-")

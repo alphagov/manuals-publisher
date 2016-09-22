@@ -1,4 +1,4 @@
-require "specialist_publisher_wiring"
+require "manuals_publisher_wiring"
 require "list_documents_service"
 require "show_document_service"
 require "new_document_service"
@@ -113,7 +113,7 @@ class AbstractDocumentServiceRegistry
 
 private
   def document_renderer
-    SpecialistPublisherWiring.get(:specialist_document_renderer)
+    ManualsPublisherWiring.get(:specialist_document_renderer)
   end
 
   def document_repository

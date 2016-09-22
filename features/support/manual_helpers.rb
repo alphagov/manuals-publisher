@@ -4,7 +4,7 @@ module ManualHelpers
   include GdsApi::TestHelpers::PublishingApi
 
   def manual_repository
-    SpecialistPublisherWiring.get(:repository_registry).manual_repository
+    ManualsPublisherWiring.get(:repository_registry).manual_repository
   end
 
   def create_manual(fields, save: true)

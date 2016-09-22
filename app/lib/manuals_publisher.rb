@@ -1,4 +1,4 @@
-module SpecialistPublisher
+module ManualsPublisher
   extend self
 
   def attachment_services(document_type)
@@ -10,7 +10,7 @@ module SpecialistPublisher
   def document_services(document_type)
     AbstractDocumentServiceRegistry.new(
       repository: document_repositories.for_type(document_type),
-      builder: SpecialistPublisherWiring.get("#{document_type}_builder".to_sym),
+      builder: ManualsPublisherWiring.get("#{document_type}_builder".to_sym),
       observers: observer_registry(document_type),
     )
   end
@@ -91,11 +91,11 @@ private
   }
 
   def view_adapters
-    SpecialistPublisherWiring.get(:view_adapter_registry)
+    ManualsPublisherWiring.get(:view_adapter_registry)
   end
 
   def document_repositories
-    SpecialistPublisherWiring.get(:repository_registry)
+    ManualsPublisherWiring.get(:repository_registry)
   end
 
   def observer_registry(document_type)

@@ -114,12 +114,12 @@ describe PublishingApiFinderPublisher do
 
       context "and the app is configured to publish pre-production finders" do
         before do
-          SpecialistPublisher::Application.config
+          ManualsPublisher::Application.config
             .publish_pre_production_finders = true
         end
 
         after do
-          SpecialistPublisher::Application.config
+          ManualsPublisher::Application.config
             .publish_pre_production_finders = false
         end
 

@@ -15,12 +15,12 @@ private
   end
 
   def manual_repository_factory
-    SpecialistPublisherWiring.get(:repository_registry)
+    ManualsPublisherWiring.get(:repository_registry)
       .organisation_scoped_manual_repository_factory
   end
 
   def associationless_manual_repository_factory
-    SpecialistPublisherWiring.get(:repository_registry)
+    ManualsPublisherWiring.get(:repository_registry)
       .associationless_organisation_scoped_manual_repository_factory
   end
 end

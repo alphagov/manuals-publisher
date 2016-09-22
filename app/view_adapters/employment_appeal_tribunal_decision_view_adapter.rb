@@ -24,6 +24,6 @@ class EmploymentAppealTribunalDecisionViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:employment_appeal_tribunal_decision_finder_schema)
+    ManualsPublisherWiring.get(:employment_appeal_tribunal_decision_finder_schema)
   end
 end
