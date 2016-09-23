@@ -1,3 +1,5 @@
+require "date"
+
 When(/^I create a Drug Safety Update$/) do
   @slug = "drug-safety-update/example-drug-safety-update"
   @document_fields = {
@@ -105,7 +107,7 @@ Then(/^the Drug Safety Update should be published$/) do
     @slug,
     @document_fields
       .merge(@dsu_metadata_values)
-      .merge(first_published_at: "01-01-2001 01:00:00")
+      .merge(first_published_at: DateTime.parse("01-01-2001 01:00:00"))
   )
 end
 

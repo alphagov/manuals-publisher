@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 require "formatters/manual_section_indexable_formatter"
 
 RSpec.describe ManualSectionIndexableFormatter do

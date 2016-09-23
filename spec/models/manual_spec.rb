@@ -28,7 +28,7 @@ describe Manual do
   it "rasies an error without an ID" do
     expect {
       Manual.new({})
-    }.to raise_error
+    }.to raise_error(KeyError)
   end
 
   describe "#publish" do

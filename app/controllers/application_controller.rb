@@ -60,7 +60,7 @@ class ApplicationController < ActionController::Base
         title: "ESI Funds",
       },
       "medical-safety-alerts" => {
-        document_type: "medical_safety_alert" ,
+        document_type: "medical_safety_alert",
         title: "Medical Safety Alerts",
       },
       "maib-reports" => {

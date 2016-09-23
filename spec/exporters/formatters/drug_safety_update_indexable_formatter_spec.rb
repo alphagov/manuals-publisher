@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 require "formatters/drug_safety_update_indexable_formatter"
 
 RSpec.describe DrugSafetyUpdateIndexableFormatter do

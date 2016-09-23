@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 
 # This is intended to test that access controls are properly set up on the
 # AbstractDocumentsController. It's infeasible to test that controller directly,

@@ -1,12 +1,13 @@
-require "spec_helper"
+require "rails_helper"
 require "gds_api/test_helpers/publishing_api_v2"
 require "sidekiq/testing"
+require "date"
 Sidekiq::Testing.inline!
 
 RSpec.describe "Republishing documents", type: :feature do
   include GdsApi::TestHelpers::PublishingApiV2
 
-  let(:public_timestamp) { "2016-05-11 10:56:07" }
+  let(:public_timestamp) { DateTime.parse("2016-05-11 10:56:07") }
   let(:publishing_api_fields) do
     {
       content_id: @document.document_id,

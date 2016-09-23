@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 require "formatters/specialist_document_publishing_api_formatter"
 require "support/govuk_content_schema_helpers"
 require "specialist_publisher_wiring"

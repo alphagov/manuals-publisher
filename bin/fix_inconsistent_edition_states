@@ -118,7 +118,7 @@ if !defined?(RSpec)
 
   InconsistentEditionStateFixer.new(specialist_document_editions, STDOUT).call
 else
-  require "spec_helper"
+  require "rails_helper"
   RSpec.describe InconsistentEditionStateFixer do
     subject(:fixer) {
       InconsistentEditionStateFixer.new(test_specialist_document_editions, STDOUT)

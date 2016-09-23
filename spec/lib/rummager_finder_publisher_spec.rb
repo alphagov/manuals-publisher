@@ -1,4 +1,4 @@
-require "spec_helper"
+require "rails_helper"
 require "rummager_finder_publisher"
 
 describe RummagerFinderPublisher do

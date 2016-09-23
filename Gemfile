@@ -20,7 +20,7 @@ gem "quiet_assets", "1.0.3"
 gem "rack", "~> 1.4.6" # explicitly requiring patched version re: CVE-2015-3225
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
-gem "unicorn", "4.8.2"
+gem "unicorn", "4.8.3"
 
 if ENV["GOVSPEAK_DEV"]
   gem "govspeak", :path => "../govspeak"
@@ -58,22 +58,22 @@ gem "pry", group: [:development, :test]
 gem "awesome_print", group: [:development, :test]
 
 group :test do
-  gem "cucumber", "1.3.16"
+  gem "cucumber", "1.3.20"
   gem "cucumber-rails", "1.4.0", require: false
   gem "launchy"
   gem "factory_girl", "4.3.0"
   gem "database_cleaner", "1.2.0"
   gem "poltergeist", "1.5.0"
   gem "phantomjs", ">= 1.9.7.1"
-  gem "webmock", "~> 1.17.4"
-  gem "rspec", "3.2.0"
-  gem "rspec-rails", "3.2.0"
-  gem "rubocop"
+  gem "webmock", "~> 1.24.6"
+  gem "rspec-rails", "3.4.0"
+  gem "rubocop", "~> 0.24.1"
   gem "simplecov"
+  gem 'test-unit', "~> 3.0"
   gem "timecop"
   gem "govuk-content-schema-test-helpers", "1.3.0"
 end
 
 group :development, :test do
-  gem "jasmine-rails"
+  gem "jasmine-rails", "~> 0.13.0"
 end
