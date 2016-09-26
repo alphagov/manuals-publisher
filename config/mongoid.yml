@@ -9,3 +9,11 @@ test:
   # Don't want this interfering with a concurrent Panopticon test run
   database: govuk_content_manuals_publisher_test
   autocreate_indexes: true
+
+production:
+  database: govuk_content_production
+  refresh_mode: :sync
+  logger: false
+  refresh_interval: 120
+  use_activesupport_time_zone: true
+  uri: <%= ENV['MONGODB_URI'] %>

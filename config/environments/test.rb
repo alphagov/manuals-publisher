@@ -31,6 +31,10 @@ ManualsPublisher::Application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
+  # Your secret key is used for verifying the integrity of signed cookies.
+  # If you change this key, all old signed cookies will become invalid!
+  config.secret_token = "b94e88701d98db420c85bfd915bdf73b06b1d2faf515024754f741a773229fb2f4644b66b16a164a501ffb658d9a64a26cecaabde7496cbbad821f65af07430a"
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 end

@@ -16,6 +16,10 @@ ManualsPublisher::Application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
+  # Your secret key is used for verifying the integrity of signed cookies.
+  # If you change this key, all old signed cookies will become invalid!
+  config.secret_token = "87fc5f137cb0c6a93584546b39d88aafcff72955cb2e3ef3d99040c77f52bcff38b26c9056c655f23e07edfcb57ab80315b4b094c50fc30f5321ad361b637a7b"
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
