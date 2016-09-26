@@ -31,4 +31,6 @@ ManualsPublisher::Application.routes.draw do
   post "manuals/:manual_id/sections/preview" => "ManualDocuments#preview", as: "preview_new_manual_document"
 
   root to: redirect("/manuals")
+
+  get "/healthcheck", to: proc { [200, {}, ["OK"]] }
 end
