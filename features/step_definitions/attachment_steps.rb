@@ -33,13 +33,6 @@ Then(/^the attachments from the previous edition remain$/) do
   check_for_an_attachment
 end
 
-Given(/^there is a published case with an attachment$/) do
-  @document_title = "Nullam quis risus"
-  @attachment_title = "My attachment"
-
-  create_case_with_attachment(@document_title, @attachment_title)
-end
-
 When(/^I edit the attachment$/) do
   @new_attachment_title = "And now for something completely different"
   @new_attachment_file_name = "text_file.txt"

@@ -64,16 +64,10 @@ Given(/^I am logged in as a writer$/) do
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
-Then(/^I can edit cases and manuals$/) do
+Then(/^I can edit manuals$/) do
   check_manual_can_be_created
-  check_cma_case_can_be_created
 end
 
-Then(/^I cannot publish cases nor manuals$/) do
+Then(/^I cannot publish manuals$/) do
   check_manual_cannot_be_published
-  check_cma_case_cannot_be_published
-end
-
-Then(/^I cannot withdraw cases$/) do
-  check_cma_case_cannot_be_withdrawn
 end

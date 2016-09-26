@@ -82,13 +82,6 @@ Feature: Creating and editing a manual
     When I create a section with duplicate title
     Then I see a warning about section slug clash at publication
 
-  @regression
-  Scenario: Manual documents are not available as specialist documents
-    Given a draft manual exists without any documents
-    And a draft document exists for the manual
-    When I visit the specialist documents path for the manual document
-    Then the document is not found
-
   @javascript
   Scenario: Previewing a draft manual document with an attachment
     Given a draft manual exists without any documents
