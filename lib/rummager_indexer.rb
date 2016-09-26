@@ -1,4 +1,4 @@
-require "specialist_publisher_wiring"
+require "manuals_publisher_wiring"
 
 class RummagerIndexer
   def add(document)
@@ -11,6 +11,6 @@ class RummagerIndexer
 
 private
   def api
-    SpecialistPublisherWiring.get(:rummager_api)
+    ManualsPublisherWiring.get(:rummager_api)
   end
 end

@@ -23,7 +23,7 @@ RSpec.describe "Republishing manuals", type: :feature do
   end
 
   def republish_manuals
-    repository = SpecialistPublisherWiring.get(:repository_registry).manual_repository
+    repository = ManualsPublisherWiring.get(:repository_registry).manual_repository
     repository.all.each do |manual|
       ManualServiceRegistry.new.republish(manual.id).call
     end

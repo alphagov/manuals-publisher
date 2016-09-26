@@ -552,7 +552,7 @@ Then(/^I see a warning about section slug clash at publication$/) do
 end
 
 When(/^a DevOps specialist withdraws the manual for me$/) do
-  manual_repository = SpecialistPublisherWiring.get(:repository_registry).manual_repository
+  manual_repository = ManualsPublisherWiring.get(:repository_registry).manual_repository
   manual = manual_repository.all.find { |manual| manual.slug == @manual_slug }
 
   withdraw_manual_without_ui(manual)

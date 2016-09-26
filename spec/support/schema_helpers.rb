@@ -3,7 +3,7 @@ RSpec.shared_context "schema with humanized_facet_value available" do
 
   before do
     symbol = "#{document_type}_finder_schema".to_sym
-    allow(SpecialistPublisherWiring).to receive(:get).with(symbol).and_return finder_schema
+    allow(ManualsPublisherWiring).to receive(:get).with(symbol).and_return finder_schema
     allow(finder_schema).to receive(:humanized_facet_value).and_return [humanized_facet_value]
   end
 end

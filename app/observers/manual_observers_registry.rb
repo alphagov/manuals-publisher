@@ -98,7 +98,7 @@ private
 
   def publishing_api_exporter
     ->(manual, action = nil) {
-      manual_renderer = SpecialistPublisherWiring.get(:manual_renderer)
+      manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
       ManualPublishingAPIExporter.new(
         publishing_api.method(:put_content_item),
         organisation(manual.attributes.fetch(:organisation_slug)),
@@ -107,7 +107,7 @@ private
         manual
       ).call
 
-      document_renderer = SpecialistPublisherWiring.get(:manual_document_renderer)
+      document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
       manual.documents.each do |document|
         next if !document.needs_exporting? && action != :republish
 
@@ -126,7 +126,7 @@ private
 
   def publishing_api_draft_exporter
     ->(manual, _ = nil) {
-      manual_renderer = SpecialistPublisherWiring.get(:manual_renderer)
+      manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
       ManualPublishingAPIExporter.new(
         publishing_api.method(:put_draft_content_item),
         organisation(manual.attributes.fetch(:organisation_slug)),
@@ -154,10 +154,10 @@ private
   end
 
   def publishing_api
-    SpecialistPublisherWiring.get(:publishing_api)
+    ManualsPublisherWiring.get(:publishing_api)
   end
 
   def organisation(slug)
-    SpecialistPublisherWiring.get(:organisation_fetcher).call(slug)
+    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
   end
 end

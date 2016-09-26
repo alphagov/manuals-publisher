@@ -3,13 +3,13 @@ require "multi_json"
 class FinderSchema
 
   def self.humanized_facet_name(key, entity, type)
-    schema = SpecialistPublisherWiring.get("#{type}_finder_schema".to_sym)
+    schema = ManualsPublisherWiring.get("#{type}_finder_schema".to_sym)
     value = entity.send(key)
     schema.humanized_facet_value(key, value)
   end
 
   def self.options_for(facet_name, type)
-    schema = SpecialistPublisherWiring.get("#{type}_finder_schema".to_sym)
+    schema = ManualsPublisherWiring.get("#{type}_finder_schema".to_sym)
     schema.options_for(facet_name)
   end
 

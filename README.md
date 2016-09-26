@@ -1,31 +1,23 @@
-[![Code Climate](https://codeclimate.com/github/alphagov/specialist-publisher.png)](https://codeclimate.com/github/alphagov/specialist-publisher)
+# Manuals publisher
 
-# Specialist publisher
+NOTE: This is the renamed respository of the original Specialist Publisher, the compositional (or 'hexagonal')
+Rails app based heavily on dependency injection.
+Specialist Publisher has been divided into two publishing applications to accommodate Finders and Manuals separately.
+_Specialist Document_ or _Finders_ publishing now lives at https://github.com/alphagov/specialist-publisher-rebuild
 
 ## Purpose
 
-Publishing App for Specialist Documents and Manuals.
+Publishing App for Manuals.
 
 ## Nomenclature
 
-* Specialist Documents: Documents with metadata which are published to Finders
-* Schema: JSON file defining slug, document noun and name of Specialist Document document_types. Also has select facets and their possible values for each document_type which are displayed by the `_form.html.erb`.
 * Manual: Grouped Documents published as a number of sections inside a parent document
 
-## Current formats
+### Live examples of manuals
 
-### Live
-
-* [AAIB Reports](https://www.gov.uk/aaib-reports)
-* [CMA Cases](https://www.gov.uk/cma-cases)
-* [Countryside Stewardship Grants](https://www.gov.uk/countryside-stewardship-grants)
-* [International Development Funding](https://www.gov.uk/international-development-funding)
-* [Drug Safety Update](https://www.gov.uk/drug-safety-update)
-* [European Structural Investment Funds](https://www.gov.uk/european-structural-investment-funds)
-* [Alerts and recalls for drugs and medical devices](https://www.gov.uk/drug-device-alerts)
-* [MAIB Reports](https://www.gov.uk/maib-reports)
-* [RAIB Reports](https://www.gov.uk/raib-reports)
-* Manuals (there's no public index page for Manuals, they can all be found at `gov.uk/guidance/:manual-slug`)
+* [The Highway Code](https://www.gov.uk/guidance/the-highway-code)
+* [Style guide](https://www.gov.uk/guidance/style-guide)
+* [Buying for schools](https://www.gov.uk/guidance/buying-for-schools)
 
 ## Dependencies
 
@@ -40,46 +32,13 @@ Publishing App for Specialist Documents and Manuals.
 ```
 $ ./startup.sh
 ```
-If you are using the GDS development virtual machine then the application will be available on the host at http://specialist-publisher.dev.gov.uk/
+If you are using the GDS development virtual machine then the application will be available on the host at http://manuals-publisher.dev.gov.uk/
 
 ## Running the test suite
 
 ```
 $ bundle exec rake
 ```
-
-## Adding a new specialist document format
-
-### In this repo
-
-1. Add the document_type to the `document_types` array in `config/routes.rb`
-1. Add a controller that inherits `AbstractDocumentsController`
-1. Add the schema to the `finders/schemas` folder and define the singleton for it in `app/lib/specialist_publisher_wiring.rb`
-1. Add the metadata about the Finder to `finders/metadata`. This can contain `"pre_production": true` to limit the Finder to the preview environment.
-1. [Add an example](https://github.com/alphagov/govuk-content-schemas/tree/master/formats/specialist_document/frontend/examples) of this format to govuk-content-schemas
-1. Use the [finder schema converter](https://github.com/alphagov/govuk-content-schemas/blob/master/docs/converting-finder-schemas.md) to modify the [`details.json`](https://github.com/alphagov/govuk-content-schemas/blob/master/formats/specialist_document/publisher/details.json) to include the new format
-1. Add a model (which is a subclass of `DocumentMetadataDecorator` and only defines the extra fields of the document type), validator and builder for the new format.
-1. Define the factory with the builder in `app/lib/specialist_publisher_wiring.rb`.
-1. Define the validatable document factory in `app/models/document_factory_registry.rb`
-1. Define a repository in `app/repositories/repository_registry.rb`
-1. Add observers, along with formatters required. In `app/exporters/formatters/`:
-  - `document_type_publication_alert_formatter.rb`
-  - `document_type_indexable_formatter.rb` for Rummager
-  - `document_type_observers_registry.rb` in `app/observers/`
-  Add the observer registry to the `observer_registry` hash in `app/lib/specialist_publisher.rb`
-1. Add `app/view_adapters/document_type_view_adapter.rb` along with its entry in `app/view_adapters/view_adapter_registry.rb`. Also add the `_form.html.erb` which has the extra fields for that document_type. Be sure to pass the correct `form_namespace` matching the document_type.
-1. Add the entry to `app/lib/permission_checker.rb` for the owning organisation and an entry in the finders array in `ApplicationController`.
-
-### In [rummager](https://github.com/alphagov/rummager/)
-
-1. Add the new document schema in `config/schema/document_types/`.
-2. Add missing field definitions in `config/schema/field_definitions.json`.
-3. Add the new document type in `config/schema/indexes/mainstream.json`.
-
-### Testing your new specialist document format
-
-We have a spec for each model but most of the testing is done in Cucumber tests. Each document format has a feature for creating & editing, publishing and withdrawing. Be sure to add an editor type to `test/factories.rb` for the owning Org of the newformat (if there isn't already a format owned by that Org). The step definitions in each of the tests are pretty similar, so the methods in `features/support/document_format_helpers.rb` call the abstract methods in `features/support/document_helpers.rb`. The features should also cover add attachments, if you follow the same pattern as the other document formats.
-
 
 ## Application Structure
 

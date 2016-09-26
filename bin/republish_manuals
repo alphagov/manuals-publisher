@@ -7,7 +7,7 @@ require "logger"
 logger = Logger.new(STDOUT)
 logger.formatter = Logger::Formatter.new
 
-repository = SpecialistPublisherWiring.get(:repository_registry).manual_repository
+repository = ManualsPublisherWiring.get(:repository_registry).manual_repository
 
 count = repository.all.count
 

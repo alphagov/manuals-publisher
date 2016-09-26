@@ -26,7 +26,7 @@ private
   def exportable_attributes
     {
       format: "redirect",
-      publishing_app: "specialist-publisher",
+      publishing_app: "manuals-publisher",
       update_type: "major",
       base_path: base_path,
       redirects: [

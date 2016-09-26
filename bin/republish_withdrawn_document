@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby
 
 require File.expand_path("../../config/environment", __FILE__)
-require "specialist_publisher"
+require "manuals_publisher"
 
 def republish_withdrawn_edition(edition)
   # Change the state to published
   edition.update_attribute(:state, "published")
 
   # Get the services for the right document type
-  services = SpecialistPublisher.document_services(edition.document_type)
+  services = ManualsPublisher.document_services(edition.document_type)
 
   # Republish the document to other GOV.UK systems
   services.republish(edition.document_id).call

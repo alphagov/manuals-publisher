@@ -26,6 +26,6 @@ class AsylumSupportDecisionViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:asylum_support_decision_finder_schema)
+    ManualsPublisherWiring.get(:asylum_support_decision_finder_schema)
   end
 end

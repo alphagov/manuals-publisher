@@ -20,7 +20,7 @@ class InternationalDevelopmentFundViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:international_development_fund_finder_schema)
+    ManualsPublisherWiring.get(:international_development_fund_finder_schema)
   end
 
 end

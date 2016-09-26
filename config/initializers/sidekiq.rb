@@ -5,7 +5,7 @@ Sidekiq.configure_server do |config|
   config.error_handlers << Proc.new {|ex, context_hash| Airbrake.notify(ex, context_hash) }
 
   config.server_middleware do |chain|
-    chain.add Sidekiq::Statsd::ServerMiddleware, env: "govuk.app.specialist-publisher", prefix: "workers"
+    chain.add Sidekiq::Statsd::ServerMiddleware, env: "govuk.app.manuals-publisher", prefix: "workers"
   end
 end
 

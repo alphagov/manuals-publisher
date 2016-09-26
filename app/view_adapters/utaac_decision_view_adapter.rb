@@ -24,6 +24,6 @@ class UtaacDecisionViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:utaac_decision_finder_schema)
+    ManualsPublisherWiring.get(:utaac_decision_finder_schema)
   end
 end

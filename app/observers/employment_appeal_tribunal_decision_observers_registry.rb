@@ -6,7 +6,7 @@ class EmploymentAppealTribunalDecisionObserversRegistry < AbstractSpecialistDocu
 
 private
   def finder_schema
-    SpecialistPublisherWiring.get(:employment_appeal_tribunal_decision_finder_schema)
+    ManualsPublisherWiring.get(:employment_appeal_tribunal_decision_finder_schema)
   end
 
   def format_document_for_indexing(document)

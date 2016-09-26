@@ -94,7 +94,7 @@ describe ManualSectionPublishingAPIExporter do
         description: "This is the first section",
         public_updated_at: Time.new(2013, 12, 31, 12, 0, 0).iso8601,
         update_type: "minor",
-        publishing_app: "specialist-publisher",
+        publishing_app: "manuals-publisher",
         rendering_app: "manuals-frontend",
         routes: [
           {

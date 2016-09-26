@@ -92,7 +92,7 @@ private
   end
 
   def cma_cases_repository
-    SpecialistPublisherWiring.get(:repository_registry).for_type("cma_case")
+    ManualsPublisherWiring.get(:repository_registry).for_type("cma_case")
   end
 
   def logger

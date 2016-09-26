@@ -23,7 +23,7 @@ private
     {
       schema_name: "gone",
       format: "gone",
-      publishing_app: "specialist-publisher",
+      publishing_app: "manuals-publisher",
       update_type: "major",
       routes: [
         {

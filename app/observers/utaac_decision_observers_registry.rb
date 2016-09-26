@@ -6,7 +6,7 @@ class UtaacDecisionObserversRegistry < AbstractSpecialistDocumentObserversRegist
 
 private
   def finder_schema
-    SpecialistPublisherWiring.get(:utaac_decision_finder_schema)
+    ManualsPublisherWiring.get(:utaac_decision_finder_schema)
   end
 
   def format_document_for_indexing(document)

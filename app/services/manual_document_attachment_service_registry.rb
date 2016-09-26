@@ -2,6 +2,6 @@ class ManualDocumentAttachmentServiceRegistry < AbstractManualDocumentAttachment
 
 private
   def repository
-    SpecialistPublisherWiring.get(:repository_registry).manual_repository
+    ManualsPublisherWiring.get(:repository_registry).manual_repository
   end
 end

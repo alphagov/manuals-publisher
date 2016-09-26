@@ -69,7 +69,7 @@ module MedicalSafetyAlertImport
       SpecialistDocumentBuilder.new("medical_safety_alert",
         ->(*args) {
           null_validator(
-            SpecialistPublisherWiring
+            ManualsPublisherWiring
             .get(:validatable_document_factories)
             .medical_safety_alert_factory
             .call(*args)
@@ -79,7 +79,7 @@ module MedicalSafetyAlertImport
     end
 
     def repo
-      SpecialistPublisherWiring.get(:repository_registry).for_type("medical_safety_alert")
+      ManualsPublisherWiring.get(:repository_registry).for_type("medical_safety_alert")
     end
 
     def null_validator(thing)

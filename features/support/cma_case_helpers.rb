@@ -17,7 +17,7 @@ module CmaCaseHelpers
   end
 
   def seed_cases(number_of_cases, state: "draft")
-    services = SpecialistPublisher.document_services("cma_case")
+    services = ManualsPublisher.document_services("cma_case")
 
     docs = number_of_cases.times.map do
       services.create(

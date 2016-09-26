@@ -24,6 +24,6 @@ class AaibReportViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:aaib_report_finder_schema)
+    ManualsPublisherWiring.get(:aaib_report_finder_schema)
   end
 end

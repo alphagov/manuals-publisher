@@ -24,7 +24,7 @@ class CmaCaseViewAdapter < DocumentViewAdapter
 private
 
   def finder_schema
-    SpecialistPublisherWiring.get(:cma_case_finder_schema)
+    ManualsPublisherWiring.get(:cma_case_finder_schema)
   end
 
 end

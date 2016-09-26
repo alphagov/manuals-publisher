@@ -30,7 +30,7 @@ private
   end
 
   def should_publish_pre_production_finders?
-    SpecialistPublisher::Application.config.publish_pre_production_finders
+    ManualsPublisher::Application.config.publish_pre_production_finders
   end
 
   def export_finder(metadata)

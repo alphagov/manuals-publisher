@@ -8,7 +8,7 @@ require "publish_manual_service"
 require "republish_manual_service"
 require "withdraw_manual_service"
 require "publish_manual_worker"
-require "specialist_publisher_wiring"
+require "manuals_publisher_wiring"
 require "manual_observers_registry"
 
 class AbstractManualServiceRegistry
@@ -93,11 +93,11 @@ class AbstractManualServiceRegistry
 
 private
   def manual_renderer
-    SpecialistPublisherWiring.get(:manual_renderer)
+    ManualsPublisherWiring.get(:manual_renderer)
   end
 
   def manual_builder
-    SpecialistPublisherWiring.get(:manual_builder)
+    ManualsPublisherWiring.get(:manual_builder)
   end
 
   def repository

@@ -1,4 +1,4 @@
-require "specialist_publisher"
+require "manuals_publisher"
 
 class AbstractDocumentsController < ApplicationController
   before_filter :authorize_user_for_editing
@@ -181,11 +181,11 @@ private
   end
 
   def view_adapter(document)
-    SpecialistPublisher.view_adapter(document)
+    ManualsPublisher.view_adapter(document)
   end
 
   def services
-    SpecialistPublisher.document_services(document_type)
+    ManualsPublisher.document_services(document_type)
   end
 
   def index_path
