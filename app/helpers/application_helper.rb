@@ -39,13 +39,13 @@ module ApplicationHelper
 
     output =  case task.state
               when "queued", "processing"
-                "This manual was sent for publishing at #{formatted_time}.
-                  It should be published shortly."
+                %Q(This manual was sent for publishing at #{formatted_time}.
+                  It should be published shortly.)
               when "finished"
-                "This manual was last published at #{formatted_time}."
+                %Q(This manual was last published at #{formatted_time}.)
               when "aborted"
-                "This manual was sent for publishing at #{formatted_time},
-                  but something went wrong. Our team has been notified."
+                %Q(This manual was sent for publishing at #{formatted_time},
+                  but something went wrong. Our team has been notified.)
               end
 
     output.html_safe

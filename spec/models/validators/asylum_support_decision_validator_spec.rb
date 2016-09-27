@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 require "validators/asylum_support_decision_validator"
 

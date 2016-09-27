@@ -1,5 +1,4 @@
 require "singleton"
-require "rspec/rails"
 
 module RummagerHelpers
 

@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 require "validators/utaac_decision_validator"
 

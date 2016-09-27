@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "formatters/international_development_fund_indexable_formatter"
 
 RSpec.describe InternationalDevelopmentFundIndexableFormatter do

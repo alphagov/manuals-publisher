@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 RSpec.describe "healthcheck path", type: :request do
   it "should respond with 'OK'" do

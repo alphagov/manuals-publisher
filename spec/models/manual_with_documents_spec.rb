@@ -23,7 +23,7 @@ describe ManualWithDocuments do
   it "rasies an error without an ID" do
     expect {
       Manual.new({})
-    }.to raise_error(KeyError)
+    }.to raise_error
   end
 
   describe "#publish" do

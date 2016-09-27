@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "formatters/utaac_decision_indexable_formatter"
 
 RSpec.describe UtaacDecisionIndexableFormatter do

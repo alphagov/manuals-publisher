@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "formatters/cma_case_indexable_formatter"
 
 RSpec.describe CmaCaseIndexableFormatter do

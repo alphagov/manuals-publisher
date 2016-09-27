@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 RSpec.shared_examples_for "tribunal decision sub_category validator" do
 

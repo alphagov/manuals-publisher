@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "formatters/esi_fund_indexable_formatter"
 
 RSpec.describe VehicleRecallsAndFaultsAlertIndexableFormatter do
