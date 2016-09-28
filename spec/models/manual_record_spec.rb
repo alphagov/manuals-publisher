@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 describe ManualRecord, hits_db: true do
   subject(:record) { ManualRecord.new }

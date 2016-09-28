@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 describe FinderSchema do
   let(:schema_file) {
@@ -38,14 +38,14 @@ describe FinderSchema do
 
       context "and value not in allowed_values config" do
         it "should raise exception" do
-          expect { finder_schema.humanized_facet_value(:case_type, "bad-value") }.to raise_exception(KeyError)
+          expect { finder_schema.humanized_facet_value(:case_type, "bad-value") }.to raise_exception
         end
       end
     end
 
     context "with facet_key not in schema" do
       it "should raise exception" do
-        expect { finder_schema.humanized_facet_value(:bad_key, "ca98-and-civil-cartels") }.to raise_exception(KeyError)
+        expect { finder_schema.humanized_facet_value(:bad_key, "ca98-and-civil-cartels") }.to raise_exception
       end
     end
   end

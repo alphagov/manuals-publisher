@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 
 describe PermissionChecker do
   let(:cma_writer)   { FactoryGirl.build(:cma_writer) }

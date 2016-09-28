@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "duplicate_draft_deleter"
 require "gds_api/test_helpers/publishing_api_v2"
 

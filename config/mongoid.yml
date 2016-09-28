@@ -16,4 +16,5 @@ production:
   logger: false
   refresh_interval: 120
   use_activesupport_time_zone: true
-  uri: <%= ENV['MONGODB_URI'] %>
+  hosts:
+    - <%= ENV['MONGODB_NODES'] %>

@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "formatters/aaib_report_indexable_formatter"
 
 RSpec.describe TaxTribunalDecisionIndexableFormatter do

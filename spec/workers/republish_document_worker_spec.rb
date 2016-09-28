@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "sidekiq/testing"
 
 RSpec.describe RepublishDocumentWorker do

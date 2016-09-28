@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "publishing_api_finder_loader"
 
 describe PublishingApiFinderLoader do

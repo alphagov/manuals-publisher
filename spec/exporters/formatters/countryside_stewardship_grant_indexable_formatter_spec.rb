@@ -1,4 +1,4 @@
-require "rails_helper"
+require "spec_helper"
 require "formatters/countryside_stewardship_grant_indexable_formatter"
 
 RSpec.describe CountrysideStewardshipGrantIndexableFormatter do
