@@ -109,22 +109,6 @@ require "search_helpers"
 require "mocks"
 require "api_helpers"
 
-require "aaib_report_helpers"
-require "asylum_support_decision_helpers"
-require "cma_case_helpers"
-require "csg_helpers"
-require "dsu_helpers"
-require "employment_appeal_tribunal_decision_helpers"
-require "employment_tribunal_decision_helpers"
-require "esi_fund_helpers"
-require "idf_helpers"
-require "maib_report_helpers"
-require "msa_helpers"
-require "raib_report_helpers"
-require "tax_tribunal_decision_helpers"
-require "utaac_decision_helpers"
-require "vehicle_recalls_and_faults_alert_helpers"
-
 World(RummagerHelpers)
 World(PublishingAPIHelpers)
 World(OrganisationsAPIHelpers)
@@ -137,19 +121,3 @@ World(FileFixtureHelpers)
 World(GdsSsoHelpers)
 World(AccessControlHelpers)
 World(SearchHelpers)
-
-World(AaibReportHelpers)
-World(AsylumSupportDecisionHelpers)
-World(CmaCaseHelpers)
-World(CsgHelpers)
-World(DsuHelpers)
-World(EmploymentAppealTribunalDecisionHelpers)
-World(EmploymentTribunalDecisionHelpers)
-World(EsiFundHelpers)
-World(IdfHelpers)
-World(MaibReportHelpers)
-World(MsaHelpers)
-World(RaibReportHelpers)
-World(TaxTribunalDecisionHelpers)
-World(UtaacDecisionHelpers)
-World(VehicleRecallsAndFaultsAlertHelpers)

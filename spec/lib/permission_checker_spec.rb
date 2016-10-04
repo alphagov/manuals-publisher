@@ -15,18 +15,6 @@ describe PermissionChecker do
           expect(checker.can_edit?("manual")).to be true
         end
       end
-
-      context "editing a non-manual format owned by their organisation" do
-        it "allows editing" do
-          expect(checker.can_edit?("cma_case")).to be true
-        end
-      end
-
-      context "editing a non-manual format not owned by their organisation" do
-        it "prevents editing" do
-          expect(checker.can_edit?("maib_report")).to be false
-        end
-      end
     end
 
     context "a GDS editor" do
@@ -55,18 +43,6 @@ describe PermissionChecker do
           expect(checker.can_publish?("manual")).to be true
         end
       end
-
-      context "publishing a non-manual format owned by their organisation" do
-        it "allows publishing" do
-          expect(checker.can_publish?("esi_fund")).to be true
-        end
-      end
-
-      context "publishing a non-manual format not owned by their organisation" do
-        it "prevents publishing" do
-          expect(checker.can_publish?("maib_report")).to be false
-        end
-      end
     end
 
     context "a GDS editor" do
@@ -87,24 +63,6 @@ describe PermissionChecker do
     it "is false for a non-GDS editor" do
       checker = PermissionChecker.new(dclg_editor)
       expect(checker.is_gds_editor?).to be false
-    end
-  end
-
-  describe "multiple organisations owning a format" do
-    let(:checkers) {
-      [PermissionChecker.new(dclg_editor), PermissionChecker.new(defra_editor)]
-    }
-
-    it "allows members of all owning organisations to edit" do
-      checkers.each do |checker|
-        expect(checker.can_edit?("esi_fund")).to be true
-      end
-    end
-
-    it "allows editors who are members of all owning organisations to publish" do
-      checkers.each do |checker|
-        expect(checker.can_publish?("esi_fund")).to be true
-      end
     end
   end
 end
