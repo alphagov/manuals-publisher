@@ -24,19 +24,11 @@ module ManualsPublisher
   end
 
 private
-  OBSERVER_MAP = {}.freeze
-
-  ORGANISATIONS = {}
-
   def view_adapters
     ManualsPublisherWiring.get(:view_adapter_registry)
   end
 
   def document_repositories
     ManualsPublisherWiring.get(:repository_registry)
-  end
-
-  def observer_registry(document_type)
-    OBSERVER_MAP.fetch(document_type).new(ORGANISATIONS.fetch(document_type, []))
   end
 end
