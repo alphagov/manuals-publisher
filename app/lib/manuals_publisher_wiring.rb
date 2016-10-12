@@ -16,7 +16,6 @@ require "marshallers/manual_publish_task_association_marshaller"
 require "repository_registry"
 require "specialist_document_header_extractor"
 require "specialist_document_repository"
-require "view_adapter_registry"
 
 $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 
@@ -51,10 +50,6 @@ ManualsPublisherWiring ||= DependencyContainer.new do
         documents: [],
       )
     }
-  }
-
-  define_factory(:view_adapter_registry) {
-    ViewAdapterRegistry.new
   }
 
   define_factory(:repository_registry) {
