@@ -9,7 +9,7 @@ class ManualPublishingAPIExporter
   end
 
   def call
-    export_recipent.call(base_path, exportable_attributes)
+    export_recipent.call(content_id, exportable_attributes)
   end
 
 private
@@ -26,13 +26,18 @@ private
     "/#{manual.attributes[:slug]}"
   end
 
+  def content_id
+    manual.id
+  end
+
   def updates_path
     [base_path, "updates"].join("/")
   end
 
   def exportable_attributes
     {
-      content_id: manual.id,
+      content_id: content_id,
+      base_path: base_path,
       schema_name: "manual",
       document_type: "manual",
       title: rendered_manual_attributes.fetch(:title),
@@ -53,7 +58,6 @@ private
       ],
       details: details_data,
       locale: "en",
-      links: links_data,
     }
   end
 
@@ -87,13 +91,6 @@ private
       organisations: [
         organisation_info
       ]
-    }
-  end
-
-  def links_data
-    {
-      organisations: [organisation.details.content_id],
-      sections: manual.documents.map(&:id),
     }
   end
 

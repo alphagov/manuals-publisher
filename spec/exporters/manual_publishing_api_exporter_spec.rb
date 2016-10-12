@@ -108,9 +108,9 @@ describe ManualPublishingAPIExporter do
     subject.call
 
     expect(export_recipent).to have_received(:call).with(
-      "/guidance/my-first-manual",
+      "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       hash_including(
-        content_id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        base_path: "/guidance/my-first-manual",
         schema_name: "manual",
         document_type: "manual",
         title: "My first manual",
@@ -137,7 +137,7 @@ describe ManualPublishingAPIExporter do
     subject.call
 
     expect(export_recipent).to have_received(:call).with(
-      "/guidance/my-first-manual",
+      "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       hash_including(
         details: {
           body: [
@@ -181,20 +181,6 @@ describe ManualPublishingAPIExporter do
               web_url: "https://www.gov.uk/government/organisations/cabinet-office",
             }
           ],
-        }
-      )
-    )
-  end
-
-  it "exports links for the manual" do
-    subject.call
-
-    expect(export_recipent).to have_received(:call).with(
-      "/guidance/my-first-manual",
-      hash_including(
-        links: {
-          organisations: ["d94d63a5-ce8e-40a1-ab4c-4956eab27259"],
-          sections: ["60023f27-0657-4812-9339-264f1c0fd90d"],
         }
       )
     )
