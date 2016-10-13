@@ -113,8 +113,15 @@ private
 
   def publishing_api_draft_manual_document_exporter
     ->(manual_document, manual) {
+      ManualSectionPublishingAPILinksExporter.new(
+        publishing_api_v2.method(:patch_links),
+        organisation(manual.attributes.fetch(:organisation_slug)),
+        manual,
+        manual_document
+      ).call
+
       ManualSectionPublishingAPIExporter.new(
-        publishing_api.method(:put_draft_content_item),
+        publishing_api_v2.method(:put_content),
         organisation(manual.attributes.fetch(:organisation_slug)),
         ManualsPublisherWiring.get(:manual_document_renderer),
         manual,
@@ -125,10 +132,6 @@ private
 
   def manual_document_renderer
     ManualsPublisherWiring.get(:manual_document_renderer)
-  end
-
-  def publishing_api
-    ManualsPublisherWiring.get(:publishing_api)
   end
 
   def publishing_api_v2

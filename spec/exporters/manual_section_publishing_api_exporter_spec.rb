@@ -30,13 +30,11 @@ describe ManualSectionPublishingAPIExporter do
       :manual,
       id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       attributes: {
-        slug: manual_slug,
+        slug: "guidance/my-first-manual",
         organisation_slug: "cabinet-office",
       },
     )
   }
-
-  let(:manual_slug) { "guidance/my-first-manual" }
 
   let(:attachments) {
     [
@@ -56,6 +54,8 @@ describe ManualSectionPublishingAPIExporter do
       }),
     ]
   }
+
+  let(:document_base_path) { "/guidance/my-first-manual/first-section" }
 
   let(:document) {
     double(
@@ -85,9 +85,9 @@ describe ManualSectionPublishingAPIExporter do
     subject.call
 
     expect(export_recipent).to have_received(:call).with(
-      "/guidance/my-first-manual/first-section",
+      document.id,
       hash_including(
-        content_id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
+        base_path: document_base_path,
         schema_name: "manual_section",
         document_type: "manual_section",
         title: "Document title",
@@ -98,7 +98,7 @@ describe ManualSectionPublishingAPIExporter do
         rendering_app: "manuals-frontend",
         routes: [
           {
-            path: "/guidance/my-first-manual/first-section",
+            path: document_base_path,
             type: "exact",
           }
         ],
@@ -109,7 +109,7 @@ describe ManualSectionPublishingAPIExporter do
     subject.call
 
     expect(export_recipent).to have_received(:call).with(
-      "/guidance/my-first-manual/first-section",
+      document.id,
       hash_including(
         details: {
           body:
@@ -151,20 +151,6 @@ describe ManualSectionPublishingAPIExporter do
               web_url: "https://www.gov.uk/government/organisations/cabinet-office",
             }
           ],
-        }
-      )
-    )
-  end
-
-  it "exports links for the document" do
-    subject.call
-
-    expect(export_recipent).to have_received(:call).with(
-      "/guidance/my-first-manual/first-section",
-      hash_including(
-        links: {
-          organisations: ["d94d63a5-ce8e-40a1-ab4c-4956eab27259"],
-          manual: ["52ab9439-95c8-4d39-9b83-0a2050a0978b"],
         }
       )
     )

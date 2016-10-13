@@ -36,7 +36,6 @@ private
 
   def exportable_attributes
     {
-      content_id: content_id,
       base_path: base_path,
       schema_name: "manual",
       document_type: "manual",
