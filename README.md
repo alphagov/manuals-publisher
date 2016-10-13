@@ -25,13 +25,22 @@ Publishing App for Manuals.
 * [alphagov/asset-manager](http://github.com/alphagov/asset-manager): provides uploading for static files
 * [alphagov/rummager](http://github.com/alphagov/rummager): allows documents to be indexed for searching in both Finders and site search
 * [alphagov/publishing-api](http://github.com/alphagov/publishing-api): allows documents to be published to the Publishing queue
-* [alphagov/email-alert-api](http://github.com/alphagov/email-alert-api): sends emails to subscribed users when documents are published
 
 ## Running the application
+
+To run the application in development you will need at least one user in the application database. 
+In a rails console do:
+
+```
+User.create!(name: "My Name", email: "my.email@somedomain.com", permissions: ["gds_editor"], organisation_slug: "government-digital-service", organisation_content_id: "af07d5a5-df63-4ddc-9383-6a666845ebe9")
+```
+
+Then start the application:
 
 ```
 $ ./startup.sh
 ```
+
 If you are using the GDS development virtual machine then the application will be available on the host at http://manuals-publisher.dev.gov.uk/
 
 ## Running the test suite
@@ -40,9 +49,7 @@ If you are using the GDS development virtual machine then the application will b
 $ bundle exec rake
 ```
 
-## Application Structure
-
-### Directory Structure
+## Application Directory Structure
 
 Non standard Rails directories and what they're used for:
 
@@ -60,8 +67,6 @@ Non standard Rails directories and what they're used for:
     Not validators. Decorators for providing validation logic.
 * `app/observers`
   Define ordered lists of exporters, called at different stages of a document's life cycle, for example, publication
-* `app/presenters`
-  Presenters used to format Finders for publishing to the Content Store
 * `app/repositories`
   Provide interaction with the persistance layer (Mongoid)
 * `app/services`
