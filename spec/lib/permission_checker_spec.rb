@@ -3,7 +3,6 @@ require "spec_helper"
 describe PermissionChecker do
   let(:cma_writer)   { FactoryGirl.build(:cma_writer) }
   let(:dclg_editor)  { FactoryGirl.build(:dclg_editor) }
-  let(:defra_editor) { FactoryGirl.build(:defra_editor) }
   let(:gds_editor)   { FactoryGirl.build(:gds_editor) }
 
   describe "#can_edit?" do
