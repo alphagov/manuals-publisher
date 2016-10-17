@@ -9,6 +9,7 @@ class CreateManualDocumentService
     @new_document = manual.build_document(document_params)
 
     if new_document.valid?
+      manual.draft
       manual_repository.store(manual)
       notify_listeners
     end

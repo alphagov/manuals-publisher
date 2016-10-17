@@ -48,6 +48,12 @@ class Manual
     self
   end
 
+  def draft
+    @state = "draft"
+
+    self
+  end
+
   def publish(&block)
     @state = "published"
     block.call if block

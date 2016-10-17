@@ -7,6 +7,7 @@ class UpdateManualService
   end
 
   def call
+    manual.draft
     update
     persist
     notify_listeners
