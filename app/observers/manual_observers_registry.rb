@@ -18,6 +18,7 @@ class ManualObserversRegistry
 
   def republication
     [
+      publishing_api_draft_exporter,
       publishing_api_publisher,
       rummager_exporter,
     ]
@@ -117,21 +118,32 @@ private
   end
 
   def publishing_api_draft_exporter
-    ->(manual, _ = nil) {
+    ->(manual, action = nil) {
+      patch_links = publishing_api_v2.method(:patch_links)
+      put_content = publishing_api_v2.method(:put_content)
+      organisation = organisation(manual.attributes.fetch(:organisation_slug))
+      manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
+      manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
+
       ManualPublishingAPILinksExporter.new(
-        publishing_api_v2.method(:patch_links),
-        organisation(manual.attributes.fetch(:organisation_slug)),
-        manual
+        patch_links, organisation, manual
       ).call
 
-      manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
       ManualPublishingAPIExporter.new(
-        publishing_api_v2.method(:put_content),
-        organisation(manual.attributes.fetch(:organisation_slug)),
-        manual_renderer,
-        PublicationLog,
-        manual
+        put_content, organisation, manual_renderer, PublicationLog, manual
       ).call
+
+      manual.documents.each do |document|
+        next if !document.needs_exporting? && action != :republish
+
+        ManualSectionPublishingAPILinksExporter.new(
+          patch_links, organisation, manual, document
+        ).call
+
+        ManualSectionPublishingAPIExporter.new(
+          put_content, organisation, manual_document_renderer, manual, document
+        ).call
+      end
     }
   end
 

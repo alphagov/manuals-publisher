@@ -146,12 +146,12 @@ module ManualHelpers
     click_link manual_title
   end
 
-  def check_manual_and_documents_were_published(manual_slug, manual_attrs, document_slug, document_attrs)
-    check_manual_is_published_to_publishing_api(manual_slug)
-    check_manual_document_is_published_to_publishing_api(document_slug)
+  def check_manual_and_documents_were_published(manual, document, manual_attrs, document_attrs)
+    check_manual_is_published_to_publishing_api(manual.id)
+    check_manual_document_is_published_to_publishing_api(document.id)
 
-    check_manual_is_published_to_rummager(manual_slug, manual_attrs)
-    check_manual_section_is_published_to_rummager(document_slug, document_attrs, manual_attrs)
+    check_manual_is_published_to_rummager(manual.slug, manual_attrs)
+    check_manual_section_is_published_to_rummager(document.slug, document_attrs, manual_attrs)
   end
 
   def check_manual_is_published_to_rummager(slug, attrs)
@@ -167,32 +167,36 @@ module ManualHelpers
       ).at_least(:once)
   end
 
-  def check_manual_is_published_to_publishing_api(slug, extra_attributes: {}, draft: false)
+  def check_manual_is_drafted_to_publishing_api(
+    content_id,
+    extra_attributes: {},
+    number_of_drafts: 1
+  )
     attributes = {
       "schema_name" => "manual",
       "document_type" => "manual",
       "rendering_app" => "manuals-frontend",
       "publishing_app" => "manuals-publisher",
     }.merge(extra_attributes)
-    if draft
-      assert_publishing_api_put_draft_item("/#{slug}", request_json_including(attributes))
-    else
-      assert_publishing_api_put_item("/#{slug}", request_json_including(attributes))
-    end
+    assert_publishing_api_put_content(content_id, request_json_including(attributes), number_of_drafts)
   end
 
-  def check_manual_document_is_published_to_publishing_api(slug, draft: false)
+  def check_manual_is_published_to_publishing_api(content_id)
+    assert_publishing_api_publish(content_id)
+  end
+
+  def check_manual_document_is_drafted_to_publishing_api(content_id)
     attributes = {
       "schema_name" => "manual_section",
       "document_type" => "manual_section",
       "rendering_app" => "manuals-frontend",
       "publishing_app" => "manuals-publisher",
     }
-    if draft
-      assert_publishing_api_put_draft_item("/#{slug}", attributes)
-    else
-      assert_publishing_api_put_item("/#{slug}", attributes)
-    end
+    assert_publishing_api_put_content(content_id, request_json_including(attributes))
+  end
+
+  def check_manual_document_is_published_to_publishing_api(content_id)
+    assert_publishing_api_publish(content_id)
   end
 
   def check_manual_section_is_published_to_rummager(slug, attrs, manual_attrs)
@@ -350,6 +354,30 @@ module ManualHelpers
     end
 
     attributes_for_documents
+  end
+
+  def create_documents_for_manual_without_ui(manual:, count:)
+    (1..count).map do |n|
+      attributes = {
+        title: "Section #{n}",
+        summary: "Section #{n} summary",
+        body: "Section #{n} body"
+      }
+
+      create_manual_document_without_ui(manual, attributes)
+    end
+  end
+
+  def most_recently_created_manual
+    ManualsPublisherWiring.get(:repository_registry).manual_repository.all.first
+  end
+
+  def document_fields(document)
+    {
+      section_title: document.title,
+      section_summary: document.summary,
+      section_body: document.body,
+    }
   end
 end
 RSpec.configuration.include ManualHelpers, type: :feature
