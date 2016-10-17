@@ -150,21 +150,17 @@ private
   def publishing_api_withdrawer
     ->(manual, _ = nil) {
       PublishingAPIWithdrawer.new(
-        publishing_api: publishing_api,
+        publishing_api: publishing_api_v2,
         entity: manual,
       ).call
 
       manual.documents.each do |document|
         PublishingAPIWithdrawer.new(
-          publishing_api: publishing_api,
+          publishing_api: publishing_api_v2,
           entity: document,
         ).call
       end
     }
-  end
-
-  def publishing_api
-    ManualsPublisherWiring.get(:publishing_api)
   end
 
   def publishing_api_v2
