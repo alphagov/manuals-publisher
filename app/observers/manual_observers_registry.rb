@@ -11,14 +11,14 @@ class ManualObserversRegistry
     # should happen before publishing to search.
     [
       publication_logger,
-      publishing_api_exporter,
+      publishing_api_publisher,
       rummager_exporter,
     ]
   end
 
   def republication
     [
-      publishing_api_exporter,
+      publishing_api_publisher,
       rummager_exporter,
     ]
   end
@@ -96,27 +96,19 @@ private
     }
   end
 
-  def publishing_api_exporter
+  def publishing_api_publisher
     ->(manual, action = nil) {
-      manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
-      ManualPublishingAPIExporter.new(
-        publishing_api.method(:put_content_item),
-        organisation(manual.attributes.fetch(:organisation_slug)),
-        manual_renderer,
-        PublicationLog,
-        manual
+      PublishingAPIPublisher.new(
+        publishing_api: publishing_api_v2,
+        entity: manual,
       ).call
 
-      document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
       manual.documents.each do |document|
         next if !document.needs_exporting? && action != :republish
 
-        ManualSectionPublishingAPIExporter.new(
-          publishing_api.method(:put_content_item),
-          organisation(manual.attributes.fetch(:organisation_slug)),
-          document_renderer,
-          manual,
-          document
+        PublishingAPIPublisher.new(
+          publishing_api: publishing_api_v2,
+          entity: document,
         ).call
 
         document.mark_as_exported_to_live_publishing_api!
