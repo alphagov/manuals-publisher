@@ -11,10 +11,8 @@ module PublishingAPIHelpers
     stub_any_publishing_api_put_content
     stub_any_publishing_api_patch_links
     stub_any_publishing_api_publish
-  end
-
-  def reset_remote_requests
-    WebMock::RequestRegistry.instance.reset!
+    # This needs adding to gds-api-adapters
+    stub_request(:post, %r{\A#{PUBLISHING_API_V2_ENDPOINT}/content/.*/unpublish})
   end
 end
 RSpec.configuration.include PublishingAPIHelpers, type: :feature

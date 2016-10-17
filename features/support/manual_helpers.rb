@@ -295,35 +295,24 @@ module ManualHelpers
     manual_services.withdraw(manual.id).call
   end
 
-  def check_manual_is_withdrawn(manual_title, manual_slug, attributes_for_documents)
-    check_manual_is_withdrawn_from_publishing_api(manual_slug, attributes_for_documents)
-    check_manual_is_withdrawn_from_rummager(manual_slug, attributes_for_documents)
+  def check_manual_is_withdrawn(manual, documents)
+    assert_publishing_api_unpublish(manual.id, { type: "gone" })
+    documents.each { |d| assert_publishing_api_unpublish(d.id, { type: "gone" }) }
+    check_manual_is_withdrawn_from_rummager(manual, documents)
   end
 
-  def check_manual_is_withdrawn_from_publishing_api(manual_slug, attributes_for_documents)
-    gone_item = {
-      "format" => "gone",
-      "publishing_app" => "manuals-publisher",
-    }
-
-    assert_publishing_api_put_item("/#{manual_slug}", gone_item)
-    attributes_for_documents.each do |document_attributes|
-      assert_publishing_api_put_item("/#{document_attributes[:slug]}", gone_item)
-    end
-  end
-
-  def check_manual_is_withdrawn_from_rummager(manual_slug, attributes_for_documents)
+  def check_manual_is_withdrawn_from_rummager(manual, documents)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
         "manual",
-        "/#{manual_slug}",
+        "/#{manual.slug}",
       )
 
-    attributes_for_documents.each do |document_attributes|
+    documents.each do |document|
       expect(fake_rummager).to have_received(:delete_document)
         .with(
           "manual_section",
-          "/#{document_attributes[:slug]}",
+          "/#{document.slug}",
         )
     end
   end
