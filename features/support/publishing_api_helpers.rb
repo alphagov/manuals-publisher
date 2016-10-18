@@ -11,8 +11,10 @@ module PublishingAPIHelpers
     stub_any_publishing_api_put_content
     stub_any_publishing_api_patch_links
     stub_any_publishing_api_publish
-    # This needs adding to gds-api-adapters
+    # FIXME - Update these methods once https://github.com/alphagov/gds-api-adapters/pull/611
+    # is merged
     stub_request(:post, %r{\A#{PUBLISHING_API_V2_ENDPOINT}/content/.*/unpublish})
+    stub_request(:post, %r{\A#{PUBLISHING_API_V2_ENDPOINT}/content/.*/discard-draft})
   end
 end
 RSpec.configuration.include PublishingAPIHelpers, type: :feature

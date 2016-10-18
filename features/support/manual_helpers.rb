@@ -185,6 +185,10 @@ module ManualHelpers
     assert_publishing_api_publish(content_id)
   end
 
+  def check_draft_has_been_discarded_in_publishing_api(content_id)
+    assert_publishing_api_discard_draft(content_id)
+  end
+
   def check_manual_document_is_drafted_to_publishing_api(content_id)
     attributes = {
       "schema_name" => "manual_section",
