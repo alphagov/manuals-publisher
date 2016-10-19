@@ -5,6 +5,12 @@ require "manuals_publisher_wiring"
 require "specialist_document"
 
 RSpec.describe SpecialistDocumentPublishingAPIFormatter do
+  before do
+    @schema_type = GovukContentSchemaTestHelpers.configuration.schema_type
+    GovukContentSchemaTestHelpers.configuration.schema_type = "publisher"
+  end
+  after { GovukContentSchemaTestHelpers.configuration.schema_type = @schema_type }
+
   let(:specialist_document_renderer) {
     ManualsPublisherWiring.get(:specialist_document_renderer)
   }

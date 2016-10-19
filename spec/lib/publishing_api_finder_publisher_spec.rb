@@ -2,6 +2,12 @@ require "spec_helper"
 require "publishing_api_finder_publisher"
 
 describe PublishingApiFinderPublisher do
+  before do
+    @schema_type = GovukContentSchemaTestHelpers.configuration.schema_type
+    GovukContentSchemaTestHelpers.configuration.schema_type = "publisher"
+  end
+  after { GovukContentSchemaTestHelpers.configuration.schema_type = @schema_type }
+
   describe "#call" do
 
     let(:schema) {
