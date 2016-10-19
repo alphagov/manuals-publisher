@@ -71,7 +71,7 @@ group :test do
   gem "rubocop"
   gem "simplecov"
   gem "timecop"
-  gem "govuk-content-schema-test-helpers", "1.3.0"
+  gem "govuk-content-schema-test-helpers", "1.4.0"
 end
 
 group :development, :test do
