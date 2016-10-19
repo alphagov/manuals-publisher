@@ -1,8 +1,4 @@
-require "gds_api/test_helpers/publishing_api"
-
 module ManualHelpers
-  include GdsApi::TestHelpers::PublishingApi
-
   def manual_repository
     ManualsPublisherWiring.get(:repository_registry).manual_repository
   end
