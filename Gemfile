@@ -53,7 +53,7 @@ group :assets do
   gem "select2-rails",  "3.5.9"
 end
 
-gem "byebug", group: [:development, :test]
+gem "pry-byebug", group: [:development, :test]
 gem "pry", group: [:development, :test]
 gem "awesome_print", group: [:development, :test]
 
