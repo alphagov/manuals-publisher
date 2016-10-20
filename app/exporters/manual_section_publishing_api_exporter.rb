@@ -9,12 +9,16 @@ class ManualSectionPublishingAPIExporter
   end
 
   def call
-    export_recipent.call(base_path, exportable_attributes)
+    export_recipent.call(content_id, exportable_attributes)
   end
 
 private
 
   attr_reader :export_recipent, :document_renderer, :organisation, :manual, :document
+
+  def content_id
+    document.id
+  end
 
   def base_path
     "/#{rendered_document_attributes.fetch(:slug)}"
@@ -22,7 +26,7 @@ private
 
   def exportable_attributes
     {
-      content_id: document.id,
+      base_path: base_path,
       schema_name: "manual_section",
       document_type: "manual_section",
       title: rendered_document_attributes.fetch(:title),
@@ -39,10 +43,6 @@ private
       ],
       details: details,
       locale: "en",
-      links: {
-        organisations: [organisation.details.content_id],
-        manual: [manual.id],
-      },
     }
   end
 
@@ -100,9 +100,9 @@ private
 
   def organisation_info
     {
-      title: organisation.title,
-      abbreviation: organisation.details.abbreviation,
-      web_url: organisation.web_url,
+      title: organisation["title"],
+      abbreviation: organisation["details"]["abbreviation"],
+      web_url: organisation["web_url"],
     }
   end
 end

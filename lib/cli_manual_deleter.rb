@@ -74,6 +74,9 @@ private
   def complete_removal(manual_record)
     document_ids = document_ids_for(manual_record)
 
+    document_ids.each { |id| discard_draft_from_publishing_api(id) }
+    discard_draft_from_publishing_api(manual_record.manual_id)
+
     document_ids.each do |id|
       SpecialistDocumentEdition.where(document_id: id).map(&:destroy)
     end
@@ -86,5 +89,16 @@ private
 
   def log(message)
     stdout.puts(message)
+  end
+
+  def discard_draft_from_publishing_api(content_id)
+    begin
+      publishing_api_v2.discard_draft(content_id)
+    rescue GdsApi::HTTPNotFound
+    end
+  end
+
+  def publishing_api_v2
+    ManualsPublisherWiring.get(:publishing_api_v2)
   end
 end

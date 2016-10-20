@@ -9,6 +9,7 @@ class UpdateManualDocumentService
     document.update(document_params)
 
     if document.valid?
+      manual.draft
       manual_repository.store(manual)
       notify_listeners
     end

@@ -6,6 +6,8 @@ When(/^I create a manual$/) do
   @manual_slug = "guidance/example-manual-title"
 
   create_manual(@manual_fields)
+
+  @manual = most_recently_created_manual
 end
 
 Then(/^the manual should exist$/) do
@@ -17,14 +19,13 @@ Then(/^I should see a link to preview the manual$/) do
 end
 
 Then(/^the manual should have been sent to the draft publishing api$/) do
-  check_manual_is_published_to_publishing_api(@manual_slug, draft: true)
+  check_manual_is_drafted_to_publishing_api(@manual.id)
 end
 
 Then(/^the edited manual should have been sent to the draft publishing api$/) do
-  check_manual_is_published_to_publishing_api(
-    @manual_slug,
+  check_manual_is_drafted_to_publishing_api(
+    @manual.id,
     extra_attributes: {title: @new_title},
-    draft: true
   )
 end
 
@@ -38,6 +39,8 @@ Given(/^a draft manual exists without any documents$/) do
   }
 
   create_manual(@manual_fields)
+
+  @manual = most_recently_created_manual
 
   WebMock::RequestRegistry.instance.reset!
 end
@@ -57,6 +60,10 @@ Given(/^a draft manual exists with some documents$/) do
     manual_fields: @manual_fields,
     count: 2,
   )
+
+  @manual = most_recently_created_manual
+  @documents = @manual.documents.to_a
+
   WebMock::RequestRegistry.instance.reset!
 end
 
@@ -120,6 +127,8 @@ When(/^I create a document for the manual$/) do
   }
 
   create_manual_document(@manual_fields.fetch(:title), @document_fields)
+
+  @document = most_recently_created_manual.documents.to_a.last
 end
 
 Then(/^I see the manual has the new section$/) do
@@ -129,7 +138,7 @@ Then(/^I see the manual has the new section$/) do
 end
 
 Then(/^the manual document and table of contents will have been sent to the draft publishing api$/) do
-  check_manual_document_is_published_to_publishing_api(@document_slug, draft: true)
+  check_manual_document_is_drafted_to_publishing_api(@document.id)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -146,15 +155,14 @@ Then(/^the manual document and table of contents will have been sent to the draf
       ]
     }
   }
-  check_manual_is_published_to_publishing_api(
-    @manual_slug,
+  check_manual_is_drafted_to_publishing_api(
+    @manual.id,
     extra_attributes: manual_table_of_contents_attributes,
-    draft: true
   )
 end
 
 Then(/^the updated manual document at the new slug and updated table of contents will have been sent to the draft publishing api$/) do
-  check_manual_document_is_published_to_publishing_api(@new_slug, draft: true)
+  check_manual_document_is_drafted_to_publishing_api(@document.id)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -171,10 +179,9 @@ Then(/^the updated manual document at the new slug and updated table of contents
       ]
     }
   }
-  check_manual_is_published_to_publishing_api(
-    @manual_slug,
+  check_manual_is_drafted_to_publishing_api(
+    @manual.id,
     extra_attributes: manual_table_of_contents_attributes,
-    draft: true
   )
 end
 
@@ -189,6 +196,9 @@ Given(/^a draft document exists for the manual$/) do
   }
 
   create_manual_document(@manual_fields.fetch(:title), @document_fields)
+
+  @document = most_recently_created_manual.documents.to_a.last
+
   WebMock::RequestRegistry.instance.reset!
 end
 
@@ -253,57 +263,53 @@ When(/^I publish the manual$/) do
 end
 
 Then(/^the manual and all its documents are published$/) do
-  @attributes_for_documents.each do |document_attributes|
+  @documents.each do |document|
     check_manual_and_documents_were_published(
-      @manual_slug,
+      @manual,
+      document,
       @manual_fields,
-      document_attributes[:slug],
-      document_attributes[:fields],
+      document_fields(document),
     )
   end
 end
 
 Then(/^the manual and the edited document are published$/) do
   check_manual_and_documents_were_published(
-    @manual_slug,
-    @manual_fields,
-    @updated_document[:slug],
-    @updated_document[:fields],
+    @manual, @updated_document, @manual_fields, @updated_fields
   )
 end
 
 Then(/^the updated manual document is available to preview$/) do
-  check_manual_document_is_published_to_publishing_api(@updated_document[:slug], draft: true)
-  updated_documents = [@updated_document] + @attributes_for_documents[1..-1]
+  check_manual_document_is_drafted_to_publishing_api(@updated_document.id)
+  sections = @documents.map do |document|
+    {
+      title: document == @updated_document ? @updated_fields[:section_title] : document.title,
+      description: document == @updated_document ? @updated_fields[:section_summary] : document.summary,
+      base_path: "/#{document.slug}",
+    }
+  end
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
         {
           title: "Contents",
-          child_sections: updated_documents.map do |updated_document|
-            {
-              title: updated_document[:fields][:section_title],
-              description: updated_document[:fields][:section_summary],
-              base_path: "/#{updated_document[:slug]}",
-            }
-          end
+          child_sections: sections,
         }
       ]
     }
   }
-  check_manual_is_published_to_publishing_api(
-    @manual_slug,
+  check_manual_is_drafted_to_publishing_api(
+    @manual.id,
     extra_attributes: manual_table_of_contents_attributes,
-    draft: true
   )
 end
 
 Then(/^the manual and its new document are published$/) do
   check_manual_and_documents_were_published(
-    @manual_slug,
+    @manual,
+    @new_document,
     @manual_fields,
-    @new_document[:slug],
-    @new_document[:fields],
+    document_fields(@new_document),
   )
 end
 
@@ -322,48 +328,43 @@ Given(/^a published manual exists$/) do
 
   create_manual(@manual_fields)
 
-  @attributes_for_documents = create_documents_for_manual(
+  create_documents_for_manual(
     manual_fields: @manual_fields,
     count: 2,
   )
 
+  @manual = most_recently_created_manual
+  @documents = @manual.documents.to_a
+
   publish_manual
 
-  # Clear out any remote requests caught by webmock.
-  # We don't want the remote calls that were made during the publishing setup
-  # to interfere with later webmock assertions.
-  reset_remote_requests
+  WebMock::RequestRegistry.instance.reset!
 end
 
 When(/^I edit one of the manual's documents$/) do
-  document_to_edit = @attributes_for_documents.first
+  @updated_document = @documents.first
 
-  @updated_document = {
-    slug: document_to_edit[:slug],
-    fields: {
-      section_title: document_to_edit[:fields][:section_title],
-      section_summary: "Updated section",
-      section_body: "Updated section",
-      change_note: "Updated section",
-    }
+  @updated_fields = {
+    section_title: @updated_document.title,
+    section_summary: "Updated section",
+    section_body: "Updated section",
+    change_note: "Updated section",
   }
 
-  edit_manual_document(@manual_title, document_to_edit[:title], @updated_document[:fields])
+  edit_manual_document(@manual_title, @updated_document.title, @updated_fields)
 end
 
 When(/^I edit one of the manual's documents without a change note$/) do
-  document_to_edit = @attributes_for_documents.first
+  @updated_document = @documents.first
 
-  @updated_document = document_to_edit.merge(
-    fields: {
-      section_title: document_to_edit[:fields][:section_title],
-      section_summary: "Updated section",
-      section_body: "Updated section",
-      change_note: "",
-    }
-  )
+  @updated_fields = {
+    section_title: @updated_document.title,
+    section_summary: "Updated section",
+    section_body: "Updated section",
+    change_note: "",
+  }
 
-  edit_manual_document(@manual_title, document_to_edit[:title], @updated_document[:fields])
+  edit_manual_document(@manual_title, @updated_document.title, @updated_fields)
 end
 
 When(/^I start creating a new manual document$/) do
@@ -404,9 +405,9 @@ When(/^I copy\+paste the embed code into the body of the document$/) do
 end
 
 When(/^I create a new draft of a section with a change note$/) do
-  document = @attributes_for_documents.first
+  document = @documents.first
 
-  click_on(document[:title])
+  click_on(document.title)
   click_on("Edit section")
 
   @change_note = "Changed title for the purposes of testing."
@@ -417,7 +418,7 @@ When(/^I create a new draft of a section with a change note$/) do
   }
 
   save_document
-  edit_manual_document(@manual_title, document[:title], fields)
+  edit_manual_document(@manual_title, document.title, fields)
 end
 
 When(/^I re\-publish the section$/) do
@@ -436,30 +437,28 @@ end
 Then(/^the document is updated without a change note$/) do
   check_manual_document_exists_with(
     @manual_title,
-    section_title: @updated_document[:title],
-    section_summary: @updated_document[:fields].fetch(:section_summary),
+    section_title: @updated_document.title,
+    section_summary: @updated_fields[:section_summary],
   )
 end
 
 When(/^I add another section to the manual$/) do
   title = "Section 2"
 
-  @new_document = {
-    title: title,
-    slug: [@manual_slug, title.parameterize].join("/"),
-    fields: {
-      section_title: title,
-      section_summary: "#{title} summary",
-      section_body: "#{title} body",
-    }
+  fields = {
+    section_title: title,
+    section_summary: "#{title} summary",
+    section_body: "#{title} body",
   }
 
-  create_manual_document(@manual_title, @new_document[:fields])
+  create_manual_document(@manual_title, fields)
+
+  @new_document = most_recently_created_manual.documents.to_a.last
 end
 
 Then(/^I see no visible change note in the manual document edit form$/) do
-  document = @attributes_for_documents.first
-  check_change_note_value(@manual_title, document[:title], "")
+  document = @documents.first
+  check_change_note_value(@manual_title, document.title, "")
 end
 
 When(/^I add invalid HTML to the document body$/) do
@@ -552,14 +551,11 @@ Then(/^I see a warning about section slug clash at publication$/) do
 end
 
 When(/^a DevOps specialist withdraws the manual for me$/) do
-  manual_repository = ManualsPublisherWiring.get(:repository_registry).manual_repository
-  manual = manual_repository.all.find { |manual| manual.slug == @manual_slug }
-
-  withdraw_manual_without_ui(manual)
+  withdraw_manual_without_ui(@manual)
 end
 
 Then(/^the manual should be withdrawn$/) do
-  check_manual_is_withdrawn(@manual_title, @manual_slug, @attributes_for_documents)
+  check_manual_is_withdrawn(@manual, @documents)
 end
 
 Then(/^the manual should belong to "(.*?)"$/) do |organisation_slug|
@@ -604,9 +600,8 @@ Then(/^the new order should be visible in the preview environment$/) do
       ]
     }
   }
-  check_manual_is_published_to_publishing_api(
-    @manual_slug,
+  check_manual_is_drafted_to_publishing_api(
+    @manual.id,
     extra_attributes: manual_table_of_contents_attributes,
-    draft: true
   )
 end

@@ -37,7 +37,7 @@ end
 if ENV["API_DEV"]
   gem "gds-api-adapters", :path => "../gds-api-adapters"
 else
-  gem "gds-api-adapters", "31.4.0"
+  gem "gds-api-adapters", "37.4.0"
 end
 
 group :development do
@@ -71,7 +71,7 @@ group :test do
   gem "rubocop"
   gem "simplecov"
   gem "timecop"
-  gem "govuk-content-schema-test-helpers", "1.3.0"
+  gem "govuk-content-schema-test-helpers", "1.4.0"
 end
 
 group :development, :test do

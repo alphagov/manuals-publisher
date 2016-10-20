@@ -5,7 +5,7 @@ class PublishingAPIWithdrawer
   end
 
   def call
-    publishing_api.put_content_item(base_path, exportable_attributes)
+    publishing_api.unpublish(content_id, exportable_attributes)
   end
 
 private
@@ -15,22 +15,13 @@ private
     :entity,
   )
 
-  def base_path
-    "/#{entity.slug}"
+  def content_id
+    entity.id
   end
 
   def exportable_attributes
     {
-      schema_name: "gone",
-      format: "gone",
-      publishing_app: "manuals-publisher",
-      update_type: "major",
-      routes: [
-        {
-          path: base_path,
-          type: "exact",
-        }
-      ],
+      type: "gone",
     }
   end
 end

@@ -11,14 +11,15 @@ class ManualObserversRegistry
     # should happen before publishing to search.
     [
       publication_logger,
-      publishing_api_exporter,
+      publishing_api_publisher,
       rummager_exporter,
     ]
   end
 
   def republication
     [
-      publishing_api_exporter,
+      publishing_api_draft_exporter,
+      publishing_api_publisher,
       rummager_exporter,
     ]
   end
@@ -96,27 +97,19 @@ private
     }
   end
 
-  def publishing_api_exporter
+  def publishing_api_publisher
     ->(manual, action = nil) {
-      manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
-      ManualPublishingAPIExporter.new(
-        publishing_api.method(:put_content_item),
-        organisation(manual.attributes.fetch(:organisation_slug)),
-        manual_renderer,
-        PublicationLog,
-        manual
+      PublishingAPIPublisher.new(
+        publishing_api: publishing_api_v2,
+        entity: manual,
       ).call
 
-      document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
       manual.documents.each do |document|
         next if !document.needs_exporting? && action != :republish
 
-        ManualSectionPublishingAPIExporter.new(
-          publishing_api.method(:put_content_item),
-          organisation(manual.attributes.fetch(:organisation_slug)),
-          document_renderer,
-          manual,
-          document
+        PublishingAPIPublisher.new(
+          publishing_api: publishing_api_v2,
+          entity: document,
         ).call
 
         document.mark_as_exported_to_live_publishing_api!
@@ -125,36 +118,53 @@ private
   end
 
   def publishing_api_draft_exporter
-    ->(manual, _ = nil) {
+    ->(manual, action = nil) {
+      patch_links = publishing_api_v2.method(:patch_links)
+      put_content = publishing_api_v2.method(:put_content)
+      organisation = organisation(manual.attributes.fetch(:organisation_slug))
       manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
-      ManualPublishingAPIExporter.new(
-        publishing_api.method(:put_draft_content_item),
-        organisation(manual.attributes.fetch(:organisation_slug)),
-        manual_renderer,
-        PublicationLog,
-        manual
+      manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
+
+      ManualPublishingAPILinksExporter.new(
+        patch_links, organisation, manual
       ).call
+
+      ManualPublishingAPIExporter.new(
+        put_content, organisation, manual_renderer, PublicationLog, manual
+      ).call
+
+      manual.documents.each do |document|
+        next if !document.needs_exporting? && action != :republish
+
+        ManualSectionPublishingAPILinksExporter.new(
+          patch_links, organisation, manual, document
+        ).call
+
+        ManualSectionPublishingAPIExporter.new(
+          put_content, organisation, manual_document_renderer, manual, document
+        ).call
+      end
     }
   end
 
   def publishing_api_withdrawer
     ->(manual, _ = nil) {
       PublishingAPIWithdrawer.new(
-        publishing_api: publishing_api,
+        publishing_api: publishing_api_v2,
         entity: manual,
       ).call
 
       manual.documents.each do |document|
         PublishingAPIWithdrawer.new(
-          publishing_api: publishing_api,
+          publishing_api: publishing_api_v2,
           entity: document,
         ).call
       end
     }
   end
 
-  def publishing_api
-    ManualsPublisherWiring.get(:publishing_api)
+  def publishing_api_v2
+    ManualsPublisherWiring.get(:publishing_api_v2)
   end
 
   def organisation(slug)

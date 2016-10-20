@@ -9,24 +9,29 @@ RSpec.describe "Republishing manuals", type: :feature do
   end
 
   let(:manual_fields) { { title: "Example manual title", summary: "A summary" } }
-  let(:manual_slug) { "guidance/example-manual-title" }
 
   def create_manual_with_sections
-    @manual_fields = manual_fields # this is necessary to be able to use `create_documents_for_manual` from `manual_helpers`
+    manual = create_manual_without_ui(manual_fields)
+    @documents = create_documents_for_manual_without_ui(manual: manual, count: 2)
+    # Re-fetch manual to include documents
+    @manual = manual_repository.fetch(manual.id)
 
-    create_manual(manual_fields)
-    @attributes_for_documents = create_documents_for_manual(manual_fields: manual_fields, count: 2)
-    publish_manual
+    publish_manual_without_ui(@manual)
 
-    check_manual_is_published_to_publishing_api(manual_slug)
+    check_manual_is_drafted_to_publishing_api(@manual.id, number_of_drafts: 3)
+    check_manual_is_published_to_publishing_api(@manual.id)
+
     WebMock::RequestRegistry.instance.reset!
   end
 
   def republish_manuals
-    repository = ManualsPublisherWiring.get(:repository_registry).manual_repository
-    repository.all.each do |manual|
+    manual_repository.all.each do |manual|
       ManualServiceRegistry.new.republish(manual.id).call
     end
+  end
+
+  def manual_repository
+    ManualsPublisherWiring.get(:repository_registry).manual_repository
   end
 
   describe "republishing a manual with sections" do
@@ -37,13 +42,10 @@ RSpec.describe "Republishing manuals", type: :feature do
     it "sends the manual and the sections to the Publishing API" do
       republish_manuals
 
-      @attributes_for_documents.each do |document_attributes|
-        check_manual_and_documents_were_published(
-          manual_slug,
-          manual_fields,
-          document_attributes[:slug],
-          document_attributes[:fields],
-        )
+      check_manual_is_drafted_to_publishing_api(@manual.id)
+      @documents.each do |document|
+        check_manual_document_is_drafted_to_publishing_api(document.id)
+        check_manual_and_documents_were_published(@manual, document, manual_fields, document_fields(document))
       end
     end
   end
