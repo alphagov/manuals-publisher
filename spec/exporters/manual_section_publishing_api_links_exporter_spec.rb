@@ -16,11 +16,11 @@ describe ManualSectionPublishingAPILinksExporter do
   let(:export_recipent) { double(:export_recipent, call: nil) }
 
   let(:organisation) {
-    double(:organisation,
-      web_url: "https://www.gov.uk/government/organisations/cabinet-office",
-      title: "Cabinet Office",
-      details: double(:org_details, abbreviation: "CO", content_id: "d94d63a5-ce8e-40a1-ab4c-4956eab27259"),
-    )
+    {
+      "web_url" => "https://www.gov.uk/government/organisations/cabinet-office",
+      "title" => "Cabinet Office",
+      "details" => { "abbreviation" => "CO", "content_id" => "d94d63a5-ce8e-40a1-ab4c-4956eab27259" },
+    }
   }
 
   let(:manual) {
@@ -51,7 +51,7 @@ describe ManualSectionPublishingAPILinksExporter do
       document.id,
       hash_including(
         links: {
-          organisations: [organisation.details.content_id],
+          organisations: [organisation["details"]["content_id"]],
           manual: [manual.id],
         }
       )
