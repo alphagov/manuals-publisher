@@ -22,7 +22,7 @@ private
   def exportable_attributes
     {
       links: {
-        organisations: [organisation["details"]["content_id"]],
+        organisations: [organisation.details.content_id],
         manual: [manual.id],
       },
     }

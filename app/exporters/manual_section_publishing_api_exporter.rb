@@ -100,9 +100,9 @@ private
 
   def organisation_info
     {
-      title: organisation["title"],
-      abbreviation: organisation["details"]["abbreviation"],
-      web_url: organisation["web_url"],
+      title: organisation.title,
+      abbreviation: organisation.details.abbreviation,
+      web_url: organisation.web_url,
     }
   end
 end
