@@ -3,7 +3,6 @@ require "builders/manual_document_builder"
 require "builders/specialist_document_builder"
 require "dependency_container"
 require "document_factory_registry"
-require "finder_schema"
 require "footnotes_section_heading_renderer"
 require "gds_api/email_alert_api"
 require "gds_api/publishing_api"
@@ -17,7 +16,6 @@ require "marshallers/manual_publish_task_association_marshaller"
 require "repository_registry"
 require "specialist_document_header_extractor"
 require "specialist_document_repository"
-require "view_adapter_registry"
 
 $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 
@@ -54,10 +52,6 @@ ManualsPublisherWiring ||= DependencyContainer.new do
     }
   }
 
-  define_factory(:view_adapter_registry) {
-    ViewAdapterRegistry.new
-  }
-
   define_factory(:repository_registry) {
     RepositoryRegistry.new(
       entity_factories: get(:validatable_document_factories),
@@ -69,81 +63,6 @@ ManualsPublisherWiring ||= DependencyContainer.new do
   }
 
   define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
-
-  define_factory(:cma_case_builder) {
-    SpecialistDocumentBuilder.new("cma_case",
-      get(:validatable_document_factories).cma_case_factory)
-  }
-
-  define_factory(:aaib_report_builder) {
-    SpecialistDocumentBuilder.new("aaib_report",
-      get(:validatable_document_factories).aaib_report_factory)
-  }
-
-  define_factory(:countryside_stewardship_grant_builder) {
-    SpecialistDocumentBuilder.new("countryside_stewardship_grant",
-      get(:validatable_document_factories).countryside_stewardship_grant_factory)
-  }
-
-  define_factory(:drug_safety_update_builder) {
-    SpecialistDocumentBuilder.new("drug_safety_update",
-      get(:validatable_document_factories).drug_safety_update_factory)
-  }
-
-  define_factory(:esi_fund_builder) {
-    SpecialistDocumentBuilder.new("esi_fund",
-      get(:validatable_document_factories).esi_fund_factory)
-  }
-
-  define_factory(:maib_report_builder) {
-    SpecialistDocumentBuilder.new("maib_report",
-      get(:validatable_document_factories).maib_report_factory)
-  }
-
-  define_factory(:medical_safety_alert_builder) {
-    SpecialistDocumentBuilder.new("medical_safety_alert",
-      get(:validatable_document_factories).medical_safety_alert_factory)
-  }
-
-  define_factory(:international_development_fund_builder) {
-    SpecialistDocumentBuilder.new("international_development_fund",
-      get(:validatable_document_factories).international_development_fund_factory)
-  }
-
-  define_factory(:raib_report_builder) {
-    SpecialistDocumentBuilder.new("raib_report",
-      get(:validatable_document_factories).raib_report_factory)
-  }
-
-  define_factory(:vehicle_recalls_and_faults_alert_builder) {
-    SpecialistDocumentBuilder.new("vehicle_recalls_and_faults_alert",
-      get(:validatable_document_factories).vehicle_recalls_and_faults_alert_factory)
-  }
-
-  define_factory(:asylum_support_decision_builder) {
-    SpecialistDocumentBuilder.new("asylum_support_decision",
-      get(:validatable_document_factories).asylum_support_decision_factory)
-  }
-
-  define_factory(:utaac_decision_builder) {
-    SpecialistDocumentBuilder.new("utaac_decision",
-      get(:validatable_document_factories).utaac_decision_factory)
-  }
-
-  define_factory(:tax_tribunal_decision_builder) {
-    SpecialistDocumentBuilder.new("tax_tribunal_decision",
-      get(:validatable_document_factories).tax_tribunal_decision_factory)
-  }
-
-  define_factory(:employment_appeal_tribunal_decision_builder) {
-    SpecialistDocumentBuilder.new("employment_appeal_tribunal_decision",
-      get(:validatable_document_factories).employment_appeal_tribunal_decision_factory)
-  }
-
-  define_factory(:employment_tribunal_decision_builder) {
-    SpecialistDocumentBuilder.new("employment_tribunal_decision",
-      get(:validatable_document_factories).employment_tribunal_decision_factory)
-  }
 
   define_instance(:markdown_attachment_renderer) {
     MarkdownAttachmentProcessor.method(:new)
@@ -241,66 +160,6 @@ ManualsPublisherWiring ||= DependencyContainer.new do
       Plek.new.find("publishing-api"),
       bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
     )
-  }
-
-  define_singleton(:aaib_report_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/aaib-reports.json"))
-  }
-
-  define_singleton(:cma_case_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/cma-cases.json"))
-  }
-
-  define_singleton(:countryside_stewardship_grant_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/countryside-stewardship-grants.json"))
-  }
-
-  define_singleton(:drug_safety_update_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/drug-safety-updates.json"))
-  }
-
-  define_singleton(:esi_fund_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/esi-funds.json"))
-  }
-
-  define_singleton(:maib_report_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/maib-reports.json"))
-  }
-
-  define_singleton(:medical_safety_alert_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/medical-safety-alerts.json"))
-  }
-
-  define_singleton(:international_development_fund_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/international-development-funds.json"))
-  }
-
-  define_singleton(:raib_report_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/raib-reports.json"))
-  }
-
-  define_singleton(:vehicle_recalls_and_faults_alert_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/vehicle-recalls-and-faults-alert.json"))
-  }
-
-  define_singleton(:asylum_support_decision_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/asylum-support-tribunal-decisions.json"))
-  }
-
-  define_singleton(:utaac_decision_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/administrative-appeals-tribunal-decisions.json"))
-  }
-
-  define_singleton(:tax_tribunal_decision_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/tax-tribunal-decisions.json"))
-  }
-
-  define_singleton(:employment_appeal_tribunal_decision_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/employment-appeal-tribunal-decisions.json"))
-  }
-
-  define_singleton(:employment_tribunal_decision_finder_schema) {
-    FinderSchema.new(Rails.root.join("finders/schemas/employment-tribunal-decisions.json"))
   }
 
   define_singleton(:organisations_api) {
