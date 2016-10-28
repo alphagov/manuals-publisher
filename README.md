@@ -1,13 +1,20 @@
 # Manuals publisher
 
-NOTE: This is the renamed respository of the original Specialist Publisher, the compositional (or 'hexagonal')
+Manuals Publisher is a Ruby on Rails content management application for the 'manuals' format.
+The manuals format is currently in a rendered phase of migration, so content is stored in a local
+datastore but also drafted and published through the publishing-pipeline via the [Publishing API](https://github.com/alphagov/publishing-api).
+
+
+This is the renamed repository of the original Specialist Publisher, the compositional (or 'hexagonal')
 Rails app based heavily on dependency injection.
-Specialist Publisher has been divided into two publishing applications to accommodate Finders and Manuals separately.
-_Specialist Document_ or _Finders_ publishing now lives at https://github.com/alphagov/specialist-publisher-rebuild
+
+
+Specialist Publisher has been divided into two publishing applications to accommodate Specialist Documents and Manuals separately.
+_Specialist Document_ or _Finders_ publishing now lives at https://github.com/alphagov/specialist-publisher
 
 ## Purpose
 
-Publishing App for Manuals.
+Publishing app for manuals.
 
 ## Nomenclature
 
@@ -49,7 +56,7 @@ If you are using the GDS development virtual machine then the application will b
 $ bundle exec rake
 ```
 
-## Application Directory Structure
+## Application directory structure
 
 Non standard Rails directories and what they're used for:
 
