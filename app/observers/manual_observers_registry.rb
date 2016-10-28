@@ -48,6 +48,7 @@ private
     ->(manual, _: nil) {
       manual.documents.each do |doc|
         next unless doc.needs_exporting?
+        next if doc.minor_update?
 
         PublicationLog.create!(
           title: doc.title,
