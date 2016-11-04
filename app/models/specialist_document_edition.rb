@@ -38,6 +38,8 @@ class SpecialistDocumentEdition
   scope :published,           where(state: "published")
   scope :archived,            where(state: "archived")
 
+  scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
+
   index "document_id"
   index "state"
   index "updated_at"
