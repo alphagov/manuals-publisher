@@ -12,7 +12,11 @@ class DocumentAssociationMarshaller
     }
 
     removed_docs = Array(record.removed_document_ids).map { |doc_id|
-      document_repository.fetch(doc_id)
+      begin
+        document_repository.fetch(doc_id)
+      rescue KeyError
+        raise RemovedDocumentIdNotFoundError, "No document found for ID #{doc_id}"
+      end
     }
 
     decorator.call(manual, documents: docs, removed_documents: removed_docs)
@@ -37,4 +41,6 @@ class DocumentAssociationMarshaller
 
 private
   attr_reader :manual_specific_document_repository_factory, :decorator
+
+  class RemovedDocumentIdNotFoundError < StandardError; end
 end
