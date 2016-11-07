@@ -29,10 +29,13 @@ RSpec.describe RemoveManualDocumentService do
     )
   }
 
+  let(:listener) { spy(call: nil) }
+
   let(:service) {
-    RemoveManualDocumentService.new(
+    described_class.new(
       repository,
       service_context,
+      listeners: [listener],
     )
   }
 
@@ -49,6 +52,11 @@ RSpec.describe RemoveManualDocumentService do
         service.call
       }.to raise_error(RemoveManualDocumentService::PreviouslyPublishedError)
     end
+
+    it "does not notify the listeners" do
+      begin; service.call; rescue; end
+      expect(listener).not_to have_received(:call)
+    end
   end
 
   context "with a section that's never been published" do
@@ -64,11 +72,15 @@ RSpec.describe RemoveManualDocumentService do
     end
 
     it "removes the section" do
-      expect(manual).to have_received(:remove_document)
+      expect(manual).to have_received(:remove_document).with(document_id)
     end
 
     it "persists the manual" do
       expect(repository).to have_received(:store).with(manual)
+    end
+
+    it "notifies its listeners" do
+      expect(listener).to have_received(:call).with(document, manual)
     end
   end
 end

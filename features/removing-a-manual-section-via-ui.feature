@@ -8,14 +8,14 @@ Feature: Removing a section from a manual
     And a draft manual exists without any documents
     And a draft document exists for the manual
     When I remove the document from the manual
-    Then the document is removed from the manual
+    Then the draft document is removed from the manual
 
   Scenario: Removing a draft section as an editor
     Given I am logged in as a "CMA" editor
     And a draft manual exists without any documents
     And a draft document exists for the manual
     When I remove the document from the manual
-    Then the document is removed from the manual
+    Then the draft document is removed from the manual
 
   Scenario: Removing a draft section as an editor
     Given I am logged in as a writer

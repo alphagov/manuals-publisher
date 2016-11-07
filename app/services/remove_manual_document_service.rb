@@ -1,7 +1,8 @@
 class RemoveManualDocumentService
-  def initialize(manual_repository, context)
+  def initialize(manual_repository, context, listeners:)
     @manual_repository = manual_repository
     @context = context
+    @listeners = listeners
   end
 
   def call
@@ -9,12 +10,13 @@ class RemoveManualDocumentService
 
     remove
     persist
+    notify_listeners
 
     [manual, document]
   end
 
 private
-  attr_reader :manual_repository, :context
+  attr_reader :manual_repository, :context, :listeners
 
   def validate_never_published
     raise PreviouslyPublishedError if document.published?
@@ -42,6 +44,12 @@ private
 
   def manual_id
     context.params.fetch("manual_id")
+  end
+
+  def notify_listeners
+    listeners.each do |listener|
+      listener.call(document, manual)
+    end
   end
 
   class PreviouslyPublishedError < StandardError; end
