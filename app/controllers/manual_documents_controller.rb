@@ -92,6 +92,26 @@ class ManualDocumentsController < ApplicationController
     )
   end
 
+  def withdraw
+    manual, document = services.show(self).call
+
+    render(:withdraw, locals: {
+      manual: ManualViewAdapter.new(manual),
+      document: ManualDocumentViewAdapter.new(manual, document),
+    })
+  end
+
+  def destroy
+    manual, document = services.remove(self).call
+
+    redirect_to(
+      manual_path(manual),
+      flash: {
+        notice: "Section #{document.title} removed!"
+      }
+    )
+  end
+
 private
   def services
     if current_user_is_gds_editor?

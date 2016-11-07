@@ -31,3 +31,13 @@ end
 Then(/^the manual section still exists$/) do
   check_manual_section_exists(@manual.id, @section.id)
 end
+
+When(/^I remove the document from the manual$/) do
+  withdraw_manual_document(@manual_fields.fetch(:title), @document_fields.fetch(:section_title))
+
+  WebMock::RequestRegistry.instance.reset!
+end
+
+Then(/^the document is removed from the manual$/) do
+  check_manual_section_was_removed(@manual.id, @document.id)
+end

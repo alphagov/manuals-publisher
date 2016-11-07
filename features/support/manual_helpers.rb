@@ -66,6 +66,15 @@ module ManualHelpers
     save_as_draft
   end
 
+  def withdraw_manual_document(manual_title, section_title)
+    go_to_manual_page(manual_title)
+    click_on section_title
+
+    click_on "Withdraw"
+
+    click_on "Yes"
+  end
+
   def save_as_draft
     click_on "Save as draft"
   end

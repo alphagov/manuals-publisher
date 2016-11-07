@@ -9,7 +9,7 @@ ManualsPublisher::Application.routes.draw do
   end
 
   resources :manuals, except: :destroy do
-    resources :documents, except: :destroy, path: "sections", controller: "ManualDocuments" do
+    resources :documents, path: "sections", controller: "ManualDocuments" do
       resources :attachments, controller: :manual_document_attachments, only: [:new, :create, :edit, :update]
 
       # This is for persisted manual documents
@@ -17,6 +17,9 @@ ManualsPublisher::Application.routes.draw do
 
       get :reorder, on: :collection
       post :update_order, on: :collection
+
+      # This is the UI page for confirming withdrawal
+      get :withdraw, on: :member
     end
 
     post :publish, on: :member
