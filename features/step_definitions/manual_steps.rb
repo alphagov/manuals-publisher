@@ -262,6 +262,16 @@ When(/^I publish the manual$/) do
   publish_manual
 end
 
+When(/^I add another section and publish the manual later$/) do
+  create_manual_document(@manual.title, {
+    section_title: "Another section so we can publish",
+    section_summary: "Another section so we can publish summary",
+    section_body: "Another section so we can publish body",
+  })
+  go_to_manual_page(@manual.title)
+  publish_manual
+end
+
 Then(/^the manual and all its documents are published$/) do
   @documents.each do |document|
     check_manual_and_documents_were_published(

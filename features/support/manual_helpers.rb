@@ -159,6 +159,14 @@ module ManualHelpers
     check_manual_section_is_published_to_rummager(document.slug, document_attrs, manual_attrs)
   end
 
+  def check_manual_was_published(manual)
+    check_manual_document_is_published_to_publishing_api(manual.id)
+  end
+
+  def check_manual_document_was_not_published(document)
+    check_manual_document_is_not_published_to_publishing_api(document.id)
+  end
+
   def check_manual_is_published_to_rummager(slug, attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
@@ -206,6 +214,10 @@ module ManualHelpers
 
   def check_manual_document_is_published_to_publishing_api(content_id)
     assert_publishing_api_publish(content_id)
+  end
+
+  def check_manual_document_is_not_published_to_publishing_api(content_id)
+    assert_publishing_api_publish(content_id, nil, 0)
   end
 
   def check_manual_section_is_published_to_rummager(slug, attrs, manual_attrs)

@@ -40,3 +40,8 @@ Then(/^the draft document is removed from the manual$/) do
   check_manual_section_was_removed(@manual.id, @document.id)
   check_draft_has_been_discarded_in_publishing_api(@document.id)
 end
+
+Then(/^the removed document is not published$/) do
+  check_manual_was_published(@manual)
+  check_manual_document_was_not_published(@document)
+end

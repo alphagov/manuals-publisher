@@ -9,6 +9,8 @@ Feature: Removing a section from a manual
     And a draft document exists for the manual
     When I remove the document from the manual
     Then the draft document is removed from the manual
+    When I add another section and publish the manual later
+    Then the removed document is not published
 
   Scenario: Removing a draft section as an editor
     Given I am logged in as a "CMA" editor
@@ -16,6 +18,8 @@ Feature: Removing a section from a manual
     And a draft document exists for the manual
     When I remove the document from the manual
     Then the draft document is removed from the manual
+    When I add another section and publish the manual later
+    Then the removed document is not published
 
   Scenario: Removing a draft section as an editor
     Given I am logged in as a writer
