@@ -53,6 +53,34 @@ describe PermissionChecker do
     end
   end
 
+  describe "#can_withdraw?" do
+    context "a user who is not an editor" do
+      subject(:checker) { PermissionChecker.new(cma_writer) }
+
+      it "prevents withdrawal" do
+        expect(checker.can_withdraw?("manual")).to be false
+      end
+    end
+
+    context "an editor" do
+      subject(:checker) { PermissionChecker.new(dclg_editor) }
+
+      context "withdrawing a manual" do
+        it "allows withdrawing" do
+          expect(checker.can_withdraw?("manual")).to be true
+        end
+      end
+    end
+
+    context "a GDS editor" do
+      subject(:checker) { PermissionChecker.new(gds_editor) }
+
+      it "allows withdrawal of any format" do
+        expect(checker.can_withdraw?("tea_and_biscuits")).to be true
+      end
+    end
+  end
+
   describe "#is_gds_editor?" do
     it "is true for a GDS editor" do
       checker = PermissionChecker.new(gds_editor)

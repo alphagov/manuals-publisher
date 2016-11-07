@@ -377,5 +377,17 @@ module ManualHelpers
       section_body: document.body,
     }
   end
+
+  def check_document_withdraw_link_not_visible(manual, document)
+    # Don't give them the option...
+    go_to_manual_page(manual.title)
+    click_on document.title
+    expect(page).not_to have_button("Withdraw")
+
+    # ...and if they get here anyway, throw them out
+    visit withdraw_manual_document_path(manual, document)
+    expect(current_path).to eq manual_document_path(manual.id, document.id)
+    expect(page).to have_text("You don't have permission to withdraw manual sections.")
+  end
 end
 RSpec.configuration.include ManualHelpers, type: :feature

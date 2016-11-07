@@ -1,4 +1,6 @@
 class ManualDocumentsController < ApplicationController
+  before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
+
   def show
     manual, document = services.show(self).call
 
@@ -129,5 +131,14 @@ private
     OrganisationalManualDocumentServiceRegistry.new(
       organisation_slug: current_organisation_slug,
     )
+  end
+
+  def authorize_user_for_withdrawing
+    unless current_user_can_withdraw?("manual")
+      redirect_to(
+        manual_document_path(params[:manual_id], params[:id]),
+        flash: { error: "You don't have permission to withdraw manual sections." },
+      )
+    end
   end
 end
