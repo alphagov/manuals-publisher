@@ -73,7 +73,10 @@ class AbstractManualDocumentServiceRegistry
     RemoveManualDocumentService.new(
       manual_repository,
       context,
-      listeners: [publishing_api_draft_manual_document_discarder]
+      listeners: [
+        publishing_api_draft_manual_exporter,
+        publishing_api_draft_manual_document_discarder
+      ]
     )
   end
 

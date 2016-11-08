@@ -6,6 +6,7 @@ RSpec.describe RemoveManualDocumentService do
 
   let(:manual) {
     double(
+      draft: nil,
       documents: [
         document,
       ],
@@ -39,6 +40,35 @@ RSpec.describe RemoveManualDocumentService do
     )
   }
 
+  context "with a document id that doesn't belong to the manual" do
+    let(:document) {
+      double(id: document_id)
+    }
+    let(:manual) {
+      double(
+        draft: nil,
+        documents: [],
+        remove_document: nil,
+      )
+    }
+
+    it "raises a ManualDocumentNotFound error" do
+      expect {
+        service.call
+      }.to raise_error(described_class::ManualDocumentNotFoundError, document_id)
+    end
+
+    it "does not mark the manual as a draft" do
+      begin; service.call; rescue; end
+      expect(manual).not_to have_received(:draft)
+    end
+
+    it "does not notifies its listeners" do
+      begin; service.call; rescue; end
+      expect(listener).not_to have_received(:call)
+    end
+  end
+
   context "with a section that's previously been published" do
     let(:document) {
       double(
@@ -53,6 +83,10 @@ RSpec.describe RemoveManualDocumentService do
 
     it "removes the section" do
       expect(manual).to have_received(:remove_document).with(document.id)
+    end
+
+    it "marks the manual as a draft" do
+      expect(manual).to have_received(:draft)
     end
 
     it "persists the manual" do
@@ -78,6 +112,11 @@ RSpec.describe RemoveManualDocumentService do
 
     it "removes the section" do
       expect(manual).to have_received(:remove_document).with(document_id)
+    end
+
+    it "marks the manual as a draft" do
+      # NOTE - this isn't neccesary really, but we do it to be consistent
+      expect(manual).to have_received(:draft)
     end
 
     it "persists the manual" do

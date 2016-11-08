@@ -185,18 +185,19 @@ module ManualHelpers
       ).at_least(:once)
   end
 
-  def check_manual_is_drafted_to_publishing_api(
-    content_id,
-    extra_attributes: {},
-    number_of_drafts: 1
-  )
-    attributes = {
-      "schema_name" => "manual",
-      "document_type" => "manual",
-      "rendering_app" => "manuals-frontend",
-      "publishing_app" => "manuals-publisher",
-    }.merge(extra_attributes)
-    assert_publishing_api_put_content(content_id, request_json_including(attributes), number_of_drafts)
+  def check_manual_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
+    raise ArgumentError, "can't specify both extra_attributes and with_matcher" if with_matcher.present? && !extra_attributes.empty?
+
+    if with_matcher.nil?
+      attributes = {
+        "schema_name" => "manual",
+        "document_type" => "manual",
+        "rendering_app" => "manuals-frontend",
+        "publishing_app" => "manuals-publisher",
+      }.merge(extra_attributes)
+      with_matcher = request_json_including(attributes)
+    end
+    assert_publishing_api_put_content(content_id, with_matcher, number_of_drafts)
   end
 
   def check_manual_is_published_to_publishing_api(content_id)

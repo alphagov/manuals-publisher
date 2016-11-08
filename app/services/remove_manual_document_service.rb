@@ -6,6 +6,9 @@ class RemoveManualDocumentService
   end
 
   def call
+    raise ManualDocumentNotFoundError.new(document_id) unless document.present?
+    # Removing a document always makes the manual a draft
+    manual.draft
 
     remove
     persist
@@ -31,6 +34,8 @@ private
 
   def manual
     @manual ||= manual_repository.fetch(manual_id)
+  rescue KeyError => error
+    raise ManualNotFoundError.new(manual_id)
   end
 
   def document_id
@@ -46,4 +51,7 @@ private
       listener.call(document, manual)
     end
   end
+
+  class ManualNotFoundError < StandardError; end
+  class ManualDocumentNotFoundError < StandardError; end
 end

@@ -51,3 +51,26 @@ Feature: Removing a section from a manual
     And a published manual with some sections was created without the UI
     And I edit one of the manual's documents
     Then I cannot remove a document from the manual
+
+  Scenario: Removing a section from a published manual as a GDS editor
+    Given I am logged in as a "GDS" editor
+    And a published manual exists
+    When I remove one of the documents from the manual
+    Then the document is removed from the manual
+    When I publish the manual
+    Then the removed document is not published
+    But the removed document is withdrawn with a redirect to the manual
+
+  Scenario: Removing a section from a published manual as an editor
+    Given I am logged in as a "CMA" editor
+    And a published manual exists
+    When I remove one of the documents from the manual
+    Then the document is removed from the manual
+    When I publish the manual
+    Then the removed document is not published
+    But the removed document is withdrawn with a redirect to the manual
+
+  Scenario: Removing a section from a published manual as an editor
+    Given I am logged in as a writer
+    And a published manual with some sections was created without the UI
+    Then I cannot remove a document from the manual
