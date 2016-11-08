@@ -167,6 +167,11 @@ module ManualHelpers
     check_manual_document_is_not_published_to_publishing_api(document.id)
   end
 
+  def check_manual_document_was_withdrawn_with_redirect(document, redirect_path)
+    check_manual_document_is_unpublished_from_publishing_api(document.id, { type: "redirect", alternative_path: redirect_path })
+    check_manual_document_is_withdrawn_from_rummager(document)
+  end
+
   def check_manual_is_published_to_rummager(slug, attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
@@ -218,6 +223,10 @@ module ManualHelpers
 
   def check_manual_document_is_not_published_to_publishing_api(content_id)
     assert_publishing_api_publish(content_id, nil, 0)
+  end
+
+  def check_manual_document_is_unpublished_from_publishing_api(content_id, unpublishing_attributes)
+    assert_publishing_api_unpublish(content_id, unpublishing_attributes)
   end
 
   def check_manual_section_is_published_to_rummager(slug, attrs, manual_attrs)
@@ -336,6 +345,14 @@ module ManualHelpers
           "/#{document.slug}",
         )
     end
+  end
+
+  def check_manual_document_is_withdrawn_from_rummager(document)
+    expect(fake_rummager).to have_received(:delete_document)
+      .with(
+        "manual_section",
+        "/#{document.slug}",
+      )
   end
 
   def check_manual_has_organisation_slug(attributes, organisation_slug)

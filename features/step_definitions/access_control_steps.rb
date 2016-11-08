@@ -72,6 +72,6 @@ Then(/^I cannot publish manuals$/) do
   check_manual_cannot_be_published
 end
 
-Then(/^I cannot remove the document from the manual$/) do
-  check_document_withdraw_link_not_visible(@manual, @document)
+Then(/^I cannot remove a document from the manual$/) do
+  check_document_withdraw_link_not_visible(@manual, @documents.first)
 end

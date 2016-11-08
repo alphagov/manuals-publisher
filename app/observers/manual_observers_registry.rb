@@ -76,6 +76,12 @@ private
           )
         )
       end
+
+      manual.removed_documents.each do |section|
+        indexer.delete(
+          ManualSectionIndexableFormatter.new(section, manual),
+        )
+      end
     }
   end
 
@@ -114,6 +120,10 @@ private
         ).call
 
         document.mark_as_exported_to_live_publishing_api! if action != :republish
+      end
+
+      manual.removed_documents.each do |document|
+        publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}" })
       end
     }
   end

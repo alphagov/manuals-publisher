@@ -6,7 +6,6 @@ class RemoveManualDocumentService
   end
 
   def call
-    validate_never_published
 
     remove
     persist
@@ -17,10 +16,6 @@ class RemoveManualDocumentService
 
 private
   attr_reader :manual_repository, :context, :listeners
-
-  def validate_never_published
-    raise PreviouslyPublishedError if document.published?
-  end
 
   def remove
     manual.remove_document(document_id)
@@ -51,6 +46,4 @@ private
       listener.call(document, manual)
     end
   end
-
-  class PreviouslyPublishedError < StandardError; end
 end
