@@ -38,3 +38,7 @@ Then(/^the removed document is withdrawn with a redirect to the manual$/) do
   check_manual_was_published(@manual)
   check_manual_document_was_withdrawn_with_redirect(@removed_document, "/#{@manual.slug}")
 end
+
+Then(/^the removed document is archived$/) do
+  check_manual_document_is_archived_in_db(@manual, @removed_document.id)
+end

@@ -123,7 +123,13 @@ private
       end
 
       manual.removed_documents.each do |document|
-        publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}" })
+        next if document.withdrawn? && action != :republish
+        publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true })
+        if document.draft?
+          document.latest_edition.archive
+        else
+          document.withdraw!
+        end
       end
     }
   end

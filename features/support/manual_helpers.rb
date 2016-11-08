@@ -168,8 +168,16 @@ module ManualHelpers
   end
 
   def check_manual_document_was_withdrawn_with_redirect(document, redirect_path)
-    check_manual_document_is_unpublished_from_publishing_api(document.id, { type: "redirect", alternative_path: redirect_path })
+    check_manual_document_is_unpublished_from_publishing_api(document.id, { type: "redirect", alternative_path: redirect_path, discard_drafts: true })
     check_manual_document_is_withdrawn_from_rummager(document)
+  end
+
+  def manual_document_repository(manual)
+    ManualsPublisherWiring.get(:repository_registry).manual_specific_document_repository_factory.call(manual)
+  end
+
+  def check_manual_document_is_archived_in_db(manual, document_id)
+    expect(manual_document_repository(manual).fetch(document_id)).to be_withdrawn
   end
 
   def check_manual_is_published_to_rummager(slug, attrs)
