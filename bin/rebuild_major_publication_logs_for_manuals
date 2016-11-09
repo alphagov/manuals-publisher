@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require File.expand_path("../../config/environment", __FILE__)
+require "manual_publication_log_filter"
 require "logger"
 
 logger = Logger.new(STDOUT)
@@ -9,11 +10,11 @@ logger.formatter = Logger::Formatter.new
 manual_publication_log_filter = ManualPublicationLogFilter.new
 
 manual_records = ManualRecord.all
-count = manual_record.count
+count = manual_records.count
 
 logger.info "Deleting publication logs and rebuilding for major updates only for #{count} manuals"
 
-manual_records.each.with_index(1) do |manual, i|
+manual_records.to_a.each.with_index(1) do |manual, i|
   logger.info("[% 3d/% 3d] id=%s slug=%s" % [i, count, manual.id, manual.slug])
   manual_publication_log_filter.delete_logs_and_rebuild_for_major_updates_only!(manual.slug)
 end
