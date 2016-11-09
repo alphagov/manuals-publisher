@@ -106,12 +106,19 @@ class ManualDocumentsController < ApplicationController
   def destroy
     manual, document = services.remove(self).call
 
-    redirect_to(
-      manual_path(manual),
-      flash: {
-        notice: "Section #{document.title} removed!"
-      }
-    )
+    if document.valid?
+      redirect_to(
+        manual_path(manual),
+        flash: {
+          notice: "Section #{document.title} removed!"
+        }
+      )
+    else
+      render(:withdraw, locals: {
+        manual: ManualViewAdapter.new(manual),
+        document: ManualDocumentViewAdapter.new(manual, document),
+      })
+    end
   end
 
 private

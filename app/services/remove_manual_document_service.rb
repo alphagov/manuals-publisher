@@ -7,12 +7,17 @@ class RemoveManualDocumentService
 
   def call
     raise ManualDocumentNotFoundError.new(document_id) unless document.present?
-    # Removing a document always makes the manual a draft
-    manual.draft
 
-    remove
-    persist
-    notify_listeners
+    document.update(change_note_params)
+
+    if document.valid?
+      # Removing a document always makes the manual a draft
+      manual.draft
+
+      remove
+      persist
+      notify_listeners
+    end
 
     [manual, document]
   end
@@ -44,6 +49,14 @@ private
 
   def manual_id
     context.params.fetch("manual_id")
+  end
+
+  def change_note_params
+    document_params = context.params.fetch("document")
+    {
+      "minor_update" => document_params.fetch("minor_update", "0"),
+      "change_note" => document_params.fetch("change_note", ""),
+    }
   end
 
   def notify_listeners

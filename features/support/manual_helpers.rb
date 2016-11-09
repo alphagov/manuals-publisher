@@ -66,11 +66,16 @@ module ManualHelpers
     save_as_draft
   end
 
-  def withdraw_manual_document(manual_title, section_title)
+  def withdraw_manual_document(manual_title, section_title, change_note: nil, minor_update: true)
     go_to_manual_page(manual_title)
     click_on section_title
 
     click_on "Withdraw"
+
+    fill_in "Change note", with: change_note unless change_note.blank?
+    if minor_update
+      check "Minor update"
+    end
 
     click_on "Yes"
   end
@@ -426,6 +431,18 @@ module ManualHelpers
     visit withdraw_manual_document_path(manual, document)
     expect(current_path).to eq manual_document_path(manual.id, document.id)
     expect(page).to have_text("You don't have permission to withdraw manual sections.")
+  end
+
+  def change_notes_sent_to_publishing_api_include_document(document)
+    ->(request) do
+      data = JSON.parse(request.body)
+      change_notes = data["details"]["change_notes"]
+      change_notes.detect { |change_note|
+        (change_note["base_path"] == "/#{document.slug}") &&
+        (change_note["title"] == document.title) &&
+        (change_note["change_note"] == document.change_note)
+      }.present?
+    end
   end
 end
 RSpec.configuration.include ManualHelpers, type: :feature

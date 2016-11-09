@@ -80,3 +80,21 @@ Feature: Removing a section from a manual
     Given I am logged in as a writer
     And a published manual with some sections was created without the UI
     Then I cannot remove a document from the manual
+
+  Scenario: Removing a section with a major update change notes
+    Given I am logged in as a "GDS" editor
+    And a published manual exists
+    When I remove one of the documents from the manual with a major update omitting the note
+    Then I see an error requesting that I provide a change note
+    When I remove one of the documents from the manual with a major update
+    Then the document is removed from the manual
+    When I publish the manual
+    Then the removed document change note is included
+
+  Scenario: Removing a section with a minor update change notes
+    Given I am logged in as a "GDS" editor
+    And a published manual exists
+    When I remove one of the documents from the manual with a minor update
+    Then the document is removed from the manual
+    When I publish the manual
+    Then the removed document change note is not included

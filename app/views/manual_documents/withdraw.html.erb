@@ -10,10 +10,18 @@
 <div class='row'>
   <div class="col-md-8">
     <%= form_for [manual, document], method: :delete, class: 'panel panel-default' do |f| %>
+      <%= render partial: "shared/form_errors", locals: { object: document } %>
+
       <div class="panel-body">
         <p>This will remove this section from the manual.  This change will go
           live when you publish the manual.  You will not be able to reinstate
           it after you remove it.</p>
+
+        <div class="checkbox add-vertical-margins">
+          <%= f.check_box :minor_update %>
+        </div>
+        <%= f.text_area :change_note, class: 'form-control short-textarea' %>
+
         <p>Are you sure you want to proceed?</p>
         <button name='draft' class="btn btn-danger" data-disable-with="Withdrawing...">Yes</button>
         <%= link_to "No", manual_document_path(manual, document), class: 'btn btn-default' %>

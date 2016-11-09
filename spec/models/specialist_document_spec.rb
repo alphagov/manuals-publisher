@@ -1,7 +1,4 @@
-require "fast_spec_helper"
-require "active_support/core_ext/hash"
-
-require "specialist_document"
+require "spec_helper"
 
 describe SpecialistDocument do
   subject(:doc) {
@@ -68,6 +65,21 @@ describe SpecialistDocument do
         published?: false,
         archived?: false,
         version_number: 2,
+        extra_fields: extra_fields,
+        document_type: document_type,
+      )
+    )
+  }
+
+  let(:draft_edition_v3) {
+    double(:draft_edition_v2,
+      edition_messages.merge(
+        title: "Draft edition v3",
+        state: "draft",
+        draft?: true,
+        published?: false,
+        archived?: false,
+        version_number: 3,
         extra_fields: extra_fields,
         document_type: document_type,
       )
@@ -583,16 +595,24 @@ describe SpecialistDocument do
         expect(doc).to be_withdrawn
       end
     end
+
+    context "one published and one withdrawn and one draft" do
+      let(:editions) { [published_edition_v1, withdrawn_edition_v2, draft_edition_v3] }
+
+      it "returns false" do
+        expect(doc).not_to be_withdrawn
+      end
+    end
   end
 
   describe "#withdraw!" do
     context "one draft" do
       let(:editions) { [draft_edition_v1] }
 
-      it "does nothing" do
+      it "archives the draft" do
         doc.withdraw!
 
-        expect(draft_edition_v1).not_to have_received(:archive)
+        expect(draft_edition_v1).to have_received(:archive)
       end
     end
 
@@ -610,10 +630,10 @@ describe SpecialistDocument do
     context "one published and one draft edition" do
       let(:editions) { [published_edition_v1, draft_edition_v2] }
 
-      it "sets the published edition's state to withdrawn" do
+      it "sets the draft edition's state to withdrawn" do
         doc.withdraw!
 
-        expect(published_edition_v1).to have_received(:archive)
+        expect(draft_edition_v2).to have_received(:archive)
       end
     end
 
@@ -632,7 +652,7 @@ describe SpecialistDocument do
     let(:editions) { [published_edition_v1, draft_edition_v2] }
 
     it "sets the exported_at date on the latest edition" do
-      time = Time.now
+      time = Time.zone.now
       Timecop.freeze(time) do
         doc.mark_as_exported_to_live_publishing_api!
         expect(draft_edition_v2).to have_received(:exported_at=).with(time).ordered

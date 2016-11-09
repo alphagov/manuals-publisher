@@ -57,6 +57,18 @@ private
           change_note: doc.change_note,
         )
       end
+
+      manual.removed_documents.each do |doc|
+        next if doc.withdrawn?
+        next if doc.minor_update?
+
+        PublicationLog.create!(
+          title: doc.title,
+          slug: doc.slug,
+          version_number: doc.version_number,
+          change_note: doc.change_note,
+        )
+      end
     }
   end
 
@@ -125,11 +137,7 @@ private
       manual.removed_documents.each do |document|
         next if document.withdrawn? && action != :republish
         publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true })
-        if document.draft?
-          document.latest_edition.archive
-        else
-          document.withdraw!
-        end
+        document.withdraw_and_mark_as_exported_to_live_publishing_api!
       end
     }
   end
