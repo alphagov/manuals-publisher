@@ -136,7 +136,10 @@ private
 
       manual.removed_documents.each do |document|
         next if document.withdrawn? && action != :republish
-        publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true })
+        begin
+          publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true })
+        rescue GdsApi::HTTPNotFound
+        end
         document.withdraw_and_mark_as_exported_to_live_publishing_api!
       end
     }
