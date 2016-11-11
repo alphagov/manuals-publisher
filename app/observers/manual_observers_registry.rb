@@ -131,7 +131,7 @@ private
           entity: document,
         ).call
 
-        document.mark_as_exported_to_live_publishing_api! if action != :republish
+        document.mark_as_exported! if action != :republish
       end
 
       manual.removed_documents.each do |document|
@@ -140,7 +140,7 @@ private
           publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true })
         rescue GdsApi::HTTPNotFound
         end
-        document.withdraw_and_mark_as_exported_to_live_publishing_api!
+        document.withdraw_and_mark_as_exported! if action != :republish
       end
     }
   end

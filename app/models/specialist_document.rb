@@ -111,9 +111,9 @@ class SpecialistDocument
     latest_edition.archive unless withdrawn?
   end
 
-  def withdraw_and_mark_as_exported_to_live_publishing_api!
+  def withdraw_and_mark_as_exported!(exported_at = Time.zone.now)
     edition = latest_edition
-    edition.exported_at = Time.zone.now
+    edition.exported_at = exported_at
     edition.archive
   end
 
@@ -145,9 +145,9 @@ class SpecialistDocument
     latest_edition.exported_at.nil?
   end
 
-  def mark_as_exported_to_live_publishing_api!
+  def mark_as_exported!(exported_at = Time.zone.now)
     edition = latest_edition
-    edition.exported_at = Time.zone.now
+    edition.exported_at = exported_at
     edition.save
   end
 

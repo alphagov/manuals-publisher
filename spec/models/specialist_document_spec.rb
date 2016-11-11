@@ -648,13 +648,13 @@ describe SpecialistDocument do
     end
   end
 
-  describe "#mark_as_exported_to_live_publishing_api!" do
+  describe "#mark_as_exported!" do
     let(:editions) { [published_edition_v1, draft_edition_v2] }
 
     it "sets the exported_at date on the latest edition" do
       time = Time.zone.now
       Timecop.freeze(time) do
-        doc.mark_as_exported_to_live_publishing_api!
+        doc.mark_as_exported!
         expect(draft_edition_v2).to have_received(:exported_at=).with(time).ordered
         expect(draft_edition_v2).to have_received(:save).ordered
 
