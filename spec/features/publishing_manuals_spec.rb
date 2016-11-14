@@ -1,7 +1,7 @@
 require "spec_helper"
 require "sidekiq/testing"
 
-RSpec.describe "Republishing manuals", type: :feature do
+RSpec.describe "Publishing manuals", type: :feature do
   before do
     Sidekiq::Testing.inline!
     login_as(:generic_editor)
@@ -15,6 +15,8 @@ RSpec.describe "Republishing manuals", type: :feature do
   end
 
   describe "publishing a manual with major and minor updates" do
+    let(:publish_time) { DateTime.now }
+
     before do
       manual = create_manual_without_ui(manual_fields)
 
@@ -26,7 +28,9 @@ RSpec.describe "Republishing manuals", type: :feature do
       # Re-fetch manual to include documents
       @manual = manual_repository.fetch(manual.id)
 
-      publish_manual_without_ui(@manual)
+      Timecop.freeze(publish_time) do
+        publish_manual_without_ui(@manual)
+      end
     end
 
     it "sends the manual and the sections to the Publishing API" do
@@ -38,6 +42,10 @@ RSpec.describe "Republishing manuals", type: :feature do
     it "creates publication logs for major updates to documents only" do
       expect(PublicationLog.count).to eq 1
       expect(PublicationLog.first.title).to eq "Section 1 major"
+    end
+
+    it "sets the exported_at timestamp on the document" do
+      expect(@documents.first.latest_edition.reload.exported_at).to be_within(1.second).of publish_time
     end
   end
 end
