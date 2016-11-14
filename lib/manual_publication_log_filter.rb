@@ -8,8 +8,8 @@ class ManualPublicationLogFilter
         slug: edition.slug,
         version_number: edition.version_number,
         change_note: edition.change_note,
-        created_at: edition.exported_at,
-        updated_at: edition.exported_at
+        created_at: edition.exported_at || edition.updated_at,
+        updated_at: edition.exported_at || edition.updated_at
       )
     end
   end
