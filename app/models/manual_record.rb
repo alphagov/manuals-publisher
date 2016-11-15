@@ -6,9 +6,10 @@ class ManualRecord
   field :organisation_slug, type: String
   field :slug, type: String
 
-  embeds_many :editions,
+  has_many :editions,
     class_name: "ManualRecord::Edition",
-    cascade_callbacks: true
+    dependent: :delete,
+    autosave: true
 
   def self.find_by(attributes)
     first(conditions: attributes)
@@ -59,8 +60,17 @@ private
     field :document_ids, type: Array
     field :removed_document_ids, type: Array
 
-    # We don't make use of the relationship but Mongiod can't save the
+    # We don't make use of the relationship but Mongoid can't save the
     # timestamps properly without it.
-    embedded_in "ManualRecord"
+    belongs_to :manual_record
+
+    after_save :touch_manual_record
+    before_destroy :touch_manual_record
+
+    def touch_manual_record
+      # Apparently touch is a Mongoid 3 thing, so we use the callback code
+      # from Mongoid::Timestamps::Updated
+      manual_record.set_updated_at if manual_record.able_to_set_updated_at?
+    end
   end
 end

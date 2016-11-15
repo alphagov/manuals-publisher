@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe ManualRecord, hits_db: true do
-  subject(:record) { ManualRecord.new }
+  subject(:record) { ManualRecord.create }
 
   describe "#latest_edition" do
     context "when there are several previous editions" do
