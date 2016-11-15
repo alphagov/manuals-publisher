@@ -16,6 +16,23 @@ describe ManualRecord, hits_db: true do
       it "returns the edition with the highest version number" do
         expect(record.latest_edition.version_number).to eq(3)
       end
+
+      it "returns the most recent new draft even if it hasn't been saved yet" do
+        # make everything published
+        record.editions.each { |e| e.state = "published"; e.save! }
+        # build a new draft
+        new_draft = record.new_or_existing_draft_edition
+        expect(new_draft).not_to be_persisted
+        expect(record.latest_edition).to eq(new_draft)
+      end
+    end
+  end
+
+  context "saving" do
+    it "saves the latest edition if it needs saving" do
+      new_draft = record.new_or_existing_draft_edition
+      record.save!
+      expect(new_draft).to be_persisted
     end
   end
 

@@ -32,12 +32,25 @@ class ManualRecord
   end
 
   def latest_edition
-    editions.order_by([:version_number, :desc]).first
+    # NOTE - we cache this because .order_by is a mongoid method that will hit
+    # the server each time, also because it's a server command it doesn't look
+    # at unsaved instances in the array (such as those created in
+    # build_draft_edition below)
+    @latest_edition ||= editions.order_by([:version_number, :desc]).first
   end
 
+  after_save :save_and_clear_latest_edition
+
 private
+  def save_and_clear_latest_edition
+    if @latest_edition.present?
+      @latest_edition.save if @latest_edition.changed?
+      @latest_edition = nil
+    end
+  end
+
   def build_draft_edition
-    editions.build(state: "draft", version_number: next_version_number)
+    @latest_edition = editions.build(state: "draft", version_number: next_version_number)
   end
 
   def next_version_number
