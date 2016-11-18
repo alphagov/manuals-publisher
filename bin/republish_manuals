@@ -7,22 +7,17 @@ require "logger"
 logger = Logger.new(STDOUT)
 logger.formatter = Logger::Formatter.new
 
-repository = ManualsPublisherWiring.get(:repository_registry).manual_repository
-
-begin
-  count = repository.all.count
-rescue DocumentAssociationMarshaller::RemovedDocumentIdNotFoundError
-  count = "?"
-end
+manual_records = ManualRecord.all
+count = manual_records.count
 
 logger.info "Republishing #{count} manuals..."
 
-repository.all.each.with_index do |manual, i|
+manual_records.to_a.each.with_index do |manual_record, i|
   begin
-    logger.info("[ #{i} / #{count} ] id=#{manual.id} slug=#{manual.slug}]")
-    ManualServiceRegistry.new.republish(manual.id).call
+    logger.info("[ #{i} / #{count} ] id=#{manual_record.manual_id} slug=#{manual_record.slug}]")
+    ManualServiceRegistry.new.republish(manual_record.manual_id).call
   rescue DocumentAssociationMarshaller::RemovedDocumentIdNotFoundError => e
-    logger.error("Did not publish manual with id=#{manual.id} slug=#{manual.slug}. It has at least one removed document which was not found: #{e.message}")
+    logger.error("Did not publish manual with id=#{manual_record.manual_id} slug=#{manual_record.slug}. It has at least one removed document which was not found: #{e.message}")
     next
   end
 end

@@ -8,11 +8,14 @@ RSpec.describe "Republishing manuals", type: :feature do
     stub_organisation_details(GDS::SSO.test_user.organisation_slug)
   end
 
+  let(:original_publish_time) { DateTime.now - 1.day }
   let(:manual_fields) { { title: "Example manual title", summary: "A summary" } }
 
   def create_manual_with_sections
     manual = create_manual_without_ui(manual_fields)
     @documents = create_documents_for_manual_without_ui(manual: manual, count: 2)
+    @documents.each { |doc| doc.update(exported_at: original_publish_time) }
+
     # Re-fetch manual to include documents
     @manual = manual_repository.fetch(manual.id)
 
@@ -47,6 +50,10 @@ RSpec.describe "Republishing manuals", type: :feature do
         check_manual_document_is_drafted_to_publishing_api(document.id)
         check_manual_and_documents_were_published(@manual, document, manual_fields, document_fields(document))
       end
+    end
+
+    it "does not change the exported timestamp" do
+      expect(@documents.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
     end
   end
 end

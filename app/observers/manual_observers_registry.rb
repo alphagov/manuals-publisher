@@ -113,7 +113,7 @@ private
           entity: document,
         ).call
 
-        document.mark_as_exported_to_live_publishing_api!
+        document.mark_as_exported_to_live_publishing_api! if action != :republish
       end
     }
   end
