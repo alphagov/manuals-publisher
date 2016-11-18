@@ -15,6 +15,7 @@
   </div>
 </div>
 
-<div class="actions">
-  <%= link_to("Edit section", edit_manual_document_path(manual, document), class: 'action-link') %>
+<div class="actions well">
+  <%= link_to("Edit section", edit_manual_document_path(manual, document), class: 'action-link btn btn-success') %>
+  <%= link_to("Withdraw section", withdraw_manual_document_path(manual, document), class: 'action-link btn btn-danger') %>
 </div>

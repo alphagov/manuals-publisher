@@ -108,11 +108,17 @@ class SpecialistDocument
   end
 
   def withdraw!
-    published_edition.archive if published_edition
+    latest_edition.archive unless withdrawn?
+  end
+
+  def withdraw_and_mark_as_exported!(exported_at = Time.zone.now)
+    edition = latest_edition
+    edition.exported_at = exported_at
+    edition.archive
   end
 
   def withdrawn?
-    most_recent_non_draft && most_recent_non_draft.archived?
+    latest_edition.archived?
   end
 
   def find_attachment_by_id(attachment_id)
@@ -139,9 +145,9 @@ class SpecialistDocument
     latest_edition.exported_at.nil?
   end
 
-  def mark_as_exported_to_live_publishing_api!
+  def mark_as_exported!(exported_at = Time.zone.now)
     edition = latest_edition
-    edition.exported_at = Time.zone.now
+    edition.exported_at = exported_at
     edition.save
   end
 

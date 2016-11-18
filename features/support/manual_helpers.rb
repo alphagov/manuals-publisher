@@ -66,6 +66,20 @@ module ManualHelpers
     save_as_draft
   end
 
+  def withdraw_manual_document(manual_title, section_title, change_note: nil, minor_update: true)
+    go_to_manual_page(manual_title)
+    click_on section_title
+
+    click_on "Withdraw"
+
+    fill_in "Change note", with: change_note unless change_note.blank?
+    if minor_update
+      check "Minor update"
+    end
+
+    click_on "Yes"
+  end
+
   def save_as_draft
     click_on "Save as draft"
   end
@@ -150,6 +164,27 @@ module ManualHelpers
     check_manual_section_is_published_to_rummager(document.slug, document_attrs, manual_attrs)
   end
 
+  def check_manual_was_published(manual)
+    check_manual_document_is_published_to_publishing_api(manual.id)
+  end
+
+  def check_manual_document_was_not_published(document)
+    check_manual_document_is_not_published_to_publishing_api(document.id)
+  end
+
+  def check_manual_document_was_withdrawn_with_redirect(document, redirect_path)
+    check_manual_document_is_unpublished_from_publishing_api(document.id, { type: "redirect", alternative_path: redirect_path, discard_drafts: true })
+    check_manual_document_is_withdrawn_from_rummager(document)
+  end
+
+  def manual_document_repository(manual)
+    ManualsPublisherWiring.get(:repository_registry).manual_specific_document_repository_factory.call(manual)
+  end
+
+  def check_manual_document_is_archived_in_db(manual, document_id)
+    expect(manual_document_repository(manual).fetch(document_id)).to be_withdrawn
+  end
+
   def check_manual_is_published_to_rummager(slug, attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
@@ -163,18 +198,19 @@ module ManualHelpers
       ).at_least(:once)
   end
 
-  def check_manual_is_drafted_to_publishing_api(
-    content_id,
-    extra_attributes: {},
-    number_of_drafts: 1
-  )
-    attributes = {
-      "schema_name" => "manual",
-      "document_type" => "manual",
-      "rendering_app" => "manuals-frontend",
-      "publishing_app" => "manuals-publisher",
-    }.merge(extra_attributes)
-    assert_publishing_api_put_content(content_id, request_json_including(attributes), number_of_drafts)
+  def check_manual_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
+    raise ArgumentError, "can't specify both extra_attributes and with_matcher" if with_matcher.present? && !extra_attributes.empty?
+
+    if with_matcher.nil?
+      attributes = {
+        "schema_name" => "manual",
+        "document_type" => "manual",
+        "rendering_app" => "manuals-frontend",
+        "publishing_app" => "manuals-publisher",
+      }.merge(extra_attributes)
+      with_matcher = request_json_including(attributes)
+    end
+    assert_publishing_api_put_content(content_id, with_matcher, number_of_drafts)
   end
 
   def check_manual_is_published_to_publishing_api(content_id)
@@ -197,6 +233,14 @@ module ManualHelpers
 
   def check_manual_document_is_published_to_publishing_api(content_id)
     assert_publishing_api_publish(content_id)
+  end
+
+  def check_manual_document_is_not_published_to_publishing_api(content_id)
+    assert_publishing_api_publish(content_id, nil, 0)
+  end
+
+  def check_manual_document_is_unpublished_from_publishing_api(content_id, unpublishing_attributes)
+    assert_publishing_api_unpublish(content_id, unpublishing_attributes)
   end
 
   def check_manual_section_is_published_to_rummager(slug, attrs, manual_attrs)
@@ -317,6 +361,14 @@ module ManualHelpers
     end
   end
 
+  def check_manual_document_is_withdrawn_from_rummager(document)
+    expect(fake_rummager).to have_received(:delete_document)
+      .with(
+        "manual_section",
+        "/#{document.slug}",
+      )
+  end
+
   def check_manual_has_organisation_slug(attributes, organisation_slug)
     go_to_manual_page(attributes.fetch(:title))
 
@@ -367,6 +419,30 @@ module ManualHelpers
       section_summary: document.summary,
       section_body: document.body,
     }
+  end
+
+  def check_document_withdraw_link_not_visible(manual, document)
+    # Don't give them the option...
+    go_to_manual_page(manual.title)
+    click_on document.title
+    expect(page).not_to have_button("Withdraw")
+
+    # ...and if they get here anyway, throw them out
+    visit withdraw_manual_document_path(manual, document)
+    expect(current_path).to eq manual_document_path(manual.id, document.id)
+    expect(page).to have_text("You don't have permission to withdraw manual sections.")
+  end
+
+  def change_notes_sent_to_publishing_api_include_document(document)
+    ->(request) do
+      data = JSON.parse(request.body)
+      change_notes = data["details"]["change_notes"]
+      change_notes.detect { |change_note|
+        (change_note["base_path"] == "/#{document.slug}") &&
+        (change_note["title"] == document.title) &&
+        (change_note["change_note"] == document.change_note)
+      }.present?
+    end
   end
 end
 RSpec.configuration.include ManualHelpers, type: :feature

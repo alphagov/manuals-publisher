@@ -57,6 +57,18 @@ private
           change_note: doc.change_note,
         )
       end
+
+      manual.removed_documents.each do |doc|
+        next if doc.withdrawn?
+        next if doc.minor_update?
+
+        PublicationLog.create!(
+          title: doc.title,
+          slug: doc.slug,
+          version_number: doc.version_number,
+          change_note: doc.change_note,
+        )
+      end
     }
   end
 
@@ -74,6 +86,12 @@ private
             MarkdownAttachmentProcessor.new(section),
             manual,
           )
+        )
+      end
+
+      manual.removed_documents.each do |section|
+        indexer.delete(
+          ManualSectionIndexableFormatter.new(section, manual),
         )
       end
     }
@@ -113,7 +131,16 @@ private
           entity: document,
         ).call
 
-        document.mark_as_exported_to_live_publishing_api! if action != :republish
+        document.mark_as_exported! if action != :republish
+      end
+
+      manual.removed_documents.each do |document|
+        next if document.withdrawn? && action != :republish
+        begin
+          publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true })
+        rescue GdsApi::HTTPNotFound
+        end
+        document.withdraw_and_mark_as_exported! if action != :republish
       end
     }
   end

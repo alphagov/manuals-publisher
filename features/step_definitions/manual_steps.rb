@@ -63,6 +63,7 @@ Given(/^a draft manual exists with some documents$/) do
 
   @manual = most_recently_created_manual
   @documents = @manual.documents.to_a
+  @document = @documents.first
 
   WebMock::RequestRegistry.instance.reset!
 end
@@ -262,6 +263,16 @@ When(/^I publish the manual$/) do
   publish_manual
 end
 
+When(/^I add another section and publish the manual later$/) do
+  create_manual_document(@manual.title, {
+    section_title: "Another section so we can publish",
+    section_summary: "Another section so we can publish summary",
+    section_body: "Another section so we can publish body",
+  })
+  go_to_manual_page(@manual.title)
+  publish_manual
+end
+
 Then(/^the manual and all its documents are published$/) do
   @documents.each do |document|
     check_manual_and_documents_were_published(
@@ -337,6 +348,42 @@ Given(/^a published manual exists$/) do
   @documents = @manual.documents.to_a
 
   publish_manual
+
+  WebMock::RequestRegistry.instance.reset!
+end
+
+Given(/^a published manual with some sections was created without the UI$/) do
+  @manual_title = "Example Manual Title"
+  @manual_slug = "guidance/example-manual-title"
+
+  @manual_fields = {
+    title: @manual_title,
+    summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
+  }
+
+  @manual = create_manual_without_ui(@manual_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
+
+  doc_1 = create_manual_document_without_ui(
+    @manual,
+    {
+      title: "1st example section",
+      summary: "1st example section summary",
+      body: "1st example section body"
+    },
+    organisation_slug: GDS::SSO.test_user.organisation_slug
+  )
+  doc_2 = create_manual_document_without_ui(
+    @manual,
+    {
+      title: "2nd example section",
+      summary: "2nd example section summary",
+      body: "2nd example section body"
+    },
+    organisation_slug: GDS::SSO.test_user.organisation_slug
+  )
+  @documents = [doc_1, doc_2]
+
+  publish_manual_without_ui(@manual)
 
   WebMock::RequestRegistry.instance.reset!
 end

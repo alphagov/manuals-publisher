@@ -73,6 +73,10 @@ class AbstractManualDocumentServiceRegistry
     RemoveManualDocumentService.new(
       manual_repository,
       context,
+      listeners: [
+        publishing_api_draft_manual_exporter,
+        publishing_api_draft_manual_document_discarder
+      ]
     )
   end
 
@@ -127,6 +131,15 @@ private
         manual,
         manual_document
       ).call
+    }
+  end
+
+  def publishing_api_draft_manual_document_discarder
+    ->(manual_document, _manual) {
+      begin
+        publishing_api_v2.discard_draft(manual_document.id)
+      rescue GdsApi::HTTPNotFound, GdsApi::HTTPUnprocessableEntity
+      end
     }
   end
 

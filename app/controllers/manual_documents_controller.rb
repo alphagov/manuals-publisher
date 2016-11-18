@@ -1,4 +1,6 @@
 class ManualDocumentsController < ApplicationController
+  before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
+
   def show
     manual, document = services.show(self).call
 
@@ -92,6 +94,33 @@ class ManualDocumentsController < ApplicationController
     )
   end
 
+  def withdraw
+    manual, document = services.show(self).call
+
+    render(:withdraw, locals: {
+      manual: ManualViewAdapter.new(manual),
+      document: ManualDocumentViewAdapter.new(manual, document),
+    })
+  end
+
+  def destroy
+    manual, document = services.remove(self).call
+
+    if document.valid?
+      redirect_to(
+        manual_path(manual),
+        flash: {
+          notice: "Section #{document.title} removed!"
+        }
+      )
+    else
+      render(:withdraw, locals: {
+        manual: ManualViewAdapter.new(manual),
+        document: ManualDocumentViewAdapter.new(manual, document),
+      })
+    end
+  end
+
 private
   def services
     if current_user_is_gds_editor?
@@ -109,5 +138,14 @@ private
     OrganisationalManualDocumentServiceRegistry.new(
       organisation_slug: current_organisation_slug,
     )
+  end
+
+  def authorize_user_for_withdrawing
+    unless current_user_can_withdraw?("manual")
+      redirect_to(
+        manual_document_path(params[:manual_id], params[:id]),
+        flash: { error: "You don't have permission to withdraw manual sections." },
+      )
+    end
   end
 end
