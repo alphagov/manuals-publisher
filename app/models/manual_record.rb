@@ -6,9 +6,10 @@ class ManualRecord
   field :organisation_slug, type: String
   field :slug, type: String
 
-  embeds_many :editions,
+  has_many :editions,
     class_name: "ManualRecord::Edition",
-    cascade_callbacks: true
+    dependent: :delete,
+    autosave: true
 
   def self.find_by(attributes)
     first(conditions: attributes)
@@ -31,12 +32,25 @@ class ManualRecord
   end
 
   def latest_edition
-    editions.order_by([:version_number, :desc]).first
+    # NOTE - we cache this because .order_by is a mongoid method that will hit
+    # the server each time, also because it's a server command it doesn't look
+    # at unsaved instances in the array (such as those created in
+    # build_draft_edition below)
+    @latest_edition ||= editions.order_by([:version_number, :desc]).first
   end
 
+  after_save :save_and_clear_latest_edition
+
 private
+  def save_and_clear_latest_edition
+    if @latest_edition.present?
+      @latest_edition.save if @latest_edition.changed?
+      @latest_edition = nil
+    end
+  end
+
   def build_draft_edition
-    editions.build(state: "draft", version_number: next_version_number)
+    @latest_edition = editions.build(state: "draft", version_number: next_version_number)
   end
 
   def next_version_number
@@ -59,8 +73,17 @@ private
     field :document_ids, type: Array
     field :removed_document_ids, type: Array
 
-    # We don't make use of the relationship but Mongiod can't save the
+    # We don't make use of the relationship but Mongoid can't save the
     # timestamps properly without it.
-    embedded_in "ManualRecord"
+    belongs_to :manual_record
+
+    after_save :touch_manual_record
+    before_destroy :touch_manual_record
+
+    def touch_manual_record
+      # Apparently touch is a Mongoid 3 thing, so we use the callback code
+      # from Mongoid::Timestamps::Updated
+      manual_record.set_updated_at if manual_record.able_to_set_updated_at?
+    end
   end
 end
