@@ -155,6 +155,10 @@ class SpecialistDocument
     editions.any?(&:persisted?)
   end
 
+  def eql?(other)
+    id.eql?(other.id)
+  end
+
 protected
 
   attr_reader :slug_generator, :edition_factory
