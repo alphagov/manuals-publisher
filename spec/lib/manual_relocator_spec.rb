@@ -16,6 +16,9 @@ describe ManualRelocator do
     let!(:temporary_section_1) { FactoryGirl.create(:specialist_document_edition, document_id: "abcdef") }
     let!(:temporary_section_2) { FactoryGirl.create(:specialist_document_edition, document_id: "bcdefg") }
 
+    let!(:existing_publication_log) { FactoryGirl.create(:publication_log, slug: "#{existing_slug}/slug-for-existing-section", change_note: "Hello from #{existing_manual_id}") }
+    let!(:temporary_publication_log) { FactoryGirl.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
+
     before do
       allow(STDOUT).to receive(:puts)
       existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456))
@@ -58,7 +61,15 @@ describe ManualRelocator do
                                       type: "redirect",
                                       alternative_path: "/#{existing_slug}",
                                       discard_drafts: true)
+    end
 
+    it "removes the publication logs for the existing manual" do
+      expect { existing_publication_log.reload }.to raise_error(Mongoid::Errors::DocumentNotFound)
+    end
+
+    it "moves the publication logs for the temp manual to the new slug" do
+      temporary_publication_log.reload
+      expect(temporary_publication_log.slug).to eq "#{existing_slug}/slug-for-temp-section"
     end
   end
 end

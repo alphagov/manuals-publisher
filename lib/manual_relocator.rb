@@ -37,6 +37,9 @@ private
         end
       end
 
+      puts "Destroying old PublicationLogs for #{manual_record.slug}"
+      PublicationLog.change_notes_for(manual_record.slug).each { |log| log.destroy }
+
       # Destroy the manual record
       puts "Destroying manual #{manual_record._id}"
       manual_record.destroy
@@ -64,6 +67,13 @@ private
     puts "#{reslug_msg} as '#{new_slug}'"
 
     hca_manual_record.set(:slug, new_slug)
+
+    # Reslug the existing publication logs
+    puts "Reslugging publication logs for #{old_slug} to #{new_slug}"
+    PublicationLog.change_notes_for(old_slug).each do |publication_log|
+      publication_log.set(:slug, publication_log.slug.gsub(old_slug, new_slug))
+    end
+    puts PublicationLog.change_notes_for(new_slug).inspect
 
     # Clean up manual sections belonging to the temporary manual path
     hca_document_ids = hca_manual_record.editions.flat_map(&:document_ids).uniq
