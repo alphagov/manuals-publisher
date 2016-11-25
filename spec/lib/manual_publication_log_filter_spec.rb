@@ -71,7 +71,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       ]
     )
 
-    subject.delete_logs_and_rebuild_for_major_updates_only!(manual_slug)
+    described_class.new(manual_record).delete_logs_and_rebuild_for_major_updates_only!
   end
 
   it "deletes all existing publication logs for the supplied manual slug only" do

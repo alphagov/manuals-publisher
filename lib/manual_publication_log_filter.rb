@@ -1,9 +1,14 @@
 class ManualPublicationLogFilter
-  def delete_logs_and_rebuild_for_major_updates_only!(slug)
-    PublicationLog.with_slug_prefix(slug).destroy_all
+  def initialize(manual_record)
+    @manual_record = manual_record
+    @manual_slug = manual_record.slug
+  end
 
-    manual_record = ManualRecord.where(slug: slug).first
-    edition_ordering = EditionOrdering.new(document_editions_for_rebuild(slug), manual_record.latest_edition.document_ids)
+  def delete_logs_and_rebuild_for_major_updates_only!
+    PublicationLog.with_slug_prefix(@manual_slug).destroy_all
+
+    manual_record = ManualRecord.where(slug: @manual_slug).first
+    edition_ordering = EditionOrdering.new(document_editions_for_rebuild, manual_record.latest_edition.document_ids)
 
     edition_ordering.sort_by_document_ids_and_created_at.each do |edition|
       PublicationLog.create!(
@@ -44,7 +49,7 @@ class ManualPublicationLogFilter
 
   private
 
-  def document_editions_for_rebuild(slug)
-    SpecialistDocumentEdition.with_slug_prefix(slug).where(:minor_update.nin => [true]).any_of({state: "published"}, {state: "archived"})
+  def document_editions_for_rebuild
+    SpecialistDocumentEdition.with_slug_prefix(@manual_slug).where(:minor_update.nin => [true]).any_of({state: "published"}, {state: "archived"})
   end
 end
