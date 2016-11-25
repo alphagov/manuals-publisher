@@ -14,12 +14,13 @@ RSpec.describe "Republishing manuals", type: :feature do
   def create_manual_with_sections
     manual = create_manual_without_ui(manual_fields)
     @documents = create_documents_for_manual_without_ui(manual: manual, count: 2)
-    @documents.each { |doc| doc.update(exported_at: original_publish_time) }
 
     # Re-fetch manual to include documents
     @manual = manual_repository.fetch(manual.id)
 
-    publish_manual_without_ui(@manual)
+    Timecop.freeze(original_publish_time) do
+      publish_manual_without_ui(@manual)
+    end
 
     check_manual_is_drafted_to_publishing_api(@manual.id, number_of_drafts: 3)
     check_manual_is_published_to_publishing_api(@manual.id)
