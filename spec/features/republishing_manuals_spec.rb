@@ -40,11 +40,11 @@ RSpec.describe "Republishing manuals", type: :feature do
   describe "republishing a manual with sections" do
     before do
       create_manual_with_sections
+
+      republish_manuals
     end
 
     it "sends the manual and the sections to the Publishing API" do
-      republish_manuals
-
       check_manual_is_drafted_to_publishing_api(@manual.id)
       @documents.each do |document|
         check_manual_document_is_drafted_to_publishing_api(document.id)
