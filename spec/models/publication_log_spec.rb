@@ -76,6 +76,40 @@ describe PublicationLog, hits_db: true do
         expect(PublicationLog.change_notes_for(slug)).to eq(change_notes_for_first_doc)
       end
 
+      context "and some are for documents with similar slugs" do
+        let!(:similar_slug) { "cma-cases/my-slug-belongs-to-me" }
+
+        let!(:change_note_for_similar_slug) {
+          PublicationLog.create(
+            slug: similar_slug,
+            title: "",
+            change_note: "A similar note",
+            version_number: 1,
+          )
+        }
+
+        it "does not include the notes for the similar slug" do
+          expect(PublicationLog.change_notes_for(slug)).not_to include change_note_for_similar_slug
+        end
+      end
+
+      context "and some are for child documents of the slug" do
+        let!(:child_slug) { "cma-cases/my-slug/my-lovely-document-slug" }
+
+        let!(:change_note_for_child_slug) {
+          PublicationLog.create(
+            slug: child_slug,
+            title: "",
+            change_note: "A child note",
+            version_number: 1,
+          )
+        }
+
+        it "includes the notes for the child" do
+          expect(PublicationLog.change_notes_for(slug)).to include change_note_for_child_slug
+        end
+      end
+
       context "multiple publication logs exist for a particular edition version" do
         before do
           PublicationLog.create(

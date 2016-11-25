@@ -12,7 +12,7 @@ class PublicationLog
 
   alias_attribute :published_at, :created_at
 
-  scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
+  scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}(\/|$)/) }
 
   def self.change_notes_for(slug)
     with_slug_prefix(slug)
