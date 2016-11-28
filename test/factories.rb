@@ -31,12 +31,12 @@ FactoryGirl.define do
   end
 
   factory :specialist_document_edition do
+    document_id { BSON::ObjectId.new }
     sequence(:slug) {|n| "test-specialist-document-#{n}" }
     sequence(:title) {|n| "Test Specialist Document #{n}" }
     summary "My summary"
     body "My body"
     document_type "cma_case"
-    sequence(:document_id) { |n| "document-id-#{n}" }
     extra_fields do
       {
         opened_date: "2013-04-20",
