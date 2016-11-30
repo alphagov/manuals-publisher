@@ -20,12 +20,6 @@ describe ManualWithDocuments do
   let(:organisation_slug) { double(:organisation_slug) }
   let(:state) { double(:state) }
 
-  it "rasies an error without an ID" do
-    expect {
-      Manual.new({})
-    }.to raise_error
-  end
-
   describe "#publish" do
     it "notifies the underlying manual" do
       manual_with_documents.publish

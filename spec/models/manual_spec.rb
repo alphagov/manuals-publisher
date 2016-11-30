@@ -13,10 +13,11 @@ describe Manual do
       organisation_slug: organisation_slug,
       state: state,
       updated_at: updated_at,
+      version_number: 10,
     )
   }
 
-  let(:id) { double(:id) }
+  let(:id) { "0123-4567-89ab-cdef" }
   let(:updated_at) { double(:updated_at) }
   let(:title) { double(:title) }
   let(:summary) { double(:summary) }
@@ -29,6 +30,18 @@ describe Manual do
     expect {
       Manual.new({})
     }.to raise_error
+  end
+
+  describe "#eql?" do
+    it "is considered the same as another manual instance if they have the same id" do
+      expect(manual).to eql(manual)
+      expect(manual).to eql(Manual.new(id: manual.id))
+      expect(manual).not_to eql(Manual.new(id: manual.id.reverse))
+    end
+
+    it "is considered the same as another manual instance with the same id even if the version number is different" do
+      expect(manual).to eql(Manual.new(id: manual.id, version_number: manual.version_number + 1))
+    end
   end
 
   describe "#publish" do
@@ -51,6 +64,16 @@ describe Manual do
     end
   end
 
+  describe "#version_number" do
+    it "comes from the initializer attributes" do
+      expect(manual.version_number).to eq 10
+    end
+
+    it "defaults to 0 if not supplied in the initalizer attributes" do
+      expect(Manual.new(id: "1234-5678").version_number).to eq 0
+    end
+  end
+
   describe "#attributes" do
     it "returns a hash of attributes" do
       expect(manual.attributes).to eq(
@@ -62,7 +85,7 @@ describe Manual do
         organisation_slug: organisation_slug,
         state: state,
         updated_at: updated_at,
-        version_number: 0,
+        version_number: 10,
       )
     end
   end

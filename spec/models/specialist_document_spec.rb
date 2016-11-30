@@ -72,7 +72,7 @@ describe SpecialistDocument do
   }
 
   let(:draft_edition_v3) {
-    double(:draft_edition_v2,
+    double(:draft_edition_v3,
       edition_messages.merge(
         title: "Draft edition v3",
         state: "draft",
@@ -115,6 +115,20 @@ describe SpecialistDocument do
       )
     )
   }
+
+  describe "#eql?" do
+    let(:editions) { [draft_edition_v1] }
+
+    it "is considered the same as another specialist document instance if they have the same id" do
+      expect(doc).to eql(doc)
+      expect(doc).to eql(SpecialistDocument.new(slug_generator, doc.id, [draft_edition_v1]))
+      expect(doc).not_to eql(SpecialistDocument.new(slug_generator, doc.id.reverse, [draft_edition_v1]))
+    end
+
+    it "is considered the same as another specialist document instance with the same id even if they have different version numbers" do
+      expect(doc).to eql(SpecialistDocument.new(slug_generator, doc.id, [draft_edition_v2]))
+    end
+  end
 
   context "with one draft edition" do
     let(:editions) { [draft_edition_v1] }

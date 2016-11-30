@@ -23,6 +23,10 @@ class Manual
     id
   end
 
+  def eql?(other)
+    id.eql? other.id
+  end
+
   def attributes
     {
       id: id,
