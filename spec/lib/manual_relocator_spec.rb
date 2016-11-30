@@ -3,18 +3,51 @@ require "manual_relocator"
 
 describe ManualRelocator do
   include GdsApi::TestHelpers::PublishingApiV2
+  let(:existing_manual_id) { SecureRandom.uuid }
+  let(:temp_manual_id) { SecureRandom.uuid }
+  let(:existing_slug) { "guidance/real-slug" }
+  let(:temp_slug) { "guidance/temporary-slug" }
+  subject { described_class.new(temp_slug, existing_slug) }
 
-  describe ".move" do
-    let(:existing_manual_id) { SecureRandom.uuid }
-    let(:temp_manual_id) { SecureRandom.uuid }
-    let(:existing_slug) { "guidance/real-slug" }
-    let(:temp_slug) { "guidance/temporary-slug" }
+  describe "#old_manual" do
+    it "raises an error if the existing slug doesn't result in a manual" do
+      expect {
+        subject.old_manual
+      }.to raise_error(RuntimeError,  "No manual found for slug '#{existing_slug}'")
+    end
+
+    it "raises an error if the existing slug maps to more than one manual" do
+      ManualRecord.create(manual_id: existing_manual_id, slug: existing_slug)
+      ManualRecord.create(slug: existing_slug)
+      expect {
+        subject.old_manual
+      }.to raise_error(RuntimeError,  "More than one manual found for slug '#{existing_slug}'")
+    end
+  end
+
+  describe "#new_manual" do
+    it "raises an error if the existing slug doesn't result in a manual" do
+      expect {
+        subject.new_manual
+      }.to raise_error(RuntimeError,  "No manual found for slug '#{temp_slug}'")
+    end
+
+    it "raises an error if the existing slug maps to more than one manual" do
+      ManualRecord.create(manual_id: temp_manual_id, slug: temp_slug)
+      ManualRecord.create(slug: temp_slug)
+      expect {
+        subject.new_manual
+      }.to raise_error(RuntimeError,  "More than one manual found for slug '#{temp_slug}'")
+    end
+  end
+
+  describe "#move!" do
     let!(:existing_manual) { ManualRecord.create(manual_id: existing_manual_id, slug: existing_slug) }
     let!(:temp_manual) { ManualRecord.create(manual_id: temp_manual_id, slug: temp_slug) }
-    let!(:existing_section_1) { FactoryGirl.create(:specialist_document_edition, document_id: "12345") }
-    let!(:existing_section_2) { FactoryGirl.create(:specialist_document_edition, document_id: "23456") }
-    let!(:temporary_section_1) { FactoryGirl.create(:specialist_document_edition, document_id: "abcdef") }
-    let!(:temporary_section_2) { FactoryGirl.create(:specialist_document_edition, document_id: "bcdefg") }
+    let!(:existing_section_1) { FactoryGirl.create(:specialist_document_edition, slug: "#{existing_slug}/existing_section_1", document_id: "12345") }
+    let!(:existing_section_2) { FactoryGirl.create(:specialist_document_edition, slug: "#{existing_slug}/existing_section_2", document_id: "23456") }
+    let!(:temporary_section_1) { FactoryGirl.create(:specialist_document_edition, slug: "#{temp_slug}/temp_section_1", document_id: "abcdef") }
+    let!(:temporary_section_2) { FactoryGirl.create(:specialist_document_edition, slug: "#{temp_slug}/temp_section_2", document_id: "bcdefg") }
 
     let!(:existing_publication_log) { FactoryGirl.create(:publication_log, slug: "#{existing_slug}/slug-for-existing-section", change_note: "Hello from #{existing_manual_id}") }
     let!(:temporary_publication_log) { FactoryGirl.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
@@ -24,22 +57,28 @@ describe ManualRelocator do
       existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456))
       temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg))
       stub_any_publishing_api_unpublish
-      ManualRelocator.move(temp_slug, existing_slug)
+      subject.move!
     end
 
-    it "moves a manual from one slug to another" do
+    it "destroys the existing manual" do
+      expect {
+        existing_manual.reload
+      }.to raise_error(Mongoid::Errors::DocumentNotFound)
+    end
+
+    it "moves the temporary manual to the existing slug" do
       expect(temp_manual.reload.slug).to eq(existing_slug)
       expect(ManualRecord.where(slug: temp_slug).count).to be(0)
     end
 
-    it "unpublishes the temporary manual" do
+    it "unpublishes the temporary manual with a redirect to the existing slug" do
       assert_publishing_api_unpublish(temp_manual_id,
                                       type: "redirect",
                                       alternative_path: "/#{existing_slug}",
                                       discard_drafts: true)
     end
 
-    it "redirects existing manual section paths" do
+    it "unpublishes the existing manual's sections with redirects to the existing slug" do
       assert_publishing_api_unpublish(existing_section_1.document_id,
                                       type: "redirect",
                                       alternative_path: "/#{existing_slug}",
@@ -51,7 +90,23 @@ describe ManualRelocator do
                                       discard_drafts: true)
     end
 
-    it "redirects temporary manual section paths" do
+    it "destroys the existing manual's sections" do
+      expect {
+        existing_section_1.reload
+      }.to raise_error(Mongoid::Errors::DocumentNotFound)
+
+      expect {
+        existing_section_2.reload
+      }.to raise_error(Mongoid::Errors::DocumentNotFound)
+    end
+
+    it "moves the temporary manual's sections to the existing slug" do
+      expect(temporary_section_1.reload.slug).to eq("#{existing_slug}/temp_section_1")
+      expect(temporary_section_2.reload.slug).to eq("#{existing_slug}/temp_section_2")
+      expect(SpecialistDocumentEdition.where(slug: /#{temp_slug}/).count).to be(0)
+    end
+
+    it "unpublishes the temporary manual's section slugs with redirects to their existing slug version" do
       assert_publishing_api_unpublish(temporary_section_1.document_id,
                                       type: "redirect",
                                       alternative_path: "/#{existing_slug}",
@@ -65,11 +120,6 @@ describe ManualRelocator do
 
     it "removes the publication logs for the existing manual" do
       expect { existing_publication_log.reload }.to raise_error(Mongoid::Errors::DocumentNotFound)
-    end
-
-    it "moves the publication logs for the temp manual to the new slug" do
-      temporary_publication_log.reload
-      expect(temporary_publication_log.slug).to eq "#{existing_slug}/slug-for-temp-section"
     end
   end
 end
