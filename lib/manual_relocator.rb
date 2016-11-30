@@ -91,9 +91,10 @@ private
     # Clean up manual sections belonging to the temporary manual path
     document_ids.each do |document_id|
       puts "Redirecting #{document_id} to '/#{to_slug}'"
+      most_recent_edition = SpecialistDocumentEdition.where(document_id: document_id).order_by([:version_number, :desc]).first
       publishing_api.unpublish(document_id,
                                type: "redirect",
-                               alternative_path: "/#{to_slug}",
+                               alternative_path: "/#{most_recent_edition.slug}",
                                discard_drafts: true)
     end
 
