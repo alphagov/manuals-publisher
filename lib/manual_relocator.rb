@@ -13,6 +13,7 @@ class ManualRelocator
   def move!
     redirect_and_remove
     reslug
+    redraft_and_republish
   end
 
   def old_manual
@@ -149,7 +150,128 @@ private
                              discard_drafts: true)
   end
 
+  def redraft_and_republish
+    put_content = publishing_api.method(:put_content)
+    organisation = fetch_organisation(new_manual.organisation_slug)
+    manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
+    manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
+
+    simple_manual = build_simple_manual(
+      new_manual,
+      new_manual.latest_edition,
+      new_manual_document_ids.map do |document_id|
+        build_simple_section(most_recent_edition_of_section(document_id))
+      end
+    )
+
+    ManualPublishingAPIExporter.new(
+      put_content, organisation, manual_renderer, PublicationLog, simple_manual
+    ).call
+
+    simple_manual.documents.each do |simple_document|
+      ManualSectionPublishingAPIExporter.new(
+        put_content, organisation, manual_document_renderer, simple_manual, simple_document
+      ).call
+    end
+  end
+
   def publishing_api
     ManualsPublisherWiring.get(:publishing_api_v2)
+  end
+
+  def fetch_organisation(slug)
+    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
+  end
+
+  def build_simple_manual(manual_record, manual_edition, documents)
+    SimpleManual.new(
+      id: manual_record.manual_id,
+      slug: manual_record.slug,
+      title: manual_edition.title,
+      summary: manual_edition.summary,
+      body: manual_edition.body,
+      organisation_slug: manual_record.organisation_slug,
+      state: manual_edition.state,
+      version_number: manual_edition.version_number,
+      updated_at: manual_edition.updated_at,
+      documents: documents,
+    )
+  end
+
+  class SimpleManual
+    attr_reader :id, :slug, :title, :summary, :body, :organisation_slug,
+        :state, :version_number, :updated_at, :documents
+
+    def initialize(id:, slug:, title:, summary:, body:, organisation_slug:, state:, version_number:, updated_at:, documents:)
+      @id = id
+      @slug = slug
+      @title = title
+      @summary = summary
+      @body = body
+      @organisation_slug = organisation_slug
+      @state = state
+      @version_number = version_number
+      @updated_at = updated_at
+      @documents = documents
+    end
+
+    def attributes
+      {
+        id: id, slug: slug, title: title, summary: summary, body: body,
+        organisation_slug: organisation_slug, state: state,
+        version_number: version_number, updated_at: updated_at,
+      }
+    end
+  end
+
+  def build_simple_section(section_edition)
+    SimpleSection.new(
+      id: section_edition.document_id,
+      title: section_edition.title,
+      slug: section_edition.slug,
+      summary: section_edition.summary,
+      body: section_edition.body,
+      document_type: section_edition.document_type,
+      updated_at: section_edition.updated_at,
+      version_number: section_edition.version_number,
+      extra_fields: section_edition.extra_fields,
+      public_updated_at: section_edition.public_updated_at,
+      minor_update: section_edition.minor_update,
+      attachments: section_edition.attachments.to_a,
+    )
+  end
+
+  class SimpleSection
+    attr_reader :id, :title, :slug, :summary, :body, :document_type, :updated_at,
+      :version_number, :extra_fields, :public_updated_at, :minor_update,
+      :attachments
+
+    def initialize(id:, title:, slug:, summary:, body:, document_type:, updated_at:, version_number:, extra_fields:, public_updated_at:, minor_update:, attachments:)
+      @id = id
+      @title = title
+      @slug = slug
+      @summary = summary
+      @body = body
+      @document_type = document_type
+      @updated_at = updated_at
+      @version_number = version_number
+      @extra_fields = extra_fields
+      @public_updated_at = public_updated_at
+      @minor_update = minor_update
+      @attachments = attachments
+    end
+
+    def attributes
+      {
+        id: id, title: title, slug: slug, summary: summary, body: body,
+        document_type: document_type, updated_at: updated_at,
+        version_number: version_number, extra_fields: extra_fields,
+        public_updated_at: public_updated_at, minor_update: minor_update
+      }
+    end
+
+    def minor_update?
+      !!minor_update
+    end
   end
 end

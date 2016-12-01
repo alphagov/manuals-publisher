@@ -3,6 +3,7 @@ require "manual_relocator"
 
 describe ManualRelocator do
   include GdsApi::TestHelpers::PublishingApiV2
+  include GdsApi::TestHelpers::Organisations
   let(:existing_manual_id) { SecureRandom.uuid }
   let(:temp_manual_id) { SecureRandom.uuid }
   let(:existing_slug) { "guidance/real-slug" }
@@ -42,8 +43,8 @@ describe ManualRelocator do
   end
 
   describe "#move!" do
-    let!(:existing_manual) { ManualRecord.create(manual_id: existing_manual_id, slug: existing_slug) }
-    let!(:temp_manual) { ManualRecord.create(manual_id: temp_manual_id, slug: temp_slug) }
+    let!(:existing_manual) { ManualRecord.create(manual_id: existing_manual_id, slug: existing_slug, organisation_slug: "cabinet-office") }
+    let!(:temp_manual) { ManualRecord.create(manual_id: temp_manual_id, slug: temp_slug, organisation_slug: "cabinet-office") }
     let!(:existing_section_1) { FactoryGirl.create(:specialist_document_edition, slug: "#{existing_slug}/existing_section_1", document_id: "12345") }
     let!(:existing_section_2) { FactoryGirl.create(:specialist_document_edition, slug: "#{existing_slug}/existing_section_2", document_id: "23456") }
     let!(:temporary_section_1) { FactoryGirl.create(:specialist_document_edition, slug: "#{temp_slug}/temp_section_1", document_id: "abcdef") }
@@ -56,10 +57,12 @@ describe ManualRelocator do
     let!(:temporary_publication_log) { FactoryGirl.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
 
     before do
+      organisations_api_has_organisation(temp_manual.organisation_slug)
       allow(STDOUT).to receive(:puts)
       existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567))
       temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh))
       stub_any_publishing_api_unpublish
+      stub_any_publishing_api_put_content
       subject.move!
     end
 
@@ -145,6 +148,24 @@ describe ManualRelocator do
 
     it "removes the publication logs for the existing manual" do
       expect { existing_publication_log.reload }.to raise_error(Mongoid::Errors::DocumentNotFound)
+    end
+
+    it "sends a new draft of the temporary manual with the existing slug as a route" do
+      assert_publishing_api_put_content(temp_manual_id, with_route_matcher("/#{existing_slug}"))
+    end
+
+    it "sends a new draft of each of the temporary manual's sections with the existing slug version of their path as a route" do
+      assert_publishing_api_put_content(temporary_section_1.document_id, with_route_matcher("/#{existing_slug}/temp_section_1"))
+      assert_publishing_api_put_content(temporary_section_2.document_id, with_route_matcher("/#{existing_slug}/temp_section_2"))
+      assert_publishing_api_put_content(temporary_section_3.document_id, with_route_matcher("/#{existing_slug}/section_3"))
+    end
+  end
+
+  def with_route_matcher(path)
+    ->(request) do
+      data = JSON.parse(request.body)
+      routes = data["routes"]
+      (data["base_path"] == path) && (routes.any? { |route| route["path"] == path })
     end
   end
 end
