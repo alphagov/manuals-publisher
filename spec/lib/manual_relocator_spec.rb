@@ -57,107 +57,151 @@ describe ManualRelocator do
     let!(:temporary_publication_log) { FactoryGirl.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
 
     before do
-      organisations_api_has_organisation(temp_manual.organisation_slug)
       allow(STDOUT).to receive(:puts)
-      existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567))
-      temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh))
-      stub_any_publishing_api_unpublish
-      stub_any_publishing_api_put_content
-      subject.move!
     end
 
-    it "destroys the existing manual" do
-      expect {
-        existing_manual.reload
-      }.to raise_error(Mongoid::Errors::DocumentNotFound)
+    context "for invalid manuals" do
+      it "raises an error if the existing manual has never been published" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "draft")
+
+        expect {
+          subject.move!
+        }.to raise_error(RuntimeError, "Manual to remove (#{existing_slug}) should be published")
+      end
+
+      it "raises an error if the existing manual has been published, but is currently withdrawn" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 2, state: "withdrawn")
+
+        expect {
+          subject.move!
+        }.to raise_error(RuntimeError, "Manual to remove (#{existing_slug}) should be published")
+      end
+
+      it "raises an error if the temporary manual has never been published" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), state: "draft")
+
+        expect {
+          subject.move!
+        }.to raise_error(RuntimeError, "Manual to reslug (#{temp_slug}) should be published")
+      end
+
+      it "raises an error if the temporary manual has been published, but is currently withdrawn" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "withdrawn")
+
+        expect {
+          subject.move!
+        }.to raise_error(RuntimeError, "Manual to reslug (#{temp_slug}) should be published")
+      end
     end
 
-    it "moves the temporary manual to the existing slug" do
-      expect(temp_manual.reload.slug).to eq(existing_slug)
-      expect(ManualRecord.where(slug: temp_slug).count).to be(0)
-    end
+    context "for valid manuals" do
+      before do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), state: "published")
 
-    it "unpublishes the temporary manual with a redirect to the existing slug" do
-      assert_publishing_api_unpublish(temp_manual_id,
-                                      type: "redirect",
-                                      alternative_path: "/#{existing_slug}",
-                                      discard_drafts: true)
-    end
+        organisations_api_has_organisation(temp_manual.organisation_slug)
+        stub_any_publishing_api_unpublish
+        stub_any_publishing_api_put_content
+        subject.move!
+      end
 
-    it "unpublishes the existing manual with a gone" do
-      assert_publishing_api_unpublish(existing_manual_id,
-                                      type: "gone",
-                                      discard_drafts: true)
-    end
+      it "destroys the existing manual" do
+        expect {
+          existing_manual.reload
+        }.to raise_error(Mongoid::Errors::DocumentNotFound)
+      end
 
-    it "unpublishes the existing manual's sections with redirects to the existing slug" do
-      assert_publishing_api_unpublish(existing_section_1.document_id,
-                                      type: "redirect",
-                                      alternative_path: "/#{existing_slug}",
-                                      discard_drafts: true)
+      it "moves the temporary manual to the existing slug" do
+        expect(temp_manual.reload.slug).to eq(existing_slug)
+        expect(ManualRecord.where(slug: temp_slug).count).to be(0)
+      end
 
-      assert_publishing_api_unpublish(existing_section_2.document_id,
-                                      type: "redirect",
-                                      alternative_path: "/#{existing_slug}",
-                                      discard_drafts: true)
-    end
+      it "unpublishes the temporary manual with a redirect to the existing slug" do
+        assert_publishing_api_unpublish(temp_manual_id,
+                                        type: "redirect",
+                                        alternative_path: "/#{existing_slug}",
+                                        discard_drafts: true)
+      end
 
-    it "issues a gone for existing manual's sections that would be reused one of the new manual's sections" do
-      assert_publishing_api_unpublish(existing_section_3.document_id,
-                                      type: "gone",
-                                      discard_drafts: true)
-    end
+      it "unpublishes the existing manual with a gone" do
+        assert_publishing_api_unpublish(existing_manual_id,
+                                        type: "gone",
+                                        discard_drafts: true)
+      end
 
-    it "destroys the existing manual's sections" do
-      expect {
-        existing_section_1.reload
-      }.to raise_error(Mongoid::Errors::DocumentNotFound)
+      it "unpublishes the existing manual's sections with redirects to the existing slug" do
+        assert_publishing_api_unpublish(existing_section_1.document_id,
+                                        type: "redirect",
+                                        alternative_path: "/#{existing_slug}",
+                                        discard_drafts: true)
 
-      expect {
-        existing_section_2.reload
-      }.to raise_error(Mongoid::Errors::DocumentNotFound)
+        assert_publishing_api_unpublish(existing_section_2.document_id,
+                                        type: "redirect",
+                                        alternative_path: "/#{existing_slug}",
+                                        discard_drafts: true)
+      end
 
-      expect {
-        existing_section_3.reload
-      }.to raise_error(Mongoid::Errors::DocumentNotFound)
-    end
+      it "issues a gone for existing manual's sections that would be reused one of the new manual's sections" do
+        assert_publishing_api_unpublish(existing_section_3.document_id,
+                                        type: "gone",
+                                        discard_drafts: true)
+      end
 
-    it "moves the temporary manual's sections to the existing slug" do
-      expect(temporary_section_1.reload.slug).to eq("#{existing_slug}/temp_section_1")
-      expect(temporary_section_2.reload.slug).to eq("#{existing_slug}/temp_section_2")
-      expect(temporary_section_3.reload.slug).to eq("#{existing_slug}/section_3")
-      expect(SpecialistDocumentEdition.where(slug: /#{temp_slug}/).count).to be(0)
-    end
+      it "destroys the existing manual's sections" do
+        expect {
+          existing_section_1.reload
+        }.to raise_error(Mongoid::Errors::DocumentNotFound)
 
-    it "unpublishes the temporary manual's section slugs with redirects to their existing slug version" do
-      assert_publishing_api_unpublish(temporary_section_1.document_id,
-                                      type: "redirect",
-                                      alternative_path: "/#{existing_slug}/temp_section_1",
-                                      discard_drafts: true)
+        expect {
+          existing_section_2.reload
+        }.to raise_error(Mongoid::Errors::DocumentNotFound)
 
-      assert_publishing_api_unpublish(temporary_section_2.document_id,
-                                      type: "redirect",
-                                      alternative_path: "/#{existing_slug}/temp_section_2",
-                                      discard_drafts: true)
+        expect {
+          existing_section_3.reload
+        }.to raise_error(Mongoid::Errors::DocumentNotFound)
+      end
 
-      assert_publishing_api_unpublish(temporary_section_3.document_id,
-                                      type: "redirect",
-                                      alternative_path: "/#{existing_slug}/section_3",
-                                      discard_drafts: true)
-    end
+      it "moves the temporary manual's sections to the existing slug" do
+        expect(temporary_section_1.reload.slug).to eq("#{existing_slug}/temp_section_1")
+        expect(temporary_section_2.reload.slug).to eq("#{existing_slug}/temp_section_2")
+        expect(temporary_section_3.reload.slug).to eq("#{existing_slug}/section_3")
+        expect(SpecialistDocumentEdition.where(slug: /#{temp_slug}/).count).to be(0)
+      end
 
-    it "removes the publication logs for the existing manual" do
-      expect { existing_publication_log.reload }.to raise_error(Mongoid::Errors::DocumentNotFound)
-    end
+      it "unpublishes the temporary manual's section slugs with redirects to their existing slug version" do
+        assert_publishing_api_unpublish(temporary_section_1.document_id,
+                                        type: "redirect",
+                                        alternative_path: "/#{existing_slug}/temp_section_1",
+                                        discard_drafts: true)
 
-    it "sends a new draft of the temporary manual with the existing slug as a route" do
-      assert_publishing_api_put_content(temp_manual_id, with_route_matcher("/#{existing_slug}"))
-    end
+        assert_publishing_api_unpublish(temporary_section_2.document_id,
+                                        type: "redirect",
+                                        alternative_path: "/#{existing_slug}/temp_section_2",
+                                        discard_drafts: true)
 
-    it "sends a new draft of each of the temporary manual's sections with the existing slug version of their path as a route" do
-      assert_publishing_api_put_content(temporary_section_1.document_id, with_route_matcher("/#{existing_slug}/temp_section_1"))
-      assert_publishing_api_put_content(temporary_section_2.document_id, with_route_matcher("/#{existing_slug}/temp_section_2"))
-      assert_publishing_api_put_content(temporary_section_3.document_id, with_route_matcher("/#{existing_slug}/section_3"))
+        assert_publishing_api_unpublish(temporary_section_3.document_id,
+                                        type: "redirect",
+                                        alternative_path: "/#{existing_slug}/section_3",
+                                        discard_drafts: true)
+      end
+
+      it "removes the publication logs for the existing manual" do
+        expect { existing_publication_log.reload }.to raise_error(Mongoid::Errors::DocumentNotFound)
+      end
+
+      it "sends a new draft of the temporary manual with the existing slug as a route" do
+        assert_publishing_api_put_content(temp_manual_id, with_route_matcher("/#{existing_slug}"))
+      end
+
+      it "sends a new draft of each of the temporary manual's sections with the existing slug version of their path as a route" do
+        assert_publishing_api_put_content(temporary_section_1.document_id, with_route_matcher("/#{existing_slug}/temp_section_1"))
+        assert_publishing_api_put_content(temporary_section_2.document_id, with_route_matcher("/#{existing_slug}/temp_section_2"))
+        assert_publishing_api_put_content(temporary_section_3.document_id, with_route_matcher("/#{existing_slug}/section_3"))
+      end
     end
   end
 

@@ -11,6 +11,7 @@ class ManualRelocator
   end
 
   def move!
+    validate_manuals
     redirect_and_remove
     reslug
     redraft_and_republish
@@ -39,6 +40,20 @@ private
 
   def new_manual_document_ids
     @new_manual_document_ids ||= new_manual.editions.flat_map(&:document_ids).uniq
+  end
+
+  def validate_manuals
+    raise "Manual to remove (#{to_slug}) should be published" unless manual_is_currently_published?(old_manual)
+    raise "Manual to reslug (#{from_slug}) should be published" unless manual_is_currently_published?(new_manual)
+  end
+
+  def manual_is_currently_published?(manual)
+    # to be currently published either...
+    # 1. it's got one edition that is published
+    (manual.editions.count == 1 && manual.latest_edition.state == "published") ||
+    # or
+    # 2. the last two editions are published and draft
+    (manual.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
   end
 
   def redirect_and_remove
