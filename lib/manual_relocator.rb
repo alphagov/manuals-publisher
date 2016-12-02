@@ -117,6 +117,10 @@ private
       map { |document_id, _slug| document_id }
   end
 
+  def most_recent_published_edition_of_section(document_id)
+    all_editions_of_section(document_id).select { |edition| edition.state == "published" }.first
+  end
+
   def most_recent_edition_of_section(document_id)
     all_editions_of_section(document_id).first
   end
@@ -166,16 +170,46 @@ private
   end
 
   def redraft_and_republish
+    if new_manual.latest_edition.state == "draft"
+      published_edition = new_manual.editions.order_by([:version_number, :desc]).limit(2).last
+
+      send_draft(
+        new_manual,
+        published_edition,
+        published_edition.document_ids.map { |document_id| most_recent_published_edition_of_section(document_id) }
+      )
+
+      publishing_api.publish(new_manual.manual_id, "republish")
+      published_edition.document_ids.each do |document_id|
+        publishing_api.publish(document_id, "republish")
+      end
+    end
+
+    send_draft(
+      new_manual,
+      new_manual.latest_edition,
+      new_manual.latest_edition.document_ids.map { |document_id| most_recent_edition_of_section(document_id) }
+    )
+
+    if new_manual.latest_edition.state == "published"
+      publishing_api.publish(new_manual.manual_id, "republish")
+      new_manual.latest_edition.document_ids.each do |document_id|
+        publishing_api.publish(document_id, "republish")
+      end
+    end
+  end
+
+  def send_draft(manual, manual_edition, document_editions)
     put_content = publishing_api.method(:put_content)
     organisation = fetch_organisation(new_manual.organisation_slug)
     manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
     manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
 
     simple_manual = build_simple_manual(
-      new_manual,
-      new_manual.latest_edition,
-      new_manual_document_ids.map do |document_id|
-        build_simple_section(most_recent_edition_of_section(document_id))
+      manual,
+      manual_edition,
+      document_editions.map do |document_edition|
+        build_simple_section(document_edition)
       end
     )
 
