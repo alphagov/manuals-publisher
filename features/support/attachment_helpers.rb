@@ -115,5 +115,19 @@ module AttachmentHelpers
 
     click_on "Save attachment"
   end
+
+  def stub_asset_manager
+    stub_request(:post, "#{test_asset_manager_base_url}/assets")
+      .to_return(
+        body: JSON.dump(asset_manager_response),
+        status: 201,
+      )
+
+    stub_request(:get, "#{test_asset_manager_base_url}/assets/#{asset_id}")
+      .to_return(
+        body: JSON.dump(asset_manager_response),
+        status: 200,
+      )
+  end
 end
 RSpec.configuration.include AttachmentHelpers, type: :feature
