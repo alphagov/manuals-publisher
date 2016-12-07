@@ -175,8 +175,10 @@ private
         published_edition.document_ids.map { |document_id| most_recent_published_edition_of_section(document_id) }
       )
 
+      puts "Publishing previously published edition of manual: #{new_manual.manual_id}"
       publishing_api.publish(new_manual.manual_id, "republish")
       published_edition.document_ids.each do |document_id|
+        puts "Publishing previously published edition of manual section: #{document_id}"
         publishing_api.publish(document_id, "republish")
       end
     end
@@ -188,8 +190,10 @@ private
     )
 
     if new_manual.latest_edition.state == "published"
+      puts "Publishing latest edition of manual: #{new_manual.manual_id}"
       publishing_api.publish(new_manual.manual_id, "republish")
       new_manual.latest_edition.document_ids.each do |document_id|
+        puts "Publishing latest edition of manual section: #{document_id}"
         publishing_api.publish(document_id, "republish")
       end
     end
@@ -209,11 +213,13 @@ private
       end
     )
 
+    puts "Sending a draft of manual #{simple_manual.id} (version: #{simple_manual.version_number})"
     ManualPublishingAPIExporter.new(
       put_content, organisation, manual_renderer, PublicationLog, simple_manual
     ).call
 
     simple_manual.documents.each do |simple_document|
+      puts "Sending a draft of manual section #{simple_document.id} (version: #{simple_document.version_number})"
       ManualSectionPublishingAPIExporter.new(
         put_content, organisation, manual_document_renderer, simple_manual, simple_document
       ).call
