@@ -115,10 +115,23 @@ describe ManualRelocator do
           }.to raise_error(Mongoid::Errors::DocumentNotFound)
         end
 
-        it "unpublishes the existing manual with a gone" do
-          assert_publishing_api_unpublish(existing_manual_id,
-                                          type: "gone",
-                                          discard_drafts: true)
+        it "replaces the existing manual with a gone item" do
+          gone_object = {
+            base_path: "/#{existing_slug}",
+            content_id: existing_manual_id,
+            document_type: "gone",
+            publishing_app: "manuals-publisher",
+            schema_name: "gone",
+            routes: [
+              {
+                path: "/#{existing_slug}",
+                type: "exact"
+              }
+            ]
+          }
+
+          assert_publishing_api_put_content(existing_manual_id, request_json_matches(gone_object))
+          assert_publishing_api_publish(existing_manual_id)
         end
 
         it "unpublishes the existing manual's sections with redirects to the existing slug" do
@@ -134,9 +147,22 @@ describe ManualRelocator do
         end
 
         it "issues a gone for existing manual's sections that would be reused one of the new manual's sections" do
-          assert_publishing_api_unpublish(existing_section_3.document_id,
-                                          type: "gone",
-                                          discard_drafts: true)
+          gone_object = {
+            base_path: "/#{existing_section_3.slug}",
+            content_id: existing_section_3.document_id,
+            document_type: "gone",
+            publishing_app: "manuals-publisher",
+            schema_name: "gone",
+            routes: [
+              {
+                path: "/#{existing_section_3.slug}",
+                type: "exact"
+              }
+            ]
+          }
+
+          assert_publishing_api_put_content(existing_section_3.document_id, request_json_matches(gone_object))
+          assert_publishing_api_publish(existing_section_3.document_id)
         end
 
         it "destroys the existing manual's sections" do

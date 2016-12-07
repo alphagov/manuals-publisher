@@ -67,9 +67,7 @@ private
         begin
           if old_sections_reused_in_new_manual.include? document_id
             puts "Issuing gone for content item '/#{section_slug}' as it will be reused by a section in '#{new_manual.slug}'"
-            publishing_api.unpublish(document_id,
-                                     type: "gone",
-                                     discard_drafts: true)
+            send_gone(document_id, section_slug)
           else
             puts "Redirecting content item '/#{section_slug}' to '/#{old_manual.slug}'"
             publishing_api.unpublish(document_id,
@@ -94,9 +92,7 @@ private
     old_manual.destroy
 
     puts "Issuing gone for #{old_manual.manual_id}"
-    publishing_api.unpublish(old_manual.manual_id,
-                             type: "gone",
-                             discard_drafts: true)
+    send_gone(old_manual.manual_id, old_manual.slug)
   end
 
   def old_sections_reused_in_new_manual
@@ -222,6 +218,30 @@ private
         put_content, organisation, manual_document_renderer, simple_manual, simple_document
       ).call
     end
+  end
+
+  def send_gone(document_id, slug)
+    # We should be able to use
+    #   publishing_api.unpublish(document_id, type: 'gone')
+    # here, but that doesn't leave the base_path in a state where
+    # publishing_api will let us re-use it.  Sending a draft gone object
+    # and then publishing it does though.  Might want to check if we can
+    # go back to the unpublish version at some point though.
+    gone_item = {
+      base_path: "/#{slug}",
+      content_id: document_id,
+      document_type: "gone",
+      publishing_app: "manuals-publisher",
+      schema_name: "gone",
+      routes: [
+        {
+          path: "/#{slug}",
+          type: "exact"
+        }
+      ]
+    }
+    publishing_api.put_content(document_id, gone_item)
+    publishing_api.publish(document_id, "major")
   end
 
   def publishing_api
