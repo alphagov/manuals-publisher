@@ -26,7 +26,7 @@ class RemoveRedirectCapitalFundingGuide < Mongoid::Migration
     new_manual_slug = "#{manual_slug}-hca"
 
     puts "Removing bad manual #{bad_manual_id} at #{manual_slug}."
-    CliManualDeleter.new(manual_slug, manual_id: bad_manual_id, stdin: StringIO.new("y")).call
+    CliManualDeleter.new(manual_slug, manual_id: bad_manual_id, stdin: StringIO.new("y")).call if ManualRecord.where(manual_id: bad_manual_id).first.present?
 
     puts "Removing existing manual #{manual_slug} and reslugging #{new_manual_slug} back onto it."
     ManualRelocator.move(new_manual_slug, manual_slug)
