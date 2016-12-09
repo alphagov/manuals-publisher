@@ -58,11 +58,15 @@ describe ManualRelocator do
 
     before do
       allow(STDOUT).to receive(:puts)
+      organisations_api_has_organisation(temp_manual.organisation_slug)
+      stub_any_publishing_api_publish
+      stub_any_publishing_api_unpublish
+      stub_any_publishing_api_put_content
     end
 
-    context "for invalid manuals" do
+    context "validating manuals can be relocated" do
       it "raises an error if the existing manual has never been published" do
-        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "draft")
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "draft")
 
         expect {
           subject.move!
@@ -79,8 +83,8 @@ describe ManualRelocator do
       end
 
       it "raises an error if the temporary manual has never been published" do
-        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "published")
-        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), state: "draft")
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "draft")
 
         expect {
           subject.move!
@@ -88,7 +92,7 @@ describe ManualRelocator do
       end
 
       it "raises an error if the temporary manual has been published, but is currently withdrawn" do
-        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "published")
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
         temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "published")
         temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "withdrawn")
 
@@ -96,16 +100,92 @@ describe ManualRelocator do
           subject.move!
         }.to raise_error(RuntimeError, "Manual to reslug (#{temp_slug}) should be published")
       end
+
+      it "does not raises an error if the existing manual is currently published" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "published")
+
+        expect {
+          subject.move!
+        }.not_to raise_error
+      end
+
+      it "does not raises an error if the existing manual is currently published, regardless of the previous edition state" do
+        previous_edition = ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "withdrawn")
+        existing_manual.editions << previous_edition
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 2, state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "published")
+
+        expect {
+          subject.move!
+        }.not_to raise_error
+
+        previous_edition.set(state: "published")
+        expect {
+          subject.move!
+        }.not_to raise_error
+
+        previous_edition.set(state: "draft")
+        expect {
+          subject.move!
+        }.not_to raise_error
+      end
+
+      it "does not raises an error if the existing manual has previously been published, but is currently draft" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 2, state: "draft")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "published")
+
+        expect {
+          subject.move!
+        }.not_to raise_error
+      end
+
+      it "does not raises an error if the temp manual is currently published" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "published")
+
+        expect {
+          subject.move!
+        }.not_to raise_error
+      end
+
+      it "does not raises an error if the temp manual is currently published, regardless of the previous edition state" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
+        previous_edition = ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "withdrawn")
+        temp_manual.editions << previous_edition
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "published")
+
+        expect {
+          subject.move!
+        }.not_to raise_error
+
+        previous_edition.set(state: "published")
+        expect {
+          subject.move!
+        }.not_to raise_error
+
+        previous_edition.set(state: "draft")
+        expect {
+          subject.move!
+        }.not_to raise_error
+      end
+
+      it "does not raises an error if the temp manual has previously been published, but is currently draft" do
+        existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "published")
+        temp_manual.editions << ManualRecord::Edition.new(document_ids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "draft")
+
+        expect {
+          subject.move!
+        }.not_to raise_error
+      end
+
     end
 
-    context "for valid manuals" do
+    context "with valid manuals" do
       before do
         existing_manual.editions << ManualRecord::Edition.new(document_ids: %w(12345 23456 34567), version_number: 1, state: "published")
-
-        organisations_api_has_organisation(temp_manual.organisation_slug)
-        stub_any_publishing_api_publish
-        stub_any_publishing_api_unpublish
-        stub_any_publishing_api_put_content
       end
 
       shared_examples_for "removing the existing manual" do
