@@ -61,7 +61,7 @@ private
   end
 
   def update_type
-    manual.documents.all?(&:minor_update?) ? "minor" : "major"
+    manual.documents.select(&:needs_exporting?).all?(&:minor_update?) ? "minor" : "major"
   end
 
   def rendered_manual_attributes

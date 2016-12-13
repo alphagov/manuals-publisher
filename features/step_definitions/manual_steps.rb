@@ -260,6 +260,7 @@ Then(/^I see errors for the document fields$/) do
 end
 
 When(/^I publish the manual$/) do
+  go_to_manual_page(@manual.title) if current_path != manual_path(@manual)
   publish_manual
 end
 
@@ -468,10 +469,6 @@ When(/^I create a new draft of a section with a change note$/) do
   edit_manual_document(@manual_title, document.title, fields)
 end
 
-When(/^I re\-publish the section$/) do
-  publish_manual
-end
-
 Then(/^I see an error requesting that I provide a change note$/) do
   expect(page).to have_content("You must provide a change note or indicate minor update")
 end
@@ -487,6 +484,18 @@ Then(/^the document is updated without a change note$/) do
     section_title: @updated_document.title,
     section_summary: @updated_fields[:section_summary],
   )
+end
+
+Then(/^the manual is published as a major update$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" })
+end
+
+Then(/^the manual is published as a minor update$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "minor" })
 end
 
 When(/^I add another section to the manual$/) do
