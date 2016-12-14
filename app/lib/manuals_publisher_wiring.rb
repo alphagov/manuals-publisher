@@ -4,7 +4,6 @@ require "builders/specialist_document_builder"
 require "dependency_container"
 require "document_factory_registry"
 require "footnotes_section_heading_renderer"
-require "gds_api/email_alert_api"
 require "gds_api/publishing_api"
 require "gds_api/publishing_api_v2"
 require "gds_api/rummager"
@@ -141,10 +140,6 @@ ManualsPublisherWiring ||= DependencyContainer.new do
 
   define_singleton(:rummager_api) {
     GdsApi::Rummager.new(Plek.new.find("search"))
-  }
-
-  define_singleton(:email_alert_api) {
-    GdsApi::EmailAlertApi.new(Plek.current.find("email-alert-api"))
   }
 
   define_singleton(:publishing_api) {
