@@ -18,6 +18,7 @@ Feature: Publishing a manual
     Then the updated manual document is available to preview
     When I publish the manual
     Then the manual and the edited document are published
+    And the manual documents that I didn't edit were not republished
 
   Scenario: Add a section to a published manual
     Given a published manual exists

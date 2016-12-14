@@ -316,6 +316,12 @@ Then(/^the updated manual document is available to preview$/) do
   )
 end
 
+Then(/^the manual documents that I didn't edit were not republished$/) do
+  @documents.reject { |d| d.id == @updated_document.id }.each do |document|
+    check_manual_document_was_not_published(document)
+  end
+end
+
 Then(/^the manual and its new document are published$/) do
   check_manual_and_documents_were_published(
     @manual,
@@ -390,6 +396,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
 end
 
 When(/^I edit one of the manual's documents$/) do
+  WebMock::RequestRegistry.instance.reset!
   @updated_document = @documents.first
 
   @updated_fields = {
@@ -403,6 +410,7 @@ When(/^I edit one of the manual's documents$/) do
 end
 
 When(/^I edit one of the manual's documents without a change note$/) do
+  WebMock::RequestRegistry.instance.reset!
   @updated_document = @documents.first
 
   @updated_fields = {
