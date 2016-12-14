@@ -313,15 +313,16 @@ private
       public_updated_at: section_edition.public_updated_at,
       minor_update: section_edition.minor_update,
       attachments: section_edition.attachments.to_a,
+      needs_exporting: section_edition.exported_at.nil?,
     )
   end
 
   class SimpleSection
     attr_reader :id, :title, :slug, :summary, :body, :document_type, :updated_at,
       :version_number, :extra_fields, :public_updated_at, :minor_update,
-      :attachments
+      :attachments, :needs_exporting
 
-    def initialize(id:, title:, slug:, summary:, body:, document_type:, updated_at:, version_number:, extra_fields:, public_updated_at:, minor_update:, attachments:)
+    def initialize(id:, title:, slug:, summary:, body:, document_type:, updated_at:, version_number:, extra_fields:, public_updated_at:, minor_update:, attachments:, needs_exporting:)
       @id = id
       @title = title
       @slug = slug
@@ -334,6 +335,7 @@ private
       @public_updated_at = public_updated_at
       @minor_update = minor_update
       @attachments = attachments
+      @needs_exporting = needs_exporting
     end
 
     def attributes
@@ -347,6 +349,10 @@ private
 
     def minor_update?
       !!minor_update
+    end
+
+    def needs_exporting?
+      !!needs_exporting
     end
   end
 end
