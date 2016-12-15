@@ -140,22 +140,6 @@ module DocumentHelpers
     )
   end
 
-  def check_email_alert_api_notified_of_publish
-    expect(fake_email_alert_api).to have_received(:send_alert)
-      .with(
-        hash_including(
-          "subject",
-          "body",
-          "tags",
-        )
-      )
-    reset_email_alert_api_stubs_and_messages
-  end
-
-  def check_email_alert_api_is_not_notified_of_publish
-    expect(fake_email_alert_api).to_not have_received(:send_alert)
-  end
-
   def check_document_was_republished(slug, fields)
     check_added_to_rummager(
       slug,

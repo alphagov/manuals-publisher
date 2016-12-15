@@ -97,7 +97,6 @@ Cucumber::Rails::Database.javascript_strategy = :truncation
 require "rummager_helpers"
 require "publishing_api_helpers"
 require "organisations_api_helpers"
-require "email_alert_api_helpers"
 require "form_helpers"
 require "document_helpers"
 require "manual_helpers"
@@ -112,7 +111,6 @@ require "api_helpers"
 World(RummagerHelpers)
 World(PublishingAPIHelpers)
 World(OrganisationsAPIHelpers)
-World(EmailAlertAPIHelpers)
 World(FormHelpers)
 World(DocumentHelpers)
 World(ManualHelpers)

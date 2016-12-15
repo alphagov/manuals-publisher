@@ -35,7 +35,6 @@ RSpec.configure do |config|
   config.before(:each, type: :feature) do
     stub_rummager
     stub_publishing_api
-    stub_email_alert_api
   end
 
   config.include Capybara::DSL, type: :feature
