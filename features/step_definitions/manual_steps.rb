@@ -260,6 +260,7 @@ Then(/^I see errors for the document fields$/) do
 end
 
 When(/^I publish the manual$/) do
+  go_to_manual_page(@manual.title) if current_path != manual_path(@manual)
   publish_manual
 end
 
@@ -313,6 +314,12 @@ Then(/^the updated manual document is available to preview$/) do
     @manual.id,
     extra_attributes: manual_table_of_contents_attributes,
   )
+end
+
+Then(/^the manual documents that I didn't edit were not republished$/) do
+  @documents.reject { |d| d.id == @updated_document.id }.each do |document|
+    check_manual_document_was_not_published(document)
+  end
 end
 
 Then(/^the manual and its new document are published$/) do
@@ -389,6 +396,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
 end
 
 When(/^I edit one of the manual's documents$/) do
+  WebMock::RequestRegistry.instance.reset!
   @updated_document = @documents.first
 
   @updated_fields = {
@@ -402,6 +410,7 @@ When(/^I edit one of the manual's documents$/) do
 end
 
 When(/^I edit one of the manual's documents without a change note$/) do
+  WebMock::RequestRegistry.instance.reset!
   @updated_document = @documents.first
 
   @updated_fields = {
@@ -468,10 +477,6 @@ When(/^I create a new draft of a section with a change note$/) do
   edit_manual_document(@manual_title, document.title, fields)
 end
 
-When(/^I re\-publish the section$/) do
-  publish_manual
-end
-
 Then(/^I see an error requesting that I provide a change note$/) do
   expect(page).to have_content("You must provide a change note or indicate minor update")
 end
@@ -487,6 +492,18 @@ Then(/^the document is updated without a change note$/) do
     section_title: @updated_document.title,
     section_summary: @updated_fields[:section_summary],
   )
+end
+
+Then(/^the manual is published as a major update$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" })
+end
+
+Then(/^the manual is published as a minor update$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "minor" })
 end
 
 When(/^I add another section to the manual$/) do

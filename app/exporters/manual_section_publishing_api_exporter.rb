@@ -31,7 +31,6 @@ private
       document_type: "manual_section",
       title: rendered_document_attributes.fetch(:title),
       description: rendered_document_attributes.fetch(:summary),
-      public_updated_at: rendered_document_attributes.fetch(:updated_at).iso8601,
       update_type: update_type,
       publishing_app: "manuals-publisher",
       rendering_app: "manuals-frontend",

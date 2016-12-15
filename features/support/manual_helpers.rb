@@ -165,7 +165,7 @@ module ManualHelpers
   end
 
   def check_manual_was_published(manual)
-    check_manual_document_is_published_to_publishing_api(manual.id)
+    check_manual_is_published_to_publishing_api(manual.id)
   end
 
   def check_manual_document_was_not_published(document)

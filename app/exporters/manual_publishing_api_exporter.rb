@@ -41,7 +41,6 @@ private
       document_type: "manual",
       title: rendered_manual_attributes.fetch(:title),
       description: rendered_manual_attributes.fetch(:summary),
-      public_updated_at: rendered_manual_attributes.fetch(:updated_at).iso8601,
       update_type: update_type,
       publishing_app: "manuals-publisher",
       rendering_app: "manuals-frontend",
@@ -61,7 +60,7 @@ private
   end
 
   def update_type
-    manual.documents.all?(&:minor_update?) ? "minor" : "major"
+    manual.documents.select(&:needs_exporting?).all?(&:minor_update?) ? "minor" : "major"
   end
 
   def rendered_manual_attributes

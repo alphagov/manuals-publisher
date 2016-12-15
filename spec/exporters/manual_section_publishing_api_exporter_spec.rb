@@ -86,23 +86,26 @@ describe ManualSectionPublishingAPIExporter do
 
     expect(export_recipent).to have_received(:call).with(
       document.id,
-      hash_including(
-        base_path: document_base_path,
-        schema_name: "manual_section",
-        document_type: "manual_section",
-        title: "Document title",
-        description: "This is the first section",
-        public_updated_at: Time.new(2013, 12, 31, 12, 0, 0).iso8601,
-        update_type: "minor",
-        publishing_app: "manuals-publisher",
-        rendering_app: "manuals-frontend",
-        routes: [
-          {
-            path: document_base_path,
-            type: "exact",
-          }
-        ],
-      ))
+      all_of(
+        hash_including(
+          base_path: document_base_path,
+          schema_name: "manual_section",
+          document_type: "manual_section",
+          title: "Document title",
+          description: "This is the first section",
+          update_type: "minor",
+          publishing_app: "manuals-publisher",
+          rendering_app: "manuals-frontend",
+          routes: [
+            {
+              path: document_base_path,
+              type: "exact",
+            }
+          ],
+        ),
+        hash_excluding(:public_updated_at)
+      )
+    )
   end
 
   it "exports section metadata for the document" do

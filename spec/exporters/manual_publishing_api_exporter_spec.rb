@@ -35,6 +35,7 @@ describe ManualPublishingAPIExporter do
         id: "60023f27-0657-4812-9339-264f1c0fd90d",
         attributes: document_attributes,
         minor_update?: false,
+        needs_exporting?: true,
       )
     ]
   }
@@ -109,28 +110,31 @@ describe ManualPublishingAPIExporter do
 
     expect(export_recipent).to have_received(:call).with(
       "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-      hash_including(
-        base_path: "/guidance/my-first-manual",
-        schema_name: "manual",
-        document_type: "manual",
-        title: "My first manual",
-        description: "This is my first manual",
-        public_updated_at: Time.new(2013, 12, 31, 12, 0, 0).iso8601,
-        update_type: "major",
-        publishing_app: "manuals-publisher",
-        rendering_app: "manuals-frontend",
-        routes: [
-          {
-            path: "/guidance/my-first-manual",
-            type: "exact",
-          },
-          {
-            path: "/guidance/my-first-manual/updates",
-            type: "exact",
-          }
-        ],
-        locale: "en",
-      ))
+      all_of(
+        hash_including(
+          base_path: "/guidance/my-first-manual",
+          schema_name: "manual",
+          document_type: "manual",
+          title: "My first manual",
+          description: "This is my first manual",
+          update_type: "major",
+          publishing_app: "manuals-publisher",
+          rendering_app: "manuals-frontend",
+          routes: [
+            {
+              path: "/guidance/my-first-manual",
+              type: "exact",
+            },
+            {
+              path: "/guidance/my-first-manual/updates",
+              type: "exact",
+            }
+          ],
+          locale: "en",
+        ),
+        hash_excluding(:public_updated_at)
+      )
+    ).once
   end
 
   it "exports section metadata for the manual" do
@@ -184,5 +188,185 @@ describe ManualPublishingAPIExporter do
         }
       )
     )
+  end
+
+  context "when no documents need exporting" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: false,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: false,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to minor" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "minor")
+      )
+    end
+  end
+
+  context "when one document needs exporting and it is a minor update" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: false,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: true,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to minor" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "minor")
+      )
+    end
+  end
+
+  context "when one document needs exporting and it is a major update" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: false,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: true,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to major" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "major")
+      )
+    end
+  end
+
+  context "when multiple documents need exporting, but none are major updates" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: true,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: true,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to minor" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "minor")
+      )
+    end
+  end
+
+  context "when multiple documents need exporting, and at least one is a major updates" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: true,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: true,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to major" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "major")
+      )
+    end
+  end
+
+  context "when multiple documents need exporting, and all are major updates" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: true,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: true,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to major" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "major")
+      )
+    end
   end
 end
