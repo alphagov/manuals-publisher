@@ -63,7 +63,8 @@ describe ManualSectionPublishingAPIExporter do
       id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       minor_update?: true,
       attributes: { body: "##Some heading\nmanual section body" },
-      attachments: attachments
+      attachments: attachments,
+      has_ever_been_published?: true,
     )
   }
 
@@ -106,6 +107,75 @@ describe ManualSectionPublishingAPIExporter do
         hash_excluding(:public_updated_at)
       )
     )
+  end
+
+  context "exporting update_type correctly" do
+    let(:document) {
+      double(
+        :document,
+        id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
+        minor_update?: update_type_attributes[:minor_update?],
+        attributes: { body: "##Some heading\nmanual section body" },
+        attachments: attachments,
+        has_ever_been_published?: update_type_attributes[:ever_been_published],
+      )
+    }
+
+    context "the document is a minor update" do
+      let(:update_type_attributes) do
+        {
+          minor_update?: true,
+          ever_been_published: true,
+        }
+      end
+
+      it "sets it to major if the document has never been published" do
+        update_type_attributes[:ever_been_published] = false
+        subject.call
+
+        expect(export_recipent).to have_received(:call).with(
+          "c19ffb7d-448c-4cc8-bece-022662ef9611",
+          hash_including(update_type: "major")
+        )
+      end
+
+      it "sets it to minor if the document has been published before" do
+        subject.call
+
+        expect(export_recipent).to have_received(:call).with(
+          "c19ffb7d-448c-4cc8-bece-022662ef9611",
+          hash_including(update_type: "minor")
+        )
+      end
+    end
+
+    context "the document is a major update" do
+      let(:update_type_attributes) do
+        {
+          minor_update?: false,
+          ever_been_published: true,
+        }
+      end
+
+      it "sets it to major if the document has never been published" do
+        update_type_attributes[:ever_been_published] = false
+        subject.call
+
+        expect(export_recipent).to have_received(:call).with(
+          "c19ffb7d-448c-4cc8-bece-022662ef9611",
+          hash_including(update_type: "major")
+        )
+      end
+
+      it "sets it to major if the document has been published before" do
+        subject.call
+
+        expect(export_recipent).to have_received(:call).with(
+          "c19ffb7d-448c-4cc8-bece-022662ef9611",
+          hash_including(update_type: "major")
+        )
+      end
+    end
   end
 
   it "exports section metadata for the document" do

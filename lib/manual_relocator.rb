@@ -297,6 +297,12 @@ private
         version_number: version_number, updated_at: updated_at,
       }
     end
+
+    def has_ever_been_published?
+      # The ManualRelocator only works on published manuals so this will always
+      # be true for any manual we are asked to relocate.
+      true
+    end
   end
 
   def build_simple_section(section_edition)
@@ -314,15 +320,19 @@ private
       minor_update: section_edition.minor_update,
       attachments: section_edition.attachments.to_a,
       needs_exporting: section_edition.exported_at.nil?,
+      # This isn't the same as the calculation in SpecialistDocument, but we
+      # don't have access to all the other editions here, and this should be
+      # close enough
+      ever_been_published: (section_edition.version_number > 1) || section_edition.exported_at.nil?,
     )
   end
 
   class SimpleSection
     attr_reader :id, :title, :slug, :summary, :body, :document_type, :updated_at,
       :version_number, :extra_fields, :public_updated_at, :minor_update,
-      :attachments, :needs_exporting
+      :attachments, :needs_exporting, :ever_been_published
 
-    def initialize(id:, title:, slug:, summary:, body:, document_type:, updated_at:, version_number:, extra_fields:, public_updated_at:, minor_update:, attachments:, needs_exporting:)
+    def initialize(id:, title:, slug:, summary:, body:, document_type:, updated_at:, version_number:, extra_fields:, public_updated_at:, minor_update:, attachments:, needs_exporting:, ever_been_published:)
       @id = id
       @title = title
       @slug = slug
@@ -336,6 +346,7 @@ private
       @minor_update = minor_update
       @attachments = attachments
       @needs_exporting = needs_exporting
+      @ever_been_published = ever_been_published
     end
 
     def attributes
@@ -353,6 +364,10 @@ private
 
     def needs_exporting?
       !!needs_exporting
+    end
+
+    def has_ever_been_published?
+      !!ever_been_published
     end
   end
 end

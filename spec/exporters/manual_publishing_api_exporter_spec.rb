@@ -1,4 +1,5 @@
 require "fast_spec_helper"
+require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
 require "manual_publishing_api_exporter"
@@ -23,6 +24,7 @@ describe ManualPublishingAPIExporter do
       id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       attributes: manual_attributes,
       documents: documents,
+      has_ever_been_published?: manual_attributes[:ever_been_published],
     )
   }
 
@@ -64,6 +66,7 @@ describe ManualPublishingAPIExporter do
       slug: "guidance/my-first-manual",
       updated_at: Time.new(2013, 12, 31, 12, 0, 0),
       organisation_slug: "cabinet-office",
+      ever_been_published: true,
     }
   }
 
@@ -190,6 +193,21 @@ describe ManualPublishingAPIExporter do
     )
   end
 
+  shared_examples_for "publishing a manual that has never been published" do
+    before do
+      manual_attributes[:ever_been_published] = false
+    end
+
+    it "exports with the update_type set to major" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "major")
+      )
+    end
+  end
+
   context "when no documents need exporting" do
     let(:documents) {
       [
@@ -199,6 +217,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: false,
           needs_exporting?: false,
+          has_ever_been_published?: true,
         ),
         double(
           :document,
@@ -206,6 +225,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: true,
           needs_exporting?: false,
+          has_ever_been_published?: true,
         )
       ]
     }
@@ -218,6 +238,8 @@ describe ManualPublishingAPIExporter do
         hash_including(update_type: "minor")
       )
     end
+
+    it_behaves_like "publishing a manual that has never been published"
   end
 
   context "when one document needs exporting and it is a minor update" do
@@ -229,6 +251,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: false,
           needs_exporting?: false,
+          has_ever_been_published?: true,
         ),
         double(
           :document,
@@ -236,6 +259,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: true,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         )
       ]
     }
@@ -246,6 +270,40 @@ describe ManualPublishingAPIExporter do
       expect(export_recipent).to have_received(:call).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "minor")
+      )
+    end
+
+    it_behaves_like "publishing a manual that has never been published"
+  end
+
+  context "when one document needs exporting and it is a minor update that has never been published" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: false,
+          needs_exporting?: false,
+          has_ever_been_published?: true,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: true,
+          has_ever_been_published?: false,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to major" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "major")
       )
     end
   end
@@ -259,6 +317,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: false,
           needs_exporting?: false,
+          has_ever_been_published?: true,
         ),
         double(
           :document,
@@ -266,6 +325,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: false,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         )
       ]
     }
@@ -278,6 +338,8 @@ describe ManualPublishingAPIExporter do
         hash_including(update_type: "major")
       )
     end
+
+    it_behaves_like "publishing a manual that has never been published"
   end
 
   context "when multiple documents need exporting, but none are major updates" do
@@ -289,6 +351,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: true,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         ),
         double(
           :document,
@@ -296,6 +359,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: true,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         )
       ]
     }
@@ -306,6 +370,40 @@ describe ManualPublishingAPIExporter do
       expect(export_recipent).to have_received(:call).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "minor")
+      )
+    end
+
+    it_behaves_like "publishing a manual that has never been published"
+  end
+
+  context "when multiple documents need exporting, but none are major updates, but one has never been published" do
+    let(:documents) {
+      [
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: true,
+          has_ever_been_published?: true,
+        ),
+        double(
+          :document,
+          id: "60023f27-0657-4812-9339-264f1c0fd90d",
+          attributes: document_attributes,
+          minor_update?: true,
+          needs_exporting?: true,
+          has_ever_been_published?: false,
+        )
+      ]
+    }
+
+    it "exports with the update_type set to major" do
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "major")
       )
     end
   end
@@ -319,6 +417,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: false,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         ),
         double(
           :document,
@@ -326,6 +425,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: true,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         )
       ]
     }
@@ -338,6 +438,8 @@ describe ManualPublishingAPIExporter do
         hash_including(update_type: "major")
       )
     end
+
+    it_behaves_like "publishing a manual that has never been published"
   end
 
   context "when multiple documents need exporting, and all are major updates" do
@@ -349,6 +451,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: false,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         ),
         double(
           :document,
@@ -356,6 +459,7 @@ describe ManualPublishingAPIExporter do
           attributes: document_attributes,
           minor_update?: false,
           needs_exporting?: true,
+          has_ever_been_published?: true,
         )
       ]
     }
@@ -368,5 +472,7 @@ describe ManualPublishingAPIExporter do
         hash_including(update_type: "major")
       )
     end
+
+    it_behaves_like "publishing a manual that has never been published"
   end
 end
