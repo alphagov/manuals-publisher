@@ -86,6 +86,7 @@ class SpecialistDocument
   def published?
     editions.any?(&:published?)
   end
+  alias_method :has_ever_been_published?, :published?
 
   def draft?
     latest_edition.draft?

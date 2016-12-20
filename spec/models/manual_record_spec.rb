@@ -110,4 +110,34 @@ describe ManualRecord, hits_db: true do
       expect(ManualRecord.all_by_updated_at.to_a).to eq([later_edition, middle_edition, early_edition])
     end
   end
+
+  describe "#has_ever_been_published?" do
+    it "is false for an unsaved instance" do
+      expect(ManualRecord.new).not_to have_ever_been_published
+    end
+
+    it "is false for a saved instance with no editions" do
+      expect(record).not_to have_ever_been_published
+    end
+
+    it "is false for a saved instance with no published editions" do
+      record.editions.create!(state: "draft", version_number: 1)
+      record.editions.create!(state: "withdrawn", version_number: 2)
+      record.editions.create!(state: "draft", version_number: 3)
+      expect(subject).not_to have_ever_been_published
+    end
+
+    it "is true for a saved instance with a published edition" do
+      record.editions.create!(state: "published", version_number: 1)
+      expect(subject).to have_ever_been_published
+    end
+
+    it "is true for a saved instance with any published editions even if it's not the latest" do
+      record.editions.create!(state: "draft", version_number: 1)
+      record.editions.create!(state: "published", version_number: 2)
+      record.editions.create!(state: "withdrawn", version_number: 3)
+      record.editions.create!(state: "draft", version_number: 4)
+      expect(subject).to have_ever_been_published
+    end
+  end
 end

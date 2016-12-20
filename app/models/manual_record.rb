@@ -39,6 +39,10 @@ class ManualRecord
     @latest_edition ||= editions.order_by([:version_number, :desc]).first
   end
 
+  def has_ever_been_published?
+    editions.any? { |x| x.state == "published" }
+  end
+
   after_save :save_and_clear_latest_edition
 
 private
