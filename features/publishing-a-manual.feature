@@ -42,6 +42,17 @@ Feature: Publishing a manual
     When I publish the manual
     Then the manual is published as a minor update
 
+  Scenario: Minor changes are published as major for first editions
+    Given a published manual exists
+    When I create a document for the manual as a minor change
+    And I publish the manual
+    Then the manual is published as a major update
+    And the section is published as a major update
+    When I edit one of the manual's documents as a minor change
+    And I publish the manual
+    Then the manual is published as a minor update
+    And the section is published as a minor update
+
   Scenario: A manual fails to publish from the queue due to an unrecoverable error
     Given a draft manual exists without any documents
     And a draft document exists for the manual

@@ -34,6 +34,7 @@ describe ManualRepository do
       body: "body",
       organisation_slug: "organisation_slug",
       slug: manual_slug,
+      ever_been_published: true,
     }
   }
 
@@ -48,6 +49,7 @@ describe ManualRepository do
       :"slug=" => nil,
       latest_edition: nil,
       save!: nil,
+      has_ever_been_published?: true,
     )
   }
 
@@ -67,6 +69,7 @@ describe ManualRepository do
       state: "draft",
       slug: manual_slug,
       version_number: 1,
+      ever_been_published: true,
     }
   }
 

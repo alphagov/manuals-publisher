@@ -15,6 +15,7 @@ class Manual
     @id = attributes.fetch(:id)
     @updated_at = attributes.fetch(:updated_at, nil)
     @version_number = attributes.fetch(:version_number, 0)
+    @ever_been_published = !!attributes.fetch(:ever_been_published, false)
 
     update(attributes)
   end
@@ -85,5 +86,9 @@ class Manual
 
   def withdrawn?
     state == "withdrawn"
+  end
+
+  def has_ever_been_published?
+    @ever_been_published
   end
 end

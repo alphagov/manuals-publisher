@@ -60,7 +60,23 @@ private
   end
 
   def update_type
-    manual.documents.select(&:needs_exporting?).all?(&:minor_update?) ? "minor" : "major"
+    # The first edition to be sent to the publishing api must always be sent as
+    # a major update
+    return "major" unless manual.has_ever_been_published?
+
+    # Otherwise our update type status depends on the update type status
+    # of our children if any of them are major we are major (and they
+    # have to send a major for their first edition too).
+    any_documents_are_major? ? "minor" : "major"
+  end
+
+  def any_documents_are_major?
+    manual.
+      documents.
+      select(&:needs_exporting?).
+      all? { |d|
+        d.minor_update? && d.has_ever_been_published?
+      }
   end
 
   def rendered_manual_attributes

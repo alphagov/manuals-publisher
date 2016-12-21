@@ -77,6 +77,7 @@ private
       state: edition.state,
       version_number: edition.version_number,
       updated_at: edition.updated_at,
+      ever_been_published: manual_record.has_ever_been_published?
     )
 
     association_marshallers.reduce(base_manual) { |manual, marshaller|

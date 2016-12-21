@@ -90,6 +90,10 @@ private
   end
 
   def update_type
+    # The first edition to be sent to the publishing-api must always be sent as
+    # a major update
+    return "major" unless document.has_ever_been_published?
+
     document.minor_update? ? "minor" : "major"
   end
 

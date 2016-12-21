@@ -28,6 +28,8 @@ module ManualHelpers
 
     fill_in_fields(fields)
 
+    yield if block_given?
+
     save_as_draft
   end
 
@@ -62,6 +64,8 @@ module ManualHelpers
     click_on section_title
     click_on "Edit"
     fill_in_fields(new_fields)
+
+    yield if block_given?
 
     save_as_draft
   end
@@ -221,13 +225,13 @@ module ManualHelpers
     assert_publishing_api_discard_draft(content_id)
   end
 
-  def check_manual_document_is_drafted_to_publishing_api(content_id)
+  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {})
     attributes = {
       "schema_name" => "manual_section",
       "document_type" => "manual_section",
       "rendering_app" => "manuals-frontend",
       "publishing_app" => "manuals-publisher",
-    }
+    }.merge(extra_attributes)
     assert_publishing_api_put_content(content_id, request_json_including(attributes))
   end
 

@@ -44,6 +44,20 @@ describe Manual do
     end
   end
 
+  describe "#has_ever_been_published?" do
+    it "is false if not told at initialize time" do
+      expect(Manual.new(id: "1234-5678-9012-3456")).not_to have_ever_been_published
+    end
+
+    it "is false if told so at initialize time" do
+      expect(Manual.new(id: "1234-5678-9012-3456", ever_been_published: false)).not_to have_ever_been_published
+    end
+
+    it "is true if told so at initialize time" do
+      expect(Manual.new(id: "1234-5678-9012-3456", ever_been_published: true)).to have_ever_been_published
+    end
+  end
+
   describe "#publish" do
     it "returns self" do
       expect(manual.publish).to be(manual)

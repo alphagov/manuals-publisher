@@ -140,6 +140,10 @@ describe SpecialistDocument do
     it "is not published" do
       expect(doc).not_to be_published
     end
+
+    it "has never been published" do
+      expect(doc).not_to have_ever_been_published
+    end
   end
 
   context "with one published edition" do
@@ -152,6 +156,10 @@ describe SpecialistDocument do
     it "is not in draft" do
       expect(doc).not_to be_draft
     end
+
+    it "has ever been published" do
+      expect(doc).to have_ever_been_published
+    end
   end
 
   context "with one published edition and one draft edition" do
@@ -160,6 +168,42 @@ describe SpecialistDocument do
     it "is published and in draft" do
       expect(doc).to be_draft
       expect(doc).to be_published
+    end
+
+    it "has ever been published" do
+      expect(doc).to have_ever_been_published
+    end
+  end
+
+  context "with two draft editions" do
+    let(:editions) { [draft_edition_v1, draft_edition_v2] }
+
+    it "is in draft" do
+      expect(doc).to be_draft
+    end
+
+    it "is not published" do
+      expect(doc).not_to be_published
+    end
+
+    it "has never been published" do
+      expect(doc).not_to have_ever_been_published
+    end
+  end
+
+  context "with one draft edition and a withdrawn edition" do
+    let(:editions) { [draft_edition_v1, withdrawn_edition_v2] }
+
+    it "is not in draft" do
+      expect(doc).not_to be_draft
+    end
+
+    it "is not published" do
+      expect(doc).not_to be_published
+    end
+
+    it "has never been published" do
+      expect(doc).not_to have_ever_been_published
     end
   end
 
