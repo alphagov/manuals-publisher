@@ -51,12 +51,14 @@ describe PublicationLog, hits_db: true do
             title: "",
             change_note: "First note",
             version_number: 1,
+            created_at: 10.seconds.ago,
           ),
           PublicationLog.create(
             slug: slug,
             title: "",
             change_note: "Second note",
             version_number: 2,
+            created_at: 6.seconds.ago,
           )
         ]
       }
@@ -68,6 +70,7 @@ describe PublicationLog, hits_db: true do
             title: "",
             change_note: "Another note",
             version_number: 1,
+            created_at: 2.seconds.ago,
           )
         ]
       }

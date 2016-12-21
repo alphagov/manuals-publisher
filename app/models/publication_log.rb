@@ -16,7 +16,8 @@ class PublicationLog
 
   def self.change_notes_for(slug)
     with_slug_prefix(slug)
-      .sort_by(&:published_at)
+      .order([:created_at, :asc])
+      .to_a
       .uniq { |publication|
         [publication.slug, publication.version_number]
       }

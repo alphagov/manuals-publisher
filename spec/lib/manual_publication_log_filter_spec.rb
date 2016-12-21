@@ -73,8 +73,15 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
           )
   end
 
-  let!(:previous_publication_logs) { create_list(:publication_log, 2, slug: manual_slug) }
-  let!(:previous_other_publication_log) { create :publication_log, slug: other_slug }
+  let!(:previous_publication_logs) {
+    [
+      create(:publication_log, slug: manual_slug, created_at: 10.seconds.ago, version_number: 1),
+      create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2)
+    ]
+  }
+  let!(:previous_other_publication_log) {
+    create :publication_log, slug: other_slug, created_at: 6.seconds.ago, version_number: 1
+  }
 
   let(:first_manual_edition_creation_time) { Time.current - 1.week }
   let(:second_manual_edition_creation_time) { first_manual_edition_creation_time - 1.day }
@@ -130,24 +137,45 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     # timestamps that post-date the manual edition update time. This is thought
     # to be "wrong" because the first manual and first editions of its documents
     # are expected to all be exported at the same time.
-    expect_log_attributes_to_match_edition(publication_logs_for_supplied_slug[0], document_a_edition_published_version_1_major_update, first_manual_edition.updated_at)
-    expect_log_attributes_to_match_edition(publication_logs_for_supplied_slug[1], document_b_edition_published_version_1_major_update, first_manual_edition.updated_at)
-    expect_log_attributes_to_match_edition(publication_logs_for_supplied_slug[2], document_c_edition_archived_version_1_major_update, first_manual_edition.updated_at)
 
-    expect_log_attributes_to_match_edition(publication_logs_for_supplied_slug[3], document_a_edition_published_version_2_major_update, document_a_edition_published_version_2_major_update.updated_at)
-    expect_log_attributes_to_match_edition(publication_logs_for_supplied_slug[4], document_e_edition_published_version_1_major_update, document_e_edition_published_version_1_major_update.updated_at)
+    # NOTE: we compare using match_array because the timestamps are all the same
+    # for the first 3 and last 2 entries which means we can't guarantee the
+    # ordering of those two sets.
 
+    publication_logs_for_first_manual_edition = publication_logs_for_supplied_slug[0..2].map { |pl| extract_attributes_from_log(pl) }
+    expect(publication_logs_for_first_manual_edition).to match_array([
+      build_attributes_for_expected_log(document_a_edition_published_version_1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(document_b_edition_published_version_1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(document_c_edition_archived_version_1_major_update, first_manual_edition.updated_at),
+    ])
+
+    publication_logs_for_next_editions = publication_logs_for_supplied_slug[3..4].map { |pl| extract_attributes_from_log(pl) }
+    expect(publication_logs_for_next_editions).to match_array([
+      build_attributes_for_expected_log(document_a_edition_published_version_2_major_update, document_a_edition_published_version_2_major_update.exported_at),
+      build_attributes_for_expected_log(document_e_edition_published_version_1_major_update, document_e_edition_published_version_1_major_update.exported_at),
+    ])
   end
 
-  def expect_log_attributes_to_match_edition(log, document_edition, expected_time)
-    expect(log).to have_attributes(
+  def extract_attributes_from_log(log)
+    {
+      slug: log.slug,
+      title: log.title,
+      version_number: log.version_number,
+      change_note: log.change_note,
+      created_at: log.created_at,
+      updated_at: log.updated_at,
+    }
+  end
+
+  def build_attributes_for_expected_log(document_edition, expected_time)
+    {
       slug: document_edition.slug,
       title: document_edition.title,
       version_number: document_edition.version_number,
       change_note: document_edition.change_note,
       created_at: expected_time,
       updated_at: expected_time
-    )
+    }
   end
 end
 
