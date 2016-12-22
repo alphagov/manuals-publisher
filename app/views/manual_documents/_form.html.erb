@@ -11,7 +11,7 @@
     <div class="preview_button add-vertical-margins"></div>
     <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
-    <% if manual.published? %>
+    <% if manual.has_ever_been_published? %>
       <div class="checkbox add-vertical-margins">
         <%= f.check_box :minor_update %>
       </div>

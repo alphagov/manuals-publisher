@@ -293,6 +293,14 @@ module ManualHelpers
     expect(change_note_field_value).to eq(expected_value)
   end
 
+  def check_that_change_note_fields_are_present(minor_update: false, note: "")
+    expect(page).to have_field("Minor update", checked: minor_update)
+    # the note field is only visible for major updates, so we have to reveal it
+    # if we think it will be a minor update alread
+    check("Minor update") if minor_update
+    expect(page).to have_field("Change note", with: note)
+  end
+
   def check_manual_can_be_created
     @manual_fields = {
       title: "Example Manual Title",
