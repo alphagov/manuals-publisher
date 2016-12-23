@@ -43,7 +43,6 @@ end
 group :development do
   gem "better_errors"
   gem "binding_of_caller"
-  gem "sinatra"
 end
 
 group :assets do
@@ -75,5 +74,6 @@ group :test do
 end
 
 group :development, :test do
+  gem "sinatra"
   gem "jasmine-rails"
 end
