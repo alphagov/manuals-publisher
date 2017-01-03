@@ -118,3 +118,19 @@ Feature: Creating and editing a manual
     Given a published manual exists
     When I edit one of the manual's documents
     Then I should see a link to preview the manual
+
+  Scenario: Change notes on new manual documents
+    Given a draft manual exists without any documents
+    Then I do not see the change note form when adding a new section
+
+  Scenario: Change notes on published manual documents
+    Given a published manual exists
+    Then I can see the change note form when editing existing sections
+    And I can see the change note form when adding a new section
+    When I create a document for the manual as a minor change
+    Then I can see the change note form when editing existing sections
+    And I can change the document to be a minor change
+    When I publish the manual
+    Then the section is published as a minor update
+    And I can see the change note form when editing existing sections
+    And the change note form for the document is clear

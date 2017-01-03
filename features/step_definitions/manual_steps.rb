@@ -550,6 +550,56 @@ Then(/^the section is published as a minor update$/) do
   check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" })
 end
 
+Then(/^I can see the change note form when editing existing sections$/) do
+  @documents.each do |document|
+    go_to_manual_page(@manual.title)
+    click_on document.title
+    click_on "Edit section"
+
+    check_that_change_note_fields_are_present
+  end
+end
+
+Then(/^I can see the change note form when adding a new section$/) do
+  go_to_manual_page(@manual.title)
+  click_on "Add section"
+
+  check_that_change_note_fields_are_present(minor_update: false, note: "New section added.")
+end
+
+Then(/^I do not see the change note form when adding a new section$/) do
+  go_to_manual_page(@manual.title)
+  click_on "Add section"
+
+  expect(page).not_to have_field("Minor update")
+  expect(page).not_to have_field("Change note")
+end
+
+Then(/^the change note form for the document is clear$/) do
+  go_to_manual_page(@manual.title)
+  click_on @updated_document.title
+  click_on "Edit section"
+
+  check_that_change_note_fields_are_present(minor_update: false, note: "")
+end
+
+Then(/^I can change the document to be a minor change$/) do
+  @updated_document = @documents.first
+
+  go_to_manual_page(@manual.title)
+  click_on @updated_document.title
+  click_on "Edit section"
+
+  fill_in "Change note", with: "This is a minor change"
+  check "Minor update"
+  click_on "Save as draft"
+
+  go_to_manual_page(@manual.title)
+  click_on @updated_document.title
+  click_on "Edit section"
+  check_that_change_note_fields_are_present(minor_update: true, note: "This is a minor change")
+end
+
 When(/^I add another section to the manual$/) do
   title = "Section 2"
 
