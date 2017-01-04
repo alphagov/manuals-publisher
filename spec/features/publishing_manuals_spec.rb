@@ -31,10 +31,13 @@ RSpec.describe "Publishing manuals", type: :feature do
       Timecop.freeze(publish_time) do
         publish_manual_without_ui(@manual)
       end
+
+      check_manual_is_drafted_to_publishing_api(@manual.id, number_of_drafts: 4)
     end
 
-    it "sends the manual and the sections to the Publishing API" do
+    it "drafts the manual and sections and publishes them to the Publishing API" do
       @documents.each do |document|
+        check_manual_document_is_drafted_to_publishing_api(document.id, number_of_drafts: 2)
         check_manual_and_documents_were_published(@manual, document, manual_fields, document_fields(document))
       end
     end

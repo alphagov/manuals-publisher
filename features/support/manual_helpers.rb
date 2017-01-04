@@ -225,14 +225,14 @@ module ManualHelpers
     assert_publishing_api_discard_draft(content_id)
   end
 
-  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {})
+  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1)
     attributes = {
       "schema_name" => "manual_section",
       "document_type" => "manual_section",
       "rendering_app" => "manuals-frontend",
       "publishing_app" => "manuals-publisher",
     }.merge(extra_attributes)
-    assert_publishing_api_put_content(content_id, request_json_including(attributes))
+    assert_publishing_api_put_content(content_id, request_json_including(attributes), number_of_drafts)
   end
 
   def check_manual_document_is_published_to_publishing_api(content_id)

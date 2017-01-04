@@ -9,8 +9,13 @@ class ManualObserversRegistry
   def publication
     # The order here is important. For example content exporting
     # should happen before publishing to search.
+    #
+    # A draft export step follows publication logging as this ensures that
+    # change notes that relate to the current draft are pushed straight to the
+    # publishing API rather than on the subsequent draft-publish cycle.
     [
       publication_logger,
+      publishing_api_draft_exporter,
       publishing_api_publisher,
       rummager_exporter,
     ]

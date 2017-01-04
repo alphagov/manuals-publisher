@@ -30,7 +30,7 @@ Feature: Publishing a manual
     Given a published manual exists
     When I create a new draft of a section with a change note
     And I publish the manual
-    Then the manual is published as a major update
+    Then the manual is published as a major update including a change note draft
 
   Scenario: Omit the change note
     Given a published manual exists
@@ -40,7 +40,7 @@ Feature: Publishing a manual
     When I indicate that the change is minor
     Then the document is updated without a change note
     When I publish the manual
-    Then the manual is published as a minor update
+    Then the manual is published as a minor update including a change note draft
 
   Scenario: Minor changes are published as major for first editions
     Given a published manual exists
@@ -50,8 +50,8 @@ Feature: Publishing a manual
     And the section is published as a major update
     When I edit one of the manual's documents as a minor change
     And I publish the manual
-    Then the manual is published as a minor update
-    And the section is published as a minor update
+    Then the manual is published as a minor update including a change note draft
+    And the section is published as a minor update including a change note draft
 
   Scenario: A manual fails to publish from the queue due to an unrecoverable error
     Given a draft manual exists without any documents

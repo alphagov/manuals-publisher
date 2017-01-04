@@ -131,6 +131,6 @@ Feature: Creating and editing a manual
     Then I can see the change note form when editing existing sections
     And I can change the document to be a minor change
     When I publish the manual
-    Then the section is published as a minor update
+    Then the section is published as a minor update including a change note draft
     And I can see the change note form when editing existing sections
     And the change note form for the document is clear
