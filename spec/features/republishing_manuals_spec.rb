@@ -22,7 +22,7 @@ RSpec.describe "Republishing manuals", type: :feature do
       publish_manual_without_ui(@manual)
     end
 
-    check_manual_is_drafted_to_publishing_api(@manual.id, number_of_drafts: 3)
+    check_manual_is_drafted_to_publishing_api(@manual.id, number_of_drafts: 4)
     check_manual_is_published_to_publishing_api(@manual.id)
 
     WebMock::RequestRegistry.instance.reset!

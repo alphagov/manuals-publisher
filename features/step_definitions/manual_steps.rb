@@ -526,28 +526,52 @@ Then(/^the document is updated without a change note$/) do
   )
 end
 
+Then(/^the manual is published as a major update including a change note draft$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
+end
+
+Then(/^the manual is published as a minor update including a change note draft$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
+end
+
 Then(/^the manual is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" })
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
 end
 
 Then(/^the manual is published as a minor update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "minor" })
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "minor" }, number_of_drafts: 1)
+end
+
+Then(/^the section is published as a major update including a change note draft$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
 end
 
 Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" })
+  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" })
+  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 1)
+end
+
+Then(/^the section is published as a minor update including a change note draft$/) do
+  # We don't use the update_type on the publish API, we fallback to what we set
+  # when drafting the content
+  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
 end
 
 Then(/^I can see the change note form when editing existing sections$/) do
