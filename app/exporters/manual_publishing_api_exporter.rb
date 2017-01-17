@@ -67,10 +67,10 @@ private
     # Otherwise our update type status depends on the update type status
     # of our children if any of them are major we are major (and they
     # have to send a major for their first edition too).
-    any_documents_are_major? ? "minor" : "major"
+    all_documents_are_minor? ? "minor" : "major"
   end
 
-  def any_documents_are_major?
+  def all_documents_are_minor?
     manual.
       documents.
       select(&:needs_exporting?).
