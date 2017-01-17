@@ -143,7 +143,7 @@ When(/^I create a document for the manual as a minor change$/) do
   }
 
   create_manual_document(@manual_fields.fetch(:title), @document_fields) do
-    check("Minor update")
+    choose("Minor update")
   end
 
   @document = most_recently_created_manual.documents.to_a.last
@@ -451,7 +451,7 @@ When(/^I edit one of the manual's documents as a minor change$/) do
   }
 
   edit_manual_document(@manual_title, @updated_document.title, @updated_fields) do
-    check("Minor update")
+    choose("Minor update")
   end
 end
 
@@ -514,7 +514,7 @@ Then(/^I see an error requesting that I provide a change note$/) do
 end
 
 When(/^I indicate that the change is minor$/) do
-  check("Minor update")
+  choose("Minor update")
   save_document
 end
 
@@ -596,6 +596,7 @@ Then(/^I do not see the change note form when adding a new section$/) do
   click_on "Add section"
 
   expect(page).not_to have_field("Minor update")
+  expect(page).not_to have_field("Major update")
   expect(page).not_to have_field("Change note")
 end
 
@@ -615,7 +616,7 @@ Then(/^I can change the document to be a minor change$/) do
   click_on "Edit section"
 
   fill_in "Change note", with: "This is a minor change"
-  check "Minor update"
+  choose "Minor update"
   click_on "Save as draft"
 
   go_to_manual_page(@manual.title)

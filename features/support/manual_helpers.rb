@@ -78,7 +78,7 @@ module ManualHelpers
 
     fill_in "Change note", with: change_note unless change_note.blank?
     if minor_update
-      check "Minor update"
+      choose "Minor update"
     end
 
     click_on "Yes"
@@ -297,7 +297,7 @@ module ManualHelpers
     expect(page).to have_field("Minor update", checked: minor_update)
     # the note field is only visible for major updates, so we have to reveal it
     # if we think it will be a minor update alread
-    check("Minor update") if minor_update
+    choose("Major update") if minor_update
     expect(page).to have_field("Change note", with: note)
   end
 

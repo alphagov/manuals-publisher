@@ -5,7 +5,7 @@
 //= require ajax_setup
 //= require length_counter
 //= require specialist_documents
-//= require toggle_hide_with_check_box
+//= require toggle_display_with_checked_input
 //= require select2
 
 function initPrimaryLinks(){
