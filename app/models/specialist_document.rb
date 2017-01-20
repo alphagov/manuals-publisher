@@ -108,14 +108,10 @@ class SpecialistDocument
     end
   end
 
-  def withdraw!
-    latest_edition.archive unless withdrawn?
-  end
-
   def withdraw_and_mark_as_exported!(exported_at = Time.zone.now)
     edition = latest_edition
     edition.exported_at = exported_at
-    edition.archive
+    edition.archive unless withdrawn?
   end
 
   def withdrawn?
