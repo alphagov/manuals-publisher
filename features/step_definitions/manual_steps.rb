@@ -132,19 +132,19 @@ When(/^I create a document for the manual$/) do
   @document = most_recently_created_manual.documents.to_a.last
 end
 
-When(/^I create a document for the manual as a minor change$/) do
+When(/^I create a document for the manual with a change note$/) do
   @document_title = "Created Section 1"
   @document_slug = [@manual_slug, "created-section-1"].join("/")
 
+  @change_note = "Adding a brand new exciting section"
   @document_fields = {
     section_title: @document_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
+    change_note: @change_note
   }
 
-  create_manual_document(@manual_fields.fetch(:title), @document_fields) do
-    choose("Minor update")
-  end
+  create_manual_document(@manual_fields.fetch(:title), @document_fields)
 
   @document = most_recently_created_manual.documents.to_a.last
 end
@@ -412,6 +412,24 @@ Given(/^a published manual with some sections was created without the UI$/) do
   WebMock::RequestRegistry.instance.reset!
 end
 
+When(/^I create a document for the manual as a minor change without the UI$/) do
+  @document_title = "Created Section 1"
+  @document_slug = [@manual_slug, "created-section-1"].join("/")
+
+  @document_fields = {
+    title: @document_title,
+    summary: "Section 1 summary",
+    body: "Section 1 body",
+    minor_update: true
+  }
+
+  @document = create_manual_document_without_ui(@manual, @document_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
+
+  go_to_manual_page(@manual.title)
+
+  WebMock::RequestRegistry.instance.reset!
+end
+
 When(/^I edit one of the manual's documents$/) do
   WebMock::RequestRegistry.instance.reset!
   @updated_document = @documents.first
@@ -492,23 +510,6 @@ When(/^I copy\+paste the embed code into the body of the document$/) do
   copy_embed_code_for_attachment_and_paste_into_manual_document_body("My attachment")
 end
 
-When(/^I create a new draft of a section with a change note$/) do
-  document = @documents.first
-
-  click_on(document.title)
-  click_on("Edit section")
-
-  @change_note = "Changed title for the purposes of testing."
-
-  fields = {
-    section_title: "This document has changed for the purposes of testing",
-    change_note: @change_note,
-  }
-
-  save_document
-  edit_manual_document(@manual_title, document.title, fields)
-end
-
 Then(/^I see an error requesting that I provide a change note$/) do
   expect(page).to have_content("You must provide a change note or indicate minor update")
 end
@@ -574,7 +575,7 @@ Then(/^the section is published as a minor update including a change note draft$
   check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
 end
 
-Then(/^I can see the change note form when editing existing sections$/) do
+Then(/^I can see the change note and update type form when editing existing sections$/) do
   @documents.each do |document|
     go_to_manual_page(@manual.title)
     click_on document.title
@@ -588,24 +589,23 @@ Then(/^I can see the change note form when adding a new section$/) do
   go_to_manual_page(@manual.title)
   click_on "Add section"
 
-  check_that_change_note_fields_are_present(minor_update: false, note: "New section added.")
-end
-
-Then(/^I do not see the change note form when adding a new section$/) do
-  go_to_manual_page(@manual.title)
-  click_on "Add section"
-
-  expect(page).not_to have_field("Minor update")
-  expect(page).not_to have_field("Major update")
-  expect(page).not_to have_field("Change note")
+  check_that_change_note_fields_are_present(note_field_only: true, note: "New section added.")
 end
 
 Then(/^the change note form for the document is clear$/) do
   go_to_manual_page(@manual.title)
-  click_on @updated_document.title
+  click_on (@updated_document || @document).title
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(minor_update: false, note: "")
+end
+
+Then(/^the change note form for the document contains my note$/) do
+  go_to_manual_page(@manual.title)
+  click_on (@updated_document || @document).title
+  click_on "Edit section"
+
+  check_that_change_note_fields_are_present(note_field_only: true, note: @change_note)
 end
 
 Then(/^I can change the document to be a minor change$/) do

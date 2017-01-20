@@ -11,7 +11,7 @@
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
-      <% if manual.has_ever_been_published? %>
+      <% if manual.has_ever_been_published? && document.has_ever_been_published? %>
         <div class="checkbox add-vertical-margins">
           <%= f.radio_button :minor_update, 1, class: 'js-update-type-minor', tag_type: :p, label: 'Minor update', checked: document.minor_update %>
           <p class="help-block">Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.</p>
@@ -20,6 +20,13 @@
           <%= f.radio_button :minor_update, 0, class: 'js-update-type-major', tag_type: :p, label: 'Major update', checked: !document.minor_update %>
         </div>
         <div class="<%= document.minor_update ? 'js-hidden' : nil %>">
+          <%= f.text_area :change_note, class: 'form-control short-textarea' %>
+          <p class="help-block">This will be publically viewable on GOV.UK.</p>
+        </div>
+      <% else %>
+        <div>
+          <p>Major update</p>
+          <p class="help-block">Adding a new section is always a major update</p>
           <%= f.text_area :change_note, class: 'form-control short-textarea' %>
           <p class="help-block">This will be publically viewable on GOV.UK.</p>
         </div>

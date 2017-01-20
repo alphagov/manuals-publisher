@@ -28,7 +28,7 @@ Feature: Publishing a manual
 
   Scenario: Add a change note
     Given a published manual exists
-    When I create a new draft of a section with a change note
+    When I create a document for the manual with a change note
     And I publish the manual
     Then the manual is published as a major update including a change note draft
 
@@ -44,7 +44,8 @@ Feature: Publishing a manual
 
   Scenario: Minor changes are published as major for first editions
     Given a published manual exists
-    When I create a document for the manual as a minor change
+    # this happens outside the UI because it's no longer possible in the UI
+    When I create a document for the manual as a minor change without the UI
     And I publish the manual
     Then the manual is published as a major update
     And the section is published as a major update

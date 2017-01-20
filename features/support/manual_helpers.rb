@@ -293,11 +293,14 @@ module ManualHelpers
     expect(change_note_field_value).to eq(expected_value)
   end
 
-  def check_that_change_note_fields_are_present(minor_update: false, note: "")
-    expect(page).to have_field("Minor update", checked: minor_update)
-    # the note field is only visible for major updates, so we have to reveal it
-    # if we think it will be a minor update alread
-    choose("Major update") if minor_update
+  def check_that_change_note_fields_are_present(note_field_only: false, minor_update: false, note: "")
+    unless note_field_only
+      expect(page).to have_field("Minor update", checked: minor_update)
+      expect(page).to have_field("Major update", checked: !minor_update)
+      # the note field is only visible for major updates, so we have to reveal it
+      # if we think it will be a minor update alread
+      choose("Major update") if minor_update
+    end
     expect(page).to have_field("Change note", with: note)
   end
 
