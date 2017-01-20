@@ -86,7 +86,11 @@ class SpecialistDocument
   def published?
     editions.any?(&:published?)
   end
-  alias_method :has_ever_been_published?, :published?
+
+  def has_ever_been_published?
+    return false if @editions.size == 1 && needs_exporting?
+    published?
+  end
 
   def draft?
     latest_edition.draft?

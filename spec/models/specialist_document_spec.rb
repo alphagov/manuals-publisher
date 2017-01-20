@@ -52,6 +52,7 @@ describe SpecialistDocument do
         archived?: false,
         version_number: 1,
         document_type: document_type,
+        exported_at: nil,
       )
     )
   }
@@ -67,6 +68,7 @@ describe SpecialistDocument do
         version_number: 2,
         extra_fields: extra_fields,
         document_type: document_type,
+        exported_at: nil,
       )
     )
   }
@@ -82,6 +84,7 @@ describe SpecialistDocument do
         version_number: 3,
         extra_fields: extra_fields,
         document_type: document_type,
+        exported_at: nil,
       )
     )
   }
@@ -157,8 +160,20 @@ describe SpecialistDocument do
       expect(doc).not_to be_draft
     end
 
-    it "has ever been published" do
-      expect(doc).to have_ever_been_published
+    context "that has been exported" do
+      before { allow(published_edition_v1).to receive(:exported_at).and_return(4.days.ago) }
+
+      it "has ever been published" do
+        expect(doc).to have_ever_been_published
+      end
+    end
+
+    context "that has not been exported" do
+      before { allow(published_edition_v1).to receive(:exported_at).and_return(nil) }
+
+      it "has never been published" do
+        expect(doc).not_to have_ever_been_published
+      end
     end
   end
 
@@ -677,8 +692,7 @@ describe SpecialistDocument do
         time = Time.zone.now
         Timecop.freeze(time) do
           doc.withdraw_and_mark_as_exported!
-          expect(draft_edition_v1).to have_received(:exported_at=).with(time).ordered
-          expect(draft_edition_v1).to have_received(:save).ordered
+          expect(draft_edition_v1).to have_received(:exported_at=).with(time)
         end
       end
     end
@@ -697,11 +711,9 @@ describe SpecialistDocument do
         time = Time.zone.now
         Timecop.freeze(time) do
           doc.withdraw_and_mark_as_exported!
-          expect(withdrawn_edition_v2).to have_received(:exported_at=).with(time).ordered
-          expect(withdrawn_edition_v2).to have_received(:save).ordered
+          expect(withdrawn_edition_v2).to have_received(:exported_at=).with(time)
 
           expect(published_edition_v1).not_to have_received(:exported_at=)
-          expect(published_edition_v1).not_to have_received(:save)
         end
       end
     end
@@ -719,11 +731,9 @@ describe SpecialistDocument do
         time = Time.zone.now
         Timecop.freeze(time) do
           doc.withdraw_and_mark_as_exported!
-          expect(draft_edition_v2).to have_received(:exported_at=).with(time).ordered
-          expect(draft_edition_v2).to have_received(:save).ordered
+          expect(draft_edition_v2).to have_received(:exported_at=).with(time)
 
           expect(published_edition_v1).not_to have_received(:exported_at=)
-          expect(published_edition_v1).not_to have_received(:save)
         end
       end
     end
@@ -741,8 +751,7 @@ describe SpecialistDocument do
         time = Time.zone.now
         Timecop.freeze(time) do
           doc.withdraw_and_mark_as_exported!
-          expect(published_edition_v1).to have_received(:exported_at=).with(time).ordered
-          expect(published_edition_v1).to have_received(:save).ordered
+          expect(published_edition_v1).to have_received(:exported_at=).with(time)
         end
       end
     end
