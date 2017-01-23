@@ -61,6 +61,7 @@ private
       summary: manual.summary,
       body: manual.body,
       state: manual.state,
+      originally_published_at: manual.originally_published_at,
     }
   end
 
@@ -77,7 +78,8 @@ private
       state: edition.state,
       version_number: edition.version_number,
       updated_at: edition.updated_at,
-      ever_been_published: manual_record.has_ever_been_published?
+      ever_been_published: manual_record.has_ever_been_published?,
+      originally_published_at: edition.originally_published_at
     )
 
     association_marshallers.reduce(base_manual) { |manual, marshaller|

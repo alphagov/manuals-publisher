@@ -14,11 +14,13 @@ describe Manual do
       state: state,
       updated_at: updated_at,
       version_number: 10,
+      originally_published_at: originally_published_at,
     )
   }
 
   let(:id) { "0123-4567-89ab-cdef" }
   let(:updated_at) { double(:updated_at) }
+  let(:originally_published_at) { double(:originally_published_at) }
   let(:title) { double(:title) }
   let(:summary) { double(:summary) }
   let(:body) { double(:body) }
@@ -100,6 +102,7 @@ describe Manual do
         state: state,
         updated_at: updated_at,
         version_number: 10,
+        originally_published_at: originally_published_at,
       )
     end
   end
