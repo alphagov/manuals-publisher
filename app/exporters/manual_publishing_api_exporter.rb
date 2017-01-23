@@ -56,7 +56,16 @@ private
       ],
       details: details_data,
       locale: "en",
-    }
+    }.merge(optional_exportable_attributes)
+  end
+
+  def optional_exportable_attributes
+    attrs = {}
+    if manual.originally_published_at.present?
+      attrs[:first_published_at] = manual.originally_published_at.iso8601
+      attrs[:public_updated_at] = manual.originally_published_at.iso8601
+    end
+    attrs
   end
 
   def update_type

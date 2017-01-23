@@ -1,4 +1,5 @@
 require "fast_spec_helper"
+require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
 require "manual_section_publishing_api_exporter"
@@ -33,6 +34,7 @@ describe ManualSectionPublishingAPIExporter do
         slug: "guidance/my-first-manual",
         organisation_slug: "cabinet-office",
       },
+      originally_published_at: nil,
     )
   }
 
@@ -105,6 +107,21 @@ describe ManualSectionPublishingAPIExporter do
           ],
         ),
         hash_excluding(:public_updated_at)
+      )
+    )
+  end
+
+  it "adds first_published_at and public_updated_at to the serialized attributes if the manual has an originally_published_at date" do
+    previously_published_date = 10.years.ago
+    allow(manual).to receive(:originally_published_at).and_return(previously_published_date)
+
+    subject.call
+
+    expect(export_recipent).to have_received(:call).with(
+      document.id,
+      hash_including(
+        first_published_at: previously_published_date.iso8601,
+        public_updated_at: previously_published_date.iso8601,
       )
     )
   end

@@ -25,6 +25,7 @@ describe ManualPublishingAPIExporter do
       attributes: manual_attributes,
       documents: documents,
       has_ever_been_published?: manual_attributes[:ever_been_published],
+      originally_published_at: nil,
     )
   }
 
@@ -138,6 +139,21 @@ describe ManualPublishingAPIExporter do
         hash_excluding(:public_updated_at)
       )
     ).once
+  end
+
+  it "adds first_published_at and public_updated_at to the serialized attributes if the manual has an originally_published_at date" do
+    previously_published_date = 10.years.ago
+    allow(manual).to receive(:originally_published_at).and_return(previously_published_date)
+
+    subject.call
+
+    expect(export_recipent).to have_received(:call).with(
+      "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+      hash_including(
+        first_published_at: previously_published_date.iso8601,
+        public_updated_at: previously_published_date.iso8601,
+      )
+    )
   end
 
   it "exports section metadata for the manual" do
