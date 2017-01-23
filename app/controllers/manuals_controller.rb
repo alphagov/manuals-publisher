@@ -111,6 +111,7 @@ private
       .fetch("manual", {})
       .slice(*valid_params)
       .symbolize_keys
+      .merge(manual_date_params)
   end
 
   def valid_params
@@ -119,6 +120,30 @@ private
       summary
       body
     )
+  end
+
+  def manual_date_params
+    date_param_names = [:originally_published_at]
+    manual_params = params.fetch("manual", {})
+    date_params = date_param_names.map do |date_param_name|
+      [
+        date_param_name,
+        build_datetime_from(*[
+          manual_params.fetch("#{date_param_name}(1i)", ""),
+          manual_params.fetch("#{date_param_name}(2i)", ""),
+          manual_params.fetch("#{date_param_name}(3i)", ""),
+          manual_params.fetch("#{date_param_name}(4i)", ""),
+          manual_params.fetch("#{date_param_name}(5i)", ""),
+          manual_params.fetch("#{date_param_name}(6i)", ""),
+        ])
+      ]
+    end
+    Hash[date_params]
+  end
+
+  def build_datetime_from(*date_args)
+    return nil if date_args.all? &:blank?
+    Time.zone.local(*date_args.map(&:to_i))
   end
 
   def manual_form(manual)

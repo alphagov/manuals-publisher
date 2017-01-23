@@ -21,6 +21,10 @@ class ManualViewAdapter < SimpleDelegator
     id
   end
 
+  def previously_published
+    has_ever_been_published?
+  end
+
 private
   attr_reader :manual
 end
