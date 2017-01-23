@@ -7,6 +7,8 @@ module ManualHelpers
     visit new_manual_path
     fill_in_fields(fields)
 
+    yield if block_given?
+
     save_as_draft if save
   end
 
@@ -170,6 +172,10 @@ module ManualHelpers
 
   def check_manual_was_published(manual)
     check_manual_is_published_to_publishing_api(manual.id)
+  end
+
+  def check_manual_document_was_published(document)
+    check_manual_document_is_published_to_publishing_api(document.id)
   end
 
   def check_manual_document_was_not_published(document)

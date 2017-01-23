@@ -134,3 +134,10 @@ Feature: Creating and editing a manual
     Then the section is published as a major update including a change note draft
     And I can see the change note and update type form when editing existing sections
     And the change note form for the document is clear
+
+  Scenario: Creating a manual that was previously published elsewhere
+    Given I create a manual that was previously published elsewhere
+    And a draft document exists for the manual
+    When I publish the manual
+    Then the manual is published with first published at and public updated at dates set to the previously published date
+    And the document is published with first published at and public updated at dates set to the previously published date
