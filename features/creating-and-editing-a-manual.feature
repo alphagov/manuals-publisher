@@ -137,7 +137,17 @@ Feature: Creating and editing a manual
 
   Scenario: Creating a manual that was previously published elsewhere
     Given I create a manual that was previously published elsewhere
-    And a draft document exists for the manual
     When I publish the manual
-    Then the manual is published with first published at and public updated at dates set to the previously published date
-    And the document is published with first published at and public updated at dates set to the previously published date
+    Then the manual and its documents are published with all public timestamps set to the previously published date
+    When I publish a minor change to the manual
+    Then the manual and its documents are republished with all public timestamps set to the previously published date
+    When I publish a major change to the manual
+    Then the manual and its documents are republished with all public timestamps set to the previously published date
+    When I tell the manual to stop using the previously published date as the public date
+    Then the manual and its documents are republished with the first published timestamp set to the previously published date, but not the public updated timestamp
+    When I publish a major change to the manual
+    Then the manual and its documents are republished with the first published timestamp set to the previously published date, but not the public updated timestamp
+    When I update the previously published date to a new one
+    Then the manual and its documents are republished with the first published timestamp set to the new published date, but not the public updated timestamp
+    When I tell the manual to start using the previously published date as the public date
+    Then the manual and its documents are republished with all public timestamps set to the new previously published date

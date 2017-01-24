@@ -217,6 +217,9 @@ Given(/^a draft document exists for the manual$/) do
 
   @document = most_recently_created_manual.documents.to_a.last
 
+  @documents ||= []
+  @documents << @document
+
   WebMock::RequestRegistry.instance.reset!
 end
 
@@ -430,7 +433,7 @@ When(/^I create a document for the manual as a minor change without the UI$/) do
   WebMock::RequestRegistry.instance.reset!
 end
 
-When(/^I edit one of the manual's documents$/) do
+When(/^I edit one of the manual's documents(?: as a major change)?$/) do
   WebMock::RequestRegistry.instance.reset!
   @updated_document = @documents.first
 
@@ -441,7 +444,9 @@ When(/^I edit one of the manual's documents$/) do
     change_note: "Updated section",
   }
 
-  edit_manual_document(@manual_title, @updated_document.title, @updated_fields)
+  edit_manual_document(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+    choose("Major update")
+  end
 end
 
 When(/^I edit one of the manual's documents without a change note$/) do
@@ -455,7 +460,9 @@ When(/^I edit one of the manual's documents without a change note$/) do
     change_note: "",
   }
 
-  edit_manual_document(@manual_title, @updated_document.title, @updated_fields)
+  edit_manual_document(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+    choose("Major update")
+  end
 end
 
 When(/^I edit one of the manual's documents as a minor change$/) do
@@ -468,7 +475,7 @@ When(/^I edit one of the manual's documents as a minor change$/) do
     section_body: "Updated section",
   }
 
-  edit_manual_document(@manual_title, @updated_document.title, @updated_fields) do
+  edit_manual_document(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
     choose("Minor update")
   end
 end

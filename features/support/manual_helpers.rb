@@ -58,6 +58,8 @@ module ManualHelpers
     go_to_edit_page_for_manual(manual_title)
     fill_in_fields(new_fields)
 
+    yield if block_given?
+
     save_as_draft
   end
 
@@ -66,6 +68,15 @@ module ManualHelpers
     click_on section_title
     click_on "Edit"
     fill_in_fields(new_fields)
+
+    yield if block_given?
+
+    save_as_draft
+  end
+
+  def edit_manual_original_publication_date(manual_title)
+    go_to_manual_page(manual_title)
+    click_on("Edit original publication date")
 
     yield if block_given?
 
@@ -231,14 +242,19 @@ module ManualHelpers
     assert_publishing_api_discard_draft(content_id)
   end
 
-  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1)
-    attributes = {
-      "schema_name" => "manual_section",
-      "document_type" => "manual_section",
-      "rendering_app" => "manuals-frontend",
-      "publishing_app" => "manuals-publisher",
-    }.merge(extra_attributes)
-    assert_publishing_api_put_content(content_id, request_json_including(attributes), number_of_drafts)
+  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
+    raise ArgumentError, "can't specify both extra_attributes and with_matcher" if with_matcher.present? && !extra_attributes.empty?
+
+    if with_matcher.nil?
+      attributes = {
+        "schema_name" => "manual_section",
+        "document_type" => "manual_section",
+        "rendering_app" => "manuals-frontend",
+        "publishing_app" => "manuals-publisher",
+      }.merge(extra_attributes)
+      with_matcher = request_json_including(attributes)
+    end
+    assert_publishing_api_put_content(content_id, with_matcher, number_of_drafts)
   end
 
   def check_manual_document_is_published_to_publishing_api(content_id)
@@ -465,5 +481,68 @@ module ManualHelpers
       }.present?
     end
   end
+
+  def check_manual_is_drafted_and_published_with_first_published_date_only(manual, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      manual.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        !data.key?("public_updated_at")
+      end,
+      number_of_drafts: how_many_times
+    )
+    check_manual_was_published(manual)
+  end
+
+  def check_manual_document_is_drafted_and_published_with_first_published_date_only(document, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      document.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        !data.key?("public_updated_at")
+      end,
+      number_of_drafts: how_many_times
+    )
+
+    check_manual_document_was_published(document)
+  end
+
+  def check_manual_is_drafted_and_published_with_all_public_timestamps(manual, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      manual.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        (data["public_updated_at"] == expected_date.iso8601)
+      end,
+      number_of_drafts: how_many_times
+    )
+    check_manual_was_published(manual)
+  end
+
+  def check_manual_document_is_drafted_and_published_with_all_public_timestamps(document, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      document.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        (data["public_updated_at"] == expected_date.iso8601)
+      end,
+      number_of_drafts: how_many_times
+    )
+
+    check_manual_document_was_published(document)
+  end
+
 end
 RSpec.configuration.include ManualHelpers, type: :feature
