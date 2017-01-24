@@ -25,6 +25,7 @@ private
       link: link,
       indexable_content: indexable_content,
       public_timestamp: public_timestamp,
+      content_store_document_type: type,
     }
   end
 
