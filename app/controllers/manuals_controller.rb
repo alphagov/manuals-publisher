@@ -97,7 +97,9 @@ private
 
   def create_manual_params
     base_manual_params
+      .merge(manual_date_params)
       .merge(
+        use_originally_published_at_for_public_timestamp: "1",
         organisation_slug: current_organisation_slug,
       )
   end
@@ -106,12 +108,11 @@ private
     base_manual_params
   end
 
-  def base_manual_params
+  def base_manual_params(only: valid_params)
     params
       .fetch("manual", {})
-      .slice(*valid_params)
+      .slice(*only)
       .symbolize_keys
-      .merge(manual_date_params)
   end
 
   def valid_params

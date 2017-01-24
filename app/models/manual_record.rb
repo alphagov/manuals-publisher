@@ -77,6 +77,7 @@ private
     field :document_ids, type: Array
     field :removed_document_ids, type: Array
     field :originally_published_at, type: DateTime
+    field :use_originally_published_at_for_public_timestamp, type: Boolean
 
     # We don't make use of the relationship but Mongoid can't save the
     # timestamps properly without it.

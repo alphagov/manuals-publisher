@@ -13,9 +13,9 @@
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
-      <% unless manual.has_ever_been_published? %>
+      <% unless manual.persisted? %>
         <fieldset class="first-published-date well">
-          <p class="required">This manual</p>
+          <label class="control-label">This manual</label>
           <div class="checkbox add-vertical-margins">
             <%= f.radio_button(:previously_published, 0, tag_type: :p, label: 'has never been published before. It is new.', checked: true) %>
           </div>
@@ -27,10 +27,10 @@
             <div class="form-inline">
               <%= f.datetime_select :originally_published_at, { include_blank: true, start_year: Date.today.year, end_year: 1945 }, { class: 'date form-control' } %>
             </div>
+            <%= f.hidden_field :use_originally_published_at_for_public_timestamp, value: 1 %>
           </div>
         </fieldset>
       <% end %>
-
 
       <div class='actions'>
         <button name="draft" class="btn btn-success" data-disable-with="Saving...">Save as draft</button>
