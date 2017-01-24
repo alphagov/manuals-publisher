@@ -544,5 +544,35 @@ module ManualHelpers
     check_manual_document_was_published(document)
   end
 
+  def check_manual_is_drafted_and_published_with_no_public_timestamps(manual, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      manual.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (!data.key?("first_published_at")) &&
+        (!data.key?("public_updated_at"))
+      end,
+      number_of_drafts: how_many_times
+    )
+    check_manual_was_published(manual)
+  end
+
+  def check_manual_document_is_drafted_and_published_with_no_public_timestamps(document, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      document.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (!data.key?("first_published_at")) &&
+        (!data.key?("public_updated_at"))
+      end,
+      number_of_drafts: how_many_times
+    )
+
+    check_manual_document_was_published(document)
+  end
 end
 RSpec.configuration.include ManualHelpers, type: :feature

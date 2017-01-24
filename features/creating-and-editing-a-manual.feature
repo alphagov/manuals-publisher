@@ -151,3 +151,5 @@ Feature: Creating and editing a manual
     Then the manual and its documents are republished with the first published timestamp set to the new published date, but not the public updated timestamp
     When I tell the manual to start using the previously published date as the public date
     Then the manual and its documents are republished with all public timestamps set to the new previously published date
+    When I update the manual to clear the previously published date
+    Then the manual and its documents are republished without any public timestamps

@@ -128,8 +128,13 @@ private
   end
 
   def publication_date_manual_params
-    base_manual_params(only: [:use_originally_published_at_for_public_timestamp])
+    base_manual_params(only: [:previously_published, :use_originally_published_at_for_public_timestamp])
       .merge(manual_date_params)
+      .tap do |extracted_params|
+        if extracted_params[:previously_published] == "0"
+          extracted_params[:originally_published_at] = nil
+        end
+      end
   end
 
   def base_manual_params(only: valid_params)
