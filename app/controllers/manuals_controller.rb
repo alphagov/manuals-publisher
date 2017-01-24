@@ -61,6 +61,25 @@ class ManualsController < ApplicationController
     end
   end
 
+  def edit_original_publication_date
+    manual, _metadata = services.show(manual_id).call
+
+    render(:edit_original_publication_date, locals: { manual: manual_form(manual) })
+  end
+
+  def update_original_publication_date
+    manual = services.update_original_publication_date(manual_id, publication_date_manual_params).call
+    manual = manual_form(manual)
+
+    if manual.valid?
+      redirect_to(manual_path(manual))
+    else
+      render(:edit_original_publication_date, locals: {
+        manual: manual,
+      })
+    end
+  end
+
   def publish
     manual = services.queue_publish(manual_id).call
 
@@ -106,6 +125,11 @@ private
 
   def update_manual_params
     base_manual_params
+  end
+
+  def publication_date_manual_params
+    base_manual_params(only: [:use_originally_published_at_for_public_timestamp])
+      .merge(manual_date_params)
   end
 
   def base_manual_params(only: valid_params)

@@ -34,6 +34,7 @@ class ManualObserversRegistry
       publishing_api_draft_exporter
     ]
   end
+  alias_method :update_original_publication_date, :update
 
   def creation
     [
