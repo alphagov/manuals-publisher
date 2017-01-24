@@ -63,7 +63,7 @@ private
     attrs = {}
     if manual.originally_published_at.present?
       attrs[:first_published_at] = manual.originally_published_at.iso8601
-      attrs[:public_updated_at] = manual.originally_published_at.iso8601
+      attrs[:public_updated_at] = manual.originally_published_at.iso8601 if manual.use_originally_published_at_for_public_timestamp?
     end
     attrs
   end

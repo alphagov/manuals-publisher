@@ -35,6 +35,7 @@ describe ManualSectionPublishingAPIExporter do
         organisation_slug: "cabinet-office",
       },
       originally_published_at: nil,
+      use_originally_published_at_for_public_timestamp?: false,
     )
   }
 
@@ -106,24 +107,49 @@ describe ManualSectionPublishingAPIExporter do
             }
           ],
         ),
-        hash_excluding(:public_updated_at)
+        hash_excluding(:first_published_at, :public_updated_at)
       )
     )
   end
 
-  it "adds first_published_at and public_updated_at to the serialized attributes if the manual has an originally_published_at date" do
-    previously_published_date = 10.years.ago
-    allow(manual).to receive(:originally_published_at).and_return(previously_published_date)
+  context "when the manual has an originally_published_at date" do
+    let(:previously_published_date) { 10.years.ago }
+    before do
+      allow(manual).to receive(:originally_published_at).and_return(previously_published_date)
+    end
 
-    subject.call
+    it "adds it as the value for first_published_at in the serialized attributes" do
+      subject.call
 
-    expect(export_recipent).to have_received(:call).with(
-      document.id,
-      hash_including(
-        first_published_at: previously_published_date.iso8601,
-        public_updated_at: previously_published_date.iso8601,
+      expect(export_recipent).to have_received(:call).with(
+        document.id,
+        hash_including(
+          first_published_at: previously_published_date.iso8601,
+        )
       )
-    )
+    end
+
+    it "adds it as the value for public_updated_at in the serialized attributes if the manual says to use it for the public timestamp" do
+      allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(true)
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        document.id,
+        hash_including(
+          public_updated_at: previously_published_date.iso8601,
+        )
+      )
+    end
+
+    it "does not add it as the value for public_updated_at in the serialized attributes if the manual says not to use it for the public timestamp" do
+      allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(false)
+      subject.call
+
+      expect(export_recipent).to have_received(:call).with(
+        document.id,
+        hash_excluding(:public_updated_at)
+      )
+    end
   end
 
   context "exporting update_type correctly" do
