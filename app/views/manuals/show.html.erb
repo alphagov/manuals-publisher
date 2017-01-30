@@ -51,6 +51,12 @@
         <dd><%= link_to manual.organisation_slug, url_for_public_org(manual.organisation_slug) %></dd>
       </dl>
     <% end %>
+    <% if manual.originally_published_at.present? %>
+      <dl class="metadata-list">
+        <dt>Originally published</dt>
+        <dd><%= nice_time_format(manual.originally_published_at) %><% if manual.use_originally_published_at_for_public_timestamp? %><br/>This will be used as the public updated at timestamp on GOV.UK.<% end %></dd>
+      </dl>
+    <% end %>
   </div>
 </div>
 
@@ -59,7 +65,8 @@
     <h2>Sections</h2>
     <div class="add-bottom-margin">
       <%= link_to 'Reorder sections', reorder_manual_documents_path(manual), class: 'btn btn-default add-right-margin' %>
-      <%= link_to 'Add section', new_manual_document_path(manual), class: 'btn btn-default' %>
+      <%= link_to 'Add section', new_manual_document_path(manual), class: 'btn btn-default add-right-margin' %>
+      <%= link_to 'Edit original publication date', original_publication_date_manual_path(manual), class: 'btn btn-default' %>
     </div>
     <% if manual.documents.any? %>
     <ul class="document-list">

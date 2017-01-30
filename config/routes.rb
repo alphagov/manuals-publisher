@@ -26,6 +26,9 @@ ManualsPublisher::Application.routes.draw do
 
     # This is for persisted manuals
     post :preview, on: :member
+
+    get :original_publication_date, on: :member, action: :edit_original_publication_date
+    put :original_publication_date, on: :member, action: :update_original_publication_date
   end
 
   # This is for new manualss

@@ -56,7 +56,16 @@ private
       ],
       details: details_data,
       locale: "en",
-    }
+    }.merge(optional_exportable_attributes)
+  end
+
+  def optional_exportable_attributes
+    attrs = {}
+    if manual.originally_published_at.present?
+      attrs[:first_published_at] = manual.originally_published_at.iso8601
+      attrs[:public_updated_at] = manual.originally_published_at.iso8601 if manual.use_originally_published_at_for_public_timestamp?
+    end
+    attrs
   end
 
   def update_type
@@ -67,10 +76,10 @@ private
     # Otherwise our update type status depends on the update type status
     # of our children if any of them are major we are major (and they
     # have to send a major for their first edition too).
-    any_documents_are_major? ? "minor" : "major"
+    all_documents_are_minor? ? "minor" : "major"
   end
 
-  def any_documents_are_major?
+  def all_documents_are_minor?
     manual.
       documents.
       select(&:needs_exporting?).

@@ -18,9 +18,16 @@
           it after you remove it.</p>
 
         <div class="checkbox add-vertical-margins">
-          <%= f.check_box :minor_update %>
+          <%= f.radio_button :minor_update, 1, tag_type: :p, label: 'Minor update', checked: document.minor_update %>
+          <p class="help-block">Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.</p>
         </div>
-        <%= f.text_area :change_note, class: 'form-control short-textarea' %>
+        <div class="checkbox add-vertical-margins">
+          <%= f.radio_button :minor_update, 0, tag_type: :p, label: 'Major update', checked: !document.minor_update %>
+        </div>
+        <div class="<%= document.minor_update ? 'js-hidden' : nil %>">
+          <%= f.text_area :change_note, class: 'form-control short-textarea' %>
+          <p class="help-block">This will be publically viewable on GOV.UK.</p>
+        </div>
 
         <p>Are you sure you want to proceed?</p>
         <button name='draft' class="btn btn-danger" data-disable-with="Withdrawing...">Yes</button>
@@ -29,3 +36,17 @@
     <% end %>
   </div>
 </div>
+
+<%= content_for :document_ready do %>
+  window.toggleDisplayWithCheckedInput({
+    $input: $("#document_minor_update_1"),
+    $element: $("#document_change_note").parent(),
+    mode: 'hide'
+  });
+  window.toggleDisplayWithCheckedInput({
+    $input: $("#document_minor_update_0"),
+    $element: $("#document_change_note").parent(),
+    mode: 'show'
+  });
+  $('.js-hidden').hide();
+<% end -%>

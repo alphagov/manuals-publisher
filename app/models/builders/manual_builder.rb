@@ -25,6 +25,8 @@ class ManualBuilder
       state: "draft",
       organisation_slug: "",
       updated_at: "",
+      originally_published_at: nil,
+      use_originally_published_at_for_public_timestamp: true,
     }
   end
 

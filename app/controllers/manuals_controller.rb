@@ -61,6 +61,25 @@ class ManualsController < ApplicationController
     end
   end
 
+  def edit_original_publication_date
+    manual, _metadata = services.show(manual_id).call
+
+    render(:edit_original_publication_date, locals: { manual: manual_form(manual) })
+  end
+
+  def update_original_publication_date
+    manual = services.update_original_publication_date(manual_id, publication_date_manual_params).call
+    manual = manual_form(manual)
+
+    if manual.valid?
+      redirect_to(manual_path(manual))
+    else
+      render(:edit_original_publication_date, locals: {
+        manual: manual,
+      })
+    end
+  end
+
   def publish
     manual = services.queue_publish(manual_id).call
 
@@ -97,7 +116,9 @@ private
 
   def create_manual_params
     base_manual_params
+      .merge(manual_date_params)
       .merge(
+        use_originally_published_at_for_public_timestamp: "1",
         organisation_slug: current_organisation_slug,
       )
   end
@@ -106,10 +127,20 @@ private
     base_manual_params
   end
 
-  def base_manual_params
+  def publication_date_manual_params
+    base_manual_params(only: [:previously_published, :use_originally_published_at_for_public_timestamp])
+      .merge(manual_date_params)
+      .tap do |extracted_params|
+        if extracted_params[:previously_published] == "0"
+          extracted_params[:originally_published_at] = nil
+        end
+      end
+  end
+
+  def base_manual_params(only: valid_params)
     params
       .fetch("manual", {})
-      .slice(*valid_params)
+      .slice(*only)
       .symbolize_keys
   end
 
@@ -119,6 +150,30 @@ private
       summary
       body
     )
+  end
+
+  def manual_date_params
+    date_param_names = [:originally_published_at]
+    manual_params = params.fetch("manual", {})
+    date_params = date_param_names.map do |date_param_name|
+      [
+        date_param_name,
+        build_datetime_from(*[
+          manual_params.fetch("#{date_param_name}(1i)", ""),
+          manual_params.fetch("#{date_param_name}(2i)", ""),
+          manual_params.fetch("#{date_param_name}(3i)", ""),
+          manual_params.fetch("#{date_param_name}(4i)", ""),
+          manual_params.fetch("#{date_param_name}(5i)", ""),
+          manual_params.fetch("#{date_param_name}(6i)", ""),
+        ])
+      ]
+    end
+    Hash[date_params]
+  end
+
+  def build_datetime_from(*date_args)
+    return nil if date_args.all? &:blank?
+    Time.zone.local(*date_args.map(&:to_i))
   end
 
   def manual_form(manual)

@@ -86,7 +86,11 @@ class SpecialistDocument
   def published?
     editions.any?(&:published?)
   end
-  alias_method :has_ever_been_published?, :published?
+
+  def has_ever_been_published?
+    return false if @editions.size == 1 && needs_exporting?
+    published?
+  end
 
   def draft?
     latest_edition.draft?
@@ -108,14 +112,10 @@ class SpecialistDocument
     end
   end
 
-  def withdraw!
-    latest_edition.archive unless withdrawn?
-  end
-
   def withdraw_and_mark_as_exported!(exported_at = Time.zone.now)
     edition = latest_edition
     edition.exported_at = exported_at
-    edition.archive
+    edition.archive unless withdrawn?
   end
 
   def withdrawn?

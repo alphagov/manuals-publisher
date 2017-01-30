@@ -270,14 +270,15 @@ private
       version_number: manual_edition.version_number,
       updated_at: manual_edition.updated_at,
       documents: documents,
+      originally_published_at: manual_edition.originally_published_at,
     )
   end
 
   class SimpleManual
     attr_reader :id, :slug, :title, :summary, :body, :organisation_slug,
-        :state, :version_number, :updated_at, :documents
+        :state, :version_number, :updated_at, :documents, :originally_published_at
 
-    def initialize(id:, slug:, title:, summary:, body:, organisation_slug:, state:, version_number:, updated_at:, documents:)
+    def initialize(id:, slug:, title:, summary:, body:, organisation_slug:, state:, version_number:, updated_at:, documents:, originally_published_at:)
       @id = id
       @slug = slug
       @title = title
@@ -288,6 +289,7 @@ private
       @version_number = version_number
       @updated_at = updated_at
       @documents = documents
+      @originally_published_at = originally_published_at
     end
 
     def attributes
@@ -295,6 +297,7 @@ private
         id: id, slug: slug, title: title, summary: summary, body: body,
         organisation_slug: organisation_slug, state: state,
         version_number: version_number, updated_at: updated_at,
+        originally_published_at: originally_published_at,
       }
     end
 

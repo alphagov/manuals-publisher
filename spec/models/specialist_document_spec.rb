@@ -52,6 +52,7 @@ describe SpecialistDocument do
         archived?: false,
         version_number: 1,
         document_type: document_type,
+        exported_at: nil,
       )
     )
   }
@@ -67,6 +68,7 @@ describe SpecialistDocument do
         version_number: 2,
         extra_fields: extra_fields,
         document_type: document_type,
+        exported_at: nil,
       )
     )
   }
@@ -82,6 +84,7 @@ describe SpecialistDocument do
         version_number: 3,
         extra_fields: extra_fields,
         document_type: document_type,
+        exported_at: nil,
       )
     )
   }
@@ -157,8 +160,20 @@ describe SpecialistDocument do
       expect(doc).not_to be_draft
     end
 
-    it "has ever been published" do
-      expect(doc).to have_ever_been_published
+    context "that has been exported" do
+      before { allow(published_edition_v1).to receive(:exported_at).and_return(4.days.ago) }
+
+      it "has ever been published" do
+        expect(doc).to have_ever_been_published
+      end
+    end
+
+    context "that has not been exported" do
+      before { allow(published_edition_v1).to receive(:exported_at).and_return(nil) }
+
+      it "has never been published" do
+        expect(doc).not_to have_ever_been_published
+      end
     end
   end
 
@@ -663,25 +678,43 @@ describe SpecialistDocument do
     end
   end
 
-  describe "#withdraw!" do
+  describe "#withdraw_and_mark_as_exported!" do
     context "one draft" do
       let(:editions) { [draft_edition_v1] }
 
       it "archives the draft" do
-        doc.withdraw!
+        doc.withdraw_and_mark_as_exported!
 
         expect(draft_edition_v1).to have_received(:archive)
+      end
+
+      it "sets the exported_at date on the draft" do
+        time = Time.zone.now
+        Timecop.freeze(time) do
+          doc.withdraw_and_mark_as_exported!
+          expect(draft_edition_v1).to have_received(:exported_at=).with(time)
+        end
       end
     end
 
     context "one published and one withdrawn" do
       let(:editions) { [published_edition_v1, withdrawn_edition_v2] }
 
-      it "does nothing" do
-        doc.withdraw!
+      it "does nothing to the states of the editions" do
+        doc.withdraw_and_mark_as_exported!
 
         expect(published_edition_v1).not_to have_received(:archive)
         expect(withdrawn_edition_v2).not_to have_received(:archive)
+      end
+
+      it "only sets the exported_at date on the withdrawn edition" do
+        time = Time.zone.now
+        Timecop.freeze(time) do
+          doc.withdraw_and_mark_as_exported!
+          expect(withdrawn_edition_v2).to have_received(:exported_at=).with(time)
+
+          expect(published_edition_v1).not_to have_received(:exported_at=)
+        end
       end
     end
 
@@ -689,9 +722,19 @@ describe SpecialistDocument do
       let(:editions) { [published_edition_v1, draft_edition_v2] }
 
       it "sets the draft edition's state to withdrawn" do
-        doc.withdraw!
+        doc.withdraw_and_mark_as_exported!
 
         expect(draft_edition_v2).to have_received(:archive)
+      end
+
+      it "only sets the exported_at date on the draft edition" do
+        time = Time.zone.now
+        Timecop.freeze(time) do
+          doc.withdraw_and_mark_as_exported!
+          expect(draft_edition_v2).to have_received(:exported_at=).with(time)
+
+          expect(published_edition_v1).not_to have_received(:exported_at=)
+        end
       end
     end
 
@@ -699,9 +742,17 @@ describe SpecialistDocument do
       let(:editions) { [published_edition_v1] }
 
       it "sets the published edition's state to withdrawn" do
-        doc.withdraw!
+        doc.withdraw_and_mark_as_exported!
 
         expect(published_edition_v1).to have_received(:archive)
+      end
+
+      it "sets the exported_at date on the published edition" do
+        time = Time.zone.now
+        Timecop.freeze(time) do
+          doc.withdraw_and_mark_as_exported!
+          expect(published_edition_v1).to have_received(:exported_at=).with(time)
+        end
       end
     end
   end

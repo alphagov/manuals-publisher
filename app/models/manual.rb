@@ -9,6 +9,8 @@ class Manual
     :state,
     :version_number,
     :updated_at,
+    :originally_published_at,
+    :use_originally_published_at_for_public_timestamp,
   )
 
   def initialize(attributes)
@@ -39,6 +41,8 @@ class Manual
       state: state,
       version_number: version_number,
       updated_at: updated_at,
+      originally_published_at: originally_published_at,
+      use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
     }
   end
 
@@ -49,6 +53,8 @@ class Manual
     @body = attributes.fetch(:body) { body }
     @organisation_slug = attributes.fetch(:organisation_slug) { organisation_slug }
     @state = attributes.fetch(:state) { state }
+    @originally_published_at = attributes.fetch(:originally_published_at) { originally_published_at }
+    @use_originally_published_at_for_public_timestamp = attributes.fetch(:use_originally_published_at_for_public_timestamp) { use_originally_published_at_for_public_timestamp }
 
     self
   end
@@ -90,5 +96,9 @@ class Manual
 
   def has_ever_been_published?
     @ever_been_published
+  end
+
+  def use_originally_published_at_for_public_timestamp?
+    !!use_originally_published_at_for_public_timestamp
   end
 end

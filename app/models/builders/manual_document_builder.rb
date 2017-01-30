@@ -20,6 +20,7 @@ private
   def defaults
     {
       document_type: "manual",
+      minor_update: false,
       change_note: "New section added.",
     }
   end

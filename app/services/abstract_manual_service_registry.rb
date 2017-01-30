@@ -91,6 +91,15 @@ class AbstractManualServiceRegistry
     )
   end
 
+  def update_original_publication_date(manual_id, attributes)
+    UpdateManualOriginalPublicationDateService.new(
+      manual_repository: repository,
+      manual_id: manual_id,
+      attributes: attributes,
+      listeners: observers.update_original_publication_date,
+    )
+  end
+
 private
   def manual_renderer
     ManualsPublisherWiring.get(:manual_renderer)

@@ -121,16 +121,35 @@ Feature: Creating and editing a manual
 
   Scenario: Change notes on new manual documents
     Given a draft manual exists without any documents
-    Then I do not see the change note form when adding a new section
+    Then I can see the change note form when adding a new section
 
   Scenario: Change notes on published manual documents
     Given a published manual exists
-    Then I can see the change note form when editing existing sections
+    Then I can see the change note and update type form when editing existing sections
     And I can see the change note form when adding a new section
-    When I create a document for the manual as a minor change
-    Then I can see the change note form when editing existing sections
-    And I can change the document to be a minor change
+    When I create a document for the manual with a change note
+    Then I can see the change note and update type form when editing existing sections
+    And the change note form for the document contains my note
     When I publish the manual
-    Then the section is published as a minor update including a change note draft
-    And I can see the change note form when editing existing sections
+    Then the section is published as a major update including a change note draft
+    And I can see the change note and update type form when editing existing sections
     And the change note form for the document is clear
+
+  Scenario: Creating a manual that was previously published elsewhere
+    Given I create a manual that was previously published elsewhere
+    When I publish the manual
+    Then the manual and its documents are published with all public timestamps set to the previously published date
+    When I publish a minor change to the manual
+    Then the manual and its documents are republished with all public timestamps set to the previously published date
+    When I publish a major change to the manual
+    Then the manual and its documents are republished with all public timestamps set to the previously published date
+    When I tell the manual to stop using the previously published date as the public date
+    Then the manual and its documents are republished with the first published timestamp set to the previously published date, but not the public updated timestamp
+    When I publish a major change to the manual
+    Then the manual and its documents are republished with the first published timestamp set to the previously published date, but not the public updated timestamp
+    When I update the previously published date to a new one
+    Then the manual and its documents are republished with the first published timestamp set to the new published date, but not the public updated timestamp
+    When I tell the manual to start using the previously published date as the public date
+    Then the manual and its documents are republished with all public timestamps set to the new previously published date
+    When I update the manual to clear the previously published date
+    Then the manual and its documents are republished without any public timestamps

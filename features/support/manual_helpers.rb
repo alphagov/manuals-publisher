@@ -7,6 +7,8 @@ module ManualHelpers
     visit new_manual_path
     fill_in_fields(fields)
 
+    yield if block_given?
+
     save_as_draft if save
   end
 
@@ -56,6 +58,8 @@ module ManualHelpers
     go_to_edit_page_for_manual(manual_title)
     fill_in_fields(new_fields)
 
+    yield if block_given?
+
     save_as_draft
   end
 
@@ -70,6 +74,15 @@ module ManualHelpers
     save_as_draft
   end
 
+  def edit_manual_original_publication_date(manual_title)
+    go_to_manual_page(manual_title)
+    click_on("Edit original publication date")
+
+    yield if block_given?
+
+    save_as_draft
+  end
+
   def withdraw_manual_document(manual_title, section_title, change_note: nil, minor_update: true)
     go_to_manual_page(manual_title)
     click_on section_title
@@ -78,7 +91,7 @@ module ManualHelpers
 
     fill_in "Change note", with: change_note unless change_note.blank?
     if minor_update
-      check "Minor update"
+      choose "Minor update"
     end
 
     click_on "Yes"
@@ -172,6 +185,10 @@ module ManualHelpers
     check_manual_is_published_to_publishing_api(manual.id)
   end
 
+  def check_manual_document_was_published(document)
+    check_manual_document_is_published_to_publishing_api(document.id)
+  end
+
   def check_manual_document_was_not_published(document)
     check_manual_document_is_not_published_to_publishing_api(document.id)
   end
@@ -225,14 +242,19 @@ module ManualHelpers
     assert_publishing_api_discard_draft(content_id)
   end
 
-  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1)
-    attributes = {
-      "schema_name" => "manual_section",
-      "document_type" => "manual_section",
-      "rendering_app" => "manuals-frontend",
-      "publishing_app" => "manuals-publisher",
-    }.merge(extra_attributes)
-    assert_publishing_api_put_content(content_id, request_json_including(attributes), number_of_drafts)
+  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
+    raise ArgumentError, "can't specify both extra_attributes and with_matcher" if with_matcher.present? && !extra_attributes.empty?
+
+    if with_matcher.nil?
+      attributes = {
+        "schema_name" => "manual_section",
+        "document_type" => "manual_section",
+        "rendering_app" => "manuals-frontend",
+        "publishing_app" => "manuals-publisher",
+      }.merge(extra_attributes)
+      with_matcher = request_json_including(attributes)
+    end
+    assert_publishing_api_put_content(content_id, with_matcher, number_of_drafts)
   end
 
   def check_manual_document_is_published_to_publishing_api(content_id)
@@ -293,11 +315,14 @@ module ManualHelpers
     expect(change_note_field_value).to eq(expected_value)
   end
 
-  def check_that_change_note_fields_are_present(minor_update: false, note: "")
-    expect(page).to have_field("Minor update", checked: minor_update)
-    # the note field is only visible for major updates, so we have to reveal it
-    # if we think it will be a minor update alread
-    check("Minor update") if minor_update
+  def check_that_change_note_fields_are_present(note_field_only: false, minor_update: false, note: "")
+    unless note_field_only
+      expect(page).to have_field("Minor update", checked: minor_update)
+      expect(page).to have_field("Major update", checked: !minor_update)
+      # the note field is only visible for major updates, so we have to reveal it
+      # if we think it will be a minor update alread
+      choose("Major update") if minor_update
+    end
     expect(page).to have_field("Change note", with: note)
   end
 
@@ -455,6 +480,99 @@ module ManualHelpers
         (change_note["change_note"] == document.change_note)
       }.present?
     end
+  end
+
+  def check_manual_is_drafted_and_published_with_first_published_date_only(manual, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      manual.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        !data.key?("public_updated_at")
+      end,
+      number_of_drafts: how_many_times
+    )
+    check_manual_was_published(manual)
+  end
+
+  def check_manual_document_is_drafted_and_published_with_first_published_date_only(document, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      document.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        !data.key?("public_updated_at")
+      end,
+      number_of_drafts: how_many_times
+    )
+
+    check_manual_document_was_published(document)
+  end
+
+  def check_manual_is_drafted_and_published_with_all_public_timestamps(manual, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      manual.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        (data["public_updated_at"] == expected_date.iso8601)
+      end,
+      number_of_drafts: how_many_times
+    )
+    check_manual_was_published(manual)
+  end
+
+  def check_manual_document_is_drafted_and_published_with_all_public_timestamps(document, expected_date, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      document.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (data["first_published_at"] == expected_date.iso8601) &&
+        (data["public_updated_at"] == expected_date.iso8601)
+      end,
+      number_of_drafts: how_many_times
+    )
+
+    check_manual_document_was_published(document)
+  end
+
+  def check_manual_is_drafted_and_published_with_no_public_timestamps(manual, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      manual.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (!data.key?("first_published_at")) &&
+        (!data.key?("public_updated_at"))
+      end,
+      number_of_drafts: how_many_times
+    )
+    check_manual_was_published(manual)
+  end
+
+  def check_manual_document_is_drafted_and_published_with_no_public_timestamps(document, how_many_times: 1)
+    # We don't use the update_type on the publish API, we fallback to what we set
+    # when drafting the content
+    check_manual_document_is_drafted_to_publishing_api(
+      document.id,
+      with_matcher: ->(request) do
+        data = JSON.parse(request.body)
+        (!data.key?("first_published_at")) &&
+        (!data.key?("public_updated_at"))
+      end,
+      number_of_drafts: how_many_times
+    )
+
+    check_manual_document_was_published(document)
   end
 end
 RSpec.configuration.include ManualHelpers, type: :feature
