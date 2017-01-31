@@ -20,7 +20,7 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
   define_factory(:manual_document_builder) {
-    ManualsPublisherWiring.get(:validatable_document_factories).manual_document_builder
+    DocumentFactoryRegistry.validatable_document_factories.manual_document_builder
   }
 
   define_factory(:manual_with_sections_factory) {
@@ -35,12 +35,8 @@ ManualsPublisherWiring ||= DependencyContainer.new do
 
   define_factory(:repository_registry) {
     RepositoryRegistry.new(
-      entity_factories: ManualsPublisherWiring.get(:validatable_document_factories),
+      entity_factories: DocumentFactoryRegistry.validatable_document_factories,
     )
-  }
-
-  define_factory(:validatable_document_factories) {
-    DocumentFactoryRegistry.validatable_document_factories
   }
 
   define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
