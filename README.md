@@ -56,6 +56,8 @@ If you are using the GDS development virtual machine then the application will b
 $ bundle exec rake
 ```
 
+Note: The `cucumber` rake task which is run as part of the `default` rake task does not work with `bundler` versions of 1.13.0 onwards. The following exception occurs: `cannot load such file -- active_model/translation (LoadError)`. The full stack trace is recorded [here](https://gist.github.com/floehopper/79341ba0205a7d95fe0cd8ca369f8551).
+
 ## Application directory structure
 
 Non standard Rails directories and what they're used for:
