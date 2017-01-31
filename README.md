@@ -58,7 +58,7 @@ If you are using the GDS development virtual machine then the application will b
 $ bundle exec rake
 ```
 
-Note: The `cucumber` rake task which is run as part of the `default` rake task does not work with `bundler` versions of 1.13.0 onwards. The following exception occurs: `cannot load such file -- active_model/translation (LoadError)`. The full stack trace is recorded [here](https://gist.github.com/floehopper/79341ba0205a7d95fe0cd8ca369f8551).
+Note: The `cucumber` rake task which is run as part of the `default` rake task does not work with `bundler` versions of 1.13.0 onwards. The following exception occurs: `cannot load such file -- active_model/translation (LoadError)`. The full stack trace is recorded [here](https://gist.github.com/floehopper/79341ba0205a7d95fe0cd8ca369f8551). Based on the fact that [the Ruby version is set to v2.1.2](https://github.com/alphagov/manuals-publisher/blob/3ad5909d64c0fbb9f17c3dfdb1bcebf14e2cf80f/.ruby-version), it looks as if the version of `bundler` [currently being used in production is v1.6.5](https://github.com/alphagov/govuk-puppet/blob/b1afe36fcde7a6880be8d9bc5f0295914d4a9aa4/modules/govuk_rbenv/manifests/all.pp#L23-L25).
 
 ## Application directory structure
 
