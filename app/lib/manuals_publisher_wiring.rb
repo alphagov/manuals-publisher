@@ -19,16 +19,6 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
-  define_factory(:validatable_manual_with_sections_factory) {
-    ->(attrs) {
-      ManualValidator.new(
-        NullValidator.new(
-          ManualsPublisherWiring.get(:manual_with_sections_factory).call(attrs),
-        ),
-      )
-    }
-  }
-
   define_factory(:manual_document_builder) {
     ManualsPublisherWiring.get(:validatable_document_factories).manual_document_builder
   }
