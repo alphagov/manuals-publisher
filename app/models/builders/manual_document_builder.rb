@@ -1,6 +1,10 @@
 require "securerandom"
 
 class ManualDocumentBuilder
+  def self.create
+    DocumentFactoryRegistry.validatable_document_factories.manual_document_builder
+  end
+
   def initialize(factory_factory:)
     @factory_factory = factory_factory
   end
