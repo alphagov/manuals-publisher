@@ -42,6 +42,8 @@ In a rails console do:
 User.create!(name: "My Name", email: "my.email@somedomain.com", permissions: ["gds_editor"], organisation_slug: "government-digital-service", organisation_content_id: "af07d5a5-df63-4ddc-9383-6a666845ebe9")
 ```
 
+Note: This insert (and the app in general) doesn't work with recent versions of MongoDB. v3.0.12 works OK; v3.4.1 does NOT work due to a problem with the `:w => 1` option no longer being supported at the top level, i.e. outside the Write Concern options.
+
 Then start the application:
 
 ```
