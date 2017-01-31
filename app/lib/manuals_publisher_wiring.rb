@@ -22,7 +22,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
   define_factory(:manual_builder) {
     ManualBuilder.new(
       slug_generator: SlugGenerator.new(prefix: "guidance"),
-      factory: get(:validatable_manual_with_sections_factory),
+      factory: ManualsPublisherWiring.get(:validatable_manual_with_sections_factory),
     )
   }
 
@@ -30,20 +30,20 @@ ManualsPublisherWiring ||= DependencyContainer.new do
     ->(attrs) {
       ManualValidator.new(
         NullValidator.new(
-          get(:manual_with_sections_factory).call(attrs),
+          ManualsPublisherWiring.get(:manual_with_sections_factory).call(attrs),
         ),
       )
     }
   }
 
   define_factory(:manual_document_builder) {
-    get(:validatable_document_factories).manual_document_builder
+    ManualsPublisherWiring.get(:validatable_document_factories).manual_document_builder
   }
 
   define_factory(:manual_with_sections_factory) {
     ->(attrs) {
       ManualWithDocuments.new(
-        get(:manual_document_builder),
+        ManualsPublisherWiring.get(:manual_document_builder),
         Manual.new(attrs),
         documents: [],
       )
@@ -52,7 +52,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
 
   define_factory(:repository_registry) {
     RepositoryRegistry.new(
-      entity_factories: get(:validatable_document_factories),
+      entity_factories: ManualsPublisherWiring.get(:validatable_document_factories),
     )
   }
 
@@ -87,7 +87,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
   define_instance(:govspeak_to_html_renderer) {
     ->(doc) {
       GovspeakToHTMLRenderer.new(
-        get(:govspeak_html_converter),
+        ManualsPublisherWiring.get(:govspeak_html_converter),
         doc,
       )
     }
@@ -96,7 +96,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
   define_instance(:specialist_document_govspeak_header_extractor) {
     ->(doc) {
       SpecialistDocumentHeaderExtractor.new(
-        get(:govspeak_header_extractor),
+        ManualsPublisherWiring.get(:govspeak_header_extractor),
         doc,
       )
     }
@@ -104,16 +104,16 @@ ManualsPublisherWiring ||= DependencyContainer.new do
 
   define_instance(:manual_renderer) {
     ->(manual) {
-      get(:govspeak_to_html_renderer).call(manual)
+      ManualsPublisherWiring.get(:govspeak_to_html_renderer).call(manual)
     }
   }
 
   define_instance(:specialist_document_renderer) {
     ->(doc) {
       pipeline = [
-        get(:markdown_attachment_renderer),
-        get(:specialist_document_govspeak_header_extractor),
-        get(:govspeak_to_html_renderer),
+        ManualsPublisherWiring.get(:markdown_attachment_renderer),
+        ManualsPublisherWiring.get(:specialist_document_govspeak_header_extractor),
+        ManualsPublisherWiring.get(:govspeak_to_html_renderer),
       ]
 
       pipeline.reduce(doc) { |doc, next_renderer|
@@ -125,10 +125,10 @@ ManualsPublisherWiring ||= DependencyContainer.new do
   define_instance(:manual_document_renderer) {
     ->(doc) {
       pipeline = [
-        get(:markdown_attachment_renderer),
-        get(:specialist_document_govspeak_header_extractor),
-        get(:govspeak_to_html_renderer),
-        get(:footnotes_section_heading_renderer),
+        ManualsPublisherWiring.get(:markdown_attachment_renderer),
+        ManualsPublisherWiring.get(:specialist_document_govspeak_header_extractor),
+        ManualsPublisherWiring.get(:govspeak_to_html_renderer),
+        ManualsPublisherWiring.get(:footnotes_section_heading_renderer),
       ]
 
       pipeline.reduce(doc) { |doc, next_renderer|
@@ -164,7 +164,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
   define_singleton(:organisation_fetcher) {
     organisations = {}
     ->(organisation_slug) {
-      organisations[organisation_slug] ||= get(:organisations_api).organisation(organisation_slug)
+      organisations[organisation_slug] ||= ManualsPublisherWiring.get(:organisations_api).organisation(organisation_slug)
     }
   }
 end
