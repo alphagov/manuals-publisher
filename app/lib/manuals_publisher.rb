@@ -4,7 +4,7 @@ module ManualsPublisher
   def document_services(document_type)
     builder = case document_type
               when "manual"
-                ManualsPublisherWiring.get(:manual_builder)
+                ManualBuilder.create
               when "manual_document"
                 ManualsPublisherWiring.get(:manual_document_builder)
     end

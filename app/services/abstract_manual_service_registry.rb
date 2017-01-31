@@ -106,7 +106,7 @@ private
   end
 
   def manual_builder
-    ManualsPublisherWiring.get(:manual_builder)
+    ManualBuilder.create
   end
 
   def repository
