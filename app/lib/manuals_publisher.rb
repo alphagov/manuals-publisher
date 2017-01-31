@@ -6,7 +6,7 @@ module ManualsPublisher
               when "manual"
                 ManualBuilder.create
               when "manual_document"
-                ManualsPublisherWiring.get(:manual_document_builder)
+                ManualDocumentBuilder.create
     end
     AbstractDocumentServiceRegistry.new(
       repository: document_repositories.for_type(document_type),
