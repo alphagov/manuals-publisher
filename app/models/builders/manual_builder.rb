@@ -4,7 +4,13 @@ class ManualBuilder
   def self.create
     ManualBuilder.new(
       slug_generator: SlugGenerator.new(prefix: "guidance"),
-      factory: ManualsPublisherWiring.get(:validatable_manual_with_sections_factory),
+      factory: ->(attrs) {
+        ManualValidator.new(
+          NullValidator.new(
+            ManualsPublisherWiring.get(:manual_with_sections_factory).call(attrs),
+          ),
+        )
+      }
     )
   end
 
