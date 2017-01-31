@@ -9,6 +9,10 @@ require "slug_generator"
 require "specialist_document"
 
 class DocumentFactoryRegistry
+  def self.validatable_document_factories
+    new
+  end
+
   def manual_with_documents
     ->(manual, attrs) {
       ManualValidator.new(

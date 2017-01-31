@@ -40,7 +40,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
   }
 
   define_factory(:validatable_document_factories) {
-    DocumentFactoryRegistry.new
+    DocumentFactoryRegistry.validatable_document_factories
   }
 
   define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
