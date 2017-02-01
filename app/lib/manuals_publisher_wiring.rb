@@ -19,14 +19,10 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
-  define_singleton(:organisations_api) {
-    OrganisationsApi.instance
-  }
-
   define_singleton(:organisation_fetcher) {
     organisations = {}
     ->(organisation_slug) {
-      organisations[organisation_slug] ||= ManualsPublisherWiring.get(:organisations_api).organisation(organisation_slug)
+      organisations[organisation_slug] ||= OrganisationsApi.instance.organisation(organisation_slug)
     }
   }
 end
