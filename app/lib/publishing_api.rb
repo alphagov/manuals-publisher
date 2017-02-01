@@ -1,3 +1,5 @@
+require "gds_api/publishing_api"
+
 class PublishingApi
   def self.instance
     GdsApi::PublishingApi.new(
