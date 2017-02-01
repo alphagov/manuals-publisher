@@ -98,71 +98,8 @@ module ApplicationHelper
     "#{Plek.current.find("draft-origin")}/#{document.slug}"
   end
 
-  def publish_form(slug_unique, publishable, document)
-    publish_form_text = publish_text_hash(document)
-    if !current_user_can_publish?(document.document_type) || !slug_unique || !publishable
-      if !current_user_can_publish?(document.document_type)
-        publish_locals = publish_form_text[:no_permission]
-      elsif !publishable
-        publish_locals = publish_form_text[:already_published]
-      elsif !slug_unique
-        publish_locals = publish_form_text[:slug_not_unique]
-      end
-    elsif publishable
-      if !document.change_note.blank? && document.change_note != "First published."
-        publish_locals = publish_form_text[:major_update]
-      elsif document.minor_update
-        publish_locals = publish_form_text[:minor_update]
-      else
-        publish_locals = publish_form_text[:new_document]
-      end
-    end
-    render partial: "specialist_documents/publish_form", locals: {
-      warning: publish_locals[:warning],
-      notification: publish_locals[:notification],
-      disabled: publish_locals[:disabled],
-      document: document
-    }
-  end
-
   def finders_sorted_by_title
     finders.sort_by {|_, value| value[:title] }
-  end
-
-private
-  def publish_text_hash(document)
-    {
-      no_permission: {
-        disabled: true,
-        warning: nil,
-        notification: "You don’t have permission to publish this document.",
-      },
-      already_published: {
-        disabled: true,
-        warning: nil,
-        notification: "There are no changes to publish.",
-      },
-      slug_not_unique: {
-        disabled: true,
-        warning: "You can’t publish this document",
-        notification: "This document has a duplicate slug.<br/> You need to #{link_to "edit the document", [:edit, document]} and change the title to be able to be published.",
-      },
-      major_update: {
-        disabled: false,
-        warning: "You are about to publish a <strong>major edit</strong> with a public change note.",
-        notification: "Publishing will email subscribers to #{current_finder[:title]}.",
-      },
-      minor_update: {
-        disabled: false,
-        warning: nil,
-        notification: "You are about to publish a <strong>minor edit</strong>.",
-      },
-      new_document: {
-        disabled: false,
-        warning: nil,
-        notification: "Publishing will email subscribers to #{current_finder[:title]}.",
-      }
-    }
   end
 
 end
