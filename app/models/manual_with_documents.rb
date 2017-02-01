@@ -1,6 +1,14 @@
 require "delegate"
 
 class ManualWithDocuments < SimpleDelegator
+  def self.create(attrs)
+    ManualWithDocuments.new(
+      ManualDocumentBuilder.create,
+      Manual.new(attrs),
+      documents: [],
+    )
+  end
+
   def initialize(document_builder, manual, documents:, removed_documents: [])
     @manual = manual
     @documents = documents
