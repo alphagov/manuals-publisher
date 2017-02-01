@@ -5,10 +5,10 @@ class ManualRepository
 
   NotFoundError = Module.new
 
-  def initialize(dependencies = {})
-    @collection = dependencies.fetch(:collection)
-    @factory = dependencies.fetch(:factory)
-    @association_marshallers = dependencies.fetch(:association_marshallers, [])
+  def initialize(collection:, factory:, association_marshallers: [])
+    @collection = collection
+    @factory = factory
+    @association_marshallers = association_marshallers
   end
 
   def fetch(*args, &block)
