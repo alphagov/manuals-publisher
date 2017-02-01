@@ -46,7 +46,7 @@ class ChangePublishedDateForManualOriginallyPublishedElsewhere < Mongoid::Migrat
     publishing_api = ManualsPublisherWiring.get(:publishing_api_v2)
     organisation = ManualsPublisherWiring.get(:organisation_fetcher).call(manual.organisation_slug)
     manual_renderer = ManualRenderer.create
-    manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
+    manual_document_renderer = ManualDocumentRenderer.create
 
     manual_for_publishing, _metadata_we_dont_need_here = ManualServiceRegistry.new.show(manual.manual_id).call
 

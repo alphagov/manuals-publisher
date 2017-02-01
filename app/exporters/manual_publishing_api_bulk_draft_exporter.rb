@@ -65,6 +65,6 @@ private
   end
 
   def manual_document_renderer
-    wiring.get(:manual_document_renderer)
+    ManualDocumentRenderer.create
   end
 end
