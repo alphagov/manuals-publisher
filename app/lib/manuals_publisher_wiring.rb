@@ -19,10 +19,6 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
-  define_instance(:specialist_document_renderer) {
-    SpecialistDocumentRenderer.create
-  }
-
   define_instance(:manual_document_renderer) {
     ->(doc) {
       pipeline = [

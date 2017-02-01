@@ -82,7 +82,7 @@ class AbstractManualDocumentServiceRegistry
 
 private
   def document_renderer
-    ManualsPublisherWiring.get(:specialist_document_renderer)
+    SpecialistDocumentRenderer.create
   end
 
   def manual_document_builder
