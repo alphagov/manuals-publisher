@@ -21,11 +21,7 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 ManualsPublisherWiring ||= DependencyContainer.new do
   define_factory(:manual_with_sections_factory) {
     ->(attrs) {
-      ManualWithDocuments.new(
-        ManualDocumentBuilder.create,
-        Manual.new(attrs),
-        documents: [],
-      )
+      ManualWithDocuments.create(attrs)
     }
   }
 
