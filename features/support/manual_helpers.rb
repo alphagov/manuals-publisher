@@ -76,7 +76,7 @@ module ManualHelpers
 
   def edit_manual_original_publication_date(manual_title)
     go_to_manual_page(manual_title)
-    click_on("Edit original publication date")
+    click_on("Edit first publication date")
 
     yield if block_given?
 

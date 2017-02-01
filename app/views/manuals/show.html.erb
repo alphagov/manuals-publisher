@@ -63,10 +63,9 @@
 <div class="row">
   <div class="col-md-8">
     <h2>Sections</h2>
-    <div class="add-bottom-margin">
+    <div class="well add-bottom-margin">
       <%= link_to 'Reorder sections', reorder_manual_documents_path(manual), class: 'btn btn-default add-right-margin' %>
-      <%= link_to 'Add section', new_manual_document_path(manual), class: 'btn btn-default add-right-margin' %>
-      <%= link_to 'Edit original publication date', original_publication_date_manual_path(manual), class: 'btn btn-default' %>
+      <%= link_to 'Add section', new_manual_document_path(manual), class: 'btn btn-default' %>
     </div>
     <% if manual.documents.any? %>
     <ul class="document-list">
@@ -83,13 +82,18 @@
       <p class='no-content-message'>You haven&rsquo;t added any sections to this manual yet.</p>
     <% end %>
 
+    <h2>Actions</h2>
     <div class="well">
-      <%= link_to 'Edit manual', edit_manual_path(manual), class: 'btn btn-success' %>
+      <%= link_to 'Edit manual', edit_manual_path(manual), class: 'btn btn-success add-right-margin' %>
+      <%= link_to 'Edit first publication date', original_publication_date_manual_path(manual), class: 'btn btn-default' %>
     </div>
 
     <% if manual.draft? && manual.documents.any? && current_user_can_publish?("manual") && slug_unique %>
-      <%= form_tag(publish_manual_path(manual), method: :post, class: 'well') do %>
-        <button name="submit" class="btn btn-danger" data-module="confirm" data-message="Are you sure you want to publish this manual?">Publish manual</button>
+      <%= form_tag(publish_manual_path(manual), method: :post, class: 'panel panel-default') do %>
+        <div class="panel-heading"><h3>Publish manual</h3></div>
+        <div class="panel-body">
+          <button name="submit" class="btn btn-danger" data-module="confirm" data-message="Are you sure you want to publish this manual?">Publish manual</button>
+        </div>
       <% end -%>
     <% end %>
   </div>
