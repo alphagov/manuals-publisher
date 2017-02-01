@@ -1,6 +1,15 @@
 require "delegate"
 
 class GovspeakToHTMLRenderer < SimpleDelegator
+  def self.create
+    ->(doc) {
+      GovspeakToHTMLRenderer.new(
+        GovspeakHtmlConverter.create,
+        doc,
+      )
+    }
+  end
+
   def initialize(govspeak_html_converter, document)
     @govspeak_html_converter = govspeak_html_converter
     super(document)
