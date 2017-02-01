@@ -19,10 +19,6 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
-  define_instance(:specialist_document_govspeak_header_extractor) {
-    SpecialistDocumentHeaderExtractor.create
-  }
-
   define_instance(:manual_renderer) {
     ->(manual) {
       GovspeakToHTMLRenderer.create.call(manual)
@@ -33,7 +29,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
     ->(doc) {
       pipeline = [
         MarkdownAttachmentProcessor.method(:new),
-        ManualsPublisherWiring.get(:specialist_document_govspeak_header_extractor),
+        SpecialistDocumentHeaderExtractor.create,
         GovspeakToHTMLRenderer.create,
       ]
 
@@ -47,7 +43,7 @@ ManualsPublisherWiring ||= DependencyContainer.new do
     ->(doc) {
       pipeline = [
         MarkdownAttachmentProcessor.method(:new),
-        ManualsPublisherWiring.get(:specialist_document_govspeak_header_extractor),
+        SpecialistDocumentHeaderExtractor.create,
         GovspeakToHTMLRenderer.create,
         FootnotesSectionHeadingRenderer.create,
       ]
