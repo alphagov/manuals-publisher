@@ -20,8 +20,7 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
   define_singleton(:organisations_api) {
-    require "gds_api/organisations"
-    GdsApi::Organisations.new(ORGANISATIONS_API_BASE_PATH)
+    OrganisationsApi.instance
   }
 
   define_singleton(:organisation_fetcher) {
