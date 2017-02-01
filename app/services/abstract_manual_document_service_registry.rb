@@ -109,7 +109,7 @@ private
       ManualPublishingAPIExporter.new(
         publishing_api_v2.method(:put_content),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualsPublisherWiring.get(:manual_renderer),
+        ManualRenderer.create,
         PublicationLog,
         manual
       ).call
