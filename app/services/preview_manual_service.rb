@@ -1,10 +1,10 @@
 class PreviewManualService
-  def initialize(dependencies = {})
-    @repository = dependencies.fetch(:repository)
-    @builder = dependencies.fetch(:builder)
-    @renderer = dependencies.fetch(:renderer)
-    @manual_id = dependencies.fetch(:manual_id)
-    @attributes = dependencies.fetch(:attributes)
+  def initialize(repository:, builder:, renderer:, manual_id:, attributes:)
+    @repository = repository
+    @builder = builder
+    @renderer = renderer
+    @manual_id = manual_id
+    @attributes = attributes
   end
 
   def call
