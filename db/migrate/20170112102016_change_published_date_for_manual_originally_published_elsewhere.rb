@@ -44,7 +44,7 @@ class ChangePublishedDateForManualOriginallyPublishedElsewhere < Mongoid::Migrat
     # sections, while injecting the old publish date
     original_publish_date = Date.new(2012, 3, 27).to_time
     publishing_api = PublishingApiV2.instance
-    organisation = ManualsPublisherWiring.get(:organisation_fetcher).call(manual.organisation_slug)
+    organisation = OrganisationFetcher.instance.call(manual.organisation_slug)
     manual_renderer = ManualRenderer.create
     manual_document_renderer = ManualDocumentRenderer.create
 

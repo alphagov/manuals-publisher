@@ -95,7 +95,7 @@ private
   end
 
   def organisation(slug)
-    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 
   def publishing_api_draft_manual_exporter

@@ -231,6 +231,6 @@ private
   end
 
   def fetch_organisation(slug)
-    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 end
