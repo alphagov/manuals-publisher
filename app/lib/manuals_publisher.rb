@@ -15,19 +15,11 @@ module ManualsPublisher
     )
   end
 
-  def view_adapter(document)
-    view_adapters.for_document(document)
-  end
-
   def document_types
     OBSERVER_MAP.keys
   end
 
 private
-  def view_adapters
-    ManualsPublisherWiring.get(:view_adapter_registry)
-  end
-
   def document_repositories
     ManualsPublisherWiring.get(:repository_registry)
   end
