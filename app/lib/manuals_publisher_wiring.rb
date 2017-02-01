@@ -20,9 +20,7 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
   define_instance(:govspeak_html_converter) {
-    ->(string) {
-      Govspeak::Document.new(string).to_html
-    }
+    GovspeakHtmlConverter.create
   }
 
   define_instance(:govspeak_header_extractor) {
