@@ -9,10 +9,6 @@ module ManualsPublisher
     )
   end
 
-  def document_types
-    OBSERVER_MAP.keys
-  end
-
 private
   def document_repositories
     ManualsPublisherWiring.get(:repository_registry)
