@@ -1,9 +1,9 @@
 class UpdateManualService
-  def initialize(dependencies)
-    @manual_repository = dependencies.fetch(:manual_repository)
-    @manual_id = dependencies.fetch(:manual_id)
-    @attributes = dependencies.fetch(:attributes)
-    @listeners = dependencies.fetch(:listeners)
+  def initialize(manual_repository:, manual_id:, attributes:, listeners:)
+    @manual_repository = manual_repository
+    @manual_id = manual_id
+    @attributes = attributes
+    @listeners = listeners
   end
 
   def call
