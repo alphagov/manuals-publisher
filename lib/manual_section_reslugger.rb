@@ -112,7 +112,7 @@ private
   end
 
   def manual_repository
-    ManualsPublisherWiring.get(:repository_registry).manual_repository
+    RepositoryRegistry.create.manual_repository
   end
 
   def current_section_edition

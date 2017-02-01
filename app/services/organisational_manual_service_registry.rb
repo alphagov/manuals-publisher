@@ -16,12 +16,12 @@ private
   end
 
   def manual_repository_factory
-    ManualsPublisherWiring.get(:repository_registry)
+    RepositoryRegistry.create
       .organisation_scoped_manual_repository_factory
   end
 
   def associationless_manual_repository_factory
-    ManualsPublisherWiring.get(:repository_registry)
+    RepositoryRegistry.create
       .associationless_organisation_scoped_manual_repository_factory
   end
 end
