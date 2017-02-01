@@ -68,19 +68,6 @@ Given(/^a draft manual exists with some documents$/) do
   WebMock::RequestRegistry.instance.reset!
 end
 
-Given(/^a draft manual was created without the UI$/) do
-  @manual_slug = "guidance/example-manual-title"
-  @manual_title = "Example Manual Title"
-
-  @manual_fields = {
-    title: "Example Manual Title",
-    summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
-  }
-
-  @manual = create_manual_without_ui(@manual_fields)
-  WebMock::RequestRegistry.instance.reset!
-end
-
 Given(/^a draft manual exists belonging to "(.*?)"$/) do |organisation_slug|
   @manual_slug = "guidance/example-manual-title"
   @manual_title = "Example Manual Title"
@@ -223,20 +210,6 @@ Given(/^a draft document exists for the manual$/) do
   WebMock::RequestRegistry.instance.reset!
 end
 
-Given(/^a draft section was created for the manual without the UI$/) do
-  @document_title = "New section"
-  @document_slug = "guidance/example-manual-title/new-section"
-
-  @document_fields = {
-    title: @document_title,
-    summary: "New section summary",
-    body: "New section body",
-  }
-
-  @section = create_manual_document_without_ui(@manual, @document_fields)
-  WebMock::RequestRegistry.instance.reset!
-end
-
 When(/^I edit the document$/) do
   @new_title = "A new section title"
   @new_slug = "#{@manual_slug}/a-new-section-title"
@@ -252,16 +225,6 @@ Then(/^the document should have been updated$/) do
     @manual_fields.fetch(:title),
     section_title: @new_title,
   )
-end
-
-When(/^I visit the specialist documents path for the manual document$/) do
-  link = page.find("a", text: @document_title)
-  document_id = URI.parse(link["href"]).path.split("/").last
-  visit cma_case_path(document_id)
-end
-
-Then(/^the document is not found$/) do
-  expect(page).to have_content("Document not found")
 end
 
 Then(/^the manual's documents won't have changed$/) do
@@ -480,19 +443,6 @@ When(/^I edit one of the manual's documents as a minor change$/) do
   end
 end
 
-When(/^I start creating a new manual document$/) do
-  @document_fields = {
-    section_title: "Section 1",
-    section_summary: "Section 1 summary",
-    section_body: "Section 1 body",
-  }
-
-  create_manual_document_for_preview(
-    @document_fields.fetch(:title),
-    @document_fields,
-  )
-end
-
 When(/^I preview the document$/) do
   generate_preview
 end
@@ -552,12 +502,6 @@ Then(/^the manual is published as a major update$/) do
   check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
 end
 
-Then(/^the manual is published as a minor update$/) do
-  # We don't use the update_type on the publish API, we fallback to what we set
-  # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "minor" }, number_of_drafts: 1)
-end
-
 Then(/^the section is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
@@ -568,12 +512,6 @@ Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
   check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
-end
-
-Then(/^the section is published as a minor update$/) do
-  # We don't use the update_type on the publish API, we fallback to what we set
-  # when drafting the content
-  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update including a change note draft$/) do
@@ -613,23 +551,6 @@ Then(/^the change note form for the document contains my note$/) do
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(note_field_only: true, note: @change_note)
-end
-
-Then(/^I can change the document to be a minor change$/) do
-  @updated_document = @documents.first
-
-  go_to_manual_page(@manual.title)
-  click_on @updated_document.title
-  click_on "Edit section"
-
-  fill_in "Change note", with: "This is a minor change"
-  choose "Minor update"
-  click_on "Save as draft"
-
-  go_to_manual_page(@manual.title)
-  click_on @updated_document.title
-  click_on "Edit section"
-  check_that_change_note_fields_are_present(minor_update: true, note: "This is a minor change")
 end
 
 When(/^I add another section to the manual$/) do

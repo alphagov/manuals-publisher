@@ -282,12 +282,6 @@ module ManualHelpers
       ).at_least(:once)
   end
 
-  def create_manual_document_for_preview(manual_title, fields)
-    go_to_manual_page(manual_title)
-    click_on "Add section"
-    fill_in_fields(fields)
-  end
-
   def check_for_document_body_preview(text)
     within(".preview") do
       expect(page).to have_css("p", text: text)
