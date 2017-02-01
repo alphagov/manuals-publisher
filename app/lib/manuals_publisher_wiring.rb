@@ -19,10 +19,6 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
-  define_singleton(:publishing_api) {
-    PublishingApi.instance
-  }
-
   define_singleton(:publishing_api_v2) {
     GdsApi::PublishingApiV2.new(
       Plek.new.find("publishing-api"),

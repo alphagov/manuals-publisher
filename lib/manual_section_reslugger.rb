@@ -63,7 +63,7 @@ private
 
   def redirect_section
     PublishingAPIRedirecter.new(
-      publishing_api: ManualsPublisherWiring.get(:publishing_api),
+      publishing_api: PublishingApi.instance,
       entity: current_section_edition,
       redirect_to_location: "/#{full_new_section_slug}"
     ).call

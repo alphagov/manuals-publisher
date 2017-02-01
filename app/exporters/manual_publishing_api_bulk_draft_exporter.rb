@@ -53,7 +53,7 @@ private
   end
 
   def export_recipient
-    wiring.get(:publishing_api).method(:put_draft_content_item)
+    PublishingApi.instance.method(:put_draft_content_item)
   end
 
   def organisation(slug)
