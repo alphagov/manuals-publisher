@@ -148,7 +148,7 @@ class ManualSectionReslugger
   end
 
   def remove_old_section_from_rummager
-    rummager = ManualsPublisherWiring.get(:rummager_api)
+    rummager = RummagerApi.instance
     rummager.delete_document(RUMMAGER_FORMAT, "/#{full_current_section_slug}")
   end
 end
