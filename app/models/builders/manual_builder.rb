@@ -7,7 +7,7 @@ class ManualBuilder
       factory: ->(attrs) {
         ManualValidator.new(
           NullValidator.new(
-            ManualsPublisherWiring.get(:manual_with_sections_factory).call(attrs),
+            ManualWithDocuments.create(attrs),
           ),
         )
       }
