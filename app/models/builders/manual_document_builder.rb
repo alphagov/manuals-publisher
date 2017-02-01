@@ -1,8 +1,8 @@
 require "securerandom"
 
 class ManualDocumentBuilder
-  def initialize(dependencies)
-    @factory_factory = dependencies.fetch(:factory_factory)
+  def initialize(factory_factory:)
+    @factory_factory = factory_factory
   end
 
   def call(manual, attrs)
