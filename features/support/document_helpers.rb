@@ -155,18 +155,6 @@ module DocumentHelpers
     end
   end
 
-  def edit_document(title, updated_fields, minor_update: false, publish: false)
-    fill_in_fields(updated_fields)
-
-    choose "Minor update" if minor_update && page.has_field?("Minor update")
-
-    save_document
-
-    if publish
-      publish_document
-    end
-  end
-
   def go_to_show_page_for_document(type, title)
     raise "Cannot find #{type.to_s.humanize} nil title" if title.nil?
     send(:"go_to_#{type}_index")
@@ -201,11 +189,6 @@ module DocumentHelpers
 
   def check_for_slug_clash_warning
     expect(page).to have_content("You can't publish it until you change the title.")
-  end
-
-  def check_count_of_logs(expected_count_of_logs)
-    count_of_logs = PublicationLog.where(slug: @slug).count
-    expect(count_of_logs).to eq(expected_count_of_logs.to_i)
   end
 
   def check_document_cant_be_published
