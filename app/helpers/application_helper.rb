@@ -102,4 +102,24 @@ module ApplicationHelper
     finders.sort_by {|_, value| value[:title] }
   end
 
+  def publish_text(manual, slug_unique)
+    if manual.state == "published"
+      text = "<p>There are no changes to publish.</p>"
+    elsif manual.state == "withdrawn"
+      text = "<p>The manual is withdrawn. You need to create a new draft before it can be published.</p>"
+    elsif !current_user_can_publish?("manual")
+      text = "<p>You don't have permission to publish this manual.</p>"
+    elsif !slug_unique
+      text = "<p>This manual has a duplicate slug and can't be published.</p>"
+    else
+      update_type = ManualUpdateType.for(manual)
+      if update_type == "minor"
+        text = "<p>You are about to publish a <strong>minor edit</strong>.</p>"
+      elsif update_type == "major" && manual.has_ever_been_published?
+        text = "<p><strong>You are about to publish a major edit with public change notes.</strong></p>"
+      end
+    end
+
+    (text || "").html_safe
+  end
 end
