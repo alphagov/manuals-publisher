@@ -148,7 +148,7 @@ private
   end
 
   def publishing_api_v2
-    ManualsPublisherWiring.get(:publishing_api_v2)
+    PublishingApiV2.instance
   end
 
   def organisations_api

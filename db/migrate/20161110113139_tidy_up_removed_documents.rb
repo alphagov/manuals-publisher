@@ -88,7 +88,7 @@ class TidyUpRemovedDocuments < Mongoid::Migration
   end
 
   def self.publishing_api_v2
-    ManualsPublisherWiring.get(:publishing_api_v2)
+    PublishingApiV2.instance
   end
 
   def self.down
