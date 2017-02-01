@@ -8,23 +8,6 @@ Given(/^I am logged in as a non\-CMA editor$/) do
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
-Then(/^I do not see an option for editing documents$/) do
-  visit root_path
-  check_document_link_not_visible
-end
-
-When(/^I attempt to visit a document edit URL$/) do
-  visit cma_cases_path
-end
-
-Then(/^I am redirected back to the index page$/) do
-  expect(current_path).to eq(manuals_path)
-end
-
-Then(/^I see a message like "(.*?)"$/) do |message|
-  check_page_for_content(message)
-end
-
 Given(/^there are manuals created by multiple organisations$/) do
 
   login_as(:cma_editor)
