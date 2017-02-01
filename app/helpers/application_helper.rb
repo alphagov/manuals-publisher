@@ -2,13 +2,6 @@
 
 module ApplicationHelper
   def state(document)
-    state, classes = state_for_frontend(document)
-
-    content_tag(:span, state, class: classes).html_safe
-
-  end
-
-  def state_for_frontend(document)
     state = document.publication_state
 
     if %w(published withdrawn).include?(state) && document.draft?
@@ -20,10 +13,9 @@ module ApplicationHelper
     else
       classes = "label label-default"
     end
-    [state, classes]
-  end
 
-  module_function :state_for_frontend
+    content_tag(:span, state, class: classes).html_safe
+  end
 
   def show_preview?(item)
     if item.respond_to?(:documents)
@@ -96,10 +88,6 @@ module ApplicationHelper
 
   def content_preview_url(document)
     "#{Plek.current.find("draft-origin")}/#{document.slug}"
-  end
-
-  def finders_sorted_by_title
-    finders.sort_by {|_, value| value[:title] }
   end
 
   def publish_text(manual, slug_unique)
