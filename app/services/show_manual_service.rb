@@ -1,8 +1,8 @@
 class ShowManualService
 
-  def initialize(dependencies = {})
-    @manual_id = dependencies.fetch(:manual_id)
-    @manual_repository = dependencies.fetch(:manual_repository)
+  def initialize(manual_id:, manual_repository:)
+    @manual_id = manual_id
+    @manual_repository = manual_repository
   end
 
   def call
