@@ -127,7 +127,7 @@ private
       ManualSectionPublishingAPIExporter.new(
         publishing_api_v2.method(:put_content),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualsPublisherWiring.get(:manual_document_renderer),
+        ManualDocumentRenderer.create,
         manual,
         manual_document
       ).call
@@ -144,7 +144,7 @@ private
   end
 
   def manual_document_renderer
-    ManualsPublisherWiring.get(:manual_document_renderer)
+    ManualDocumentRenderer.create
   end
 
   def publishing_api_v2

@@ -203,7 +203,7 @@ private
     put_content = publishing_api.method(:put_content)
     organisation = fetch_organisation(new_manual.organisation_slug)
     manual_renderer = ManualRenderer.create
-    manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
+    manual_document_renderer = ManualDocumentRenderer.create
 
     simple_manual = build_simple_manual(
       manual,
