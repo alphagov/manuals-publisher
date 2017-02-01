@@ -37,18 +37,6 @@ module AttachmentHelpers
     end
   end
 
-  def copy_embed_code_for_attachment_and_paste_into_body(title, body_selector)
-    snippet = within(".attachments") do
-      page
-        .find("li", text: /#{title}/)
-        .find("span.snippet")
-        .text
-    end
-
-    body_text = find(body_selector).value
-    fill_in("Body", with: body_text + snippet)
-  end
-
   def check_preview_contains_attachment_link(title)
     within(".preview") do
       expect(page).to have_css("a", text: title)
