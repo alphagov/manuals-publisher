@@ -11,6 +11,12 @@ require "specialist_document_edition"
 require "specialist_document_repository"
 
 class RepositoryRegistry
+  def self.create
+    RepositoryRegistry.new(
+      entity_factories: DocumentFactoryRegistry.validatable_document_factories,
+    )
+  end
+
   def initialize(entity_factories:)
     @entity_factories = entity_factories
   end

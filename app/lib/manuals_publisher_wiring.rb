@@ -20,9 +20,7 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
   define_factory(:repository_registry) {
-    RepositoryRegistry.new(
-      entity_factories: DocumentFactoryRegistry.validatable_document_factories,
-    )
+    RepositoryRegistry.create
   }
 
   define_singleton(:edition_factory) { SpecialistDocumentEdition.method(:new) }
