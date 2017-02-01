@@ -102,7 +102,7 @@ class AbstractManualServiceRegistry
 
 private
   def manual_renderer
-    ManualsPublisherWiring.get(:manual_renderer)
+    ManualRenderer.create
   end
 
   def manual_builder
