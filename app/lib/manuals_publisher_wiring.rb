@@ -20,9 +20,7 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
   define_instance(:footnotes_section_heading_renderer) {
-    ->(doc) {
-      FootnotesSectionHeadingRenderer.new(doc)
-    }
+    FootnotesSectionHeadingRenderer.create
   }
 
   define_instance(:govspeak_to_html_renderer) {
