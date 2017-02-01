@@ -20,7 +20,7 @@ $LOAD_PATH.unshift(File.expand_path("../..", "app/services"))
 # rubocop:disable ConstantName
 ManualsPublisherWiring ||= DependencyContainer.new do
   define_singleton(:rummager_api) {
-    GdsApi::Rummager.new(Plek.new.find("search"))
+    RummagerApi.instance
   }
 
   define_singleton(:publishing_api) {
