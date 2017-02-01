@@ -77,7 +77,13 @@ class Manual
   end
 
   def publication_state
-    state
+    if withdrawn?
+      "withdrawn"
+    elsif has_ever_been_published? || published?
+      "published"
+    else
+      "draft"
+    end
   end
 
   def published?

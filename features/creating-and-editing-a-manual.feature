@@ -18,6 +18,14 @@ Feature: Creating and editing a manual
     Then the manual should have been updated
     And the edited manual should have been sent to the draft publishing api
 
+  Scenario: Checking publication state of a manual
+    Given a draft manual exists with some documents
+    Then the manual is listed as draft
+    When I publish the manual
+    Then the manual is listed as published
+    When I edit the manual
+    Then the manual is listed as published with new draft
+
   @javascript
   Scenario: Previewing a draft manual
     Given a draft manual exists without any documents
