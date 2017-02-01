@@ -11,9 +11,9 @@ class SpecialistDocumentRepository
     raise e.extend(NotFoundError)
   end
 
-  def initialize(dependencies)
-    @document_type = dependencies.fetch(:document_type)
-    @document_factory = dependencies.fetch(:document_factory)
+  def initialize(document_type:, document_factory:)
+    @document_type = document_type
+    @document_factory = document_factory
   end
 
   def all(limit = -1, offset = 0)
