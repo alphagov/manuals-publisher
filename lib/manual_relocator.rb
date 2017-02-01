@@ -255,7 +255,7 @@ private
   end
 
   def fetch_organisation(slug)
-    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 
   def build_simple_manual(manual_record, manual_edition, documents)

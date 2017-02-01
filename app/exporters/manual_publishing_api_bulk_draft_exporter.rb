@@ -56,7 +56,7 @@ private
   end
 
   def organisation(slug)
-    wiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 
   def manual_renderer

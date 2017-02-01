@@ -40,7 +40,7 @@ class SendCorrectPublicUpdatedAtForCbtManual < Mongoid::Migration
 
     # Write new drafts of the manual
     manual_renderer = ManualRenderer.create
-    organisation = ManualsPublisherWiring.get(:organisation_fetcher).call(manual.organisation_slug)
+    organisation = OrganisationFetcher.instance.call(manual.organisation_slug)
     ManualPublishingAPIExporter.new(
       put_content, organisation, manual_renderer, PublicationLog, manual
     ).call
