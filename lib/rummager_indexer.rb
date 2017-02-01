@@ -1,5 +1,3 @@
-require "manuals_publisher_wiring"
-
 class RummagerIndexer
   def add(document)
     api.add_document(document.type, document.id, document.indexable_attributes)
