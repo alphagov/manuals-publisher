@@ -1,12 +1,6 @@
 module ManualsPublisher
   extend self
 
-  def attachment_services(document_type)
-    AbstractAttachmentServiceRegistry.new(
-      repository: document_repositories.for_type(document_type)
-    )
-  end
-
   def document_services(document_type)
     AbstractDocumentServiceRegistry.new(
       repository: document_repositories.for_type(document_type),
