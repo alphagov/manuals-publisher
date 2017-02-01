@@ -1,9 +1,9 @@
 require "securerandom"
 
 class ManualBuilder
-  def initialize(dependencies)
-    @slug_generator = dependencies.fetch(:slug_generator)
-    @factory = dependencies.fetch(:factory)
+  def initialize(slug_generator:, factory:)
+    @slug_generator = slug_generator
+    @factory = factory
   end
 
   def call(attrs)
