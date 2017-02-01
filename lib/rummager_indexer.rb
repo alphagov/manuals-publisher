@@ -12,6 +12,6 @@ class RummagerIndexer
 private
 
   def api
-    ManualsPublisherWiring.get(:rummager_api)
+    RummagerApi.instance
   end
 end
