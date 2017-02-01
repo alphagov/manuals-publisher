@@ -17,6 +17,6 @@ module ManualsPublisher
 
 private
   def document_repositories
-    ManualsPublisherWiring.get(:repository_registry)
+    RepositoryRegistry.create
   end
 end

@@ -1,6 +1,6 @@
 module ManualHelpers
   def manual_repository
-    ManualsPublisherWiring.get(:repository_registry).manual_repository
+    RepositoryRegistry.create.manual_repository
   end
 
   def create_manual(fields, save: true)
@@ -199,7 +199,7 @@ module ManualHelpers
   end
 
   def manual_document_repository(manual)
-    ManualsPublisherWiring.get(:repository_registry).manual_specific_document_repository_factory.call(manual)
+    RepositoryRegistry.create.manual_specific_document_repository_factory.call(manual)
   end
 
   def check_manual_document_is_archived_in_db(manual, document_id)
@@ -441,7 +441,7 @@ module ManualHelpers
   end
 
   def most_recently_created_manual
-    ManualsPublisherWiring.get(:repository_registry).manual_repository.all.first
+    RepositoryRegistry.create.manual_repository.all.first
   end
 
   def document_fields(document)

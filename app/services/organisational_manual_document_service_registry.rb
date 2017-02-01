@@ -7,7 +7,7 @@ private
   attr_reader :organisation_slug
 
   def manual_repository_factory
-    ManualsPublisherWiring.get(:repository_registry).
+    RepositoryRegistry.create.
       organisation_scoped_manual_repository_factory
   end
 
