@@ -8,7 +8,6 @@ require "publish_manual_service"
 require "republish_manual_service"
 require "withdraw_manual_service"
 require "publish_manual_worker"
-require "manuals_publisher_wiring"
 require "manual_observers_registry"
 
 class AbstractManualServiceRegistry

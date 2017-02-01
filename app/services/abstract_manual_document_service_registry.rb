@@ -6,7 +6,6 @@ require "new_manual_document_service"
 require "list_manual_documents_service"
 require "reorder_manual_documents_service"
 require "remove_manual_document_service"
-require "manuals_publisher_wiring"
 
 class AbstractManualDocumentServiceRegistry
   def preview(context)

@@ -1,4 +1,3 @@
-require "manuals_publisher_wiring"
 require "forwardable"
 require "permission_checker"
 require "url_maker"
