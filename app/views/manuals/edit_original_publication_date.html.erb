@@ -1,35 +1,25 @@
 <% content_for :breadcrumbs do %>
   <li><%= link_to "Your manuals", manuals_path %></li>
   <li><%= link_to manual.title, manual_path(manual) %></li>
-  <li class="active">Edit original publication date</li>
+  <li class="active">Edit first publication date</li>
 <% end %>
 
-<h1 class="page-header">Edit original publication date</h1>
+<h1 class="page-header">Edit first publication date</h1>
 
 <div class="row">
   <div class="col-md-8">
     <%= form_for manual, url: original_publication_date_manual_path(manual), method: :put do |f| %>
       <%= render partial: "shared/form_errors", locals: { object: manual } %>
-      <label class="control-label">This manual</label>
-      <div class="checkbox add-vertical-margins">
-        <%= f.radio_button(:previously_published, 0, tag_type: :p, label: 'was first published on GOV.UK.', checked: !manual.originally_published_at.present?) %>
+      <%= f.label :originally_published_at, "First publication date:" %>
+      <div class="form-inline add-vertical-margins">
+        <%= f.datetime_select :originally_published_at, { include_blank: true, start_year: Date.today.year, end_year: 1945 }, { class: 'date form-control' } %>
       </div>
       <div class="checkbox add-vertical-margins">
-        <%= f.radio_button(:previously_published, 1, tag_type: :p, label: 'was first published on another website.', checked: manual.originally_published_at.present?) %>
+        <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 1, tag_type: :p, label: 'Change the GOV.UK publication date.', checked: manual.use_originally_published_at_for_public_timestamp?) %>
       </div>
-      <%= content_tag :div, class: manual.originally_published_at.present? ? nil : "js-hidden" do %>
-        <%= f.label :originally_published_at, "Its original publication date was" %>
-        <div class="form-inline add-vertical-margins">
-          <%= f.datetime_select :originally_published_at, { include_blank: true, start_year: Date.today.year, end_year: 1945 }, { class: 'date form-control' } %>
-        </div>
-        <label class="control-label">The "updated at" timestamp on GOV.UK</label>
-        <div class="checkbox add-vertical-margins">
-          <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 1, tag_type: :p, label: 'should use the original publication date above.', checked: manual.use_originally_published_at_for_public_timestamp?) %>
-        </div>
-        <div class="checkbox add-vertical-margins">
-          <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 0, tag_type: :p, label: 'should use the actual time of publication.', checked: !manual.use_originally_published_at_for_public_timestamp?) %>
-        </div>
-      <% end %>
+      <div class="checkbox add-vertical-margins">
+        <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 0, tag_type: :p, label: 'Keep the original GOV.UK publication date.', checked: !manual.use_originally_published_at_for_public_timestamp?) %>
+      </div>
 
       <div class="actions">
         <button name="draft" class="btn btn-danger" data-disable-with="Saving...">Save as draft</button>
@@ -38,17 +28,3 @@
     <% end %>
   </div>
 </div>
-
-<%= content_for :document_ready do %>
-  window.toggleDisplayWithCheckedInput({
-    $input: $("#manual_previously_published_0"),
-    $element: $("#manual_originally_published_at_1i").parent().parent(),
-    mode: 'hide'
-  });
-  window.toggleDisplayWithCheckedInput({
-    $input: $("#manual_previously_published_1"),
-    $element: $("#manual_originally_published_at_1i").parent().parent(),
-    mode: 'show'
-  });
-  $('.js-hidden').hide();
-<% end %>

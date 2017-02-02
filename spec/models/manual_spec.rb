@@ -110,6 +110,50 @@ describe Manual do
     end
   end
 
+  describe "#publication_state" do
+    context "for a manual in the draft state" do
+      let(:state) { "draft" }
+
+      it "is draft for the first edition" do
+        allow(manual).to receive(:has_ever_been_published?).and_return false
+        expect(manual.publication_state).to eql "draft"
+      end
+
+      it "is published if the manual has ever been published" do
+        allow(manual).to receive(:has_ever_been_published?).and_return true
+        expect(manual.publication_state).to eql "published"
+      end
+    end
+
+    context "for a manual in the published state" do
+      let(:state) { "published" }
+
+      it "is published for the first edition" do
+        allow(manual).to receive(:has_ever_been_published?).and_return false
+        expect(manual.publication_state).to eql "published"
+      end
+
+      it "is published if the manual has ever been published" do
+        allow(manual).to receive(:has_ever_been_published?).and_return true
+        expect(manual.publication_state).to eql "published"
+      end
+    end
+
+    context "for a manual in the withdrawn state" do
+      let(:state) { "withdrawn" }
+
+      it "is withdrawn for the first edition" do
+        allow(manual).to receive(:has_ever_been_published?).and_return false
+        expect(manual.publication_state).to eql "withdrawn"
+      end
+
+      it "is withdrawn if the manual has ever been published" do
+        allow(manual).to receive(:has_ever_been_published?).and_return true
+        expect(manual.publication_state).to eql "withdrawn"
+      end
+    end
+  end
+
   describe "#update" do
     it "returns self" do
       expect(manual.update({})).to be(manual)

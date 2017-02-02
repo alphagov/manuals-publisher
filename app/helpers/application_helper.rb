@@ -2,13 +2,6 @@
 
 module ApplicationHelper
   def state(document)
-    state, classes = state_for_frontend(document)
-
-    content_tag(:span, state, class: classes).html_safe
-
-  end
-
-  def state_for_frontend(document)
     state = document.publication_state
 
     if %w(published withdrawn).include?(state) && document.draft?
@@ -20,10 +13,9 @@ module ApplicationHelper
     else
       classes = "label label-default"
     end
-    [state, classes]
-  end
 
-  module_function :state_for_frontend
+    content_tag(:span, state, class: classes).html_safe
+  end
 
   def show_preview?(item)
     if item.respond_to?(:documents)
@@ -98,71 +90,32 @@ module ApplicationHelper
     "#{Plek.current.find("draft-origin")}/#{document.slug}"
   end
 
-  def publish_form(slug_unique, publishable, document)
-    publish_form_text = publish_text_hash(document)
-    if !current_user_can_publish?(document.document_type) || !slug_unique || !publishable
-      if !current_user_can_publish?(document.document_type)
-        publish_locals = publish_form_text[:no_permission]
-      elsif !publishable
-        publish_locals = publish_form_text[:already_published]
-      elsif !slug_unique
-        publish_locals = publish_form_text[:slug_not_unique]
+  def publish_text(manual, slug_unique)
+    if manual.state == "published"
+      text = "<p>There are no changes to publish.</p>"
+    elsif manual.state == "withdrawn"
+      text = "<p>The manual is withdrawn. You need to create a new draft before it can be published.</p>"
+    elsif !current_user_can_publish?("manual")
+      text = "<p>You don't have permission to publish this manual.</p>"
+    elsif !slug_unique
+      text = "<p>This manual has a duplicate slug and can't be published.</p>"
+    else
+      text = ""
+      update_type = ManualUpdateType.for(manual)
+      if update_type == "minor"
+        text += "<p>You are about to publish a <strong>minor edit</strong>.</p>"
+      elsif update_type == "major" && manual.has_ever_been_published?
+        text += "<p><strong>You are about to publish a major edit with public change notes.</strong></p>"
       end
-    elsif publishable
-      if !document.change_note.blank? && document.change_note != "First published."
-        publish_locals = publish_form_text[:major_update]
-      elsif document.minor_update
-        publish_locals = publish_form_text[:minor_update]
-      else
-        publish_locals = publish_form_text[:new_document]
+      if manual.use_originally_published_at_for_public_timestamp? && manual.originally_published_at.present?
+        text += "<p>The updated timestamp on GOV.UK will be set to the first publication date.</p>"
+      elsif update_type == "minor"
+        text += "<p>The updated timestamp on GOV.UK will not change.</p>"
+      elsif update_type == "major"
+        text += "<p>The updated timestamp on GOV.UK will be set to the time you press the publish button.</p>"
       end
     end
-    render partial: "specialist_documents/publish_form", locals: {
-      warning: publish_locals[:warning],
-      notification: publish_locals[:notification],
-      disabled: publish_locals[:disabled],
-      document: document
-    }
-  end
 
-  def finders_sorted_by_title
-    finders.sort_by {|_, value| value[:title] }
+    (text || "").html_safe
   end
-
-private
-  def publish_text_hash(document)
-    {
-      no_permission: {
-        disabled: true,
-        warning: nil,
-        notification: "You don’t have permission to publish this document.",
-      },
-      already_published: {
-        disabled: true,
-        warning: nil,
-        notification: "There are no changes to publish.",
-      },
-      slug_not_unique: {
-        disabled: true,
-        warning: "You can’t publish this document",
-        notification: "This document has a duplicate slug.<br/> You need to #{link_to "edit the document", [:edit, document]} and change the title to be able to be published.",
-      },
-      major_update: {
-        disabled: false,
-        warning: "You are about to publish a <strong>major edit</strong> with a public change note.",
-        notification: "Publishing will email subscribers to #{current_finder[:title]}.",
-      },
-      minor_update: {
-        disabled: false,
-        warning: nil,
-        notification: "You are about to publish a <strong>minor edit</strong>.",
-      },
-      new_document: {
-        disabled: false,
-        warning: nil,
-        notification: "Publishing will email subscribers to #{current_finder[:title]}.",
-      }
-    }
-  end
-
 end

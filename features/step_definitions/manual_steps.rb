@@ -82,9 +82,10 @@ Given(/^a draft manual exists belonging to "(.*?)"$/) do |organisation_slug|
   WebMock::RequestRegistry.instance.reset!
 end
 
-When(/^I edit a manual$/) do
+When(/^I edit (?:a|the) manual$/) do
   @new_title = "Edited Example Manual"
   edit_manual(@manual_fields[:title], title: @new_title)
+  @manual = most_recently_created_manual
 end
 
 Then(/^the manual should have been updated$/) do
@@ -715,4 +716,14 @@ Then(/^the new order should be visible in the preview environment$/) do
     @manual.id,
     extra_attributes: manual_table_of_contents_attributes,
   )
+end
+
+Then(/^the manual is listed as (draft|published|published with new draft)$/) do |status|
+  visit manuals_path
+
+  expect(page).to have_selector(:xpath, "//li[a[.='#{@manual.title}']]//span[contains(concat(' ', normalize-space(@class), ' '), ' label ')][.='#{status}']")
+
+  click_on @manual.title
+
+  expect(page).to have_selector(:xpath, "//dt[.='State']/following-sibling::dd[.='#{status}']")
 end
