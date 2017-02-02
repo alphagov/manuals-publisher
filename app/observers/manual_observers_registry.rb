@@ -22,6 +22,9 @@ class ManualObserversRegistry
   end
 
   def republication
+    # Note that these should probably always be called with the :republish
+    # action as 2nd argument, but we have to leave that up to the calling
+    # service, rather than being able to encode it explicitly here.
     [
       publishing_api_draft_exporter,
       publishing_api_publisher,
@@ -124,9 +127,11 @@ private
 
   def publishing_api_publisher
     ->(manual, action = nil) {
+      update_type = (action == :republish ? "republish" : nil)
       PublishingAPIPublisher.new(
         publishing_api: publishing_api_v2,
         entity: manual,
+        update_type: update_type,
       ).call
 
       manual.documents.each do |document|
@@ -135,6 +140,7 @@ private
         PublishingAPIPublisher.new(
           publishing_api: publishing_api_v2,
           entity: document,
+          update_type: update_type,
         ).call
 
         document.mark_as_exported! if action != :republish
@@ -153,6 +159,8 @@ private
 
   def publishing_api_draft_exporter
     ->(manual, action = nil) {
+      update_type = (action == :republish ? "republish" : nil)
+
       patch_links = publishing_api_v2.method(:patch_links)
       put_content = publishing_api_v2.method(:put_content)
       organisation = organisation(manual.attributes.fetch(:organisation_slug))
@@ -164,7 +172,7 @@ private
       ).call
 
       ManualPublishingAPIExporter.new(
-        put_content, organisation, manual_renderer, PublicationLog, manual
+        put_content, organisation, manual_renderer, PublicationLog, manual, update_type: update_type
       ).call
 
       manual.documents.each do |document|
@@ -175,7 +183,7 @@ private
         ).call
 
         ManualSectionPublishingAPIExporter.new(
-          put_content, organisation, manual_document_renderer, manual, document
+          put_content, organisation, manual_document_renderer, manual, document, update_type: update_type
         ).call
       end
     }
