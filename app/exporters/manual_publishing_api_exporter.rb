@@ -1,11 +1,14 @@
 class ManualPublishingAPIExporter
+  UPDATE_TYPES = %w(minor major republish).freeze
 
-  def initialize(export_recipent, organisation, manual_renderer, publication_logs, manual)
+  def initialize(export_recipent, organisation, manual_renderer, publication_logs, manual, update_type: nil)
     @export_recipent = export_recipent
     @organisation = organisation
     @manual_renderer = manual_renderer
     @publication_logs = publication_logs
     @manual = manual
+    raise ArgumentError, "update_type '#{update_type}' not recognised" if update_type.present? && !UPDATE_TYPES.include?(update_type)
+    @update_type = update_type
   end
 
   def call
@@ -69,6 +72,7 @@ private
   end
 
   def update_type
+    return @update_type if @update_type.present?
     ManualUpdateType.for(manual)
   end
 

@@ -6,7 +6,7 @@ require "manual_publishing_api_exporter"
 
 describe ManualPublishingAPIExporter do
   subject {
-    ManualPublishingAPIExporter.new(
+    described_class.new(
       export_recipent,
       organisation,
       manual_renderer,
@@ -105,6 +105,47 @@ describe ManualPublishingAPIExporter do
       ),
     ]
   }
+
+  it "raises an argument error if update_type is supplied, but not a valid choice" do
+    expect {
+      described_class.new(
+        export_recipent,
+        organisation,
+        manual_renderer,
+        publication_logs_collection,
+        manual,
+        update_type: "reticulate-splines"
+      )
+    }.to raise_error(ArgumentError, "update_type 'reticulate-splines' not recognised")
+  end
+
+  it "accepts major, minor, and republish as options for update_type" do
+    %w(major minor republish).each do |update_type|
+      expect {
+        described_class.new(
+          export_recipent,
+          organisation,
+          manual_renderer,
+          publication_logs_collection,
+          manual,
+          update_type: update_type
+        )
+      }.not_to raise_error
+    end
+  end
+
+  it "accepts explicitly setting nil as the option for update_type" do
+    expect {
+      described_class.new(
+        export_recipent,
+        organisation,
+        manual_renderer,
+        publication_logs_collection,
+        manual,
+        update_type: nil
+      )
+    }.not_to raise_error
+  end
 
   it "exports a manual valid against the schema" do
     expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema("manual")
@@ -250,6 +291,52 @@ describe ManualPublishingAPIExporter do
     end
   end
 
+  shared_examples_for "obeying the provided update_type" do
+    subject {
+      described_class.new(
+        export_recipent,
+        organisation,
+        manual_renderer,
+        publication_logs_collection,
+        manual,
+        update_type: explicit_update_type
+      )
+    }
+
+    context "when update_type is provided as 'republish'" do
+      let(:explicit_update_type) { "republish" }
+      it "exports with the update_type set to republish" do
+        subject.call
+        expect(export_recipent).to have_received(:call).with(
+          "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+          hash_including(update_type: "republish")
+        )
+      end
+    end
+
+    context "when update_type is provided as 'minor'" do
+      let(:explicit_update_type) { "minor" }
+      it "exports with the update_type set to minor" do
+        subject.call
+        expect(export_recipent).to have_received(:call).with(
+          "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+          hash_including(update_type: "minor")
+        )
+      end
+    end
+
+    context "when update_type is provided as 'major'" do
+      let(:explicit_update_type) { "major" }
+      it "exports with the update_type set to major" do
+        subject.call
+        expect(export_recipent).to have_received(:call).with(
+          "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+          hash_including(update_type: "major")
+        )
+      end
+    end
+  end
+
   context "when no documents need exporting" do
     let(:documents) {
       [
@@ -282,6 +369,7 @@ describe ManualPublishingAPIExporter do
     end
 
     it_behaves_like "publishing a manual that has never been published"
+    it_behaves_like "obeying the provided update_type"
   end
 
   context "when one document needs exporting and it is a minor update" do
@@ -316,6 +404,7 @@ describe ManualPublishingAPIExporter do
     end
 
     it_behaves_like "publishing a manual that has never been published"
+    it_behaves_like "obeying the provided update_type"
   end
 
   context "when one document needs exporting and it is a minor update that has never been published" do
@@ -348,6 +437,8 @@ describe ManualPublishingAPIExporter do
         hash_including(update_type: "major")
       )
     end
+
+    it_behaves_like "obeying the provided update_type"
   end
 
   context "when one document needs exporting and it is a major update" do
@@ -382,6 +473,7 @@ describe ManualPublishingAPIExporter do
     end
 
     it_behaves_like "publishing a manual that has never been published"
+    it_behaves_like "obeying the provided update_type"
   end
 
   context "when multiple documents need exporting, but none are major updates" do
@@ -416,6 +508,7 @@ describe ManualPublishingAPIExporter do
     end
 
     it_behaves_like "publishing a manual that has never been published"
+    it_behaves_like "obeying the provided update_type"
   end
 
   context "when multiple documents need exporting, but none are major updates, but one has never been published" do
@@ -448,6 +541,7 @@ describe ManualPublishingAPIExporter do
         hash_including(update_type: "major")
       )
     end
+    it_behaves_like "obeying the provided update_type"
   end
 
   context "when multiple documents need exporting, and at least one is a major updates" do
@@ -482,6 +576,7 @@ describe ManualPublishingAPIExporter do
     end
 
     it_behaves_like "publishing a manual that has never been published"
+    it_behaves_like "obeying the provided update_type"
   end
 
   context "when multiple documents need exporting, and all are major updates" do
@@ -516,5 +611,6 @@ describe ManualPublishingAPIExporter do
     end
 
     it_behaves_like "publishing a manual that has never been published"
+    it_behaves_like "obeying the provided update_type"
   end
 end
