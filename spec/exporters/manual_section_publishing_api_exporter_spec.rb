@@ -6,7 +6,7 @@ require "manual_section_publishing_api_exporter"
 
 describe ManualSectionPublishingAPIExporter do
   subject {
-    ManualSectionPublishingAPIExporter.new(
+    described_class.new(
       export_recipent,
       organisation,
       document_renderer,
@@ -80,6 +80,47 @@ describe ManualSectionPublishingAPIExporter do
       updated_at: Time.new(2013, 12, 31, 12, 0, 0),
     }
   }
+
+  it "raises an argument error if update_type is supplied, but not a valid choice" do
+    expect {
+      described_class.new(
+        export_recipent,
+        organisation,
+        document_renderer,
+        manual,
+        document,
+        update_type: "reticulate-splines"
+      )
+    }.to raise_error(ArgumentError, "update_type 'reticulate-splines' not recognised")
+  end
+
+  it "accepts major, minor, and republish as options for update_type" do
+    %w(major minor republish).each do |update_type|
+      expect {
+        described_class.new(
+          export_recipent,
+          organisation,
+          document_renderer,
+          manual,
+          document,
+          update_type: update_type
+        )
+      }.not_to raise_error
+    end
+  end
+
+  it "accepts explicitly setting nil as the option for update_type" do
+    expect {
+      described_class.new(
+        export_recipent,
+        organisation,
+        document_renderer,
+        manual,
+        document,
+        update_type: nil
+      )
+    }.not_to raise_error
+  end
 
   it "exports a manual_section valid against the schema" do
     expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema("manual_section")
@@ -164,6 +205,52 @@ describe ManualSectionPublishingAPIExporter do
       )
     }
 
+    shared_examples_for "obeying the provided update_type" do
+      subject {
+        described_class.new(
+          export_recipent,
+          organisation,
+          document_renderer,
+          manual,
+          document,
+          update_type: explicit_update_type
+        )
+      }
+
+      context "when update_type is provided as 'republish'" do
+        let(:explicit_update_type) { "republish" }
+        it "exports with the update_type set to republish" do
+          subject.call
+          expect(export_recipent).to have_received(:call).with(
+            "c19ffb7d-448c-4cc8-bece-022662ef9611",
+            hash_including(update_type: "republish")
+          )
+        end
+      end
+
+      context "when update_type is provided as 'minor'" do
+        let(:explicit_update_type) { "minor" }
+        it "exports with the update_type set to minor" do
+          subject.call
+          expect(export_recipent).to have_received(:call).with(
+            "c19ffb7d-448c-4cc8-bece-022662ef9611",
+            hash_including(update_type: "minor")
+          )
+        end
+      end
+
+      context "when update_type is provided as 'major'" do
+        let(:explicit_update_type) { "major" }
+        it "exports with the update_type set to major" do
+          subject.call
+          expect(export_recipent).to have_received(:call).with(
+            "c19ffb7d-448c-4cc8-bece-022662ef9611",
+            hash_including(update_type: "major")
+          )
+        end
+      end
+    end
+
     context "the document is a minor update" do
       let(:update_type_attributes) do
         {
@@ -190,6 +277,8 @@ describe ManualSectionPublishingAPIExporter do
           hash_including(update_type: "minor")
         )
       end
+
+      it_behaves_like "obeying the provided update_type"
     end
 
     context "the document is a major update" do
@@ -218,6 +307,8 @@ describe ManualSectionPublishingAPIExporter do
           hash_including(update_type: "major")
         )
       end
+
+      it_behaves_like "obeying the provided update_type"
     end
   end
 
