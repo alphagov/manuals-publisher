@@ -63,7 +63,7 @@ class ManualSectionReslugger
 
   def redirect_section
     PublishingAPIRedirecter.new(
-      publishing_api: ManualsPublisherWiring.get(:publishing_api),
+      publishing_api: PublishingApi.instance,
       entity: current_section_edition,
       redirect_to_location: "/#{full_new_section_slug}"
     ).call
@@ -112,7 +112,7 @@ class ManualSectionReslugger
   end
 
   def manual_repository
-    ManualsPublisherWiring.get(:repository_registry).manual_repository
+    RepositoryRegistry.create.manual_repository
   end
 
   def current_section_edition
@@ -148,7 +148,7 @@ class ManualSectionReslugger
   end
 
   def remove_old_section_from_rummager
-    rummager = ManualsPublisherWiring.get(:rummager_api)
+    rummager = RummagerApi.instance
     rummager.delete_document(RUMMAGER_FORMAT, "/#{full_current_section_slug}")
   end
 end

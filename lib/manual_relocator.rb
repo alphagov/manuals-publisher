@@ -202,8 +202,8 @@ private
   def send_draft(manual, manual_edition, document_editions)
     put_content = publishing_api.method(:put_content)
     organisation = fetch_organisation(new_manual.organisation_slug)
-    manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
-    manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
+    manual_renderer = ManualRenderer.create
+    manual_document_renderer = ManualDocumentRenderer.create
 
     simple_manual = build_simple_manual(
       manual,
@@ -251,11 +251,11 @@ private
   end
 
   def publishing_api
-    ManualsPublisherWiring.get(:publishing_api_v2)
+    PublishingApiV2.instance
   end
 
   def fetch_organisation(slug)
-    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 
   def build_simple_manual(manual_record, manual_edition, documents)

@@ -2,6 +2,14 @@ require "delegate"
 require "active_support/core_ext/hash"
 
 class SpecialistDocumentHeaderExtractor < SimpleDelegator
+  def self.create
+    ->(doc) {
+      SpecialistDocumentHeaderExtractor.new(
+        GovspeakHeaderExtractor.create,
+        doc,
+      )
+    }
+  end
 
   def initialize(header_parser, doc)
     @header_parser = header_parser

@@ -28,7 +28,7 @@ class SendCorrectPublicUpdatedAtForCbtManual < Mongoid::Migration
     correct_public_timestamp = Time.zone.parse("2016-12-01T08:51:37.000+00:00")
 
     manual, _metadata_we_dont_need_here = ManualServiceRegistry.new.show("ccf91c4f-6a0f-4498-8ddd-6be537df296c").call
-    publishing_api = ManualsPublisherWiring.get(:publishing_api_v2)
+    publishing_api = PublishingApiV2.instance
 
     put_content = ->(content_id, payload) do
       publishing_api.put_content(content_id, payload.merge(
@@ -39,8 +39,8 @@ class SendCorrectPublicUpdatedAtForCbtManual < Mongoid::Migration
     end
 
     # Write new drafts of the manual
-    manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
-    organisation = ManualsPublisherWiring.get(:organisation_fetcher).call(manual.organisation_slug)
+    manual_renderer = ManualRenderer.create
+    organisation = OrganisationFetcher.instance.call(manual.organisation_slug)
     ManualPublishingAPIExporter.new(
       put_content, organisation, manual_renderer, PublicationLog, manual
     ).call

@@ -1,4 +1,10 @@
 class FootnotesSectionHeadingRenderer < SimpleDelegator
+  def self.create
+    ->(doc) {
+      FootnotesSectionHeadingRenderer.new(doc)
+    }
+  end
+
   def body
     document.body.gsub(footnote_open_tag, "#{heading_tag}\\&")
   end
