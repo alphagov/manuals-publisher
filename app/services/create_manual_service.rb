@@ -1,9 +1,9 @@
 class CreateManualService
-  def initialize(dependencies)
-    @manual_repository = dependencies.fetch(:manual_repository)
-    @manual_builder = dependencies.fetch(:manual_builder)
-    @listeners = dependencies.fetch(:listeners)
-    @attributes = dependencies.fetch(:attributes)
+  def initialize(manual_repository:, manual_builder:, listeners:, attributes:)
+    @manual_repository = manual_repository
+    @manual_builder = manual_builder
+    @listeners = listeners
+    @attributes = attributes
   end
 
   def call

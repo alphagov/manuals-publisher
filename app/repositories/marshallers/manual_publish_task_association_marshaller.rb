@@ -1,7 +1,7 @@
 class ManualPublishTaskAssociationMarshaller
-  def initialize(dependencies = {})
-    @decorator = dependencies.fetch(:decorator)
-    @collection = dependencies.fetch(:collection)
+  def initialize(decorator:, collection:)
+    @decorator = decorator
+    @collection = collection
   end
 
   def load(manual, _record)

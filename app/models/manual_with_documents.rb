@@ -1,10 +1,10 @@
 require "delegate"
 
 class ManualWithDocuments < SimpleDelegator
-  def initialize(document_builder, manual, attrs)
+  def initialize(document_builder, manual, documents:, removed_documents: [])
     @manual = manual
-    @documents = attrs.fetch(:documents)
-    @removed_documents = attrs.fetch(:removed_documents, [])
+    @documents = documents
+    @removed_documents = removed_documents
     @document_builder = document_builder
     super(manual)
   end

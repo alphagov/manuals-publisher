@@ -1,6 +1,6 @@
 class OrganisationalManualServiceRegistry < AbstractManualServiceRegistry
-  def initialize(dependencies)
-    @organisation_slug = dependencies.fetch(:organisation_slug)
+  def initialize(organisation_slug:)
+    @organisation_slug = organisation_slug
   end
 
 private

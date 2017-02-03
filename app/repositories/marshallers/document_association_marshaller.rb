@@ -1,7 +1,7 @@
 class DocumentAssociationMarshaller
-  def initialize(dependencies = {})
-    @decorator = dependencies.fetch(:decorator)
-    @manual_specific_document_repository_factory = dependencies.fetch(:manual_specific_document_repository_factory)
+  def initialize(decorator:, manual_specific_document_repository_factory:)
+    @decorator = decorator
+    @manual_specific_document_repository_factory = manual_specific_document_repository_factory
   end
 
   def load(manual, record)

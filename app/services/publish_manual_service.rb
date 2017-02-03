@@ -1,9 +1,9 @@
 class PublishManualService
-  def initialize(dependencies)
-    @manual_id = dependencies.fetch(:manual_id)
-    @manual_repository = dependencies.fetch(:manual_repository)
-    @listeners = dependencies.fetch(:listeners)
-    @version_number = dependencies.fetch(:version_number)
+  def initialize(manual_id:, manual_repository:, listeners:, version_number:)
+    @manual_id = manual_id
+    @manual_repository = manual_repository
+    @listeners = listeners
+    @version_number = version_number
   end
 
   def call

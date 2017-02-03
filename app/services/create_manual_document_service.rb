@@ -1,8 +1,8 @@
 class CreateManualDocumentService
-  def initialize(dependencies)
-    @manual_repository = dependencies.fetch(:manual_repository)
-    @listeners = dependencies.fetch(:listeners)
-    @context = dependencies.fetch(:context)
+  def initialize(manual_repository:, listeners:, context:)
+    @manual_repository = manual_repository
+    @listeners = listeners
+    @context = context
   end
 
   def call

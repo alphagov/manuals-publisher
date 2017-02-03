@@ -1,6 +1,6 @@
 class SlugGenerator
-  def initialize(dependencies)
-    @prefix = dependencies.fetch(:prefix)
+  def initialize(prefix:)
+    @prefix = prefix
   end
 
   def call(title)

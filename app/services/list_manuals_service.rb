@@ -1,7 +1,7 @@
 class ListManualsService
-  def initialize(dependencies)
-    @manual_repository = dependencies.fetch(:manual_repository)
-    @context = dependencies.fetch(:context)
+  def initialize(manual_repository:, context:)
+    @manual_repository = manual_repository
+    @context = context
   end
 
   def call
