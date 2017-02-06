@@ -166,62 +166,38 @@ private
   end
 
   def redraft_and_republish
-    if new_manual.latest_edition.state == "draft"
-      published_edition = new_manual.editions.order_by([:version_number, :desc]).limit(2).last
+    manual_versions = VersionedManualRepository.get_manual(new_manual.manual_id)
 
-      send_draft(
-        new_manual,
-        published_edition,
-        published_edition.document_ids.map { |document_id| most_recent_published_edition_of_section(document_id) }
-      )
+    if manual_versions[:published].present?
+      manual_to_publish = manual_versions[:published]
+      send_draft(manual_to_publish)
 
-      puts "Publishing previously published edition of manual: #{new_manual.manual_id}"
-      publishing_api.publish(new_manual.manual_id, "republish")
-      published_edition.document_ids.each do |document_id|
-        puts "Publishing previously published edition of manual section: #{document_id}"
-        publishing_api.publish(document_id, "republish")
+      puts "Publishing published edition of manual: #{manual_to_publish.id}"
+      publishing_api.publish(manual_to_publish.id, "republish")
+      manual_to_publish.documents.each do |document|
+        puts "Publishing published edition of manual section: #{document.id}"
+        publishing_api.publish(document.id, "republish")
       end
     end
 
-    send_draft(
-      new_manual,
-      new_manual.latest_edition,
-      new_manual.latest_edition.document_ids.map { |document_id| most_recent_edition_of_section(document_id) }
-    )
-
-    if new_manual.latest_edition.state == "published"
-      puts "Publishing latest edition of manual: #{new_manual.manual_id}"
-      publishing_api.publish(new_manual.manual_id, "republish")
-      new_manual.latest_edition.document_ids.each do |document_id|
-        puts "Publishing latest edition of manual section: #{document_id}"
-        publishing_api.publish(document_id, "republish")
-      end
-    end
+    send_draft(manual_versions[:draft]) if manual_versions[:draft].present?
   end
 
-  def send_draft(manual, manual_edition, document_editions)
+  def send_draft(manual)
     put_content = publishing_api.method(:put_content)
-    organisation = fetch_organisation(new_manual.organisation_slug)
+    organisation = fetch_organisation(manual.organisation_slug)
     manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
     manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
 
-    simple_manual = build_simple_manual(
-      manual,
-      manual_edition,
-      document_editions.map do |document_edition|
-        build_simple_section(document_edition)
-      end
-    )
-
-    puts "Sending a draft of manual #{simple_manual.id} (version: #{simple_manual.version_number})"
+    puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
     ManualPublishingAPIExporter.new(
-      put_content, organisation, manual_renderer, PublicationLog, simple_manual
+      put_content, organisation, manual_renderer, PublicationLog, manual
     ).call
 
-    simple_manual.documents.each do |simple_document|
-      puts "Sending a draft of manual section #{simple_document.id} (version: #{simple_document.version_number})"
+    manual.documents.each do |document|
+      puts "Sending a draft of manual section #{document.id} (version: #{document.version_number})"
       ManualSectionPublishingAPIExporter.new(
-        put_content, organisation, manual_document_renderer, simple_manual, simple_document
+        put_content, organisation, manual_document_renderer, manual, document
       ).call
     end
   end
@@ -256,121 +232,5 @@ private
 
   def fetch_organisation(slug)
     ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
-  end
-
-  def build_simple_manual(manual_record, manual_edition, documents)
-    SimpleManual.new(
-      id: manual_record.manual_id,
-      slug: manual_record.slug,
-      title: manual_edition.title,
-      summary: manual_edition.summary,
-      body: manual_edition.body,
-      organisation_slug: manual_record.organisation_slug,
-      state: manual_edition.state,
-      version_number: manual_edition.version_number,
-      updated_at: manual_edition.updated_at,
-      documents: documents,
-      originally_published_at: manual_edition.originally_published_at,
-    )
-  end
-
-  class SimpleManual
-    attr_reader :id, :slug, :title, :summary, :body, :organisation_slug,
-        :state, :version_number, :updated_at, :documents, :originally_published_at
-
-    def initialize(id:, slug:, title:, summary:, body:, organisation_slug:, state:, version_number:, updated_at:, documents:, originally_published_at:)
-      @id = id
-      @slug = slug
-      @title = title
-      @summary = summary
-      @body = body
-      @organisation_slug = organisation_slug
-      @state = state
-      @version_number = version_number
-      @updated_at = updated_at
-      @documents = documents
-      @originally_published_at = originally_published_at
-    end
-
-    def attributes
-      {
-        id: id, slug: slug, title: title, summary: summary, body: body,
-        organisation_slug: organisation_slug, state: state,
-        version_number: version_number, updated_at: updated_at,
-        originally_published_at: originally_published_at,
-      }
-    end
-
-    def has_ever_been_published?
-      # The ManualRelocator only works on published manuals so this will always
-      # be true for any manual we are asked to relocate.
-      true
-    end
-  end
-
-  def build_simple_section(section_edition)
-    SimpleSection.new(
-      id: section_edition.document_id,
-      title: section_edition.title,
-      slug: section_edition.slug,
-      summary: section_edition.summary,
-      body: section_edition.body,
-      document_type: section_edition.document_type,
-      updated_at: section_edition.updated_at,
-      version_number: section_edition.version_number,
-      extra_fields: section_edition.extra_fields,
-      public_updated_at: section_edition.public_updated_at,
-      minor_update: section_edition.minor_update,
-      attachments: section_edition.attachments.to_a,
-      needs_exporting: section_edition.exported_at.nil?,
-      # This isn't the same as the calculation in SpecialistDocument, but we
-      # don't have access to all the other editions here, and this should be
-      # close enough
-      ever_been_published: (section_edition.version_number > 1) || section_edition.exported_at.nil?,
-    )
-  end
-
-  class SimpleSection
-    attr_reader :id, :title, :slug, :summary, :body, :document_type, :updated_at,
-      :version_number, :extra_fields, :public_updated_at, :minor_update,
-      :attachments, :needs_exporting, :ever_been_published
-
-    def initialize(id:, title:, slug:, summary:, body:, document_type:, updated_at:, version_number:, extra_fields:, public_updated_at:, minor_update:, attachments:, needs_exporting:, ever_been_published:)
-      @id = id
-      @title = title
-      @slug = slug
-      @summary = summary
-      @body = body
-      @document_type = document_type
-      @updated_at = updated_at
-      @version_number = version_number
-      @extra_fields = extra_fields
-      @public_updated_at = public_updated_at
-      @minor_update = minor_update
-      @attachments = attachments
-      @needs_exporting = needs_exporting
-      @ever_been_published = ever_been_published
-    end
-
-    def attributes
-      {
-        id: id, title: title, slug: slug, summary: summary, body: body,
-        document_type: document_type, updated_at: updated_at,
-        version_number: version_number, extra_fields: extra_fields,
-        public_updated_at: public_updated_at, minor_update: minor_update
-      }
-    end
-
-    def minor_update?
-      !!minor_update
-    end
-
-    def needs_exporting?
-      !!needs_exporting
-    end
-
-    def has_ever_been_published?
-      !!ever_been_published
-    end
   end
 end
