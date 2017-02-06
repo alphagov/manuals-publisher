@@ -36,7 +36,7 @@ FactoryGirl.define do
     sequence(:title) {|n| "Test Specialist Document #{n}" }
     summary "My summary"
     body "My body"
-    document_type "cma_case"
+    document_type "manual"
     extra_fields do
       {
         opened_date: "2013-04-20",
