@@ -63,6 +63,20 @@ module ManualHelpers
     save_as_draft
   end
 
+  def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
+    stub_organisation_details(organisation_slug)
+    manual_services = OrganisationalManualServiceRegistry.new(
+      organisation_slug: organisation_slug,
+    )
+
+    manual = manual_services.update(
+      manual.id,
+      fields.merge(organisation_slug: organisation_slug),
+    ).call
+
+    manual
+  end
+
   def edit_manual_document(manual_title, section_title, new_fields)
     go_to_manual_page(manual_title)
     click_on section_title
@@ -72,6 +86,26 @@ module ManualHelpers
     yield if block_given?
 
     save_as_draft
+  end
+
+  def edit_manual_document_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
+    manual_document_services = OrganisationalManualDocumentServiceRegistry.new(
+      organisation_slug: organisation_slug,
+    )
+
+    service_context = OpenStruct.new(
+      {
+        params: {
+          "manual_id" => manual.id,
+          "id" => document.id,
+          "document" => fields,
+        },
+      }
+    )
+
+    _, document = manual_document_services.update(service_context).call
+
+    document
   end
 
   def edit_manual_original_publication_date(manual_title)
@@ -185,6 +219,10 @@ module ManualHelpers
     check_manual_is_published_to_publishing_api(manual.id)
   end
 
+  def check_manual_was_not_published(manual)
+    check_manual_is_not_published_to_publishing_api(manual.id)
+  end
+
   def check_manual_document_was_published(document)
     check_manual_document_is_published_to_publishing_api(document.id)
   end
@@ -219,6 +257,28 @@ module ManualHelpers
       ).at_least(:once)
   end
 
+  def check_manual_is_not_published_to_rummager(slug)
+    expect(fake_rummager).not_to have_received(:add_document)
+      .with(
+        "manual",
+        "/#{slug}",
+        anything
+      )
+  end
+
+  def check_manual_is_not_published_to_rummager_with_attrs(slug, attrs)
+    expect(fake_rummager).not_to have_received(:add_document)
+      .with(
+        "manual",
+        "/#{slug}",
+        hash_including(
+          title: attrs.fetch(:title),
+          link: "/#{slug}",
+          indexable_content: attrs.fetch(:summary),
+        )
+      )
+  end
+
   def check_manual_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
     raise ArgumentError, "can't specify both extra_attributes and with_matcher" if with_matcher.present? && !extra_attributes.empty?
 
@@ -234,8 +294,12 @@ module ManualHelpers
     assert_publishing_api_put_content(content_id, with_matcher, number_of_drafts)
   end
 
-  def check_manual_is_published_to_publishing_api(content_id)
-    assert_publishing_api_publish(content_id)
+  def check_manual_is_published_to_publishing_api(content_id, times: 1)
+    assert_publishing_api_publish(content_id, nil, times)
+  end
+
+  def check_manual_is_not_published_to_publishing_api(content_id)
+    assert_publishing_api_publish(content_id, nil, 0)
   end
 
   def check_draft_has_been_discarded_in_publishing_api(content_id)
@@ -257,8 +321,8 @@ module ManualHelpers
     assert_publishing_api_put_content(content_id, with_matcher, number_of_drafts)
   end
 
-  def check_manual_document_is_published_to_publishing_api(content_id)
-    assert_publishing_api_publish(content_id)
+  def check_manual_document_is_published_to_publishing_api(content_id, times: 1)
+    assert_publishing_api_publish(content_id, nil, times)
   end
 
   def check_manual_document_is_not_published_to_publishing_api(content_id)
@@ -280,6 +344,28 @@ module ManualHelpers
           indexable_content: attrs.fetch(:section_body),
         )
       ).at_least(:once)
+  end
+
+  def check_manual_section_is_not_published_to_rummager(slug)
+    expect(fake_rummager).not_to have_received(:add_document)
+      .with(
+        "manual_section",
+        "/#{slug}",
+        anything
+      )
+  end
+
+  def check_manual_section_is_not_published_to_rummager_with_attrs(slug, attrs, manual_attrs)
+    expect(fake_rummager).not_to have_received(:add_document)
+      .with(
+        "manual_section",
+        "/#{slug}",
+        hash_including(
+          title: "#{manual_attrs.fetch(:title)}: #{attrs.fetch(:section_title)}",
+          link: "/#{slug}",
+          indexable_content: attrs.fetch(:section_body),
+        )
+      )
   end
 
   def check_for_document_body_preview(text)

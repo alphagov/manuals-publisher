@@ -77,8 +77,8 @@ class AbstractManualServiceRegistry
 
   def republish(manual_id)
     RepublishManualService.new(
-      manual_repository: repository,
-      listeners: observers.republication,
+      draft_listeners: observers.update,
+      published_listeners: observers.republication,
       manual_id: manual_id,
     )
   end
