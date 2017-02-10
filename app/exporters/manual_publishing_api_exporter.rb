@@ -1,5 +1,5 @@
 class ManualPublishingAPIExporter
-  UPDATE_TYPES = %w(minor major republish).freeze
+  include PublishingAPIUpdateTypes
 
   def initialize(export_recipent, organisation, manual_renderer, publication_logs, manual, update_type: nil)
     @export_recipent = export_recipent
@@ -7,8 +7,8 @@ class ManualPublishingAPIExporter
     @manual_renderer = manual_renderer
     @publication_logs = publication_logs
     @manual = manual
-    raise ArgumentError, "update_type '#{update_type}' not recognised" if update_type.present? && !UPDATE_TYPES.include?(update_type)
     @update_type = update_type
+    check_update_type!(@update_type)
   end
 
   def call
@@ -22,7 +22,7 @@ private
     :organisation,
     :manual_renderer,
     :publication_logs,
-    :manual
+    :manual,
   )
 
   def base_path

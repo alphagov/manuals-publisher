@@ -1,11 +1,11 @@
 class PublishingAPIPublisher
-  UPDATE_TYPES = %w(minor major republish).freeze
+  include PublishingAPIUpdateTypes
 
   def initialize(publishing_api:, entity:, update_type: nil)
     @publishing_api = publishing_api
     @entity = entity
     @update_type = update_type
-    raise ArgumentError, "update_type '#{update_type}' not recognised" if update_type.present? && !UPDATE_TYPES.include?(update_type)
+    check_update_type!(@update_type)
   end
 
   def call
