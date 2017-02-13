@@ -1,11 +1,14 @@
 class ManualSectionPublishingAPIExporter
+  include PublishingAPIUpdateTypes
 
-  def initialize(export_recipent, organisation, document_renderer, manual, document)
+  def initialize(export_recipent, organisation, document_renderer, manual, document, update_type: nil)
     @export_recipent = export_recipent
     @organisation = organisation
     @document_renderer = document_renderer
     @manual = manual
     @document = document
+    @update_type = update_type
+    check_update_type!(@update_type)
   end
 
   def call
@@ -99,6 +102,7 @@ private
   end
 
   def update_type
+    return @update_type if @update_type.present?
     # The first edition to be sent to the publishing-api must always be sent as
     # a major update
     return "major" unless document.has_ever_been_published?
