@@ -14,7 +14,6 @@ class SpecialistDocument
       :document_type,
       :updated_at,
       :version_number,
-      :extra_fields,
       # TODO: These fields expose the edition a little too directly, rethink?
       :change_note,
       :change_history,
@@ -44,15 +43,10 @@ class SpecialistDocument
     id
   end
 
-  def extra_fields
-    latest_edition.extra_fields.symbolize_keys
-  end
-
   def attributes
     latest_edition
       .attributes
       .symbolize_keys
-      .merge(extra_fields: extra_fields)
       .select { |k, _|
         self.class.edition_attributes.include?(k)
       }
