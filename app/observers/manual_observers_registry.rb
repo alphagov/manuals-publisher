@@ -151,7 +151,7 @@ private
         next if document.withdrawn? && action != :republish
         begin
           publishing_api_v2.unpublish(document.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
-        rescue GdsApi::HTTPNotFound
+        rescue GdsApi::HTTPNotFound # rubocop:disable Lint/HandleExceptions
         end
         document.withdraw_and_mark_as_exported! if action != :republish
       end

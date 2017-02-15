@@ -40,7 +40,7 @@ private
 
   def manual
     @manual ||= manual_repository.fetch(manual_id)
-  rescue KeyError => error
+  rescue KeyError
     raise ManualNotFoundError.new(manual_id)
   end
 

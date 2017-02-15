@@ -7,7 +7,7 @@ describe DuplicateDraftDeleter do
 
   it "deletes duplicate editions that aren't present in Publishing API" do
     original_content_id = SecureRandom.uuid
-    edition = FactoryGirl.create(:specialist_document_edition,
+    FactoryGirl.create(:specialist_document_edition,
       slug: "cma-cases/a-case",
       document_id: original_content_id,
       document_type: "cma_case",
@@ -16,13 +16,13 @@ describe DuplicateDraftDeleter do
     publishing_api_has_item(content_id: original_content_id)
 
     duplicate_content_id = SecureRandom.uuid
-    duplicate_edition = FactoryGirl.create(:specialist_document_edition,
+    FactoryGirl.create(:specialist_document_edition,
       slug: "cma-cases/a-case",
       document_id: duplicate_content_id,
       document_type: "cma_case",
       state: "draft",
     )
-    another_duplicate_edition_with_same_content_id = FactoryGirl.create(:specialist_document_edition,
+    FactoryGirl.create(:specialist_document_edition,
       slug: "cma-cases/a-case",
       document_id: duplicate_content_id,
       document_type: "cma_case",
@@ -39,12 +39,12 @@ describe DuplicateDraftDeleter do
 
   it "leaves non-duplicated editions alone" do
     content_id = SecureRandom.uuid
-    edition = FactoryGirl.create(:specialist_document_edition,
-      document_id: content_id,
+    FactoryGirl.create(:specialist_document_edition,
+     document_id: content_id,
     )
 
     another_content_id = SecureRandom.uuid
-    edition = FactoryGirl.create(:specialist_document_edition,
+    FactoryGirl.create(:specialist_document_edition,
       document_id: another_content_id,
     )
 

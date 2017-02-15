@@ -71,7 +71,7 @@ protected
     klass.new(*dependencies_for(klass))
   end
 
-  class FactoryDependency < Struct.new(:container, :callable)
+  FactoryDependency = Struct.new(:container, :callable) do
     def get
       container.instance_eval(&callable)
     end
@@ -83,7 +83,7 @@ protected
     end
   end
 
-  class InstanceDependency < Struct.new(:container, :instance)
+  InstanceDependency = Struct.new(:container, :instance) do
     def get
       self.instance
     end

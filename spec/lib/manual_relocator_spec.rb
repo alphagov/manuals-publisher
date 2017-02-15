@@ -414,7 +414,7 @@ describe ManualRelocator do
   def with_body_matcher(body)
     ->(request) do
       data = JSON.parse(request.body)
-      unrendered_body = data["details"]["body"].detect { |body| body["content_type"] == "text/govspeak" }
+      unrendered_body = data["details"]["body"].detect { |api_body| api_body["content_type"] == "text/govspeak" }
       (unrendered_body && unrendered_body["content"] == body)
     end
   end
@@ -423,7 +423,7 @@ describe ManualRelocator do
     ->(request) do
       data = JSON.parse(request.body)
       routes = data["routes"]
-      unrendered_body = data["details"]["body"].detect { |body| body["content_type"] == "text/govspeak" }
+      unrendered_body = data["details"]["body"].detect { |api_body| api_body["content_type"] == "text/govspeak" }
       (unrendered_body && unrendered_body["content"] == body) &&
         ((data["base_path"] == path) && (routes.any? { |route| route["path"] == path }))
     end

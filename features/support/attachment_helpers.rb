@@ -57,7 +57,6 @@ module AttachmentHelpers
 
   def edit_attachment(_document_title, attachment_title, new_attachment_title, new_attachment_file_name)
     attachment_li = page.find(".attachments li", text: attachment_title)
-    attachment_edit_link = attachment_li.find("a", text: "edit")
 
     within(attachment_li) do
       click_link("edit")

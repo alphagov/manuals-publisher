@@ -74,7 +74,7 @@ private
   end
 
   def new_edition_for_slug_change
-    manual, document = ManualDocumentServiceRegistry.new.update(context_for_section_edition_update).call
+    _manual, document = ManualDocumentServiceRegistry.new.update(context_for_section_edition_update).call
     document.latest_edition
   end
 

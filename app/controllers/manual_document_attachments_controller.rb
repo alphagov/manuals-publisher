@@ -10,7 +10,7 @@ class ManualDocumentAttachmentsController < ApplicationController
   end
 
   def create
-    manual, document, attachment = services.create(self).call
+    manual, document, _attachment = services.create(self).call
 
     redirect_to edit_manual_document_path(manual, document)
   end

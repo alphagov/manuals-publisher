@@ -129,14 +129,5 @@ describe DependencyContainer do
       expect(instance).to be_a struct
       expect(instance.logger).to be_a MyLogger
     end
-
-    it "will set optional dependencies if defined" do
-      my_class = Class.new do
-        def initialize(logger = nil, not_defined = nil)
-        end
-      end
-
-      @container.define_factory(:test)
-    end
   end
 end

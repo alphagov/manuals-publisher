@@ -1,5 +1,5 @@
 # Autoload the User model from govuk_content_models
-User
+require 'user'
 
 # We need to add this field to User as the rebuild uses it for permissions.
 class User

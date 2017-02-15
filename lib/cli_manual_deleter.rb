@@ -96,6 +96,7 @@ private
     begin
       publishing_api_v2.discard_draft(content_id)
     rescue GdsApi::HTTPNotFound
+      log "Draft for #{content_id} already discarded."
     end
   end
 

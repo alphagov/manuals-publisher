@@ -116,8 +116,8 @@ ManualsPublisherWiring ||= DependencyContainer.new do
         get(:govspeak_to_html_renderer),
       ]
 
-      pipeline.reduce(doc) { |doc, next_renderer|
-        next_renderer.call(doc)
+      pipeline.reduce(doc) { |current_doc, next_renderer|
+        next_renderer.call(current_doc)
       }
     }
   }
@@ -131,8 +131,8 @@ ManualsPublisherWiring ||= DependencyContainer.new do
         get(:footnotes_section_heading_renderer),
       ]
 
-      pipeline.reduce(doc) { |doc, next_renderer|
-        next_renderer.call(doc)
+      pipeline.reduce(doc) { |current_doc, next_renderer|
+        next_renderer.call(current_doc)
       }
     }
   }

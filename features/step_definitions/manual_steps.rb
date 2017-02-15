@@ -541,7 +541,7 @@ end
 
 Then(/^the change note form for the document is clear$/) do
   go_to_manual_page(@manual.title)
-  click_on (@updated_document || @document).title
+  click_on((@updated_document || @document).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(minor_update: false, note: "")
@@ -549,7 +549,7 @@ end
 
 Then(/^the change note form for the document contains my note$/) do
   go_to_manual_page(@manual.title)
-  click_on (@updated_document || @document).title
+  click_on((@updated_document || @document).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(note_field_only: true, note: @change_note)

@@ -504,7 +504,7 @@ module ManualHelpers
     end
 
     attributes_for_documents.each do |attributes|
-      create_manual_document(@manual_fields.fetch(:title), attributes[:fields])
+      create_manual_document(manual_fields.fetch(:title), attributes[:fields])
     end
 
     attributes_for_documents
