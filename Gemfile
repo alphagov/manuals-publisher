@@ -58,18 +58,18 @@ gem "pry", group: [:development, :test]
 gem "awesome_print", group: [:development, :test]
 
 group :test do
-  gem "cucumber", "1.3.16"
-  gem "cucumber-rails", "1.4.0", require: false
+  gem "cucumber", "~> 2.2.0"
+  gem "cucumber-rails", "~> 1.4.0", require: false
   gem "launchy"
   gem "factory_girl", "4.3.0"
   gem "database_cleaner", "1.2.0"
   gem "poltergeist", "1.5.0"
   gem "phantomjs", ">= 1.9.7.1"
   gem "webmock", "~> 1.17.4"
-  gem "rspec", "3.2.0"
-  gem "rspec-rails", "3.2.0"
+  gem "rspec", "~> 3.2.0"
+  gem "rspec-rails", "~> 3.2.0"
   # we need test-unit for rails 3.2 and ruby 2.2
-  gem 'test-unit'
+  gem 'test-unit', require: false
   gem "govuk-lint"
   gem "simplecov"
   gem "timecop"
