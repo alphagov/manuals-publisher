@@ -30,10 +30,10 @@ describe DocumentAssociationMarshaller do
   let(:record) {
     double(
       :record,
-      :document_ids => document_ids,
-      :"document_ids=" => nil,
-      :removed_document_ids => removed_document_ids,
-      :"removed_document_ids=" => nil,
+      document_ids: document_ids,
+      "document_ids=": nil,
+      removed_document_ids: removed_document_ids,
+      "removed_document_ids=": nil,
     )
   }
 

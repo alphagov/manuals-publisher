@@ -25,32 +25,32 @@ describe SpecialistDocumentRepository do
   let(:new_draft_edition) {
     double(
       :new_draft_edition,
-      :title => "Example document about oil reserves",
-      :slug => "example-document-about-oil-reserves",
-      :"document_id=" => nil,
-      :"slug=" => nil,
-      :changed? => true,
-      :save! => true,
-      :published? => false,
-      :draft? => true,
-      :errors => {},
-      :publish => nil,
-      :version_number => 2,
-      :archive => nil,
+      title: "Example document about oil reserves",
+      slug: "example-document-about-oil-reserves",
+      "document_id=": nil,
+      "slug=": nil,
+      changed?: true,
+      save!: true,
+      published?: false,
+      draft?: true,
+      errors: {},
+      publish: nil,
+      version_number: 2,
+      archive: nil,
     )
   }
 
   def build_published_edition(version: 1)
     double(
       :published_edition,
-      :title => "Example document about oil reserves #{version}",
-      :"document_id=" => nil,
-      :changed? => false,
-      :save! => nil,
-      :archive => nil,
-      :published? => true,
-      :draft? => false,
-      :version_number => version,
+      title: "Example document about oil reserves #{version}",
+      "document_id=": nil,
+      changed?: false,
+      save!: nil,
+      archive: nil,
+      published?: true,
+      draft?: false,
+      version_number: version,
     )
   end
 

@@ -21,6 +21,7 @@ gem "rack", "~> 1.4.6" # explicitly requiring patched version re: CVE-2015-3225
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
 gem "unicorn", "4.8.2"
+gem "raindrops", ">= 0.13.0"
 
 if ENV["GOVSPEAK_DEV"]
   gem "govspeak", path: "../govspeak"
@@ -67,6 +68,8 @@ group :test do
   gem "webmock", "~> 1.17.4"
   gem "rspec", "3.2.0"
   gem "rspec-rails", "3.2.0"
+  # we need test-unit for rails 3.2 and ruby 2.2
+  gem 'test-unit'
   gem "govuk-lint"
   gem "simplecov"
   gem "timecop"
