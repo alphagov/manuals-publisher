@@ -57,7 +57,8 @@ class ManualWithDocuments < SimpleDelegator
     @removed_documents << removed
   end
 
-  private
+private
+
   attr_reader :document_builder, :manual
 
   def add_document(document)

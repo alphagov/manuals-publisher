@@ -1,5 +1,4 @@
 class ManualSectionPublishingAPILinksExporter
-
   def initialize(export_recipent, organisation, manual, document)
     @export_recipent = export_recipent
     @organisation = organisation

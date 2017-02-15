@@ -17,6 +17,7 @@ class WithdrawManualService
   end
 
 private
+
   attr_reader :manual_repository, :listeners, :manual_id
 
   def withdraw

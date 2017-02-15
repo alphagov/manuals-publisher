@@ -27,6 +27,7 @@ class PublishManualWorker
   end
 
 private
+
   def services
     ManualServiceRegistry.new
   end

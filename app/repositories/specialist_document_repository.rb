@@ -44,7 +44,7 @@ class SpecialistDocumentRepository
     conditions = search_conditions(query)
 
     all_document_ids_scoped(conditions)
-      .map { |id| fetch(id)  }
+      .map { |id| fetch(id) }
   end
 
   def slug_unique?(document)
@@ -75,6 +75,7 @@ class SpecialistDocumentRepository
   end
 
 private
+
   attr_reader(
     :document_type,
     :document_factory,
@@ -83,7 +84,7 @@ private
   def search_conditions(query)
     matcher = /#{query}/i
     searchable_attributes.map { |attr|
-      {attr => matcher}
+      { attr => matcher }
     }
   end
 

@@ -19,6 +19,7 @@ class ManualUpdateType
   end
 
 private
+
   attr_reader :manual
 
   def all_documents_are_minor?

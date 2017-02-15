@@ -14,8 +14,8 @@ class DependencyContainer
     @definitions[name] = SingletonDependency.new(self, block)
   end
 
-  def define_instance(name, instance = nil, &block)
-    instance = block.call if block_given?
+  def define_instance(name, instance = nil)
+    instance = yield if block_given?
     @definitions[name] = InstanceDependency.new(self, instance)
   end
 

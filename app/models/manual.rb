@@ -67,7 +67,7 @@ class Manual
 
   def publish(&block)
     @state = "published"
-    block.call if block
+    yield if block
 
     self
   end

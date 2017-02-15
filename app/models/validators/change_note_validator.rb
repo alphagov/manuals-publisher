@@ -19,7 +19,7 @@ class ChangeNoteValidator < SimpleDelegator
     entity.errors.to_hash.merge(@errors)
   end
 
-  private
+private
 
   attr_reader :entity
 

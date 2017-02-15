@@ -3,7 +3,6 @@ require "fast_spec_helper"
 require "manual_with_documents"
 
 describe ManualWithDocuments do
-
   subject(:manual_with_documents) {
     ManualWithDocuments.new(document_builder, manual, documents: documents)
   }

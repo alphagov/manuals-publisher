@@ -1,5 +1,4 @@
 module DateTimeHelper
-
   def time_with_local_zone(time)
     ActiveSupport::TimeZone.new("London").at(time)
   end
@@ -9,5 +8,4 @@ module DateTimeHelper
       time.strftime("%l:%M%P on %-d %B %Y")
     end
   end
-
 end

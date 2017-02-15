@@ -25,6 +25,7 @@ class InconsistentEditionStateFixer
   end
 
 private
+
   def archive_old_editions(doc)
     doc
       .editions

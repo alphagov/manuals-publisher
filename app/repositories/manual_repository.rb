@@ -53,6 +53,7 @@ class ManualRepository
   end
 
 private
+
   attr_reader :collection, :factory, :association_marshallers
 
   def attributes_for(manual)

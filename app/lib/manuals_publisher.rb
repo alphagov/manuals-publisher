@@ -10,6 +10,7 @@ module ManualsPublisher
   end
 
 private
+
   def document_repositories
     ManualsPublisherWiring.get(:repository_registry)
   end

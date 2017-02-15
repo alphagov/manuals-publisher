@@ -15,7 +15,7 @@ class CreateManualService
     manual
   end
 
-  private
+private
 
   attr_reader(
     :manual_repository,

@@ -40,6 +40,7 @@ class ManualDocumentAttachmentsController < ApplicationController
   end
 
 private
+
   def services
     if current_user_is_gds_editor?
       gds_editor_services

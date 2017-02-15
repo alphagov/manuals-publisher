@@ -4,6 +4,7 @@ class OrganisationalManualServiceRegistry < AbstractManualServiceRegistry
   end
 
 private
+
   attr_reader :organisation_slug
 
   def repository

@@ -22,7 +22,7 @@ class Attachment
   def file
     raise ApiClientNotPresent unless AttachmentApi.client
     unless file_id.nil?
-      @attachments ||= { }
+      @attachments ||= {}
       @attachments[field] ||= AttachmentApi.client.asset(file_id)
     end
   end

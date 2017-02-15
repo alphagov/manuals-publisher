@@ -2,7 +2,6 @@ require "spec_helper"
 require "formatters/manual_section_indexable_formatter"
 
 RSpec.describe ManualSectionIndexableFormatter do
-
   let(:section) {
     double(
       :manual_section,
@@ -26,5 +25,4 @@ RSpec.describe ManualSectionIndexableFormatter do
   describe "as an indexable formatter" do
     it_behaves_like "an indexable formatter"
   end
-
 end

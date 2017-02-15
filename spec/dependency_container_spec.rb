@@ -2,7 +2,6 @@ require "spec_helper"
 require "dependency_container"
 
 describe DependencyContainer do
-
   class ExampleClass; end
 
   it "builds object instances from a factory defined by a passed-in block" do

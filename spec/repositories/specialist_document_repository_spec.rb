@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe SpecialistDocumentRepository do
-
   let(:specialist_document_repository) do
     SpecialistDocumentRepository.new(
       document_type: document_type,
@@ -12,7 +11,7 @@ describe SpecialistDocumentRepository do
   let(:document_factory) { double(:document_factory, call: document) }
 
   let(:document_id) { "document-id" }
-  let(:document_type) { "generic_document"}
+  let(:document_type) { "generic_document" }
 
   let(:document) {
     SpecialistDocument.new(slug_generator, document_id, editions, edition_factory)

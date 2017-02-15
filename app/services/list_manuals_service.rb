@@ -8,7 +8,7 @@ class ListManualsService
     manual_repository.all
   end
 
-  private
+private
 
   attr_reader :manual_repository, :context
 end

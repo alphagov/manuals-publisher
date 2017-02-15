@@ -16,5 +16,6 @@ class ManualPublishTaskAssociationMarshaller
   end
 
 private
+
   attr_reader :collection, :decorator
 end

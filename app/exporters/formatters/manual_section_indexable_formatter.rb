@@ -11,6 +11,7 @@ class ManualSectionIndexableFormatter < AbstractIndexableFormatter
   end
 
 private
+
   attr_reader :manual
 
   def extra_attributes

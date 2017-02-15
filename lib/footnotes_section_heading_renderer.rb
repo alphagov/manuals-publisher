@@ -10,6 +10,7 @@ class FootnotesSectionHeadingRenderer < SimpleDelegator
   end
 
 private
+
   def footnote_open_tag
     '<div class="footnotes">'
   end

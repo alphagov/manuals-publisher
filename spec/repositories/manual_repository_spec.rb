@@ -19,13 +19,13 @@ describe ManualRepository do
 
   let(:association_marshallers) { [] }
 
-  let(:manual_factory)  { double(:manual_factory, call: nil) }
+  let(:manual_factory) { double(:manual_factory, call: nil) }
   let(:manual_id) { double(:manual_id) }
   let(:manual_slug) { double(:manual_slug) }
   let(:originally_published_at) { double(:originally_published_at) }
   let(:use_originally_published_at_for_public_timestamp) { double(:use_originally_published_at_for_public_timestamp) }
 
-  let(:manual)    { double(:manual, manual_attributes) }
+  let(:manual) { double(:manual, manual_attributes) }
 
   let(:manual_attributes) {
     {

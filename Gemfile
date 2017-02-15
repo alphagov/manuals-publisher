@@ -23,19 +23,19 @@ gem "sidekiq-statsd", "0.1.5"
 gem "unicorn", "4.8.2"
 
 if ENV["GOVSPEAK_DEV"]
-  gem "govspeak", :path => "../govspeak"
+  gem "govspeak", path: "../govspeak"
 else
   gem "govspeak", "3.1.0"
 end
 
 if ENV["CONTENT_MODELS_DEV"]
-  gem "govuk_content_models", :path => "../govuk_content_models"
+  gem "govuk_content_models", path: "../govuk_content_models"
 else
   gem "govuk_content_models", "28.7.0"
 end
 
 if ENV["API_DEV"]
-  gem "gds-api-adapters", :path => "../gds-api-adapters"
+  gem "gds-api-adapters", path: "../gds-api-adapters"
 else
   gem "gds-api-adapters", "37.4.0"
 end
@@ -49,7 +49,7 @@ group :assets do
   gem "sass-rails", "3.2.6"
   gem "uglifier", ">= 1.3.0"
   gem "govuk_frontend_toolkit", "0.44.0"
-  gem "select2-rails",  "3.5.9"
+  gem "select2-rails", "3.5.9"
 end
 
 gem "pry-byebug", group: [:development, :test]

@@ -17,7 +17,7 @@ class CreateManualDocumentService
     [manual, new_document]
   end
 
-  private
+private
 
   attr_reader :manual_repository, :listeners, :context
 

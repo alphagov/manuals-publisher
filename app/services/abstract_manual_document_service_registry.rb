@@ -81,6 +81,7 @@ class AbstractManualDocumentServiceRegistry
   end
 
 private
+
   def document_renderer
     ManualsPublisherWiring.get(:specialist_document_renderer)
   end

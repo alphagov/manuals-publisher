@@ -123,7 +123,7 @@ module DocumentHelpers
   end
 
   def check_content_preview_link(slug)
-    preview_url = "#{Plek.current.find("draft-origin")}/#{slug}"
+    preview_url = "#{Plek.current.find('draft-origin')}/#{slug}"
     expect(page).to have_link("Preview draft", href: preview_url)
   end
 

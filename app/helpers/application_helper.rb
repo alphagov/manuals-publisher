@@ -8,11 +8,11 @@ module ApplicationHelper
       state << " with new draft"
     end
 
-    if document.draft?
-      classes = "label label-primary"
-    else
-      classes = "label label-default"
-    end
+    classes = if document.draft?
+                "label label-primary"
+              else
+                "label label-default"
+              end
 
     content_tag(:span, state, class: classes).html_safe
   end
@@ -31,12 +31,12 @@ module ApplicationHelper
 
     output =  case task.state
               when "queued", "processing"
-                %Q(This manual was sent for publishing at #{formatted_time}.
+                %(This manual was sent for publishing at #{formatted_time}.
                   It should be published shortly.)
               when "finished"
-                %Q(This manual was last published at #{formatted_time}.)
+                %(This manual was last published at #{formatted_time}.)
               when "aborted"
-                %Q(This manual was sent for publishing at #{formatted_time},
+                %(This manual was sent for publishing at #{formatted_time},
                   but something went wrong. Our team has been notified.)
               end
 
@@ -87,7 +87,7 @@ module ApplicationHelper
   end
 
   def content_preview_url(document)
-    "#{Plek.current.find("draft-origin")}/#{document.slug}"
+    "#{Plek.current.find('draft-origin')}/#{document.slug}"
   end
 
   def publish_text(manual, slug_unique)

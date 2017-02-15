@@ -110,6 +110,7 @@ class ManualsController < ApplicationController
   end
 
 private
+
   def manual_id
     params.fetch("id")
   end

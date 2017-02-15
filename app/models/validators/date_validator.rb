@@ -6,6 +6,7 @@ class DateValidator < ActiveModel::EachValidator
   end
 
 private
+
   def parsable_date?(date_string)
     date_string =~ iso8601_regex && Date.parse(date_string)
   rescue ArgumentError

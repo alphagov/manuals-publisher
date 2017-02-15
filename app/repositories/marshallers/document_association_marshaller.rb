@@ -33,13 +33,14 @@ class DocumentAssociationMarshaller
       document_repository.store(document)
     end
 
-    record.document_ids = manual.documents.map { |d| d.id }
-    record.removed_document_ids = manual.removed_documents.map { |d| d.id }
+    record.document_ids = manual.documents.map(&:id)
+    record.removed_document_ids = manual.removed_documents.map(&:id)
 
     nil
   end
 
 private
+
   attr_reader :manual_specific_document_repository_factory, :decorator
 
   class RemovedDocumentIdNotFoundError < StandardError; end

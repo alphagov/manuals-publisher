@@ -1,5 +1,4 @@
 class NewManualDocumentAttachmentService
-
   def initialize(manual_repository, builder, context)
     @manual_repository = manual_repository
     @builder = builder
@@ -10,7 +9,7 @@ class NewManualDocumentAttachmentService
     [manual, document, attachment]
   end
 
-  private
+private
 
   attr_reader :manual_repository, :builder, :context
 

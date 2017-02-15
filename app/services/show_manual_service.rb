@@ -1,5 +1,4 @@
 class ShowManualService
-
   def initialize(manual_id:, manual_repository:)
     @manual_id = manual_id
     @manual_repository = manual_repository

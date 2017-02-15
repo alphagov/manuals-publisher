@@ -40,7 +40,7 @@ private
     }
   end
 
-  private
+private
 
   def content_id
     @_content_id ||= SecureRandom.uuid

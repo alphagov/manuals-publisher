@@ -1,7 +1,6 @@
 require "manual_repository"
 
 class VersionedManualRepository
-
   class NotFoundError < StandardError; include ManualRepository::NotFoundError; end
 
   def self.get_manual(manual_id)
@@ -63,7 +62,7 @@ private
     end
   end
 
-  def build_manual_for(manual_record, edition, &document_fetcher_block)
+  def build_manual_for(manual_record, edition)
     base_manual = Manual.new(
       id: manual_record.manual_id,
       slug: manual_record.slug,
@@ -79,7 +78,7 @@ private
       use_originally_published_at_for_public_timestamp: edition.use_originally_published_at_for_public_timestamp,
     )
 
-    document_attrs = document_fetcher_block.call
+    document_attrs = yield
 
     ManualWithDocuments.new(
       ->(_manual, _attrs) { raise RuntimeError, "read only manaul" },
@@ -94,12 +93,12 @@ private
     end
   end
 
-  def build_specialist_document(document_id, &filter)
+  def build_specialist_document(document_id)
     all_editions = SpecialistDocumentEdition.where(document_type: "manual", document_id: document_id).order_by([:version_number, :desc]).to_a
     SpecialistDocument.new(
       ->(_title) { raise RuntimeError, "read only manual" },
       document_id,
-      filter.call(all_editions).take(2).reverse,
+      yield(all_editions).take(2).reverse,
     )
   end
 
