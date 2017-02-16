@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "3.2.22.3"
 
 # Alphabetical order please :)
-gem "airbrake", "3.1.15"
+gem "airbrake", "~> 4.3"
 gem "bson_ext", "1.12.1"
 gem "faraday", "0.9.0"
 gem "fetchable", "1.0.0"
