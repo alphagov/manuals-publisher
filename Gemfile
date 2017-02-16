@@ -4,6 +4,7 @@ gem "rails", "3.2.22.3"
 
 # Alphabetical order please :)
 gem "airbrake", "3.1.15"
+gem "bson_ext", "1.12.1"
 gem "faraday", "0.9.0"
 gem "fetchable", "1.0.0"
 gem "gds-sso", "~> 11.0" # can't go higher because govuk_content_models needs this version (also > 12 need rails 4+)
@@ -20,18 +21,13 @@ gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
 gem "rack", "~> 1.4.6" # explicitly requiring patched version re: CVE-2015-3225
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
+gem "state_machine", "1.2.0"
 gem "unicorn", "4.8.2"
 
 if ENV["API_DEV"]
   gem "gds-api-adapters", path: "../gds-api-adapters"
 else
   gem "gds-api-adapters", "~> 39.0"
-end
-
-if ENV["CONTENT_MODELS_DEV"]
-  gem "govuk_content_models", path: "../govuk_content_models"
-else
-  gem "govuk_content_models", "~> 34.0" # higher versions require mongoid 5.1
 end
 
 if ENV["GOVSPEAK_DEV"]

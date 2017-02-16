@@ -1,6 +1,18 @@
-require "govuk_content_models/test_helpers/factories"
-
 FactoryGirl.define do
+  factory :user do
+    sequence(:uid) { |n| "uid-#{n}" }
+    sequence(:name) { |n| "Joe Bloggs #{n}" }
+    sequence(:email) { |n| "joe#{n}@bloggs.com" }
+    if defined?(GDS::SSO::Config)
+      # Grant permission to signin to the app using the gem
+      permissions { ["signin"] }
+    end
+  end
+
+  factory :disabled_user, parent: :user do
+    disabled true
+  end
+
   factory :editor, parent: :user do
     permissions %w(signin editor)
   end
