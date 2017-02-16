@@ -390,11 +390,11 @@ DEPENDENCIES
   binding_of_caller
   cucumber (~> 2.2.0)
   cucumber-rails (~> 1.4.0)
-  database_cleaner (= 1.2.0)
-  factory_girl_rails (= 4.8.0)
+  database_cleaner
+  factory_girl_rails
   faraday (= 0.9.0)
   fetchable (= 1.0.0)
-  foreman (= 0.74.0)
+  foreman
   gds-api-adapters (= 37.4.0)
   gds-sso (= 10.1.0)
   generic_form_builder (= 0.11.0)
@@ -430,7 +430,7 @@ DEPENDENCIES
   timecop
   uglifier (>= 1.3.0)
   unicorn (= 4.8.2)
-  webmock (~> 1.17.4)
+  webmock
 
 BUNDLED WITH
    1.10.6

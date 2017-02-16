@@ -6,7 +6,6 @@ gem "rails", "3.2.22.3"
 gem "airbrake", "3.1.15"
 gem "faraday", "0.9.0"
 gem "fetchable", "1.0.0"
-gem "foreman", "0.74.0"
 gem "gds-sso", "10.1.0"
 gem "generic_form_builder", "0.11.0"
 gem "govuk_admin_template", "3.0.0"
@@ -54,6 +53,7 @@ end
 
 group :development, :test do
   gem "awesome_print"
+  gem "foreman"
   gem "jasmine-rails"
   gem "pry-byebug"
   gem "sinatra"
@@ -62,8 +62,8 @@ end
 group :test do
   gem "cucumber", "~> 2.2.0"
   gem "cucumber-rails", "~> 1.4.0", require: false
-  gem "database_cleaner", "1.2.0"
-  gem "factory_girl_rails", "4.8.0"
+  gem "database_cleaner"
+  gem "factory_girl_rails"
   gem "govuk-lint"
   gem "govuk-content-schema-test-helpers", "1.4.0"
   gem "launchy"
@@ -75,5 +75,5 @@ group :test do
   # we need test-unit for rails 3.2 and ruby 2.2
   gem 'test-unit', require: false
   gem "timecop"
-  gem "webmock", "~> 1.17.4"
+  gem "webmock"
 end
