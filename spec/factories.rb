@@ -32,8 +32,8 @@ FactoryGirl.define do
 
   factory :specialist_document_edition do
     document_id { BSON::ObjectId.new }
-    sequence(:slug) {|n| "test-specialist-document-#{n}" }
-    sequence(:title) {|n| "Test Specialist Document #{n}" }
+    sequence(:slug) { |n| "test-specialist-document-#{n}" }
+    sequence(:title) { |n| "Test Specialist Document #{n}" }
     summary "My summary"
     body "My body"
     document_type "manual"
@@ -48,9 +48,9 @@ FactoryGirl.define do
   end
 
   factory :specialist_document do
-    slug_generator {"some"}
-    id {"some"}
-    editions {"s"}
+    slug_generator { "some" }
+    id { "some" }
+    editions { "s" }
     initialize_with { new(slug_generator, id, editions) }
   end
 

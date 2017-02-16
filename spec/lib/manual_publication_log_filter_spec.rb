@@ -8,79 +8,86 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   let(:document_edition_exported_time) { Time.current }
 
   let(:document_a_edition_published_version_1_major_update) do
-    create(:specialist_document_edition,
-           state: "published",
-           slug: "#{manual_slug}/first-further-info",
-           exported_at: document_edition_exported_time,
-           version_number: 1,
-          )
+    FactoryGirl.create(
+      :specialist_document_edition,
+      state: "published",
+      slug: "#{manual_slug}/first-further-info",
+      exported_at: document_edition_exported_time,
+      version_number: 1,
+    )
   end
 
   let(:document_a_edition_published_version_2_major_update) do
-    create(:specialist_document_edition,
-           state: "published",
-           slug: document_a_edition_published_version_1_major_update.slug,
-           document_id: document_a_edition_published_version_1_major_update.document_id,
-           exported_at: document_edition_exported_time,
-           version_number: 2
-          )
+    FactoryGirl.create(
+      :specialist_document_edition,
+      state: "published",
+      slug: document_a_edition_published_version_1_major_update.slug,
+      document_id: document_a_edition_published_version_1_major_update.document_id,
+      exported_at: document_edition_exported_time,
+      version_number: 2
+    )
   end
 
   let(:document_b_edition_published_version_1_major_update) do
-    create(:specialist_document_edition,
-           state: "published",
-           slug: "#{manual_slug}/second-further-info",
-           exported_at: document_edition_exported_time,
-           version_number: 1,
-          )
+    FactoryGirl.create(
+      :specialist_document_edition,
+      state: "published",
+      slug: "#{manual_slug}/second-further-info",
+      exported_at: document_edition_exported_time,
+      version_number: 1,
+    )
   end
 
   let(:document_b_edition_published_version_2_minor_update) do
-    create(:specialist_document_edition,
-           state: "published",
-           slug: document_b_edition_published_version_1_major_update.slug,
-           document_id: document_b_edition_published_version_1_major_update.document_id,
-           exported_at: document_edition_exported_time,
-           minor_update: true,
-           version_number: 2
-          )
+    FactoryGirl.create(
+      :specialist_document_edition,
+      state: "published",
+      slug: document_b_edition_published_version_1_major_update.slug,
+      document_id: document_b_edition_published_version_1_major_update.document_id,
+      exported_at: document_edition_exported_time,
+      minor_update: true,
+      version_number: 2
+    )
   end
 
   let(:document_c_edition_archived_version_1_major_update) do
-    create(:specialist_document_edition,
-           state: "archived",
-           slug: "#{manual_slug}/additional-data",
-           exported_at: document_edition_exported_time,
-           version_number: 1
-          )
+    FactoryGirl.create(
+      :specialist_document_edition,
+      state: "archived",
+      slug: "#{manual_slug}/additional-data",
+      exported_at: document_edition_exported_time,
+      version_number: 1
+    )
   end
 
   let(:document_d_edition_draft_version_1_major_update) do
-    create(:specialist_document_edition,
-           state: "draft",
-           slug: "#{manual_slug}/draft-info",
-           exported_at: document_edition_exported_time,
-           version_number: 1
-          )
+    FactoryGirl.create(
+      :specialist_document_edition,
+      state: "draft",
+      slug: "#{manual_slug}/draft-info",
+      exported_at: document_edition_exported_time,
+      version_number: 1
+    )
   end
 
   let(:document_e_edition_published_version_1_major_update) do
-    create(:specialist_document_edition,
-           state: "published",
-           slug: "#{manual_slug}/third-further-info",
-           exported_at: document_edition_exported_time,
-           version_number: 1,
-          )
+    FactoryGirl.create(
+      :specialist_document_edition,
+      state: "published",
+      slug: "#{manual_slug}/third-further-info",
+      exported_at: document_edition_exported_time,
+      version_number: 1,
+    )
   end
 
   let!(:previous_publication_logs) {
     [
-      create(:publication_log, slug: manual_slug, created_at: 10.seconds.ago, version_number: 1),
-      create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2)
+      FactoryGirl.create(:publication_log, slug: manual_slug, created_at: 10.seconds.ago, version_number: 1),
+      FactoryGirl.create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2)
     ]
   }
   let!(:previous_other_publication_log) {
-    create :publication_log, slug: other_slug, created_at: 6.seconds.ago, version_number: 1
+    FactoryGirl.create :publication_log, slug: other_slug, created_at: 6.seconds.ago, version_number: 1
   }
 
   let(:first_manual_edition_creation_time) { Time.current - 1.week }
@@ -181,12 +188,12 @@ end
 
 describe ManualPublicationLogFilter::EditionOrdering do
   describe ".sort_by_document_ids_and_created_at" do
-    let!(:edition_in_third_position) { create :specialist_document_edition }
-    let!(:edition_in_first_position) { create :specialist_document_edition }
-    let!(:edition_in_second_position) { create :specialist_document_edition }
+    let!(:edition_in_third_position) { FactoryGirl.create :specialist_document_edition }
+    let!(:edition_in_first_position) { FactoryGirl.create :specialist_document_edition }
+    let!(:edition_in_second_position) { FactoryGirl.create :specialist_document_edition }
 
-    let!(:other_edition_newer) { create :specialist_document_edition, created_at: Time.now - 1.day }
-    let!(:other_edition_older) { create :specialist_document_edition, created_at: Time.now - 1.week }
+    let!(:other_edition_newer) { FactoryGirl.create :specialist_document_edition, created_at: Time.now - 1.day }
+    let!(:other_edition_older) { FactoryGirl.create :specialist_document_edition, created_at: Time.now - 1.week }
 
     let!(:document_ids) {
       [

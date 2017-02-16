@@ -69,10 +69,10 @@ describe SpecialistDocumentRepository do
       @edition_1, @edition_2 = [2, 1].map do |n|
         document_id = "document-id-#{n}"
 
-        edition = create(:specialist_document_edition,
-                            document_id: document_id,
-                            document_type: document_type,
-                            updated_at: n.days.ago)
+        edition = FactoryGirl.create(:specialist_document_edition,
+                                     document_id: document_id,
+                                     document_type: document_type,
+                                     updated_at: n.days.ago)
 
         allow(document_factory).to receive(:call)
           .with(document_id, [edition])
