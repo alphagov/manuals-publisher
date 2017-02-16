@@ -414,7 +414,6 @@ DEPENDENCIES
   phantomjs (>= 1.9.7.1)
   plek (= 1.12.0)
   poltergeist (= 1.5.0)
-  pry
   pry-byebug
   quiet_assets (= 1.0.3)
   rack (~> 1.4.6)
