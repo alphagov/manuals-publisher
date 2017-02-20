@@ -6,7 +6,7 @@ development:
 
 test:
   host: localhost
-  # Don't want this interfering with a concurrent Panopticon test run
+  # Don't want this interfering with a concurrent publisher/content_api test run
   database: govuk_content_manuals_publisher_test
   autocreate_indexes: true
 
