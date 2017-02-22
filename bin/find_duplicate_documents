@@ -5,7 +5,7 @@ require File.expand_path("../../config/environment", __FILE__)
 slug_hash = {}
 SpecialistDocumentEdition.all.each do |edition|
   slug_hash[edition.slug] ||= {}
-  slug_hash[edition.slug][edition.document_id] ||= {state: edition.state, created_at: edition.created_at, editions: 0}
+  slug_hash[edition.slug][edition.document_id] ||= { state: edition.state, created_at: edition.created_at, editions: 0 }
   slug_hash[edition.slug][edition.document_id][:editions] += 1
 end
 

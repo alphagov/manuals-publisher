@@ -263,7 +263,7 @@ describe SpecialistDocument do
 
     context "before the document is published" do
       context "with an existing draft edition" do
-        let(:editions)  { [draft_edition_v1] }
+        let(:editions) { [draft_edition_v1] }
 
         context "when providing a title" do
           let(:new_title) { double(:new_title) }
@@ -279,10 +279,12 @@ describe SpecialistDocument do
             doc.update(title: new_title)
 
             expect(draft_edition_v1).to have_received(:assign_attributes)
-              .with(hash_including(
-                title: new_title,
-                slug: slug,
-              ))
+              .with(
+                hash_including(
+                  title: new_title,
+                  slug: slug,
+                )
+              )
           end
         end
       end
@@ -291,7 +293,7 @@ describe SpecialistDocument do
     context "when the current document is published" do
       let(:editions) { [published_edition_v1] }
 
-      let(:params) { {title: "It is a new title"} }
+      let(:params) { { title: "It is a new title" } }
 
       let(:edition_body) { double(:edition_body) }
       let(:edition_attributes) {
@@ -316,23 +318,28 @@ describe SpecialistDocument do
       it "builds the new edition with attributes carried over from the previous edition" do
         doc.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(
-          body: edition_body,
-        ))
+        expect(edition_factory).to have_received(:call)
+          .with(hash_including(body: edition_body))
       end
 
       it "filters the previous edition's attributes" do
         doc.update(params)
 
-        expect(edition_factory).not_to have_received(:call).with(hash_including(
-          _id: "superfluous id",
-          updated_at: "superfluous timestamp",
-        ))
+        expect(edition_factory).not_to have_received(:call)
+          .with(
+            hash_including(
+              _id: "superfluous id",
+              updated_at: "superfluous timestamp",
+            )
+          )
 
-        expect(edition_factory).not_to have_received(:call).with(hash_including(
-          "_id" => "superfluous id",
-          "updated_at" => "superfluous timestamp",
-        ))
+        expect(edition_factory).not_to have_received(:call)
+          .with(
+            hash_including(
+              "_id" => "superfluous id",
+              "updated_at" => "superfluous timestamp",
+            )
+          )
       end
 
       it "builds a new edition with an incremented version number" do
@@ -350,9 +357,8 @@ describe SpecialistDocument do
       it "builds a new edition copying over the previous edition's attachments" do
         doc.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(
-          attachments: attachments,
-        ))
+        expect(edition_factory).to have_received(:call)
+          .with(hash_including(attachments: attachments))
       end
 
       it "presents the new edition" do
@@ -384,7 +390,7 @@ describe SpecialistDocument do
     context "when the current document is withdrawn" do
       let(:editions) { [withdrawn_edition_v2] }
 
-      let(:params) { {title: "It is a new title"} }
+      let(:params) { { title: "It is a new title" } }
 
       it "builds a new edition with the new params" do
         doc.update(params)
@@ -407,9 +413,8 @@ describe SpecialistDocument do
       it "builds a new edition copying over the previous edition's attachments" do
         doc.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(
-          attachments: attachments,
-        ))
+        expect(edition_factory).to have_received(:call)
+          .with(hash_including(attachments: attachments))
       end
 
       it "presents the new edition" do

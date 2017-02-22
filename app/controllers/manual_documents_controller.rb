@@ -84,7 +84,7 @@ class ManualDocumentsController < ApplicationController
   end
 
   def update_order
-    manual, documents = services.update_order(self).call
+    manual, _documents = services.update_order(self).call
 
     redirect_to(
       manual_path(manual),
@@ -122,6 +122,7 @@ class ManualDocumentsController < ApplicationController
   end
 
 private
+
   def services
     if current_user_is_gds_editor?
       gds_editor_services

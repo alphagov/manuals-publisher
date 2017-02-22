@@ -53,6 +53,7 @@ class ManualObserversRegistry
   end
 
 private
+
   def publication_logger
     ->(manual, _: nil) {
       manual.documents.each do |doc|
@@ -149,8 +150,8 @@ private
       manual.removed_documents.each do |document|
         next if document.withdrawn? && action != :republish
         begin
-          publishing_api_v2.unpublish(document.id, { type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true })
-        rescue GdsApi::HTTPNotFound
+          publishing_api_v2.unpublish(document.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+        rescue GdsApi::HTTPNotFound # rubocop:disable Lint/HandleExceptions
         end
         document.withdraw_and_mark_as_exported! if action != :republish
       end

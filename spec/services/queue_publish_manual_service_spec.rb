@@ -3,7 +3,6 @@ require "queue_publish_manual_service"
 require "ostruct"
 
 RSpec.describe QueuePublishManualService do
-
   let(:manual_id) { double(:manual_id) }
   let(:repository) { double(:repository) }
   let(:worker) { double(:worker, perform_async: nil) }

@@ -3,7 +3,6 @@ require "fast_spec_helper"
 require "marshallers/document_association_marshaller"
 
 describe DocumentAssociationMarshaller do
-
   subject(:marshaller) {
     DocumentAssociationMarshaller.new(
       decorator: decorator,
@@ -31,10 +30,10 @@ describe DocumentAssociationMarshaller do
   let(:record) {
     double(
       :record,
-      :document_ids => document_ids,
-      :"document_ids=" => nil,
-      :removed_document_ids => removed_document_ids,
-      :"removed_document_ids=" => nil,
+      document_ids: document_ids,
+      "document_ids=": nil,
+      removed_document_ids: removed_document_ids,
+      "removed_document_ids=": nil,
     )
   }
 

@@ -10,7 +10,7 @@ class SlugGenerator
     ].join("/")
   end
 
-  private
+private
 
   def slugify_title(title)
     title

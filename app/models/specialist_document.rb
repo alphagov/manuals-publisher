@@ -194,7 +194,7 @@ protected
   end
 
   def most_recent_non_draft
-    editions.reject { |e| e.draft? }.last
+    editions.reject(&:draft?).last
   end
 
   def previous_edition_attributes

@@ -55,9 +55,8 @@ module AttachmentHelpers
     add_attachment_to_document(document_title, attachment_title)
   end
 
-  def edit_attachment(document_title, attachment_title, new_attachment_title, new_attachment_file_name)
+  def edit_attachment(_document_title, attachment_title, new_attachment_title, new_attachment_file_name)
     attachment_li = page.find(".attachments li", text: attachment_title)
-    attachment_edit_link = attachment_li.find("a", text: "edit")
 
     within(attachment_li) do
       click_link("edit")
@@ -75,12 +74,12 @@ module AttachmentHelpers
     click_button "Save attachment"
   end
 
-  def check_for_attachment_update(document_title, attachment_title, attachment_file_name)
+  def check_for_attachment_update(_document_title, _attachment_title, _attachment_file_name)
     expect(page).to have_css(".attachments li", text: @new_attachment_title)
     expect(page).to have_css(".attachments li", text: @new_attachment_file_name)
   end
 
-  def add_attachment_to_document(document_title, attachment_title)
+  def add_attachment_to_document(_document_title, attachment_title)
     unless current_path.include?("edit")
       click_link "Edit"
     end

@@ -5,7 +5,7 @@ module AttachmentApi
   def self.client
     @client ||= GdsApi::AssetManager.new(
       Plek.current.find("asset-manager"),
-      bearer_token: ENV["ASSET_MANAGER_BEARER_TOKEN"],
+      bearer_token: ENV["ASSET_MANAGER_BEARER_TOKEN"] || '12345678',
     )
   end
 end

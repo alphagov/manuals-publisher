@@ -2,7 +2,6 @@ require "spec_helper"
 require "sidekiq/testing"
 
 RSpec.describe RepublishDocumentWorker do
-
   after do
     GdsApi::GovukHeaders.clear_headers
   end

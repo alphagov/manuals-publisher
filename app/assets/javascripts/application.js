@@ -6,7 +6,6 @@
 //= require length_counter
 //= require specialist_documents
 //= require toggle_display_with_checked_input
-//= require select2
 
 function initPrimaryLinks(){
   GOVUK.primaryLinks.init('.primary-item');
@@ -15,10 +14,6 @@ $(initPrimaryLinks);
 $(window).on('displayPreviewDone', initPrimaryLinks);
 
 jQuery(function($) {
-  $(".select2").select2({
-    placeholder: $(this).data('placeholder')
-  });
-
   $(".js-length-counter").each(function(){
     new GOVUK.LengthCounter({$el:$(this)});
   })

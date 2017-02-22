@@ -19,7 +19,7 @@ class AbstractManualServiceRegistry
     )
   end
 
-  def new(context)
+  def new(_context)
     ->() { manual_builder.call(title: "") }
   end
 
@@ -101,6 +101,7 @@ class AbstractManualServiceRegistry
   end
 
 private
+
   def manual_renderer
     ManualsPublisherWiring.get(:manual_renderer)
   end

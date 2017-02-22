@@ -8,7 +8,7 @@ class NewManualDocumentService
     [manual, manual.build_document({})]
   end
 
-  private
+private
 
   attr_reader(
     :manual_repository,

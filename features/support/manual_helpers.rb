@@ -41,11 +41,9 @@ module ManualHelpers
     )
 
     create_service_context = OpenStruct.new(
-      {
-        params: {
-          "manual_id" => manual.id,
-          "document" => fields,
-        },
+      params: {
+        "manual_id" => manual.id,
+        "document" => fields,
       }
     )
 
@@ -94,12 +92,10 @@ module ManualHelpers
     )
 
     service_context = OpenStruct.new(
-      {
-        params: {
-          "manual_id" => manual.id,
-          "id" => document.id,
-          "document" => fields,
-        },
+      params: {
+        "manual_id" => manual.id,
+        "id" => document.id,
+        "document" => fields,
       }
     )
 
@@ -193,7 +189,7 @@ module ManualHelpers
   end
 
   def check_content_preview_link(slug)
-    preview_url = "#{Plek.current.find("draft-origin")}/#{slug}"
+    preview_url = "#{Plek.current.find('draft-origin')}/#{slug}"
     expect(page).to have_link("Preview draft", href: preview_url)
   end
 
@@ -232,7 +228,7 @@ module ManualHelpers
   end
 
   def check_manual_document_was_withdrawn_with_redirect(document, redirect_path)
-    check_manual_document_is_unpublished_from_publishing_api(document.id, { type: "redirect", alternative_path: redirect_path, discard_drafts: true })
+    check_manual_document_is_unpublished_from_publishing_api(document.id, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
     check_manual_document_is_withdrawn_from_rummager(document)
   end
 
@@ -457,8 +453,8 @@ module ManualHelpers
   end
 
   def check_manual_is_withdrawn(manual, documents)
-    assert_publishing_api_unpublish(manual.id, { type: "gone" })
-    documents.each { |d| assert_publishing_api_unpublish(d.id, { type: "gone" }) }
+    assert_publishing_api_unpublish(manual.id, type: "gone")
+    documents.each { |d| assert_publishing_api_unpublish(d.id, type: "gone") }
     check_manual_is_withdrawn_from_rummager(manual, documents)
   end
 
@@ -508,7 +504,7 @@ module ManualHelpers
     end
 
     attributes_for_documents.each do |attributes|
-      create_manual_document(@manual_fields.fetch(:title), attributes[:fields])
+      create_manual_document(manual_fields.fetch(:title), attributes[:fields])
     end
 
     attributes_for_documents
@@ -556,8 +552,8 @@ module ManualHelpers
       change_notes = data["details"]["change_notes"]
       change_notes.detect { |change_note|
         (change_note["base_path"] == "/#{document.slug}") &&
-        (change_note["title"] == document.title) &&
-        (change_note["change_note"] == document.change_note)
+          (change_note["title"] == document.title) &&
+          (change_note["change_note"] == document.change_note)
       }.present?
     end
   end
@@ -631,8 +627,8 @@ module ManualHelpers
       manual.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
-        (!data.key?("first_published_at")) &&
-        (!data.key?("public_updated_at"))
+        !data.key?("first_published_at") &&
+        !data.key?("public_updated_at")
       end,
       number_of_drafts: how_many_times
     )
@@ -646,8 +642,8 @@ module ManualHelpers
       document.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
-        (!data.key?("first_published_at")) &&
-        (!data.key?("public_updated_at"))
+        !data.key?("first_published_at") &&
+        !data.key?("public_updated_at")
       end,
       number_of_drafts: how_many_times
     )

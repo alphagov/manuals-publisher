@@ -30,7 +30,7 @@ describe Attachment do
     it "uploads a file before saving" do
       expect(AttachmentApi.client).to receive(:create_asset)
         .with(file: upload_file)
-        .and_return({ "file_url" => "some/file/url", "id" => "some_file_id" })
+        .and_return("file_url" => "some/file/url", "id" => "some_file_id")
 
       attachment.file = upload_file
       expect(attachment.file_has_changed?).to be true
@@ -49,7 +49,7 @@ describe Attachment do
       it "updates the uploaded file on the Attachment" do
         expect(AttachmentApi.client).to receive(:update_asset)
           .with("some_file_id", file: upload_file)
-          .and_return({ "file_url" => "some/file/url", "id" => "some_file_id" })
+          .and_return("file_url" => "some/file/url", "id" => "some_file_id")
 
         attachment.file = upload_file
         expect(attachment.file_has_changed?).to be true

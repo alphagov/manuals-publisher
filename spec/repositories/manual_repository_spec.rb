@@ -19,13 +19,13 @@ describe ManualRepository do
 
   let(:association_marshallers) { [] }
 
-  let(:manual_factory)  { double(:manual_factory, call: nil) }
+  let(:manual_factory) { double(:manual_factory, call: nil) }
   let(:manual_id) { double(:manual_id) }
   let(:manual_slug) { double(:manual_slug) }
   let(:originally_published_at) { double(:originally_published_at) }
   let(:use_originally_published_at_for_public_timestamp) { double(:use_originally_published_at_for_public_timestamp) }
 
-  let(:manual)    { double(:manual, manual_attributes) }
+  let(:manual) { double(:manual, manual_attributes) }
 
   let(:manual_attributes) {
     {
@@ -48,9 +48,9 @@ describe ManualRepository do
       manual_id: manual_id,
       new_or_existing_draft_edition: nil,
       organisation_slug: "organisation_slug",
-      :"organisation_slug=" => nil,
+      "organisation_slug=": nil,
       slug: manual_slug,
-      :"slug=" => nil,
+      "slug=": nil,
       latest_edition: nil,
       save!: nil,
       has_ever_been_published?: true,

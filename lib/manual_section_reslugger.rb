@@ -2,7 +2,7 @@ require "gds_api/content_store"
 require "manual_service_registry"
 
 class ManualSectionReslugger
-  RUMMAGER_FORMAT = "manual_section"
+  RUMMAGER_FORMAT = "manual_section".freeze
   class Error < RuntimeError; end
 
   def initialize(manual_slug, current_section_slug, new_section_slug)
@@ -20,7 +20,7 @@ class ManualSectionReslugger
     remove_old_section_from_rummager
   end
 
-  private
+private
 
   def validate
     validate_manual
@@ -74,7 +74,7 @@ class ManualSectionReslugger
   end
 
   def new_edition_for_slug_change
-    manual, document = ManualDocumentServiceRegistry.new.update(context_for_section_edition_update).call
+    _manual, document = ManualDocumentServiceRegistry.new.update(context_for_section_edition_update).call
     document.latest_edition
   end
 

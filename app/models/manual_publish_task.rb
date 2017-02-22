@@ -28,5 +28,4 @@ class ManualPublishTask
       transition processing: :aborted
     end
   end
-
 end

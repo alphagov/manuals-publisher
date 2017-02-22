@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe SpecialistDocumentRepository do
-
   let(:specialist_document_repository) do
     SpecialistDocumentRepository.new(
       document_type: document_type,
@@ -12,7 +11,7 @@ describe SpecialistDocumentRepository do
   let(:document_factory) { double(:document_factory, call: document) }
 
   let(:document_id) { "document-id" }
-  let(:document_type) { "generic_document"}
+  let(:document_type) { "generic_document" }
 
   let(:document) {
     SpecialistDocument.new(slug_generator, document_id, editions, edition_factory)
@@ -26,32 +25,32 @@ describe SpecialistDocumentRepository do
   let(:new_draft_edition) {
     double(
       :new_draft_edition,
-      :title => "Example document about oil reserves",
-      :slug => "example-document-about-oil-reserves",
-      :"document_id=" => nil,
-      :"slug=" => nil,
-      :changed? => true,
-      :save! => true,
-      :published? => false,
-      :draft? => true,
-      :errors => {},
-      :publish => nil,
-      :version_number => 2,
-      :archive => nil,
+      title: "Example document about oil reserves",
+      slug: "example-document-about-oil-reserves",
+      "document_id=": nil,
+      "slug=": nil,
+      changed?: true,
+      save!: true,
+      published?: false,
+      draft?: true,
+      errors: {},
+      publish: nil,
+      version_number: 2,
+      archive: nil,
     )
   }
 
   def build_published_edition(version: 1)
     double(
       :published_edition,
-      :title => "Example document about oil reserves #{version}",
-      :"document_id=" => nil,
-      :changed? => false,
-      :save! => nil,
-      :archive => nil,
-      :published? => true,
-      :draft? => false,
-      :version_number => version,
+      title: "Example document about oil reserves #{version}",
+      "document_id=": nil,
+      changed?: false,
+      save!: nil,
+      archive: nil,
+      published?: true,
+      draft?: false,
+      version_number: version,
     )
   end
 
@@ -70,10 +69,10 @@ describe SpecialistDocumentRepository do
       @edition_1, @edition_2 = [2, 1].map do |n|
         document_id = "document-id-#{n}"
 
-        edition = create(:specialist_document_edition,
-                            document_id: document_id,
-                            document_type: document_type,
-                            updated_at: n.days.ago)
+        edition = FactoryGirl.create(:specialist_document_edition,
+                                     document_id: document_id,
+                                     document_type: document_type,
+                                     updated_at: n.days.ago)
 
         allow(document_factory).to receive(:call)
           .with(document_id, [edition])

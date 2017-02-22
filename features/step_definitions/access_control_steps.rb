@@ -9,7 +9,6 @@ Given(/^I am logged in as a non\-CMA editor$/) do
 end
 
 Given(/^there are manuals created by multiple organisations$/) do
-
   login_as(:cma_editor)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
   @cma_manual_fields = {
@@ -25,7 +24,6 @@ Given(/^there are manuals created by multiple organisations$/) do
     summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
   }
   create_manual(@tea_manual_fields)
-
 end
 
 When(/^I view my list of manuals$/) do

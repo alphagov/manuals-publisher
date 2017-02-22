@@ -1,6 +1,6 @@
 class ManualServiceRegistry < AbstractManualServiceRegistry
-
 private
+
   def associationless_repository
     ManualsPublisherWiring.get(:repository_registry)
       .associationless_manual_repository

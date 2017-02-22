@@ -1,7 +1,6 @@
 require "manual_publish_task"
 
 class QueuePublishManualService
-
   def initialize(worker, repository, manual_id)
     @worker = worker
     @repository = repository

@@ -1,7 +1,6 @@
 require "singleton"
 
 module RummagerHelpers
-
   class FakeRummager
     include Singleton
 

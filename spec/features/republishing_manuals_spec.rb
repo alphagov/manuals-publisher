@@ -175,6 +175,5 @@ RSpec.describe "Republishing manuals", type: :feature do
     it "does not set the exported timestamp of the previously published version of the section" do
       expect(@documents.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
     end
-
   end
 end

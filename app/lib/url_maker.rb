@@ -4,6 +4,7 @@ class UrlMaker
   end
 
 private
+
   def plek
     @plek ||= Plek.current
   end

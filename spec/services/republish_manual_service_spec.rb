@@ -27,10 +27,12 @@ RSpec.describe RepublishManualService do
 
   context "(for a published manual)" do
     before do
-      allow(VersionedManualRepository).to receive(:get_manual).with(manual_id).and_return({
-        published: published_manual_version,
-        draft: nil,
-      })
+      allow(VersionedManualRepository).to receive(:get_manual)
+        .with(manual_id)
+        .and_return(
+          published: published_manual_version,
+          draft: nil
+        )
     end
 
     it "tells the published listeners to republish the published version of the manual" do
@@ -46,10 +48,12 @@ RSpec.describe RepublishManualService do
 
   context "(for a draft manual)" do
     before do
-      allow(VersionedManualRepository).to receive(:get_manual).with(manual_id).and_return({
-        published: nil,
-        draft: draft_manual_version,
-      })
+      allow(VersionedManualRepository).to receive(:get_manual)
+        .with(manual_id)
+        .and_return(
+          published: nil,
+          draft: draft_manual_version
+        )
     end
 
     it "tells the published listeners nothing" do
@@ -65,10 +69,12 @@ RSpec.describe RepublishManualService do
 
   context "(for a published manual with a new draft waiting)" do
     before do
-      allow(VersionedManualRepository).to receive(:get_manual).with(manual_id).and_return({
-        published: published_manual_version,
-        draft: draft_manual_version,
-      })
+      allow(VersionedManualRepository).to receive(:get_manual)
+        .with(manual_id)
+        .and_return(
+          published: published_manual_version,
+          draft: draft_manual_version
+        )
     end
 
     it "tells the published listeners to republish the published version of the manual" do
@@ -84,7 +90,9 @@ RSpec.describe RepublishManualService do
 
   context "(for a manual that doesn't exist)" do
     before do
-      allow(VersionedManualRepository).to receive(:get_manual).with(manual_id).and_raise(VersionedManualRepository::NotFoundError.new("uh-oh!"))
+      allow(VersionedManualRepository).to receive(:get_manual)
+        .with(manual_id)
+        .and_raise(VersionedManualRepository::NotFoundError.new("uh-oh!"))
     end
 
     it "raises an exception" do
@@ -102,10 +110,12 @@ RSpec.describe RepublishManualService do
 
   context "(for a manual that exists, but is neither published, nor draft)" do
     before do
-      allow(VersionedManualRepository).to receive(:get_manual).with(manual_id).and_return({
-        published: nil,
-        draft: nil,
-      })
+      allow(VersionedManualRepository).to receive(:get_manual)
+        .with(manual_id)
+        .and_return(
+          published: nil,
+          draft: nil
+        )
     end
 
     it "tells none of the listeners to do anything" do

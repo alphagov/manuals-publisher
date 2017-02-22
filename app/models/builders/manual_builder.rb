@@ -12,7 +12,7 @@ class ManualBuilder
     factory.call(defaults.merge(attrs))
   end
 
-  private
+private
 
   attr_reader :slug_generator, :factory, :attrs
 

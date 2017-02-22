@@ -9,6 +9,7 @@ class ListManualDocumentsService
   end
 
 private
+
   attr_reader :manual_repository, :context
 
   def documents

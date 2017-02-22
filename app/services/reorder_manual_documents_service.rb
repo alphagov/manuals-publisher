@@ -15,6 +15,7 @@ class ReorderManualDocumentsService
   end
 
 private
+
   attr_reader :manual_repository, :context, :listeners
 
   def update

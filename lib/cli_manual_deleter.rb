@@ -15,14 +15,15 @@ class CliManualDeleter
   end
 
 private
+
   attr_reader :manual_slug, :manual_id, :stdin, :stdout
 
   def find_manual_record
-    if manual_id
-      manual_records = ManualRecord.where(manual_id: manual_id)
-    else
-      manual_records = ManualRecord.where(slug: manual_slug)
-    end
+    manual_records = if manual_id
+                       ManualRecord.where(manual_id: manual_id)
+                     else
+                       ManualRecord.where(slug: manual_slug)
+                     end
 
     validate_manual_records(manual_records)
 
@@ -51,7 +52,7 @@ private
     log "Type 'y' to proceed and delete this manual or anything else to exit:"
 
     response = stdin.gets
-    unless response.strip.downcase == "y"
+    unless response.strip.casecmp("y").zero?
       raise "Quitting"
     end
   end
@@ -95,6 +96,7 @@ private
     begin
       publishing_api_v2.discard_draft(content_id)
     rescue GdsApi::HTTPNotFound
+      log "Draft for #{content_id} already discarded."
     end
   end
 

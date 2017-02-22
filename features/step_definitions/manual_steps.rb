@@ -25,7 +25,7 @@ end
 Then(/^the edited manual should have been sent to the draft publishing api$/) do
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
-    extra_attributes: {title: @new_title},
+    extra_attributes: { title: @new_title },
   )
 end
 
@@ -249,11 +249,12 @@ When(/^I publish the manual$/) do
 end
 
 When(/^I add another section and publish the manual later$/) do
-  create_manual_document(@manual.title, {
+  create_manual_document(
+    @manual.title,
     section_title: "Another section so we can publish",
     section_summary: "Another section so we can publish summary",
-    section_body: "Another section so we can publish body",
-  })
+    section_body: "Another section so we can publish body"
+  )
   go_to_manual_page(@manual.title)
   publish_manual
 end
@@ -540,7 +541,7 @@ end
 
 Then(/^the change note form for the document is clear$/) do
   go_to_manual_page(@manual.title)
-  click_on (@updated_document || @document).title
+  click_on((@updated_document || @document).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(minor_update: false, note: "")
@@ -548,7 +549,7 @@ end
 
 Then(/^the change note form for the document contains my note$/) do
   go_to_manual_page(@manual.title)
-  click_on (@updated_document || @document).title
+  click_on((@updated_document || @document).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(note_field_only: true, note: @change_note)

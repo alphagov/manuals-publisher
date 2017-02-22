@@ -14,7 +14,7 @@ describe ManualRelocator do
     it "raises an error if the existing slug doesn't result in a manual" do
       expect {
         subject.old_manual
-      }.to raise_error(RuntimeError,  "No manual found for slug '#{existing_slug}'")
+      }.to raise_error(RuntimeError, "No manual found for slug '#{existing_slug}'")
     end
 
     it "raises an error if the existing slug maps to more than one manual" do
@@ -22,7 +22,7 @@ describe ManualRelocator do
       ManualRecord.create(slug: existing_slug)
       expect {
         subject.old_manual
-      }.to raise_error(RuntimeError,  "More than one manual found for slug '#{existing_slug}'")
+      }.to raise_error(RuntimeError, "More than one manual found for slug '#{existing_slug}'")
     end
   end
 
@@ -30,7 +30,7 @@ describe ManualRelocator do
     it "raises an error if the existing slug doesn't result in a manual" do
       expect {
         subject.new_manual
-      }.to raise_error(RuntimeError,  "No manual found for slug '#{temp_slug}'")
+      }.to raise_error(RuntimeError, "No manual found for slug '#{temp_slug}'")
     end
 
     it "raises an error if the existing slug maps to more than one manual" do
@@ -38,7 +38,7 @@ describe ManualRelocator do
       ManualRecord.create(slug: temp_slug)
       expect {
         subject.new_manual
-      }.to raise_error(RuntimeError,  "More than one manual found for slug '#{temp_slug}'")
+      }.to raise_error(RuntimeError, "More than one manual found for slug '#{temp_slug}'")
     end
   end
 
@@ -180,7 +180,6 @@ describe ManualRelocator do
           subject.move!
         }.not_to raise_error
       end
-
     end
 
     context "with valid manuals" do
@@ -262,7 +261,6 @@ describe ManualRelocator do
         it "removes the publication logs for the existing manual" do
           expect { existing_publication_log.reload }.to raise_error(Mongoid::Errors::DocumentNotFound)
         end
-
       end
 
       context "when the temp manual has no draft" do
@@ -416,7 +414,7 @@ describe ManualRelocator do
   def with_body_matcher(body)
     ->(request) do
       data = JSON.parse(request.body)
-      unrendered_body = data["details"]["body"].detect { |body| body["content_type"] == "text/govspeak" }
+      unrendered_body = data["details"]["body"].detect { |api_body| api_body["content_type"] == "text/govspeak" }
       (unrendered_body && unrendered_body["content"] == body)
     end
   end
@@ -425,9 +423,9 @@ describe ManualRelocator do
     ->(request) do
       data = JSON.parse(request.body)
       routes = data["routes"]
-      unrendered_body = data["details"]["body"].detect { |body| body["content_type"] == "text/govspeak" }
+      unrendered_body = data["details"]["body"].detect { |api_body| api_body["content_type"] == "text/govspeak" }
       (unrendered_body && unrendered_body["content"] == body) &&
-      ((data["base_path"] == path) && (routes.any? { |route| route["path"] == path }))
+        ((data["base_path"] == path) && (routes.any? { |route| route["path"] == path }))
     end
   end
 

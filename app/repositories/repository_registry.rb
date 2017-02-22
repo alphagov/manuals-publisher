@@ -89,5 +89,6 @@ class RepositoryRegistry
   end
 
 private
+
   attr_reader :entity_factories
 end

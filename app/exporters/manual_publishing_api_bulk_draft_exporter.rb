@@ -47,6 +47,7 @@ class ManualPublishingApiBulkDraftExporter
   end
 
 private
+
   def count_manuals
     @manuals_count ||= wiring.get(:repository_registry).associationless_manual_repository.all.count
   end

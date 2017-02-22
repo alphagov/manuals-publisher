@@ -2,7 +2,6 @@ require "spec_helper"
 require "sidekiq/testing"
 
 RSpec.describe PublishManualWorker do
-
   after do
     GdsApi::GovukHeaders.clear_headers
   end
@@ -21,7 +20,7 @@ RSpec.describe PublishManualWorker do
     expect(PublishManualService).to receive(:new).and_return(double(:publish, call: nil))
 
     Sidekiq::Testing.inline! do
-      PublishManualWorker.perform_async("1", { request_id: "12345", authenticated_user: "abc123" })
+      PublishManualWorker.perform_async("1", request_id: "12345", authenticated_user: "abc123")
       expect(GdsApi::GovukHeaders.headers[:govuk_request_id]).to eq("12345")
       expect(GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user]).to eq("abc123")
     end

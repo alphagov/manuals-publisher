@@ -13,7 +13,7 @@ class PreviewManualService
     renderer.call(manual)
   end
 
-  private
+private
 
   attr_reader(
     :repository,

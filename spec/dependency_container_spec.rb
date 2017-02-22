@@ -2,7 +2,6 @@ require "spec_helper"
 require "dependency_container"
 
 describe DependencyContainer do
-
   class ExampleClass; end
 
   it "builds object instances from a factory defined by a passed-in block" do
@@ -129,15 +128,6 @@ describe DependencyContainer do
       instance = @container.get(:my_struct)
       expect(instance).to be_a struct
       expect(instance.logger).to be_a MyLogger
-    end
-
-    it "will set optional dependencies if defined" do
-      my_class = Class.new do
-        def initialize(logger = nil, not_defined = nil)
-        end
-      end
-
-      @container.define_factory(:test)
     end
   end
 end

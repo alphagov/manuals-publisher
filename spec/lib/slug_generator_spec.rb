@@ -13,7 +13,6 @@ describe SlugGenerator do
   let(:title) { "My document" }
 
   describe "#call" do
-
     it "returns a slug based on the prefix and given title" do
       slug = slug_gen.call(title)
 

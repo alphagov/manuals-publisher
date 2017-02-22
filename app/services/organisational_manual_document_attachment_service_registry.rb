@@ -4,6 +4,7 @@ class OrganisationalManualDocumentAttachmentServiceRegistry < AbstractManualDocu
   end
 
 private
+
   attr_reader :organisation_slug
 
   def manual_repository_factory

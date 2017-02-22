@@ -2,7 +2,6 @@ require "delegate"
 require "active_support/core_ext/hash"
 
 class SpecialistDocumentHeaderExtractor < SimpleDelegator
-
   def initialize(header_parser, doc)
     @header_parser = header_parser
     super(doc)

@@ -5,16 +5,9 @@ require File.expand_path("../config/application", __FILE__)
 
 ManualsPublisher::Application.load_tasks
 
-task :rubocop do
-  system("bin/rubocop")
-
-  exit_code = $?.exitstatus
-  exit(exit_code) unless exit_code == 0
-end
-
 task default: [
-  "rubocop",
+  "lint",
   "spec:javascript",
   "spec",
   "cucumber",
-  ]
+]

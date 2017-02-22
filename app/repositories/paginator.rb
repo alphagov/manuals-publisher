@@ -9,7 +9,7 @@ class RepositoryPaginator < SimpleDelegator
     apply_pipeline(repo.all(limit, offset))
   end
 
-  def map(*args, &block)
+  def map(*_args, &block)
     pipeline.push([:map, block])
 
     self

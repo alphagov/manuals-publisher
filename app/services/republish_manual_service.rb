@@ -13,6 +13,7 @@ class RepublishManualService
   end
 
 private
+
   attr_reader :published_listeners, :draft_listeners, :manual_id
 
   def manual_repository

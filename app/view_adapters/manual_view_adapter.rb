@@ -26,5 +26,6 @@ class ManualViewAdapter < SimpleDelegator
   end
 
 private
+
   attr_reader :manual
 end

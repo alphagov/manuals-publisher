@@ -31,5 +31,6 @@ class ManualDocumentViewAdapter < SimpleDelegator
   end
 
 private
+
   attr_reader :manual, :document
 end

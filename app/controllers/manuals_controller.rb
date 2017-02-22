@@ -110,6 +110,7 @@ class ManualsController < ApplicationController
   end
 
 private
+
   def manual_id
     params.fetch("id")
   end
@@ -167,7 +168,7 @@ private
   end
 
   def build_datetime_from(*date_args)
-    return nil if date_args.all? &:blank?
+    return nil if date_args.all?(&:blank?)
     Time.zone.local(*date_args.map(&:to_i))
   end
 

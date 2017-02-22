@@ -13,7 +13,7 @@ class PublishManualService
       persist
     else
       raise VersionMismatchError.new(
-        %Q(The manual with id '#{manual.id}' could not be published due to a version mismatch.
+        %(The manual with id '#{manual.id}' could not be published due to a version mismatch.
           The version to publish was '#{version_number}' but the current version was '#{manual.version_number}')
       )
     end

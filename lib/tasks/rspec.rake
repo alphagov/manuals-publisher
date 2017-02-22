@@ -3,4 +3,5 @@ begin
 
   RSpec::Core::RakeTask.new(:spec)
 rescue LoadError
+  puts "Rspec not available"
 end

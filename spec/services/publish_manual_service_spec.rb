@@ -3,7 +3,6 @@ require "publish_manual_service"
 require "ostruct"
 
 RSpec.describe PublishManualService do
-
   let(:manual_id) { double(:manual_id) }
   let(:manual_repository) { double(:manual_repository) }
   let(:listeners) { [] }

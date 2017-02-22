@@ -64,7 +64,7 @@ Then(/^the removed document change note is included$/) do
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
     with_matcher: change_notes_sent_to_publishing_api_include_document(@removed_document),
-    number_of_drafts: 3
+    number_of_drafts: 1
   )
 end
 

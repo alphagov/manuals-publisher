@@ -6,7 +6,7 @@ class SpecialistDocumentEdition
 
   field :document_id,          type: String
   field :document_type,        type: String
-  field :version_number,       type: Integer,  default: 1
+  field :version_number,       type: Integer, default: 1
   field :title,                type: String
   field :slug,                 type: String
   field :summary, type: String
@@ -45,8 +45,10 @@ class SpecialistDocumentEdition
   index "updated_at"
 
   def build_attachment(attributes)
-    attachments.build(attributes.merge(
-      filename: attributes.fetch(:file).original_filename
-    ))
+    attachments.build(
+      attributes.merge(
+        filename: attributes.fetch(:file).original_filename
+      )
+    )
   end
 end

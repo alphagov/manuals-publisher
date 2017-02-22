@@ -53,7 +53,7 @@ private
     (manual.latest_edition.state == "published") ||
     # or
     # 2. the last two editions are published and draft
-    (manual.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
+      (manual.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
   end
 
   def redirect_and_remove
@@ -85,7 +85,7 @@ private
     end
 
     puts "Destroying old PublicationLogs for #{old_manual.slug}"
-    PublicationLog.change_notes_for(old_manual.slug).each { |log| log.destroy }
+    PublicationLog.change_notes_for(old_manual.slug).each(&:destroy)
 
     # Destroy the manual record
     puts "Destroying manual #{old_manual.manual_id}"

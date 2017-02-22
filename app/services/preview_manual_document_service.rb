@@ -12,7 +12,7 @@ class PreviewManualDocumentService
     document_renderer.call(document)
   end
 
-  private
+private
 
   attr_reader(
     :manual_repository,

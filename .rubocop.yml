@@ -1,0 +1,6 @@
+AllCops:
+  TargetRubyVersion: 2.2
+
+Lint/HandleExceptions:
+  Exclude:
+    - 'spec/**/*'

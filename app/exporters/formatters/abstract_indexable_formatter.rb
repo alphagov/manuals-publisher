@@ -16,6 +16,7 @@ class AbstractIndexableFormatter
   end
 
 private
+
   attr_reader :entity
 
   def base_attributes

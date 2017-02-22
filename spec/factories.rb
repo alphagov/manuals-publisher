@@ -1,6 +1,18 @@
-require "govuk_content_models/test_helpers/factories"
-
 FactoryGirl.define do
+  factory :user do
+    sequence(:uid) { |n| "uid-#{n}" }
+    sequence(:name) { |n| "Joe Bloggs #{n}" }
+    sequence(:email) { |n| "joe#{n}@bloggs.com" }
+    if defined?(GDS::SSO::Config)
+      # Grant permission to signin to the app using the gem
+      permissions { ["signin"] }
+    end
+  end
+
+  factory :disabled_user, parent: :user do
+    disabled true
+  end
+
   factory :editor, parent: :user do
     permissions %w(signin editor)
   end
@@ -32,8 +44,8 @@ FactoryGirl.define do
 
   factory :specialist_document_edition do
     document_id { BSON::ObjectId.new }
-    sequence(:slug) {|n| "test-specialist-document-#{n}" }
-    sequence(:title) {|n| "Test Specialist Document #{n}" }
+    sequence(:slug) { |n| "test-specialist-document-#{n}" }
+    sequence(:title) { |n| "Test Specialist Document #{n}" }
     summary "My summary"
     body "My body"
     document_type "manual"
@@ -48,9 +60,9 @@ FactoryGirl.define do
   end
 
   factory :specialist_document do
-    slug_generator {"some"}
-    id {"some"}
-    editions {"s"}
+    slug_generator { "some" }
+    id { "some" }
+    editions { "s" }
     initialize_with { new(slug_generator, id, editions) }
   end
 

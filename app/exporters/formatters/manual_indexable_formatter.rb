@@ -6,6 +6,7 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
   end
 
 private
+
   def extra_attributes
     {}
   end

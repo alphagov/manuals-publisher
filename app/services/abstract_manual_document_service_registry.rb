@@ -81,6 +81,7 @@ class AbstractManualDocumentServiceRegistry
   end
 
 private
+
   def document_renderer
     ManualsPublisherWiring.get(:specialist_document_renderer)
   end
@@ -138,7 +139,7 @@ private
     ->(manual_document, _manual) {
       begin
         publishing_api_v2.discard_draft(manual_document.id)
-      rescue GdsApi::HTTPNotFound, GdsApi::HTTPUnprocessableEntity
+      rescue GdsApi::HTTPNotFound, GdsApi::HTTPUnprocessableEntity # rubocop:disable Lint/HandleExceptions
       end
     }
   end

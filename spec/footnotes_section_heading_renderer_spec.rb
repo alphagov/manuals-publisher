@@ -11,7 +11,7 @@ RSpec.describe FootnotesSectionHeadingRenderer do
 
   context "with footnotes in the document body" do
     let(:html_fragment) {
-      %q{
+      '
         <h2 id="heading">First heading</h2>
         <p>
           Lorem ipsum dolor sit amet
@@ -26,11 +26,11 @@ RSpec.describe FootnotesSectionHeadingRenderer do
             </li>
           </ol>
         </div>
-      }
+      '
     }
 
     let(:expected_html) {
-      %q{
+      '
         <h2 id="heading">First heading</h2>
         <p>
           Lorem ipsum dolor sit amet
@@ -45,7 +45,7 @@ RSpec.describe FootnotesSectionHeadingRenderer do
             </li>
           </ol>
         </div>
-      }
+      '
     }
 
     it "adds a heading to the footnotes section" do
@@ -55,7 +55,7 @@ RSpec.describe FootnotesSectionHeadingRenderer do
 
   context "with no footnotes in the body" do
     let(:html_fragment) {
-      %q{
+      '
         <h2 id="the-first-heading">The first heading</h2>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus
@@ -70,7 +70,7 @@ RSpec.describe FootnotesSectionHeadingRenderer do
           ullamcorper vitae. Nullam rhoncus, eros vulputate tincidunt facilisis,
           lorem nunc facilisis mauris, commodo tincidunt nunc leo ac est.
         </p>
-      }
+      '
     }
 
     it "doesn't add a footnotes heading where none is necessary" do
