@@ -5,7 +5,7 @@ describe SpecialistDocumentBuilder do
     SpecialistDocumentBuilder.new(document_type, document_factory)
   }
 
-  let(:document_type)     { "dummy_document" }
+  let(:document_type)     { "manual" }
   let(:document_factory)  { double(:document_factory, call: document) }
   let(:document)          { double(:document, update: nil) }
 

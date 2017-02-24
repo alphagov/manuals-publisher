@@ -10,7 +10,7 @@ describe SpecialistDocument do
   end
 
   let(:document_id)         { "a-document-id" }
-  let(:document_type)       { "cma_case" }
+  let(:document_type)       { "manual" }
   let(:slug)                { double(:slug) }
   let(:published_slug)      { double(:published_slug) }
   let(:slug_generator)      { double(:slug_generator, call: slug) }
