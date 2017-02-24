@@ -43,18 +43,6 @@ module AttachmentHelpers
     end
   end
 
-  def create_case_with_attachment(document_title, attachment_title)
-    create_cma_case(
-      title: document_title,
-      summary: "Eget urna mollis ornare vel eu leo.",
-      body: ("Praesent commodo cursus magna, vel scelerisque nisl consectetur et." * 10),
-      opened_date: "2014-01-01",
-      market_sector: "Energy",
-    )
-
-    add_attachment_to_document(document_title, attachment_title)
-  end
-
   def edit_attachment(_document_title, attachment_title, new_attachment_title, new_attachment_file_name)
     attachment_li = page.find(".attachments li", text: attachment_title)
 
