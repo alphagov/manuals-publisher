@@ -89,11 +89,11 @@ private
 
   def get_latest_version_of_documents(document_ids)
     (document_ids || []).map do |document_id|
-      build_specialist_document(document_id) { |editions| editions }
+      build_section(document_id) { |editions| editions }
     end
   end
 
-  def build_specialist_document(document_id)
+  def build_section(document_id)
     all_editions = SectionEdition.where(document_id: document_id).order_by([:version_number, :desc]).to_a
     Section.new(
       ->(_title) { raise RuntimeError, "read only manual" },
@@ -104,7 +104,7 @@ private
 
   def get_published_version_of_documents(document_ids)
     (document_ids || []).map do |document_id|
-      build_specialist_document(document_id) { |editions| editions.drop_while { |e| e.state != "published" } }
+      build_section(document_id) { |editions| editions.drop_while { |e| e.state != "published" } }
     end
   end
 end
