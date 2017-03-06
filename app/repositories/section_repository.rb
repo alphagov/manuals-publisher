@@ -24,7 +24,7 @@ class SectionRepository
   end
 
   def [](id)
-    editions = specialist_document_editions
+    editions = section_editions
       .where(document_id: id)
       .order_by([:version_number, :desc])
       .limit(2)
@@ -48,7 +48,7 @@ class SectionRepository
   def slug_unique?(document)
     # TODO: push this method down into persistence layer
     if document.draft?
-      specialist_document_editions.where(
+      section_editions.where(
         :slug => document.slug,
         :document_id.ne => document.id,
         :state => "published"
@@ -69,7 +69,7 @@ class SectionRepository
   end
 
   def count
-    specialist_document_editions.distinct(:document_id).count
+    section_editions.distinct(:document_id).count
   end
 
 private
@@ -94,7 +94,7 @@ private
 
   def all_document_ids_scoped(conditions)
     only_document_ids_for(
-      specialist_document_editions
+      section_editions
         .any_of(conditions)
     )
   end
@@ -109,12 +109,12 @@ private
 
   def all_document_ids
     only_document_ids_for(
-      specialist_document_editions
+      section_editions
         .all
     )
   end
 
-  def specialist_document_editions
+  def section_editions
     SectionEdition.all
   end
 end
