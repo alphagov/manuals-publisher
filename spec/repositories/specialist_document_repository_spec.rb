@@ -11,7 +11,7 @@ describe SpecialistDocumentRepository do
 
   let(:document_id) { "document-id" }
   let(:document) {
-    SpecialistDocument.new(slug_generator, document_id, editions, edition_factory)
+    Section.new(slug_generator, document_id, editions, edition_factory)
   }
 
   let(:slug_generator) { double(:slug_generator) }
@@ -52,7 +52,7 @@ describe SpecialistDocumentRepository do
   end
 
   def build_specialist_document(*args)
-    SpecialistDocument.new(slug_generator, *args)
+    Section.new(slug_generator, *args)
   end
 
   let(:published_edition) { build_published_edition }
@@ -90,7 +90,7 @@ describe SpecialistDocumentRepository do
     let(:editions)       { [published_edition] }
 
     before do
-      allow(SpecialistDocument).to receive(:new).and_return(document)
+      allow(Section).to receive(:new).and_return(document)
       allow(SpecialistDocumentEdition).to receive(:all)
         .and_return(editions_proxy)
     end

@@ -38,7 +38,7 @@ class DocumentFactoryRegistry
 
         ChangeNoteValidator.new(
           ManualDocumentValidator.new(
-            SpecialistDocument.new(
+            Section.new(
               slug_generator,
               id,
               editions,

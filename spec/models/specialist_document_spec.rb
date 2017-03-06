@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe SpecialistDocument do
+describe Section do
   subject(:doc) {
-    SpecialistDocument.new(slug_generator, document_id, editions, edition_factory)
+    Section.new(slug_generator, document_id, editions, edition_factory)
   }
 
   def key_classes_for(hash)
@@ -107,14 +107,14 @@ describe SpecialistDocument do
   describe "#eql?" do
     let(:editions) { [draft_edition_v1] }
 
-    it "is considered the same as another specialist document instance if they have the same id" do
+    it "is considered the same as another section instance if they have the same id" do
       expect(doc).to eql(doc)
-      expect(doc).to eql(SpecialistDocument.new(slug_generator, doc.id, [draft_edition_v1]))
-      expect(doc).not_to eql(SpecialistDocument.new(slug_generator, doc.id.reverse, [draft_edition_v1]))
+      expect(doc).to eql(Section.new(slug_generator, doc.id, [draft_edition_v1]))
+      expect(doc).not_to eql(Section.new(slug_generator, doc.id.reverse, [draft_edition_v1]))
     end
 
-    it "is considered the same as another specialist document instance with the same id even if they have different version numbers" do
-      expect(doc).to eql(SpecialistDocument.new(slug_generator, doc.id, [draft_edition_v2]))
+    it "is considered the same as another section instance with the same id even if they have different version numbers" do
+      expect(doc).to eql(Section.new(slug_generator, doc.id, [draft_edition_v2]))
     end
   end
 

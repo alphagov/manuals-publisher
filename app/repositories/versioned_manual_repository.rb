@@ -95,7 +95,7 @@ private
 
   def build_specialist_document(document_id)
     all_editions = SpecialistDocumentEdition.where(document_id: document_id).order_by([:version_number, :desc]).to_a
-    SpecialistDocument.new(
+    Section.new(
       ->(_title) { raise RuntimeError, "read only manual" },
       document_id,
       yield(all_editions).take(2).reverse,

@@ -2,7 +2,7 @@ require "forwardable"
 require "active_model/conversion"
 require "active_model/naming"
 
-class SpecialistDocument
+class Section
   extend Forwardable
 
   def self.edition_attributes
