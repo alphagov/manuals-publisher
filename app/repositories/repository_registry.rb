@@ -59,7 +59,7 @@ class RepositoryRegistry
     ->(manual) {
       document_factory = entity_factories.manual_document_factory_factory.call(manual)
 
-      SpecialistDocumentRepository.new(
+      SectionRepository.new(
         document_factory: document_factory,
       )
     }

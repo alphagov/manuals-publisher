@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe SpecialistDocumentRepository do
-  let(:specialist_document_repository) do
-    SpecialistDocumentRepository.new(
+describe SectionRepository do
+  let(:section_repository) do
+    SectionRepository.new(
       document_factory: document_factory,
     )
   end
@@ -58,7 +58,7 @@ describe SpecialistDocumentRepository do
   let(:published_edition) { build_published_edition }
 
   it "supports the fetch interface" do
-    expect(specialist_document_repository).to be_a_kind_of(Fetchable)
+    expect(section_repository).to be_a_kind_of(Fetchable)
   end
 
   describe "#all" do
@@ -80,7 +80,7 @@ describe SpecialistDocumentRepository do
 
     it "returns all documents by date updated desc" do
       expect(
-        specialist_document_repository.all.map(&:title).to_a
+        section_repository.all.map(&:title).to_a
       ).to eq([@edition_2, @edition_1].map(&:title))
     end
   end
@@ -96,13 +96,13 @@ describe SpecialistDocumentRepository do
     end
 
     it "populates the document with all editions for that document id" do
-      specialist_document_repository[document_id]
+      section_repository[document_id]
 
       expect(document_factory).to have_received(:call).with(document_id, editions)
     end
 
     it "returns the document" do
-      expect(specialist_document_repository[document_id]).to eq(document)
+      expect(section_repository[document_id]).to eq(document)
     end
 
     context "when there are no editions" do
@@ -111,7 +111,7 @@ describe SpecialistDocumentRepository do
       end
 
       it "returns nil" do
-        expect(specialist_document_repository[document_id]).to be_nil
+        expect(section_repository[document_id]).to be_nil
       end
     end
   end
@@ -136,13 +136,13 @@ describe SpecialistDocumentRepository do
       }
 
       it "returns self" do
-        expect(specialist_document_repository.store(document)).to be(
-          specialist_document_repository
+        expect(section_repository.store(document)).to be(
+          section_repository
         )
       end
 
       it "saves the the two most recent editions" do
-        specialist_document_repository.store(document)
+        section_repository.store(document)
 
         expect(new_draft_edition).to have_received(:save!)
         expect(current_published_edition).to have_received(:save!)

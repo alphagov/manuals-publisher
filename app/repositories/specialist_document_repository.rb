@@ -1,6 +1,6 @@
 require "fetchable"
 
-class SpecialistDocumentRepository
+class SectionRepository
   include Fetchable
 
   NotFoundError = Module.new
