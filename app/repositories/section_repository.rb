@@ -24,7 +24,6 @@ class SectionRepository
   end
 
   def [](id)
-    # TODO: add a method on SpecialistDocumentEdition to handle this
     editions = specialist_document_editions
       .where(document_id: id)
       .order_by([:version_number, :desc])
@@ -108,7 +107,6 @@ private
       .uniq
   end
 
-  # TODO Add a method on SpecialistDocumentEdition to handle this
   def all_document_ids
     only_document_ids_for(
       specialist_document_editions
