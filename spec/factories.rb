@@ -50,13 +50,6 @@ FactoryGirl.define do
     body "My body"
   end
 
-  factory :specialist_document do
-    slug_generator { "some" }
-    id { "some" }
-    editions { "s" }
-    initialize_with { new(slug_generator, id, editions) }
-  end
-
   factory :publication_log do
     sequence(:slug) { |n| "test-publication-log-#{n}" }
     sequence(:title) { |n| "Test Publication Log #{n}" }
