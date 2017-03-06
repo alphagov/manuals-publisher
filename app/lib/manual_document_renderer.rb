@@ -7,7 +7,7 @@ class ManualDocumentRenderer
   def call(doc)
     pipeline = [
       MarkdownAttachmentProcessor.method(:new),
-      SpecialistDocumentHeaderExtractor.create,
+      SectionHeaderExtractor.create,
       GovspeakToHTMLRenderer.create,
       FootnotesSectionHeadingRenderer.create,
     ]
