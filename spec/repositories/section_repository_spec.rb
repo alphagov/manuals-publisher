@@ -51,10 +51,6 @@ describe SectionRepository do
     )
   end
 
-  def build_specialist_document(*args)
-    Section.new(slug_generator, *args)
-  end
-
   let(:published_edition) { build_published_edition }
 
   it "supports the fetch interface" do
@@ -72,7 +68,7 @@ describe SectionRepository do
 
         allow(document_factory).to receive(:call)
           .with(document_id, [edition])
-          .and_return(build_specialist_document(document_id, [edition]))
+          .and_return(Section.new(slug_generator, document_id, [edition]))
 
         edition
       end
