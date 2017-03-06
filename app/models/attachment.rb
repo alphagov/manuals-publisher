@@ -7,7 +7,7 @@ class Attachment
   field :file_id, type: String
   field :file_url, type: String
 
-  embedded_in :specialist_document_edition
+  embedded_in :section_edition
 
   before_save :upload_file, if: :file_has_changed?
 

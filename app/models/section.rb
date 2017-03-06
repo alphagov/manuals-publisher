@@ -25,7 +25,7 @@ class Section
 
   attr_reader :id, :editions, :latest_edition
 
-  def initialize(slug_generator, id, editions, edition_factory = SpecialistDocumentEdition.method(:new))
+  def initialize(slug_generator, id, editions, edition_factory = SectionEdition.method(:new))
     @slug_generator = slug_generator
     @id = id
     @editions = editions

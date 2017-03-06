@@ -42,10 +42,10 @@ FactoryGirl.define do
     organisation_slug "government-digital-service"
   end
 
-  factory :specialist_document_edition do
+  factory :section_edition do
     document_id { BSON::ObjectId.new }
-    sequence(:slug) { |n| "test-specialist-document-#{n}" }
-    sequence(:title) { |n| "Test Specialist Document #{n}" }
+    sequence(:slug) { |n| "test-section-edition-#{n}" }
+    sequence(:title) { |n| "Test Section Edition #{n}" }
     summary "My summary"
     body "My body"
   end

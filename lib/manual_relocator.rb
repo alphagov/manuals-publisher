@@ -122,7 +122,7 @@ private
   end
 
   def all_editions_of_section(document_id)
-    SpecialistDocumentEdition.where(document_id: document_id).order_by([:version_number, :desc])
+    SectionEdition.where(document_id: document_id).order_by([:version_number, :desc])
   end
 
   def reslug

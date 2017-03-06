@@ -4,7 +4,7 @@ class DuplicateDraftDeleter
   def call
     duplicated_editions_not_in_publishing_api = duplicated_editions.reject { |data| in_publishing_api?(data[:content_id]) }
     content_ids = duplicated_editions_not_in_publishing_api.map { |data| data[:content_id] }
-    editions_to_delete = SpecialistDocumentEdition.where(:document_id.in => content_ids)
+    editions_to_delete = SectionEdition.where(:document_id.in => content_ids)
 
     puts "The following #{editions_to_delete.count} editions are unknown to Publishing API and will be deleted:"
     editions_to_delete.each do |edition|
@@ -32,7 +32,7 @@ private
 
   def duplicated_editions
     slug_hash = {}
-    SpecialistDocumentEdition.all.each do |edition|
+    SectionEdition.all.each do |edition|
       slug_hash[edition.slug] ||= {}
       slug_hash[edition.slug][edition.document_id] ||= { state: edition.state, created_at: edition.created_at, editions: 0, content_id: edition.document_id, slug: edition.slug }
       slug_hash[edition.slug][edition.document_id][:editions] += 1

@@ -124,7 +124,7 @@ private
   end
 
   def section_in_database(slug)
-    SpecialistDocumentEdition.where(slug: slug).last
+    SectionEdition.where(slug: slug).last
   end
 
   def section_in_content_store(slug)

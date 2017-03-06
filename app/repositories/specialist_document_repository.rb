@@ -117,6 +117,6 @@ private
   end
 
   def specialist_document_editions
-    SpecialistDocumentEdition.all
+    SectionEdition.all
   end
 end

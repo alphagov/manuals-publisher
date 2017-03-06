@@ -9,7 +9,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let(:document_a_edition_published_version_1_major_update) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       slug: "#{manual_slug}/first-further-info",
       exported_at: document_edition_exported_time,
@@ -19,7 +19,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let(:document_a_edition_published_version_2_major_update) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       slug: document_a_edition_published_version_1_major_update.slug,
       document_id: document_a_edition_published_version_1_major_update.document_id,
@@ -30,7 +30,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let(:document_b_edition_published_version_1_major_update) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       slug: "#{manual_slug}/second-further-info",
       exported_at: document_edition_exported_time,
@@ -40,7 +40,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let(:document_b_edition_published_version_2_minor_update) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       slug: document_b_edition_published_version_1_major_update.slug,
       document_id: document_b_edition_published_version_1_major_update.document_id,
@@ -52,7 +52,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let(:document_c_edition_archived_version_1_major_update) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "archived",
       slug: "#{manual_slug}/additional-data",
       exported_at: document_edition_exported_time,
@@ -62,7 +62,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let(:document_d_edition_draft_version_1_major_update) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "draft",
       slug: "#{manual_slug}/draft-info",
       exported_at: document_edition_exported_time,
@@ -72,7 +72,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let(:document_e_edition_published_version_1_major_update) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       slug: "#{manual_slug}/third-further-info",
       exported_at: document_edition_exported_time,
@@ -188,12 +188,12 @@ end
 
 describe ManualPublicationLogFilter::EditionOrdering do
   describe ".sort_by_document_ids_and_created_at" do
-    let!(:edition_in_third_position) { FactoryGirl.create :specialist_document_edition }
-    let!(:edition_in_first_position) { FactoryGirl.create :specialist_document_edition }
-    let!(:edition_in_second_position) { FactoryGirl.create :specialist_document_edition }
+    let!(:edition_in_third_position) { FactoryGirl.create :section_edition }
+    let!(:edition_in_first_position) { FactoryGirl.create :section_edition }
+    let!(:edition_in_second_position) { FactoryGirl.create :section_edition }
 
-    let!(:other_edition_newer) { FactoryGirl.create :specialist_document_edition, created_at: Time.now - 1.day }
-    let!(:other_edition_older) { FactoryGirl.create :specialist_document_edition, created_at: Time.now - 1.week }
+    let!(:other_edition_newer) { FactoryGirl.create :section_edition, created_at: Time.now - 1.day }
+    let!(:other_edition_older) { FactoryGirl.create :section_edition, created_at: Time.now - 1.week }
 
     let!(:document_ids) {
       [
@@ -207,7 +207,7 @@ describe ManualPublicationLogFilter::EditionOrdering do
       document_ids.concat([other_edition_older.document_id, other_edition_newer.document_id])
     }
 
-    let(:subject) { described_class.new(SpecialistDocumentEdition.all, document_ids) }
+    let(:subject) { described_class.new(SectionEdition.all, document_ids) }
 
     it "returns editions in the supplied document id and created_at order" do
       ordered_editions = subject.sort_by_document_ids_and_created_at

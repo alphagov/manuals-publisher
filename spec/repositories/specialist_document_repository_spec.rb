@@ -66,7 +66,7 @@ describe SpecialistDocumentRepository do
       @edition_1, @edition_2 = [2, 1].map do |n|
         document_id = "document-id-#{n}"
 
-        edition = FactoryGirl.create(:specialist_document_edition,
+        edition = FactoryGirl.create(:section_edition,
                                      document_id: document_id,
                                      updated_at: n.days.ago)
 
@@ -91,7 +91,7 @@ describe SpecialistDocumentRepository do
 
     before do
       allow(Section).to receive(:new).and_return(document)
-      allow(SpecialistDocumentEdition).to receive(:all)
+      allow(SectionEdition).to receive(:all)
         .and_return(editions_proxy)
     end
 

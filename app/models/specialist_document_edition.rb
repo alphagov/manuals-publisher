@@ -1,6 +1,6 @@
 require "state_machine"
 
-class SpecialistDocumentEdition
+class SectionEdition
   include Mongoid::Document
   include Mongoid::Timestamps
 

@@ -69,7 +69,7 @@ private
   end
 
   def document_editions_for_first_manual_edition
-    @document_editions_for_first_manual_edition ||= SpecialistDocumentEdition.where(:document_id.in => first_manual_edition.document_ids, :minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
+    @document_editions_for_first_manual_edition ||= SectionEdition.where(:document_id.in => first_manual_edition.document_ids, :minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
   end
 
   def first_manual_edition
@@ -79,6 +79,6 @@ private
   def document_editions_for_rebuild
     ids_to_ignore = document_editions_for_first_manual_edition.map(&:_id)
 
-    SpecialistDocumentEdition.with_slug_prefix(@manual_slug).where(:minor_update.nin => [true], :_id.nin => ids_to_ignore).any_of({ state: "published" }, state: "archived")
+    SectionEdition.with_slug_prefix(@manual_slug).where(:minor_update.nin => [true], :_id.nin => ids_to_ignore).any_of({ state: "published" }, state: "archived")
   end
 end
