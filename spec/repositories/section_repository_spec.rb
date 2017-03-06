@@ -116,12 +116,6 @@ describe SectionRepository do
     end
   end
 
-  context "when the document is new" do
-    before do
-      @document = build_specialist_document(document_id, [new_draft_edition])
-    end
-  end
-
   describe "#store(document)" do
     context "with a valid editions" do
       let(:previous_edition) { build_published_edition(version: 1) }
