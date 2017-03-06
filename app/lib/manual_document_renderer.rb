@@ -1,5 +1,5 @@
 require "markdown_attachment_processor"
-require "specialist_document_header_extractor"
+require "section_header_extractor"
 require "govspeak_to_html_renderer"
 require "footnotes_section_heading_renderer"
 

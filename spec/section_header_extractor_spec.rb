@@ -1,6 +1,6 @@
 require "fast_spec_helper"
 
-require "specialist_document_header_extractor"
+require "section_header_extractor"
 
 describe SectionHeaderExtractor do
   subject(:header_extractor) {
