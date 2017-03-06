@@ -23,7 +23,7 @@ When(/^I tell the manual to stop using the previously published date as the publ
   WebMock::RequestRegistry.instance.reset!
 
   edit_manual_original_publication_date(@manual.title) do
-    choose("Keep the original GOV.UK publication date.")
+    choose("Change the first published date.")
   end
 
   step %{I publish the manual}
@@ -55,7 +55,7 @@ When(/^I tell the manual to start using the previously published date as the pub
   WebMock::RequestRegistry.instance.reset!
 
   edit_manual_original_publication_date(@manual.title) do
-    choose("Change the GOV.UK publication date.")
+    choose("Change the first published and last updated date.")
   end
 
   step %{I publish the manual}

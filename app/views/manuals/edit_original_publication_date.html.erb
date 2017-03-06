@@ -15,10 +15,10 @@
         <%= f.datetime_select :originally_published_at, { include_blank: true, start_year: Date.today.year, end_year: 1945 }, { class: 'date form-control' } %>
       </div>
       <div class="checkbox add-vertical-margins">
-        <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 1, tag_type: :p, label: 'Change the GOV.UK publication date.', checked: manual.use_originally_published_at_for_public_timestamp?) %>
+        <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 1, tag_type: :p, label: 'Change the first published and last updated date.', checked: manual.use_originally_published_at_for_public_timestamp?) %>
       </div>
       <div class="checkbox add-vertical-margins">
-        <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 0, tag_type: :p, label: 'Keep the original GOV.UK publication date.', checked: !manual.use_originally_published_at_for_public_timestamp?) %>
+        <%= f.radio_button(:use_originally_published_at_for_public_timestamp, 0, tag_type: :p, label: 'Change the first published date.', checked: !manual.use_originally_published_at_for_public_timestamp?) %>
       </div>
 
       <div class="actions">
