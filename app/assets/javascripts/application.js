@@ -4,7 +4,7 @@
 //= require govuk_toolkit
 //= require ajax_setup
 //= require length_counter
-//= require specialist_documents
+//= require markdown_preview
 //= require toggle_display_with_checked_input
 
 function initPrimaryLinks(){

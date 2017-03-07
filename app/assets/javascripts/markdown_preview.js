@@ -1,9 +1,9 @@
 (function(jQuery) {
   'use strict';
 
-  var SpecialistDocument = {};
+  var MarkdownPreview = {};
 
-  SpecialistDocument.addPreviewFeature = function addPreviewFeature(args) {
+  MarkdownPreview.addPreviewFeature = function addPreviewFeature(args) {
     insertMarkup();
     addButtonPressListener();
     showMarkup();
@@ -58,5 +58,5 @@
     }
   };
 
-  window.SpecialistDocument = SpecialistDocument;
+  window.MarkdownPreview = MarkdownPreview;
 })($);
