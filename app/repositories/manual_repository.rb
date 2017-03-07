@@ -1,13 +1,13 @@
 require "fetchable"
+require 'manual'
 
 class ManualRepository
   include Fetchable
 
   NotFoundError = Module.new
 
-  def initialize(collection:, factory:, association_marshallers: [])
+  def initialize(collection:, association_marshallers: [])
     @collection = collection
-    @factory = factory
     @association_marshallers = association_marshallers
   end
 
@@ -70,7 +70,7 @@ private
   def build_manual_for(manual_record)
     edition = manual_record.latest_edition
 
-    base_manual = factory.call(
+    base_manual = Manual.new(
       id: manual_record.manual_id,
       slug: manual_record.slug,
       title: edition.title,
