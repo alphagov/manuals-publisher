@@ -186,8 +186,8 @@ private
   def send_draft(manual)
     put_content = publishing_api.method(:put_content)
     organisation = fetch_organisation(manual.organisation_slug)
-    manual_renderer = ManualsPublisherWiring.get(:manual_renderer)
-    manual_document_renderer = ManualsPublisherWiring.get(:manual_document_renderer)
+    manual_renderer = ManualRenderer.create
+    manual_document_renderer = ManualDocumentRenderer.create
 
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
     ManualPublishingAPIExporter.new(
@@ -227,10 +227,10 @@ private
   end
 
   def publishing_api
-    ManualsPublisherWiring.get(:publishing_api_v2)
+    PublishingApiV2.instance
   end
 
   def fetch_organisation(slug)
-    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 end

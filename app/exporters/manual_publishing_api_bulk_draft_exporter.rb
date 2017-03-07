@@ -9,7 +9,7 @@ class ManualPublishingApiBulkDraftExporter
   def export_all
     logger.info("Exporting #{count_manuals} manuals to the DRAFT publishing api")
 
-    wiring.get(:repository_registry).manual_repository.all.each do |manual|
+    RepositoryRegistry.create.manual_repository.all.each do |manual|
       export_one(manual)
     end
 
@@ -49,22 +49,22 @@ class ManualPublishingApiBulkDraftExporter
 private
 
   def count_manuals
-    @manuals_count ||= wiring.get(:repository_registry).associationless_manual_repository.all.count
+    @manuals_count ||= RepositoryRegistry.create.associationless_manual_repository.all.count
   end
 
   def export_recipient
-    wiring.get(:publishing_api).method(:put_draft_content_item)
+    PublishingApi.instance.method(:put_draft_content_item)
   end
 
   def organisation(slug)
-    wiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 
   def manual_renderer
-    wiring.get(:manual_renderer)
+    ManualRenderer.create
   end
 
   def manual_document_renderer
-    wiring.get(:manual_document_renderer)
+    ManualDocumentRenderer.create
   end
 end

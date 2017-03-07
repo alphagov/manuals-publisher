@@ -2,9 +2,15 @@ module ManualsPublisher
   extend self
 
   def document_services(document_type)
+    builder = case document_type
+              when "manual"
+                ManualBuilder.create
+              when "manual_document"
+                ManualDocumentBuilder.create
+              end
     AbstractDocumentServiceRegistry.new(
       repository: document_repositories.for_type(document_type),
-      builder: ManualsPublisherWiring.get("#{document_type}_builder".to_sym),
+      builder: builder,
       observers: observer_registry(document_type),
     )
   end
@@ -12,6 +18,6 @@ module ManualsPublisher
 private
 
   def document_repositories
-    ManualsPublisherWiring.get(:repository_registry)
+    RepositoryRegistry.create
   end
 end

@@ -6,7 +6,6 @@ require "new_manual_document_service"
 require "list_manual_documents_service"
 require "reorder_manual_documents_service"
 require "remove_manual_document_service"
-require "manuals_publisher_wiring"
 
 class AbstractManualDocumentServiceRegistry
   def preview(context)
@@ -83,11 +82,11 @@ class AbstractManualDocumentServiceRegistry
 private
 
   def document_renderer
-    ManualsPublisherWiring.get(:specialist_document_renderer)
+    SpecialistDocumentRenderer.create
   end
 
   def manual_document_builder
-    ManualsPublisherWiring.get(:manual_document_builder)
+    ManualDocumentBuilder.create
   end
 
   def manual_repository
@@ -95,7 +94,7 @@ private
   end
 
   def organisation(slug)
-    ManualsPublisherWiring.get(:organisation_fetcher).call(slug)
+    OrganisationFetcher.instance.call(slug)
   end
 
   def publishing_api_draft_manual_exporter
@@ -109,7 +108,7 @@ private
       ManualPublishingAPIExporter.new(
         publishing_api_v2.method(:put_content),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualsPublisherWiring.get(:manual_renderer),
+        ManualRenderer.create,
         PublicationLog,
         manual
       ).call
@@ -128,7 +127,7 @@ private
       ManualSectionPublishingAPIExporter.new(
         publishing_api_v2.method(:put_content),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualsPublisherWiring.get(:manual_document_renderer),
+        ManualDocumentRenderer.create,
         manual,
         manual_document
       ).call
@@ -145,11 +144,11 @@ private
   end
 
   def manual_document_renderer
-    ManualsPublisherWiring.get(:manual_document_renderer)
+    ManualDocumentRenderer.create
   end
 
   def publishing_api_v2
-    ManualsPublisherWiring.get(:publishing_api_v2)
+    PublishingApiV2.instance
   end
 
   def organisations_api
