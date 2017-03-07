@@ -13,7 +13,7 @@ gem "govuk_admin_template", "~> 4.0" # higher versions require rails 4
 gem "kaminari", "0.16.1"
 gem "logstasher", "0.4.8"
 gem "mongoid", "2.5.2"
-gem "mongoid_rails_migrations", "1.0.0"
+gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code"
 gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"
 gem "quiet_assets", "1.0.3"
