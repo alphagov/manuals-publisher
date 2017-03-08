@@ -1,18 +1,18 @@
 class ManualSectionPublishingAPILinksExporter
-  def initialize(export_recipent, organisation, manual, document)
-    @export_recipent = export_recipent
+  def initialize(export_recipient, organisation, manual, document)
+    @export_recipient = export_recipient
     @organisation = organisation
     @manual = manual
     @document = document
   end
 
   def call
-    export_recipent.call(content_id, exportable_attributes)
+    export_recipient.call(content_id, exportable_attributes)
   end
 
 private
 
-  attr_reader :export_recipent, :organisation, :manual, :document
+  attr_reader :export_recipient, :organisation, :manual, :document
 
   def content_id
     document.id

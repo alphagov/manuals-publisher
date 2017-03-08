@@ -7,7 +7,7 @@ require "manual_section_publishing_api_exporter"
 describe ManualSectionPublishingAPIExporter do
   subject {
     described_class.new(
-      export_recipent,
+      export_recipient,
       organisation,
       document_renderer,
       manual,
@@ -15,7 +15,7 @@ describe ManualSectionPublishingAPIExporter do
     )
   }
 
-  let(:export_recipent) { double(:export_recipent, call: nil) }
+  let(:export_recipient) { double(:export_recipient, call: nil) }
   let(:document_renderer) { ->(_) { double(:rendered_document, attributes: rendered_attributes) } }
 
   let(:organisation) {
@@ -84,7 +84,7 @@ describe ManualSectionPublishingAPIExporter do
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
       described_class.new(
-        export_recipent,
+        export_recipient,
         organisation,
         document_renderer,
         manual,
@@ -98,7 +98,7 @@ describe ManualSectionPublishingAPIExporter do
     %w(major minor republish).each do |update_type|
       expect {
         described_class.new(
-          export_recipent,
+          export_recipient,
           organisation,
           document_renderer,
           manual,
@@ -112,7 +112,7 @@ describe ManualSectionPublishingAPIExporter do
   it "accepts explicitly setting nil as the option for update_type" do
     expect {
       described_class.new(
-        export_recipent,
+        export_recipient,
         organisation,
         document_renderer,
         manual,
@@ -129,7 +129,7 @@ describe ManualSectionPublishingAPIExporter do
   it "exports the serialized document attributes" do
     subject.call
 
-    expect(export_recipent).to have_received(:call).with(
+    expect(export_recipient).to have_received(:call).with(
       document.id,
       all_of(
         hash_including(
@@ -162,7 +162,7 @@ describe ManualSectionPublishingAPIExporter do
     it "adds it as the value for first_published_at in the serialized attributes" do
       subject.call
 
-      expect(export_recipent).to have_received(:call).with(
+      expect(export_recipient).to have_received(:call).with(
         document.id,
         hash_including(
           first_published_at: previously_published_date.iso8601,
@@ -174,7 +174,7 @@ describe ManualSectionPublishingAPIExporter do
       allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(true)
       subject.call
 
-      expect(export_recipent).to have_received(:call).with(
+      expect(export_recipient).to have_received(:call).with(
         document.id,
         hash_including(
           public_updated_at: previously_published_date.iso8601,
@@ -186,7 +186,7 @@ describe ManualSectionPublishingAPIExporter do
       allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(false)
       subject.call
 
-      expect(export_recipent).to have_received(:call).with(
+      expect(export_recipient).to have_received(:call).with(
         document.id,
         hash_excluding(:public_updated_at)
       )
@@ -208,7 +208,7 @@ describe ManualSectionPublishingAPIExporter do
     shared_examples_for "obeying the provided update_type" do
       subject {
         described_class.new(
-          export_recipent,
+          export_recipient,
           organisation,
           document_renderer,
           manual,
@@ -221,7 +221,7 @@ describe ManualSectionPublishingAPIExporter do
         let(:explicit_update_type) { "republish" }
         it "exports with the update_type set to republish" do
           subject.call
-          expect(export_recipent).to have_received(:call).with(
+          expect(export_recipient).to have_received(:call).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
             hash_including(update_type: "republish")
           )
@@ -232,7 +232,7 @@ describe ManualSectionPublishingAPIExporter do
         let(:explicit_update_type) { "minor" }
         it "exports with the update_type set to minor" do
           subject.call
-          expect(export_recipent).to have_received(:call).with(
+          expect(export_recipient).to have_received(:call).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
             hash_including(update_type: "minor")
           )
@@ -243,7 +243,7 @@ describe ManualSectionPublishingAPIExporter do
         let(:explicit_update_type) { "major" }
         it "exports with the update_type set to major" do
           subject.call
-          expect(export_recipent).to have_received(:call).with(
+          expect(export_recipient).to have_received(:call).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
             hash_including(update_type: "major")
           )
@@ -263,7 +263,7 @@ describe ManualSectionPublishingAPIExporter do
         update_type_attributes[:ever_been_published] = false
         subject.call
 
-        expect(export_recipent).to have_received(:call).with(
+        expect(export_recipient).to have_received(:call).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "major")
         )
@@ -272,7 +272,7 @@ describe ManualSectionPublishingAPIExporter do
       it "sets it to minor if the document has been published before" do
         subject.call
 
-        expect(export_recipent).to have_received(:call).with(
+        expect(export_recipient).to have_received(:call).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "minor")
         )
@@ -293,7 +293,7 @@ describe ManualSectionPublishingAPIExporter do
         update_type_attributes[:ever_been_published] = false
         subject.call
 
-        expect(export_recipent).to have_received(:call).with(
+        expect(export_recipient).to have_received(:call).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "major")
         )
@@ -302,7 +302,7 @@ describe ManualSectionPublishingAPIExporter do
       it "sets it to major if the document has been published before" do
         subject.call
 
-        expect(export_recipent).to have_received(:call).with(
+        expect(export_recipient).to have_received(:call).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "major")
         )
@@ -315,7 +315,7 @@ describe ManualSectionPublishingAPIExporter do
   it "exports section metadata for the document" do
     subject.call
 
-    expect(export_recipent).to have_received(:call).with(
+    expect(export_recipient).to have_received(:call).with(
       document.id,
       hash_including(
         details: {
