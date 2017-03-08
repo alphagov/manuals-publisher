@@ -62,11 +62,7 @@ private
   end
 
   def redirect_section
-    PublishingAPIRedirecter.new(
-      publishing_api: PublishingApi.instance,
-      entity: current_section_edition,
-      redirect_to_location: "/#{full_new_section_slug}"
-    ).call
+    raise 'GdsApi::PublishingApi#put_content_item was removed in gds-api-adapters v38.0.0'
   end
 
   def update_slug
