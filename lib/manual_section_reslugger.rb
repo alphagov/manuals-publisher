@@ -12,12 +12,7 @@ class ManualSectionReslugger
   end
 
   def call
-    validate
-
-    update_slug
-    publish_manual
     raise 'GdsApi::PublishingApi#put_content_item was removed in gds-api-adapters v38.0.0'
-    remove_old_section_from_rummager
   end
 
 private
