@@ -53,7 +53,7 @@ private
   end
 
   def export_recipient
-    PublishingApi.instance.method(:put_draft_content_item)
+    -> { raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0' }
   end
 
   def organisation(slug)
