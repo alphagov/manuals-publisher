@@ -9,6 +9,7 @@ require "republish_manual_service"
 require "withdraw_manual_service"
 require "publish_manual_worker"
 require "manual_observers_registry"
+require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
   def list(context)
