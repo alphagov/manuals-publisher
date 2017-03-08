@@ -1,6 +1,5 @@
 require "forwardable"
 require "permission_checker"
-require "url_maker"
 
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
@@ -14,12 +13,6 @@ class ApplicationController < ActionController::Base
   rescue_from("ManualRepository::NotFoundError") do
     redirect_to(manuals_path, flash: { error: "Manual not found" })
   end
-
-  def url_maker
-    UrlMaker.new
-  end
-  def_delegators :url_maker, :published_specialist_document_path
-  helper_method :published_specialist_document_path
 
   def current_user_can_edit?(format)
     permission_checker.can_edit?(format)
