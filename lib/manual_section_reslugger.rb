@@ -16,7 +16,7 @@ class ManualSectionReslugger
 
     update_slug
     publish_manual
-    redirect_section
+    raise 'GdsApi::PublishingApi#put_content_item was removed in gds-api-adapters v38.0.0'
     remove_old_section_from_rummager
   end
 
@@ -59,10 +59,6 @@ private
   def validate_new_section_in_content_store
     section = section_in_content_store(full_new_section_slug)
     raise Error.new("Manual Section already exists in content store") if section
-  end
-
-  def redirect_section
-    raise 'GdsApi::PublishingApi#put_content_item was removed in gds-api-adapters v38.0.0'
   end
 
   def update_slug
