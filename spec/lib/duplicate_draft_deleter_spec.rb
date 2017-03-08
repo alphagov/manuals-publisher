@@ -10,7 +10,7 @@ describe DuplicateDraftDeleter do
     FactoryGirl.create(:specialist_document_edition,
       slug: "cma-cases/a-case",
       document_id: original_content_id,
-      document_type: "cma_case",
+      document_type: "manual",
       state: "draft",
     )
     publishing_api_has_item(content_id: original_content_id)
@@ -19,13 +19,13 @@ describe DuplicateDraftDeleter do
     FactoryGirl.create(:specialist_document_edition,
       slug: "cma-cases/a-case",
       document_id: duplicate_content_id,
-      document_type: "cma_case",
+      document_type: "manual",
       state: "draft",
     )
     FactoryGirl.create(:specialist_document_edition,
       slug: "cma-cases/a-case",
       document_id: duplicate_content_id,
-      document_type: "cma_case",
+      document_type: "manual",
       state: "archived",
     )
     publishing_api_does_not_have_item(duplicate_content_id)
