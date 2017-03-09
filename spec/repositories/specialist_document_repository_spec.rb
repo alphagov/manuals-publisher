@@ -71,7 +71,6 @@ describe SpecialistDocumentRepository do
 
         edition = FactoryGirl.create(:specialist_document_edition,
                                      document_id: document_id,
-                                     document_type: document_type,
                                      updated_at: n.days.ago)
 
         allow(document_factory).to receive(:call)

@@ -7,7 +7,7 @@ class SpecialistDocumentEdition
   MANUAL_DOCUMENT_TYPE = "manual".freeze
 
   field :document_id,          type: String
-  field :document_type,        type: String
+  field :document_type,        type: String, default: MANUAL_DOCUMENT_TYPE
   field :version_number,       type: Integer, default: 1
   field :title,                type: String
   field :slug,                 type: String
