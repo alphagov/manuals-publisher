@@ -2,10 +2,7 @@ module ManualsPublisher
   extend self
 
   def document_services(document_type)
-    builder = case document_type
-              when "manual"
-                ManualBuilder.create
-              end
+    builder = ManualBuilder.create
     AbstractDocumentServiceRegistry.new(
       repository: document_repositories.for_type(document_type),
       builder: builder,
