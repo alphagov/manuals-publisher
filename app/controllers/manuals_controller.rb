@@ -90,7 +90,7 @@ class ManualsController < ApplicationController
   end
 
   def preview
-    manual = services.preview(params["id"], update_manual_params).call
+    manual = services.preview(params[:id], update_manual_params).call
 
     manual.valid? # Force validation check or errors will be empty
 
@@ -112,7 +112,7 @@ class ManualsController < ApplicationController
 private
 
   def manual_id
-    params.fetch("id")
+    params.fetch(:id)
   end
 
   def create_manual_params
@@ -135,7 +135,7 @@ private
 
   def base_manual_params(only: valid_params)
     params
-      .fetch("manual", {})
+      .fetch(:manual, {})
       .slice(*only)
       .symbolize_keys
   end
@@ -150,7 +150,7 @@ private
 
   def manual_date_params
     date_param_names = [:originally_published_at]
-    manual_params = params.fetch("manual", {})
+    manual_params = params.fetch(:manual, {})
     date_params = date_param_names.map do |date_param_name|
       [
         date_param_name,
