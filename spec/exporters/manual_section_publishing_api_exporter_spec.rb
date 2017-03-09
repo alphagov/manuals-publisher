@@ -134,8 +134,8 @@ describe ManualSectionPublishingAPIExporter do
       all_of(
         hash_including(
           base_path: document_base_path,
-          schema_name: "manual_section",
-          document_type: "manual_section",
+          schema_name: ManualSectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
+          document_type: ManualSectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
           title: "Document title",
           description: "This is the first section",
           update_type: "minor",

@@ -280,8 +280,8 @@ module ManualHelpers
 
     if with_matcher.nil?
       attributes = {
-        "schema_name" => "manual",
-        "document_type" => "manual",
+        "schema_name" => ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
+        "document_type" => ManualPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
         "rendering_app" => "manuals-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)
@@ -307,8 +307,8 @@ module ManualHelpers
 
     if with_matcher.nil?
       attributes = {
-        "schema_name" => "manual_section",
-        "document_type" => "manual_section",
+        "schema_name" => ManualSectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
+        "document_type" => ManualSectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
         "rendering_app" => "manuals-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)

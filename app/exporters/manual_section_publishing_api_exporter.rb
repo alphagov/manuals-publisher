@@ -1,6 +1,9 @@
 class ManualSectionPublishingAPIExporter
   include PublishingAPIUpdateTypes
 
+  PUBLISHING_API_SCHEMA_NAME = "manual_section".freeze
+  PUBLISHING_API_DOCUMENT_TYPE = "manual_section".freeze
+
   def initialize(export_recipient, organisation, document_renderer, manual, document, update_type: nil)
     @export_recipient = export_recipient
     @organisation = organisation
@@ -30,8 +33,8 @@ private
   def exportable_attributes
     {
       base_path: base_path,
-      schema_name: "manual_section",
-      document_type: "manual_section",
+      schema_name: PUBLISHING_API_SCHEMA_NAME,
+      document_type: PUBLISHING_API_DOCUMENT_TYPE,
       title: rendered_document_attributes.fetch(:title),
       description: rendered_document_attributes.fetch(:summary),
       update_type: update_type,
