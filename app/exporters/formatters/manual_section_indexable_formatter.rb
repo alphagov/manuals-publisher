@@ -1,13 +1,15 @@
 require "formatters/abstract_indexable_formatter"
 
 class ManualSectionIndexableFormatter < AbstractIndexableFormatter
+  RUMMAGER_DOCUMENT_TYPE = "manual_section".freeze
+
   def initialize(section, manual)
     @entity = section
     @manual = manual
   end
 
   def type
-    "manual_section"
+    RUMMAGER_DOCUMENT_TYPE
   end
 
 private
