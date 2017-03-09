@@ -10,14 +10,10 @@ class ManualPublishingApiBulkDraftExporter
     logger.info("Exporting #{count_manuals} manuals to the DRAFT publishing api")
 
     RepositoryRegistry.create.manual_repository.all.each do |manual|
-      export_one(manual)
+      raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0'
     end
 
     logger.info("Export complete")
-  end
-
-  def export_one(manual)
-    raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0'
   end
 
 private
