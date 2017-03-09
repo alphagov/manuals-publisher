@@ -21,7 +21,7 @@ class ManualPublishingApiBulkDraftExporter
     organisation = organisation(manual.attributes.fetch(:organisation_slug))
 
     ManualPublishingAPIExporter.new(
-      export_recipient,
+      -> { raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0' },
       organisation,
       manual_renderer,
       PublicationLog,
@@ -35,7 +35,7 @@ class ManualPublishingApiBulkDraftExporter
       logger.info("Exporting document: '#{document.id}' '#{document.slug}'")
 
       ManualSectionPublishingAPIExporter.new(
-        export_recipient,
+        -> { raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0' },
         organisation,
         manual_document_renderer,
         manual,
@@ -50,10 +50,6 @@ private
 
   def count_manuals
     @manuals_count ||= RepositoryRegistry.create.associationless_manual_repository.all.count
-  end
-
-  def export_recipient
-    -> { raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0' }
   end
 
   def organisation(slug)
