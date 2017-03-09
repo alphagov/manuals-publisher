@@ -82,7 +82,7 @@ class AbstractManualDocumentServiceRegistry
 private
 
   def document_renderer
-    SpecialistDocumentRenderer.create
+    SpecialistDocumentRenderer.new
   end
 
   def manual_document_builder
