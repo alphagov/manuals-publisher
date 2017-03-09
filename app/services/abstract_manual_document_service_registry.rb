@@ -143,10 +143,6 @@ private
     }
   end
 
-  def manual_document_renderer
-    ManualDocumentRenderer.create
-  end
-
   def publishing_api_v2
     PublishingApiV2.instance
   end
