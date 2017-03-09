@@ -5,7 +5,7 @@ class SpecialistDocumentHeaderExtractor < SimpleDelegator
   def self.create
     ->(doc) {
       SpecialistDocumentHeaderExtractor.new(
-        GovspeakHeaderExtractor.create,
+        GovspeakHeaderExtractor.new,
         doc,
       )
     }
