@@ -5,8 +5,6 @@ module ManualsPublisher
     builder = case document_type
               when "manual"
                 ManualBuilder.create
-              when "manual_document"
-                ManualDocumentBuilder.create
               end
     AbstractDocumentServiceRegistry.new(
       repository: document_repositories.for_type(document_type),
