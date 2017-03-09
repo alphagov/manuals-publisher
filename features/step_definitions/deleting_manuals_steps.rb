@@ -14,11 +14,11 @@ end
 
 When(/^I refuse deletion/) do
   allow(@stdin).to receive(:gets).and_return("No")
-  expect { @deleter.call }.to raise_error
+  expect { @deleter.call }.to raise_error(RuntimeError, /Quitting/)
 end
 
 Then(/^the script raises an error/) do
-  expect { @deleter.call }.to raise_error
+  expect { @deleter.call }.to raise_error(RuntimeError, /Cannot delete/)
 end
 
 Then(/^the manual and its documents are deleted$/) do
