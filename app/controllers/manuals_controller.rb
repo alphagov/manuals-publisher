@@ -195,7 +195,7 @@ private
   end
 
   def authorize_user_for_publishing
-    unless current_user_can_publish?("manual")
+    unless current_user_can_publish?(PermissionChecker::MANUAL_FORMAT)
       redirect_to(
         manual_path(manual_id),
         flash: { error: "You don't have permission to publish." },

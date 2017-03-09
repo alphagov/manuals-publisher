@@ -92,7 +92,7 @@
       <div class="panel-heading"><h3>Publish manual</h3></div>
       <div class="panel-body">
         <%= publish_text(manual, slug_unique) %>
-        <% if manual.draft? && manual.documents.any? && current_user_can_publish?("manual") && slug_unique %>
+        <% if manual.draft? && manual.documents.any? && current_user_can_publish?(PermissionChecker::MANUAL_FORMAT) && slug_unique %>
           <%= form_tag(publish_manual_path(manual), method: :post) do %>
             <button name="submit" class="btn btn-danger" data-module="confirm" data-message="Are you sure you want to publish this manual?">Publish manual</button>
           <% end -%>

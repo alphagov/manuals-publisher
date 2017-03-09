@@ -2,6 +2,8 @@ class PermissionChecker
   GDS_EDITOR_PERMISSION = "gds_editor".freeze
   EDITOR_PERMISSION = "editor".freeze
 
+  MANUAL_FORMAT = "manual".freeze
+
   def initialize(user)
     @user = user
   end
@@ -31,6 +33,6 @@ private
   end
 
   def can_access_format?(format)
-    format == "manual"
+    format == MANUAL_FORMAT
   end
 end

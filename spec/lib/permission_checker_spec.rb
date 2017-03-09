@@ -11,7 +11,7 @@ describe PermissionChecker do
 
       context "editing a manual" do
         it "allows editing" do
-          expect(checker.can_edit?("manual")).to be true
+          expect(checker.can_edit?(PermissionChecker::MANUAL_FORMAT)).to be true
         end
       end
     end
@@ -30,7 +30,7 @@ describe PermissionChecker do
       subject(:checker) { PermissionChecker.new(cma_writer) }
 
       it "prevents publishing" do
-        expect(checker.can_publish?("manual")).to be false
+        expect(checker.can_publish?(PermissionChecker::MANUAL_FORMAT)).to be false
       end
     end
 
@@ -39,7 +39,7 @@ describe PermissionChecker do
 
       context "publishing a manual" do
         it "allows publishing" do
-          expect(checker.can_publish?("manual")).to be true
+          expect(checker.can_publish?(PermissionChecker::MANUAL_FORMAT)).to be true
         end
       end
     end
@@ -58,7 +58,7 @@ describe PermissionChecker do
       subject(:checker) { PermissionChecker.new(cma_writer) }
 
       it "prevents withdrawal" do
-        expect(checker.can_withdraw?("manual")).to be false
+        expect(checker.can_withdraw?(PermissionChecker::MANUAL_FORMAT)).to be false
       end
     end
 
@@ -67,7 +67,7 @@ describe PermissionChecker do
 
       context "withdrawing a manual" do
         it "allows withdrawing" do
-          expect(checker.can_withdraw?("manual")).to be true
+          expect(checker.can_withdraw?(PermissionChecker::MANUAL_FORMAT)).to be true
         end
       end
     end
