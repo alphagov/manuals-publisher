@@ -17,21 +17,7 @@ class ManualPublishingApiBulkDraftExporter
   end
 
   def export_one(manual)
-    logger.info("Exporting manual: '#{manual.id}' '#{manual.attributes[:slug]}'")
-    organisation = organisation(manual.attributes.fetch(:organisation_slug))
-
     raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0'
-
-    count = manual.documents.count
-    logger.info("Exporting #{count} documents...")
-
-    manual.documents.each do |document|
-      logger.info("Exporting document: '#{document.id}' '#{document.slug}'")
-
-      raise 'GdsApi::PublishingApi#put_draft_content_item was removed in gds-api-adapters v38.0.0'
-    end
-
-    logger.info("Exporting of manual: '#{manual.id}' complete")
   end
 
 private
