@@ -6,13 +6,13 @@ require "manual_publishing_api_links_exporter"
 describe ManualPublishingAPILinksExporter do
   subject {
     ManualPublishingAPILinksExporter.new(
-      export_recipent,
+      export_recipient,
       organisation,
       manual
     )
   }
 
-  let(:export_recipent) { double(:export_recipent, call: nil) }
+  let(:export_recipient) { double(:export_recipient, call: nil) }
 
   let(:organisation) {
     {
@@ -44,7 +44,7 @@ describe ManualPublishingAPILinksExporter do
   it "exports links for the manual" do
     subject.call
 
-    expect(export_recipent).to have_received(:call).with(
+    expect(export_recipient).to have_received(:call).with(
       manual.id,
       hash_including(
         links: {

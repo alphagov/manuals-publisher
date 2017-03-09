@@ -6,14 +6,14 @@ require "manual_section_publishing_api_links_exporter"
 describe ManualSectionPublishingAPILinksExporter do
   subject {
     ManualSectionPublishingAPILinksExporter.new(
-      export_recipent,
+      export_recipient,
       organisation,
       manual,
       document
     )
   }
 
-  let(:export_recipent) { double(:export_recipent, call: nil) }
+  let(:export_recipient) { double(:export_recipient, call: nil) }
 
   let(:organisation) {
     {
@@ -47,7 +47,7 @@ describe ManualSectionPublishingAPILinksExporter do
   it "exports links for the document" do
     subject.call
 
-    expect(export_recipent).to have_received(:call).with(
+    expect(export_recipient).to have_received(:call).with(
       document.id,
       hash_including(
         links: {

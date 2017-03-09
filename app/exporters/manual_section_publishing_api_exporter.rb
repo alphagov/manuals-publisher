@@ -1,8 +1,8 @@
 class ManualSectionPublishingAPIExporter
   include PublishingAPIUpdateTypes
 
-  def initialize(export_recipent, organisation, document_renderer, manual, document, update_type: nil)
-    @export_recipent = export_recipent
+  def initialize(export_recipient, organisation, document_renderer, manual, document, update_type: nil)
+    @export_recipient = export_recipient
     @organisation = organisation
     @document_renderer = document_renderer
     @manual = manual
@@ -12,12 +12,12 @@ class ManualSectionPublishingAPIExporter
   end
 
   def call
-    export_recipent.call(content_id, exportable_attributes)
+    export_recipient.call(content_id, exportable_attributes)
   end
 
 private
 
-  attr_reader :export_recipent, :document_renderer, :organisation, :manual, :document
+  attr_reader :export_recipient, :document_renderer, :organisation, :manual, :document
 
   def content_id
     document.id
