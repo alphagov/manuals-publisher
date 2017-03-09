@@ -11,7 +11,7 @@ describe SpecialistDocumentRepository do
   let(:document_factory) { double(:document_factory, call: document) }
 
   let(:document_id) { "document-id" }
-  let(:document_type) { "manual" }
+  let(:document_type) { SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE }
 
   let(:document) {
     SpecialistDocument.new(slug_generator, document_id, editions, edition_factory)

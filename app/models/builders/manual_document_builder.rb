@@ -23,7 +23,7 @@ private
 
   def defaults
     {
-      document_type: "manual",
+      document_type: SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE,
       minor_update: false,
       change_note: "New section added.",
     }

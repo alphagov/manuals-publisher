@@ -48,7 +48,7 @@ FactoryGirl.define do
     sequence(:title) { |n| "Test Specialist Document #{n}" }
     summary "My summary"
     body "My body"
-    document_type "manual"
+    document_type SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE
   end
 
   factory :specialist_document do
