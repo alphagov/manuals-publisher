@@ -6,7 +6,6 @@ describe ManualRepository do
   subject(:repo) {
     ManualRepository.new(
       collection: record_collection,
-      factory: manual_factory,
       association_marshallers: association_marshallers,
     )
   }
@@ -19,7 +18,6 @@ describe ManualRepository do
 
   let(:association_marshallers) { [] }
 
-  let(:manual_factory) { double(:manual_factory, call: nil) }
   let(:manual_id) { double(:manual_id) }
   let(:manual_slug) { double(:manual_slug) }
   let(:originally_published_at) { double(:originally_published_at) }
@@ -151,7 +149,7 @@ describe ManualRepository do
     before do
       allow(record_collection).to receive(:find_by).and_return(manual_record)
       allow(manual_record).to receive(:latest_edition).and_return(edition)
-      allow(manual_factory).to receive(:call).and_return(manual)
+      allow(Manual).to receive(:new).and_return(manual)
     end
 
     it "finds the manual record by manual id" do
@@ -164,10 +162,10 @@ describe ManualRepository do
     it "builds a new manual from the latest edition" do
       repo[manual_id]
 
-      factory_arguments = edition_attributes.merge(id: manual_id)
+      arguments = edition_attributes.merge(id: manual_id)
 
-      expect(manual_factory).to have_received(:call)
-        .with(factory_arguments)
+      expect(Manual).to have_received(:new)
+        .with(arguments)
     end
 
     it "returns the built manual" do
@@ -199,6 +197,7 @@ describe ManualRepository do
     before do
       allow(record_collection).to receive(:all_by_updated_at).and_return([manual_record])
       allow(manual_record).to receive(:latest_edition).and_return(edition)
+      allow(Manual).to receive(:new)
     end
 
     it "retrieves all records from the collection" do
@@ -210,19 +209,19 @@ describe ManualRepository do
     it "builds a manual for each record" do
       repo.all.to_a
 
-      factory_arguments = edition_attributes.merge(id: manual_id)
+      arguments = edition_attributes.merge(id: manual_id)
 
-      expect(manual_factory).to have_received(:call).with(factory_arguments)
+      expect(Manual).to have_received(:new).with(arguments)
     end
 
     it "builds lazily" do
       repo.all
 
-      expect(manual_factory).not_to have_received(:call)
+      expect(Manual).not_to have_received(:new)
     end
 
     it "returns the built manuals" do
-      allow(manual_factory).to receive(:call).and_return(manual)
+      allow(Manual).to receive(:new).and_return(manual)
 
       expect(repo.all.to_a).to eq([manual])
     end

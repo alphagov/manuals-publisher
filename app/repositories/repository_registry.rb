@@ -59,7 +59,6 @@ class RepositoryRegistry
           }
         ),
       ],
-      factory: Manual.method(:new),
       collection: collection,
     )
   end
@@ -81,7 +80,6 @@ class RepositoryRegistry
 
   def associationless_scoped_manual_repository(collection)
     ManualRepository.new(
-      factory: Manual.method(:new),
       collection: collection,
     )
   end
