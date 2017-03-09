@@ -4,7 +4,7 @@ class GovspeakToHTMLRenderer < SimpleDelegator
   def self.create
     ->(doc) {
       GovspeakToHTMLRenderer.new(
-        GovspeakHtmlConverter.create,
+        GovspeakHtmlConverter.new,
         doc,
       )
     }
