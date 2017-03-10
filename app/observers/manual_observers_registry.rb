@@ -165,8 +165,8 @@ private
       patch_links = publishing_api_v2.method(:patch_links)
       put_content = publishing_api_v2.method(:put_content)
       organisation = organisation(manual.attributes.fetch(:organisation_slug))
-      manual_renderer = ManualRenderer.create
-      manual_document_renderer = ManualDocumentRenderer.create
+      manual_renderer = ManualRenderer.new
+      manual_document_renderer = ManualDocumentRenderer.new
 
       ManualPublishingAPILinksExporter.new(
         patch_links, organisation, manual

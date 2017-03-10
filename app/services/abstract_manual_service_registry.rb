@@ -103,7 +103,7 @@ class AbstractManualServiceRegistry
 private
 
   def manual_renderer
-    ManualRenderer.create
+    ManualRenderer.new
   end
 
   def manual_builder

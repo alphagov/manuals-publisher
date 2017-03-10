@@ -82,7 +82,7 @@ class AbstractManualDocumentServiceRegistry
 private
 
   def document_renderer
-    SpecialistDocumentRenderer.create
+    SpecialistDocumentRenderer.new
   end
 
   def manual_document_builder
@@ -108,7 +108,7 @@ private
       ManualPublishingAPIExporter.new(
         publishing_api_v2.method(:put_content),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualRenderer.create,
+        ManualRenderer.new,
         PublicationLog,
         manual
       ).call
@@ -127,7 +127,7 @@ private
       ManualSectionPublishingAPIExporter.new(
         publishing_api_v2.method(:put_content),
         organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualDocumentRenderer.create,
+        ManualDocumentRenderer.new,
         manual,
         manual_document
       ).call
