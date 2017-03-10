@@ -41,7 +41,7 @@ Then(/^I see manuals created by all organisations$/) do
 end
 
 Given(/^I am logged in as a writer$/) do
-  login_as(:cma_writer)
+  login_as(:generic_writer)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
