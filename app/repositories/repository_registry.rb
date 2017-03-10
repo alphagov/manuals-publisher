@@ -21,13 +21,6 @@ class RepositoryRegistry
     @entity_factories = entity_factories
   end
 
-  def for_type(type)
-    SpecialistDocumentRepository.new(
-      document_type: type,
-      document_factory: entity_factories.public_send("#{type}_factory")
-    )
-  end
-
   def organisation_scoped_manual_repository_factory
     ->(organisation_slug) {
       scoped_manual_repository(
