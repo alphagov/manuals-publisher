@@ -21,10 +21,6 @@ FactoryGirl.define do
     organisation_slug "competition-and-markets-authority"
   end
 
-  factory :dclg_editor, parent: :editor do
-    organisation_slug "department-for-communities-and-local-government"
-  end
-
   factory :generic_writer, parent: :user do
     organisation_slug "ministry-of-tea"
   end
