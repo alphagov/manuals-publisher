@@ -1,2 +1,4 @@
-require "simplecov"
-SimpleCov.start
+if ENV["TEST_COVERAGE"]
+  require "simplecov"
+  SimpleCov.start
+end

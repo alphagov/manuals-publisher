@@ -12,7 +12,7 @@ def setupDb() {
 
 def runTests() {
   echo 'Running tests'
-  sh("bundle exec rake")
+  sh("TEST_COVERAGE=true bundle exec rake")
 }
 
 node {
