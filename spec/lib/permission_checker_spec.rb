@@ -1,13 +1,13 @@
 require "spec_helper"
 
 describe PermissionChecker do
-  let(:cma_writer)   { FactoryGirl.build(:cma_writer) }
-  let(:dclg_editor)  { FactoryGirl.build(:dclg_editor) }
-  let(:gds_editor)   { FactoryGirl.build(:gds_editor) }
+  let(:generic_writer) { FactoryGirl.build(:generic_writer) }
+  let(:dclg_editor)    { FactoryGirl.build(:dclg_editor) }
+  let(:gds_editor)     { FactoryGirl.build(:gds_editor) }
 
   describe "#can_edit?" do
     context "a user who is not an editor" do
-      subject(:checker) { PermissionChecker.new(cma_writer) }
+      subject(:checker) { PermissionChecker.new(generic_writer) }
 
       context "editing a manual" do
         it "allows editing" do
@@ -27,7 +27,7 @@ describe PermissionChecker do
 
   describe "#can_publish?" do
     context "a user who is not an editor" do
-      subject(:checker) { PermissionChecker.new(cma_writer) }
+      subject(:checker) { PermissionChecker.new(generic_writer) }
 
       it "prevents publishing" do
         expect(checker.can_publish?("manual")).to be false
@@ -55,7 +55,7 @@ describe PermissionChecker do
 
   describe "#can_withdraw?" do
     context "a user who is not an editor" do
-      subject(:checker) { PermissionChecker.new(cma_writer) }
+      subject(:checker) { PermissionChecker.new(generic_writer) }
 
       it "prevents withdrawal" do
         expect(checker.can_withdraw?("manual")).to be false
