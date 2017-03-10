@@ -1,4 +1,3 @@
 :concurrency:  2
 :queues:
-  - ["bulk_republishing", 1]
   - ["default", 5]
