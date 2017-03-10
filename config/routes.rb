@@ -1,5 +1,3 @@
-require "manuals_publisher"
-
 ManualsPublisher::Application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount GovukAdminTemplate::Engine, at: "/style-guide"
