@@ -91,7 +91,7 @@ describe SpecialistDocumentRepository do
 
     before do
       allow(SpecialistDocument).to receive(:new).and_return(document)
-      allow(SpecialistDocumentEdition).to receive(:where)
+      allow(SpecialistDocumentEdition).to receive(:all)
         .and_return(editions_proxy)
     end
 

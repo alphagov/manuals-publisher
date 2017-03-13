@@ -94,7 +94,7 @@ private
   end
 
   def build_specialist_document(document_id)
-    all_editions = SpecialistDocumentEdition.where(document_type: SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE, document_id: document_id).order_by([:version_number, :desc]).to_a
+    all_editions = SpecialistDocumentEdition.where(document_id: document_id).order_by([:version_number, :desc]).to_a
     SpecialistDocument.new(
       ->(_title) { raise RuntimeError, "read only manual" },
       document_id,

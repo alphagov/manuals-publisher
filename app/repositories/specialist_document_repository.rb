@@ -117,6 +117,6 @@ private
   end
 
   def specialist_document_editions
-    SpecialistDocumentEdition.where(document_type: SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE)
+    SpecialistDocumentEdition.all
   end
 end
