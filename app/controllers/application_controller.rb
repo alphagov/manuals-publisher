@@ -15,8 +15,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_can_publish?
-    format = PermissionChecker::MANUAL_FORMAT
-    permission_checker.can_publish?(format)
+    permission_checker.can_publish?
   end
   helper_method :current_user_can_publish?
 
