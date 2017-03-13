@@ -29,7 +29,7 @@ private
   end
 
   def validate_manual
-    raise Error.new("Manual not found for manual_slug `#{manual_slug}`") if manual_record.nil?
+    raise Error.new("Manual not found for manual_slug `#{@manual_slug}`") if manual_record.nil?
   end
 
   def validate_current_section
