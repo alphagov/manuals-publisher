@@ -14,7 +14,8 @@ class ApplicationController < ActionController::Base
     redirect_to(manuals_path, flash: { error: "Manual not found" })
   end
 
-  def current_user_can_publish?(format)
+  def current_user_can_publish?
+    format = PermissionChecker::MANUAL_FORMAT
     permission_checker.can_publish?(format)
   end
   helper_method :current_user_can_publish?

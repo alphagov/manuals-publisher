@@ -95,7 +95,7 @@ module ApplicationHelper
       text = "<p>There are no changes to publish.</p>"
     elsif manual.state == "withdrawn"
       text = "<p>The manual is withdrawn. You need to create a new draft before it can be published.</p>"
-    elsif !current_user_can_publish?(PermissionChecker::MANUAL_FORMAT)
+    elsif !current_user_can_publish?
       text = "<p>You don't have permission to publish this manual.</p>"
     elsif !slug_unique
       text = "<p>This manual has a duplicate slug and can't be published.</p>"
