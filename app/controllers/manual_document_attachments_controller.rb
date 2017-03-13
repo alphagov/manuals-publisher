@@ -1,4 +1,5 @@
 require "create_manual_document_attachment_service"
+require "show_manual_document_attachment_service"
 require "new_manual_document_attachment_service"
 
 class ManualDocumentAttachmentsController < ApplicationController
@@ -29,7 +30,11 @@ class ManualDocumentAttachmentsController < ApplicationController
   end
 
   def edit
-    manual, document, attachment = services.show(self).call
+    service = ShowManualDocumentAttachmentService.new(
+      repository,
+      self,
+    )
+    manual, document, attachment = service.call
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
