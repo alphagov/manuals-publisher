@@ -9,13 +9,13 @@ Given(/^I am logged in as a non\-CMA editor$/) do
 end
 
 Given(/^there are manuals created by multiple organisations$/) do
-  login_as(:cma_editor)
+  login_as(:gds_editor)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
-  @cma_manual_fields = {
+  @gds_manual_fields = {
     title: "Manual on Competition",
     summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
   }
-  create_manual(@cma_manual_fields)
+  create_manual(@gds_manual_fields)
 
   login_as(:generic_editor)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
@@ -32,16 +32,16 @@ end
 
 Then(/^I only see manuals created by my organisation$/) do
   check_manual_visible(@tea_manual_fields.fetch(:title))
-  check_manual_not_visible(@cma_manual_fields.fetch(:title))
+  check_manual_not_visible(@gds_manual_fields.fetch(:title))
 end
 
 Then(/^I see manuals created by all organisations$/) do
   check_manual_visible(@tea_manual_fields.fetch(:title))
-  check_manual_visible(@cma_manual_fields.fetch(:title))
+  check_manual_visible(@gds_manual_fields.fetch(:title))
 end
 
 Given(/^I am logged in as a writer$/) do
-  login_as(:cma_writer)
+  login_as(:generic_writer)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
