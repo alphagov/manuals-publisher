@@ -8,11 +8,6 @@ Given(/^I am logged in as an editor$/) do
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
-Given(/^I am logged in as a non\-CMA editor$/) do
-  login_as(:generic_editor)
-  stub_organisation_details(GDS::SSO.test_user.organisation_slug)
-end
-
 Given(/^there are manuals created by multiple organisations$/) do
   login_as(:cma_editor)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)

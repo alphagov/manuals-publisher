@@ -5,7 +5,7 @@ Feature: Access control
 
   Scenario: Editor only sees manuals created by their organisation
     Given there are manuals created by multiple organisations
-    And I am logged in as a non-CMA editor
+    And I am logged in as an editor
     When I view my list of manuals
     Then I only see manuals created by my organisation
 
