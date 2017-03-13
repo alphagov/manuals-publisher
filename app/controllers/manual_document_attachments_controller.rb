@@ -1,4 +1,5 @@
 require "create_manual_document_attachment_service"
+require "update_manual_document_attachment_service"
 require "show_manual_document_attachment_service"
 require "new_manual_document_attachment_service"
 
@@ -44,7 +45,11 @@ class ManualDocumentAttachmentsController < ApplicationController
   end
 
   def update
-    manual, document, attachment = services.update(self).call
+    service = UpdateManualDocumentAttachmentService.new(
+      repository,
+      self,
+    )
+    manual, document, attachment = service.call
 
     if attachment.persisted?
       redirect_to(edit_manual_document_path(manual, document))
