@@ -11,7 +11,7 @@ Feature: Access control
 
   Scenario: GDS Editor sees manuals created by all organisations
     Given there are manuals created by multiple organisations
-    And I am logged in as a "GDS" editor
+    And I am logged in as a GDS editor
     When I view my list of manuals
     Then I see manuals created by all organisations
 

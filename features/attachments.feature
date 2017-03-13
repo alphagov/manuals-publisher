@@ -16,7 +16,7 @@ Feature: Attachments
   @regression
   Scenario: GDS editor can add attachment to manual from another Org
     Given a draft manual exists belonging to "ministry-of-tea"
-    And I am logged in as a "GDS" editor
+    And I am logged in as a GDS editor
     And a draft document exists for the manual
     When I attach a file and give it a title
     Then I see the attached file
