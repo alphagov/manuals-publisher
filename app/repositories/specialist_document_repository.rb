@@ -12,7 +12,6 @@ class SpecialistDocumentRepository
   end
 
   def initialize(document_factory:)
-    @document_type = SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE
     @document_factory = document_factory
   end
 
@@ -118,6 +117,6 @@ private
   end
 
   def specialist_document_editions
-    SpecialistDocumentEdition.where(document_type: document_type)
+    SpecialistDocumentEdition.where(document_type: SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE)
   end
 end
