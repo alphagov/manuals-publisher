@@ -1,7 +1,9 @@
 $LOAD_PATH << File.join(File.dirname(__FILE__), "..")
 
-require "simplecov"
-SimpleCov.start
+if ENV["TEST_COVERAGE"]
+  require "simplecov"
+  SimpleCov.start
+end
 
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= "test"
