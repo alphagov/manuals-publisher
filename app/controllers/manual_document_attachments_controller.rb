@@ -1,3 +1,4 @@
+require "create_manual_document_attachment_service"
 require "new_manual_document_attachment_service"
 
 class ManualDocumentAttachmentsController < ApplicationController
@@ -18,7 +19,11 @@ class ManualDocumentAttachmentsController < ApplicationController
   end
 
   def create
-    manual, document, _attachment = services.create(self).call
+    service = CreateManualDocumentAttachmentService.new(
+      repository,
+      self,
+    )
+    manual, document, _attachment = service.call
 
     redirect_to edit_manual_document_path(manual, document)
   end
