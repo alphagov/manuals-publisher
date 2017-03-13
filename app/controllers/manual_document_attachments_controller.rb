@@ -58,4 +58,22 @@ private
       organisation_slug: current_organisation_slug,
     )
   end
+
+  def repository
+    if current_user_is_gds_editor?
+      gds_editor_repository
+    else
+      organisational_repository
+    end
+  end
+
+  def gds_editor_repository
+    ManualDocumentAttachmentServiceRegistry.new.repository
+  end
+
+  def organisational_repository
+    OrganisationalManualDocumentAttachmentServiceRegistry.new(
+      organisation_slug: current_organisation_slug,
+    ).repository
+  end
 end
