@@ -8,10 +8,6 @@ class PermissionChecker
     @user = user
   end
 
-  def can_edit?(format)
-    is_gds_editor? || can_access_format?(format)
-  end
-
   def can_publish?
     format = MANUAL_FORMAT
     is_gds_editor? || is_editor? && can_access_format?(format)

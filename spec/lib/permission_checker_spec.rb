@@ -5,26 +5,6 @@ describe PermissionChecker do
   let(:dclg_editor)  { FactoryGirl.build(:dclg_editor) }
   let(:gds_editor)   { FactoryGirl.build(:gds_editor) }
 
-  describe "#can_edit?" do
-    context "a user who is not an editor" do
-      subject(:checker) { PermissionChecker.new(cma_writer) }
-
-      context "editing a manual" do
-        it "allows editing" do
-          expect(checker.can_edit?(PermissionChecker::MANUAL_FORMAT)).to be true
-        end
-      end
-    end
-
-    context "a GDS editor" do
-      subject(:checker) { PermissionChecker.new(gds_editor) }
-
-      it "allows editing of any format" do
-        expect(checker.can_edit?("tea_and_cake")).to be true
-      end
-    end
-  end
-
   describe "#can_publish?" do
     context "a user who is not an editor" do
       subject(:checker) { PermissionChecker.new(cma_writer) }

@@ -7,7 +7,6 @@ describe ManualsController, type: :controller do
       let(:services) { spy(AbstractManualDocumentServiceRegistry) }
       before do
         login_as_stub_user
-        allow_any_instance_of(PermissionChecker).to receive(:can_edit?).and_return(true)
         allow_any_instance_of(PermissionChecker).to receive(:can_publish?).and_return(false)
         allow(controller).to receive(:services).and_return services
         post :publish, id: manual_id
