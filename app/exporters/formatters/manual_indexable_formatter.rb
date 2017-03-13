@@ -1,8 +1,10 @@
 require "formatters/abstract_indexable_formatter"
 
 class ManualIndexableFormatter < AbstractIndexableFormatter
+  RUMMAGER_DOCUMENT_TYPE = "manual".freeze
+
   def type
-    "manual"
+    RUMMAGER_DOCUMENT_TYPE
   end
 
 private

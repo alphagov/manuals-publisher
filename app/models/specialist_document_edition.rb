@@ -5,7 +5,6 @@ class SpecialistDocumentEdition
   include Mongoid::Timestamps
 
   field :document_id,          type: String
-  field :document_type,        type: String
   field :version_number,       type: Integer, default: 1
   field :title,                type: String
   field :slug,                 type: String
@@ -18,7 +17,6 @@ class SpecialistDocumentEdition
   field :exported_at, type: DateTime
 
   validates :document_id, presence: true
-  validates :document_type, presence: true
   validates :slug, presence: true
 
   embeds_many :attachments, cascade_callbacks: true

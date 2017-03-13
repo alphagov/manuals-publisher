@@ -3,7 +3,6 @@ require "spec_helper"
 describe SpecialistDocumentRepository do
   let(:specialist_document_repository) do
     SpecialistDocumentRepository.new(
-      document_type: document_type,
       document_factory: document_factory,
     )
   end
@@ -11,8 +10,6 @@ describe SpecialistDocumentRepository do
   let(:document_factory) { double(:document_factory, call: document) }
 
   let(:document_id) { "document-id" }
-  let(:document_type) { "manual" }
-
   let(:document) {
     SpecialistDocument.new(slug_generator, document_id, editions, edition_factory)
   }
@@ -71,7 +68,6 @@ describe SpecialistDocumentRepository do
 
         edition = FactoryGirl.create(:specialist_document_edition,
                                      document_id: document_id,
-                                     document_type: document_type,
                                      updated_at: n.days.ago)
 
         allow(document_factory).to receive(:call)
@@ -95,7 +91,7 @@ describe SpecialistDocumentRepository do
 
     before do
       allow(SpecialistDocument).to receive(:new).and_return(document)
-      allow(SpecialistDocumentEdition).to receive(:where)
+      allow(SpecialistDocumentEdition).to receive(:all)
         .and_return(editions_proxy)
     end
 

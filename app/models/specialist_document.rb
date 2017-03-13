@@ -11,7 +11,6 @@ class SpecialistDocument
       :slug,
       :summary,
       :body,
-      :document_type,
       :updated_at,
       :version_number,
       # TODO: These fields expose the edition a little too directly, rethink?
@@ -182,7 +181,6 @@ protected
       .merge(
         version_number: current_version_number + 1,
         slug: slug,
-        document_type: document_type,
         attachments: attachments,
       )
 

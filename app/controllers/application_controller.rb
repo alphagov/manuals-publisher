@@ -14,13 +14,13 @@ class ApplicationController < ActionController::Base
     redirect_to(manuals_path, flash: { error: "Manual not found" })
   end
 
-  def current_user_can_publish?(format)
-    permission_checker.can_publish?(format)
+  def current_user_can_publish?
+    permission_checker.can_publish?
   end
   helper_method :current_user_can_publish?
 
-  def current_user_can_withdraw?(format)
-    permission_checker.can_withdraw?(format)
+  def current_user_can_withdraw?
+    permission_checker.can_withdraw?
   end
   helper_method :current_user_can_withdraw?
 

@@ -11,8 +11,7 @@ class SpecialistDocumentRepository
     raise e.extend(NotFoundError)
   end
 
-  def initialize(document_type:, document_factory:)
-    @document_type = document_type
+  def initialize(document_factory:)
     @document_factory = document_factory
   end
 
@@ -77,7 +76,6 @@ class SpecialistDocumentRepository
 private
 
   attr_reader(
-    :document_type,
     :document_factory,
   )
 
@@ -119,6 +117,6 @@ private
   end
 
   def specialist_document_editions
-    SpecialistDocumentEdition.where(document_type: document_type)
+    SpecialistDocumentEdition.all
   end
 end
