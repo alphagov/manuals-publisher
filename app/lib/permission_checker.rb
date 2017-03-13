@@ -10,7 +10,7 @@ class PermissionChecker
 
   def can_publish?
     format = MANUAL_FORMAT
-    is_gds_editor? || is_editor? && can_access_format?(format)
+    is_gds_editor? || is_editor? && (format == MANUAL_FORMAT)
   end
 
   def can_withdraw?
@@ -27,9 +27,5 @@ private
 
   def is_editor?
     user.has_permission?(EDITOR_PERMISSION)
-  end
-
-  def can_access_format?(format)
-    format == MANUAL_FORMAT
   end
 end
