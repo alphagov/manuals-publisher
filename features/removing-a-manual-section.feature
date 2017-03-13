@@ -14,7 +14,7 @@ Feature: Removing a section from a manual
     And the removed document is archived
 
   Scenario: Removing a draft section as an editor
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as a CMA editor
     And a draft manual exists without any documents
     And a draft document exists for the manual
     When I remove the document from the manual
@@ -40,7 +40,7 @@ Feature: Removing a section from a manual
     And the removed document is archived
 
   Scenario: Removing a previously published section from a draft manual as an editor
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as a CMA editor
     And a published manual exists
     And I edit one of the manual's documents
     When I remove the edited document from the manual
@@ -67,7 +67,7 @@ Feature: Removing a section from a manual
     And the removed document is archived
 
   Scenario: Removing a section from a published manual as an editor
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as a CMA editor
     And a published manual exists
     When I remove one of the documents from the manual
     Then the document is removed from the manual

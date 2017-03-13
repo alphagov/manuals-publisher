@@ -3,6 +3,11 @@ Given(/^I am logged in as a GDS editor$/) do
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
+Given(/^I am logged in as a CMA editor$/) do
+  login_as(:cma_editor)
+  stub_organisation_details(GDS::SSO.test_user.organisation_slug)
+end
+
 Given(/^I am logged in as a "(.*?)" editor$/) do |editor_type|
   login_as(:"#{editor_type.downcase}_editor")
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
