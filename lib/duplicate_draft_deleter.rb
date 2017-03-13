@@ -1,5 +1,3 @@
-require "gds_api/publishing_api_v2"
-
 class DuplicateDraftDeleter
   def call
     duplicated_editions_not_in_publishing_api = duplicated_editions.reject { |data| in_publishing_api?(data[:content_id]) }
@@ -16,10 +14,7 @@ class DuplicateDraftDeleter
 private
 
   def publishing_api
-    @publishing_api ||= GdsApi::PublishingApiV2.new(
-      Plek.new.find("publishing-api"),
-      bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
-    )
+    PublishingApiV2.instance
   end
 
   def in_publishing_api?(content_id)
