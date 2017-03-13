@@ -95,8 +95,8 @@ private
   end
 
   def organisational_repository
-    OrganisationalManualDocumentAttachmentServiceRegistry.new(
-      organisation_slug: current_organisation_slug,
-    ).repository
+    manual_repository_factory = RepositoryRegistry.create
+      .organisation_scoped_manual_repository_factory
+    manual_repository_factory.call(current_organisation_slug)
   end
 end
