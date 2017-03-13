@@ -8,7 +8,7 @@ class PublishingAPIRedirecter
   end
 
   def call
-    publishing_api.put_content_item(base_path, exportable_attributes)
+    raise 'GdsApi::PublishingApi#put_content_item was removed in gds-api-adapters v38.0.0'
   end
 
 private
