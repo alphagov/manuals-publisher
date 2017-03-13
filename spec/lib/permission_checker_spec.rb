@@ -56,25 +56,23 @@ describe PermissionChecker do
       subject(:checker) { PermissionChecker.new(cma_writer) }
 
       it "prevents withdrawal" do
-        expect(checker.can_withdraw?(PermissionChecker::MANUAL_FORMAT)).to be false
+        expect(checker.can_withdraw?).to be false
       end
     end
 
     context "an editor" do
       subject(:checker) { PermissionChecker.new(dclg_editor) }
 
-      context "withdrawing a manual" do
-        it "allows withdrawing" do
-          expect(checker.can_withdraw?(PermissionChecker::MANUAL_FORMAT)).to be true
-        end
+      it "allows withdrawal" do
+        expect(checker.can_withdraw?).to be true
       end
     end
 
     context "a GDS editor" do
       subject(:checker) { PermissionChecker.new(gds_editor) }
 
-      it "allows withdrawal of any format" do
-        expect(checker.can_withdraw?("tea_and_biscuits")).to be true
+      it "allows withdrawal" do
+        expect(checker.can_withdraw?).to be true
       end
     end
   end

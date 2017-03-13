@@ -17,7 +17,7 @@ class PermissionChecker
     is_gds_editor? || is_editor? && can_access_format?(format)
   end
 
-  def can_withdraw?(_format)
+  def can_withdraw?
     is_gds_editor? || is_editor?
   end
 
