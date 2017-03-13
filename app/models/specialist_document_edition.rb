@@ -4,8 +4,6 @@ class SpecialistDocumentEdition
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  MANUAL_DOCUMENT_TYPE = "manual".freeze
-
   field :document_id,          type: String
   field :version_number,       type: Integer, default: 1
   field :title,                type: String
