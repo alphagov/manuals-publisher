@@ -4,8 +4,8 @@ Feature: Attachments
   So that users can access the supporting documents
 
   @regression
-  Scenario: CMA editor can add and replace attachment to manual
-    Given I am logged in as a CMA editor
+  Scenario: editor can add and replace attachment to manual
+    Given I am logged in as an editor
     And a draft manual exists without any documents
     And a draft document exists for the manual
     When I attach a file and give it a title

@@ -3,8 +3,8 @@ Given(/^I am logged in as a GDS editor$/) do
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
-Given(/^I am logged in as a CMA editor$/) do
-  login_as(:cma_editor)
+Given(/^I am logged in as an editor$/) do
+  login_as(:generic_editor)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
 end
 
