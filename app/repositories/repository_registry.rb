@@ -61,7 +61,6 @@ class RepositoryRegistry
       document_factory = entity_factories.manual_document_factory_factory.call(manual)
 
       SpecialistDocumentRepository.new(
-        document_type: SpecialistDocumentEdition::MANUAL_DOCUMENT_TYPE,
         document_factory: document_factory,
       )
     }
