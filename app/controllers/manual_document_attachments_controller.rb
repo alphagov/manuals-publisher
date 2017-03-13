@@ -91,7 +91,7 @@ private
   end
 
   def gds_editor_repository
-    ManualDocumentAttachmentServiceRegistry.new.repository
+    RepositoryRegistry.create.manual_repository
   end
 
   def organisational_repository
