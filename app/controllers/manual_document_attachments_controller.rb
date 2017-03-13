@@ -1,6 +1,14 @@
+require "new_manual_document_attachment_service"
+
 class ManualDocumentAttachmentsController < ApplicationController
   def new
-    manual, document, attachment = services.new(self).call
+    service = NewManualDocumentAttachmentService.new(
+      repository,
+      # TODO: This be should be created from the document or just be a form object
+      Attachment.method(:new),
+      self,
+    )
+    manual, document, attachment = service.call
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
