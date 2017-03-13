@@ -37,6 +37,10 @@ FactoryGirl.define do
     organisation_slug "ministry-of-tea"
   end
 
+  factory :generic_editor_of_another_organisation, parent: :editor do
+    organisation_slug "another-organisation"
+  end
+
   factory :gds_editor, parent: :user do
     permissions %w(signin gds_editor)
     organisation_slug "government-digital-service"
