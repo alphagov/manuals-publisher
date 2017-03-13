@@ -20,7 +20,8 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_can_publish?
 
-  def current_user_can_withdraw?(format)
+  def current_user_can_withdraw?
+    format = PermissionChecker::MANUAL_FORMAT
     permission_checker.can_withdraw?(format)
   end
   helper_method :current_user_can_withdraw?
