@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe SpecialistDocumentRepository do
-  let(:specialist_document_repository) do
-    SpecialistDocumentRepository.new(
+describe SectionRepository do
+  let(:section_repository) do
+    SectionRepository.new(
       document_factory: document_factory,
     )
   end
@@ -11,7 +11,7 @@ describe SpecialistDocumentRepository do
 
   let(:document_id) { "document-id" }
   let(:document) {
-    SpecialistDocument.new(slug_generator, document_id, editions, edition_factory)
+    Section.new(slug_generator, document_id, editions, edition_factory)
   }
 
   let(:slug_generator) { double(:slug_generator) }
@@ -51,14 +51,10 @@ describe SpecialistDocumentRepository do
     )
   end
 
-  def build_specialist_document(*args)
-    SpecialistDocument.new(slug_generator, *args)
-  end
-
   let(:published_edition) { build_published_edition }
 
   it "supports the fetch interface" do
-    expect(specialist_document_repository).to be_a_kind_of(Fetchable)
+    expect(section_repository).to be_a_kind_of(Fetchable)
   end
 
   describe "#all" do
@@ -66,13 +62,13 @@ describe SpecialistDocumentRepository do
       @edition_1, @edition_2 = [2, 1].map do |n|
         document_id = "document-id-#{n}"
 
-        edition = FactoryGirl.create(:specialist_document_edition,
+        edition = FactoryGirl.create(:section_edition,
                                      document_id: document_id,
                                      updated_at: n.days.ago)
 
         allow(document_factory).to receive(:call)
           .with(document_id, [edition])
-          .and_return(build_specialist_document(document_id, [edition]))
+          .and_return(Section.new(slug_generator, document_id, [edition]))
 
         edition
       end
@@ -80,7 +76,7 @@ describe SpecialistDocumentRepository do
 
     it "returns all documents by date updated desc" do
       expect(
-        specialist_document_repository.all.map(&:title).to_a
+        section_repository.all.map(&:title).to_a
       ).to eq([@edition_2, @edition_1].map(&:title))
     end
   end
@@ -90,19 +86,19 @@ describe SpecialistDocumentRepository do
     let(:editions)       { [published_edition] }
 
     before do
-      allow(SpecialistDocument).to receive(:new).and_return(document)
-      allow(SpecialistDocumentEdition).to receive(:all)
+      allow(Section).to receive(:new).and_return(document)
+      allow(SectionEdition).to receive(:all)
         .and_return(editions_proxy)
     end
 
     it "populates the document with all editions for that document id" do
-      specialist_document_repository[document_id]
+      section_repository[document_id]
 
       expect(document_factory).to have_received(:call).with(document_id, editions)
     end
 
     it "returns the document" do
-      expect(specialist_document_repository[document_id]).to eq(document)
+      expect(section_repository[document_id]).to eq(document)
     end
 
     context "when there are no editions" do
@@ -111,14 +107,8 @@ describe SpecialistDocumentRepository do
       end
 
       it "returns nil" do
-        expect(specialist_document_repository[document_id]).to be_nil
+        expect(section_repository[document_id]).to be_nil
       end
-    end
-  end
-
-  context "when the document is new" do
-    before do
-      @document = build_specialist_document(document_id, [new_draft_edition])
     end
   end
 
@@ -136,13 +126,13 @@ describe SpecialistDocumentRepository do
       }
 
       it "returns self" do
-        expect(specialist_document_repository.store(document)).to be(
-          specialist_document_repository
+        expect(section_repository.store(document)).to be(
+          section_repository
         )
       end
 
       it "saves the the two most recent editions" do
-        specialist_document_repository.store(document)
+        section_repository.store(document)
 
         expect(new_draft_edition).to have_received(:save!)
         expect(current_published_edition).to have_received(:save!)

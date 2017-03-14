@@ -15,7 +15,7 @@ describe Attachment do
 
   context "#save" do
     let(:edition) do
-      FactoryGirl.create(:specialist_document_edition)
+      FactoryGirl.create(:section_edition)
     end
 
     let(:upload_file) do
@@ -24,7 +24,7 @@ describe Attachment do
 
     before do
       edition.attachments << attachment
-      attachment.specialist_document_edition = edition
+      attachment.section_edition = edition
     end
 
     it "uploads a file before saving" do

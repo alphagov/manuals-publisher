@@ -38,7 +38,7 @@ class RenameSomeDevelopmentFundingMetadataKeys < Mongoid::Migration
   end
 
   def self.funds
-    SpecialistDocumentEdition.where(
+    SectionEdition.where(
       :document_type => "international_development_fund",
       # Some imported records don't have any extra_fields yet
       :extra_fields.ne => {},

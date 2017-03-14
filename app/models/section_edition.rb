@@ -1,8 +1,10 @@
 require "state_machine"
 
-class SpecialistDocumentEdition
+class SectionEdition
   include Mongoid::Document
   include Mongoid::Timestamps
+
+  store_in "specialist_document_editions"
 
   field :document_id,          type: String
   field :version_number,       type: Integer, default: 1

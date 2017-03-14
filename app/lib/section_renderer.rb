@@ -1,12 +1,12 @@
 require "markdown_attachment_processor"
-require "specialist_document_header_extractor"
+require "section_header_extractor"
 require "govspeak_to_html_renderer"
 
-class SpecialistDocumentRenderer
+class SectionRenderer
   def call(doc)
     pipeline = [
       MarkdownAttachmentProcessor.method(:new),
-      SpecialistDocumentHeaderExtractor.create,
+      SectionHeaderExtractor.create,
       GovspeakToHTMLRenderer.create,
     ]
 

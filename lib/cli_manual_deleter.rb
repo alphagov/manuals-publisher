@@ -79,7 +79,7 @@ private
     discard_draft_from_publishing_api(manual_record.manual_id)
 
     document_ids.each do |id|
-      SpecialistDocumentEdition.where(document_id: id).map(&:destroy)
+      SectionEdition.where(document_id: id).map(&:destroy)
     end
 
     manual_record.destroy

@@ -1,14 +1,13 @@
-require "specialist_document_repository"
+require "section_repository"
 require "manual_repository"
-require "specialist_document_edition"
+require "section_edition"
 require "marshallers/document_association_marshaller"
 require "marshallers/manual_publish_task_association_marshaller"
 require "manual_publish_task"
 require "manual_with_publish_tasks"
 require "manual"
 require "manual_record"
-require "specialist_document_edition"
-require "specialist_document_repository"
+
 
 class RepositoryRegistry
   def self.create
@@ -60,7 +59,7 @@ class RepositoryRegistry
     ->(manual) {
       document_factory = entity_factories.manual_document_factory_factory.call(manual)
 
-      SpecialistDocumentRepository.new(
+      SectionRepository.new(
         document_factory: document_factory,
       )
     }

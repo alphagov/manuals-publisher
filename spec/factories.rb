@@ -42,19 +42,12 @@ FactoryGirl.define do
     organisation_slug "government-digital-service"
   end
 
-  factory :specialist_document_edition do
+  factory :section_edition do
     document_id { BSON::ObjectId.new }
-    sequence(:slug) { |n| "test-specialist-document-#{n}" }
-    sequence(:title) { |n| "Test Specialist Document #{n}" }
+    sequence(:slug) { |n| "test-section-edition-#{n}" }
+    sequence(:title) { |n| "Test Section Edition #{n}" }
     summary "My summary"
     body "My body"
-  end
-
-  factory :specialist_document do
-    slug_generator { "some" }
-    id { "some" }
-    editions { "s" }
-    initialize_with { new(slug_generator, id, editions) }
   end
 
   factory :publication_log do

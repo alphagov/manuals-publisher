@@ -13,7 +13,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   # one published before the start date with a PDF
   let!(:early_document_edition_with_pdf) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       exported_at: start_date - 1.day,
     ).tap do |document_edition|
@@ -27,7 +27,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   # one published before the start date with a non-PDF attachment
   let!(:early_document_edition_with_non_pdf) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       exported_at: start_date - 1.day,
     ).tap do |document_edition|
@@ -41,7 +41,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   # one only drafted before the start date with a PDF attachment
   let!(:early_document_edition_draft_with_pdf) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "draft",
       exported_at: start_date - 1.day,
     ).tap do |document_edition|
@@ -55,7 +55,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   # one created between the start date and the last time period
   let!(:more_recent_document_edition) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       exported_at: (Date.today - last_time_period_days) - 1.day,
     ).tap do |document_edition|
@@ -69,7 +69,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   # one created after the last time period
   let!(:very_recent_document_edition) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "published",
       exported_at: (Date.today - last_time_period_days) + 1.day,
     ).tap do |document_edition|
@@ -100,7 +100,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
 
   let!(:very_recent_draft_patent_document_edition) do
     FactoryGirl.create(
-      :specialist_document_edition,
+      :section_edition,
       state: "draft",
       exported_at: Date.today,
     ).tap do |document_edition|

@@ -16,7 +16,7 @@ def in_publishing_api?(content_id)
 end
 
 def marked_editions
-  SpecialistDocumentEdition.where(title: /\Axx/i)
+  SectionEdition.where(title: /\Axx/i)
 end
 
 def fetch_duplicated_editions
@@ -44,7 +44,7 @@ known_editions, unknown_editions = duplicated_editions.partition { |edition| in_
 puts "The following #{unknown_editions.count} are unknown to Publishing API and are safe to delete:"
 unknown_editions.each do |edition|
   puts [edition[:slug], edition[:content_id], edition[:state], edition[:created_at]].join(",")
-  SpecialistDocumentEdition.where(document_id: edition[:content_id]).delete_all if ENV["DO_IT"].present?
+  SectionEdition.where(document_id: edition[:content_id]).delete_all if ENV["DO_IT"].present?
 end
 
 puts "The following #{known_editions.count} are known to Publishing API and will be deleted after the draft is discarded:"
@@ -52,6 +52,6 @@ known_editions.each do |edition|
   puts [edition[:slug], edition[:content_id], edition[:state], edition[:created_at]].join(",")
   if ENV["DO_IT"].present?
     publishing_api.discard_draft(edition[:content_id])
-    SpecialistDocumentEdition.where(document_id: edition[:content_id]).delete_all
+    SectionEdition.where(document_id: edition[:content_id]).delete_all
   end
 end

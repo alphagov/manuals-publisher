@@ -2,7 +2,7 @@ require "forwardable"
 require "active_model/conversion"
 require "active_model/naming"
 
-class SpecialistDocument
+class Section
   extend Forwardable
 
   def self.edition_attributes
@@ -25,7 +25,7 @@ class SpecialistDocument
 
   attr_reader :id, :editions, :latest_edition
 
-  def initialize(slug_generator, id, editions, edition_factory = SpecialistDocumentEdition.method(:new))
+  def initialize(slug_generator, id, editions, edition_factory = SectionEdition.method(:new))
     @slug_generator = slug_generator
     @id = id
     @editions = editions

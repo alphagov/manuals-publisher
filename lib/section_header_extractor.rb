@@ -1,10 +1,10 @@
 require "delegate"
 require "active_support/core_ext/hash"
 
-class SpecialistDocumentHeaderExtractor < SimpleDelegator
+class SectionHeaderExtractor < SimpleDelegator
   def self.create
     ->(doc) {
-      SpecialistDocumentHeaderExtractor.new(
+      SectionHeaderExtractor.new(
         GovspeakHeaderExtractor.new,
         doc,
       )

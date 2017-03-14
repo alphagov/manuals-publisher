@@ -24,7 +24,7 @@ class AttachmentReporting
       # the editions of these documents in version order to find unique PDF attachments and their
       # publication times.
       all_unique_document_ids_for_manual(manual).each do |document_id|
-        document_editions = SpecialistDocumentEdition.where(document_id: document_id).order(:version_number)
+        document_editions = SectionEdition.where(document_id: document_id).order(:version_number)
 
         document_editions.each do |document_edition|
           next if document_edition_never_published?(document_edition)

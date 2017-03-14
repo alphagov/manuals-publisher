@@ -1,10 +1,10 @@
 require "fast_spec_helper"
 
-require "specialist_document_header_extractor"
+require "section_header_extractor"
 
-describe SpecialistDocumentHeaderExtractor do
+describe SectionHeaderExtractor do
   subject(:header_extractor) {
-    SpecialistDocumentHeaderExtractor.new(parser, doc)
+    SectionHeaderExtractor.new(parser, doc)
   }
 
   let(:doc)     { double(:doc, body: doc_body, attributes: doc_attributes) }

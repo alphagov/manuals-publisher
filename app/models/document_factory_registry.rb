@@ -6,7 +6,7 @@ require "validators/null_validator"
 require "builders/manual_document_builder"
 require "manual_with_documents"
 require "slug_generator"
-require "specialist_document"
+require "section"
 
 class DocumentFactoryRegistry
   def self.validatable_document_factories
@@ -38,7 +38,7 @@ class DocumentFactoryRegistry
 
         ChangeNoteValidator.new(
           ManualDocumentValidator.new(
-            SpecialistDocument.new(
+            Section.new(
               slug_generator,
               id,
               editions,
