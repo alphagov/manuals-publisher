@@ -1,7 +1,6 @@
 require "preview_section_service"
 require "create_section_service"
 require "update_section_service"
-require "show_section_service"
 require "new_section_service"
 require "list_sections_service"
 require "reorder_sections_service"
@@ -37,13 +36,6 @@ class AbstractSectionServiceRegistry
         publishing_api_draft_manual_exporter,
         publishing_api_draft_section_exporter
       ],
-    )
-  end
-
-  def show(context)
-    ShowSectionService.new(
-      manual_repository,
-      context,
     )
   end
 

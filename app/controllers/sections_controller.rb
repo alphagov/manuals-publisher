@@ -1,8 +1,14 @@
+require "show_section_service"
+
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 
   def show
-    manual, section = services.show(self).call
+    service = ShowSectionService.new(
+      services.manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:show, locals: {
       manual: manual,
@@ -33,7 +39,11 @@ class SectionsController < ApplicationController
   end
 
   def edit
-    manual, section = services.show(self).call
+    service = ShowSectionService.new(
+      services.manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
@@ -95,7 +105,11 @@ class SectionsController < ApplicationController
   end
 
   def withdraw
-    manual, section = services.show(self).call
+    service = ShowSectionService.new(
+      services.manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:withdraw, locals: {
       manual: ManualViewAdapter.new(manual),
