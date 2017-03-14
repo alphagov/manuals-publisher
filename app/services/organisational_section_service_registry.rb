@@ -3,8 +3,6 @@ class OrganisationalSectionServiceRegistry < AbstractSectionServiceRegistry
     @organisation_slug = organisation_slug
   end
 
-private
-
   attr_reader :organisation_slug
 
   def manual_repository_factory

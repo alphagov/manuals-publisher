@@ -80,8 +80,6 @@ class AbstractSectionServiceRegistry
     )
   end
 
-private
-
   def document_renderer
     SectionRenderer.new
   end
