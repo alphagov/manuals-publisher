@@ -1,6 +1,7 @@
 require "gds_api/content_store"
 require "manual_service_registry"
 require "services"
+require "update_section_service"
 
 class SectionReslugger
   RUMMAGER_FORMAT = "manual_section".freeze
@@ -76,7 +77,15 @@ private
 
   def new_edition_for_slug_change
     services = SectionServiceRegistry.new
-    _manual, document = services.update(context_for_section_edition_update).call
+    service = UpdateSectionService.new(
+      manual_repository: services.manual_repository,
+      context: context_for_section_edition_update,
+      listeners: [
+        services.publishing_api_draft_manual_exporter,
+        services.publishing_api_draft_section_exporter
+      ],
+    )
+    _manual, document = service.call
     document.latest_edition
   end
 

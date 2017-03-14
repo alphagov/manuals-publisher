@@ -1,4 +1,5 @@
 require "create_section_service"
+require "update_section_service"
 
 module ManualHelpers
   def manual_repository
@@ -109,7 +110,15 @@ module ManualHelpers
       }
     )
 
-    _, document = section_services.update(service_context).call
+    service = UpdateSectionService.new(
+      manual_repository: section_services.manual_repository,
+      context: service_context,
+      listeners: [
+        section_services.publishing_api_draft_manual_exporter,
+        section_services.publishing_api_draft_section_exporter
+      ],
+    )
+    _, document = service.call
 
     document
   end
