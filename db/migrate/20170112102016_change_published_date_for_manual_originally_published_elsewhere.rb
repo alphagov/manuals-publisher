@@ -66,7 +66,7 @@ class ChangePublishedDateForManualOriginallyPublishedElsewhere < Mongoid::Migrat
       put_content, organisation, manual_renderer, PublicationLog, manual_for_publishing
     ).call
     manual_for_publishing.documents.each do |manual_document|
-      ManualSectionPublishingAPIExporter.new(
+      SectionPublishingAPIExporter.new(
         put_content, organisation, manual_document_renderer, manual_for_publishing, manual_document
       ).call
     end

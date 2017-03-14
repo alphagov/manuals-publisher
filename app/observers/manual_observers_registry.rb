@@ -1,5 +1,5 @@
 require "manual_publishing_api_exporter"
-require "manual_section_publishing_api_exporter"
+require "section_publishing_api_exporter"
 require "publishing_api_withdrawer"
 require "rummager_indexer"
 require "formatters/manual_indexable_formatter"
@@ -183,7 +183,7 @@ private
           patch_links, organisation, manual, document
         ).call
 
-        ManualSectionPublishingAPIExporter.new(
+        SectionPublishingAPIExporter.new(
           put_content, organisation, manual_document_renderer, manual, document, update_type: update_type
         ).call
       end

@@ -1,4 +1,4 @@
-class ManualSectionPublishingAPIExporter
+class SectionPublishingAPIExporter
   include PublishingAPIUpdateTypes
 
   PUBLISHING_API_SCHEMA_NAME = "manual_section".freeze
