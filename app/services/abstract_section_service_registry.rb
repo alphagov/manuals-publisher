@@ -18,12 +18,7 @@ class AbstractSectionServiceRegistry
   end
 
   def publishing_api_draft_section_discarder
-    ->(section, _manual) {
-      begin
-        publishing_api_v2.discard_draft(section.id)
-      rescue GdsApi::HTTPNotFound, GdsApi::HTTPUnprocessableEntity # rubocop:disable Lint/HandleExceptions
-      end
-    }
+    PublishingApiDraftSectionDiscarder.new(self)
   end
 
   def publishing_api_v2
