@@ -1,10 +1,6 @@
 require "services"
 
 class AbstractSectionServiceRegistry
-  def document_renderer
-    SectionRenderer.new
-  end
-
   def section_builder
     SectionBuilder.create
   end
