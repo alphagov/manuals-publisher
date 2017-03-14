@@ -1,4 +1,5 @@
 require "show_section_service"
+require "new_section_service"
 
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
@@ -17,7 +18,11 @@ class SectionsController < ApplicationController
   end
 
   def new
-    manual, section = services.new(self).call
+    service = NewSectionService.new(
+      services.manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
