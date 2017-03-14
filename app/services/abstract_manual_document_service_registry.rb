@@ -117,7 +117,7 @@ private
 
   def publishing_api_draft_manual_document_exporter
     ->(manual_document, manual) {
-      ManualSectionPublishingAPILinksExporter.new(
+      SectionPublishingAPILinksExporter.new(
         publishing_api_v2.method(:patch_links),
         organisation(manual.attributes.fetch(:organisation_slug)),
         manual,

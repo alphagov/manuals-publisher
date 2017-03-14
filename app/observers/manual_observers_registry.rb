@@ -179,7 +179,7 @@ private
       manual.documents.each do |document|
         next if !document.needs_exporting? && action != :republish
 
-        ManualSectionPublishingAPILinksExporter.new(
+        SectionPublishingAPILinksExporter.new(
           patch_links, organisation, manual, document
         ).call
 
