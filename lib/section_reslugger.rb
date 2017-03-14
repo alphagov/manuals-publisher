@@ -1,7 +1,7 @@
 require "gds_api/content_store"
 require "manual_service_registry"
 
-class ManualSectionReslugger
+class SectionReslugger
   RUMMAGER_FORMAT = "manual_section".freeze
   class Error < RuntimeError; end
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require File.expand_path("../../config/environment", __FILE__)
-require "manual_section_reslugger"
+require "section_reslugger"
 require "logger"
 
 def usage
@@ -37,8 +37,8 @@ new_slug = ARGV[2]
 logger.info "Renaming manual document slug"
 
 begin
-  ManualSectionReslugger.new(manual_slug, current_slug, new_slug).call
+  SectionReslugger.new(manual_slug, current_slug, new_slug).call
   logger.info "Republishing of manual section complete."
-rescue ManualSectionReslugger::Error => e
+rescue SectionReslugger::Error => e
   logger.error(e)
 end
