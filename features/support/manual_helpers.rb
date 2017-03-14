@@ -332,7 +332,7 @@ module ManualHelpers
   def check_manual_section_is_published_to_rummager(slug, attrs, manual_attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
-        ManualSectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
         "/#{slug}",
         hash_including(
           title: "#{manual_attrs.fetch(:title)}: #{attrs.fetch(:section_title)}",
@@ -345,7 +345,7 @@ module ManualHelpers
   def check_manual_section_is_not_published_to_rummager(slug)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        ManualSectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
         "/#{slug}",
         anything
       )
@@ -354,7 +354,7 @@ module ManualHelpers
   def check_manual_section_is_not_published_to_rummager_with_attrs(slug, attrs, manual_attrs)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        ManualSectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
         "/#{slug}",
         hash_including(
           title: "#{manual_attrs.fetch(:title)}: #{attrs.fetch(:section_title)}",
@@ -468,7 +468,7 @@ module ManualHelpers
     documents.each do |document|
       expect(fake_rummager).to have_received(:delete_document)
         .with(
-          ManualSectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+          SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
           "/#{document.slug}",
         )
     end
@@ -477,7 +477,7 @@ module ManualHelpers
   def check_manual_document_is_withdrawn_from_rummager(document)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
-        ManualSectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
         "/#{document.slug}",
       )
   end
