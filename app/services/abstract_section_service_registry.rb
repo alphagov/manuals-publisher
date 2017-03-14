@@ -12,8 +12,4 @@ class AbstractSectionServiceRegistry
   def publishing_api_v2
     Services.publishing_api_v2
   end
-
-  def organisations_api
-    Services.organisations
-  end
 end
