@@ -165,7 +165,7 @@ class SectionsController < ApplicationController
       self,
       listeners: [
         PublishingApiDraftManualExporter.new(services),
-        services.publishing_api_draft_section_discarder
+        PublishingApiDraftSectionDiscarder.new(services)
       ]
     )
     manual, section = service.call
