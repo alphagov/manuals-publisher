@@ -82,7 +82,7 @@ private
       context: context_for_section_edition_update,
       listeners: [
         PublishingApiDraftManualExporter.new(services),
-        services.publishing_api_draft_section_exporter
+        PublishingApiDraftSectionExporter.new(services)
       ],
     )
     _manual, document = service.call

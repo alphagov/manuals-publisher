@@ -9,10 +9,6 @@ class AbstractSectionServiceRegistry
     OrganisationFetcher.instance.call(slug)
   end
 
-  def publishing_api_draft_section_exporter
-    PublishingApiDraftSectionExporter.new(self)
-  end
-
   def publishing_api_draft_section_discarder
     PublishingApiDraftSectionDiscarder.new(self)
   end

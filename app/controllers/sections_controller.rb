@@ -41,7 +41,7 @@ class SectionsController < ApplicationController
       manual_repository: services.manual_repository,
       listeners: [
         PublishingApiDraftManualExporter.new(services),
-        services.publishing_api_draft_section_exporter
+        PublishingApiDraftSectionExporter.new(services)
       ],
       context: self,
     )
@@ -76,7 +76,7 @@ class SectionsController < ApplicationController
       context: self,
       listeners: [
         PublishingApiDraftManualExporter.new(services),
-        services.publishing_api_draft_section_exporter
+        PublishingApiDraftSectionExporter.new(services)
       ],
     )
     manual, section = service.call
