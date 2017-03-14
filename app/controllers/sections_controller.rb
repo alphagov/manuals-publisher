@@ -1,5 +1,6 @@
 require "show_section_service"
 require "new_section_service"
+require "create_section_service"
 
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
@@ -31,7 +32,15 @@ class SectionsController < ApplicationController
   end
 
   def create
-    manual, section = services.create(self).call
+    service = CreateSectionService.new(
+      manual_repository: services.manual_repository,
+      listeners: [
+        services.publishing_api_draft_manual_exporter,
+        services.publishing_api_draft_section_exporter
+      ],
+      context: self,
+    )
+    manual, section = service.call
 
     if section.valid?
       redirect_to(manual_path(manual))

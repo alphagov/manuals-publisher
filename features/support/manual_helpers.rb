@@ -1,3 +1,5 @@
+require "create_section_service"
+
 module ManualHelpers
   def manual_repository
     RepositoryRegistry.create.manual_repository
@@ -47,7 +49,15 @@ module ManualHelpers
       }
     )
 
-    _, document = section_services.create(create_service_context).call
+    service = CreateSectionService.new(
+      manual_repository: section_services.manual_repository,
+      listeners: [
+        section_services.publishing_api_draft_manual_exporter,
+        section_services.publishing_api_draft_section_exporter
+      ],
+      context: create_service_context,
+    )
+    _, document = service.call
 
     document
   end

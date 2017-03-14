@@ -1,5 +1,4 @@
 require "preview_section_service"
-require "create_section_service"
 require "update_section_service"
 require "list_sections_service"
 require "reorder_sections_service"
@@ -13,17 +12,6 @@ class AbstractSectionServiceRegistry
       section_builder,
       document_renderer,
       context,
-    )
-  end
-
-  def create(context)
-    CreateSectionService.new(
-      manual_repository: manual_repository,
-      listeners: [
-        publishing_api_draft_manual_exporter,
-        publishing_api_draft_section_exporter
-      ],
-      context: context,
     )
   end
 
