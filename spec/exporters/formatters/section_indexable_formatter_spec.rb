@@ -4,7 +4,7 @@ require "formatters/section_indexable_formatter"
 RSpec.describe SectionIndexableFormatter do
   let(:section) {
     double(
-      :manual_section,
+      :section,
       title: double,
       summary: double,
       slug: "",
