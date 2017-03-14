@@ -1,18 +1,6 @@
-require "remove_section_service"
 require "services"
 
 class AbstractSectionServiceRegistry
-  def remove(context)
-    RemoveSectionService.new(
-      manual_repository,
-      context,
-      listeners: [
-        publishing_api_draft_manual_exporter,
-        publishing_api_draft_section_discarder
-      ]
-    )
-  end
-
   def document_renderer
     SectionRenderer.new
   end

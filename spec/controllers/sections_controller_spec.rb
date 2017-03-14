@@ -32,11 +32,11 @@ describe SectionsController, type: :controller do
   describe "#destroy" do
     let(:manual_id) { "manual-1" }
     let(:document_id) { "section-1" }
-    let(:services) { spy(AbstractSectionServiceRegistry) }
+    let(:service) { spy(RemoveSectionService) }
     before do
       login_as_stub_user
       allow_any_instance_of(PermissionChecker).to receive(:can_withdraw?).and_return(false)
-      allow(controller).to receive(:services).and_return services
+      allow(RemoveSectionService).to receive(:new).and_return(service)
       delete :destroy, manual_id: manual_id, id: document_id
     end
 
@@ -53,7 +53,7 @@ describe SectionsController, type: :controller do
     end
 
     it "does not withdraw the manual" do
-      expect(services).not_to have_received(:remove)
+      expect(service).not_to have_received(:call)
     end
 
     it "sets the authenticated user header" do

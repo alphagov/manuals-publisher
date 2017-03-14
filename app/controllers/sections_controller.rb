@@ -5,6 +5,7 @@ require "update_section_service"
 require "preview_section_service"
 require "list_sections_service"
 require "reorder_sections_service"
+require "remove_section_service"
 
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
@@ -159,7 +160,15 @@ class SectionsController < ApplicationController
   end
 
   def destroy
-    manual, section = services.remove(self).call
+    service = RemoveSectionService.new(
+      services.manual_repository,
+      self,
+      listeners: [
+        services.publishing_api_draft_manual_exporter,
+        services.publishing_api_draft_section_discarder
+      ]
+    )
+    manual, section = service.call
 
     if section.valid?
       redirect_to(
