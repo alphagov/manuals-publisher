@@ -10,21 +10,7 @@ class AbstractSectionServiceRegistry
   end
 
   def publishing_api_draft_manual_exporter
-    ->(_, manual) {
-      ManualPublishingAPILinksExporter.new(
-        publishing_api_v2.method(:patch_links),
-        organisation(manual.attributes.fetch(:organisation_slug)),
-        manual
-      ).call
-
-      ManualPublishingAPIExporter.new(
-        publishing_api_v2.method(:put_content),
-        organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualRenderer.new,
-        PublicationLog,
-        manual
-      ).call
-    }
+    PublishingApiDraftManualExporter.new(self)
   end
 
   def publishing_api_draft_section_exporter
