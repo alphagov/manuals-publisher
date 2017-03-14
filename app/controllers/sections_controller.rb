@@ -4,6 +4,7 @@ require "create_section_service"
 require "update_section_service"
 require "preview_section_service"
 require "list_sections_service"
+require "reorder_sections_service"
 
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
@@ -129,7 +130,12 @@ class SectionsController < ApplicationController
   end
 
   def update_order
-    manual, _sections = services.update_order(self).call
+    service = ReorderSectionsService.new(
+      services.manual_repository,
+      self,
+      listeners: [services.publishing_api_draft_manual_exporter]
+    )
+    manual, _sections = service.call
 
     redirect_to(
       manual_path(manual),

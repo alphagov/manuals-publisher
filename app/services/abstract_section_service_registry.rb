@@ -1,16 +1,7 @@
-require "reorder_sections_service"
 require "remove_section_service"
 require "services"
 
 class AbstractSectionServiceRegistry
-  def update_order(context)
-    ReorderSectionsService.new(
-      manual_repository,
-      context,
-      listeners: [publishing_api_draft_manual_exporter]
-    )
-  end
-
   def remove(context)
     RemoveSectionService.new(
       manual_repository,
