@@ -1,19 +1,9 @@
-require "preview_section_service"
 require "list_sections_service"
 require "reorder_sections_service"
 require "remove_section_service"
 require "services"
 
 class AbstractSectionServiceRegistry
-  def preview(context)
-    PreviewSectionService.new(
-      manual_repository,
-      section_builder,
-      document_renderer,
-      context,
-    )
-  end
-
   def list(context)
     ListSectionsService.new(
       manual_repository,

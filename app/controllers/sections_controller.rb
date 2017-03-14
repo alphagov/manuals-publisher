@@ -2,6 +2,7 @@ require "show_section_service"
 require "new_section_service"
 require "create_section_service"
 require "update_section_service"
+require "preview_section_service"
 
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
@@ -88,7 +89,13 @@ class SectionsController < ApplicationController
   end
 
   def preview
-    section = services.preview(self).call
+    service = PreviewSectionService.new(
+      services.manual_repository,
+      services.section_builder,
+      services.document_renderer,
+      self,
+    )
+    section = service.call
 
     section.valid? # Force validation check or errors will be empty
 
