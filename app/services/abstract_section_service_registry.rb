@@ -1,10 +1,6 @@
 require "services"
 
 class AbstractSectionServiceRegistry
-  def section_builder
-    SectionBuilder.create
-  end
-
   def manual_repository
     raise NotImplementedError
   end
