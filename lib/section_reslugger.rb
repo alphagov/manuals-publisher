@@ -81,7 +81,7 @@ private
       manual_repository: services.manual_repository,
       context: context_for_section_edition_update,
       listeners: [
-        services.publishing_api_draft_manual_exporter,
+        PublishingApiDraftManualExporter.new(services),
         services.publishing_api_draft_section_exporter
       ],
     )

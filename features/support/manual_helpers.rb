@@ -53,7 +53,7 @@ module ManualHelpers
     service = CreateSectionService.new(
       manual_repository: section_services.manual_repository,
       listeners: [
-        section_services.publishing_api_draft_manual_exporter,
+        PublishingApiDraftManualExporter.new(section_services),
         section_services.publishing_api_draft_section_exporter
       ],
       context: create_service_context,
@@ -114,7 +114,7 @@ module ManualHelpers
       manual_repository: section_services.manual_repository,
       context: service_context,
       listeners: [
-        section_services.publishing_api_draft_manual_exporter,
+        PublishingApiDraftManualExporter.new(section_services),
         section_services.publishing_api_draft_section_exporter
       ],
     )
