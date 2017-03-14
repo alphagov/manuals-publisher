@@ -29,7 +29,7 @@ When(/^I remove one of the documents from the manual with a minor update$/) do
 end
 
 Then(/^the document is removed from the manual$/) do
-  check_manual_section_was_removed(@manual.id, @removed_document.id)
+  check_section_was_removed(@manual.id, @removed_document.id)
   check_draft_has_been_discarded_in_publishing_api(@removed_document.id)
 
   # Check that no child section has the removed document's title

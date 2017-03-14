@@ -82,7 +82,7 @@ RSpec.describe "Republishing manuals", type: :feature do
           description: document.attributes[:summary],
         })
         check_manual_document_is_published_to_publishing_api(document.id)
-        check_manual_section_is_published_to_rummager(document.slug, document_fields(document), manual_fields)
+        check_section_is_published_to_rummager(document.slug, document_fields(document), manual_fields)
       end
     end
 
@@ -111,7 +111,7 @@ RSpec.describe "Republishing manuals", type: :feature do
           description: document.attributes[:summary],
         })
         check_manual_document_is_not_published_to_publishing_api(document.id)
-        check_manual_section_is_not_published_to_rummager(document.slug)
+        check_section_is_not_published_to_rummager(document.slug)
       end
     end
 
@@ -143,7 +143,7 @@ RSpec.describe "Republishing manuals", type: :feature do
           description: edited_fields[:summary],
         })
         check_manual_document_is_published_to_publishing_api(document.id)
-        check_manual_section_is_published_to_rummager(document.slug, document_fields(document), manual_fields)
+        check_section_is_published_to_rummager(document.slug, document_fields(document), manual_fields)
       end
     end
 
@@ -164,7 +164,7 @@ RSpec.describe "Republishing manuals", type: :feature do
         # we can't check that it's not published (because one version will be)
         # all we can check is that it was only published once
         check_manual_document_is_published_to_publishing_api(document.id, times: 1)
-        check_manual_section_is_not_published_to_rummager_with_attrs(document.slug, document_fields(document), edited_manual_fields)
+        check_section_is_not_published_to_rummager_with_attrs(document.slug, document_fields(document), edited_manual_fields)
       end
     end
 

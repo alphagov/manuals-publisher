@@ -167,13 +167,13 @@ module ManualHelpers
     end
   end
 
-  def check_manual_section_exists(manual_id, section_id)
+  def check_section_exists(manual_id, section_id)
     manual = manual_repository.fetch(manual_id)
 
     manual.documents.any? { |document| document.id == section_id }
   end
 
-  def check_manual_section_was_removed(manual_id, section_id)
+  def check_section_was_removed(manual_id, section_id)
     manual = manual_repository.fetch(manual_id)
 
     manual.removed_documents.any? { |document| document.id == section_id }
@@ -208,7 +208,7 @@ module ManualHelpers
     check_manual_document_is_published_to_publishing_api(document.id)
 
     check_manual_is_published_to_rummager(manual.slug, manual_attrs)
-    check_manual_section_is_published_to_rummager(document.slug, document_attrs, manual_attrs)
+    check_section_is_published_to_rummager(document.slug, document_attrs, manual_attrs)
   end
 
   def check_manual_was_published(manual)
@@ -329,7 +329,7 @@ module ManualHelpers
     assert_publishing_api_unpublish(content_id, unpublishing_attributes)
   end
 
-  def check_manual_section_is_published_to_rummager(slug, attrs, manual_attrs)
+  def check_section_is_published_to_rummager(slug, attrs, manual_attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
         SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
@@ -342,7 +342,7 @@ module ManualHelpers
       ).at_least(:once)
   end
 
-  def check_manual_section_is_not_published_to_rummager(slug)
+  def check_section_is_not_published_to_rummager(slug)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
         SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
@@ -351,7 +351,7 @@ module ManualHelpers
       )
   end
 
-  def check_manual_section_is_not_published_to_rummager_with_attrs(slug, attrs, manual_attrs)
+  def check_section_is_not_published_to_rummager_with_attrs(slug, attrs, manual_attrs)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
         SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
