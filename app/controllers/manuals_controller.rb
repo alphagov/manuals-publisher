@@ -13,7 +13,7 @@ class ManualsController < ApplicationController
 
   def index
     service = ListManualsService.new(
-      manual_repository: services.associationless_repository,
+      manual_repository: associationless_repository,
       context: self,
     )
     all_manuals = service.call
@@ -253,6 +253,10 @@ private
 
   def repository
     services.repository
+  end
+
+  def associationless_repository
+    services.associationless_repository
   end
 
   def authorize_user_for_publishing
