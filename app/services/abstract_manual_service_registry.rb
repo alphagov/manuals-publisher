@@ -1,21 +1,11 @@
-require "queue_publish_manual_service"
 require "preview_manual_service"
 require "publish_manual_service"
 require "republish_manual_service"
 require "withdraw_manual_service"
-require "publish_manual_worker"
 require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def queue_publish(manual_id)
-    QueuePublishManualService.new(
-      PublishManualWorker,
-      repository,
-      manual_id,
-    )
-  end
-
   def preview(manual_id, attributes)
     PreviewManualService.new(
       repository: repository,

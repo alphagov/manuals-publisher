@@ -2,6 +2,8 @@ require "list_manuals_service"
 require "show_manual_service"
 require "create_manual_service"
 require "update_manual_service"
+require "queue_publish_manual_service"
+require "publish_manual_worker"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
@@ -121,7 +123,12 @@ class ManualsController < ApplicationController
   end
 
   def publish
-    manual = services.queue_publish(manual_id).call
+    service = QueuePublishManualService.new(
+      PublishManualWorker,
+      services.repository,
+      manual_id,
+    )
+    manual = service.call
 
     redirect_to(
       manual_path(manual),
