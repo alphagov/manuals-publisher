@@ -8,7 +8,7 @@ ManualsPublisher::Application.routes.draw do
 
   resources :manuals, except: :destroy do
     resources :documents, path: "sections", controller: "Sections" do
-      resources :attachments, controller: :manual_document_attachments, only: [:new, :create, :edit, :update]
+      resources :attachments, controller: :section_attachments, only: [:new, :create, :edit, :update]
 
       # This is for persisted manual documents
       post :preview, on: :member

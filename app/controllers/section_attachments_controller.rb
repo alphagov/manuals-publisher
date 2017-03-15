@@ -3,7 +3,7 @@ require "update_manual_document_attachment_service"
 require "show_manual_document_attachment_service"
 require "new_manual_document_attachment_service"
 
-class ManualDocumentAttachmentsController < ApplicationController
+class SectionAttachmentsController < ApplicationController
   def new
     service = NewManualDocumentAttachmentService.new(
       repository,
