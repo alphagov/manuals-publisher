@@ -1,8 +1,14 @@
+require "list_manuals_service"
+
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
 
   def index
-    all_manuals = services.list(self).call
+    service = ListManualsService.new(
+      manual_repository: services.associationless_repository,
+      context: self,
+    )
+    all_manuals = service.call
 
     render(:index, locals: { manuals: all_manuals })
   end

@@ -1,4 +1,3 @@
-require "list_manuals_service"
 require "create_manual_service"
 require "update_manual_service"
 require "show_manual_service"
@@ -12,13 +11,6 @@ require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def list(context)
-    ListManualsService.new(
-      manual_repository: associationless_repository,
-      context: context,
-    )
-  end
-
   def new(_context)
     ->() { manual_builder.call(title: "") }
   end
