@@ -4,26 +4,26 @@ class SectionViewAdapter < SimpleDelegator
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
-  def initialize(manual, document)
+  def initialize(manual, section)
     @manual = manual
-    @document = document
-    super(document)
+    @section = section
+    super(section)
   end
 
   def persisted?
-    document.updated_at || document.published?
+    section.updated_at || section.published?
   end
 
   def minor_update
-    document.draft? ? document.minor_update : false
+    section.draft? ? section.minor_update : false
   end
 
   def change_note
-    document.draft? ? document.change_note : ""
+    section.draft? ? section.change_note : ""
   end
 
   def to_param
-    document.id
+    section.id
   end
 
   def self.model_name
@@ -32,5 +32,5 @@ class SectionViewAdapter < SimpleDelegator
 
 private
 
-  attr_reader :manual, :document
+  attr_reader :manual, :section
 end
