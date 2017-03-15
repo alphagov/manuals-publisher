@@ -1,6 +1,4 @@
 class ManualServiceRegistry < AbstractManualServiceRegistry
-private
-
   def associationless_repository
     RepositoryRegistry.create
       .associationless_manual_repository

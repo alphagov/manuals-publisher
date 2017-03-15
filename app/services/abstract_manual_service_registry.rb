@@ -100,8 +100,6 @@ class AbstractManualServiceRegistry
     )
   end
 
-private
-
   def manual_renderer
     ManualRenderer.new
   end
