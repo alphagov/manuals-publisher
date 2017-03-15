@@ -1,4 +1,5 @@
 require "list_manuals_service"
+require "show_manual_service"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
@@ -14,7 +15,11 @@ class ManualsController < ApplicationController
   end
 
   def show
-    manual, metadata = services.show(manual_id).call
+    service = ShowManualService.new(
+      manual_repository: services.repository,
+      manual_id: manual_id,
+    )
+    manual, metadata = service.call
     slug_unique = metadata.fetch(:slug_unique)
     clashing_sections = metadata.fetch(:clashing_sections)
 
@@ -49,7 +54,11 @@ class ManualsController < ApplicationController
   end
 
   def edit
-    manual, _metadata = services.show(manual_id).call
+    service = ShowManualService.new(
+      manual_repository: services.repository,
+      manual_id: manual_id,
+    )
+    manual, _metadata = service.call
 
     render(:edit, locals: { manual: manual_form(manual) })
   end
@@ -68,7 +77,11 @@ class ManualsController < ApplicationController
   end
 
   def edit_original_publication_date
-    manual, _metadata = services.show(manual_id).call
+    service = ShowManualService.new(
+      manual_repository: services.repository,
+      manual_id: manual_id,
+    )
+    manual, _metadata = service.call
 
     render(:edit_original_publication_date, locals: { manual: manual_form(manual) })
   end

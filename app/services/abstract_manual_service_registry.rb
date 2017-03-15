@@ -1,6 +1,5 @@
 require "create_manual_service"
 require "update_manual_service"
-require "show_manual_service"
 require "queue_publish_manual_service"
 require "preview_manual_service"
 require "publish_manual_service"
@@ -30,13 +29,6 @@ class AbstractManualServiceRegistry
       manual_id: manual_id,
       attributes: attributes,
       listeners: observers.update,
-    )
-  end
-
-  def show(manual_id)
-    ShowManualService.new(
-      manual_repository: repository,
-      manual_id: manual_id,
     )
   end
 
