@@ -1,5 +1,5 @@
 require "validators/change_note_validator"
-require "validators/manual_document_validator"
+require "validators/section_validator"
 require "validators/manual_validator"
 require "validators/null_validator"
 
@@ -37,7 +37,7 @@ class DocumentFactoryRegistry
         slug_generator = SlugGenerator.new(prefix: manual.slug)
 
         ChangeNoteValidator.new(
-          ManualDocumentValidator.new(
+          SectionValidator.new(
             Section.new(
               slug_generator,
               id,

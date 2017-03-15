@@ -1,7 +1,7 @@
 require "delegate"
 require "validators/safe_html_validator"
 
-class ManualDocumentValidator < SimpleDelegator
+class SectionValidator < SimpleDelegator
   include ActiveModel::Validations
 
   validates :summary, presence: true
