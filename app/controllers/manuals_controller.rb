@@ -262,7 +262,14 @@ private
   end
 
   def associationless_repository
-    services.associationless_repository
+    if current_user_is_gds_editor?
+      RepositoryRegistry.create
+        .associationless_manual_repository
+    else
+      associationless_manual_repository_factory = RepositoryRegistry.create
+        .associationless_organisation_scoped_manual_repository_factory
+      associationless_manual_repository_factory.call(current_organisation_slug)
+    end
   end
 
   def authorize_user_for_publishing
