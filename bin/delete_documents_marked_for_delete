@@ -2,13 +2,8 @@
 
 require File.expand_path("../../config/environment", __FILE__)
 
-require "gds_api/publishing_api_v2"
-
 def publishing_api
-  @publishing_api ||= GdsApi::PublishingApiV2.new(
-    Plek.new.find("publishing-api"),
-    bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
-  )
+  PublishingApiV2.instance
 end
 
 def in_publishing_api?(content_id)
