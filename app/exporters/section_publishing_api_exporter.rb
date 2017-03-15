@@ -6,7 +6,6 @@ class SectionPublishingAPIExporter
 
   def initialize(organisation, manual, document, update_type: nil)
     @organisation = organisation
-    @document_renderer = ManualDocumentRenderer.new
     @manual = manual
     @document = document
     @update_type = update_type
@@ -19,7 +18,7 @@ class SectionPublishingAPIExporter
 
 private
 
-  attr_reader :document_renderer, :organisation, :manual, :document
+  attr_reader :organisation, :manual, :document
 
   def content_id
     document.id
@@ -113,7 +112,7 @@ private
   end
 
   def rendered_document_attributes
-    @rendered_document_attributes ||= document_renderer.call(document).attributes
+    @rendered_document_attributes ||= ManualDocumentRenderer.new.call(document).attributes
   end
 
   def organisation_info

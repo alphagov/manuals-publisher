@@ -81,7 +81,7 @@ describe SectionPublishingAPIExporter do
 
   before {
     allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
-    allow(subject).to receive(:document_renderer).and_return(document_renderer)
+    allow(ManualDocumentRenderer).to receive(:new).and_return(document_renderer)
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do
