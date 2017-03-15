@@ -1,9 +1,9 @@
 require "manual_publishing_api_exporter"
-require "manual_section_publishing_api_exporter"
+require "section_publishing_api_exporter"
 require "publishing_api_withdrawer"
 require "rummager_indexer"
 require "formatters/manual_indexable_formatter"
-require "formatters/manual_section_indexable_formatter"
+require "formatters/section_indexable_formatter"
 
 class ManualObserversRegistry
   def publication
@@ -92,7 +92,7 @@ private
 
       manual.documents.each do |section|
         indexer.add(
-          ManualSectionIndexableFormatter.new(
+          SectionIndexableFormatter.new(
             MarkdownAttachmentProcessor.new(section),
             manual,
           )
@@ -101,7 +101,7 @@ private
 
       manual.removed_documents.each do |section|
         indexer.delete(
-          ManualSectionIndexableFormatter.new(section, manual),
+          SectionIndexableFormatter.new(section, manual),
         )
       end
     }
@@ -117,7 +117,7 @@ private
 
       manual.documents.each do |section|
         indexer.delete(
-          ManualSectionIndexableFormatter.new(
+          SectionIndexableFormatter.new(
             MarkdownAttachmentProcessor.new(section),
             manual,
           )
@@ -179,11 +179,11 @@ private
       manual.documents.each do |document|
         next if !document.needs_exporting? && action != :republish
 
-        ManualSectionPublishingAPILinksExporter.new(
+        SectionPublishingAPILinksExporter.new(
           patch_links, organisation, manual, document
         ).call
 
-        ManualSectionPublishingAPIExporter.new(
+        SectionPublishingAPIExporter.new(
           put_content, organisation, manual_document_renderer, manual, document, update_type: update_type
         ).call
       end

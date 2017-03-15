@@ -1,6 +1,6 @@
 require "formatters/abstract_indexable_formatter"
 
-class ManualSectionIndexableFormatter < AbstractIndexableFormatter
+class SectionIndexableFormatter < AbstractIndexableFormatter
   RUMMAGER_DOCUMENT_TYPE = "manual_section".freeze
 
   def initialize(section, manual)

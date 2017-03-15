@@ -2,9 +2,9 @@ require "fast_spec_helper"
 require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
-require "manual_section_publishing_api_exporter"
+require "section_publishing_api_exporter"
 
-describe ManualSectionPublishingAPIExporter do
+describe SectionPublishingAPIExporter do
   subject {
     described_class.new(
       export_recipient,
@@ -134,8 +134,8 @@ describe ManualSectionPublishingAPIExporter do
       all_of(
         hash_including(
           base_path: document_base_path,
-          schema_name: ManualSectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
-          document_type: ManualSectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
+          schema_name: SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
+          document_type: SectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
           title: "Document title",
           description: "This is the first section",
           update_type: "minor",

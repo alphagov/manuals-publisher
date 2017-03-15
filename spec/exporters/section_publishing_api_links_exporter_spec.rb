@@ -1,11 +1,11 @@
 require "fast_spec_helper"
 require "support/govuk_content_schema_helpers"
 
-require "manual_section_publishing_api_links_exporter"
+require "section_publishing_api_links_exporter"
 
-describe ManualSectionPublishingAPILinksExporter do
+describe SectionPublishingAPILinksExporter do
   subject {
-    ManualSectionPublishingAPILinksExporter.new(
+    SectionPublishingAPILinksExporter.new(
       export_recipient,
       organisation,
       manual,
@@ -59,6 +59,6 @@ describe ManualSectionPublishingAPILinksExporter do
   end
 
   it "exports links valid against the schema" do
-    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_links_schema(ManualSectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME)
+    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_links_schema(SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME)
   end
 end
