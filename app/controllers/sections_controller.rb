@@ -136,7 +136,7 @@ private
   end
 
   def organisational_services
-    OrganisationalManualDocumentServiceRegistry.new(
+    OrganisationalSectionServiceRegistry.new(
       organisation_slug: current_organisation_slug,
     )
   end

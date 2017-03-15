@@ -36,7 +36,7 @@ module ManualHelpers
   end
 
   def create_manual_document_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    manual_document_services = OrganisationalManualDocumentServiceRegistry.new(
+    manual_document_services = OrganisationalSectionServiceRegistry.new(
       organisation_slug: organisation_slug,
     )
 
@@ -87,7 +87,7 @@ module ManualHelpers
   end
 
   def edit_manual_document_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
-    manual_document_services = OrganisationalManualDocumentServiceRegistry.new(
+    manual_document_services = OrganisationalSectionServiceRegistry.new(
       organisation_slug: organisation_slug,
     )
 

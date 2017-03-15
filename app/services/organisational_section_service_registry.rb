@@ -1,4 +1,4 @@
-class OrganisationalManualDocumentServiceRegistry < AbstractManualDocumentServiceRegistry
+class OrganisationalSectionServiceRegistry < AbstractManualDocumentServiceRegistry
   def initialize(organisation_slug:)
     @organisation_slug = organisation_slug
   end
