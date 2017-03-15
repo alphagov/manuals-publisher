@@ -13,7 +13,7 @@ describe SectionPublishingAPIExporter do
     )
   }
 
-  let(:export_recipient) { double(:export_recipient, call: nil) }
+  let(:publishing_api) { double(:publishing_api, put_content: nil) }
   let(:document_renderer) { ->(_) { double(:rendered_document, attributes: rendered_attributes) } }
 
   let(:organisation) {
@@ -80,7 +80,7 @@ describe SectionPublishingAPIExporter do
   }
 
   before {
-    allow(subject).to receive(:export_recipient).and_return(export_recipient)
+    allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
     allow(subject).to receive(:document_renderer).and_return(document_renderer)
   }
 
@@ -126,7 +126,7 @@ describe SectionPublishingAPIExporter do
   it "exports the serialized document attributes" do
     subject.call
 
-    expect(export_recipient).to have_received(:call).with(
+    expect(publishing_api).to have_received(:put_content).with(
       document.id,
       all_of(
         hash_including(
@@ -159,7 +159,7 @@ describe SectionPublishingAPIExporter do
     it "adds it as the value for first_published_at in the serialized attributes" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         document.id,
         hash_including(
           first_published_at: previously_published_date.iso8601,
@@ -171,7 +171,7 @@ describe SectionPublishingAPIExporter do
       allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(true)
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         document.id,
         hash_including(
           public_updated_at: previously_published_date.iso8601,
@@ -183,7 +183,7 @@ describe SectionPublishingAPIExporter do
       allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(false)
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         document.id,
         hash_excluding(:public_updated_at)
       )
@@ -216,7 +216,7 @@ describe SectionPublishingAPIExporter do
         let(:explicit_update_type) { "republish" }
         it "exports with the update_type set to republish" do
           subject.call
-          expect(export_recipient).to have_received(:call).with(
+          expect(publishing_api).to have_received(:put_content).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
             hash_including(update_type: "republish")
           )
@@ -227,7 +227,7 @@ describe SectionPublishingAPIExporter do
         let(:explicit_update_type) { "minor" }
         it "exports with the update_type set to minor" do
           subject.call
-          expect(export_recipient).to have_received(:call).with(
+          expect(publishing_api).to have_received(:put_content).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
             hash_including(update_type: "minor")
           )
@@ -238,7 +238,7 @@ describe SectionPublishingAPIExporter do
         let(:explicit_update_type) { "major" }
         it "exports with the update_type set to major" do
           subject.call
-          expect(export_recipient).to have_received(:call).with(
+          expect(publishing_api).to have_received(:put_content).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
             hash_including(update_type: "major")
           )
@@ -258,7 +258,7 @@ describe SectionPublishingAPIExporter do
         allow(document).to receive(:has_ever_been_published?).and_return(false)
         subject.call
 
-        expect(export_recipient).to have_received(:call).with(
+        expect(publishing_api).to have_received(:put_content).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "major")
         )
@@ -267,7 +267,7 @@ describe SectionPublishingAPIExporter do
       it "sets it to minor if the document has been published before" do
         subject.call
 
-        expect(export_recipient).to have_received(:call).with(
+        expect(publishing_api).to have_received(:put_content).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "minor")
         )
@@ -288,7 +288,7 @@ describe SectionPublishingAPIExporter do
         update_type_attributes[:ever_been_published] = false
         subject.call
 
-        expect(export_recipient).to have_received(:call).with(
+        expect(publishing_api).to have_received(:put_content).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "major")
         )
@@ -297,7 +297,7 @@ describe SectionPublishingAPIExporter do
       it "sets it to major if the document has been published before" do
         subject.call
 
-        expect(export_recipient).to have_received(:call).with(
+        expect(publishing_api).to have_received(:put_content).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
           hash_including(update_type: "major")
         )
@@ -310,7 +310,7 @@ describe SectionPublishingAPIExporter do
   it "exports section metadata for the document" do
     subject.call
 
-    expect(export_recipient).to have_received(:call).with(
+    expect(publishing_api).to have_received(:put_content).with(
       document.id,
       hash_including(
         details: {
