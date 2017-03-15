@@ -3,7 +3,7 @@ require "create_section_service"
 require "update_section_service"
 require "show_section_service"
 require "new_section_service"
-require "list_manual_documents_service"
+require "list_sections_service"
 require "reorder_manual_documents_service"
 require "remove_section_service"
 require "services"
@@ -55,7 +55,7 @@ class AbstractSectionServiceRegistry
   end
 
   def list(context)
-    ListManualDocumentsService.new(
+    ListSectionsService.new(
       manual_repository,
       context,
     )
