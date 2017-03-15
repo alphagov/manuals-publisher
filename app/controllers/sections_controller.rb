@@ -40,8 +40,8 @@ class SectionsController < ApplicationController
     service = CreateSectionService.new(
       manual_repository: services.manual_repository,
       listeners: [
-        PublishingApiDraftManualExporter.new(services),
-        PublishingApiDraftSectionExporter.new(services)
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionExporter.new
       ],
       context: self,
     )
@@ -75,8 +75,8 @@ class SectionsController < ApplicationController
       manual_repository: services.manual_repository,
       context: self,
       listeners: [
-        PublishingApiDraftManualExporter.new(services),
-        PublishingApiDraftSectionExporter.new(services)
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionExporter.new
       ],
     )
     manual, section = service.call
@@ -134,7 +134,7 @@ class SectionsController < ApplicationController
     service = ReorderSectionsService.new(
       services.manual_repository,
       self,
-      listeners: [PublishingApiDraftManualExporter.new(services)]
+      listeners: [PublishingApiDraftManualExporter.new]
     )
     manual, _sections = service.call
 
@@ -164,8 +164,8 @@ class SectionsController < ApplicationController
       services.manual_repository,
       self,
       listeners: [
-        PublishingApiDraftManualExporter.new(services),
-        PublishingApiDraftSectionDiscarder.new(services)
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionDiscarder.new
       ]
     )
     manual, section = service.call

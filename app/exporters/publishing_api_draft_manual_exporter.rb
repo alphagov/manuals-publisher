@@ -1,8 +1,4 @@
 class PublishingApiDraftManualExporter
-  def initialize(services)
-    @services = services
-  end
-
   def call(_, manual)
     ManualPublishingAPILinksExporter.new(
       Services.publishing_api_v2.method(:patch_links),
