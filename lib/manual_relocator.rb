@@ -199,7 +199,7 @@ private
     manual.documents.each do |document|
       puts "Sending a draft of manual section #{document.id} (version: #{document.version_number})"
       SectionPublishingAPIExporter.new(
-        put_content, organisation, manual_document_renderer, manual, document
+        organisation, manual_document_renderer, manual, document
       ).call
     end
   end

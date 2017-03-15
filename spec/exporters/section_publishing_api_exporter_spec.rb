@@ -7,7 +7,6 @@ require "section_publishing_api_exporter"
 describe SectionPublishingAPIExporter do
   subject {
     described_class.new(
-      export_recipient,
       organisation,
       document_renderer,
       manual,
@@ -81,10 +80,13 @@ describe SectionPublishingAPIExporter do
     }
   }
 
+  before {
+    allow(subject).to receive(:export_recipient).and_return(export_recipient)
+  }
+
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
       described_class.new(
-        export_recipient,
         organisation,
         document_renderer,
         manual,
@@ -98,7 +100,6 @@ describe SectionPublishingAPIExporter do
     %w(major minor republish).each do |update_type|
       expect {
         described_class.new(
-          export_recipient,
           organisation,
           document_renderer,
           manual,
@@ -112,7 +113,6 @@ describe SectionPublishingAPIExporter do
   it "accepts explicitly setting nil as the option for update_type" do
     expect {
       described_class.new(
-        export_recipient,
         organisation,
         document_renderer,
         manual,
@@ -208,7 +208,6 @@ describe SectionPublishingAPIExporter do
     shared_examples_for "obeying the provided update_type" do
       subject {
         described_class.new(
-          export_recipient,
           organisation,
           document_renderer,
           manual,
@@ -260,7 +259,7 @@ describe SectionPublishingAPIExporter do
       end
 
       it "sets it to major if the document has never been published" do
-        update_type_attributes[:ever_been_published] = false
+        allow(document).to receive(:has_ever_been_published?).and_return(false)
         subject.call
 
         expect(export_recipient).to have_received(:call).with(

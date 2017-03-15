@@ -185,7 +185,7 @@ private
         ).call
 
         SectionPublishingAPIExporter.new(
-          put_content, organisation, manual_document_renderer, manual, document, update_type: update_type
+          organisation, manual_document_renderer, manual, document, update_type: update_type
         ).call
       end
     }
