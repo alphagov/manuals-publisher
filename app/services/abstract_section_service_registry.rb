@@ -4,7 +4,7 @@ require "update_section_service"
 require "show_section_service"
 require "new_section_service"
 require "list_sections_service"
-require "reorder_manual_documents_service"
+require "reorder_sections_service"
 require "remove_section_service"
 require "services"
 
@@ -62,7 +62,7 @@ class AbstractSectionServiceRegistry
   end
 
   def update_order(context)
-    ReorderManualDocumentsService.new(
+    ReorderSectionsService.new(
       manual_repository,
       context,
       listeners: [publishing_api_draft_manual_exporter]
