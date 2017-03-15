@@ -187,24 +187,6 @@ class SectionsController < ApplicationController
 
 private
 
-  def services
-    if current_user_is_gds_editor?
-      gds_editor_services
-    else
-      organisational_services
-    end
-  end
-
-  def gds_editor_services
-    SectionServiceRegistry.new
-  end
-
-  def organisational_services
-    OrganisationalSectionServiceRegistry.new(
-      organisation_slug: current_organisation_slug,
-    )
-  end
-
   def manual_repository
     if current_user_is_gds_editor?
       RepositoryRegistry.create.manual_repository
