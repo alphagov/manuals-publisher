@@ -13,6 +13,16 @@ describe Attachment do
     expect(attachment.snippet).to eq("[InlineAttachment:document.pdf]")
   end
 
+  context "#upload_file" do
+    it "raises an informative exception if the asset manager service can't be found" do
+      client = double('client')
+      allow(client).to receive(:create_asset).and_raise(GdsApi::HTTPNotFound.new(404))
+      allow(AttachmentApi).to receive(:client).and_return(client)
+      attachment = Attachment.new
+      expect { attachment.upload_file }.to raise_error(/Error uploading file. Is the Asset Manager service available\?/)
+    end
+  end
+
   context "#save" do
     let(:edition) do
       FactoryGirl.create(:section_edition)
