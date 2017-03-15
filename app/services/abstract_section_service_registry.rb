@@ -87,7 +87,7 @@ private
   end
 
   def manual_document_builder
-    ManualDocumentBuilder.create
+    SectionBuilder.create
   end
 
   def manual_repository

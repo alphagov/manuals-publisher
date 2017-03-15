@@ -3,7 +3,7 @@ require "validators/manual_document_validator"
 require "validators/manual_validator"
 require "validators/null_validator"
 
-require "builders/manual_document_builder"
+require "builders/section_builder"
 require "manual_with_documents"
 require "slug_generator"
 require "section"
@@ -28,7 +28,7 @@ class DocumentFactoryRegistry
   end
 
   def manual_document_builder
-    ManualDocumentBuilder.new(factory_factory: manual_document_factory_factory)
+    SectionBuilder.new(factory_factory: manual_document_factory_factory)
   end
 
   def manual_document_factory_factory

@@ -1,6 +1,6 @@
 require "securerandom"
 
-class ManualDocumentBuilder
+class SectionBuilder
   def self.create
     DocumentFactoryRegistry.validatable_document_factories.manual_document_builder
   end
