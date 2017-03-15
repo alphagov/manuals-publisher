@@ -15,7 +15,7 @@ class SectionsController < ApplicationController
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
-      section: ManualDocumentViewAdapter.new(manual, section)
+      section: SectionViewAdapter.new(manual, section)
     })
   end
 
@@ -27,7 +27,7 @@ class SectionsController < ApplicationController
     else
       render(:new, locals: {
         manual: ManualViewAdapter.new(manual),
-        section: ManualDocumentViewAdapter.new(manual, section),
+        section: SectionViewAdapter.new(manual, section),
       })
     end
   end
@@ -37,7 +37,7 @@ class SectionsController < ApplicationController
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
-      section: ManualDocumentViewAdapter.new(manual, section),
+      section: SectionViewAdapter.new(manual, section),
     })
   end
 
@@ -49,7 +49,7 @@ class SectionsController < ApplicationController
     else
       render(:edit, locals: {
         manual: ManualViewAdapter.new(manual),
-        section: ManualDocumentViewAdapter.new(manual, section),
+        section: SectionViewAdapter.new(manual, section),
       })
     end
   end
@@ -99,7 +99,7 @@ class SectionsController < ApplicationController
 
     render(:withdraw, locals: {
       manual: ManualViewAdapter.new(manual),
-      section: ManualDocumentViewAdapter.new(manual, section),
+      section: SectionViewAdapter.new(manual, section),
     })
   end
 
@@ -116,7 +116,7 @@ class SectionsController < ApplicationController
     else
       render(:withdraw, locals: {
         manual: ManualViewAdapter.new(manual),
-        section: ManualDocumentViewAdapter.new(manual, section),
+        section: SectionViewAdapter.new(manual, section),
       })
     end
   end

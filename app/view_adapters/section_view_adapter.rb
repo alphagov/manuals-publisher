@@ -1,6 +1,6 @@
 require "forwardable"
 
-class ManualDocumentViewAdapter < SimpleDelegator
+class SectionViewAdapter < SimpleDelegator
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
