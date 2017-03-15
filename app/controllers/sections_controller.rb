@@ -12,7 +12,7 @@ class SectionsController < ApplicationController
 
   def show
     service = ShowSectionService.new(
-      services.manual_repository,
+      manual_repository,
       self,
     )
     manual, section = service.call
@@ -25,7 +25,7 @@ class SectionsController < ApplicationController
 
   def new
     service = NewSectionService.new(
-      services.manual_repository,
+      manual_repository,
       self,
     )
     manual, section = service.call
@@ -38,7 +38,7 @@ class SectionsController < ApplicationController
 
   def create
     service = CreateSectionService.new(
-      manual_repository: services.manual_repository,
+      manual_repository: manual_repository,
       listeners: [
         PublishingApiDraftManualExporter.new,
         PublishingApiDraftSectionExporter.new
@@ -59,7 +59,7 @@ class SectionsController < ApplicationController
 
   def edit
     service = ShowSectionService.new(
-      services.manual_repository,
+      manual_repository,
       self,
     )
     manual, section = service.call
@@ -72,7 +72,7 @@ class SectionsController < ApplicationController
 
   def update
     service = UpdateSectionService.new(
-      manual_repository: services.manual_repository,
+      manual_repository: manual_repository,
       context: self,
       listeners: [
         PublishingApiDraftManualExporter.new,
@@ -93,7 +93,7 @@ class SectionsController < ApplicationController
 
   def preview
     service = PreviewSectionService.new(
-      services.manual_repository,
+      manual_repository,
       SectionBuilder.create,
       SectionRenderer.new,
       self,
@@ -119,7 +119,7 @@ class SectionsController < ApplicationController
 
   def reorder
     service = ListSectionsService.new(
-      services.manual_repository,
+      manual_repository,
       self,
     )
     manual, sections = service.call
@@ -132,7 +132,7 @@ class SectionsController < ApplicationController
 
   def update_order
     service = ReorderSectionsService.new(
-      services.manual_repository,
+      manual_repository,
       self,
       listeners: [PublishingApiDraftManualExporter.new]
     )
@@ -148,7 +148,7 @@ class SectionsController < ApplicationController
 
   def withdraw
     service = ShowSectionService.new(
-      services.manual_repository,
+      manual_repository,
       self,
     )
     manual, section = service.call
@@ -161,7 +161,7 @@ class SectionsController < ApplicationController
 
   def destroy
     service = RemoveSectionService.new(
-      services.manual_repository,
+      manual_repository,
       self,
       listeners: [
         PublishingApiDraftManualExporter.new,
@@ -203,6 +203,10 @@ private
     OrganisationalSectionServiceRegistry.new(
       organisation_slug: current_organisation_slug,
     )
+  end
+
+  def manual_repository
+    services.manual_repository
   end
 
   def authorize_user_for_withdrawing

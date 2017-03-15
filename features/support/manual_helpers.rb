@@ -42,6 +42,7 @@ module ManualHelpers
     section_services = OrganisationalSectionServiceRegistry.new(
       organisation_slug: organisation_slug,
     )
+    organisational_manual_repository = section_services.manual_repository
 
     create_service_context = OpenStruct.new(
       params: {
@@ -51,7 +52,7 @@ module ManualHelpers
     )
 
     service = CreateSectionService.new(
-      manual_repository: section_services.manual_repository,
+      manual_repository: organisational_manual_repository,
       listeners: [
         PublishingApiDraftManualExporter.new,
         PublishingApiDraftSectionExporter.new
@@ -101,6 +102,7 @@ module ManualHelpers
     section_services = OrganisationalSectionServiceRegistry.new(
       organisation_slug: organisation_slug,
     )
+    organisational_manual_repository = section_services.manual_repository
 
     service_context = OpenStruct.new(
       params: {
@@ -111,7 +113,7 @@ module ManualHelpers
     )
 
     service = UpdateSectionService.new(
-      manual_repository: section_services.manual_repository,
+      manual_repository: organisational_manual_repository,
       context: service_context,
       listeners: [
         PublishingApiDraftManualExporter.new,

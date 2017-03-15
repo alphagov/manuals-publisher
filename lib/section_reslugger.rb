@@ -77,8 +77,9 @@ private
 
   def new_edition_for_slug_change
     services = SectionServiceRegistry.new
+    manual_repository = services.manual_repository
     service = UpdateSectionService.new(
-      manual_repository: services.manual_repository,
+      manual_repository: manual_repository,
       context: context_for_section_edition_update,
       listeners: [
         PublishingApiDraftManualExporter.new,
