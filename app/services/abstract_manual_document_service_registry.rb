@@ -148,6 +148,6 @@ private
   end
 
   def organisations_api
-    GdsApi::Organisations.new(ORGANISATIONS_API_BASE_PATH)
+    OrganisationsApi.instance
   end
 end
