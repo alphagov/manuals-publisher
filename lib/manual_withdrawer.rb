@@ -8,7 +8,13 @@ class ManualWithdrawer
   end
 
   def execute(manual_id)
-    manual = ManualServiceRegistry.new.withdraw(manual_id).call
+    services = ManualServiceRegistry.new
+    service = WithdrawManualService.new(
+      manual_repository: services.repository,
+      listeners: services.observers.withdrawal,
+      manual_id: manual_id,
+    )
+    manual = service.call
 
     if manual.withdrawn?
       logger.info "SUCCESS: Manual `#{manual.slug}` withdrawn"

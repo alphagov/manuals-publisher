@@ -1,16 +1,7 @@
-require "withdraw_manual_service"
 require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def withdraw(manual_id)
-    WithdrawManualService.new(
-      manual_repository: repository,
-      listeners: observers.withdrawal,
-      manual_id: manual_id,
-    )
-  end
-
   def manual_renderer
     ManualRenderer.new
   end
