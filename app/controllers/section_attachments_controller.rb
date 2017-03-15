@@ -1,4 +1,4 @@
-require "create_manual_document_attachment_service"
+require "create_section_attachment_service"
 require "update_section_attachment_service"
 require "show_section_attachment_service"
 require "new_section_attachment_service"
@@ -21,7 +21,7 @@ class SectionAttachmentsController < ApplicationController
   end
 
   def create
-    service = CreateManualDocumentAttachmentService.new(
+    service = CreateSectionAttachmentService.new(
       repository,
       self,
     )

@@ -1,4 +1,4 @@
-class CreateManualDocumentAttachmentService
+class CreateSectionAttachmentService
   def initialize(manual_repository, context)
     @manual_repository = manual_repository
     @context = context
