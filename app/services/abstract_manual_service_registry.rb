@@ -10,10 +10,6 @@ require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def new(_context)
-    ->() { manual_builder.call(title: "") }
-  end
-
   def create(attributes)
     CreateManualService.new(
       manual_repository: repository,
