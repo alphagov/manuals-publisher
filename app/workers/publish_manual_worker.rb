@@ -14,9 +14,10 @@ class PublishManualWorker
     task = ManualPublishTask.find(task_id)
     task.start!
 
+    observers = ManualObserversRegistry.new
     service = PublishManualService.new(
       manual_repository: services.repository,
-      listeners: services.observers.publication,
+      listeners: observers.publication,
       manual_id: task.manual_id,
       version_number: task.version_number,
     )

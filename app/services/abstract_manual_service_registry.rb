@@ -1,5 +1,3 @@
-require "manual_observers_registry"
-
 class AbstractManualServiceRegistry
   def repository
     raise NotImplementedError
@@ -7,9 +5,5 @@ class AbstractManualServiceRegistry
 
   def associationless_repository
     raise NotImplementedError
-  end
-
-  def observers
-    @observers ||= ManualObserversRegistry.new
   end
 end

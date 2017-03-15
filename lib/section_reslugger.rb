@@ -112,9 +112,10 @@ private
 
   def publish_manual
     services = ManualServiceRegistry.new
+    observers = ManualObserversRegistry.new
     service = PublishManualService.new(
       manual_repository: services.repository,
-      listeners: services.observers.publication,
+      listeners: observers.publication,
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
     )

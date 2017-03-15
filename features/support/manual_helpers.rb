@@ -23,10 +23,11 @@ module ManualHelpers
       organisation_slug: organisation_slug,
     )
 
+    observers = ManualObserversRegistry.new
     service = CreateManualService.new(
       manual_repository: manual_services.repository,
       manual_builder: ManualBuilder.create,
-      listeners: manual_services.observers.creation,
+      listeners: observers.creation,
       attributes: fields.merge(organisation_slug: organisation_slug),
     )
     manual = service.call
@@ -85,11 +86,12 @@ module ManualHelpers
       organisation_slug: organisation_slug,
     )
 
+    observers = ManualObserversRegistry.new
     service = UpdateManualService.new(
       manual_repository: manual_services.repository,
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
-      listeners: manual_services.observers.update,
+      listeners: observers.update,
     )
     manual = service.call
 
@@ -174,9 +176,10 @@ module ManualHelpers
     stub_manual_publication_observers(organisation_slug)
 
     manual_services = ManualServiceRegistry.new
+    observers = ManualObserversRegistry.new
     service = PublishManualService.new(
       manual_repository: manual_services.repository,
-      listeners: manual_services.observers.publication,
+      listeners: observers.publication,
       manual_id: manual.id,
       version_number: manual.version_number,
     )
