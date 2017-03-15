@@ -1,4 +1,4 @@
-class ManualDocumentsController < ApplicationController
+class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 
   def show

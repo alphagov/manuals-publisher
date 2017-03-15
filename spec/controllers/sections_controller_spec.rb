@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe ManualDocumentsController, type: :controller do
+describe SectionsController, type: :controller do
   describe "#withdraw" do
     context "for a user that cannot withdraw" do
       let(:manual_id) { "manual-1" }

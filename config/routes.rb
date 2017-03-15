@@ -7,7 +7,7 @@ ManualsPublisher::Application.routes.draw do
   end
 
   resources :manuals, except: :destroy do
-    resources :documents, path: "sections", controller: "ManualDocuments" do
+    resources :documents, path: "sections", controller: "Sections" do
       resources :attachments, controller: :manual_document_attachments, only: [:new, :create, :edit, :update]
 
       # This is for persisted manual documents
@@ -32,7 +32,7 @@ ManualsPublisher::Application.routes.draw do
   # This is for new manualss
   post "manuals/preview" => "Manuals#preview", as: "preview_new_manual"
   # This is for new manual documents
-  post "manuals/:manual_id/sections/preview" => "ManualDocuments#preview", as: "preview_new_manual_document"
+  post "manuals/:manual_id/sections/preview" => "Sections#preview", as: "preview_new_manual_document"
 
   root to: redirect("/manuals")
 
