@@ -1,10 +1,10 @@
 Feature: Creating and editing a manual
-  As a CMA editor
+  As an editor
   I want to create and edit a manual and see it in the publisher
   So that I can start moving my content to gov.uk
 
   Background:
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as an editor
 
   Scenario: Create a new manual
     When I create a manual

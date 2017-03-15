@@ -80,16 +80,16 @@ describe ManualRecord, hits_db: true do
   end
 
   describe "#find_by_organisation" do
-    let!(:cma_manual) {
-      ManualRecord.create!(organisation_slug: "cma")
+    let!(:org_1_manual) {
+      ManualRecord.create!(organisation_slug: "org-1")
     }
 
-    let!(:tea_manual) {
-      ManualRecord.create!(organisation_slug: "ministry-of-tea")
+    let!(:org_2_manual) {
+      ManualRecord.create!(organisation_slug: "org-2")
     }
 
     it "filters by organisation" do
-      expect(ManualRecord.find_by_organisation("cma").to_a).to eq([cma_manual])
+      expect(ManualRecord.find_by_organisation("org-1").to_a).to eq([org_1_manual])
     end
   end
 

@@ -3,7 +3,7 @@ Feature: Script to delete a manual
   documents and its slug is no longer reserved
 
   Background:
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as an editor
 
   Scenario: Deleting a manual
     Given a draft manual exists without any documents

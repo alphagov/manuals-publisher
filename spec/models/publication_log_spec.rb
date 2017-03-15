@@ -40,8 +40,8 @@ describe PublicationLog, hits_db: true do
 
   describe ".change_notes_for" do
     context "there are some publication log entries" do
-      let(:slug) { "cma-cases/my-slug" }
-      let(:other_slug) { "something-else/another-one" }
+      let(:slug) { "guidance/my-slug" }
+      let(:other_slug) { "not-guidance/another-one" }
 
       let!(:change_notes_for_first_doc) {
         [
@@ -79,7 +79,7 @@ describe PublicationLog, hits_db: true do
       end
 
       context "and some are for documents with similar slugs" do
-        let!(:similar_slug) { "cma-cases/my-slug-belongs-to-me" }
+        let!(:similar_slug) { "guidance/my-slug-belongs-to-me" }
 
         let!(:change_note_for_similar_slug) {
           PublicationLog.create(
@@ -96,7 +96,7 @@ describe PublicationLog, hits_db: true do
       end
 
       context "and some are for child documents of the slug" do
-        let!(:child_slug) { "cma-cases/my-slug/my-lovely-document-slug" }
+        let!(:child_slug) { "guidance/my-slug/my-lovely-document-slug" }
 
         let!(:change_note_for_child_slug) {
           PublicationLog.create(
@@ -130,7 +130,7 @@ describe PublicationLog, hits_db: true do
 
     context "no publication logs exist for a slug" do
       it "returns an empty list" do
-        expect(PublicationLog.change_notes_for("cma-cases/my-slug")).to eq([])
+        expect(PublicationLog.change_notes_for("guidance/my-slug")).to eq([])
       end
     end
   end

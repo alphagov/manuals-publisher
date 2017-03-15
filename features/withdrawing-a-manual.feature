@@ -4,7 +4,7 @@ Feature: Script to withdraw published manuals
   So that it is not accessible to the public
 
   Background:
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as an editor
 
   Scenario:
     Given a published manual exists

@@ -17,24 +17,16 @@ FactoryGirl.define do
     permissions %w(signin editor)
   end
 
-  factory :cma_writer, parent: :user do
-    organisation_slug "competition-and-markets-authority"
-  end
-
-  factory :cma_editor, parent: :editor do
-    organisation_slug "competition-and-markets-authority"
-  end
-
-  factory :dclg_editor, parent: :editor do
-    organisation_slug "department-for-communities-and-local-government"
-  end
-
   factory :generic_writer, parent: :user do
     organisation_slug "ministry-of-tea"
   end
 
   factory :generic_editor, parent: :editor do
     organisation_slug "ministry-of-tea"
+  end
+
+  factory :generic_editor_of_another_organisation, parent: :editor do
+    organisation_slug "another-organisation"
   end
 
   factory :gds_editor, parent: :user do

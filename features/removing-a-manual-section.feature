@@ -4,7 +4,7 @@ Feature: Removing a section from a manual
   So that it no longer one of the manual's sections
 
   Scenario: Removing a draft section as a GDS editor
-    Given I am logged in as a "GDS" editor
+    Given I am logged in as a GDS editor
     And a draft manual exists without any documents
     And a draft document exists for the manual
     When I remove the document from the manual
@@ -14,7 +14,7 @@ Feature: Removing a section from a manual
     And the removed document is archived
 
   Scenario: Removing a draft section as an editor
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as an editor
     And a draft manual exists without any documents
     And a draft document exists for the manual
     When I remove the document from the manual
@@ -29,7 +29,7 @@ Feature: Removing a section from a manual
     Then I cannot remove a document from the manual
 
   Scenario: Removing a previously published section from a draft manual as a GDS editor
-    Given I am logged in as a "GDS" editor
+    Given I am logged in as a GDS editor
     And a published manual exists
     And I edit one of the manual's documents
     When I remove the edited document from the manual
@@ -40,7 +40,7 @@ Feature: Removing a section from a manual
     And the removed document is archived
 
   Scenario: Removing a previously published section from a draft manual as an editor
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as an editor
     And a published manual exists
     And I edit one of the manual's documents
     When I remove the edited document from the manual
@@ -57,7 +57,7 @@ Feature: Removing a section from a manual
     Then I cannot remove a document from the manual
 
   Scenario: Removing a section from a published manual as a GDS editor
-    Given I am logged in as a "GDS" editor
+    Given I am logged in as a GDS editor
     And a published manual exists
     When I remove one of the documents from the manual
     Then the document is removed from the manual
@@ -67,7 +67,7 @@ Feature: Removing a section from a manual
     And the removed document is archived
 
   Scenario: Removing a section from a published manual as an editor
-    Given I am logged in as a "CMA" editor
+    Given I am logged in as an editor
     And a published manual exists
     When I remove one of the documents from the manual
     Then the document is removed from the manual
@@ -82,7 +82,7 @@ Feature: Removing a section from a manual
     Then I cannot remove a document from the manual
 
   Scenario: Removing a section with a major update change notes
-    Given I am logged in as a "GDS" editor
+    Given I am logged in as a GDS editor
     And a published manual exists
     When I remove one of the documents from the manual with a major update omitting the note
     Then I see an error requesting that I provide a change note
@@ -92,7 +92,7 @@ Feature: Removing a section from a manual
     Then the removed document change note is included
 
   Scenario: Removing a section with a minor update change notes
-    Given I am logged in as a "GDS" editor
+    Given I am logged in as a GDS editor
     And a published manual exists
     When I remove one of the documents from the manual with a minor update
     Then the document is removed from the manual
