@@ -59,10 +59,10 @@ RSpec.describe RemoveSectionService do
       }
     end
 
-    it "raises a ManualDocumentNotFound error" do
+    it "raises a SectionNotFound error" do
       expect {
         service.call
-      }.to raise_error(described_class::ManualDocumentNotFoundError, document_id)
+      }.to raise_error(described_class::SectionNotFoundError, document_id)
     end
 
     it "does not mark the manual as a draft" do

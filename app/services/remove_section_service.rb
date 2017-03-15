@@ -6,7 +6,7 @@ class RemoveSectionService
   end
 
   def call
-    raise ManualDocumentNotFoundError.new(document_id) unless document.present?
+    raise SectionNotFoundError.new(document_id) unless document.present?
 
     document.update(change_note_params)
 
@@ -67,5 +67,5 @@ private
   end
 
   class ManualNotFoundError < StandardError; end
-  class ManualDocumentNotFoundError < StandardError; end
+  class SectionNotFoundError < StandardError; end
 end
