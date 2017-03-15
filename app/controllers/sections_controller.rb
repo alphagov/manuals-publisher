@@ -2,72 +2,72 @@ class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 
   def show
-    manual, document = services.show(self).call
+    manual, section = services.show(self).call
 
     render(:show, locals: {
       manual: manual,
-      document: document,
+      document: section,
     })
   end
 
   def new
-    manual, document = services.new(self).call
+    manual, section = services.new(self).call
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: ManualDocumentViewAdapter.new(manual, document)
+      document: ManualDocumentViewAdapter.new(manual, section)
     })
   end
 
   def create
-    manual, document = services.create(self).call
+    manual, section = services.create(self).call
 
-    if document.valid?
+    if section.valid?
       redirect_to(manual_path(manual))
     else
       render(:new, locals: {
         manual: ManualViewAdapter.new(manual),
-        document: ManualDocumentViewAdapter.new(manual, document),
+        document: ManualDocumentViewAdapter.new(manual, section),
       })
     end
   end
 
   def edit
-    manual, document = services.show(self).call
+    manual, section = services.show(self).call
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: ManualDocumentViewAdapter.new(manual, document),
+      document: ManualDocumentViewAdapter.new(manual, section),
     })
   end
 
   def update
-    manual, document = services.update(self).call
+    manual, section = services.update(self).call
 
-    if document.valid?
+    if section.valid?
       redirect_to(manual_path(manual))
     else
       render(:edit, locals: {
         manual: ManualViewAdapter.new(manual),
-        document: ManualDocumentViewAdapter.new(manual, document),
+        document: ManualDocumentViewAdapter.new(manual, section),
       })
     end
   end
 
   def preview
-    document = services.preview(self).call
+    section = services.preview(self).call
 
-    document.valid? # Force validation check or errors will be empty
+    section.valid? # Force validation check or errors will be empty
 
-    if document.errors[:body].nil?
-      render json: { preview_html: document.body }
+    if section.errors[:body].nil?
+      render json: { preview_html: section.body }
     else
       render json: {
         preview_html: render_to_string(
           "shared/_preview_errors",
           layout: false,
           locals: {
-            errors: document.errors[:body]
+            errors: section.errors[:body]
           }
         )
       }
@@ -75,16 +75,16 @@ class SectionsController < ApplicationController
   end
 
   def reorder
-    manual, documents = services.list(self).call
+    manual, sections = services.list(self).call
 
     render(:reorder, locals: {
       manual: ManualViewAdapter.new(manual),
-      documents: documents,
+      documents: sections,
     })
   end
 
   def update_order
-    manual, _documents = services.update_order(self).call
+    manual, _sections = services.update_order(self).call
 
     redirect_to(
       manual_path(manual),
@@ -95,28 +95,28 @@ class SectionsController < ApplicationController
   end
 
   def withdraw
-    manual, document = services.show(self).call
+    manual, section = services.show(self).call
 
     render(:withdraw, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: ManualDocumentViewAdapter.new(manual, document),
+      document: ManualDocumentViewAdapter.new(manual, section),
     })
   end
 
   def destroy
-    manual, document = services.remove(self).call
+    manual, section = services.remove(self).call
 
-    if document.valid?
+    if section.valid?
       redirect_to(
         manual_path(manual),
         flash: {
-          notice: "Section #{document.title} removed!"
+          notice: "Section #{section.title} removed!"
         }
       )
     else
       render(:withdraw, locals: {
         manual: ManualViewAdapter.new(manual),
-        document: ManualDocumentViewAdapter.new(manual, document),
+        document: ManualDocumentViewAdapter.new(manual, section),
       })
     end
   end
