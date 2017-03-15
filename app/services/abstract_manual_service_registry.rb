@@ -2,10 +2,6 @@ require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def manual_renderer
-    ManualRenderer.new
-  end
-
   def manual_builder
     ManualBuilder.create
   end

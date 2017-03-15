@@ -141,7 +141,7 @@ class ManualsController < ApplicationController
     service = PreviewManualService.new(
       repository: services.repository,
       builder: services.manual_builder,
-      renderer: services.manual_renderer,
+      renderer: ManualRenderer.new,
       manual_id: params[:id],
       attributes: update_manual_params,
     )
