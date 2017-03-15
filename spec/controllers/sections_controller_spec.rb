@@ -32,7 +32,7 @@ describe SectionsController, type: :controller do
   describe "#destroy" do
     let(:manual_id) { "manual-1" }
     let(:document_id) { "section-1" }
-    let(:services) { spy(AbstractManualDocumentServiceRegistry) }
+    let(:services) { spy(AbstractSectionServiceRegistry) }
     before do
       login_as_stub_user
       allow_any_instance_of(PermissionChecker).to receive(:can_withdraw?).and_return(false)

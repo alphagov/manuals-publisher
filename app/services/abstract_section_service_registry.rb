@@ -8,7 +8,7 @@ require "reorder_manual_documents_service"
 require "remove_manual_document_service"
 require "services"
 
-class AbstractManualDocumentServiceRegistry
+class AbstractSectionServiceRegistry
   def preview(context)
     PreviewManualDocumentService.new(
       manual_repository,
