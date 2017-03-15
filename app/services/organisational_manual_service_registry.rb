@@ -12,11 +12,8 @@ class OrganisationalManualServiceRegistry < AbstractManualServiceRegistry
   end
 
   def associationless_repository
-    associationless_manual_repository_factory.call(organisation_slug)
-  end
-
-  def associationless_manual_repository_factory
-    RepositoryRegistry.create
+    associationless_manual_repository_factory = RepositoryRegistry.create
       .associationless_organisation_scoped_manual_repository_factory
+    associationless_manual_repository_factory.call(organisation_slug)
   end
 end
