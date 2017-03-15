@@ -22,9 +22,14 @@ module ManualHelpers
     manual_services = OrganisationalManualServiceRegistry.new(
       organisation_slug: organisation_slug,
     )
-    manual = manual_services.create(
-      fields.merge(organisation_slug: organisation_slug),
-    ).call
+
+    service = CreateManualService.new(
+      manual_repository: manual_services.repository,
+      manual_builder: manual_services.manual_builder,
+      listeners: manual_services.observers.creation,
+      attributes: fields.merge(organisation_slug: organisation_slug),
+    )
+    manual = service.call
 
     manual_repository.fetch(manual.id)
   end

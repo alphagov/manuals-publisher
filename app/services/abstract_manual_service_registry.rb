@@ -1,4 +1,3 @@
-require "create_manual_service"
 require "update_manual_service"
 require "queue_publish_manual_service"
 require "preview_manual_service"
@@ -10,15 +9,6 @@ require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def create(attributes)
-    CreateManualService.new(
-      manual_repository: repository,
-      manual_builder: manual_builder,
-      listeners: observers.creation,
-      attributes: attributes,
-    )
-  end
-
   def update(manual_id, attributes)
     UpdateManualService.new(
       manual_repository: repository,
