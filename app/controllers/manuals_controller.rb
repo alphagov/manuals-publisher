@@ -1,6 +1,7 @@
 require "list_manuals_service"
 require "show_manual_service"
 require "create_manual_service"
+require "update_manual_service"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
@@ -72,7 +73,13 @@ class ManualsController < ApplicationController
   end
 
   def update
-    manual = services.update(manual_id, update_manual_params).call
+    service = UpdateManualService.new(
+      manual_repository: services.repository,
+      manual_id: manual_id,
+      attributes: update_manual_params,
+      listeners: services.observers.update,
+    )
+    manual = service.call
     manual = manual_form(manual)
 
     if manual.valid?

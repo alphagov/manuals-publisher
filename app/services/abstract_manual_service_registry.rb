@@ -1,4 +1,3 @@
-require "update_manual_service"
 require "queue_publish_manual_service"
 require "preview_manual_service"
 require "publish_manual_service"
@@ -9,15 +8,6 @@ require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def update(manual_id, attributes)
-    UpdateManualService.new(
-      manual_repository: repository,
-      manual_id: manual_id,
-      attributes: attributes,
-      listeners: observers.update,
-    )
-  end
-
   def queue_publish(manual_id)
     QueuePublishManualService.new(
       PublishManualWorker,

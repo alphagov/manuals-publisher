@@ -85,10 +85,13 @@ module ManualHelpers
       organisation_slug: organisation_slug,
     )
 
-    manual = manual_services.update(
-      manual.id,
-      fields.merge(organisation_slug: organisation_slug),
-    ).call
+    service = UpdateManualService.new(
+      manual_repository: manual_services.repository,
+      manual_id: manual.id,
+      attributes: fields.merge(organisation_slug: organisation_slug),
+      listeners: manual_services.observers.update,
+    )
+    manual = service.call
 
     manual
   end
