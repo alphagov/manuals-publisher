@@ -1,5 +1,6 @@
 require "gds_api/content_store"
 require "manual_service_registry"
+require "services"
 
 class SectionReslugger
   RUMMAGER_FORMAT = "manual_section".freeze
@@ -63,7 +64,7 @@ private
 
   def redirect_section
     PublishingAPIRedirecter.new(
-      publishing_api: PublishingApi.instance,
+      publishing_api: Services.publishing_api,
       entity: current_section_edition,
       redirect_to_location: "/#{full_new_section_slug}"
     ).call
