@@ -149,7 +149,7 @@ private
   end
 
   def remove_old_section_from_rummager
-    rummager = RummagerApi.instance
+    rummager = Services.rummager
     rummager.delete_document(RUMMAGER_FORMAT, "/#{full_current_section_slug}")
   end
 end
