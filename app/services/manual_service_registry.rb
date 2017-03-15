@@ -3,8 +3,4 @@ class ManualServiceRegistry < AbstractManualServiceRegistry
     RepositoryRegistry.create
       .associationless_manual_repository
   end
-
-  def repository
-    RepositoryRegistry.create.manual_repository
-  end
 end

@@ -252,7 +252,13 @@ private
   end
 
   def repository
-    services.repository
+    if current_user_is_gds_editor?
+      RepositoryRegistry.create.manual_repository
+    else
+      manual_repository_factory = RepositoryRegistry.create
+        .organisation_scoped_manual_repository_factory
+      manual_repository_factory.call(current_organisation_slug)
+    end
   end
 
   def associationless_repository

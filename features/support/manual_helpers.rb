@@ -19,13 +19,13 @@ module ManualHelpers
 
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_services = OrganisationalManualServiceRegistry.new(
-      organisation_slug: organisation_slug,
-    )
+    manual_repository_factory = RepositoryRegistry.create
+      .organisation_scoped_manual_repository_factory
+    repository = manual_repository_factory.call(organisation_slug)
 
     observers = ManualObserversRegistry.new
     service = CreateManualService.new(
-      manual_repository: manual_services.repository,
+      manual_repository: repository,
       manual_builder: ManualBuilder.create,
       listeners: observers.creation,
       attributes: fields.merge(organisation_slug: organisation_slug),
@@ -82,13 +82,13 @@ module ManualHelpers
 
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_services = OrganisationalManualServiceRegistry.new(
-      organisation_slug: organisation_slug,
-    )
+    manual_repository_factory = RepositoryRegistry.create
+      .organisation_scoped_manual_repository_factory
+    repository = manual_repository_factory.call(organisation_slug)
 
     observers = ManualObserversRegistry.new
     service = UpdateManualService.new(
-      manual_repository: manual_services.repository,
+      manual_repository: repository,
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
       listeners: observers.update,
@@ -175,10 +175,9 @@ module ManualHelpers
   def publish_manual_without_ui(manual, organisation_slug: "ministry-of-tea")
     stub_manual_publication_observers(organisation_slug)
 
-    manual_services = ManualServiceRegistry.new
     observers = ManualObserversRegistry.new
     service = PublishManualService.new(
-      manual_repository: manual_services.repository,
+      manual_repository: RepositoryRegistry.create.manual_repository,
       listeners: observers.publication,
       manual_id: manual.id,
       version_number: manual.version_number,

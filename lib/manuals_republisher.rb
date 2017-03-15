@@ -1,4 +1,3 @@
-require "manual_service_registry"
 require "marshallers/document_association_marshaller"
 
 class ManualsRepublisher

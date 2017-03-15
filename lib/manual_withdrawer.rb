@@ -1,5 +1,3 @@
-require "manual_service_registry"
-
 class ManualWithdrawer
   attr_reader :logger
 
@@ -8,10 +6,9 @@ class ManualWithdrawer
   end
 
   def execute(manual_id)
-    services = ManualServiceRegistry.new
     observers = ManualObserversRegistry.new
     service = WithdrawManualService.new(
-      manual_repository: services.repository,
+      manual_repository: RepositoryRegistry.create.manual_repository,
       listeners: observers.withdrawal,
       manual_id: manual_id,
     )
