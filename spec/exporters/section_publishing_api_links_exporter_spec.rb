@@ -1,4 +1,4 @@
-require "fast_spec_helper"
+require "spec_helper"
 require "support/govuk_content_schema_helpers"
 
 require "section_publishing_api_links_exporter"

@@ -1,4 +1,4 @@
-require "fast_spec_helper"
+require "spec_helper"
 
 require "publishing_api_publisher"
 
