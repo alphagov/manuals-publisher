@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 
 require File.expand_path("../../config/environment", __FILE__)
+require "services"
 
 def publishing_api
-  PublishingApiV2.instance
+  Services.publishing_api_v2
 end
 
 def in_publishing_api?(content_id)

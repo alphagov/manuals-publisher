@@ -145,7 +145,7 @@ private
   end
 
   def publishing_api_v2
-    PublishingApiV2.instance
+    Services.publishing_api_v2
   end
 
   def organisations_api
