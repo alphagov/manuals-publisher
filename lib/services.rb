@@ -12,6 +12,10 @@ module Services
     )
   end
 
+  def self.content_store
+    @content_store ||= GdsApi::ContentStore.new(Plek.current.find("content-store"))
+  end
+
   def self.organisations
     @organisations ||= GdsApi::Organisations.new(ORGANISATIONS_API_BASE_PATH)
   end

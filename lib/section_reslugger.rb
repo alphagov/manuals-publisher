@@ -133,7 +133,7 @@ private
   end
 
   def content_store
-    GdsApi::ContentStore.new(Plek.current.find("content-store"))
+    Services.content_store
   end
 
   def full_current_section_slug
