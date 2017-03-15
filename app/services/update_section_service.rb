@@ -1,4 +1,4 @@
-class UpdateManualDocumentService
+class UpdateSectionService
   def initialize(manual_repository:, context:, listeners:)
     @manual_repository = manual_repository
     @context = context

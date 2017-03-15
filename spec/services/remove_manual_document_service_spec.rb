@@ -1,7 +1,7 @@
 require "spec_helper"
-require "remove_manual_document_service"
+require "remove_section_service"
 
-RSpec.describe RemoveManualDocumentService do
+RSpec.describe RemoveSectionService do
   let(:document_id) { "123" }
 
   let(:manual) {

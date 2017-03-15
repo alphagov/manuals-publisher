@@ -1,16 +1,16 @@
-require "preview_manual_document_service"
-require "create_manual_document_service"
-require "update_manual_document_service"
-require "show_manual_document_service"
-require "new_manual_document_service"
+require "preview_section_service"
+require "create_section_service"
+require "update_section_service"
+require "show_section_service"
+require "new_section_service"
 require "list_manual_documents_service"
 require "reorder_manual_documents_service"
-require "remove_manual_document_service"
+require "remove_section_service"
 require "services"
 
 class AbstractSectionServiceRegistry
   def preview(context)
-    PreviewManualDocumentService.new(
+    PreviewSectionService.new(
       manual_repository,
       manual_document_builder,
       document_renderer,
@@ -19,7 +19,7 @@ class AbstractSectionServiceRegistry
   end
 
   def create(context)
-    CreateManualDocumentService.new(
+    CreateSectionService.new(
       manual_repository: manual_repository,
       listeners: [
         publishing_api_draft_manual_exporter,
@@ -30,7 +30,7 @@ class AbstractSectionServiceRegistry
   end
 
   def update(context)
-    UpdateManualDocumentService.new(
+    UpdateSectionService.new(
       manual_repository: manual_repository,
       context: context,
       listeners: [
@@ -41,14 +41,14 @@ class AbstractSectionServiceRegistry
   end
 
   def show(context)
-    ShowManualDocumentService.new(
+    ShowSectionService.new(
       manual_repository,
       context,
     )
   end
 
   def new(context)
-    NewManualDocumentService.new(
+    NewSectionService.new(
       manual_repository,
       context,
     )
@@ -70,7 +70,7 @@ class AbstractSectionServiceRegistry
   end
 
   def remove(context)
-    RemoveManualDocumentService.new(
+    RemoveSectionService.new(
       manual_repository,
       context,
       listeners: [

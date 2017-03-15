@@ -1,4 +1,4 @@
-class CreateManualDocumentService
+class CreateSectionService
   def initialize(manual_repository:, listeners:, context:)
     @manual_repository = manual_repository
     @listeners = listeners
