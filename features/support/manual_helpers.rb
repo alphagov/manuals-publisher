@@ -39,10 +39,9 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    section_services = OrganisationalSectionServiceRegistry.new(
-      organisation_slug: organisation_slug,
-    )
-    organisational_manual_repository = section_services.manual_repository
+    manual_repository_factory = RepositoryRegistry.create.
+      organisation_scoped_manual_repository_factory
+    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
 
     create_service_context = OpenStruct.new(
       params: {
@@ -99,10 +98,9 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
-    section_services = OrganisationalSectionServiceRegistry.new(
-      organisation_slug: organisation_slug,
-    )
-    organisational_manual_repository = section_services.manual_repository
+    manual_repository_factory = RepositoryRegistry.create.
+      organisation_scoped_manual_repository_factory
+    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
 
     service_context = OpenStruct.new(
       params: {
