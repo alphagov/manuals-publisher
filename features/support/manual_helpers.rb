@@ -25,7 +25,7 @@ module ManualHelpers
 
     service = CreateManualService.new(
       manual_repository: manual_services.repository,
-      manual_builder: manual_services.manual_builder,
+      manual_builder: ManualBuilder.create,
       listeners: manual_services.observers.creation,
       attributes: fields.merge(organisation_slug: organisation_slug),
     )

@@ -5,6 +5,7 @@ require "update_manual_service"
 require "queue_publish_manual_service"
 require "publish_manual_worker"
 require "preview_manual_service"
+require "builders/manual_builder"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
@@ -40,7 +41,7 @@ class ManualsController < ApplicationController
   end
 
   def new
-    service = ->() { services.manual_builder.call(title: "") }
+    service = ->() { ManualBuilder.create.call(title: "") }
     manual = service.call
 
     render(:new, locals: { manual: manual_form(manual) })
@@ -49,7 +50,7 @@ class ManualsController < ApplicationController
   def create
     service = CreateManualService.new(
       manual_repository: services.repository,
-      manual_builder: services.manual_builder,
+      manual_builder: ManualBuilder.create,
       listeners: services.observers.creation,
       attributes: create_manual_params,
     )
@@ -140,7 +141,7 @@ class ManualsController < ApplicationController
   def preview
     service = PreviewManualService.new(
       repository: services.repository,
-      builder: services.manual_builder,
+      builder: ManualBuilder.create,
       renderer: ManualRenderer.new,
       manual_id: params[:id],
       attributes: update_manual_params,

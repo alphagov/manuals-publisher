@@ -1,11 +1,6 @@
 require "manual_observers_registry"
-require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def manual_builder
-    ManualBuilder.create
-  end
-
   def repository
     raise NotImplementedError
   end
