@@ -1,11 +1,11 @@
 require "create_manual_document_attachment_service"
 require "update_manual_document_attachment_service"
 require "show_manual_document_attachment_service"
-require "new_manual_document_attachment_service"
+require "new_section_attachment_service"
 
 class SectionAttachmentsController < ApplicationController
   def new
-    service = NewManualDocumentAttachmentService.new(
+    service = NewSectionAttachmentService.new(
       repository,
       # TODO: This be should be created from the document or just be a form object
       Attachment.method(:new),
