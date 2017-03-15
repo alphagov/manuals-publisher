@@ -8,7 +8,6 @@ describe SectionPublishingAPIExporter do
   subject {
     described_class.new(
       organisation,
-      document_renderer,
       manual,
       document
     )
@@ -82,13 +81,13 @@ describe SectionPublishingAPIExporter do
 
   before {
     allow(subject).to receive(:export_recipient).and_return(export_recipient)
+    allow(subject).to receive(:document_renderer).and_return(document_renderer)
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
       described_class.new(
         organisation,
-        document_renderer,
         manual,
         document,
         update_type: "reticulate-splines"
@@ -101,7 +100,6 @@ describe SectionPublishingAPIExporter do
       expect {
         described_class.new(
           organisation,
-          document_renderer,
           manual,
           document,
           update_type: update_type
@@ -114,7 +112,6 @@ describe SectionPublishingAPIExporter do
     expect {
       described_class.new(
         organisation,
-        document_renderer,
         manual,
         document,
         update_type: nil
@@ -209,7 +206,6 @@ describe SectionPublishingAPIExporter do
       subject {
         described_class.new(
           organisation,
-          document_renderer,
           manual,
           document,
           update_type: explicit_update_type

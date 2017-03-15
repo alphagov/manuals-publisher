@@ -127,7 +127,6 @@ private
 
       SectionPublishingAPIExporter.new(
         organisation(manual.attributes.fetch(:organisation_slug)),
-        ManualDocumentRenderer.new,
         manual,
         manual_document
       ).call

@@ -4,10 +4,10 @@ class SectionPublishingAPIExporter
   PUBLISHING_API_SCHEMA_NAME = "manual_section".freeze
   PUBLISHING_API_DOCUMENT_TYPE = "manual_section".freeze
 
-  def initialize(organisation, document_renderer, manual, document, update_type: nil)
+  def initialize(organisation, manual, document, update_type: nil)
     @export_recipient = Services.publishing_api_v2.method(:put_content)
     @organisation = organisation
-    @document_renderer = document_renderer
+    @document_renderer = ManualDocumentRenderer.new
     @manual = manual
     @document = document
     @update_type = update_type
