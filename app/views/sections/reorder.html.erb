@@ -11,10 +11,10 @@
   <div class="row">
     <div class="col-md-8">
       <ol class="reorderable-document-list">
-        <% documents.each do |document| %>
+        <% sections.each do |section| %>
           <li>
-            <input type="hidden" name="section_order[]" value="<%= document.id %>">
-            <%= document.title %>
+            <input type="hidden" name="section_order[]" value="<%= section.id %>">
+            <%= section.title %>
           </li>
         <% end %>
       </ol>
