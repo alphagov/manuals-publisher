@@ -1,4 +1,3 @@
-require "preview_manual_service"
 require "publish_manual_service"
 require "republish_manual_service"
 require "withdraw_manual_service"
@@ -6,16 +5,6 @@ require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def preview(manual_id, attributes)
-    PreviewManualService.new(
-      repository: repository,
-      builder: manual_builder,
-      renderer: manual_renderer,
-      manual_id: manual_id,
-      attributes: attributes,
-    )
-  end
-
   def publish(manual_id, version_number)
     PublishManualService.new(
       manual_repository: repository,

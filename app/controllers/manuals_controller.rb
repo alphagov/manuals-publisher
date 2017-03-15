@@ -4,6 +4,7 @@ require "create_manual_service"
 require "update_manual_service"
 require "queue_publish_manual_service"
 require "publish_manual_worker"
+require "preview_manual_service"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
@@ -137,7 +138,14 @@ class ManualsController < ApplicationController
   end
 
   def preview
-    manual = services.preview(params[:id], update_manual_params).call
+    service = PreviewManualService.new(
+      repository: services.repository,
+      builder: services.manual_builder,
+      renderer: services.manual_renderer,
+      manual_id: params[:id],
+      attributes: update_manual_params,
+    )
+    manual = service.call
 
     manual.valid? # Force validation check or errors will be empty
 
