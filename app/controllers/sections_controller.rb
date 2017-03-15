@@ -132,7 +132,7 @@ private
   end
 
   def gds_editor_services
-    ManualDocumentServiceRegistry.new
+    SectionServiceRegistry.new
   end
 
   def organisational_services
