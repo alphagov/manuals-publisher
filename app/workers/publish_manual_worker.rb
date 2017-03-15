@@ -16,7 +16,7 @@ class PublishManualWorker
 
     observers = ManualObserversRegistry.new
     service = PublishManualService.new(
-      manual_repository: services.repository,
+      manual_repository: repository,
       listeners: observers.publication,
       manual_id: task.manual_id,
       version_number: task.version_number,
@@ -34,6 +34,10 @@ class PublishManualWorker
   end
 
 private
+
+  def repository
+    services.repository
+  end
 
   def services
     ManualServiceRegistry.new

@@ -23,7 +23,7 @@ class ManualsController < ApplicationController
 
   def show
     service = ShowManualService.new(
-      manual_repository: services.repository,
+      manual_repository: repository,
       manual_id: manual_id,
     )
     manual, metadata = service.call
@@ -50,7 +50,7 @@ class ManualsController < ApplicationController
 
   def create
     service = CreateManualService.new(
-      manual_repository: services.repository,
+      manual_repository: repository,
       manual_builder: ManualBuilder.create,
       listeners: ManualObserversRegistry.new.creation,
       attributes: create_manual_params,
@@ -69,7 +69,7 @@ class ManualsController < ApplicationController
 
   def edit
     service = ShowManualService.new(
-      manual_repository: services.repository,
+      manual_repository: repository,
       manual_id: manual_id,
     )
     manual, _metadata = service.call
@@ -79,7 +79,7 @@ class ManualsController < ApplicationController
 
   def update
     service = UpdateManualService.new(
-      manual_repository: services.repository,
+      manual_repository: repository,
       manual_id: manual_id,
       attributes: update_manual_params,
       listeners: ManualObserversRegistry.new.update,
@@ -98,7 +98,7 @@ class ManualsController < ApplicationController
 
   def edit_original_publication_date
     service = ShowManualService.new(
-      manual_repository: services.repository,
+      manual_repository: repository,
       manual_id: manual_id,
     )
     manual, _metadata = service.call
@@ -108,7 +108,7 @@ class ManualsController < ApplicationController
 
   def update_original_publication_date
     service = UpdateManualOriginalPublicationDateService.new(
-      manual_repository: services.repository,
+      manual_repository: repository,
       manual_id: manual_id,
       attributes: publication_date_manual_params,
       listeners: ManualObserversRegistry.new.update_original_publication_date,
@@ -128,7 +128,7 @@ class ManualsController < ApplicationController
   def publish
     service = QueuePublishManualService.new(
       PublishManualWorker,
-      services.repository,
+      repository,
       manual_id,
     )
     manual = service.call
@@ -141,7 +141,7 @@ class ManualsController < ApplicationController
 
   def preview
     service = PreviewManualService.new(
-      repository: services.repository,
+      repository: repository,
       builder: ManualBuilder.create,
       renderer: ManualRenderer.new,
       manual_id: params[:id],
@@ -249,6 +249,10 @@ private
     OrganisationalManualServiceRegistry.new(
       organisation_slug: current_organisation_slug,
     )
+  end
+
+  def repository
+    services.repository
   end
 
   def authorize_user_for_publishing
