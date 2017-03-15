@@ -6,6 +6,7 @@ require "new_manual_document_service"
 require "list_manual_documents_service"
 require "reorder_manual_documents_service"
 require "remove_manual_document_service"
+require "services"
 
 class AbstractManualDocumentServiceRegistry
   def preview(context)
@@ -148,6 +149,6 @@ private
   end
 
   def organisations_api
-    OrganisationsApi.instance
+    Services.organisations
   end
 end
