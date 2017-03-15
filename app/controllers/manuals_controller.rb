@@ -102,7 +102,13 @@ class ManualsController < ApplicationController
   end
 
   def update_original_publication_date
-    manual = services.update_original_publication_date(manual_id, publication_date_manual_params).call
+    service = UpdateManualOriginalPublicationDateService.new(
+      manual_repository: services.repository,
+      manual_id: manual_id,
+      attributes: publication_date_manual_params,
+      listeners: services.observers.update_original_publication_date,
+    )
+    manual = service.call
     manual = manual_form(manual)
 
     if manual.valid?
