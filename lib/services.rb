@@ -1,9 +1,17 @@
+require "gds_api/asset_manager"
 require "gds_api/organisations"
 require "gds_api/publishing_api"
 require "gds_api/publishing_api_v2"
 require "gds_api/rummager"
 
 module Services
+  def self.attachment_api
+    @attachment_api ||= GdsApi::AssetManager.new(
+      Plek.current.find("asset-manager"),
+      bearer_token: ENV["ASSET_MANAGER_BEARER_TOKEN"] || '12345678',
+    )
+  end
+
   def self.organisations
     @organisations ||= GdsApi::Organisations.new(ORGANISATIONS_API_BASE_PATH)
   end

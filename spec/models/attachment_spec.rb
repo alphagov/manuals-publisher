@@ -17,7 +17,7 @@ describe Attachment do
     it "raises an informative exception if the asset manager service can't be found" do
       client = double('client')
       allow(client).to receive(:create_asset).and_raise(GdsApi::HTTPNotFound.new(404))
-      allow(AttachmentApi).to receive(:client).and_return(client)
+      allow(Services).to receive(:attachment_api).and_return(client)
       attachment = Attachment.new
       expect { attachment.upload_file }.to raise_error(/Error uploading file. Is the Asset Manager service available\?/)
     end
@@ -38,7 +38,7 @@ describe Attachment do
     end
 
     it "uploads a file before saving" do
-      expect(AttachmentApi.client).to receive(:create_asset)
+      expect(Services.attachment_api).to receive(:create_asset)
         .with(file: upload_file)
         .and_return("file_url" => "some/file/url", "id" => "some_file_id")
 
@@ -57,7 +57,7 @@ describe Attachment do
       end
 
       it "updates the uploaded file on the Attachment" do
-        expect(AttachmentApi.client).to receive(:update_asset)
+        expect(Services.attachment_api).to receive(:update_asset)
           .with("some_file_id", file: upload_file)
           .and_return("file_url" => "some/file/url", "id" => "some_file_id")
 
