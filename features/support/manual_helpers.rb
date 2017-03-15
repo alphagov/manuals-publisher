@@ -174,7 +174,13 @@ module ManualHelpers
     stub_manual_publication_observers(organisation_slug)
 
     manual_services = ManualServiceRegistry.new
-    manual_services.publish(manual.id, manual.version_number).call
+    service = PublishManualService.new(
+      manual_repository: manual_services.repository,
+      listeners: manual_services.observers.publication,
+      manual_id: manual.id,
+      version_number: manual.version_number,
+    )
+    service.call
   end
 
   def check_manual_exists_with(attributes)

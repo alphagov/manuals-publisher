@@ -1,19 +1,9 @@
-require "publish_manual_service"
 require "republish_manual_service"
 require "withdraw_manual_service"
 require "manual_observers_registry"
 require "builders/manual_builder"
 
 class AbstractManualServiceRegistry
-  def publish(manual_id, version_number)
-    PublishManualService.new(
-      manual_repository: repository,
-      listeners: observers.publication,
-      manual_id: manual_id,
-      version_number: version_number,
-    )
-  end
-
   def republish(manual_id)
     RepublishManualService.new(
       draft_listeners: observers.update,
