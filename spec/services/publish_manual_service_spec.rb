@@ -1,4 +1,4 @@
-require "fast_spec_helper"
+require "spec_helper"
 require "publish_manual_service"
 require "ostruct"
 

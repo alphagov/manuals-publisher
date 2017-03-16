@@ -1,4 +1,4 @@
-require "fast_spec_helper"
+require "spec_helper"
 require "remove_manual_document_service"
 
 RSpec.describe RemoveManualDocumentService do
