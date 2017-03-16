@@ -12,7 +12,7 @@ describe ManualPublishingAPIExporter do
     )
   }
 
-  let(:export_recipient) { double(:export_recipient, call: nil) }
+  let(:publishing_api) { double(:publishing_api, put_content: nil) }
   let(:manual_renderer) { ->(_) { double(:rendered_manual, attributes: rendered_manual_attributes) } }
 
   let(:manual) {
@@ -104,7 +104,7 @@ describe ManualPublishingAPIExporter do
   }
 
   before {
-    allow(subject).to receive(:export_recipient).and_return(export_recipient)
+    allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
     allow(subject).to receive(:manual_renderer).and_return(manual_renderer)
     allow(subject).to receive(:publication_logs).and_return(publication_logs_collection)
   }
@@ -148,7 +148,7 @@ describe ManualPublishingAPIExporter do
   it "exports the serialized document attributes" do
     subject.call
 
-    expect(export_recipient).to have_received(:call).with(
+    expect(publishing_api).to have_received(:put_content).with(
       "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       all_of(
         hash_including(
@@ -186,7 +186,7 @@ describe ManualPublishingAPIExporter do
     it "adds it as the value for first_published_at in the serialized attributes" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(
           first_published_at: previously_published_date.iso8601,
@@ -198,7 +198,7 @@ describe ManualPublishingAPIExporter do
       allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(true)
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(
           public_updated_at: previously_published_date.iso8601,
@@ -210,7 +210,7 @@ describe ManualPublishingAPIExporter do
       allow(manual).to receive(:use_originally_published_at_for_public_timestamp?).and_return(false)
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_excluding(:public_updated_at)
       )
@@ -220,7 +220,7 @@ describe ManualPublishingAPIExporter do
   it "exports section metadata for the manual" do
     subject.call
 
-    expect(export_recipient).to have_received(:call).with(
+    expect(publishing_api).to have_received(:put_content).with(
       "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       hash_including(
         details: {
@@ -278,7 +278,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to major" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "major")
       )
@@ -298,7 +298,7 @@ describe ManualPublishingAPIExporter do
       let(:explicit_update_type) { "republish" }
       it "exports with the update_type set to republish" do
         subject.call
-        expect(export_recipient).to have_received(:call).with(
+        expect(publishing_api).to have_received(:put_content).with(
           "52ab9439-95c8-4d39-9b83-0a2050a0978b",
           hash_including(update_type: "republish")
         )
@@ -309,7 +309,7 @@ describe ManualPublishingAPIExporter do
       let(:explicit_update_type) { "minor" }
       it "exports with the update_type set to minor" do
         subject.call
-        expect(export_recipient).to have_received(:call).with(
+        expect(publishing_api).to have_received(:put_content).with(
           "52ab9439-95c8-4d39-9b83-0a2050a0978b",
           hash_including(update_type: "minor")
         )
@@ -320,7 +320,7 @@ describe ManualPublishingAPIExporter do
       let(:explicit_update_type) { "major" }
       it "exports with the update_type set to major" do
         subject.call
-        expect(export_recipient).to have_received(:call).with(
+        expect(publishing_api).to have_received(:put_content).with(
           "52ab9439-95c8-4d39-9b83-0a2050a0978b",
           hash_including(update_type: "major")
         )
@@ -353,7 +353,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to minor" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "minor")
       )
@@ -388,7 +388,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to minor" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "minor")
       )
@@ -423,7 +423,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to major" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "major")
       )
@@ -457,7 +457,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to major" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "major")
       )
@@ -492,7 +492,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to minor" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "minor")
       )
@@ -527,7 +527,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to major" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "major")
       )
@@ -560,7 +560,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to major" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "major")
       )
@@ -595,7 +595,7 @@ describe ManualPublishingAPIExporter do
     it "exports with the update_type set to major" do
       subject.call
 
-      expect(export_recipient).to have_received(:call).with(
+      expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(update_type: "major")
       )

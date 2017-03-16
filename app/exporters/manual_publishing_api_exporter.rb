@@ -5,7 +5,6 @@ class ManualPublishingAPIExporter
   PUBLISHING_API_DOCUMENT_TYPE = "manual".freeze
 
   def initialize(organisation, manual, update_type: nil)
-    @export_recipient = Services.publishing_api_v2.method(:put_content)
     @organisation = organisation
     @manual_renderer = ManualRenderer.new
     @publication_logs = PublicationLog
@@ -15,13 +14,12 @@ class ManualPublishingAPIExporter
   end
 
   def call
-    export_recipient.call(content_id, exportable_attributes)
+    Services.publishing_api_v2.put_content(content_id, exportable_attributes)
   end
 
 private
 
   attr_reader(
-    :export_recipient,
     :organisation,
     :manual_renderer,
     :publication_logs,
