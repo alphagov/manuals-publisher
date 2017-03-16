@@ -3,11 +3,11 @@ require "spec_helper"
 describe SectionRepository do
   let(:section_repository) do
     SectionRepository.new(
-      document_factory: document_factory,
+      section_factory: section_factory,
     )
   end
 
-  let(:document_factory) { double(:document_factory, call: document) }
+  let(:section_factory) { double(:section_factory, call: document) }
 
   let(:document_id) { "document-id" }
   let(:document) {
@@ -66,7 +66,7 @@ describe SectionRepository do
                                      document_id: document_id,
                                      updated_at: n.days.ago)
 
-        allow(document_factory).to receive(:call)
+        allow(section_factory).to receive(:call)
           .with(document_id, [edition])
           .and_return(Section.new(slug_generator, document_id, [edition]))
 
@@ -94,7 +94,7 @@ describe SectionRepository do
     it "populates the document with all editions for that document id" do
       section_repository[document_id]
 
-      expect(document_factory).to have_received(:call).with(document_id, editions)
+      expect(section_factory).to have_received(:call).with(document_id, editions)
     end
 
     it "returns the document" do

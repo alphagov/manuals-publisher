@@ -57,10 +57,10 @@ class RepositoryRegistry
 
   def section_repository_factory
     ->(manual) {
-      document_factory = entity_factories.section_factory_factory.call(manual)
+      section_factory = entity_factories.section_factory_factory.call(manual)
 
       SectionRepository.new(
-        document_factory: document_factory,
+        section_factory: section_factory,
       )
     }
   end
