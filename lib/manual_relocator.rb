@@ -230,6 +230,6 @@ private
   end
 
   def fetch_organisation(slug)
-    OrganisationFetcher.instance.call(slug)
+    OrganisationFetcher.fetch(slug)
   end
 end
