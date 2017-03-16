@@ -23,7 +23,7 @@ class AbstractSectionServiceRegistry
       manual_repository: manual_repository,
       listeners: [
         publishing_api_draft_manual_exporter,
-        publishing_api_draft_manual_document_exporter
+        publishing_api_draft_section_exporter
       ],
       context: context,
     )
@@ -35,7 +35,7 @@ class AbstractSectionServiceRegistry
       context: context,
       listeners: [
         publishing_api_draft_manual_exporter,
-        publishing_api_draft_manual_document_exporter
+        publishing_api_draft_section_exporter
       ],
     )
   end
@@ -116,7 +116,7 @@ private
     }
   end
 
-  def publishing_api_draft_manual_document_exporter
+  def publishing_api_draft_section_exporter
     ->(manual_document, manual) {
       SectionPublishingAPILinksExporter.new(
         publishing_api_v2.method(:patch_links),
