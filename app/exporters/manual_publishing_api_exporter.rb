@@ -6,7 +6,6 @@ class ManualPublishingAPIExporter
 
   def initialize(organisation, manual, update_type: nil)
     @organisation = organisation
-    @manual_renderer = ManualRenderer.new
     @publication_logs = PublicationLog
     @manual = manual
     @update_type = update_type
@@ -21,7 +20,6 @@ private
 
   attr_reader(
     :organisation,
-    :manual_renderer,
     :publication_logs,
     :manual,
   )
@@ -78,7 +76,7 @@ private
   end
 
   def rendered_manual_attributes
-    @rendered_manual_attributes ||= manual_renderer.call(manual).attributes
+    @rendered_manual_attributes ||= ManualRenderer.new.call(manual).attributes
   end
 
   def details_data

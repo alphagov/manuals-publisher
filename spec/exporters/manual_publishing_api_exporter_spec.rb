@@ -105,7 +105,7 @@ describe ManualPublishingAPIExporter do
 
   before {
     allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
-    allow(subject).to receive(:manual_renderer).and_return(manual_renderer)
+    allow(ManualRenderer).to receive(:new).and_return(manual_renderer)
     allow(subject).to receive(:publication_logs).and_return(publication_logs_collection)
   }
 
