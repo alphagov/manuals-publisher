@@ -6,7 +6,6 @@ require "manual_publishing_api_links_exporter"
 describe ManualPublishingAPILinksExporter do
   subject {
     ManualPublishingAPILinksExporter.new(
-      export_recipient,
       organisation,
       manual
     )
@@ -39,6 +38,10 @@ describe ManualPublishingAPILinksExporter do
       double(:document, id: "c19ffb7d-448c-4cc8-bece-022662ef9611"),
       double(:document, id: "f9c91a07-6a41-4b97-94a8-ecdc81997d49"),
     ]
+  }
+
+  before {
+    allow(subject).to receive(:export_recipient).and_return(export_recipient)
   }
 
   it "exports links for the manual" do
