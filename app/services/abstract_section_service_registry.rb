@@ -75,7 +75,7 @@ class AbstractSectionServiceRegistry
       context,
       listeners: [
         publishing_api_draft_manual_exporter,
-        publishing_api_draft_manual_document_discarder
+        publishing_api_draft_section_discarder
       ]
     )
   end
@@ -133,7 +133,7 @@ private
     }
   end
 
-  def publishing_api_draft_manual_document_discarder
+  def publishing_api_draft_section_discarder
     ->(manual_document, _manual) {
       begin
         publishing_api_v2.discard_draft(manual_document.id)
