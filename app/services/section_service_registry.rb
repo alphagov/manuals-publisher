@@ -1,2 +1,0 @@
-class SectionServiceRegistry < AbstractSectionServiceRegistry
-end
