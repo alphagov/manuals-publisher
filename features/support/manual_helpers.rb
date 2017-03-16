@@ -1,5 +1,6 @@
 require "create_section_service"
 require "update_section_service"
+require "manuals_republisher"
 
 module ManualHelpers
   def manual_repository
@@ -652,6 +653,12 @@ module ManualHelpers
       number_of_drafts: how_many_times
     )
     check_manual_was_published(manual)
+  end
+
+  def republish_manuals_without_ui
+    logger = Logger.new(nil)
+    republisher = ManualsRepublisher.new(logger)
+    republisher.execute
   end
 end
 RSpec.configuration.include ManualHelpers, type: :feature

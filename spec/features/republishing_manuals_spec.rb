@@ -53,9 +53,7 @@ RSpec.describe "Republishing manuals", type: :feature do
   end
 
   def republish_manuals
-    manual_repository.all.each do |manual|
-      ManualServiceRegistry.new.republish(manual.id).call
-    end
+    republish_manuals_without_ui
   end
 
   def manual_repository
