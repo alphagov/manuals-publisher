@@ -10,7 +10,6 @@ describe PublishingAPIPublisher do
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
       described_class.new(
-        publishing_api: publishing_api,
         entity: document,
         update_type: "reticulate-splines"
       )
@@ -21,7 +20,6 @@ describe PublishingAPIPublisher do
     %w(major minor republish).each do |update_type|
       expect {
         described_class.new(
-          publishing_api: publishing_api,
           entity: document,
           update_type: update_type
         )
@@ -32,7 +30,6 @@ describe PublishingAPIPublisher do
   it "accepts explicitly setting nil as the option for update_type" do
     expect {
       described_class.new(
-        publishing_api: publishing_api,
         entity: document,
         update_type: nil
       )
@@ -40,10 +37,13 @@ describe PublishingAPIPublisher do
   end
 
   describe "#call" do
+    before {
+      allow(subject).to receive(:publishing_api).and_return(publishing_api)
+    }
+
     context "when no explicit update_type is given" do
       subject do
         described_class.new(
-          publishing_api: publishing_api,
           entity: document
         )
       end
@@ -58,7 +58,6 @@ describe PublishingAPIPublisher do
     context "when an explicit update_type is given" do
       subject do
         described_class.new(
-          publishing_api: publishing_api,
           entity: document,
           update_type: "republish"
         )

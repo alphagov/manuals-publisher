@@ -1,8 +1,8 @@
 class PublishingAPIPublisher
   include PublishingAPIUpdateTypes
 
-  def initialize(publishing_api:, entity:, update_type: nil)
-    @publishing_api = publishing_api
+  def initialize(entity:, update_type: nil)
+    @publishing_api = Services.publishing_api_v2
     @entity = entity
     @update_type = update_type
     check_update_type!(@update_type)

@@ -131,7 +131,6 @@ private
     ->(manual, action = nil) {
       update_type = (action == :republish ? "republish" : nil)
       PublishingAPIPublisher.new(
-        publishing_api: publishing_api_v2,
         entity: manual,
         update_type: update_type,
       ).call
@@ -140,7 +139,6 @@ private
         next if !document.needs_exporting? && action != :republish
 
         PublishingAPIPublisher.new(
-          publishing_api: publishing_api_v2,
           entity: document,
           update_type: update_type,
         ).call
