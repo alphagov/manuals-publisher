@@ -8,7 +8,6 @@ describe ManualPublishingAPIExporter do
   subject {
     described_class.new(
       organisation,
-      manual_renderer,
       publication_logs_collection,
       manual
     )
@@ -107,13 +106,13 @@ describe ManualPublishingAPIExporter do
 
   before {
     allow(subject).to receive(:export_recipient).and_return(export_recipient)
+    allow(subject).to receive(:manual_renderer).and_return(manual_renderer)
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
       described_class.new(
         organisation,
-        manual_renderer,
         publication_logs_collection,
         manual,
         update_type: "reticulate-splines"
@@ -126,7 +125,6 @@ describe ManualPublishingAPIExporter do
       expect {
         described_class.new(
           organisation,
-          manual_renderer,
           publication_logs_collection,
           manual,
           update_type: update_type
@@ -139,7 +137,6 @@ describe ManualPublishingAPIExporter do
     expect {
       described_class.new(
         organisation,
-        manual_renderer,
         publication_logs_collection,
         manual,
         update_type: nil
@@ -295,7 +292,6 @@ describe ManualPublishingAPIExporter do
     subject {
       described_class.new(
         organisation,
-        manual_renderer,
         publication_logs_collection,
         manual,
         update_type: explicit_update_type

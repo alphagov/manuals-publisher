@@ -165,14 +165,13 @@ private
 
       patch_links = publishing_api_v2.method(:patch_links)
       organisation = organisation(manual.attributes.fetch(:organisation_slug))
-      manual_renderer = ManualRenderer.new
 
       ManualPublishingAPILinksExporter.new(
         patch_links, organisation, manual
       ).call
 
       ManualPublishingAPIExporter.new(
-        organisation, manual_renderer, PublicationLog, manual, update_type: update_type
+        organisation, PublicationLog, manual, update_type: update_type
       ).call
 
       manual.documents.each do |document|

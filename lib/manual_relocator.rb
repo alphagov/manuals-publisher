@@ -187,11 +187,10 @@ private
 
   def send_draft(manual)
     organisation = fetch_organisation(manual.organisation_slug)
-    manual_renderer = ManualRenderer.new
 
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
     ManualPublishingAPIExporter.new(
-      organisation, manual_renderer, PublicationLog, manual
+      organisation, PublicationLog, manual
     ).call
 
     manual.documents.each do |document|
