@@ -53,7 +53,7 @@ private
   end
 
   def change_note_params
-    document_params = context.params.fetch("document")
+    document_params = context.params.fetch("section")
     {
       "minor_update" => document_params.fetch("minor_update", "0"),
       "change_note" => document_params.fetch("change_note", ""),

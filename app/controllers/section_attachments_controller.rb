@@ -27,7 +27,7 @@ class SectionAttachmentsController < ApplicationController
     )
     manual, document, _attachment = service.call
 
-    redirect_to edit_manual_document_path(manual, document)
+    redirect_to edit_manual_section_path(manual, document)
   end
 
   def edit
@@ -52,7 +52,7 @@ class SectionAttachmentsController < ApplicationController
     manual, document, attachment = service.call
 
     if attachment.persisted?
-      redirect_to(edit_manual_document_path(manual, document))
+      redirect_to(edit_manual_section_path(manual, document))
     else
       render(:edit, locals: {
         manual: ManualViewAdapter.new(manual),

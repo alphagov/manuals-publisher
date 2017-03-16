@@ -26,7 +26,7 @@ RSpec.describe RemoveSectionService do
       params: {
         "id" => document_id,
         "manual_id" => "ABC",
-        "document" => change_note_params
+        "section" => change_note_params
       },
     )
   }

@@ -27,7 +27,7 @@ class SectionViewAdapter < SimpleDelegator
   end
 
   def self.model_name
-    ActiveModel::Name.new(self, nil, "Document")
+    ActiveModel::Name.new(self, nil, "Section")
   end
 
 private

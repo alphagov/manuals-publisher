@@ -53,7 +53,7 @@
     <h2>Attachments</h2>
 
     <% if section.persisted? %>
-      <%= link_to "Add attachment", new_manual_document_attachment_path(manual, section) %>
+      <%= link_to "Add attachment", new_manual_section_attachment_path(manual, section) %>
     <% else %>
       <p>To add an attachment, please save the draft first.</p>
     <% end %>
@@ -63,7 +63,7 @@
         <li class="attachment">
           <span class="title"><%= attachment.title %></span>
           <span class="snippet"><%= attachment.snippet %></span>
-          <%= link_to "edit", edit_manual_document_attachment_path(manual, section, attachment) %>
+          <%= link_to "edit", edit_manual_section_attachment_path(manual, section, attachment) %>
         </li>
       <% end %>
     </ul>
@@ -71,14 +71,14 @@
 </div>
 <%= content_for :document_ready do %>
   window.MarkdownPreview.addPreviewFeature({
-    'url'             : '<%= preview_path_for_manual_document(manual, section) %>',
+    'url'             : '<%= preview_path_for_section(manual, section) %>',
     'insert_into'     : '.preview_container',
     'insert_button'   : '.preview_button',
     'render_to'       : '.preview .govspeak',
     'data_target'     : function() {
                           return {
                             'document' : {
-                              'body' : $('#document_body').val()
+                              'body' : $('#section_body').val()
                             }
                           };
                         }

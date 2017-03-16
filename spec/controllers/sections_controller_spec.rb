@@ -16,7 +16,7 @@ describe SectionsController, type: :controller do
       end
 
       it "redirects to the manual document's show page" do
-        expect(response).to redirect_to manual_document_path(manual_id: manual_id, id: document_id)
+        expect(response).to redirect_to manual_section_path(manual_id: manual_id, id: document_id)
       end
 
       it "sets a flash message" do
@@ -45,7 +45,7 @@ describe SectionsController, type: :controller do
     end
 
     it "redirects to the manual document's show page" do
-      expect(response).to redirect_to manual_document_path(manual_id: manual_id, id: document_id)
+      expect(response).to redirect_to manual_section_path(manual_id: manual_id, id: document_id)
     end
 
     it "sets a flash message" do

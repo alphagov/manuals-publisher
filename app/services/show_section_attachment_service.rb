@@ -29,7 +29,7 @@ private
   end
 
   def document_id
-    context.params.fetch("document_id")
+    context.params.fetch("section_id")
   end
 
   def attachment_id

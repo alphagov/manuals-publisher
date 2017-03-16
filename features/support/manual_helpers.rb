@@ -43,7 +43,7 @@ module ManualHelpers
     create_service_context = OpenStruct.new(
       params: {
         "manual_id" => manual.id,
-        "document" => fields,
+        "section" => fields,
       }
     )
 
@@ -95,7 +95,7 @@ module ManualHelpers
       params: {
         "manual_id" => manual.id,
         "id" => document.id,
-        "document" => fields,
+        "section" => fields,
       }
     )
 
@@ -378,7 +378,7 @@ module ManualHelpers
         .text
     end
 
-    body_text = find("#document_body").value
+    body_text = find("#section_body").value
     fill_in("Section body", with: body_text + snippet)
   end
 
@@ -387,7 +387,7 @@ module ManualHelpers
     click_on document_title
     click_on "Edit section"
 
-    change_note_field_value = page.find("textarea[name='document[change_note]']").text
+    change_note_field_value = page.find("textarea[name='section[change_note]']").text
     expect(change_note_field_value).to eq(expected_value)
   end
 
@@ -541,8 +541,8 @@ module ManualHelpers
     expect(page).not_to have_button("Withdraw")
 
     # ...and if they get here anyway, throw them out
-    visit withdraw_manual_document_path(manual, document)
-    expect(current_path).to eq manual_document_path(manual.id, document.id)
+    visit withdraw_manual_section_path(manual, document)
+    expect(current_path).to eq manual_section_path(manual.id, document.id)
     expect(page).to have_text("You don't have permission to withdraw manual sections.")
   end
 

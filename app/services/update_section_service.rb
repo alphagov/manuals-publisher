@@ -38,7 +38,7 @@ private
   end
 
   def document_params
-    context.params.fetch("document")
+    context.params.fetch("section")
   end
 
   def notify_listeners

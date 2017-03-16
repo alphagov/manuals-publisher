@@ -144,7 +144,7 @@ private
   def authorize_user_for_withdrawing
     unless current_user_can_withdraw?
       redirect_to(
-        manual_document_path(params[:manual_id], params[:id]),
+        manual_section_path(params[:manual_id], params[:id]),
         flash: { error: "You don't have permission to withdraw manual sections." },
       )
     end
