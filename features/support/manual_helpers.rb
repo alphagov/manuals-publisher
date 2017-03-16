@@ -233,7 +233,7 @@ module ManualHelpers
   end
 
   def manual_document_repository(manual)
-    RepositoryRegistry.create.manual_specific_document_repository_factory.call(manual)
+    RepositoryRegistry.create.section_repository_factory.call(manual)
   end
 
   def check_manual_document_is_archived_in_db(manual, document_id)

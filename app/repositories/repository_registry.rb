@@ -36,7 +36,7 @@ class RepositoryRegistry
     ManualRepository.new(
       association_marshallers: [
         DocumentAssociationMarshaller.new(
-          manual_specific_document_repository_factory: manual_specific_document_repository_factory,
+          section_repository_factory: section_repository_factory,
           decorator: ->(manual, attrs) {
             entity_factories.manual_with_documents.call(manual, attrs)
           }
@@ -55,7 +55,7 @@ class RepositoryRegistry
     )
   end
 
-  def manual_specific_document_repository_factory
+  def section_repository_factory
     ->(manual) {
       document_factory = entity_factories.section_factory_factory.call(manual)
 

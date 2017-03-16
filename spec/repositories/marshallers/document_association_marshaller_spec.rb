@@ -6,14 +6,14 @@ describe DocumentAssociationMarshaller do
   subject(:marshaller) {
     DocumentAssociationMarshaller.new(
       decorator: decorator,
-      manual_specific_document_repository_factory: manual_specific_document_repository_factory,
+      section_repository_factory: section_repository_factory,
     )
   }
 
   let(:decorator) { double(:decorator, call: nil) }
-  let(:manual_specific_document_repository_factory) {
+  let(:section_repository_factory) {
     double(
-      :manual_specific_document_repository_factory,
+      :section_repository_factory,
       call: document_repository,
     )
   }

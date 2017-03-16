@@ -1,11 +1,11 @@
 class DocumentAssociationMarshaller
-  def initialize(decorator:, manual_specific_document_repository_factory:)
+  def initialize(decorator:, section_repository_factory:)
     @decorator = decorator
-    @manual_specific_document_repository_factory = manual_specific_document_repository_factory
+    @section_repository_factory = section_repository_factory
   end
 
   def load(manual, record)
-    document_repository = manual_specific_document_repository_factory.call(manual)
+    document_repository = section_repository_factory.call(manual)
 
     docs = Array(record.document_ids).map { |doc_id|
       document_repository.fetch(doc_id)
@@ -23,7 +23,7 @@ class DocumentAssociationMarshaller
   end
 
   def dump(manual, record)
-    document_repository = manual_specific_document_repository_factory.call(manual)
+    document_repository = section_repository_factory.call(manual)
 
     manual.documents.each do |document|
       document_repository.store(document)
@@ -41,7 +41,7 @@ class DocumentAssociationMarshaller
 
 private
 
-  attr_reader :manual_specific_document_repository_factory, :decorator
+  attr_reader :section_repository_factory, :decorator
 
   class RemovedDocumentIdNotFoundError < StandardError; end
 end
