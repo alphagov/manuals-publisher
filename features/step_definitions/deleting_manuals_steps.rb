@@ -21,12 +21,12 @@ Then(/^the script raises an error/) do
   expect { @deleter.call }.to raise_error(RuntimeError, /Cannot delete/)
 end
 
-Then(/^the manual and its documents are deleted$/) do
+Then(/^the manual and its sections are deleted$/) do
   check_manual_does_not_exist_with(@manual_fields)
   check_draft_has_been_discarded_in_publishing_api(@manual.id)
   check_draft_has_been_discarded_in_publishing_api(@document.id)
 end
 
-Then(/^the manual and its documents still exist$/) do
+Then(/^the manual and its sections still exist$/) do
   check_manual_exists_with(@manual_fields)
 end

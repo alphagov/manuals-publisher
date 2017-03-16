@@ -1,34 +1,34 @@
-When(/^I remove the document from the manual$/) do
+When(/^I remove the section from the manual$/) do
   withdraw_section(@manual_fields.fetch(:title), @document_fields.fetch(:section_title))
   @removed_document = @document
 end
 
-When(/^I remove the edited document from the manual$/) do
+When(/^I remove the edited section from the manual$/) do
   withdraw_section(@manual_fields.fetch(:title), @updated_fields.fetch(:section_title))
   @removed_document = @updated_document
 end
 
-When(/^I remove one of the documents from the manual$/) do
+When(/^I remove one of the sections from the manual$/) do
   withdraw_section(@manual_fields.fetch(:title), @documents.first.title)
   @removed_document = @documents.first
 end
 
-When(/^I remove one of the documents from the manual with a major update omitting the note$/) do
+When(/^I remove one of the sections from the manual with a major update omitting the note$/) do
   withdraw_section(@manual_fields.fetch(:title), @documents.first.title, minor_update: false)
   @removed_document = @documents.first
 end
 
-When(/^I remove one of the documents from the manual with a major update$/) do
+When(/^I remove one of the sections from the manual with a major update$/) do
   withdraw_section(@manual_fields.fetch(:title), @documents.first.title, minor_update: false, change_note: "Removing #{@documents.first.title} section as content is covered elsewhere.")
   @removed_document = @documents.first
 end
 
-When(/^I remove one of the documents from the manual with a minor update$/) do
+When(/^I remove one of the sections from the manual with a minor update$/) do
   withdraw_section(@manual_fields.fetch(:title), @documents.first.title, minor_update: true, change_note: "Should never have published this section, let's pretend we never did with this secret removal.")
   @removed_document = @documents.first
 end
 
-Then(/^the document is removed from the manual$/) do
+Then(/^the section is removed from the manual$/) do
   check_section_was_removed(@manual.id, @removed_document.id)
   check_draft_has_been_discarded_in_publishing_api(@removed_document.id)
 
@@ -44,21 +44,21 @@ Then(/^the document is removed from the manual$/) do
   check_manual_is_drafted_to_publishing_api(@manual.id, with_matcher: without_removed_document_matcher)
 end
 
-Then(/^the removed document is not published$/) do
+Then(/^the removed section is not published$/) do
   check_manual_was_published(@manual)
   check_section_was_not_published(@removed_document)
 end
 
-Then(/^the removed document is withdrawn with a redirect to the manual$/) do
+Then(/^the removed section is withdrawn with a redirect to the manual$/) do
   check_manual_was_published(@manual)
   check_section_was_withdrawn_with_redirect(@removed_document, "/#{@manual.slug}")
 end
 
-Then(/^the removed document is archived$/) do
+Then(/^the removed section is archived$/) do
   check_section_is_archived_in_db(@manual, @removed_document.id)
 end
 
-Then(/^the removed document change note is included$/) do
+Then(/^the removed section change note is included$/) do
   @removed_document = section_repository(@manual).fetch(@removed_document.id)
 
   check_manual_is_drafted_to_publishing_api(
@@ -68,7 +68,7 @@ Then(/^the removed document change note is included$/) do
   )
 end
 
-Then(/^the removed document change note is not included$/) do
+Then(/^the removed section change note is not included$/) do
   @removed_document = section_repository(@manual).fetch(@removed_document.id)
 
   check_manual_is_drafted_to_publishing_api(
