@@ -4,11 +4,11 @@ class ManualPublishingAPIExporter
   PUBLISHING_API_SCHEMA_NAME = "manual".freeze
   PUBLISHING_API_DOCUMENT_TYPE = "manual".freeze
 
-  def initialize(organisation, publication_logs, manual, update_type: nil)
+  def initialize(organisation, manual, update_type: nil)
     @export_recipient = Services.publishing_api_v2.method(:put_content)
     @organisation = organisation
     @manual_renderer = ManualRenderer.new
-    @publication_logs = publication_logs
+    @publication_logs = PublicationLog
     @manual = manual
     @update_type = update_type
     check_update_type!(@update_type)

@@ -190,7 +190,7 @@ private
 
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
     ManualPublishingAPIExporter.new(
-      organisation, PublicationLog, manual
+      organisation, manual
     ).call
 
     manual.documents.each do |document|

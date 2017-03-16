@@ -8,7 +8,6 @@ class PublishingApiDraftManualExporter
 
     ManualPublishingAPIExporter.new(
       OrganisationFetcher.instance.call(manual.attributes.fetch(:organisation_slug)),
-      PublicationLog,
       manual
     ).call
   end

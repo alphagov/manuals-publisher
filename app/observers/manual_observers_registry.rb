@@ -171,7 +171,7 @@ private
       ).call
 
       ManualPublishingAPIExporter.new(
-        organisation, PublicationLog, manual, update_type: update_type
+        organisation, manual, update_type: update_type
       ).call
 
       manual.documents.each do |document|
