@@ -6,6 +6,7 @@ require "new_manual_document_service"
 require "list_manual_documents_service"
 require "reorder_manual_documents_service"
 require "remove_manual_document_service"
+require "services"
 
 class AbstractManualDocumentServiceRegistry
   def preview(context)
@@ -144,10 +145,10 @@ private
   end
 
   def publishing_api_v2
-    PublishingApiV2.instance
+    Services.publishing_api_v2
   end
 
   def organisations_api
-    GdsApi::Organisations.new(ORGANISATIONS_API_BASE_PATH)
+    Services.organisations
   end
 end

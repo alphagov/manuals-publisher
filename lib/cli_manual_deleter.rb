@@ -1,3 +1,5 @@
+require "services"
+
 class CliManualDeleter
   def initialize(manual_slug, manual_id: nil, stdin: STDIN, stdout: STDOUT)
     @manual_slug = manual_slug
@@ -101,6 +103,6 @@ private
   end
 
   def publishing_api_v2
-    PublishingApiV2.instance
+    Services.publishing_api_v2
   end
 end

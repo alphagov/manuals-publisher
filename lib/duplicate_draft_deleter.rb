@@ -1,3 +1,5 @@
+require "services"
+
 class DuplicateDraftDeleter
   def call
     duplicated_editions_not_in_publishing_api = duplicated_editions.reject { |data| in_publishing_api?(data[:content_id]) }
@@ -14,7 +16,7 @@ class DuplicateDraftDeleter
 private
 
   def publishing_api
-    PublishingApiV2.instance
+    Services.publishing_api_v2
   end
 
   def in_publishing_api?(content_id)

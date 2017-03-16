@@ -1,3 +1,5 @@
+require "services"
+
 class ManualRelocator
   attr_reader :from_slug, :to_slug
 
@@ -227,7 +229,7 @@ private
   end
 
   def publishing_api
-    PublishingApiV2.instance
+    Services.publishing_api_v2
   end
 
   def fetch_organisation(slug)

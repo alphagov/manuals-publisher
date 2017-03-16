@@ -4,6 +4,7 @@ require "publishing_api_withdrawer"
 require "rummager_indexer"
 require "formatters/manual_indexable_formatter"
 require "formatters/section_indexable_formatter"
+require "services"
 
 class ManualObserversRegistry
   def publication
@@ -207,7 +208,7 @@ private
   end
 
   def publishing_api_v2
-    PublishingApiV2.instance
+    Services.publishing_api_v2
   end
 
   def organisation(slug)

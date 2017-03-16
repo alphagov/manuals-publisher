@@ -1,3 +1,5 @@
+require "services"
+
 class RummagerIndexer
   def add(document)
     api.add_document(document.type, document.id, document.indexable_attributes)
@@ -10,6 +12,6 @@ class RummagerIndexer
 private
 
   def api
-    RummagerApi.instance
+    Services.rummager
   end
 end
