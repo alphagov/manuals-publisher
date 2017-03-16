@@ -38,7 +38,7 @@ describe PublishingAPIPublisher do
 
   describe "#call" do
     before {
-      allow(subject).to receive(:publishing_api).and_return(publishing_api)
+      allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
     }
 
     context "when no explicit update_type is given" do
