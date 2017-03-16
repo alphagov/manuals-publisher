@@ -6,7 +6,6 @@ require "section_publishing_api_links_exporter"
 describe SectionPublishingAPILinksExporter do
   subject {
     SectionPublishingAPILinksExporter.new(
-      export_recipient,
       organisation,
       manual,
       document
@@ -42,6 +41,10 @@ describe SectionPublishingAPILinksExporter do
       attributes: { body: "##Some heading\nmanual section body" },
       attachments: []
     )
+  }
+
+  before {
+    allow(subject).to receive(:export_recipient).and_return(export_recipient)
   }
 
   it "exports links for the document" do

@@ -1,6 +1,6 @@
 class SectionPublishingAPILinksExporter
-  def initialize(export_recipient, organisation, manual, document)
-    @export_recipient = export_recipient
+  def initialize(organisation, manual, document)
+    @export_recipient = Services.publishing_api_v2.method(:patch_links)
     @organisation = organisation
     @manual = manual
     @document = document
