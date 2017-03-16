@@ -461,14 +461,7 @@ module ManualHelpers
     expect(page).to have_content("Warning: There are duplicate section slugs in this manual")
   end
 
-  def stub_manual_withdrawal_observers
-    stub_rummager
-    stub_publishing_api
-  end
-
   def withdraw_manual_without_ui(manual)
-    stub_manual_withdrawal_observers
-
     logger = Logger.new(nil)
     withdrawer = ManualWithdrawer.new(logger)
     withdrawer.execute(manual.id)
