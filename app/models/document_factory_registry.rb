@@ -18,7 +18,7 @@ class DocumentFactoryRegistry
       ManualValidator.new(
         NullValidator.new(
           ManualWithDocuments.new(
-            manual_document_builder,
+            section_builder,
             manual,
             attrs,
           )
@@ -27,7 +27,7 @@ class DocumentFactoryRegistry
     }
   end
 
-  def manual_document_builder
+  def section_builder
     SectionBuilder.new(factory_factory: manual_document_factory_factory)
   end
 
