@@ -52,10 +52,6 @@ RSpec.describe "Republishing manuals", type: :feature do
     WebMock::RequestRegistry.instance.reset!
   end
 
-  def republish_manuals
-    republish_manuals_without_ui
-  end
-
   def manual_repository
     RepositoryRegistry.create.manual_repository
   end
@@ -64,7 +60,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     before do
       create_manual_with_sections(published: true)
 
-      republish_manuals
+      republish_manuals_without_ui
     end
 
     it "sends the manual and the sections to the Publishing API" do
@@ -93,7 +89,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     before do
       create_manual_with_sections(published: false)
 
-      republish_manuals
+      republish_manuals_without_ui
     end
 
     it "sends the manual and the sections to the Publishing API" do
@@ -124,7 +120,7 @@ RSpec.describe "Republishing manuals", type: :feature do
 
       @edited_document = edit_manual_and_sections
 
-      republish_manuals
+      republish_manuals_without_ui
     end
 
     it "sends the published versions of the manual and its sections to the Publishing API" do
