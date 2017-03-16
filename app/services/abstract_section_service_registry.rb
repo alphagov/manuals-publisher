@@ -12,7 +12,7 @@ class AbstractSectionServiceRegistry
   def preview(context)
     PreviewSectionService.new(
       manual_repository,
-      manual_document_builder,
+      section_builder,
       document_renderer,
       context,
     )
@@ -86,7 +86,7 @@ private
     SectionRenderer.new
   end
 
-  def manual_document_builder
+  def section_builder
     SectionBuilder.create
   end
 
