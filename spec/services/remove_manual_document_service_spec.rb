@@ -1,7 +1,7 @@
 require "spec_helper"
-require "remove_manual_document_service"
+require "remove_section_service"
 
-RSpec.describe RemoveManualDocumentService do
+RSpec.describe RemoveSectionService do
   let(:document_id) { "123" }
 
   let(:manual) {
@@ -26,7 +26,7 @@ RSpec.describe RemoveManualDocumentService do
       params: {
         "id" => document_id,
         "manual_id" => "ABC",
-        "document" => change_note_params
+        "section" => change_note_params
       },
     )
   }
@@ -59,10 +59,10 @@ RSpec.describe RemoveManualDocumentService do
       }
     end
 
-    it "raises a ManualDocumentNotFound error" do
+    it "raises a SectionNotFound error" do
       expect {
         service.call
-      }.to raise_error(described_class::ManualDocumentNotFoundError, document_id)
+      }.to raise_error(described_class::SectionNotFoundError, document_id)
     end
 
     it "does not mark the manual as a draft" do

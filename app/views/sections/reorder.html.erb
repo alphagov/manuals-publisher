@@ -7,14 +7,14 @@
 <h1 class="page-header">
   Reorder sections
 </h1>
-<%= form_tag(update_order_manual_documents_path(manual), method: :post) do %>
+<%= form_tag(update_order_manual_sections_path(manual), method: :post) do %>
   <div class="row">
     <div class="col-md-8">
       <ol class="reorderable-document-list">
-        <% documents.each do |document| %>
+        <% sections.each do |section| %>
           <li>
-            <input type="hidden" name="section_order[]" value="<%= document.id %>">
-            <%= document.title %>
+            <input type="hidden" name="section_order[]" value="<%= section.id %>">
+            <%= section.title %>
           </li>
         <% end %>
       </ol>

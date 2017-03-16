@@ -1,4 +1,4 @@
-class RemoveManualDocumentService
+class RemoveSectionService
   def initialize(manual_repository, context, listeners:)
     @manual_repository = manual_repository
     @context = context
@@ -6,7 +6,7 @@ class RemoveManualDocumentService
   end
 
   def call
-    raise ManualDocumentNotFoundError.new(document_id) unless document.present?
+    raise SectionNotFoundError.new(document_id) unless document.present?
 
     document.update(change_note_params)
 
@@ -53,7 +53,7 @@ private
   end
 
   def change_note_params
-    document_params = context.params.fetch("document")
+    document_params = context.params.fetch("section")
     {
       "minor_update" => document_params.fetch("minor_update", "0"),
       "change_note" => document_params.fetch("change_note", ""),
@@ -67,5 +67,5 @@ private
   end
 
   class ManualNotFoundError < StandardError; end
-  class ManualDocumentNotFoundError < StandardError; end
+  class SectionNotFoundError < StandardError; end
 end

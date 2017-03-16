@@ -70,11 +70,11 @@ module ApplicationHelper
     end
   end
 
-  def preview_path_for_manual_document(manual, document)
+  def preview_path_for_section(manual, document)
     if document.persisted?
-      preview_manual_document_path(manual, document)
+      preview_manual_section_path(manual, document)
     else
-      preview_new_manual_document_path(manual)
+      preview_new_section_path(manual)
     end
   end
 

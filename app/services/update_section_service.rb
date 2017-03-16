@@ -1,4 +1,4 @@
-class UpdateManualDocumentService
+class UpdateSectionService
   def initialize(manual_repository:, context:, listeners:)
     @manual_repository = manual_repository
     @context = context
@@ -38,7 +38,7 @@ private
   end
 
   def document_params
-    context.params.fetch("document")
+    context.params.fetch("section")
   end
 
   def notify_listeners

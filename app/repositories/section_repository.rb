@@ -11,8 +11,8 @@ class SectionRepository
     raise e.extend(NotFoundError)
   end
 
-  def initialize(document_factory:)
-    @document_factory = document_factory
+  def initialize(section_factory:)
+    @section_factory = section_factory
   end
 
   def all(limit = -1, offset = 0)
@@ -34,7 +34,7 @@ class SectionRepository
     if editions.empty?
       nil
     else
-      document_factory.call(id, editions)
+      section_factory.call(id, editions)
     end
   end
 
@@ -75,7 +75,7 @@ class SectionRepository
 private
 
   attr_reader(
-    :document_factory,
+    :section_factory,
   )
 
   def search_conditions(query)

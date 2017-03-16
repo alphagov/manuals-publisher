@@ -1,11 +1,11 @@
-require "create_manual_document_attachment_service"
-require "update_manual_document_attachment_service"
-require "show_manual_document_attachment_service"
-require "new_manual_document_attachment_service"
+require "create_section_attachment_service"
+require "update_section_attachment_service"
+require "show_section_attachment_service"
+require "new_section_attachment_service"
 
-class ManualDocumentAttachmentsController < ApplicationController
+class SectionAttachmentsController < ApplicationController
   def new
-    service = NewManualDocumentAttachmentService.new(
+    service = NewSectionAttachmentService.new(
       repository,
       # TODO: This be should be created from the document or just be a form object
       Attachment.method(:new),
@@ -15,23 +15,23 @@ class ManualDocumentAttachmentsController < ApplicationController
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: ManualDocumentViewAdapter.new(manual, document),
+      document: SectionViewAdapter.new(manual, document),
       attachment: attachment,
     })
   end
 
   def create
-    service = CreateManualDocumentAttachmentService.new(
+    service = CreateSectionAttachmentService.new(
       repository,
       self,
     )
     manual, document, _attachment = service.call
 
-    redirect_to edit_manual_document_path(manual, document)
+    redirect_to edit_manual_section_path(manual, document)
   end
 
   def edit
-    service = ShowManualDocumentAttachmentService.new(
+    service = ShowSectionAttachmentService.new(
       repository,
       self,
     )
@@ -39,24 +39,24 @@ class ManualDocumentAttachmentsController < ApplicationController
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: ManualDocumentViewAdapter.new(manual, document),
+      document: SectionViewAdapter.new(manual, document),
       attachment: attachment,
     })
   end
 
   def update
-    service = UpdateManualDocumentAttachmentService.new(
+    service = UpdateSectionAttachmentService.new(
       repository,
       self,
     )
     manual, document, attachment = service.call
 
     if attachment.persisted?
-      redirect_to(edit_manual_document_path(manual, document))
+      redirect_to(edit_manual_section_path(manual, document))
     else
       render(:edit, locals: {
         manual: ManualViewAdapter.new(manual),
-        document: ManualDocumentViewAdapter.new(manual, document),
+        document: SectionViewAdapter.new(manual, document),
         attachment: attachment,
       })
     end

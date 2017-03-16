@@ -1,4 +1,4 @@
-class PreviewManualDocumentService
+class PreviewSectionService
   def initialize(manual_repository, document_builder, document_renderer, context)
     @manual_repository = manual_repository
     @document_builder = document_builder

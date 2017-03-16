@@ -3,7 +3,7 @@ module AttachmentHelpers
     Plek.current.find("asset-manager")
   end
 
-  def add_attachment_to_manual_document(document_title, attachment_title)
+  def add_attachment_to_section(document_title, attachment_title)
     if page.has_css?("a", text: document_title)
       click_on(document_title)
     elsif page.has_css?("a", text: "Edit")

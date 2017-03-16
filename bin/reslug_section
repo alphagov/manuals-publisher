@@ -34,7 +34,7 @@ manual_slug = ARGV[0]
 current_slug = ARGV[1]
 new_slug = ARGV[2]
 
-logger.info "Renaming manual document slug"
+logger.info "Renaming section slug"
 
 begin
   SectionReslugger.new(manual_slug, current_slug, new_slug).call

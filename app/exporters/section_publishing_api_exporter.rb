@@ -112,7 +112,7 @@ private
   end
 
   def rendered_document_attributes
-    @rendered_document_attributes ||= ManualDocumentRenderer.new.call(document).attributes
+    @rendered_document_attributes ||= SectionRenderer.new.call(document).attributes
   end
 
   def organisation_info

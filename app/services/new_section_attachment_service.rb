@@ -1,20 +1,21 @@
-class CreateManualDocumentAttachmentService
-  def initialize(manual_repository, context)
+class NewSectionAttachmentService
+  def initialize(manual_repository, builder, context)
     @manual_repository = manual_repository
+    @builder = builder
     @context = context
   end
 
   def call
-    attachment = document.add_attachment(attachment_params)
-
-    manual_repository.store(manual)
-
     [manual, document, attachment]
   end
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :manual_repository, :builder, :context
+
+  def attachment
+    builder.call(initial_params)
+  end
 
   def document
     @document ||= manual.documents.find { |d| d.id == document_id }
@@ -24,8 +25,8 @@ private
     @manual ||= manual_repository.fetch(manual_id)
   end
 
-  def attachment_params
-    context.params.fetch("attachment")
+  def initial_params
+    {}
   end
 
   def manual_id
@@ -33,6 +34,6 @@ private
   end
 
   def document_id
-    context.params.fetch("document_id")
+    context.params.fetch("section_id")
   end
 end

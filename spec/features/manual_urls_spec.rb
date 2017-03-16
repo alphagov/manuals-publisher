@@ -6,7 +6,7 @@ RSpec.describe "manual urls", type: :feature do
   end
 
   let!(:manual) { create_manual_without_ui(title: "A manual", summary: "A manual summary", body: "A manual body") }
-  let!(:section) { create_manual_document_without_ui(manual, title: "Section 1", summary: "A section summary", body: "A section body") }
+  let!(:section) { create_section_without_ui(manual, title: "Section 1", summary: "A section summary", body: "A section body") }
 
   it "should respond with 'OK'" do
     visit "/manuals"

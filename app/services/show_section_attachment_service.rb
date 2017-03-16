@@ -1,4 +1,4 @@
-class ShowManualDocumentAttachmentService
+class ShowSectionAttachmentService
   def initialize(manual_repository, context)
     @manual_repository = manual_repository
     @context = context
@@ -29,7 +29,7 @@ private
   end
 
   def document_id
-    context.params.fetch("document_id")
+    context.params.fetch("section_id")
   end
 
   def attachment_id

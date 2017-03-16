@@ -1,4 +1,4 @@
-class ManualDocumentServiceRegistry < AbstractManualDocumentServiceRegistry
+class SectionServiceRegistry < AbstractSectionServiceRegistry
 private
 
   def manual_repository

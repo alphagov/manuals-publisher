@@ -1,7 +1,7 @@
 <div class='row'>
   <div class="col-md-8">
-    <%= form_for [manual, document] do |f| %>
-      <%= render partial: "shared/form_errors", locals: { object: document } %>
+    <%= form_for [manual, section] do |f| %>
+      <%= render partial: "shared/form_errors", locals: { object: section } %>
 
       <%= f.text_field :title, label: 'Section title', class: 'form-control' %>
       <%= f.text_area :summary, label: 'Section summary', class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
@@ -11,15 +11,15 @@
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
-      <% if manual.has_ever_been_published? && document.has_ever_been_published? %>
+      <% if manual.has_ever_been_published? && section.has_ever_been_published? %>
         <div class="checkbox add-vertical-margins">
-          <%= f.radio_button :minor_update, 1, class: 'js-update-type-minor', tag_type: :p, label: 'Minor update', checked: document.minor_update %>
+          <%= f.radio_button :minor_update, 1, class: 'js-update-type-minor', tag_type: :p, label: 'Minor update', checked: section.minor_update %>
           <p class="help-block">Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.</p>
         </div>
         <div class="checkbox add-vertical-margins">
-          <%= f.radio_button :minor_update, 0, class: 'js-update-type-major', tag_type: :p, label: 'Major update', checked: !document.minor_update %>
+          <%= f.radio_button :minor_update, 0, class: 'js-update-type-major', tag_type: :p, label: 'Major update', checked: !section.minor_update %>
         </div>
-        <div class="<%= document.minor_update ? 'js-hidden' : nil %>">
+        <div class="<%= section.minor_update ? 'js-hidden' : nil %>">
           <%= f.text_area :change_note, class: 'form-control short-textarea' %>
           <p class="help-block">This will be publically viewable on GOV.UK.</p>
         </div>
@@ -52,18 +52,18 @@
 
     <h2>Attachments</h2>
 
-    <% if document.persisted? %>
-      <%= link_to "Add attachment", new_manual_document_attachment_path(manual, document) %>
+    <% if section.persisted? %>
+      <%= link_to "Add attachment", new_manual_section_attachment_path(manual, section) %>
     <% else %>
       <p>To add an attachment, please save the draft first.</p>
     <% end %>
 
     <ul class="attachments">
-      <% document.attachments.each do |attachment| %>
+      <% section.attachments.each do |attachment| %>
         <li class="attachment">
           <span class="title"><%= attachment.title %></span>
           <span class="snippet"><%= attachment.snippet %></span>
-          <%= link_to "edit", edit_manual_document_attachment_path(manual, document, attachment) %>
+          <%= link_to "edit", edit_manual_section_attachment_path(manual, section, attachment) %>
         </li>
       <% end %>
     </ul>
@@ -71,14 +71,14 @@
 </div>
 <%= content_for :document_ready do %>
   window.MarkdownPreview.addPreviewFeature({
-    'url'             : '<%= preview_path_for_manual_document(manual, document) %>',
+    'url'             : '<%= preview_path_for_section(manual, section) %>',
     'insert_into'     : '.preview_container',
     'insert_button'   : '.preview_button',
     'render_to'       : '.preview .govspeak',
     'data_target'     : function() {
                           return {
                             'document' : {
-                              'body' : $('#document_body').val()
+                              'body' : $('#section_body').val()
                             }
                           };
                         }

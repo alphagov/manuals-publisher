@@ -1,7 +1,7 @@
 <% content_for :breadcrumbs do %>
   <li><%= link_to "Your manuals", manuals_path %></li>
   <li><%= link_to manual.title, manual_path(manual) %></li>
-  <li><%= link_to document.title, manual_document_path(manual, document) %></li>
+  <li><%= link_to section.title, manual_section_path(manual, section) %></li>
   <li class='active'>Withdraw section</li>
 <% end %>
 
@@ -9,8 +9,8 @@
 
 <div class='row'>
   <div class="col-md-8">
-    <%= form_for [manual, document], method: :delete, class: 'panel panel-default' do |f| %>
-      <%= render partial: "shared/form_errors", locals: { object: document } %>
+    <%= form_for [manual, section], method: :delete, class: 'panel panel-default' do |f| %>
+      <%= render partial: "shared/form_errors", locals: { object: section } %>
 
       <div class="panel-body">
         <p>This will remove this section from the manual.  This change will go
@@ -18,20 +18,20 @@
           it after you remove it.</p>
 
         <div class="checkbox add-vertical-margins">
-          <%= f.radio_button :minor_update, 1, tag_type: :p, label: 'Minor update', checked: document.minor_update %>
+          <%= f.radio_button :minor_update, 1, tag_type: :p, label: 'Minor update', checked: section.minor_update %>
           <p class="help-block">Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.</p>
         </div>
         <div class="checkbox add-vertical-margins">
-          <%= f.radio_button :minor_update, 0, tag_type: :p, label: 'Major update', checked: !document.minor_update %>
+          <%= f.radio_button :minor_update, 0, tag_type: :p, label: 'Major update', checked: !section.minor_update %>
         </div>
-        <div class="<%= document.minor_update ? 'js-hidden' : nil %>">
+        <div class="<%= section.minor_update ? 'js-hidden' : nil %>">
           <%= f.text_area :change_note, class: 'form-control short-textarea' %>
           <p class="help-block">This will be publically viewable on GOV.UK.</p>
         </div>
 
         <p>Are you sure you want to proceed?</p>
         <button name='draft' class="btn btn-danger" data-disable-with="Withdrawing...">Yes</button>
-        <%= link_to "No", manual_document_path(manual, document), class: 'btn btn-default' %>
+        <%= link_to "No", manual_section_path(manual, section), class: 'btn btn-default' %>
       </div>
     <% end %>
   </div>

@@ -1,68 +1,68 @@
-require "preview_manual_document_service"
-require "create_manual_document_service"
-require "update_manual_document_service"
-require "show_manual_document_service"
-require "new_manual_document_service"
-require "list_manual_documents_service"
-require "reorder_manual_documents_service"
-require "remove_manual_document_service"
+require "preview_section_service"
+require "create_section_service"
+require "update_section_service"
+require "show_section_service"
+require "new_section_service"
+require "list_sections_service"
+require "reorder_sections_service"
+require "remove_section_service"
 require "services"
 
-class AbstractManualDocumentServiceRegistry
+class AbstractSectionServiceRegistry
   def preview(context)
-    PreviewManualDocumentService.new(
+    PreviewSectionService.new(
       manual_repository,
-      manual_document_builder,
+      section_builder,
       document_renderer,
       context,
     )
   end
 
   def create(context)
-    CreateManualDocumentService.new(
+    CreateSectionService.new(
       manual_repository: manual_repository,
       listeners: [
         publishing_api_draft_manual_exporter,
-        publishing_api_draft_manual_document_exporter
+        publishing_api_draft_section_exporter
       ],
       context: context,
     )
   end
 
   def update(context)
-    UpdateManualDocumentService.new(
+    UpdateSectionService.new(
       manual_repository: manual_repository,
       context: context,
       listeners: [
         publishing_api_draft_manual_exporter,
-        publishing_api_draft_manual_document_exporter
+        publishing_api_draft_section_exporter
       ],
     )
   end
 
   def show(context)
-    ShowManualDocumentService.new(
+    ShowSectionService.new(
       manual_repository,
       context,
     )
   end
 
   def new(context)
-    NewManualDocumentService.new(
+    NewSectionService.new(
       manual_repository,
       context,
     )
   end
 
   def list(context)
-    ListManualDocumentsService.new(
+    ListSectionsService.new(
       manual_repository,
       context,
     )
   end
 
   def update_order(context)
-    ReorderManualDocumentsService.new(
+    ReorderSectionsService.new(
       manual_repository,
       context,
       listeners: [publishing_api_draft_manual_exporter]
@@ -70,12 +70,12 @@ class AbstractManualDocumentServiceRegistry
   end
 
   def remove(context)
-    RemoveManualDocumentService.new(
+    RemoveSectionService.new(
       manual_repository,
       context,
       listeners: [
         publishing_api_draft_manual_exporter,
-        publishing_api_draft_manual_document_discarder
+        publishing_api_draft_section_discarder
       ]
     )
   end
@@ -86,8 +86,8 @@ private
     SectionRenderer.new
   end
 
-  def manual_document_builder
-    ManualDocumentBuilder.create
+  def section_builder
+    SectionBuilder.create
   end
 
   def manual_repository
@@ -116,27 +116,27 @@ private
     }
   end
 
-  def publishing_api_draft_manual_document_exporter
-    ->(manual_document, manual) {
+  def publishing_api_draft_section_exporter
+    ->(section, manual) {
       SectionPublishingAPILinksExporter.new(
         publishing_api_v2.method(:patch_links),
         organisation(manual.attributes.fetch(:organisation_slug)),
         manual,
-        manual_document
+        section
       ).call
 
       SectionPublishingAPIExporter.new(
         organisation(manual.attributes.fetch(:organisation_slug)),
         manual,
-        manual_document
+        section
       ).call
     }
   end
 
-  def publishing_api_draft_manual_document_discarder
-    ->(manual_document, _manual) {
+  def publishing_api_draft_section_discarder
+    ->(section, _manual) {
       begin
-        publishing_api_v2.discard_draft(manual_document.id)
+        publishing_api_v2.discard_draft(section.id)
       rescue GdsApi::HTTPNotFound, GdsApi::HTTPUnprocessableEntity # rubocop:disable Lint/HandleExceptions
       end
     }
