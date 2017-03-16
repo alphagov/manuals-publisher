@@ -117,26 +117,26 @@ private
   end
 
   def publishing_api_draft_section_exporter
-    ->(manual_document, manual) {
+    ->(section, manual) {
       SectionPublishingAPILinksExporter.new(
         publishing_api_v2.method(:patch_links),
         organisation(manual.attributes.fetch(:organisation_slug)),
         manual,
-        manual_document
+        section
       ).call
 
       SectionPublishingAPIExporter.new(
         organisation(manual.attributes.fetch(:organisation_slug)),
         manual,
-        manual_document
+        section
       ).call
     }
   end
 
   def publishing_api_draft_section_discarder
-    ->(manual_document, _manual) {
+    ->(section, _manual) {
       begin
-        publishing_api_v2.discard_draft(manual_document.id)
+        publishing_api_v2.discard_draft(section.id)
       rescue GdsApi::HTTPNotFound, GdsApi::HTTPUnprocessableEntity # rubocop:disable Lint/HandleExceptions
       end
     }
