@@ -57,7 +57,7 @@ class RepositoryRegistry
 
   def manual_specific_document_repository_factory
     ->(manual) {
-      document_factory = entity_factories.manual_document_factory_factory.call(manual)
+      document_factory = entity_factories.section_factory_factory.call(manual)
 
       SectionRepository.new(
         document_factory: document_factory,

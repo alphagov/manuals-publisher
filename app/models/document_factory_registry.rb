@@ -28,10 +28,10 @@ class DocumentFactoryRegistry
   end
 
   def section_builder
-    SectionBuilder.new(factory_factory: manual_document_factory_factory)
+    SectionBuilder.new(factory_factory: section_factory_factory)
   end
 
-  def manual_document_factory_factory
+  def section_factory_factory
     ->(manual) {
       ->(id, editions) {
         slug_generator = SlugGenerator.new(prefix: manual.slug)
