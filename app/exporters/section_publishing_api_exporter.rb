@@ -4,10 +4,8 @@ class SectionPublishingAPIExporter
   PUBLISHING_API_SCHEMA_NAME = "manual_section".freeze
   PUBLISHING_API_DOCUMENT_TYPE = "manual_section".freeze
 
-  def initialize(export_recipient, organisation, document_renderer, manual, document, update_type: nil)
-    @export_recipient = export_recipient
+  def initialize(organisation, manual, document, update_type: nil)
     @organisation = organisation
-    @document_renderer = document_renderer
     @manual = manual
     @document = document
     @update_type = update_type
@@ -15,12 +13,12 @@ class SectionPublishingAPIExporter
   end
 
   def call
-    export_recipient.call(content_id, exportable_attributes)
+    Services.publishing_api_v2.put_content(content_id, exportable_attributes)
   end
 
 private
 
-  attr_reader :export_recipient, :document_renderer, :organisation, :manual, :document
+  attr_reader :organisation, :manual, :document
 
   def content_id
     document.id
@@ -114,7 +112,7 @@ private
   end
 
   def rendered_document_attributes
-    @rendered_document_attributes ||= document_renderer.call(document).attributes
+    @rendered_document_attributes ||= ManualDocumentRenderer.new.call(document).attributes
   end
 
   def organisation_info

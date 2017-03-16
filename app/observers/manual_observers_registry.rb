@@ -167,7 +167,6 @@ private
       put_content = publishing_api_v2.method(:put_content)
       organisation = organisation(manual.attributes.fetch(:organisation_slug))
       manual_renderer = ManualRenderer.new
-      manual_document_renderer = ManualDocumentRenderer.new
 
       ManualPublishingAPILinksExporter.new(
         patch_links, organisation, manual
@@ -185,7 +184,7 @@ private
         ).call
 
         SectionPublishingAPIExporter.new(
-          put_content, organisation, manual_document_renderer, manual, document, update_type: update_type
+          organisation, manual, document, update_type: update_type
         ).call
       end
     }

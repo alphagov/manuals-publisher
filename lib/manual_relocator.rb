@@ -189,7 +189,6 @@ private
     put_content = publishing_api.method(:put_content)
     organisation = fetch_organisation(manual.organisation_slug)
     manual_renderer = ManualRenderer.new
-    manual_document_renderer = ManualDocumentRenderer.new
 
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
     ManualPublishingAPIExporter.new(
@@ -199,7 +198,7 @@ private
     manual.documents.each do |document|
       puts "Sending a draft of manual section #{document.id} (version: #{document.version_number})"
       SectionPublishingAPIExporter.new(
-        put_content, organisation, manual_document_renderer, manual, document
+        organisation, manual, document
       ).call
     end
   end
