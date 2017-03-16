@@ -24,7 +24,7 @@ module ManualHelpers
     manual_repository.fetch(manual.id)
   end
 
-  def create_manual_document(manual_title, fields)
+  def create_section(manual_title, fields)
     go_to_manual_page(manual_title)
     click_on "Add section"
 
@@ -35,8 +35,8 @@ module ManualHelpers
     save_as_draft
   end
 
-  def create_manual_document_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    manual_document_services = OrganisationalSectionServiceRegistry.new(
+  def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
+    section_services = OrganisationalSectionServiceRegistry.new(
       organisation_slug: organisation_slug,
     )
 
@@ -47,7 +47,7 @@ module ManualHelpers
       }
     )
 
-    _, document = manual_document_services.create(create_service_context).call
+    _, document = section_services.create(create_service_context).call
 
     document
   end
@@ -75,7 +75,7 @@ module ManualHelpers
     manual
   end
 
-  def edit_manual_document(manual_title, section_title, new_fields)
+  def edit_section(manual_title, section_title, new_fields)
     go_to_manual_page(manual_title)
     click_on section_title
     click_on "Edit"
@@ -86,8 +86,8 @@ module ManualHelpers
     save_as_draft
   end
 
-  def edit_manual_document_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
-    manual_document_services = OrganisationalSectionServiceRegistry.new(
+  def edit_section_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
+    section_services = OrganisationalSectionServiceRegistry.new(
       organisation_slug: organisation_slug,
     )
 
@@ -99,7 +99,7 @@ module ManualHelpers
       }
     )
 
-    _, document = manual_document_services.update(service_context).call
+    _, document = section_services.update(service_context).call
 
     document
   end
@@ -113,7 +113,7 @@ module ManualHelpers
     save_as_draft
   end
 
-  def withdraw_manual_document(manual_title, section_title, change_note: nil, minor_update: true)
+  def withdraw_section(manual_title, section_title, change_note: nil, minor_update: true)
     go_to_manual_page(manual_title)
     click_on section_title
 
@@ -158,7 +158,7 @@ module ManualHelpers
     expect(page).not_to have_content(attributes.fetch(:title))
   end
 
-  def check_manual_document_exists_with(manual_title, attributes)
+  def check_section_exists_with(manual_title, attributes)
     go_to_manual_page(manual_title)
     click_on(attributes.fetch(:section_title))
 
@@ -205,7 +205,7 @@ module ManualHelpers
 
   def check_manual_and_documents_were_published(manual, document, manual_attrs, document_attrs)
     check_manual_is_published_to_publishing_api(manual.id)
-    check_manual_document_is_published_to_publishing_api(document.id)
+    check_section_is_published_to_publishing_api(document.id)
 
     check_manual_is_published_to_rummager(manual.slug, manual_attrs)
     check_section_is_published_to_rummager(document.slug, document_attrs, manual_attrs)
@@ -219,25 +219,25 @@ module ManualHelpers
     check_manual_is_not_published_to_publishing_api(manual.id)
   end
 
-  def check_manual_document_was_published(document)
-    check_manual_document_is_published_to_publishing_api(document.id)
+  def check_section_was_published(document)
+    check_section_is_published_to_publishing_api(document.id)
   end
 
-  def check_manual_document_was_not_published(document)
-    check_manual_document_is_not_published_to_publishing_api(document.id)
+  def check_section_was_not_published(document)
+    check_section_is_not_published_to_publishing_api(document.id)
   end
 
-  def check_manual_document_was_withdrawn_with_redirect(document, redirect_path)
-    check_manual_document_is_unpublished_from_publishing_api(document.id, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
-    check_manual_document_is_withdrawn_from_rummager(document)
+  def check_section_was_withdrawn_with_redirect(document, redirect_path)
+    check_section_is_unpublished_from_publishing_api(document.id, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
+    check_section_is_withdrawn_from_rummager(document)
   end
 
-  def manual_document_repository(manual)
+  def section_repository(manual)
     RepositoryRegistry.create.section_repository_factory.call(manual)
   end
 
-  def check_manual_document_is_archived_in_db(manual, document_id)
-    expect(manual_document_repository(manual).fetch(document_id)).to be_withdrawn
+  def check_section_is_archived_in_db(manual, document_id)
+    expect(section_repository(manual).fetch(document_id)).to be_withdrawn
   end
 
   def check_manual_is_published_to_rummager(slug, attrs)
@@ -302,7 +302,7 @@ module ManualHelpers
     assert_publishing_api_discard_draft(content_id)
   end
 
-  def check_manual_document_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
+  def check_section_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
     raise ArgumentError, "can't specify both extra_attributes and with_matcher" if with_matcher.present? && !extra_attributes.empty?
 
     if with_matcher.nil?
@@ -317,15 +317,15 @@ module ManualHelpers
     assert_publishing_api_put_content(content_id, with_matcher, number_of_drafts)
   end
 
-  def check_manual_document_is_published_to_publishing_api(content_id, times: 1)
+  def check_section_is_published_to_publishing_api(content_id, times: 1)
     assert_publishing_api_publish(content_id, nil, times)
   end
 
-  def check_manual_document_is_not_published_to_publishing_api(content_id)
+  def check_section_is_not_published_to_publishing_api(content_id)
     assert_publishing_api_publish(content_id, nil, 0)
   end
 
-  def check_manual_document_is_unpublished_from_publishing_api(content_id, unpublishing_attributes)
+  def check_section_is_unpublished_from_publishing_api(content_id, unpublishing_attributes)
     assert_publishing_api_unpublish(content_id, unpublishing_attributes)
   end
 
@@ -370,7 +370,7 @@ module ManualHelpers
     end
   end
 
-  def copy_embed_code_for_attachment_and_paste_into_manual_document_body(title)
+  def copy_embed_code_for_attachment_and_paste_into_section_body(title)
     snippet = within(".attachments") do
       page
         .find("li", text: /#{title}/)
@@ -418,7 +418,7 @@ module ManualHelpers
       section_summary: "Section 1 summary",
       section_body: "Section 1 body",
     }
-    create_manual_document(@manual_fields.fetch(:title), document_fields)
+    create_section(@manual_fields.fetch(:title), document_fields)
 
     go_to_manual_page(@manual_fields.fetch(:title))
     expect(page).not_to have_button("Publish")
@@ -474,7 +474,7 @@ module ManualHelpers
     end
   end
 
-  def check_manual_document_is_withdrawn_from_rummager(document)
+  def check_section_is_withdrawn_from_rummager(document)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
         SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
@@ -504,7 +504,7 @@ module ManualHelpers
     end
 
     attributes_for_documents.each do |attributes|
-      create_manual_document(manual_fields.fetch(:title), attributes[:fields])
+      create_section(manual_fields.fetch(:title), attributes[:fields])
     end
 
     attributes_for_documents
@@ -518,7 +518,7 @@ module ManualHelpers
         body: "Section #{n} body"
       }
 
-      create_manual_document_without_ui(manual, attributes)
+      create_section_without_ui(manual, attributes)
     end
   end
 
@@ -561,7 +561,7 @@ module ManualHelpers
   def check_manual_is_drafted_and_published_with_first_published_date_only(manual, expected_date, how_many_times: 1)
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
-    check_manual_document_is_drafted_to_publishing_api(
+    check_section_is_drafted_to_publishing_api(
       manual.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
@@ -573,10 +573,10 @@ module ManualHelpers
     check_manual_was_published(manual)
   end
 
-  def check_manual_document_is_drafted_and_published_with_first_published_date_only(document, expected_date, how_many_times: 1)
+  def check_section_is_drafted_and_published_with_first_published_date_only(document, expected_date, how_many_times: 1)
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
-    check_manual_document_is_drafted_to_publishing_api(
+    check_section_is_drafted_to_publishing_api(
       document.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
@@ -586,13 +586,13 @@ module ManualHelpers
       number_of_drafts: how_many_times
     )
 
-    check_manual_document_was_published(document)
+    check_section_was_published(document)
   end
 
   def check_manual_is_drafted_and_published_with_all_public_timestamps(manual, expected_date, how_many_times: 1)
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
-    check_manual_document_is_drafted_to_publishing_api(
+    check_section_is_drafted_to_publishing_api(
       manual.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
@@ -604,10 +604,10 @@ module ManualHelpers
     check_manual_was_published(manual)
   end
 
-  def check_manual_document_is_drafted_and_published_with_all_public_timestamps(document, expected_date, how_many_times: 1)
+  def check_section_is_drafted_and_published_with_all_public_timestamps(document, expected_date, how_many_times: 1)
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
-    check_manual_document_is_drafted_to_publishing_api(
+    check_section_is_drafted_to_publishing_api(
       document.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
@@ -617,13 +617,13 @@ module ManualHelpers
       number_of_drafts: how_many_times
     )
 
-    check_manual_document_was_published(document)
+    check_section_was_published(document)
   end
 
   def check_manual_is_drafted_and_published_with_no_public_timestamps(manual, how_many_times: 1)
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
-    check_manual_document_is_drafted_to_publishing_api(
+    check_section_is_drafted_to_publishing_api(
       manual.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)

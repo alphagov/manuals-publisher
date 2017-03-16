@@ -21,8 +21,8 @@ RSpec.describe "Publishing manuals", type: :feature do
       manual = create_manual_without_ui(manual_fields)
 
       @documents = [].tap do |documents|
-        documents << create_manual_document_without_ui(manual, title: "Section 1 major", summary: "Section 1 summary", body: "Section body")
-        documents << create_manual_document_without_ui(manual, title: "Section 1", summary: "Section 1 minor summary", body: "Section body minor update", minor_update: true)
+        documents << create_section_without_ui(manual, title: "Section 1 major", summary: "Section 1 summary", body: "Section body")
+        documents << create_section_without_ui(manual, title: "Section 1", summary: "Section 1 minor summary", body: "Section body minor update", minor_update: true)
       end
 
       # Re-fetch manual to include documents
@@ -37,7 +37,7 @@ RSpec.describe "Publishing manuals", type: :feature do
 
     it "drafts the manual and sections and publishes them to the Publishing API" do
       @documents.each do |document|
-        check_manual_document_is_drafted_to_publishing_api(document.id, number_of_drafts: 2)
+        check_section_is_drafted_to_publishing_api(document.id, number_of_drafts: 2)
         check_manual_and_documents_were_published(@manual, document, manual_fields, document_fields(document))
       end
     end

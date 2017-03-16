@@ -1,6 +1,6 @@
 When(/^I attach a file and give it a title$/) do
   @attachment_title = "My attachment"
-  add_attachment_to_manual_document(@document_title, @attachment_title)
+  add_attachment_to_section(@document_title, @attachment_title)
 end
 
 Then(/^I can see a link to the file with the title in the document preview$/) do

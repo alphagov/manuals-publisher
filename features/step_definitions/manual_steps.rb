@@ -115,7 +115,7 @@ When(/^I create a document for the manual$/) do
     section_body: "Section 1 body",
   }
 
-  create_manual_document(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @document_fields)
 
   @document = most_recently_created_manual.documents.to_a.last
 end
@@ -132,7 +132,7 @@ When(/^I create a document for the manual with a change note$/) do
     change_note: @change_note
   }
 
-  create_manual_document(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @document_fields)
 
   @document = most_recently_created_manual.documents.to_a.last
 end
@@ -144,7 +144,7 @@ Then(/^I see the manual has the new section$/) do
 end
 
 Then(/^the manual document and table of contents will have been sent to the draft publishing api$/) do
-  check_manual_document_is_drafted_to_publishing_api(@document.id)
+  check_section_is_drafted_to_publishing_api(@document.id)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -168,7 +168,7 @@ Then(/^the manual document and table of contents will have been sent to the draf
 end
 
 Then(/^the updated manual document at the new slug and updated table of contents will have been sent to the draft publishing api$/) do
-  check_manual_document_is_drafted_to_publishing_api(@document.id)
+  check_section_is_drafted_to_publishing_api(@document.id)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -201,7 +201,7 @@ Given(/^a draft document exists for the manual$/) do
     section_body: "New section body",
   }
 
-  create_manual_document(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @document_fields)
 
   @document = most_recently_created_manual.documents.to_a.last
 
@@ -214,7 +214,7 @@ end
 When(/^I edit the document$/) do
   @new_title = "A new section title"
   @new_slug = "#{@manual_slug}/a-new-section-title"
-  edit_manual_document(
+  edit_section(
     @manual_fields.fetch(:title),
     @document_fields.fetch(:section_title),
     section_title: @new_title,
@@ -222,7 +222,7 @@ When(/^I edit the document$/) do
 end
 
 Then(/^the document should have been updated$/) do
-  check_manual_document_exists_with(
+  check_section_exists_with(
     @manual_fields.fetch(:title),
     section_title: @new_title,
   )
@@ -233,7 +233,7 @@ Then(/^the manual's documents won't have changed$/) do
 end
 
 When(/^I create a document with empty fields$/) do
-  create_manual_document(@manual_fields.fetch(:title), {})
+  create_section(@manual_fields.fetch(:title), {})
 end
 
 Then(/^I see errors for the document fields$/) do
@@ -249,7 +249,7 @@ When(/^I publish the manual$/) do
 end
 
 When(/^I add another section and publish the manual later$/) do
-  create_manual_document(
+  create_section(
     @manual.title,
     section_title: "Another section so we can publish",
     section_summary: "Another section so we can publish summary",
@@ -277,7 +277,7 @@ Then(/^the manual and the edited document are published$/) do
 end
 
 Then(/^the updated manual document is available to preview$/) do
-  check_manual_document_is_drafted_to_publishing_api(@updated_document.id)
+  check_section_is_drafted_to_publishing_api(@updated_document.id)
   sections = @documents.map do |document|
     {
       title: document == @updated_document ? @updated_fields[:section_title] : document.title,
@@ -303,7 +303,7 @@ end
 
 Then(/^the manual documents that I didn't edit were not republished$/) do
   @documents.reject { |d| d.id == @updated_document.id }.each do |document|
-    check_manual_document_was_not_published(document)
+    check_section_was_not_published(document)
   end
 end
 
@@ -355,7 +355,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
 
   @manual = create_manual_without_ui(@manual_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
-  doc_1 = create_manual_document_without_ui(
+  doc_1 = create_section_without_ui(
     @manual,
     {
       title: "1st example section",
@@ -364,7 +364,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
     },
     organisation_slug: GDS::SSO.test_user.organisation_slug
   )
-  doc_2 = create_manual_document_without_ui(
+  doc_2 = create_section_without_ui(
     @manual,
     {
       title: "2nd example section",
@@ -391,7 +391,7 @@ When(/^I create a document for the manual as a minor change without the UI$/) do
     minor_update: true
   }
 
-  @document = create_manual_document_without_ui(@manual, @document_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
+  @document = create_section_without_ui(@manual, @document_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
   go_to_manual_page(@manual.title)
 
@@ -409,7 +409,7 @@ When(/^I edit one of the manual's documents(?: as a major change)?$/) do
     change_note: "Updated section",
   }
 
-  edit_manual_document(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+  edit_section(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
     choose("Major update")
   end
 end
@@ -425,7 +425,7 @@ When(/^I edit one of the manual's documents without a change note$/) do
     change_note: "",
   }
 
-  edit_manual_document(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+  edit_section(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
     choose("Major update")
   end
 end
@@ -440,7 +440,7 @@ When(/^I edit one of the manual's documents as a minor change$/) do
     section_body: "Updated section",
   }
 
-  edit_manual_document(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+  edit_section(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
     choose("Minor update")
   end
 end
@@ -466,7 +466,7 @@ Then(/^I see the document body preview$/) do
 end
 
 When(/^I copy\+paste the embed code into the body of the document$/) do
-  copy_embed_code_for_attachment_and_paste_into_manual_document_body("My attachment")
+  copy_embed_code_for_attachment_and_paste_into_section_body("My attachment")
 end
 
 Then(/^I see an error requesting that I provide a change note$/) do
@@ -479,7 +479,7 @@ When(/^I indicate that the change is minor$/) do
 end
 
 Then(/^the document is updated without a change note$/) do
-  check_manual_document_exists_with(
+  check_section_exists_with(
     @manual_title,
     section_title: @updated_document.title,
     section_summary: @updated_fields[:section_summary],
@@ -507,19 +507,19 @@ end
 Then(/^the section is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
 end
 
 Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
+  check_section_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_document_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do
@@ -564,7 +564,7 @@ When(/^I add another section to the manual$/) do
     section_body: "#{title} body",
   }
 
-  create_manual_document(@manual_title, fields)
+  create_section(@manual_title, fields)
 
   @new_document = most_recently_created_manual.documents.to_a.last
 end
@@ -583,7 +583,7 @@ When(/^I create another manual with the same slug$/) do
 end
 
 When(/^I create a section with duplicate title$/) do
-  create_manual_document(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @document_fields)
 end
 
 Then(/^the manual and its documents have failed to publish$/) do

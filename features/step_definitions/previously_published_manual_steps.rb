@@ -79,28 +79,28 @@ Then(/^the manual and its documents are (re|)published with all public timestamp
   how_many_times = (republished == "re" ? 2 : 1)
 
   check_manual_is_drafted_and_published_with_all_public_timestamps(@manual, @originally_published_at, how_many_times: how_many_times)
-  check_manual_document_is_drafted_and_published_with_all_public_timestamps(@document, @originally_published_at, how_many_times: how_many_times)
+  check_section_is_drafted_and_published_with_all_public_timestamps(@document, @originally_published_at, how_many_times: how_many_times)
 end
 
 Then(/^the manual and its documents are (re|)published with the first published timestamp set to the previously published date, but not the public updated timestamp$/) do |republished|
   how_many_times = (republished == "re" ? 2 : 1)
 
   check_manual_is_drafted_and_published_with_first_published_date_only(@manual, @originally_published_at, how_many_times: how_many_times)
-  check_manual_document_is_drafted_and_published_with_first_published_date_only(@document, @originally_published_at, how_many_times: how_many_times)
+  check_section_is_drafted_and_published_with_first_published_date_only(@document, @originally_published_at, how_many_times: how_many_times)
 end
 
 Then(/^the manual and its documents are (re|)published with all public timestamps set to the new previously published date$/) do |republished|
   how_many_times = (republished == "re" ? 2 : 1)
 
   check_manual_is_drafted_and_published_with_all_public_timestamps(@manual, @new_originally_published_at, how_many_times: how_many_times)
-  check_manual_document_is_drafted_and_published_with_all_public_timestamps(@document, @new_originally_published_at, how_many_times: how_many_times)
+  check_section_is_drafted_and_published_with_all_public_timestamps(@document, @new_originally_published_at, how_many_times: how_many_times)
 end
 
 Then(/^the manual and its documents are (re|)published with the first published timestamp set to the new published date, but not the public updated timestamp$/) do |republished|
   how_many_times = (republished == "re" ? 2 : 1)
 
   check_manual_is_drafted_and_published_with_first_published_date_only(@manual, @new_originally_published_at, how_many_times: how_many_times)
-  check_manual_document_is_drafted_and_published_with_first_published_date_only(@document, @new_originally_published_at, how_many_times: how_many_times)
+  check_section_is_drafted_and_published_with_first_published_date_only(@document, @new_originally_published_at, how_many_times: how_many_times)
 end
 
 Then(/^the manual and its documents are (re|)published without any public timestamps$/) do |republished|
