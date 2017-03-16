@@ -15,7 +15,7 @@ describe SectionsController, type: :controller do
         GdsApi::GovukHeaders.clear_headers
       end
 
-      it "redirects to the manual document's show page" do
+      it "redirects to the section's show page" do
         expect(response).to redirect_to manual_section_path(manual_id: manual_id, id: document_id)
       end
 
@@ -44,7 +44,7 @@ describe SectionsController, type: :controller do
       GdsApi::GovukHeaders.clear_headers
     end
 
-    it "redirects to the manual document's show page" do
+    it "redirects to the section's show page" do
       expect(response).to redirect_to manual_section_path(manual_id: manual_id, id: document_id)
     end
 
