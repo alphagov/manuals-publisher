@@ -2,6 +2,7 @@
 
 require File.expand_path("../../config/environment", __FILE__)
 require "manual_service_registry"
+require "marshallers/document_association_marshaller"
 require "logger"
 
 logger = Logger.new(STDOUT)
