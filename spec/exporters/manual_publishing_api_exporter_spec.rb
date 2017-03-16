@@ -7,7 +7,6 @@ require "manual_publishing_api_exporter"
 describe ManualPublishingAPIExporter do
   subject {
     described_class.new(
-      export_recipient,
       organisation,
       manual_renderer,
       publication_logs_collection,
@@ -106,10 +105,13 @@ describe ManualPublishingAPIExporter do
     ]
   }
 
+  before {
+    allow(subject).to receive(:export_recipient).and_return(export_recipient)
+  }
+
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
       described_class.new(
-        export_recipient,
         organisation,
         manual_renderer,
         publication_logs_collection,
@@ -123,7 +125,6 @@ describe ManualPublishingAPIExporter do
     %w(major minor republish).each do |update_type|
       expect {
         described_class.new(
-          export_recipient,
           organisation,
           manual_renderer,
           publication_logs_collection,
@@ -137,7 +138,6 @@ describe ManualPublishingAPIExporter do
   it "accepts explicitly setting nil as the option for update_type" do
     expect {
       described_class.new(
-        export_recipient,
         organisation,
         manual_renderer,
         publication_logs_collection,
@@ -278,7 +278,7 @@ describe ManualPublishingAPIExporter do
 
   shared_examples_for "publishing a manual that has never been published" do
     before do
-      manual_attributes[:ever_been_published] = false
+      allow(manual).to receive(:has_ever_been_published?).and_return(false)
     end
 
     it "exports with the update_type set to major" do
@@ -294,7 +294,6 @@ describe ManualPublishingAPIExporter do
   shared_examples_for "obeying the provided update_type" do
     subject {
       described_class.new(
-        export_recipient,
         organisation,
         manual_renderer,
         publication_logs_collection,
