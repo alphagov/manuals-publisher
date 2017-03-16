@@ -1,6 +1,7 @@
 require "create_section_service"
 require "update_section_service"
 require "manuals_republisher"
+require "manual_withdrawer"
 
 module ManualHelpers
   def manual_repository
@@ -468,8 +469,9 @@ module ManualHelpers
   def withdraw_manual_without_ui(manual)
     stub_manual_withdrawal_observers
 
-    manual_services = ManualServiceRegistry.new
-    manual_services.withdraw(manual.id).call
+    logger = Logger.new(nil)
+    withdrawer = ManualWithdrawer.new(logger)
+    withdrawer.execute(manual.id)
   end
 
   def check_manual_is_withdrawn(manual, documents)
