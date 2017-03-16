@@ -6,7 +6,6 @@ class ManualPublishingAPIExporter
 
   def initialize(organisation, manual, update_type: nil)
     @organisation = organisation
-    @publication_logs = PublicationLog
     @manual = manual
     @update_type = update_type
     check_update_type!(@update_type)
@@ -20,7 +19,6 @@ private
 
   attr_reader(
     :organisation,
-    :publication_logs,
     :manual,
   )
 
@@ -115,7 +113,7 @@ private
   end
 
   def serialised_change_notes
-    publication_logs.change_notes_for(manual.attributes.fetch(:slug)).map { |publication|
+    PublicationLog.change_notes_for(manual.attributes.fetch(:slug)).map { |publication|
       {
         base_path: "/#{publication.slug}",
         title: publication.title,

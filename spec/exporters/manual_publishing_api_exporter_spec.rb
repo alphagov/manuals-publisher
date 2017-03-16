@@ -80,10 +80,6 @@ describe ManualPublishingAPIExporter do
     }
   }
 
-  let(:publication_logs_collection) {
-    double(:publication_logs, change_notes_for: publication_logs)
-  }
-
   let(:publication_logs) {
     [
       double(
@@ -106,7 +102,7 @@ describe ManualPublishingAPIExporter do
   before {
     allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
     allow(ManualRenderer).to receive(:new).and_return(manual_renderer)
-    allow(subject).to receive(:publication_logs).and_return(publication_logs_collection)
+    allow(PublicationLog).to receive(:change_notes_for).and_return(publication_logs)
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do
