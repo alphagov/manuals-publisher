@@ -1,3 +1,6 @@
+require "create_section_service"
+require "update_section_service"
+
 module ManualHelpers
   def manual_repository
     RepositoryRegistry.create.manual_repository
@@ -36,9 +39,9 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    section_services = OrganisationalSectionServiceRegistry.new(
-      organisation_slug: organisation_slug,
-    )
+    manual_repository_factory = RepositoryRegistry.create.
+      organisation_scoped_manual_repository_factory
+    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
 
     create_service_context = OpenStruct.new(
       params: {
@@ -47,7 +50,15 @@ module ManualHelpers
       }
     )
 
-    _, document = section_services.create(create_service_context).call
+    service = CreateSectionService.new(
+      manual_repository: organisational_manual_repository,
+      listeners: [
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionExporter.new
+      ],
+      context: create_service_context,
+    )
+    _, document = service.call
 
     document
   end
@@ -87,9 +98,9 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
-    section_services = OrganisationalSectionServiceRegistry.new(
-      organisation_slug: organisation_slug,
-    )
+    manual_repository_factory = RepositoryRegistry.create.
+      organisation_scoped_manual_repository_factory
+    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
 
     service_context = OpenStruct.new(
       params: {
@@ -99,7 +110,15 @@ module ManualHelpers
       }
     )
 
-    _, document = section_services.update(service_context).call
+    service = UpdateSectionService.new(
+      manual_repository: organisational_manual_repository,
+      context: service_context,
+      listeners: [
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionExporter.new
+      ],
+    )
+    _, document = service.call
 
     document
   end

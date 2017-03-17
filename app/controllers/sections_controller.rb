@@ -1,8 +1,21 @@
+require "show_section_service"
+require "new_section_service"
+require "create_section_service"
+require "update_section_service"
+require "preview_section_service"
+require "list_sections_service"
+require "reorder_sections_service"
+require "remove_section_service"
+
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 
   def show
-    manual, section = services.show(self).call
+    service = ShowSectionService.new(
+      manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:show, locals: {
       manual: manual,
@@ -11,7 +24,11 @@ class SectionsController < ApplicationController
   end
 
   def new
-    manual, section = services.new(self).call
+    service = NewSectionService.new(
+      manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
@@ -20,7 +37,15 @@ class SectionsController < ApplicationController
   end
 
   def create
-    manual, section = services.create(self).call
+    service = CreateSectionService.new(
+      manual_repository: manual_repository,
+      listeners: [
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionExporter.new
+      ],
+      context: self,
+    )
+    manual, section = service.call
 
     if section.valid?
       redirect_to(manual_path(manual))
@@ -33,7 +58,11 @@ class SectionsController < ApplicationController
   end
 
   def edit
-    manual, section = services.show(self).call
+    service = ShowSectionService.new(
+      manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
@@ -42,7 +71,15 @@ class SectionsController < ApplicationController
   end
 
   def update
-    manual, section = services.update(self).call
+    service = UpdateSectionService.new(
+      manual_repository: manual_repository,
+      context: self,
+      listeners: [
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionExporter.new
+      ],
+    )
+    manual, section = service.call
 
     if section.valid?
       redirect_to(manual_path(manual))
@@ -55,7 +92,13 @@ class SectionsController < ApplicationController
   end
 
   def preview
-    section = services.preview(self).call
+    service = PreviewSectionService.new(
+      manual_repository,
+      SectionBuilder.create,
+      SectionRenderer.new,
+      self,
+    )
+    section = service.call
 
     section.valid? # Force validation check or errors will be empty
 
@@ -75,7 +118,11 @@ class SectionsController < ApplicationController
   end
 
   def reorder
-    manual, sections = services.list(self).call
+    service = ListSectionsService.new(
+      manual_repository,
+      self,
+    )
+    manual, sections = service.call
 
     render(:reorder, locals: {
       manual: ManualViewAdapter.new(manual),
@@ -84,7 +131,12 @@ class SectionsController < ApplicationController
   end
 
   def update_order
-    manual, _sections = services.update_order(self).call
+    service = ReorderSectionsService.new(
+      manual_repository,
+      self,
+      listeners: [PublishingApiDraftManualExporter.new]
+    )
+    manual, _sections = service.call
 
     redirect_to(
       manual_path(manual),
@@ -95,7 +147,11 @@ class SectionsController < ApplicationController
   end
 
   def withdraw
-    manual, section = services.show(self).call
+    service = ShowSectionService.new(
+      manual_repository,
+      self,
+    )
+    manual, section = service.call
 
     render(:withdraw, locals: {
       manual: ManualViewAdapter.new(manual),
@@ -104,7 +160,15 @@ class SectionsController < ApplicationController
   end
 
   def destroy
-    manual, section = services.remove(self).call
+    service = RemoveSectionService.new(
+      manual_repository,
+      self,
+      listeners: [
+        PublishingApiDraftManualExporter.new,
+        PublishingApiDraftSectionDiscarder.new
+      ]
+    )
+    manual, section = service.call
 
     if section.valid?
       redirect_to(
@@ -123,22 +187,14 @@ class SectionsController < ApplicationController
 
 private
 
-  def services
+  def manual_repository
     if current_user_is_gds_editor?
-      gds_editor_services
+      RepositoryRegistry.create.manual_repository
     else
-      organisational_services
+      manual_repository_factory = RepositoryRegistry.create.
+        organisation_scoped_manual_repository_factory
+      manual_repository_factory.call(current_organisation_slug)
     end
-  end
-
-  def gds_editor_services
-    SectionServiceRegistry.new
-  end
-
-  def organisational_services
-    OrganisationalSectionServiceRegistry.new(
-      organisation_slug: current_organisation_slug,
-    )
   end
 
   def authorize_user_for_withdrawing
