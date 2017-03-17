@@ -1,5 +1,7 @@
 require "create_section_service"
 require "update_section_service"
+require "manuals_republisher"
+require "manual_withdrawer"
 
 module ManualHelpers
   def manual_repository
@@ -459,16 +461,10 @@ module ManualHelpers
     expect(page).to have_content("Warning: There are duplicate section slugs in this manual")
   end
 
-  def stub_manual_withdrawal_observers
-    stub_rummager
-    stub_publishing_api
-  end
-
   def withdraw_manual_without_ui(manual)
-    stub_manual_withdrawal_observers
-
-    manual_services = ManualServiceRegistry.new
-    manual_services.withdraw(manual.id).call
+    logger = Logger.new(nil)
+    withdrawer = ManualWithdrawer.new(logger)
+    withdrawer.execute(manual.id)
   end
 
   def check_manual_is_withdrawn(manual, documents)
@@ -652,6 +648,12 @@ module ManualHelpers
       number_of_drafts: how_many_times
     )
     check_manual_was_published(manual)
+  end
+
+  def republish_manuals_without_ui
+    logger = Logger.new(nil)
+    republisher = ManualsRepublisher.new(logger)
+    republisher.execute
   end
 end
 RSpec.configuration.include ManualHelpers, type: :feature
