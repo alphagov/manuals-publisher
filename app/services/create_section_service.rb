@@ -32,7 +32,7 @@ private
   end
 
   def call_publishing_api_draft_manual_exporter
-    PublishingApiDraftManualExporter.new.call(new_document, manual)
+    PublishingApiDraftManualExporter.new.call(manual)
   end
 
   def document_params

@@ -169,7 +169,7 @@ RSpec.describe RemoveSectionService do
       end
 
       it "publishes a manual" do
-        expect(exporter).to have_received(:call).with(document, manual)
+        expect(exporter).to have_received(:call).with(manual)
       end
 
       it "discards a section" do
@@ -209,7 +209,7 @@ RSpec.describe RemoveSectionService do
       end
 
       it "publishes a manual" do
-        expect(exporter).to have_received(:call).with(document, manual)
+        expect(exporter).to have_received(:call).with(manual)
       end
 
       it "discards a section" do
