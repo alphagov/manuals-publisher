@@ -1,18 +1,17 @@
 class SectionPublishingAPILinksExporter
-  def initialize(export_recipient, organisation, manual, document)
-    @export_recipient = export_recipient
+  def initialize(organisation, manual, document)
     @organisation = organisation
     @manual = manual
     @document = document
   end
 
   def call
-    export_recipient.call(content_id, exportable_attributes)
+    Services.publishing_api_v2.patch_links(content_id, exportable_attributes)
   end
 
 private
 
-  attr_reader :export_recipient, :organisation, :manual, :document
+  attr_reader :organisation, :manual, :document
 
   def content_id
     document.id

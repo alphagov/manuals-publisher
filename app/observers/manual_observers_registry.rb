@@ -161,7 +161,6 @@ private
     ->(manual, action = nil) {
       update_type = (action == :republish ? "republish" : nil)
 
-      patch_links = publishing_api_v2.method(:patch_links)
       organisation = organisation(manual.attributes.fetch(:organisation_slug))
 
       ManualPublishingAPILinksExporter.new(
@@ -176,7 +175,7 @@ private
         next if !document.needs_exporting? && action != :republish
 
         SectionPublishingAPILinksExporter.new(
-          patch_links, organisation, manual, document
+          organisation, manual, document
         ).call
 
         SectionPublishingAPIExporter.new(
