@@ -1,12 +1,9 @@
 require "securerandom"
 
 class SectionBuilder
-  def initialize
-    @factory_factory = DocumentFactoryRegistry.new.section_factory_factory
-  end
-
   def call(manual, attrs)
-    document = @factory_factory
+    factory_factory = DocumentFactoryRegistry.new.section_factory_factory
+    document = factory_factory
       .call(manual)
       .call(SecureRandom.uuid, [])
 
