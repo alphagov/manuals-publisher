@@ -5,7 +5,7 @@ describe PublishingAPIWithdrawer do
     publishing_api = double(:publishing_api, unpublish: nil)
     entity = double(:entity, id: 'content-id')
     withdrawer = PublishingAPIWithdrawer.new(entity: entity)
-    allow(withdrawer).to receive(:publishing_api).and_return(publishing_api)
+    allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
 
     withdrawer.call
 
