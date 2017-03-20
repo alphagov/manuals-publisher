@@ -80,10 +80,6 @@ private
     service = UpdateSectionService.new(
       manual_repository: manual_repository,
       context: context_for_section_edition_update,
-      listeners: [
-        PublishingApiDraftManualExporter.new,
-        PublishingApiDraftSectionExporter.new
-      ],
     )
     _manual, document = service.call
     document.latest_edition
