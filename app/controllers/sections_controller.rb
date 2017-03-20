@@ -154,10 +154,6 @@ class SectionsController < ApplicationController
     service = RemoveSectionService.new(
       manual_repository,
       self,
-      listeners: [
-        PublishingApiDraftManualExporter.new,
-        PublishingApiDraftSectionDiscarder.new
-      ]
     )
     manual, section = service.call
 
