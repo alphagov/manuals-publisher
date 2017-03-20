@@ -176,9 +176,9 @@ private
 
   def manual_repository
     if current_user_is_gds_editor?
-      RepositoryRegistry.create.manual_repository
+      RepositoryRegistry.new.manual_repository
     else
-      manual_repository_factory = RepositoryRegistry.create.
+      manual_repository_factory = RepositoryRegistry.new.
         organisation_scoped_manual_repository_factory
       manual_repository_factory.call(current_organisation_slug)
     end

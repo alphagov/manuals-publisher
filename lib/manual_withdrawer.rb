@@ -8,7 +8,7 @@ class ManualWithdrawer
   def execute(manual_id)
     observers = ManualObserversRegistry.new
     service = WithdrawManualService.new(
-      manual_repository: RepositoryRegistry.create.manual_repository,
+      manual_repository: RepositoryRegistry.new.manual_repository,
       listeners: observers.withdrawal,
       manual_id: manual_id,
     )

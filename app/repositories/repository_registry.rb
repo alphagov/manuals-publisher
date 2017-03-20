@@ -9,10 +9,6 @@ require "manual"
 require "manual_record"
 
 class RepositoryRegistry
-  def self.create
-    RepositoryRegistry.new
-  end
-
   def initialize
     @entity_factories = DocumentFactoryRegistry.validatable_document_factories
   end
