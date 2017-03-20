@@ -1,7 +1,10 @@
 class CreateSectionService
-  def initialize(manual_repository:, listeners:, context:)
+  def initialize(manual_repository:, context:)
     @manual_repository = manual_repository
-    @listeners = listeners
+    @listeners = [
+      PublishingApiDraftManualExporter.new,
+      PublishingApiDraftSectionExporter.new
+    ]
     @context = context
   end
 
