@@ -24,7 +24,7 @@ class DocumentFactoryRegistry
   end
 
   def section_builder
-    SectionBuilder.new(factory_factory: section_factory_factory)
+    SectionBuilder.create
   end
 
   def section_factory_factory
