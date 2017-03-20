@@ -70,10 +70,6 @@ class SectionsController < ApplicationController
     service = UpdateSectionService.new(
       manual_repository: manual_repository,
       context: self,
-      listeners: [
-        PublishingApiDraftManualExporter.new,
-        PublishingApiDraftSectionExporter.new
-      ],
     )
     manual, section = service.call
 

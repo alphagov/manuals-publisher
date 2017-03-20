@@ -1,8 +1,11 @@
 class UpdateSectionService
-  def initialize(manual_repository:, context:, listeners:)
+  def initialize(manual_repository:, context:)
     @manual_repository = manual_repository
     @context = context
-    @listeners = listeners
+    @listeners = [
+      PublishingApiDraftManualExporter.new,
+      PublishingApiDraftSectionExporter.new
+    ]
   end
 
   def call
