@@ -14,7 +14,14 @@ class PublishManualWorker
     task = ManualPublishTask.find(task_id)
     task.start!
 
-    services.publish(task.manual_id, task.version_number).call
+    observers = ManualObserversRegistry.new
+    service = PublishManualService.new(
+      manual_repository: repository,
+      listeners: observers.publication,
+      manual_id: task.manual_id,
+      version_number: task.version_number,
+    )
+    service.call
 
     task.finish!
   rescue GdsApi::HTTPServerError => error
@@ -28,8 +35,8 @@ class PublishManualWorker
 
 private
 
-  def services
-    ManualServiceRegistry.new
+  def repository
+    RepositoryRegistry.create.manual_repository
   end
 
   def requeue_task(manual_id, error)

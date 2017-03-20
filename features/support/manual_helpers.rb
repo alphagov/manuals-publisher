@@ -19,12 +19,18 @@ module ManualHelpers
 
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_services = OrganisationalManualServiceRegistry.new(
-      organisation_slug: organisation_slug,
+    manual_repository_factory = RepositoryRegistry.create
+      .organisation_scoped_manual_repository_factory
+    repository = manual_repository_factory.call(organisation_slug)
+
+    observers = ManualObserversRegistry.new
+    service = CreateManualService.new(
+      manual_repository: repository,
+      manual_builder: ManualBuilder.create,
+      listeners: observers.creation,
+      attributes: fields.merge(organisation_slug: organisation_slug),
     )
-    manual = manual_services.create(
-      fields.merge(organisation_slug: organisation_slug),
-    ).call
+    manual = service.call
 
     manual_repository.fetch(manual.id)
   end
@@ -76,14 +82,18 @@ module ManualHelpers
 
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_services = OrganisationalManualServiceRegistry.new(
-      organisation_slug: organisation_slug,
-    )
+    manual_repository_factory = RepositoryRegistry.create
+      .organisation_scoped_manual_repository_factory
+    repository = manual_repository_factory.call(organisation_slug)
 
-    manual = manual_services.update(
-      manual.id,
-      fields.merge(organisation_slug: organisation_slug),
-    ).call
+    observers = ManualObserversRegistry.new
+    service = UpdateManualService.new(
+      manual_repository: repository,
+      manual_id: manual.id,
+      attributes: fields.merge(organisation_slug: organisation_slug),
+      listeners: observers.update,
+    )
+    manual = service.call
 
     manual
   end
@@ -165,8 +175,14 @@ module ManualHelpers
   def publish_manual_without_ui(manual, organisation_slug: "ministry-of-tea")
     stub_manual_publication_observers(organisation_slug)
 
-    manual_services = ManualServiceRegistry.new
-    manual_services.publish(manual.id, manual.version_number).call
+    observers = ManualObserversRegistry.new
+    service = PublishManualService.new(
+      manual_repository: RepositoryRegistry.create.manual_repository,
+      listeners: observers.publication,
+      manual_id: manual.id,
+      version_number: manual.version_number,
+    )
+    service.call
   end
 
   def check_manual_exists_with(attributes)

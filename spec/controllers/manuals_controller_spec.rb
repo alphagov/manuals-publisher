@@ -4,11 +4,11 @@ describe ManualsController, type: :controller do
   describe "#publish" do
     context "when the user lacks permission to publish" do
       let(:manual_id) { "manual-1" }
-      let(:services) { spy(AbstractManualServiceRegistry) }
+      let(:service) { spy(PublishManualService) }
       before do
         login_as_stub_user
         allow_any_instance_of(PermissionChecker).to receive(:can_publish?).and_return(false)
-        allow(controller).to receive(:services).and_return services
+        allow(PublishManualService).to receive(:new).and_return(service)
         post :publish, id: manual_id
       end
 
@@ -25,7 +25,7 @@ describe ManualsController, type: :controller do
       end
 
       it "does not publish the manual" do
-        expect(services).not_to have_received(:publish)
+        expect(service).not_to have_received(:call)
       end
 
       it "sets the authenticated user header" do

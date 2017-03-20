@@ -1,4 +1,3 @@
-require "manual_service_registry"
 require "marshallers/document_association_marshaller"
 
 class ManualsRepublisher
@@ -17,7 +16,13 @@ class ManualsRepublisher
     manual_records.to_a.each.with_index do |manual_record, i|
       begin
         logger.info("[ #{i} / #{count} ] id=#{manual_record.manual_id} slug=#{manual_record.slug}]")
-        ManualServiceRegistry.new.republish(manual_record.manual_id).call
+        observers = ManualObserversRegistry.new
+        service = RepublishManualService.new(
+          draft_listeners: observers.update,
+          published_listeners: observers.republication,
+          manual_id: manual_record.manual_id,
+        )
+        service.call
       rescue DocumentAssociationMarshaller::RemovedDocumentIdNotFoundError => e
         logger.error("Did not publish manual with id=#{manual_record.manual_id} slug=#{manual_record.slug}. It has at least one removed document which was not found: #{e.message}")
         next

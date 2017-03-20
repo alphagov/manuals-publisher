@@ -1,14 +1,32 @@
+require "list_manuals_service"
+require "show_manual_service"
+require "create_manual_service"
+require "update_manual_service"
+require "queue_publish_manual_service"
+require "publish_manual_worker"
+require "preview_manual_service"
+require "builders/manual_builder"
+require "manual_observers_registry"
+
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
 
   def index
-    all_manuals = services.list(self).call
+    service = ListManualsService.new(
+      manual_repository: associationless_repository,
+      context: self,
+    )
+    all_manuals = service.call
 
     render(:index, locals: { manuals: all_manuals })
   end
 
   def show
-    manual, metadata = services.show(manual_id).call
+    service = ShowManualService.new(
+      manual_repository: repository,
+      manual_id: manual_id,
+    )
+    manual, metadata = service.call
     slug_unique = metadata.fetch(:slug_unique)
     clashing_sections = metadata.fetch(:clashing_sections)
 
@@ -24,13 +42,20 @@ class ManualsController < ApplicationController
   end
 
   def new
-    manual = services.new(self).call
+    service = ->() { ManualBuilder.create.call(title: "") }
+    manual = service.call
 
     render(:new, locals: { manual: manual_form(manual) })
   end
 
   def create
-    manual = services.create(create_manual_params).call
+    service = CreateManualService.new(
+      manual_repository: repository,
+      manual_builder: ManualBuilder.create,
+      listeners: ManualObserversRegistry.new.creation,
+      attributes: create_manual_params,
+    )
+    manual = service.call
     manual = manual_form(manual)
 
     if manual.valid?
@@ -43,13 +68,23 @@ class ManualsController < ApplicationController
   end
 
   def edit
-    manual, _metadata = services.show(manual_id).call
+    service = ShowManualService.new(
+      manual_repository: repository,
+      manual_id: manual_id,
+    )
+    manual, _metadata = service.call
 
     render(:edit, locals: { manual: manual_form(manual) })
   end
 
   def update
-    manual = services.update(manual_id, update_manual_params).call
+    service = UpdateManualService.new(
+      manual_repository: repository,
+      manual_id: manual_id,
+      attributes: update_manual_params,
+      listeners: ManualObserversRegistry.new.update,
+    )
+    manual = service.call
     manual = manual_form(manual)
 
     if manual.valid?
@@ -62,13 +97,23 @@ class ManualsController < ApplicationController
   end
 
   def edit_original_publication_date
-    manual, _metadata = services.show(manual_id).call
+    service = ShowManualService.new(
+      manual_repository: repository,
+      manual_id: manual_id,
+    )
+    manual, _metadata = service.call
 
     render(:edit_original_publication_date, locals: { manual: manual_form(manual) })
   end
 
   def update_original_publication_date
-    manual = services.update_original_publication_date(manual_id, publication_date_manual_params).call
+    service = UpdateManualOriginalPublicationDateService.new(
+      manual_repository: repository,
+      manual_id: manual_id,
+      attributes: publication_date_manual_params,
+      listeners: ManualObserversRegistry.new.update_original_publication_date,
+    )
+    manual = service.call
     manual = manual_form(manual)
 
     if manual.valid?
@@ -81,7 +126,12 @@ class ManualsController < ApplicationController
   end
 
   def publish
-    manual = services.queue_publish(manual_id).call
+    service = QueuePublishManualService.new(
+      PublishManualWorker,
+      repository,
+      manual_id,
+    )
+    manual = service.call
 
     redirect_to(
       manual_path(manual),
@@ -90,7 +140,14 @@ class ManualsController < ApplicationController
   end
 
   def preview
-    manual = services.preview(params[:id], update_manual_params).call
+    service = PreviewManualService.new(
+      repository: repository,
+      builder: ManualBuilder.create,
+      renderer: ManualRenderer.new,
+      manual_id: params[:id],
+      attributes: update_manual_params,
+    )
+    manual = service.call
 
     manual.valid? # Force validation check or errors will be empty
 
@@ -176,22 +233,25 @@ private
     ManualViewAdapter.new(manual)
   end
 
-  def services
+  def repository
     if current_user_is_gds_editor?
-      gds_editor_services
+      RepositoryRegistry.create.manual_repository
     else
-      organisational_services
+      manual_repository_factory = RepositoryRegistry.create
+        .organisation_scoped_manual_repository_factory
+      manual_repository_factory.call(current_organisation_slug)
     end
   end
 
-  def gds_editor_services
-    ManualServiceRegistry.new
-  end
-
-  def organisational_services
-    OrganisationalManualServiceRegistry.new(
-      organisation_slug: current_organisation_slug,
-    )
+  def associationless_repository
+    if current_user_is_gds_editor?
+      RepositoryRegistry.create
+        .associationless_manual_repository
+    else
+      associationless_manual_repository_factory = RepositoryRegistry.create
+        .associationless_organisation_scoped_manual_repository_factory
+      associationless_manual_repository_factory.call(current_organisation_slug)
+    end
   end
 
   def authorize_user_for_publishing

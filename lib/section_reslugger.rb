@@ -111,7 +111,14 @@ private
   end
 
   def publish_manual
-    ManualServiceRegistry.new.publish(manual_record.manual_id, manual_version_number).call
+    observers = ManualObserversRegistry.new
+    service = PublishManualService.new(
+      manual_repository: RepositoryRegistry.create.manual_repository,
+      listeners: observers.publication,
+      manual_id: manual_record.manual_id,
+      version_number: manual_version_number,
+    )
+    service.call
   end
 
   def manual_record

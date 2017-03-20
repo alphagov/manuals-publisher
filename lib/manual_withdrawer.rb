@@ -1,5 +1,3 @@
-require "manual_service_registry"
-
 class ManualWithdrawer
   attr_reader :logger
 
@@ -8,7 +6,13 @@ class ManualWithdrawer
   end
 
   def execute(manual_id)
-    manual = ManualServiceRegistry.new.withdraw(manual_id).call
+    observers = ManualObserversRegistry.new
+    service = WithdrawManualService.new(
+      manual_repository: RepositoryRegistry.create.manual_repository,
+      listeners: observers.withdrawal,
+      manual_id: manual_id,
+    )
+    manual = service.call
 
     if manual.withdrawn?
       logger.info "SUCCESS: Manual `#{manual.slug}` withdrawn"
