@@ -2,11 +2,11 @@ require "securerandom"
 
 class SectionBuilder
   def self.create
-    SectionBuilder.new(factory_factory: DocumentFactoryRegistry.new.section_factory_factory)
+    SectionBuilder.new
   end
 
-  def initialize(factory_factory:)
-    @factory_factory = factory_factory
+  def initialize
+    @factory_factory = DocumentFactoryRegistry.new.section_factory_factory
   end
 
   def call(manual, attrs)
