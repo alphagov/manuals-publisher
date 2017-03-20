@@ -25,19 +25,7 @@ class DocumentFactoryRegistry
 
   def section_factory_factory
     ->(manual) {
-      ->(id, editions) {
-        slug_generator = SlugGenerator.new(prefix: manual.slug)
-
-        ChangeNoteValidator.new(
-          SectionValidator.new(
-            Section.new(
-              slug_generator,
-              id,
-              editions,
-            ),
-          )
-        )
-      }
+      SectionFactory.new(manual)
     }
   end
 end
