@@ -39,10 +39,6 @@ class SectionsController < ApplicationController
   def create
     service = CreateSectionService.new(
       manual_repository: manual_repository,
-      listeners: [
-        PublishingApiDraftManualExporter.new,
-        PublishingApiDraftSectionExporter.new
-      ],
       context: self,
     )
     manual, section = service.call
