@@ -9,10 +9,6 @@ require "manual"
 require "manual_record"
 
 class RepositoryRegistry
-  def initialize
-    @entity_factories = DocumentFactoryRegistry.new
-  end
-
   def organisation_scoped_manual_repository_factory
     ->(organisation_slug) {
       scoped_manual_repository(
@@ -31,7 +27,7 @@ class RepositoryRegistry
         DocumentAssociationMarshaller.new(
           section_repository_factory: section_repository_factory,
           decorator: ->(manual, attrs) {
-            entity_factories.manual_with_documents.call(manual, attrs)
+            DocumentFactoryRegistry.new.manual_with_documents.call(manual, attrs)
           }
         ),
         ManualPublishTaskAssociationMarshaller.new(
@@ -50,7 +46,7 @@ class RepositoryRegistry
 
   def section_repository_factory
     ->(manual) {
-      section_factory = entity_factories.section_factory_factory.call(manual)
+      section_factory = DocumentFactoryRegistry.new.section_factory_factory.call(manual)
 
       SectionRepository.new(
         section_factory: section_factory,
@@ -75,8 +71,4 @@ class RepositoryRegistry
       )
     }
   end
-
-private
-
-  attr_reader :entity_factories
 end
