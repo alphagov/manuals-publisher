@@ -167,7 +167,7 @@ private
       organisation = organisation(manual.attributes.fetch(:organisation_slug))
 
       ManualPublishingAPILinksExporter.new(
-        patch_links, organisation, manual
+        organisation, manual
       ).call
 
       ManualPublishingAPIExporter.new(
