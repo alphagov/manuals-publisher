@@ -2,21 +2,20 @@ class ReorderSectionsService
   def initialize(manual_repository, context)
     @manual_repository = manual_repository
     @context = context
-    @listeners = [PublishingApiDraftManualExporter.new]
   end
 
   def call
     manual.draft
     update
     persist
-    notify_listeners
+    export_draft_manual_to_publishing_api
 
     [manual, documents]
   end
 
 private
 
-  attr_reader :manual_repository, :context, :listeners
+  attr_reader :manual_repository, :context
 
   def update
     manual.reorder_documents(document_order)
@@ -42,9 +41,7 @@ private
     context.params.fetch("section_order")
   end
 
-  def notify_listeners
-    listeners.each do |listener|
-      listener.call(nil, manual)
-    end
+  def export_draft_manual_to_publishing_api
+    PublishingApiDraftManualExporter.new.call(nil, manual)
   end
 end
