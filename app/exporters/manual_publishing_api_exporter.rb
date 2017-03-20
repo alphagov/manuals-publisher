@@ -4,27 +4,21 @@ class ManualPublishingAPIExporter
   PUBLISHING_API_SCHEMA_NAME = "manual".freeze
   PUBLISHING_API_DOCUMENT_TYPE = "manual".freeze
 
-  def initialize(export_recipient, organisation, manual_renderer, publication_logs, manual, update_type: nil)
-    @export_recipient = export_recipient
+  def initialize(organisation, manual, update_type: nil)
     @organisation = organisation
-    @manual_renderer = manual_renderer
-    @publication_logs = publication_logs
     @manual = manual
     @update_type = update_type
     check_update_type!(@update_type)
   end
 
   def call
-    export_recipient.call(content_id, exportable_attributes)
+    Services.publishing_api_v2.put_content(content_id, exportable_attributes)
   end
 
 private
 
   attr_reader(
-    :export_recipient,
     :organisation,
-    :manual_renderer,
-    :publication_logs,
     :manual,
   )
 
@@ -80,7 +74,7 @@ private
   end
 
   def rendered_manual_attributes
-    @rendered_manual_attributes ||= manual_renderer.call(manual).attributes
+    @rendered_manual_attributes ||= ManualRenderer.new.call(manual).attributes
   end
 
   def details_data
@@ -119,7 +113,7 @@ private
   end
 
   def serialised_change_notes
-    publication_logs.change_notes_for(manual.attributes.fetch(:slug)).map { |publication|
+    PublicationLog.change_notes_for(manual.attributes.fetch(:slug)).map { |publication|
       {
         base_path: "/#{publication.slug}",
         title: publication.title,

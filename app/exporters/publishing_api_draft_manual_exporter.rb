@@ -7,10 +7,7 @@ class PublishingApiDraftManualExporter
     ).call
 
     ManualPublishingAPIExporter.new(
-      Services.publishing_api_v2.method(:put_content),
       OrganisationFetcher.instance.call(manual.attributes.fetch(:organisation_slug)),
-      ManualRenderer.new,
-      PublicationLog,
       manual
     ).call
   end
