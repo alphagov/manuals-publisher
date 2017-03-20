@@ -46,7 +46,7 @@ class RepositoryRegistry
 
   def section_repository_factory
     ->(manual) {
-      section_factory = DocumentFactoryRegistry.new.section_factory_factory.call(manual)
+      section_factory = SectionFactory.new(manual)
 
       SectionRepository.new(
         section_factory: section_factory,

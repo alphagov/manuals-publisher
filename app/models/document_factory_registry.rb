@@ -22,10 +22,4 @@ class DocumentFactoryRegistry
       )
     }
   end
-
-  def section_factory_factory
-    ->(manual) {
-      SectionFactory.new(manual)
-    }
-  end
 end
