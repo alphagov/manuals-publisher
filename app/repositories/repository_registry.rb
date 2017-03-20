@@ -10,7 +10,7 @@ require "manual_record"
 
 class RepositoryRegistry
   def initialize
-    @entity_factories = DocumentFactoryRegistry.validatable_document_factories
+    @entity_factories = DocumentFactoryRegistry.new
   end
 
   def organisation_scoped_manual_repository_factory

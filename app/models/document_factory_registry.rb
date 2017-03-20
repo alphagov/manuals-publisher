@@ -9,10 +9,6 @@ require "slug_generator"
 require "section"
 
 class DocumentFactoryRegistry
-  def self.validatable_document_factories
-    new
-  end
-
   def manual_with_documents
     ->(manual, attrs) {
       ManualValidator.new(
