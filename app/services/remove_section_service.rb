@@ -2,10 +2,6 @@ class RemoveSectionService
   def initialize(manual_repository, context)
     @manual_repository = manual_repository
     @context = context
-    @listeners = [
-      PublishingApiDraftManualExporter.new,
-      PublishingApiDraftSectionDiscarder.new
-    ]
   end
 
   def call
@@ -19,7 +15,8 @@ class RemoveSectionService
 
       remove
       persist
-      notify_listeners
+      export_draft_manual_to_publishing_api
+      discard_section_via_publishing_api
     end
 
     [manual, document]
@@ -27,7 +24,7 @@ class RemoveSectionService
 
 private
 
-  attr_reader :manual_repository, :context, :listeners
+  attr_reader :manual_repository, :context
 
   def remove
     manual.remove_document(document_id)
@@ -63,10 +60,12 @@ private
     }
   end
 
-  def notify_listeners
-    listeners.each do |listener|
-      listener.call(document, manual)
-    end
+  def discard_section_via_publishing_api
+    PublishingApiDraftSectionDiscarder.new.call(document, manual)
+  end
+
+  def export_draft_manual_to_publishing_api
+    PublishingApiDraftManualExporter.new.call(document, manual)
   end
 
   class ManualNotFoundError < StandardError; end
