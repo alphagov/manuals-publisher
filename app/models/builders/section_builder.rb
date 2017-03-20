@@ -3,9 +3,8 @@ require "securerandom"
 class SectionBuilder
   def call(manual, attrs)
     factory_factory = DocumentFactoryRegistry.new.section_factory_factory
-    document = factory_factory
-      .call(manual)
-      .call(SecureRandom.uuid, [])
+    section_factory = factory_factory.call(manual)
+    document = section_factory.call(SecureRandom.uuid, [])
 
     document.update(attrs.reverse_merge(defaults))
 
