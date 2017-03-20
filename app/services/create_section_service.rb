@@ -1,10 +1,6 @@
 class CreateSectionService
   def initialize(manual_repository:, context:)
     @manual_repository = manual_repository
-    @listeners = [
-      PublishingApiDraftManualExporter.new,
-      PublishingApiDraftSectionExporter.new
-    ]
     @context = context
   end
 
@@ -14,7 +10,8 @@ class CreateSectionService
     if new_document.valid?
       manual.draft
       manual_repository.store(manual)
-      notify_listeners
+      call_publishing_api_draft_manual_exporter
+      call_publishing_api_draft_section_exporter
     end
 
     [manual, new_document]
@@ -30,10 +27,12 @@ private
     @manual ||= manual_repository.fetch(context.params.fetch("manual_id"))
   end
 
-  def notify_listeners
-    listeners.each do |listener|
-      listener.call(new_document, manual)
-    end
+  def call_publishing_api_draft_section_exporter
+    PublishingApiDraftSectionExporter.new.call(new_document, manual)
+  end
+
+  def call_publishing_api_draft_manual_exporter
+    PublishingApiDraftManualExporter.new.call(new_document, manual)
   end
 
   def document_params
