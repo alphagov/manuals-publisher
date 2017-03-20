@@ -42,7 +42,7 @@ private
   end
 
   def export_draft_manual_to_publishing_api
-    PublishingApiDraftManualExporter.new.call(document, manual)
+    PublishingApiDraftManualExporter.new.call(manual)
   end
 
   def export_draft_section_to_publishing_api

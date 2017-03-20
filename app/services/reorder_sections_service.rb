@@ -42,6 +42,6 @@ private
   end
 
   def export_draft_manual_to_publishing_api
-    PublishingApiDraftManualExporter.new.call(nil, manual)
+    PublishingApiDraftManualExporter.new.call(manual)
   end
 end
