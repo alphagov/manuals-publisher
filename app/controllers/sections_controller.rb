@@ -126,7 +126,6 @@ class SectionsController < ApplicationController
     service = ReorderSectionsService.new(
       manual_repository,
       self,
-      listeners: [PublishingApiDraftManualExporter.new]
     )
     manual, _sections = service.call
 
