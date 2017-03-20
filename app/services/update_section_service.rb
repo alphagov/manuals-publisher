@@ -2,10 +2,6 @@ class UpdateSectionService
   def initialize(manual_repository:, context:)
     @manual_repository = manual_repository
     @context = context
-    @listeners = [
-      PublishingApiDraftManualExporter.new,
-      PublishingApiDraftSectionExporter.new
-    ]
   end
 
   def call
@@ -14,7 +10,8 @@ class UpdateSectionService
     if document.valid?
       manual.draft
       manual_repository.store(manual)
-      notify_listeners
+      call_publishing_api_draft_manual_exporter
+      call_publishing_api_draft_section_exporter
     end
 
     [manual, document]
@@ -44,9 +41,11 @@ private
     context.params.fetch("section")
   end
 
-  def notify_listeners
-    listeners.each do |listener|
-      listener.call(document, manual)
-    end
+  def call_publishing_api_draft_section_exporter
+    PublishingApiDraftSectionExporter.new.call(document, manual)
+  end
+
+  def call_publishing_api_draft_manual_exporter
+    PublishingApiDraftManualExporter.new.call(document, manual)
   end
 end
