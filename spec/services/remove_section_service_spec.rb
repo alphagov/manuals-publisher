@@ -31,15 +31,19 @@ RSpec.describe RemoveSectionService do
     )
   }
 
-  let(:listener) { spy(call: nil) }
-
   let(:service) {
     described_class.new(
       repository,
       service_context,
-      listeners: [listener],
     )
   }
+  let(:discarder) { spy(PublishingApiDraftSectionDiscarder) }
+  let(:exporter) { spy(PublishingApiDraftManualExporter) }
+
+  before do
+    allow(PublishingApiDraftManualExporter).to receive(:new).and_return(exporter)
+    allow(PublishingApiDraftSectionDiscarder).to receive(:new).and_return(discarder)
+  end
 
   context "with a document id that doesn't belong to the manual" do
     let(:document) {
@@ -70,9 +74,14 @@ RSpec.describe RemoveSectionService do
       expect(manual).not_to have_received(:draft)
     end
 
-    it "does not notifies its listeners" do
+    it "does not export a manual" do
       begin; service.call; rescue; end
-      expect(listener).not_to have_received(:call)
+      expect(exporter).not_to have_received(:call)
+    end
+
+    it "does not discard a section" do
+      begin; service.call; rescue; end
+      expect(discarder).not_to have_received(:call)
     end
   end
 
@@ -112,8 +121,12 @@ RSpec.describe RemoveSectionService do
       expect(repository).not_to have_received(:store).with(manual)
     end
 
-    it "does not notify its listeners" do
-      expect(listener).not_to have_received(:call).with(document, manual)
+    it "does not export a manual" do
+      expect(exporter).not_to have_received(:call)
+    end
+
+    it "does not discard a section" do
+      expect(discarder).not_to have_received(:call)
     end
   end
 
@@ -155,8 +168,12 @@ RSpec.describe RemoveSectionService do
         expect(repository).to have_received(:store).with(manual)
       end
 
-      it "notifies its listeners" do
-        expect(listener).to have_received(:call).with(document, manual)
+      it "exports a manual" do
+        expect(exporter).to have_received(:call).with(document, manual)
+      end
+
+      it "discards a section" do
+        expect(discarder).to have_received(:call).with(document, manual)
       end
     end
 
@@ -191,8 +208,12 @@ RSpec.describe RemoveSectionService do
         expect(repository).to have_received(:store).with(manual)
       end
 
-      it "notifies its listeners" do
-        expect(listener).to have_received(:call).with(document, manual)
+      it "exports a manual" do
+        expect(exporter).to have_received(:call).with(document, manual)
+      end
+
+      it "discards a section" do
+        expect(discarder).to have_received(:call).with(document, manual)
       end
     end
 
