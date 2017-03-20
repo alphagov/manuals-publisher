@@ -1,6 +1,6 @@
 class PublishingAPIWithdrawer
-  def initialize(publishing_api:, entity:)
-    @publishing_api = publishing_api
+  def initialize(entity:)
+    @publishing_api = Services.publishing_api_v2
     @entity = entity
   end
 
