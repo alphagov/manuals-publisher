@@ -8,16 +8,13 @@ require "manual_with_publish_tasks"
 require "manual"
 require "manual_record"
 
-
 class RepositoryRegistry
   def self.create
-    RepositoryRegistry.new(
-      entity_factories: DocumentFactoryRegistry.validatable_document_factories,
-    )
+    RepositoryRegistry.new
   end
 
-  def initialize(entity_factories:)
-    @entity_factories = entity_factories
+  def initialize
+    @entity_factories = DocumentFactoryRegistry.validatable_document_factories
   end
 
   def organisation_scoped_manual_repository_factory
