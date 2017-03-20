@@ -1,10 +1,6 @@
 require "securerandom"
 
 class SectionBuilder
-  def self.create
-    SectionBuilder.new
-  end
-
   def initialize
     @factory_factory = DocumentFactoryRegistry.new.section_factory_factory
   end

@@ -86,7 +86,7 @@ class SectionsController < ApplicationController
   def preview
     service = PreviewSectionService.new(
       manual_repository,
-      SectionBuilder.create,
+      SectionBuilder.new,
       SectionRenderer.new,
       self,
     )

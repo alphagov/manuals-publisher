@@ -14,7 +14,7 @@ class DocumentFactoryRegistry
       ManualValidator.new(
         NullValidator.new(
           ManualWithDocuments.new(
-            SectionBuilder.create,
+            SectionBuilder.new,
             manual,
             attrs,
           )
