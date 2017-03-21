@@ -60,6 +60,7 @@ private
   def validate_new_section_in_content_store
     section = section_in_content_store(full_new_section_slug)
     raise Error.new("Manual Section already exists in content store") if section
+  rescue GdsApi::ContentStore::ItemNotFound # rubocop:disable Lint/HandleExceptions
   end
 
   def redirect_section
