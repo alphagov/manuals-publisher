@@ -5,6 +5,7 @@ require "rummager_indexer"
 require "formatters/manual_indexable_formatter"
 require "formatters/section_indexable_formatter"
 require "services"
+require 'publication_logger'
 
 class ManualObserversRegistry
   def publication
@@ -15,7 +16,7 @@ class ManualObserversRegistry
     # change notes that relate to the current draft are pushed straight to the
     # publishing API rather than on the subsequent draft-publish cycle.
     [
-      publication_logger,
+      PublicationLogger.new,
       publishing_api_draft_exporter,
       publishing_api_publisher,
       rummager_exporter,
@@ -54,34 +55,6 @@ class ManualObserversRegistry
   end
 
 private
-
-  def publication_logger
-    ->(manual, _: nil) {
-      manual.sections.each do |doc|
-        next unless doc.needs_exporting?
-        next if doc.minor_update?
-
-        PublicationLog.create!(
-          title: doc.title,
-          slug: doc.slug,
-          version_number: doc.version_number,
-          change_note: doc.change_note,
-        )
-      end
-
-      manual.removed_sections.each do |doc|
-        next if doc.withdrawn?
-        next if doc.minor_update?
-
-        PublicationLog.create!(
-          title: doc.title,
-          slug: doc.slug,
-          version_number: doc.version_number,
-          change_note: doc.change_note,
-        )
-      end
-    }
-  end
 
   def rummager_exporter
     ->(manual, _ = nil) {
