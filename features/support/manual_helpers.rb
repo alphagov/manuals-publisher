@@ -60,10 +60,6 @@ module ManualHelpers
 
     service = CreateSectionService.new(
       manual_repository: organisational_manual_repository,
-      listeners: [
-        PublishingApiDraftManualExporter.new,
-        PublishingApiDraftSectionExporter.new
-      ],
       context: create_service_context,
     )
     _, document = service.call
@@ -125,10 +121,6 @@ module ManualHelpers
     service = UpdateSectionService.new(
       manual_repository: organisational_manual_repository,
       context: service_context,
-      listeners: [
-        PublishingApiDraftManualExporter.new,
-        PublishingApiDraftSectionExporter.new
-      ],
     )
     _, document = service.call
 
