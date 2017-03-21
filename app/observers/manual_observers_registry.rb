@@ -7,6 +7,7 @@ require "formatters/section_indexable_formatter"
 require "services"
 require 'publication_logger'
 require 'publishing_api_draft_manual_with_sections_exporter'
+require 'publishing_api_manual_with_sections_publisher'
 
 class ManualObserversRegistry
   def publication
@@ -19,7 +20,7 @@ class ManualObserversRegistry
     [
       PublicationLogger.new,
       PublishingApiDraftManualWithSectionsExporter.new,
-      publishing_api_publisher,
+      PublishingApiManualWithSectionsPublisher.new,
       rummager_exporter,
     ]
   end
@@ -30,7 +31,7 @@ class ManualObserversRegistry
     # service, rather than being able to encode it explicitly here.
     [
       PublishingApiDraftManualWithSectionsExporter.new,
-      publishing_api_publisher,
+      PublishingApiManualWithSectionsPublisher.new,
       rummager_exporter,
     ]
   end
@@ -97,36 +98,6 @@ private
             manual,
           )
         )
-      end
-    }
-  end
-
-  def publishing_api_publisher
-    ->(manual, action = nil) {
-      update_type = (action == :republish ? "republish" : nil)
-      PublishingAPIPublisher.new(
-        entity: manual,
-        update_type: update_type,
-      ).call
-
-      manual.sections.each do |document|
-        next if !document.needs_exporting? && action != :republish
-
-        PublishingAPIPublisher.new(
-          entity: document,
-          update_type: update_type,
-        ).call
-
-        document.mark_as_exported! if action != :republish
-      end
-
-      manual.removed_sections.each do |document|
-        next if document.withdrawn? && action != :republish
-        begin
-          publishing_api_v2.unpublish(document.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
-        rescue GdsApi::HTTPNotFound # rubocop:disable Lint/HandleExceptions
-        end
-        document.withdraw_and_mark_as_exported! if action != :republish
       end
     }
   end
