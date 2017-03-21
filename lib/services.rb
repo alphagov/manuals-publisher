@@ -17,7 +17,7 @@ module Services
   end
 
   def self.organisations
-    @organisations ||= GdsApi::Organisations.new(ORGANISATIONS_API_BASE_PATH)
+    @organisations ||= GdsApi::Organisations.new(Plek.find("whitehall-admin"))
   end
 
   def self.publishing_api
