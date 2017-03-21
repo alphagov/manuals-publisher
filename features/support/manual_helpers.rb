@@ -80,12 +80,10 @@ module ManualHelpers
       .organisation_scoped_manual_repository_factory
     repository = manual_repository_factory.call(organisation_slug)
 
-    observers = ManualObserversRegistry.new
     service = UpdateManualService.new(
       manual_repository: repository,
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
-      listeners: observers.update,
     )
     manual = service.call
 

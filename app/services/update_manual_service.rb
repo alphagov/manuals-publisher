@@ -1,9 +1,9 @@
 class UpdateManualService
-  def initialize(manual_repository:, manual_id:, attributes:, listeners:)
+  def initialize(manual_repository:, manual_id:, attributes:)
     @manual_repository = manual_repository
     @manual_id = manual_id
     @attributes = attributes
-    @listeners = listeners
+    @listeners = ManualObserversRegistry.new.update
   end
 
   def call
