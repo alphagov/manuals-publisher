@@ -44,7 +44,7 @@ private
 
   def validate_current_section_in_content_store
     raise Error.new("Manual Section does not exist in content store") if current_section_in_content_store.nil?
-    raise Error.new("Manual Section already withdrawn") if current_section_in_content_store.format == "gone"
+    raise Error.new("Manual Section already withdrawn") if current_section_in_content_store['format'] == "gone"
   end
 
   def validate_new_section
