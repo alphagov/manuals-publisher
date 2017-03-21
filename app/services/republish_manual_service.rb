@@ -1,7 +1,8 @@
 class RepublishManualService
-  def initialize(published_listeners: [], draft_listeners: [], manual_id:)
-    @published_listeners = published_listeners
-    @draft_listeners = draft_listeners
+  def initialize(manual_id:)
+    registry = ManualObserversRegistry.new
+    @published_listeners = registry.republication
+    @draft_listeners = registry.update
     @manual_id = manual_id
   end
 

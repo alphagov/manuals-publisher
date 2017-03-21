@@ -8,21 +8,20 @@ RSpec.describe RepublishManualService do
   let(:published_listeners) { [published_listener] }
   let(:draft_listener) { double(:listener) }
   let(:draft_listeners) { [draft_listener] }
-
+  let(:registry) { double(:registry, update: draft_listeners, republication: published_listeners) }
   let(:published_manual_version) { double(:manual) }
   let(:draft_manual_version) { double(:manual) }
 
   subject {
     described_class.new(
       manual_id: manual_id,
-      published_listeners: published_listeners,
-      draft_listeners: draft_listeners,
     )
   }
 
   before do
     allow(draft_listener).to receive(:call)
     allow(published_listener).to receive(:call)
+    allow(ManualObserversRegistry).to receive(:new).and_return(registry)
   end
 
   context "(for a published manual)" do
