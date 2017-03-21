@@ -163,10 +163,8 @@ module ManualHelpers
   def publish_manual_without_ui(manual, organisation_slug: "ministry-of-tea")
     stub_manual_publication_observers(organisation_slug)
 
-    observers = ManualObserversRegistry.new
     service = PublishManualService.new(
       manual_repository: RepositoryRegistry.create.manual_repository,
-      listeners: observers.publication,
       manual_id: manual.id,
       version_number: manual.version_number,
     )
