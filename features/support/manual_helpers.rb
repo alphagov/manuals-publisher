@@ -23,11 +23,9 @@ module ManualHelpers
       .organisation_scoped_manual_repository_factory
     repository = manual_repository_factory.call(organisation_slug)
 
-    observers = ManualObserversRegistry.new
     service = CreateManualService.new(
       manual_repository: repository,
       manual_builder: ManualBuilder.create,
-      listeners: observers.creation,
       attributes: fields.merge(organisation_slug: organisation_slug),
     )
     manual = service.call

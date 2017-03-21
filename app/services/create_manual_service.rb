@@ -1,8 +1,8 @@
 class CreateManualService
-  def initialize(manual_repository:, manual_builder:, listeners:, attributes:)
+  def initialize(manual_repository:, manual_builder:, attributes:)
     @manual_repository = manual_repository
     @manual_builder = manual_builder
-    @listeners = listeners
+    @listeners = ManualObserversRegistry.new.creation
     @attributes = attributes
   end
 

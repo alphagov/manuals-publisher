@@ -52,7 +52,6 @@ class ManualsController < ApplicationController
     service = CreateManualService.new(
       manual_repository: repository,
       manual_builder: ManualBuilder.create,
-      listeners: ManualObserversRegistry.new.creation,
       attributes: create_manual_params,
     )
     manual = service.call
