@@ -6,6 +6,7 @@ require "formatters/manual_indexable_formatter"
 require "formatters/section_indexable_formatter"
 require "services"
 require 'publication_logger'
+require 'publishing_api_draft_manual_with_sections_exporter'
 
 class ManualObserversRegistry
   def publication
@@ -17,7 +18,7 @@ class ManualObserversRegistry
     # publishing API rather than on the subsequent draft-publish cycle.
     [
       PublicationLogger.new,
-      publishing_api_draft_exporter,
+      PublishingApiDraftManualWithSectionsExporter.new,
       publishing_api_publisher,
       rummager_exporter,
     ]
@@ -28,7 +29,7 @@ class ManualObserversRegistry
     # action as 2nd argument, but we have to leave that up to the calling
     # service, rather than being able to encode it explicitly here.
     [
-      publishing_api_draft_exporter,
+      PublishingApiDraftManualWithSectionsExporter.new,
       publishing_api_publisher,
       rummager_exporter,
     ]
@@ -36,14 +37,14 @@ class ManualObserversRegistry
 
   def update
     [
-      publishing_api_draft_exporter
+      PublishingApiDraftManualWithSectionsExporter.new
     ]
   end
   alias_method :update_original_publication_date, :update
 
   def creation
     [
-      publishing_api_draft_exporter
+      PublishingApiDraftManualWithSectionsExporter.new
     ]
   end
 
@@ -130,34 +131,6 @@ private
     }
   end
 
-  def publishing_api_draft_exporter
-    ->(manual, action = nil) {
-      update_type = (action == :republish ? "republish" : nil)
-
-      organisation = organisation(manual.attributes.fetch(:organisation_slug))
-
-      ManualPublishingAPILinksExporter.new(
-        organisation, manual
-      ).call
-
-      ManualPublishingAPIExporter.new(
-        organisation, manual, update_type: update_type
-      ).call
-
-      manual.sections.each do |document|
-        next if !document.needs_exporting? && action != :republish
-
-        SectionPublishingAPILinksExporter.new(
-          organisation, manual, document
-        ).call
-
-        SectionPublishingAPIExporter.new(
-          organisation, manual, document, update_type: update_type
-        ).call
-      end
-    }
-  end
-
   def publishing_api_withdrawer
     ->(manual, _ = nil) {
       PublishingAPIWithdrawer.new(
@@ -174,9 +147,5 @@ private
 
   def publishing_api_v2
     Services.publishing_api_v2
-  end
-
-  def organisation(slug)
-    OrganisationFetcher.fetch(slug)
   end
 end
