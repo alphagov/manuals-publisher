@@ -9,9 +9,8 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
   let(:document_2) { double(:document, update: nil) }
   let(:documents) { [document_1, document_2] }
   let(:originally_published_at) { 10.years.ago }
-  let(:listener_1) { double(:listener, call: nil) }
-  let(:listener_2) { double(:listener, call: nil) }
-  let(:listeners) { [listener_1, listener_2] }
+  let(:registry) { double(:registry, update_original_publication_date: [listener]) }
+  let(:listener) { double(:listener) }
 
   subject {
     described_class.new(
@@ -21,8 +20,7 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
         originally_published_at: originally_published_at,
         use_originally_published_at_for_public_timestamp: "1",
         title: "hats",
-      },
-      listeners: listeners
+      }
     )
   }
 
@@ -31,6 +29,8 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
     allow(manual_repository).to receive(:store)
     allow(manual).to receive(:draft)
     allow(manual).to receive(:update)
+    allow(ManualObserversRegistry).to receive(:new).and_return(registry)
+    allow(listener).to receive(:call)
   end
 
   it "updates the manual with only the originally_published_at and use_originally_published_at_for_public_timestamp attribtues" do
@@ -60,7 +60,6 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
     subject.call
 
     expect(manual_repository).to have_received(:store).with(manual).ordered
-    expect(listener_1).to have_received(:call).with(manual).ordered
-    expect(listener_2).to have_received(:call).with(manual).ordered
+    expect(listener).to have_received(:call).with(manual).ordered
   end
 end
