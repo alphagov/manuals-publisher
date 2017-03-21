@@ -1,5 +1,4 @@
 require "gds_api/content_store"
-require "manual_service_registry"
 require "services"
 require "update_section_service"
 
