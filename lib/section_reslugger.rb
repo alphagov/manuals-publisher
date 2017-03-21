@@ -65,7 +65,7 @@ private
 
   def redirect_section
     PublishingAPIRedirecter.new(
-      publishing_api: Services.publishing_api,
+      publishing_api: Services.publishing_api_v2,
       entity: current_section_edition,
       redirect_to_location: "/#{full_new_section_slug}"
     ).call
