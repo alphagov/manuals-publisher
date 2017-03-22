@@ -6,12 +6,6 @@ require 'rummager_manual_with_sections_withdrawer'
 require 'publishing_api_manual_with_sections_withdrawer'
 
 class ManualObserversRegistry
-  def update_original_publication_date
-    [
-      PublishingApiDraftManualWithSectionsExporter.new
-    ]
-  end
-
   def creation
     [
       PublishingApiDraftManualWithSectionsExporter.new
