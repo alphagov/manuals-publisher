@@ -26,14 +26,14 @@ class ManualWithDocuments < SimpleDelegator
   end
 
   def build_document(attributes)
-    document = section_builder.call(
+    section = section_builder.call(
       self,
       attributes
     )
 
-    add_section(document)
+    add_section(section)
 
-    document
+    section
   end
 
   def publish
