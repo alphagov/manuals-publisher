@@ -2,14 +2,13 @@ class CreateManualService
   def initialize(manual_repository:, manual_builder:, attributes:)
     @manual_repository = manual_repository
     @manual_builder = manual_builder
-    @listeners = [PublishingApiDraftManualWithSectionsExporter.new]
     @attributes = attributes
   end
 
   def call
     if manual.valid?
       persist
-      notify_listeners
+      export_draft_to_publishing_api
     end
 
     manual
@@ -20,7 +19,6 @@ private
   attr_reader(
     :manual_repository,
     :manual_builder,
-    :listeners,
     :attributes,
   )
 
@@ -32,10 +30,8 @@ private
     manual_repository.store(manual)
   end
 
-  def notify_listeners
+  def export_draft_to_publishing_api
     reloaded_manual = manual_repository[manual.id]
-    listeners.each do |listener|
-      listener.call(reloaded_manual)
-    end
+    PublishingApiDraftManualWithSectionsExporter.new.call(reloaded_manual)
   end
 end
