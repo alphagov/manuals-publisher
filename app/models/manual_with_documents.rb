@@ -12,7 +12,7 @@ class ManualWithDocuments < SimpleDelegator
   def initialize(section_builder, manual, sections:, removed_sections: [])
     @manual = manual
     @sections = sections
-    @removed_documents = removed_sections
+    @removed_sections = removed_sections
     @section_builder = section_builder
     super(manual)
   end
@@ -22,7 +22,7 @@ class ManualWithDocuments < SimpleDelegator
   end
 
   def removed_documents
-    @removed_documents.to_enum
+    @removed_sections.to_enum
   end
 
   def build_document(attributes)
@@ -62,7 +62,7 @@ class ManualWithDocuments < SimpleDelegator
 
     return if removed.nil?
 
-    @removed_documents << removed
+    @removed_sections << removed
   end
 
 private
