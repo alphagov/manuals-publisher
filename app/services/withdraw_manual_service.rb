@@ -1,7 +1,10 @@
 class WithdrawManualService
-  def initialize(manual_repository:, listeners: [], manual_id:)
+  def initialize(manual_repository:, manual_id:)
     @manual_repository = manual_repository
-    @listeners = listeners
+    @listeners = [
+      PublishingApiManualWithSectionsWithdrawer.new,
+      RummagerManualWithSectionsWithdrawer.new,
+    ]
     @manual_id = manual_id
   end
 
