@@ -54,11 +54,11 @@ class ManualWithDocuments < SimpleDelegator
   end
 
   def remove_document(section_id)
-    found_document = @sections.find { |d| d.id == section_id }
+    found_section = @sections.find { |d| d.id == section_id }
 
-    return if found_document.nil?
+    return if found_section.nil?
 
-    removed = @sections.delete(found_document)
+    removed = @sections.delete(found_section)
 
     return if removed.nil?
 
