@@ -1,13 +1,13 @@
 require "manual_publishing_api_exporter"
 require "section_publishing_api_exporter"
 require "publishing_api_withdrawer"
-require "rummager_indexer"
 require "formatters/manual_indexable_formatter"
 require "formatters/section_indexable_formatter"
 require "services"
 require 'publication_logger'
 require 'publishing_api_draft_manual_with_sections_exporter'
 require 'publishing_api_manual_with_sections_publisher'
+require 'rummager_manual_with_sections_exporter'
 
 class ManualObserversRegistry
   def publication
@@ -21,7 +21,7 @@ class ManualObserversRegistry
       PublicationLogger.new,
       PublishingApiDraftManualWithSectionsExporter.new,
       PublishingApiManualWithSectionsPublisher.new,
-      rummager_exporter,
+      RummagerManualWithSectionsExporter.new,
     ]
   end
 
@@ -32,7 +32,7 @@ class ManualObserversRegistry
     [
       PublishingApiDraftManualWithSectionsExporter.new,
       PublishingApiManualWithSectionsPublisher.new,
-      rummager_exporter,
+      RummagerManualWithSectionsExporter.new,
     ]
   end
 
@@ -57,31 +57,6 @@ class ManualObserversRegistry
   end
 
 private
-
-  def rummager_exporter
-    ->(manual, _ = nil) {
-      indexer = RummagerIndexer.new
-
-      indexer.add(
-        ManualIndexableFormatter.new(manual)
-      )
-
-      manual.sections.each do |section|
-        indexer.add(
-          SectionIndexableFormatter.new(
-            MarkdownAttachmentProcessor.new(section),
-            manual,
-          )
-        )
-      end
-
-      manual.removed_sections.each do |section|
-        indexer.delete(
-          SectionIndexableFormatter.new(section, manual),
-        )
-      end
-    }
-  end
 
   def rummager_withdrawer
     ->(manual, _ = nil) {
