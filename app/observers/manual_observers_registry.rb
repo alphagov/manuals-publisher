@@ -6,12 +6,6 @@ require 'rummager_manual_with_sections_withdrawer'
 require 'publishing_api_manual_with_sections_withdrawer'
 
 class ManualObserversRegistry
-  def creation
-    [
-      PublishingApiDraftManualWithSectionsExporter.new
-    ]
-  end
-
   def withdrawal
     [
       PublishingApiManualWithSectionsWithdrawer.new,
