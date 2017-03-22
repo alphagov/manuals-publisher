@@ -42,15 +42,15 @@ class ManualWithDocuments < SimpleDelegator
     end
   end
 
-  def reorder_documents(document_order)
-    unless document_order.sort == @sections.map(&:id).sort
+  def reorder_documents(section_order)
+    unless section_order.sort == @sections.map(&:id).sort
       raise(
         ArgumentError,
-        "document_order must contain each document_id exactly once",
+        "section_order must contain each section_id exactly once",
       )
     end
 
-    @sections.sort_by! { |doc| document_order.index(doc.id) }
+    @sections.sort_by! { |doc| section_order.index(doc.id) }
   end
 
   def remove_document(document_id)
