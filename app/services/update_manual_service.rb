@@ -3,14 +3,13 @@ class UpdateManualService
     @manual_repository = manual_repository
     @manual_id = manual_id
     @attributes = attributes
-    @listeners = [PublishingApiDraftManualWithSectionsExporter.new]
   end
 
   def call
     manual.draft
     update
     persist
-    notify_listeners
+    export_draft_to_publishing_api
 
     manual
   end
@@ -21,7 +20,6 @@ private
     :manual_id,
     :manual_repository,
     :attributes,
-    :listeners,
   )
 
   def update
@@ -36,10 +34,8 @@ private
     @manual ||= manual_repository.fetch(manual_id)
   end
 
-  def notify_listeners
+  def export_draft_to_publishing_api
     reloaded_manual = manual_repository[manual.id]
-    listeners.each do |listener|
-      listener.call(reloaded_manual)
-    end
+    PublishingApiDraftManualWithSectionsExporter.new.call(reloaded_manual)
   end
 end
