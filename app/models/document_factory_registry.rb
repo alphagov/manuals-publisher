@@ -14,34 +14,12 @@ class DocumentFactoryRegistry
       ManualValidator.new(
         NullValidator.new(
           ManualWithDocuments.new(
-            section_builder,
+            SectionBuilder.new,
             manual,
             attrs,
           )
         )
       )
-    }
-  end
-
-  def section_builder
-    SectionBuilder.new(factory_factory: section_factory_factory)
-  end
-
-  def section_factory_factory
-    ->(manual) {
-      ->(id, editions) {
-        slug_generator = SlugGenerator.new(prefix: manual.slug)
-
-        ChangeNoteValidator.new(
-          SectionValidator.new(
-            Section.new(
-              slug_generator,
-              id,
-              editions,
-            ),
-          )
-        )
-      }
     }
   end
 end

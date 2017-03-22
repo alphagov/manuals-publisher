@@ -1,18 +1,9 @@
 require "securerandom"
 
 class SectionBuilder
-  def self.create
-    DocumentFactoryRegistry.new.section_builder
-  end
-
-  def initialize(factory_factory:)
-    @factory_factory = factory_factory
-  end
-
   def call(manual, attrs)
-    document = @factory_factory
-      .call(manual)
-      .call(SecureRandom.uuid, [])
+    section_factory = SectionFactory.new(manual)
+    document = section_factory.call(SecureRandom.uuid, [])
 
     document.update(attrs.reverse_merge(defaults))
 

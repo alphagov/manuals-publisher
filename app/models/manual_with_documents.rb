@@ -3,7 +3,7 @@ require "delegate"
 class ManualWithDocuments < SimpleDelegator
   def self.create(attrs)
     ManualWithDocuments.new(
-      SectionBuilder.create,
+      SectionBuilder.new,
       Manual.new(attrs),
       documents: [],
     )
