@@ -31,7 +31,7 @@ class ManualWithDocuments < SimpleDelegator
       attributes
     )
 
-    add_document(document)
+    add_section(document)
 
     document
   end
@@ -69,7 +69,7 @@ private
 
   attr_reader :section_builder, :manual
 
-  def add_document(section)
+  def add_section(section)
     @sections << section
   end
 end
