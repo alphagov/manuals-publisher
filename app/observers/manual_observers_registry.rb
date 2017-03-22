@@ -9,6 +9,7 @@ require 'publishing_api_draft_manual_with_sections_exporter'
 require 'publishing_api_manual_with_sections_publisher'
 require 'rummager_manual_with_sections_exporter'
 require 'rummager_manual_with_sections_withdrawer'
+require 'publishing_api_manual_with_sections_withdrawer'
 
 class ManualObserversRegistry
   def publication
@@ -52,28 +53,8 @@ class ManualObserversRegistry
 
   def withdrawal
     [
-      publishing_api_withdrawer,
+      PublishingApiManualWithSectionsWithdrawer.new,
       RummagerManualWithSectionsWithdrawer.new,
     ]
-  end
-
-private
-
-  def publishing_api_withdrawer
-    ->(manual, _ = nil) {
-      PublishingAPIWithdrawer.new(
-        entity: manual,
-      ).call
-
-      manual.sections.each do |document|
-        PublishingAPIWithdrawer.new(
-          entity: document,
-        ).call
-      end
-    }
-  end
-
-  def publishing_api_v2
-    Services.publishing_api_v2
   end
 end
