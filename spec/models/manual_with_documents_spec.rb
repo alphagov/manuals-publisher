@@ -136,10 +136,10 @@ describe ManualWithDocuments do
       expect(manual_with_documents.documents.to_a).to eq([document_b])
     end
 
-    it "adds the document to #removed_documents" do
+    it "adds the document to #removed_sections" do
       manual_with_documents.remove_section(document_a.id)
 
-      expect(manual_with_documents.removed_documents.to_a).to eq(
+      expect(manual_with_documents.removed_sections.to_a).to eq(
         [
           document_c,
           document_a,

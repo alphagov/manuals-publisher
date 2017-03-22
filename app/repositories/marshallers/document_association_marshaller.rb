@@ -29,12 +29,12 @@ class DocumentAssociationMarshaller
       document_repository.store(document)
     end
 
-    manual.removed_documents.each do |document|
+    manual.removed_sections.each do |document|
       document_repository.store(document)
     end
 
     record.document_ids = manual.documents.map(&:id)
-    record.removed_document_ids = manual.removed_documents.map(&:id)
+    record.removed_document_ids = manual.removed_sections.map(&:id)
 
     nil
   end

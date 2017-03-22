@@ -83,7 +83,7 @@ describe DocumentAssociationMarshaller do
   describe "#dump" do
     before do
       allow(entity).to receive(:documents).and_return(documents)
-      allow(entity).to receive(:removed_documents).and_return(removed_documents)
+      allow(entity).to receive(:removed_sections).and_return(removed_documents)
     end
 
     it "saves associated documents and removed documents" do

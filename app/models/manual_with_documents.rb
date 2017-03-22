@@ -21,7 +21,7 @@ class ManualWithDocuments < SimpleDelegator
     @sections.to_enum
   end
 
-  def removed_documents
+  def removed_sections
     @removed_sections.to_enum
   end
 

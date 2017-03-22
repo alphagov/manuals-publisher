@@ -69,7 +69,7 @@ private
         )
       end
 
-      manual.removed_documents.each do |doc|
+      manual.removed_sections.each do |doc|
         next if doc.withdrawn?
         next if doc.minor_update?
 
@@ -100,7 +100,7 @@ private
         )
       end
 
-      manual.removed_documents.each do |section|
+      manual.removed_sections.each do |section|
         indexer.delete(
           SectionIndexableFormatter.new(section, manual),
         )
@@ -146,7 +146,7 @@ private
         document.mark_as_exported! if action != :republish
       end
 
-      manual.removed_documents.each do |document|
+      manual.removed_sections.each do |document|
         next if document.withdrawn? && action != :republish
         begin
           publishing_api_v2.unpublish(document.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
