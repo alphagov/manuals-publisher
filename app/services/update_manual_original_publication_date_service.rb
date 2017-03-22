@@ -40,7 +40,7 @@ private
   end
 
   def update_documents
-    manual.documents.each do |document|
+    manual.sections.each do |document|
       # a no-op update will force a new draft if we need it
       document.update({})
     end

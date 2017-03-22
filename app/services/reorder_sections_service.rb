@@ -26,7 +26,7 @@ private
   end
 
   def documents
-    manual.documents
+    manual.sections
   end
 
   def manual

@@ -20,7 +20,7 @@ describe ManualPublishingAPIExporter do
       :manual,
       id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       attributes: manual_attributes,
-      documents: documents,
+      sections: documents,
       has_ever_been_published?: manual_attributes[:ever_been_published],
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp?: false,

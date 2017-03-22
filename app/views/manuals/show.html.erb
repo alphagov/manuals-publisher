@@ -67,9 +67,9 @@
       <%= link_to 'Reorder sections', reorder_manual_sections_path(manual), class: 'btn btn-default add-right-margin' %>
       <%= link_to 'Add section', new_manual_section_path(manual), class: 'btn btn-default' %>
     </div>
-    <% if manual.documents.any? %>
+    <% if manual.sections.any? %>
     <ul class="document-list">
-     <% manual.documents.each do |document| %>
+     <% manual.sections.each do |document| %>
         <li class="document">
           <%= link_to(document.title, manual_section_path(manual, document), class: 'document-title') %>
           <ul class="metadata">
@@ -92,7 +92,7 @@
       <div class="panel-heading"><h3>Publish manual</h3></div>
       <div class="panel-body">
         <%= publish_text(manual, slug_unique) %>
-        <% if manual.draft? && manual.documents.any? && current_user_can_publish? && slug_unique %>
+        <% if manual.draft? && manual.sections.any? && current_user_can_publish? && slug_unique %>
           <%= form_tag(publish_manual_path(manual), method: :post) do %>
             <button name="submit" class="btn btn-danger" data-module="confirm" data-message="Are you sure you want to publish this manual?">Publish manual</button>
           <% end -%>

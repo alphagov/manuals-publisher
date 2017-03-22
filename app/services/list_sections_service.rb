@@ -13,7 +13,7 @@ private
   attr_reader :manual_repository, :context
 
   def documents
-    manual.documents
+    manual.sections
   end
 
   def manual

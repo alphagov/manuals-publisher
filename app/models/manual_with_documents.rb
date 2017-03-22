@@ -17,7 +17,7 @@ class ManualWithDocuments < SimpleDelegator
     super(manual)
   end
 
-  def documents
+  def sections
     @sections.to_enum
   end
 
@@ -38,7 +38,7 @@ class ManualWithDocuments < SimpleDelegator
 
   def publish
     manual.publish do
-      documents.each(&:publish!)
+      sections.each(&:publish!)
     end
   end
 

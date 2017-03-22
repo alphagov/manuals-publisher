@@ -29,7 +29,7 @@ describe ManualPublishingAPILinksExporter do
         slug: "guidance/my-first-manual",
         organisation_slug: "cabinet-office",
       },
-      documents: documents,
+      sections: documents,
     )
   }
 

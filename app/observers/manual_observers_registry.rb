@@ -57,7 +57,7 @@ private
 
   def publication_logger
     ->(manual, _: nil) {
-      manual.documents.each do |doc|
+      manual.sections.each do |doc|
         next unless doc.needs_exporting?
         next if doc.minor_update?
 
@@ -91,7 +91,7 @@ private
         ManualIndexableFormatter.new(manual)
       )
 
-      manual.documents.each do |section|
+      manual.sections.each do |section|
         indexer.add(
           SectionIndexableFormatter.new(
             MarkdownAttachmentProcessor.new(section),
@@ -116,7 +116,7 @@ private
         ManualIndexableFormatter.new(manual)
       )
 
-      manual.documents.each do |section|
+      manual.sections.each do |section|
         indexer.delete(
           SectionIndexableFormatter.new(
             MarkdownAttachmentProcessor.new(section),
@@ -135,7 +135,7 @@ private
         update_type: update_type,
       ).call
 
-      manual.documents.each do |document|
+      manual.sections.each do |document|
         next if !document.needs_exporting? && action != :republish
 
         PublishingAPIPublisher.new(
@@ -171,7 +171,7 @@ private
         organisation, manual, update_type: update_type
       ).call
 
-      manual.documents.each do |document|
+      manual.sections.each do |document|
         next if !document.needs_exporting? && action != :republish
 
         SectionPublishingAPILinksExporter.new(
@@ -191,7 +191,7 @@ private
         entity: manual,
       ).call
 
-      manual.documents.each do |document|
+      manual.sections.each do |document|
         PublishingAPIWithdrawer.new(
           entity: document,
         ).call

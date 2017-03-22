@@ -103,7 +103,7 @@ private
   end
 
   def sections
-    manual.documents.map { |d|
+    manual.sections.map { |d|
       {
         title: d.attributes.fetch(:title),
         description: d.attributes.fetch(:summary),

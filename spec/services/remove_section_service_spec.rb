@@ -7,7 +7,7 @@ RSpec.describe RemoveSectionService do
   let(:manual) {
     double(
       draft: nil,
-      documents: [
+      sections: [
         document,
       ],
       remove_section: nil,
@@ -52,7 +52,7 @@ RSpec.describe RemoveSectionService do
     let(:manual) {
       double(
         draft: nil,
-        documents: [],
+        sections: [],
         remove_section: nil,
       )
     }

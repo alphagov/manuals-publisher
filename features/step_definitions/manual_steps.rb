@@ -62,7 +62,7 @@ Given(/^a draft manual exists with some sections$/) do
   )
 
   @manual = most_recently_created_manual
-  @documents = @manual.documents.to_a
+  @documents = @manual.sections.to_a
   @document = @documents.first
 
   WebMock::RequestRegistry.instance.reset!
@@ -117,7 +117,7 @@ When(/^I create a section for the manual$/) do
 
   create_section(@manual_fields.fetch(:title), @document_fields)
 
-  @document = most_recently_created_manual.documents.to_a.last
+  @document = most_recently_created_manual.sections.to_a.last
 end
 
 When(/^I create a section for the manual with a change note$/) do
@@ -134,7 +134,7 @@ When(/^I create a section for the manual with a change note$/) do
 
   create_section(@manual_fields.fetch(:title), @document_fields)
 
-  @document = most_recently_created_manual.documents.to_a.last
+  @document = most_recently_created_manual.sections.to_a.last
 end
 
 Then(/^I see the manual has the new section$/) do
@@ -203,7 +203,7 @@ Given(/^a draft section exists for the manual$/) do
 
   create_section(@manual_fields.fetch(:title), @document_fields)
 
-  @document = most_recently_created_manual.documents.to_a.last
+  @document = most_recently_created_manual.sections.to_a.last
 
   @documents ||= []
   @documents << @document
@@ -337,7 +337,7 @@ Given(/^a published manual exists$/) do
   )
 
   @manual = most_recently_created_manual
-  @documents = @manual.documents.to_a
+  @documents = @manual.sections.to_a
 
   publish_manual
 
@@ -566,7 +566,7 @@ When(/^I add another section to the manual$/) do
 
   create_section(@manual_title, fields)
 
-  @new_document = most_recently_created_manual.documents.to_a.last
+  @new_document = most_recently_created_manual.sections.to_a.last
 end
 
 Then(/^I see no visible change note in the section edit form$/) do

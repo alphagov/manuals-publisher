@@ -39,7 +39,7 @@ RSpec.describe VersionedManualRepository do
       end
 
       it "has the first draft of the section editions as Section instances attached" do
-        documents = subject.documents.to_a
+        documents = subject.sections.to_a
         expect(documents.size).to eq 2
 
         document_1 = documents[0]
@@ -81,7 +81,7 @@ RSpec.describe VersionedManualRepository do
       end
 
       it "has the published version of the section editions as Section instances attached" do
-        documents = subject.documents.to_a
+        documents = subject.sections.to_a
         expect(documents.size).to eq 2
 
         document_1 = documents[0]
@@ -164,7 +164,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -195,7 +195,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the new drafts of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -231,7 +231,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -262,7 +262,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -299,7 +299,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -330,7 +330,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has correct draft or published version of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]

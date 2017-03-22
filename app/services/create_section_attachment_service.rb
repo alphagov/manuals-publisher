@@ -17,7 +17,7 @@ private
   attr_reader :manual_repository, :context
 
   def document
-    @document ||= manual.documents.find { |d| d.id == document_id }
+    @document ||= manual.sections.find { |d| d.id == document_id }
   end
 
   def manual

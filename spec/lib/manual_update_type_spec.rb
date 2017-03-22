@@ -16,7 +16,7 @@ RSpec.describe ManualUpdateType do
     before { allow(manual).to receive(:has_ever_been_published?).and_return true }
 
     context "and has no documents" do
-      before { allow(manual).to receive(:documents).and_return [] }
+      before { allow(manual).to receive(:sections).and_return [] }
 
       it "is 'minor'" do
         expect(subject).to eql "minor"
@@ -27,7 +27,7 @@ RSpec.describe ManualUpdateType do
       let(:section_1) { double(:section) }
       let(:section_2) { double(:section) }
       let(:section_3) { double(:section) }
-      before { allow(manual).to receive(:documents).and_return [section_1, section_2, section_3] }
+      before { allow(manual).to receive(:sections).and_return [section_1, section_2, section_3] }
 
       context "none of which need exporting" do
         before do

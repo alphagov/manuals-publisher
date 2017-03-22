@@ -69,7 +69,7 @@ describe ManualWithDocuments do
         beta
       ))
 
-      expect(manual_with_documents.documents.to_a).to eq([
+      expect(manual_with_documents.sections.to_a).to eq([
         gamma_document,
         alpha_document,
         beta_document,
@@ -133,7 +133,7 @@ describe ManualWithDocuments do
     it "removes the document from #documents" do
       manual_with_documents.remove_section(document_a.id)
 
-      expect(manual_with_documents.documents.to_a).to eq([document_b])
+      expect(manual_with_documents.sections.to_a).to eq([document_b])
     end
 
     it "adds the document to #removed_sections" do

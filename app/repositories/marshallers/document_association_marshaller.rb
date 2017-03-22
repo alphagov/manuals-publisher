@@ -25,7 +25,7 @@ class DocumentAssociationMarshaller
   def dump(manual, record)
     document_repository = section_repository_factory.call(manual)
 
-    manual.documents.each do |document|
+    manual.sections.each do |document|
       document_repository.store(document)
     end
 
@@ -33,7 +33,7 @@ class DocumentAssociationMarshaller
       document_repository.store(document)
     end
 
-    record.document_ids = manual.documents.map(&:id)
+    record.document_ids = manual.sections.map(&:id)
     record.removed_document_ids = manual.removed_sections.map(&:id)
 
     nil

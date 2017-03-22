@@ -34,7 +34,7 @@ private
   end
 
   def clashing_sections
-    manual.documents
+    manual.sections
       .group_by(&:slug)
       .select { |_slug, docs| docs.size > 1 }
   end

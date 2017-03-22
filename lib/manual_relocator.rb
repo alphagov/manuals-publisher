@@ -176,7 +176,7 @@ private
 
       puts "Publishing published edition of manual: #{manual_to_publish.id}"
       publishing_api.publish(manual_to_publish.id, "republish")
-      manual_to_publish.documents.each do |document|
+      manual_to_publish.sections.each do |document|
         puts "Publishing published edition of manual section: #{document.id}"
         publishing_api.publish(document.id, "republish")
       end
@@ -193,7 +193,7 @@ private
       organisation, manual
     ).call
 
-    manual.documents.each do |document|
+    manual.sections.each do |document|
       puts "Sending a draft of manual section #{document.id} (version: #{document.version_number})"
       SectionPublishingAPIExporter.new(
         organisation, manual, document
