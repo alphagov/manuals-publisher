@@ -2,19 +2,16 @@ class PublishManualService
   def initialize(manual_id:, manual_repository:, version_number:)
     @manual_id = manual_id
     @manual_repository = manual_repository
-    @listeners = [
-      PublicationLogger.new,
-      PublishingApiDraftManualWithSectionsExporter.new,
-      PublishingApiManualWithSectionsPublisher.new,
-      RummagerManualWithSectionsExporter.new,
-    ]
     @version_number = version_number
   end
 
   def call
     if versions_match?
       publish
-      notify_listeners
+      log_publication
+      export_draft_to_publishing_api
+      publish_to_publishing_api
+      export_to_rummager
       persist
     else
       raise VersionMismatchError.new(
@@ -31,7 +28,6 @@ private
   attr_reader(
     :manual_id,
     :manual_repository,
-    :listeners,
     :version_number,
   )
 
@@ -47,10 +43,20 @@ private
     manual_repository.store(manual)
   end
 
-  def notify_listeners
-    listeners.each do |listener|
-      listener.call(manual)
-    end
+  def log_publication
+    PublicationLogger.new.call(manual)
+  end
+
+  def export_draft_to_publishing_api
+    PublishingApiDraftManualWithSectionsExporter.new.call(manual)
+  end
+
+  def publish_to_publishing_api
+    PublishingApiManualWithSectionsPublisher.new.call(manual)
+  end
+
+  def export_to_rummager
+    RummagerManualWithSectionsExporter.new.call(manual)
   end
 
   def manual
