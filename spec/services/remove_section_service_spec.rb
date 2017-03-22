@@ -63,25 +63,33 @@ RSpec.describe RemoveSectionService do
       }
     end
 
-    it "raises a SectionNotFound error" do
+    it "raises a SectionNotFoundError" do
       expect {
         service.call
       }.to raise_error(described_class::SectionNotFoundError, document_id)
     end
 
-    it "does not mark the manual as a draft" do
-      begin; service.call; rescue; end
-      expect(manual).not_to have_received(:draft)
-    end
+    context "when SectionNotFoundError is raised" do
+      before do
+        ignoring(described_class::SectionNotFoundError) { service.call }
+      end
 
-    it "does not export a manual" do
-      begin; service.call; rescue; end
-      expect(exporter).not_to have_received(:call)
-    end
+      it "does not mark the manual as a draft" do
+        expect(manual).not_to have_received(:draft)
+      end
 
-    it "does not discard a section" do
-      begin; service.call; rescue; end
-      expect(discarder).not_to have_received(:call)
+      it "does not export a manual" do
+        expect(exporter).not_to have_received(:call)
+      end
+
+      it "does not discard a section" do
+        expect(discarder).not_to have_received(:call)
+      end
+
+      def ignoring(exception_class)
+        yield
+      rescue exception_class
+      end
     end
   end
 
