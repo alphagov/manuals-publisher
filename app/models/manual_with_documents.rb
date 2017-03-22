@@ -25,7 +25,7 @@ class ManualWithDocuments < SimpleDelegator
     @removed_sections.to_enum
   end
 
-  def build_document(attributes)
+  def build_section(attributes)
     section = section_builder.call(
       self,
       attributes
