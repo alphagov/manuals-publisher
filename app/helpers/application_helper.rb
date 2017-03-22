@@ -18,8 +18,8 @@ module ApplicationHelper
   end
 
   def show_preview?(item)
-    if item.respond_to?(:documents)
-      item.draft? || item.documents.any?(&:draft?)
+    if item.respond_to?(:sections)
+      item.draft? || item.sections.any?(&:draft?)
     else
       item.draft?
     end

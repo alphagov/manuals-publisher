@@ -70,7 +70,7 @@ describe DocumentAssociationMarshaller do
       marshaller.load(entity, record)
 
       expect(decorator).to have_received(:call).
-        with(entity, documents: documents, removed_documents: removed_documents)
+        with(entity, sections: documents, removed_sections: removed_documents)
     end
 
     it "returns the decorated entity" do
@@ -82,8 +82,8 @@ describe DocumentAssociationMarshaller do
 
   describe "#dump" do
     before do
-      allow(entity).to receive(:documents).and_return(documents)
-      allow(entity).to receive(:removed_documents).and_return(removed_documents)
+      allow(entity).to receive(:sections).and_return(documents)
+      allow(entity).to receive(:removed_sections).and_return(removed_documents)
     end
 
     it "saves associated documents and removed documents" do

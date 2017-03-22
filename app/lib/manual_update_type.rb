@@ -24,7 +24,7 @@ private
 
   def all_documents_are_minor?
     manual.
-      documents.
+      sections.
       select(&:needs_exporting?).
       all? { |d|
         d.minor_update? && d.has_ever_been_published?

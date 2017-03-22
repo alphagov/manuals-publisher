@@ -193,13 +193,13 @@ module ManualHelpers
   def check_section_exists(manual_id, section_id)
     manual = manual_repository.fetch(manual_id)
 
-    manual.documents.any? { |document| document.id == section_id }
+    manual.sections.any? { |document| document.id == section_id }
   end
 
   def check_section_was_removed(manual_id, section_id)
     manual = manual_repository.fetch(manual_id)
 
-    manual.removed_documents.any? { |document| document.id == section_id }
+    manual.removed_sections.any? { |document| document.id == section_id }
   end
 
   def go_to_edit_page_for_manual(manual_title)

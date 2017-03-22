@@ -34,7 +34,7 @@ private
   end
 
   def existing_document
-    @existing_document ||= manual.documents.find { |document|
+    @existing_document ||= manual.sections.find { |document|
       document.id == document_id
     }
   end

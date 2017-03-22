@@ -5,7 +5,7 @@ class CreateSectionService
   end
 
   def call
-    @new_document = manual.build_document(document_params)
+    @new_document = manual.build_section(document_params)
 
     if new_document.valid?
       manual.draft

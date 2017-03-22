@@ -4,7 +4,7 @@ require "update_manual_original_publication_date_service"
 RSpec.describe UpdateManualOriginalPublicationDateService do
   let(:manual_id) { double(:manual_id) }
   let(:manual_repository) { double(:manual_repository) }
-  let(:manual) { double(:manual, id: manual_id, documents: documents) }
+  let(:manual) { double(:manual, id: manual_id, sections: documents) }
   let(:document_1) { double(:document, update: nil) }
   let(:document_2) { double(:document, update: nil) }
   let(:documents) { [document_1, document_2] }

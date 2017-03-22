@@ -24,8 +24,8 @@ private
 
     build_manual_for(manual_record, manual_record.latest_edition) do
       {
-        documents: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
-        removed_documents: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
+        sections: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
+        removed_sections: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
       }
     end
   end
@@ -36,8 +36,8 @@ private
     if manual_record.latest_edition.state == "published"
       build_manual_for(manual_record, manual_record.latest_edition) do
         {
-          documents: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
-          removed_documents: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
+          sections: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
+          removed_sections: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
         }
       end
     elsif manual_record.latest_edition.state == "draft"
@@ -45,8 +45,8 @@ private
       if previous_edition.state == "published"
         build_manual_for(manual_record, previous_edition) do
           {
-            documents: get_published_version_of_documents(previous_edition.document_ids),
-            removed_documents: get_latest_version_of_documents(previous_edition.removed_document_ids)
+            sections: get_published_version_of_documents(previous_edition.document_ids),
+            removed_sections: get_latest_version_of_documents(previous_edition.removed_document_ids)
           }
         end
       else
@@ -80,7 +80,7 @@ private
 
     document_attrs = yield
 
-    ManualWithDocuments.new(
+    ManualWithSections.new(
       ->(_manual, _attrs) { raise RuntimeError, "read only manaul" },
       base_manual,
       document_attrs

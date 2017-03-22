@@ -57,7 +57,7 @@ private
 
   def publication_logger
     ->(manual, _: nil) {
-      manual.documents.each do |doc|
+      manual.sections.each do |doc|
         next unless doc.needs_exporting?
         next if doc.minor_update?
 
@@ -69,7 +69,7 @@ private
         )
       end
 
-      manual.removed_documents.each do |doc|
+      manual.removed_sections.each do |doc|
         next if doc.withdrawn?
         next if doc.minor_update?
 
@@ -91,7 +91,7 @@ private
         ManualIndexableFormatter.new(manual)
       )
 
-      manual.documents.each do |section|
+      manual.sections.each do |section|
         indexer.add(
           SectionIndexableFormatter.new(
             MarkdownAttachmentProcessor.new(section),
@@ -100,7 +100,7 @@ private
         )
       end
 
-      manual.removed_documents.each do |section|
+      manual.removed_sections.each do |section|
         indexer.delete(
           SectionIndexableFormatter.new(section, manual),
         )
@@ -116,7 +116,7 @@ private
         ManualIndexableFormatter.new(manual)
       )
 
-      manual.documents.each do |section|
+      manual.sections.each do |section|
         indexer.delete(
           SectionIndexableFormatter.new(
             MarkdownAttachmentProcessor.new(section),
@@ -135,7 +135,7 @@ private
         update_type: update_type,
       ).call
 
-      manual.documents.each do |document|
+      manual.sections.each do |document|
         next if !document.needs_exporting? && action != :republish
 
         PublishingAPIPublisher.new(
@@ -146,7 +146,7 @@ private
         document.mark_as_exported! if action != :republish
       end
 
-      manual.removed_documents.each do |document|
+      manual.removed_sections.each do |document|
         next if document.withdrawn? && action != :republish
         begin
           publishing_api_v2.unpublish(document.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
@@ -171,7 +171,7 @@ private
         organisation, manual, update_type: update_type
       ).call
 
-      manual.documents.each do |document|
+      manual.sections.each do |document|
         next if !document.needs_exporting? && action != :republish
 
         SectionPublishingAPILinksExporter.new(
@@ -191,7 +191,7 @@ private
         entity: manual,
       ).call
 
-      manual.documents.each do |document|
+      manual.sections.each do |document|
         PublishingAPIWithdrawer.new(
           entity: document,
         ).call

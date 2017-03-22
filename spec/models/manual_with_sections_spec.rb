@@ -1,10 +1,10 @@
 require "spec_helper"
 
-require "manual_with_documents"
+require "manual_with_sections"
 
-describe ManualWithDocuments do
-  subject(:manual_with_documents) {
-    ManualWithDocuments.new(document_builder, manual, documents: documents)
+describe ManualWithSections do
+  subject(:manual_with_sections) {
+    ManualWithSections.new(document_builder, manual, sections: documents)
   }
 
   let(:manual) { double(:manual, publish: nil) }
@@ -21,7 +21,7 @@ describe ManualWithDocuments do
 
   describe "#publish" do
     it "notifies the underlying manual" do
-      manual_with_documents.publish
+      manual_with_sections.publish
 
       expect(manual).to have_received(:publish)
     end
@@ -32,7 +32,7 @@ describe ManualWithDocuments do
       end
 
       it "passes a block which publishes" do
-        manual_with_documents.publish
+        manual_with_sections.publish
 
         expect(document).to have_received(:publish!)
       end
@@ -40,14 +40,14 @@ describe ManualWithDocuments do
 
     context "when the manual publish does not succeed" do
       it "does not publish the documents" do
-        manual_with_documents.publish
+        manual_with_sections.publish
 
         expect(document).not_to have_received(:publish!)
       end
     end
   end
 
-  describe "#reorder_documents" do
+  describe "#reorder_sections" do
     let(:documents) {
       [
         alpha_document,
@@ -63,13 +63,13 @@ describe ManualWithDocuments do
     let(:document_order) { %w(gamma alpha beta) }
 
     it "reorders the documents to match the given order" do
-      manual_with_documents.reorder_documents(%w(
+      manual_with_sections.reorder_sections(%w(
         gamma
         alpha
         beta
       ))
 
-      expect(manual_with_documents.documents.to_a).to eq([
+      expect(manual_with_sections.sections.to_a).to eq([
         gamma_document,
         alpha_document,
         beta_document,
@@ -78,7 +78,7 @@ describe ManualWithDocuments do
 
     it "raises an error if document_order doesn't contain all IDs" do
       expect {
-        manual_with_documents.reorder_documents(%w(
+        manual_with_sections.reorder_sections(%w(
           alpha
           beta
         ))
@@ -87,7 +87,7 @@ describe ManualWithDocuments do
 
     it "raises an error if document_order contains non-existent IDs" do
       expect {
-        manual_with_documents.reorder_documents(%w(
+        manual_with_sections.reorder_sections(%w(
           alpha
           beta
           gamma
@@ -98,7 +98,7 @@ describe ManualWithDocuments do
 
     it "raises an error if document_order contains duplicate IDs" do
       expect {
-        manual_with_documents.reorder_documents(%w(
+        manual_with_sections.reorder_sections(%w(
           alpha
           beta
           gamma
@@ -108,13 +108,13 @@ describe ManualWithDocuments do
     end
   end
 
-  describe "#remove_document" do
-    subject(:manual_with_documents) {
-      ManualWithDocuments.new(
+  describe "#remove_section" do
+    subject(:manual_with_sections) {
+      ManualWithSections.new(
         document_builder,
         manual,
-        documents: documents,
-        removed_documents: removed_documents,
+        sections: documents,
+        removed_sections: removed_documents,
       )
     }
 
@@ -131,15 +131,15 @@ describe ManualWithDocuments do
     let(:document_c) { double(:document, id: "c") }
 
     it "removes the document from #documents" do
-      manual_with_documents.remove_document(document_a.id)
+      manual_with_sections.remove_section(document_a.id)
 
-      expect(manual_with_documents.documents.to_a).to eq([document_b])
+      expect(manual_with_sections.sections.to_a).to eq([document_b])
     end
 
-    it "adds the document to #removed_documents" do
-      manual_with_documents.remove_document(document_a.id)
+    it "adds the document to #removed_sections" do
+      manual_with_sections.remove_section(document_a.id)
 
-      expect(manual_with_documents.removed_documents.to_a).to eq(
+      expect(manual_with_sections.removed_sections.to_a).to eq(
         [
           document_c,
           document_a,

@@ -18,7 +18,7 @@ private
   attr_reader :manual_repository, :context
 
   def update
-    manual.reorder_documents(document_order)
+    manual.reorder_sections(document_order)
   end
 
   def persist
@@ -26,7 +26,7 @@ private
   end
 
   def documents
-    manual.documents
+    manual.sections
   end
 
   def manual

@@ -27,7 +27,7 @@ class RepositoryRegistry
         DocumentAssociationMarshaller.new(
           section_repository_factory: section_repository_factory,
           decorator: ->(manual, attrs) {
-            DocumentFactoryRegistry.new.manual_with_documents.call(manual, attrs)
+            DocumentFactoryRegistry.new.manual_with_sections.call(manual, attrs)
           }
         ),
         ManualPublishTaskAssociationMarshaller.new(

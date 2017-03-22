@@ -27,7 +27,7 @@ private
   attr_reader :manual_repository, :context
 
   def remove
-    manual.remove_document(document_id)
+    manual.remove_section(document_id)
   end
 
   def persist
@@ -35,7 +35,7 @@ private
   end
 
   def document
-    @document ||= manual.documents.find { |d| d.id == document_id }
+    @document ||= manual.sections.find { |d| d.id == document_id }
   end
 
   def manual

@@ -19,22 +19,22 @@ class DocumentAssociationMarshaller
       end
     }
 
-    decorator.call(manual, documents: docs, removed_documents: removed_docs)
+    decorator.call(manual, sections: docs, removed_sections: removed_docs)
   end
 
   def dump(manual, record)
     document_repository = section_repository_factory.call(manual)
 
-    manual.documents.each do |document|
+    manual.sections.each do |document|
       document_repository.store(document)
     end
 
-    manual.removed_documents.each do |document|
+    manual.removed_sections.each do |document|
       document_repository.store(document)
     end
 
-    record.document_ids = manual.documents.map(&:id)
-    record.removed_document_ids = manual.removed_documents.map(&:id)
+    record.document_ids = manual.sections.map(&:id)
+    record.removed_document_ids = manual.removed_sections.map(&:id)
 
     nil
   end

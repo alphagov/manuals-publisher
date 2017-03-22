@@ -5,7 +5,7 @@ class NewSectionService
   end
 
   def call
-    [manual, manual.build_document({})]
+    [manual, manual.build_section({})]
   end
 
 private

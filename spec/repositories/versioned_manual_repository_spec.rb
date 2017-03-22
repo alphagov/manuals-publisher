@@ -30,8 +30,8 @@ RSpec.describe VersionedManualRepository do
     context "the draft version returned" do
       subject { repository.get_manual(manual_id)[:draft] }
 
-      it "is the first draft as a ManualWithDocuments instance" do
-        expect(subject).to be_a ::ManualWithDocuments
+      it "is the first draft as a ManualWithSections instance" do
+        expect(subject).to be_a ::ManualWithSections
         expect(subject.id).to eq manual_id
         expect(subject.state).to eq "draft"
         expect(subject.version_number).to eq 1
@@ -39,7 +39,7 @@ RSpec.describe VersionedManualRepository do
       end
 
       it "has the first draft of the section editions as Section instances attached" do
-        documents = subject.documents.to_a
+        documents = subject.sections.to_a
         expect(documents.size).to eq 2
 
         document_1 = documents[0]
@@ -72,8 +72,8 @@ RSpec.describe VersionedManualRepository do
     context "the published version returned" do
       subject { repository.get_manual(manual_id)[:published] }
 
-      it "is the published version as a ManualWithDocuments instance" do
-        expect(subject).to be_a ::ManualWithDocuments
+      it "is the published version as a ManualWithSections instance" do
+        expect(subject).to be_a ::ManualWithSections
         expect(subject.id).to eq manual_id
         expect(subject.state).to eq "published"
         expect(subject.version_number).to eq 1
@@ -81,7 +81,7 @@ RSpec.describe VersionedManualRepository do
       end
 
       it "has the published version of the section editions as Section instances attached" do
-        documents = subject.documents.to_a
+        documents = subject.sections.to_a
         expect(documents.size).to eq 2
 
         document_1 = documents[0]
@@ -155,8 +155,8 @@ RSpec.describe VersionedManualRepository do
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
 
-        it "is the published version as a ManualWithDocuments instance" do
-          expect(subject).to be_a ::ManualWithDocuments
+        it "is the published version as a ManualWithSections instance" do
+          expect(subject).to be_a ::ManualWithSections
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "published"
           expect(subject.version_number).to eq 1
@@ -164,7 +164,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -186,8 +186,8 @@ RSpec.describe VersionedManualRepository do
       context "the draft version returned" do
         subject { repository.get_manual(manual_id)[:draft] }
 
-        it "is the new draft as a ManualWithDocuments instance" do
-          expect(subject).to be_a ::ManualWithDocuments
+        it "is the new draft as a ManualWithSections instance" do
+          expect(subject).to be_a ::ManualWithSections
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "draft"
           expect(subject.version_number).to eq 2
@@ -195,7 +195,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the new drafts of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -222,8 +222,8 @@ RSpec.describe VersionedManualRepository do
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
 
-        it "is the published version as a ManualWithDocuments instance" do
-          expect(subject).to be_a ::ManualWithDocuments
+        it "is the published version as a ManualWithSections instance" do
+          expect(subject).to be_a ::ManualWithSections
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "published"
           expect(subject.version_number).to eq 1
@@ -231,7 +231,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -253,8 +253,8 @@ RSpec.describe VersionedManualRepository do
       context "the draft version returned" do
         subject { repository.get_manual(manual_id)[:draft] }
 
-        it "is the new draft as a ManualWithDocuments instance" do
-          expect(subject).to be_a ::ManualWithDocuments
+        it "is the new draft as a ManualWithSections instance" do
+          expect(subject).to be_a ::ManualWithSections
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "draft"
           expect(subject.version_number).to eq 2
@@ -262,7 +262,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -290,8 +290,8 @@ RSpec.describe VersionedManualRepository do
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
 
-        it "is the published version as a ManualWithDocuments instance" do
-          expect(subject).to be_a ::ManualWithDocuments
+        it "is the published version as a ManualWithSections instance" do
+          expect(subject).to be_a ::ManualWithSections
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "published"
           expect(subject.version_number).to eq 1
@@ -299,7 +299,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
@@ -321,8 +321,8 @@ RSpec.describe VersionedManualRepository do
       context "the draft version returned" do
         subject { repository.get_manual(manual_id)[:draft] }
 
-        it "is the new draft as a ManualWithDocuments instance" do
-          expect(subject).to be_a ::ManualWithDocuments
+        it "is the new draft as a ManualWithSections instance" do
+          expect(subject).to be_a ::ManualWithSections
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "draft"
           expect(subject.version_number).to eq 2
@@ -330,7 +330,7 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has correct draft or published version of the section editions as Section instances attached" do
-          documents = subject.documents.to_a
+          documents = subject.sections.to_a
           expect(documents.size).to eq 2
 
           document_1 = documents[0]
