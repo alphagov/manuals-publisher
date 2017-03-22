@@ -42,7 +42,7 @@ class ManualWithDocuments < SimpleDelegator
     end
   end
 
-  def reorder_documents(section_order)
+  def reorder_sections(section_order)
     unless section_order.sort == @sections.map(&:id).sort
       raise(
         ArgumentError,

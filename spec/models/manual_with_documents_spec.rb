@@ -47,7 +47,7 @@ describe ManualWithDocuments do
     end
   end
 
-  describe "#reorder_documents" do
+  describe "#reorder_sections" do
     let(:documents) {
       [
         alpha_document,
@@ -63,7 +63,7 @@ describe ManualWithDocuments do
     let(:document_order) { %w(gamma alpha beta) }
 
     it "reorders the documents to match the given order" do
-      manual_with_documents.reorder_documents(%w(
+      manual_with_documents.reorder_sections(%w(
         gamma
         alpha
         beta
@@ -78,7 +78,7 @@ describe ManualWithDocuments do
 
     it "raises an error if document_order doesn't contain all IDs" do
       expect {
-        manual_with_documents.reorder_documents(%w(
+        manual_with_documents.reorder_sections(%w(
           alpha
           beta
         ))
@@ -87,7 +87,7 @@ describe ManualWithDocuments do
 
     it "raises an error if document_order contains non-existent IDs" do
       expect {
-        manual_with_documents.reorder_documents(%w(
+        manual_with_documents.reorder_sections(%w(
           alpha
           beta
           gamma
@@ -98,7 +98,7 @@ describe ManualWithDocuments do
 
     it "raises an error if document_order contains duplicate IDs" do
       expect {
-        manual_with_documents.reorder_documents(%w(
+        manual_with_documents.reorder_sections(%w(
           alpha
           beta
           gamma
