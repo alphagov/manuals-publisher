@@ -11,14 +11,14 @@ class ManualWithDocuments < SimpleDelegator
 
   def initialize(section_builder, manual, sections:, removed_sections: [])
     @manual = manual
-    @documents = sections
+    @sections = sections
     @removed_documents = removed_sections
     @section_builder = section_builder
     super(manual)
   end
 
   def documents
-    @documents.to_enum
+    @sections.to_enum
   end
 
   def removed_documents
@@ -43,22 +43,22 @@ class ManualWithDocuments < SimpleDelegator
   end
 
   def reorder_documents(document_order)
-    unless document_order.sort == @documents.map(&:id).sort
+    unless document_order.sort == @sections.map(&:id).sort
       raise(
         ArgumentError,
         "document_order must contain each document_id exactly once",
       )
     end
 
-    @documents.sort_by! { |doc| document_order.index(doc.id) }
+    @sections.sort_by! { |doc| document_order.index(doc.id) }
   end
 
   def remove_document(document_id)
-    found_document = @documents.find { |d| d.id == document_id }
+    found_document = @sections.find { |d| d.id == document_id }
 
     return if found_document.nil?
 
-    removed = @documents.delete(found_document)
+    removed = @sections.delete(found_document)
 
     return if removed.nil?
 
@@ -70,6 +70,6 @@ private
   attr_reader :section_builder, :manual
 
   def add_document(document)
-    @documents << document
+    @sections << document
   end
 end
