@@ -1,9 +1,9 @@
 class UpdateManualOriginalPublicationDateService
-  def initialize(manual_repository:, manual_id:, attributes:, listeners:)
+  def initialize(manual_repository:, manual_id:, attributes:)
     @manual_repository = manual_repository
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
-    @listeners = listeners
+    @listeners = ManualObserversRegistry.new.update_original_publication_date
   end
 
   def call

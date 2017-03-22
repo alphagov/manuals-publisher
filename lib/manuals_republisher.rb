@@ -16,10 +16,7 @@ class ManualsRepublisher
     manual_records.to_a.each.with_index do |manual_record, i|
       begin
         logger.info("[ #{i} / #{count} ] id=#{manual_record.manual_id} slug=#{manual_record.slug}]")
-        observers = ManualObserversRegistry.new
         service = RepublishManualService.new(
-          draft_listeners: observers.update,
-          published_listeners: observers.republication,
           manual_id: manual_record.manual_id,
         )
         service.call

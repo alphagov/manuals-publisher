@@ -1,5 +1,5 @@
 class PublishingApiDraftManualExporter
-  def call(_, manual)
+  def call(manual)
     ManualPublishingAPILinksExporter.new(
       OrganisationFetcher.fetch(manual.attributes.fetch(:organisation_slug)),
       manual

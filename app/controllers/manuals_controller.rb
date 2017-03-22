@@ -52,7 +52,6 @@ class ManualsController < ApplicationController
     service = CreateManualService.new(
       manual_repository: repository,
       manual_builder: ManualBuilder.create,
-      listeners: ManualObserversRegistry.new.creation,
       attributes: create_manual_params,
     )
     manual = service.call
@@ -82,7 +81,6 @@ class ManualsController < ApplicationController
       manual_repository: repository,
       manual_id: manual_id,
       attributes: update_manual_params,
-      listeners: ManualObserversRegistry.new.update,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -111,7 +109,6 @@ class ManualsController < ApplicationController
       manual_repository: repository,
       manual_id: manual_id,
       attributes: publication_date_manual_params,
-      listeners: ManualObserversRegistry.new.update_original_publication_date,
     )
     manual = service.call
     manual = manual_form(manual)

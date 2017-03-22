@@ -5,14 +5,13 @@ require "ostruct"
 RSpec.describe PublishManualService do
   let(:manual_id) { double(:manual_id) }
   let(:manual_repository) { double(:manual_repository) }
-  let(:listeners) { [] }
   let(:manual) { double(:manual, id: manual_id, version_number: 3) }
+  let(:registry) { double(:registry, publication: []) }
 
   subject {
     PublishManualService.new(
       manual_id: manual_id,
       manual_repository: manual_repository,
-      listeners: listeners,
       version_number: version_number,
     )
   }
@@ -22,6 +21,8 @@ RSpec.describe PublishManualService do
     allow(manual_repository).to receive(:store)
     allow(manual).to receive(:publish)
     allow(manual).to receive(:update)
+    allow(manual).to receive(:documents)
+    allow(ManualObserversRegistry).to receive(:new).and_return(registry)
   end
 
   context "when the version number is up to date" do
