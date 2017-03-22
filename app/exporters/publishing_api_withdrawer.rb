@@ -1,17 +1,15 @@
 class PublishingAPIWithdrawer
-  def initialize(publishing_api:, entity:)
-    @publishing_api = publishing_api
+  def initialize(entity:)
     @entity = entity
   end
 
   def call
-    publishing_api.unpublish(content_id, exportable_attributes)
+    Services.publishing_api_v2.unpublish(content_id, exportable_attributes)
   end
 
 private
 
   attr_reader(
-    :publishing_api,
     :entity,
   )
 
