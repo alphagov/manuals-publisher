@@ -9,11 +9,11 @@ class ManualWithDocuments < SimpleDelegator
     )
   end
 
-  def initialize(document_builder, manual, documents:, removed_documents: [])
+  def initialize(section_builder, manual, documents:, removed_documents: [])
     @manual = manual
     @documents = documents
     @removed_documents = removed_documents
-    @document_builder = document_builder
+    @section_builder = section_builder
     super(manual)
   end
 
@@ -26,7 +26,7 @@ class ManualWithDocuments < SimpleDelegator
   end
 
   def build_document(attributes)
-    document = document_builder.call(
+    document = section_builder.call(
       self,
       attributes
     )
@@ -67,7 +67,7 @@ class ManualWithDocuments < SimpleDelegator
 
 private
 
-  attr_reader :document_builder, :manual
+  attr_reader :section_builder, :manual
 
   def add_document(document)
     @documents << document
