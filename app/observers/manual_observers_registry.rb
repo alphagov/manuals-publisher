@@ -8,6 +8,7 @@ require 'publication_logger'
 require 'publishing_api_draft_manual_with_sections_exporter'
 require 'publishing_api_manual_with_sections_publisher'
 require 'rummager_manual_with_sections_exporter'
+require 'rummager_manual_with_sections_withdrawer'
 
 class ManualObserversRegistry
   def publication
@@ -52,30 +53,11 @@ class ManualObserversRegistry
   def withdrawal
     [
       publishing_api_withdrawer,
-      rummager_withdrawer,
+      RummagerManualWithSectionsWithdrawer.new,
     ]
   end
 
 private
-
-  def rummager_withdrawer
-    ->(manual, _ = nil) {
-      indexer = RummagerIndexer.new
-
-      indexer.delete(
-        ManualIndexableFormatter.new(manual)
-      )
-
-      manual.sections.each do |section|
-        indexer.delete(
-          SectionIndexableFormatter.new(
-            MarkdownAttachmentProcessor.new(section),
-            manual,
-          )
-        )
-      end
-    }
-  end
 
   def publishing_api_withdrawer
     ->(manual, _ = nil) {
