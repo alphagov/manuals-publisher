@@ -114,7 +114,7 @@ describe ManualWithDocuments do
         document_builder,
         manual,
         sections: documents,
-        removed_documents: removed_documents,
+        removed_sections: removed_documents,
       )
     }
 

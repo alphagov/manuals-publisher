@@ -70,7 +70,7 @@ describe DocumentAssociationMarshaller do
       marshaller.load(entity, record)
 
       expect(decorator).to have_received(:call).
-        with(entity, sections: documents, removed_documents: removed_documents)
+        with(entity, sections: documents, removed_sections: removed_documents)
     end
 
     it "returns the decorated entity" do

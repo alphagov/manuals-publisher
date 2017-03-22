@@ -9,10 +9,10 @@ class ManualWithDocuments < SimpleDelegator
     )
   end
 
-  def initialize(section_builder, manual, sections:, removed_documents: [])
+  def initialize(section_builder, manual, sections:, removed_sections: [])
     @manual = manual
     @documents = sections
-    @removed_documents = removed_documents
+    @removed_documents = removed_sections
     @section_builder = section_builder
     super(manual)
   end
