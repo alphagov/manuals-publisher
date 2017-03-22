@@ -5,8 +5,7 @@ class RepublishManualService
       PublishingApiManualWithSectionsPublisher.new,
       RummagerManualWithSectionsExporter.new,
     ]
-    registry = ManualObserversRegistry.new
-    @draft_listeners = registry.update
+    @draft_listeners = [PublishingApiDraftManualWithSectionsExporter.new]
     @manual_id = manual_id
   end
 

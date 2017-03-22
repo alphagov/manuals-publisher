@@ -6,12 +6,11 @@ require 'rummager_manual_with_sections_withdrawer'
 require 'publishing_api_manual_with_sections_withdrawer'
 
 class ManualObserversRegistry
-  def update
+  def update_original_publication_date
     [
       PublishingApiDraftManualWithSectionsExporter.new
     ]
   end
-  alias_method :update_original_publication_date, :update
 
   def creation
     [

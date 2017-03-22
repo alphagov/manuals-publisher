@@ -3,7 +3,7 @@ class UpdateManualService
     @manual_repository = manual_repository
     @manual_id = manual_id
     @attributes = attributes
-    @listeners = ManualObserversRegistry.new.update
+    @listeners = [PublishingApiDraftManualWithSectionsExporter.new]
   end
 
   def call

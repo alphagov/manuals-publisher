@@ -4,9 +4,6 @@ require "versioned_manual_repository"
 
 RSpec.describe RepublishManualService do
   let(:manual_id) { double(:manual_id) }
-  let(:draft_listener) { double(:listener) }
-  let(:draft_listeners) { [draft_listener] }
-  let(:registry) { double(:registry, update: draft_listeners) }
   let(:published_manual_version) { double(:manual) }
   let(:draft_manual_version) { double(:manual) }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
@@ -20,8 +17,6 @@ RSpec.describe RepublishManualService do
   }
 
   before do
-    allow(draft_listener).to receive(:call)
-    allow(ManualObserversRegistry).to receive(:new).and_return(registry)
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { publishing_api_publisher }
     allow(RummagerManualWithSectionsExporter).to receive(:new) { rummager_exporter }
@@ -57,7 +52,7 @@ RSpec.describe RepublishManualService do
 
     it "tells the draft listeners nothing" do
       subject.call
-      expect(draft_listener).not_to have_received(:call)
+      expect(publishing_api_draft_exporter).not_to have_received(:call).with(draft_manual_version, :republish)
     end
   end
 
@@ -73,14 +68,14 @@ RSpec.describe RepublishManualService do
 
     it "tells the published listeners nothing" do
       subject.call
-      expect(publishing_api_draft_exporter).not_to have_received(:call)
       expect(publishing_api_publisher).not_to have_received(:call)
+      expect(publishing_api_draft_exporter).not_to have_received(:call).with(published_manual_version, :republish)
       expect(rummager_exporter).not_to have_received(:call)
     end
 
     it "tells the draft listeners to republish the draft version of the manual" do
       subject.call
-      expect(draft_listener).to have_received(:call).with(draft_manual_version, :republish)
+      expect(publishing_api_draft_exporter).to have_received(:call).with(draft_manual_version, :republish)
     end
   end
 
@@ -111,7 +106,7 @@ RSpec.describe RepublishManualService do
 
     it "tells the draft listeners to republish the draft version of the manual" do
       subject.call
-      expect(draft_listener).to have_received(:call).with(draft_manual_version, :republish)
+      expect(publishing_api_draft_exporter).to have_received(:call).with(draft_manual_version, :republish)
     end
   end
 
@@ -133,7 +128,6 @@ RSpec.describe RepublishManualService do
       expect(publishing_api_draft_exporter).not_to have_received(:call)
       expect(publishing_api_publisher).not_to have_received(:call)
       expect(rummager_exporter).not_to have_received(:call)
-      expect(draft_listener).not_to have_received(:call)
     end
   end
 
@@ -152,7 +146,6 @@ RSpec.describe RepublishManualService do
       expect(publishing_api_draft_exporter).not_to have_received(:call)
       expect(publishing_api_publisher).not_to have_received(:call)
       expect(rummager_exporter).not_to have_received(:call)
-      expect(draft_listener).not_to have_received(:call)
     end
   end
 end
