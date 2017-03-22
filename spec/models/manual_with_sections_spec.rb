@@ -3,7 +3,7 @@ require "spec_helper"
 require "manual_with_sections"
 
 describe ManualWithSections do
-  subject(:manual_with_documents) {
+  subject(:manual_with_sections) {
     ManualWithSections.new(document_builder, manual, sections: documents)
   }
 
@@ -21,7 +21,7 @@ describe ManualWithSections do
 
   describe "#publish" do
     it "notifies the underlying manual" do
-      manual_with_documents.publish
+      manual_with_sections.publish
 
       expect(manual).to have_received(:publish)
     end
@@ -32,7 +32,7 @@ describe ManualWithSections do
       end
 
       it "passes a block which publishes" do
-        manual_with_documents.publish
+        manual_with_sections.publish
 
         expect(document).to have_received(:publish!)
       end
@@ -40,7 +40,7 @@ describe ManualWithSections do
 
     context "when the manual publish does not succeed" do
       it "does not publish the documents" do
-        manual_with_documents.publish
+        manual_with_sections.publish
 
         expect(document).not_to have_received(:publish!)
       end
@@ -63,13 +63,13 @@ describe ManualWithSections do
     let(:document_order) { %w(gamma alpha beta) }
 
     it "reorders the documents to match the given order" do
-      manual_with_documents.reorder_sections(%w(
+      manual_with_sections.reorder_sections(%w(
         gamma
         alpha
         beta
       ))
 
-      expect(manual_with_documents.sections.to_a).to eq([
+      expect(manual_with_sections.sections.to_a).to eq([
         gamma_document,
         alpha_document,
         beta_document,
@@ -78,7 +78,7 @@ describe ManualWithSections do
 
     it "raises an error if document_order doesn't contain all IDs" do
       expect {
-        manual_with_documents.reorder_sections(%w(
+        manual_with_sections.reorder_sections(%w(
           alpha
           beta
         ))
@@ -87,7 +87,7 @@ describe ManualWithSections do
 
     it "raises an error if document_order contains non-existent IDs" do
       expect {
-        manual_with_documents.reorder_sections(%w(
+        manual_with_sections.reorder_sections(%w(
           alpha
           beta
           gamma
@@ -98,7 +98,7 @@ describe ManualWithSections do
 
     it "raises an error if document_order contains duplicate IDs" do
       expect {
-        manual_with_documents.reorder_sections(%w(
+        manual_with_sections.reorder_sections(%w(
           alpha
           beta
           gamma
@@ -109,7 +109,7 @@ describe ManualWithSections do
   end
 
   describe "#remove_section" do
-    subject(:manual_with_documents) {
+    subject(:manual_with_sections) {
       ManualWithSections.new(
         document_builder,
         manual,
@@ -131,15 +131,15 @@ describe ManualWithSections do
     let(:document_c) { double(:document, id: "c") }
 
     it "removes the document from #documents" do
-      manual_with_documents.remove_section(document_a.id)
+      manual_with_sections.remove_section(document_a.id)
 
-      expect(manual_with_documents.sections.to_a).to eq([document_b])
+      expect(manual_with_sections.sections.to_a).to eq([document_b])
     end
 
     it "adds the document to #removed_sections" do
-      manual_with_documents.remove_section(document_a.id)
+      manual_with_sections.remove_section(document_a.id)
 
-      expect(manual_with_documents.removed_sections.to_a).to eq(
+      expect(manual_with_sections.removed_sections.to_a).to eq(
         [
           document_c,
           document_a,
