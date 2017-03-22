@@ -6,21 +6,6 @@ require 'rummager_manual_with_sections_withdrawer'
 require 'publishing_api_manual_with_sections_withdrawer'
 
 class ManualObserversRegistry
-  def publication
-    # The order here is important. For example content exporting
-    # should happen before publishing to search.
-    #
-    # A draft export step follows publication logging as this ensures that
-    # change notes that relate to the current draft are pushed straight to the
-    # publishing API rather than on the subsequent draft-publish cycle.
-    [
-      PublicationLogger.new,
-      PublishingApiDraftManualWithSectionsExporter.new,
-      PublishingApiManualWithSectionsPublisher.new,
-      RummagerManualWithSectionsExporter.new,
-    ]
-  end
-
   def republication
     # Note that these should probably always be called with the :republish
     # action as 2nd argument, but we have to leave that up to the calling

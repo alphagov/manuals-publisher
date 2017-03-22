@@ -2,7 +2,12 @@ class PublishManualService
   def initialize(manual_id:, manual_repository:, version_number:)
     @manual_id = manual_id
     @manual_repository = manual_repository
-    @listeners = ManualObserversRegistry.new.publication
+    @listeners = [
+      PublicationLogger.new,
+      PublishingApiDraftManualWithSectionsExporter.new,
+      PublishingApiManualWithSectionsPublisher.new,
+      RummagerManualWithSectionsExporter.new,
+    ]
     @version_number = version_number
   end
 
