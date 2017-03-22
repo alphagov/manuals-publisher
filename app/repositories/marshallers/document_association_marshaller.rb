@@ -19,7 +19,7 @@ class DocumentAssociationMarshaller
       end
     }
 
-    decorator.call(manual, documents: docs, removed_documents: removed_docs)
+    decorator.call(manual, sections: docs, removed_documents: removed_docs)
   end
 
   def dump(manual, record)

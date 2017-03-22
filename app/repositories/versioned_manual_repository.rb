@@ -24,7 +24,7 @@ private
 
     build_manual_for(manual_record, manual_record.latest_edition) do
       {
-        documents: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
+        sections: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
         removed_documents: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
       }
     end
@@ -36,7 +36,7 @@ private
     if manual_record.latest_edition.state == "published"
       build_manual_for(manual_record, manual_record.latest_edition) do
         {
-          documents: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
+          sections: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
           removed_documents: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
         }
       end
@@ -45,7 +45,7 @@ private
       if previous_edition.state == "published"
         build_manual_for(manual_record, previous_edition) do
           {
-            documents: get_published_version_of_documents(previous_edition.document_ids),
+            sections: get_published_version_of_documents(previous_edition.document_ids),
             removed_documents: get_latest_version_of_documents(previous_edition.removed_document_ids)
           }
         end

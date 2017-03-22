@@ -4,7 +4,7 @@ require "manual_with_documents"
 
 describe ManualWithDocuments do
   subject(:manual_with_documents) {
-    ManualWithDocuments.new(document_builder, manual, documents: documents)
+    ManualWithDocuments.new(document_builder, manual, sections: documents)
   }
 
   let(:manual) { double(:manual, publish: nil) }
@@ -113,7 +113,7 @@ describe ManualWithDocuments do
       ManualWithDocuments.new(
         document_builder,
         manual,
-        documents: documents,
+        sections: documents,
         removed_documents: removed_documents,
       )
     }
