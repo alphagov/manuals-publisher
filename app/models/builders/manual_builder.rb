@@ -7,7 +7,7 @@ class ManualBuilder
       factory: ->(attrs) {
         ManualValidator.new(
           NullValidator.new(
-            ManualWithDocuments.create(attrs),
+            ManualWithSections.create(attrs),
           ),
         )
       }

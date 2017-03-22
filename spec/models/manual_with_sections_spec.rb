@@ -1,10 +1,10 @@
 require "spec_helper"
 
-require "manual_with_documents"
+require "manual_with_sections"
 
-describe ManualWithDocuments do
+describe ManualWithSections do
   subject(:manual_with_documents) {
-    ManualWithDocuments.new(document_builder, manual, sections: documents)
+    ManualWithSections.new(document_builder, manual, sections: documents)
   }
 
   let(:manual) { double(:manual, publish: nil) }
@@ -110,7 +110,7 @@ describe ManualWithDocuments do
 
   describe "#remove_section" do
     subject(:manual_with_documents) {
-      ManualWithDocuments.new(
+      ManualWithSections.new(
         document_builder,
         manual,
         sections: documents,

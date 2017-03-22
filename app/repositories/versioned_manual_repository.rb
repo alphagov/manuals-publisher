@@ -80,7 +80,7 @@ private
 
     document_attrs = yield
 
-    ManualWithDocuments.new(
+    ManualWithSections.new(
       ->(_manual, _attrs) { raise RuntimeError, "read only manaul" },
       base_manual,
       document_attrs

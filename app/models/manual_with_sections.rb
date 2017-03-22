@@ -1,8 +1,8 @@
 require "delegate"
 
-class ManualWithDocuments < SimpleDelegator
+class ManualWithSections < SimpleDelegator
   def self.create(attrs)
-    ManualWithDocuments.new(
+    ManualWithSections.new(
       SectionBuilder.new,
       Manual.new(attrs),
       sections: [],
