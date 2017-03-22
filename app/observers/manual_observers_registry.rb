@@ -6,17 +6,6 @@ require 'rummager_manual_with_sections_withdrawer'
 require 'publishing_api_manual_with_sections_withdrawer'
 
 class ManualObserversRegistry
-  def republication
-    # Note that these should probably always be called with the :republish
-    # action as 2nd argument, but we have to leave that up to the calling
-    # service, rather than being able to encode it explicitly here.
-    [
-      PublishingApiDraftManualWithSectionsExporter.new,
-      PublishingApiManualWithSectionsPublisher.new,
-      RummagerManualWithSectionsExporter.new,
-    ]
-  end
-
   def update
     [
       PublishingApiDraftManualWithSectionsExporter.new

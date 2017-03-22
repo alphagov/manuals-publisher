@@ -1,7 +1,11 @@
 class RepublishManualService
   def initialize(manual_id:)
+    @published_listeners = [
+      PublishingApiDraftManualWithSectionsExporter.new,
+      PublishingApiManualWithSectionsPublisher.new,
+      RummagerManualWithSectionsExporter.new,
+    ]
     registry = ManualObserversRegistry.new
-    @published_listeners = registry.republication
     @draft_listeners = registry.update
     @manual_id = manual_id
   end
