@@ -1,9 +1,3 @@
-require "manual_publishing_api_exporter"
-require "section_publishing_api_exporter"
-require "publishing_api_withdrawer"
-require "formatters/manual_indexable_formatter"
-require "formatters/section_indexable_formatter"
-require "services"
 require 'publication_logger'
 require 'publishing_api_draft_manual_with_sections_exporter'
 require 'publishing_api_manual_with_sections_publisher'
