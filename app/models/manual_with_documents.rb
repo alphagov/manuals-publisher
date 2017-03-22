@@ -53,8 +53,8 @@ class ManualWithDocuments < SimpleDelegator
     @sections.sort_by! { |doc| section_order.index(doc.id) }
   end
 
-  def remove_document(document_id)
-    found_document = @sections.find { |d| d.id == document_id }
+  def remove_document(section_id)
+    found_document = @sections.find { |d| d.id == section_id }
 
     return if found_document.nil?
 
