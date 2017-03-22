@@ -11,7 +11,7 @@ RSpec.describe "Publishing manuals", type: :feature do
   let(:manual_fields) { { title: "Example manual title", summary: "A summary" } }
 
   def manual_repository
-    RepositoryRegistry.create.manual_repository
+    RepositoryRegistry.new.manual_repository
   end
 
   describe "publishing a manual with major and minor updates" do

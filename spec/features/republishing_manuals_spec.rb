@@ -53,7 +53,7 @@ RSpec.describe "Republishing manuals", type: :feature do
   end
 
   def manual_repository
-    RepositoryRegistry.create.manual_repository
+    RepositoryRegistry.new.manual_repository
   end
 
   describe "republishing a published manual with sections" do

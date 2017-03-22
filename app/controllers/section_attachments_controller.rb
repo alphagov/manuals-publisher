@@ -73,11 +73,11 @@ private
   end
 
   def gds_editor_repository
-    RepositoryRegistry.create.manual_repository
+    RepositoryRegistry.new.manual_repository
   end
 
   def organisational_repository
-    manual_repository_factory = RepositoryRegistry.create
+    manual_repository_factory = RepositoryRegistry.new
       .organisation_scoped_manual_repository_factory
     manual_repository_factory.call(current_organisation_slug)
   end

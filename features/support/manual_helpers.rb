@@ -5,7 +5,7 @@ require "manual_withdrawer"
 
 module ManualHelpers
   def manual_repository
-    RepositoryRegistry.create.manual_repository
+    RepositoryRegistry.new.manual_repository
   end
 
   def create_manual(fields, save: true)
@@ -19,7 +19,7 @@ module ManualHelpers
 
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_repository_factory = RepositoryRegistry.create
+    manual_repository_factory = RepositoryRegistry.new
       .organisation_scoped_manual_repository_factory
     repository = manual_repository_factory.call(organisation_slug)
 
@@ -45,7 +45,7 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    manual_repository_factory = RepositoryRegistry.create.
+    manual_repository_factory = RepositoryRegistry.new.
       organisation_scoped_manual_repository_factory
     organisational_manual_repository = manual_repository_factory.call(organisation_slug)
 
@@ -76,7 +76,7 @@ module ManualHelpers
 
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_repository_factory = RepositoryRegistry.create
+    manual_repository_factory = RepositoryRegistry.new
       .organisation_scoped_manual_repository_factory
     repository = manual_repository_factory.call(organisation_slug)
 
@@ -102,7 +102,7 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
-    manual_repository_factory = RepositoryRegistry.create.
+    manual_repository_factory = RepositoryRegistry.new.
       organisation_scoped_manual_repository_factory
     organisational_manual_repository = manual_repository_factory.call(organisation_slug)
 
@@ -164,7 +164,7 @@ module ManualHelpers
     stub_manual_publication_observers(organisation_slug)
 
     service = PublishManualService.new(
-      manual_repository: RepositoryRegistry.create.manual_repository,
+      manual_repository: RepositoryRegistry.new.manual_repository,
       manual_id: manual.id,
       version_number: manual.version_number,
     )
@@ -256,7 +256,7 @@ module ManualHelpers
   end
 
   def section_repository(manual)
-    RepositoryRegistry.create.section_repository_factory.call(manual)
+    RepositoryRegistry.new.section_repository_factory.call(manual)
   end
 
   def check_section_is_archived_in_db(manual, document_id)
@@ -540,7 +540,7 @@ module ManualHelpers
   end
 
   def most_recently_created_manual
-    RepositoryRegistry.create.manual_repository.all.first
+    RepositoryRegistry.new.manual_repository.all.first
   end
 
   def document_fields(document)
