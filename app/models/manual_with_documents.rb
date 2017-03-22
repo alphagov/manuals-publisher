@@ -69,7 +69,7 @@ private
 
   attr_reader :section_builder, :manual
 
-  def add_document(document)
-    @sections << document
+  def add_document(section)
+    @sections << section
   end
 end
