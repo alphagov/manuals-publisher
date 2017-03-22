@@ -108,7 +108,7 @@ describe ManualWithDocuments do
     end
   end
 
-  describe "#remove_document" do
+  describe "#remove_section" do
     subject(:manual_with_documents) {
       ManualWithDocuments.new(
         document_builder,
@@ -131,13 +131,13 @@ describe ManualWithDocuments do
     let(:document_c) { double(:document, id: "c") }
 
     it "removes the document from #documents" do
-      manual_with_documents.remove_document(document_a.id)
+      manual_with_documents.remove_section(document_a.id)
 
       expect(manual_with_documents.documents.to_a).to eq([document_b])
     end
 
     it "adds the document to #removed_documents" do
-      manual_with_documents.remove_document(document_a.id)
+      manual_with_documents.remove_section(document_a.id)
 
       expect(manual_with_documents.removed_documents.to_a).to eq(
         [

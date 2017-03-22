@@ -10,7 +10,7 @@ RSpec.describe RemoveSectionService do
       documents: [
         document,
       ],
-      remove_document: nil,
+      remove_section: nil,
     )
   }
 
@@ -53,7 +53,7 @@ RSpec.describe RemoveSectionService do
       double(
         draft: nil,
         documents: [],
-        remove_document: nil,
+        remove_section: nil,
       )
     }
     let(:change_note_params) do
@@ -110,7 +110,7 @@ RSpec.describe RemoveSectionService do
     end
 
     it "does not removes the section" do
-      expect(manual).not_to have_received(:remove_document).with(document.id)
+      expect(manual).not_to have_received(:remove_section).with(document.id)
     end
 
     it "does not mark the manual as a draft" do
@@ -157,7 +157,7 @@ RSpec.describe RemoveSectionService do
       end
 
       it "removes the section" do
-        expect(manual).to have_received(:remove_document).with(document.id)
+        expect(manual).to have_received(:remove_section).with(document.id)
       end
 
       it "marks the manual as a draft" do
@@ -196,7 +196,7 @@ RSpec.describe RemoveSectionService do
       end
 
       it "removes the section" do
-        expect(manual).to have_received(:remove_document).with(document_id)
+        expect(manual).to have_received(:remove_section).with(document_id)
       end
 
       it "marks the manual as a draft" do
