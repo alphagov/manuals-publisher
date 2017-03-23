@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require "validators/change_note_validator"
-
 RSpec.describe ChangeNoteValidator do
   subject(:validatable) {
     ChangeNoteValidator.new(entity)

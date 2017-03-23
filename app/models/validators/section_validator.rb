@@ -1,5 +1,4 @@
 require "delegate"
-require "validators/safe_html_validator"
 
 class SectionValidator < SimpleDelegator
   include ActiveModel::Validations
