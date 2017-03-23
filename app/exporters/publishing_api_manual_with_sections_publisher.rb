@@ -6,24 +6,24 @@ class PublishingApiManualWithSectionsPublisher
       update_type: update_type,
     ).call
 
-    manual.sections.each do |document|
-      next if !document.needs_exporting? && action != :republish
+    manual.sections.each do |section|
+      next if !section.needs_exporting? && action != :republish
 
       PublishingAPIPublisher.new(
-        entity: document,
+        entity: section,
         update_type: update_type,
       ).call
 
-      document.mark_as_exported! if action != :republish
+      section.mark_as_exported! if action != :republish
     end
 
-    manual.removed_sections.each do |document|
-      next if document.withdrawn? && action != :republish
+    manual.removed_sections.each do |section|
+      next if section.withdrawn? && action != :republish
       begin
-        publishing_api_v2.unpublish(document.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+        publishing_api_v2.unpublish(section.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
       rescue GdsApi::HTTPNotFound # rubocop:disable Lint/HandleExceptions
       end
-      document.withdraw_and_mark_as_exported! if action != :republish
+      section.withdraw_and_mark_as_exported! if action != :republish
     end
   end
 
