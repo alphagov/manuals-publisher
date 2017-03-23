@@ -8,7 +8,7 @@ describe SectionPublishingAPILinksExporter do
     SectionPublishingAPILinksExporter.new(
       organisation,
       manual,
-      document
+      section
     )
   }
 
@@ -33,9 +33,9 @@ describe SectionPublishingAPILinksExporter do
     )
   }
 
-  let(:document) {
+  let(:section) {
     double(
-      :document,
+      :section,
       id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       minor_update?: true,
       attributes: { body: "##Some heading\nmanual section body" },
@@ -47,11 +47,11 @@ describe SectionPublishingAPILinksExporter do
     allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
   }
 
-  it "exports links for the document" do
+  it "exports links for the section" do
     subject.call
 
     expect(publishing_api).to have_received(:patch_links).with(
-      document.id,
+      section.id,
       hash_including(
         links: {
           organisations: [organisation["details"]["content_id"]],
