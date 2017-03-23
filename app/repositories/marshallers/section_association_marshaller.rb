@@ -15,7 +15,7 @@ class SectionAssociationMarshaller
       begin
         section_repository.fetch(section_id)
       rescue KeyError
-        raise RemovedDocumentIdNotFoundError, "No section found for ID #{section_id}"
+        raise RemovedSectionIdNotFoundError, "No section found for ID #{section_id}"
       end
     }
 
@@ -43,5 +43,5 @@ private
 
   attr_reader :section_repository_factory, :decorator
 
-  class RemovedDocumentIdNotFoundError < StandardError; end
+  class RemovedSectionIdNotFoundError < StandardError; end
 end
