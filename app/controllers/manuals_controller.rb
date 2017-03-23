@@ -123,7 +123,6 @@ class ManualsController < ApplicationController
 
   def publish
     service = QueuePublishManualService.new(
-      PublishManualWorker,
       repository,
       manual_id,
     )
