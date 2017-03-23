@@ -1,6 +1,3 @@
-require 'validators/change_note_validator'
-require 'validators/section_validator'
-
 class SectionFactory
   def initialize(manual)
     @manual = manual

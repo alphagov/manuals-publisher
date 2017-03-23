@@ -26,5 +26,10 @@ module ManualsPublisher
     # Enable the asset pipeline
     config.assets.enabled = true
     config.assets.initialize_on_precompile = true
+
+    # These paths are non-standard (they are subdirectories of
+    # app/models) so they need to be added to the autoload_paths
+    config.autoload_paths << "#{Rails.root}/app/models/builders"
+    config.autoload_paths << "#{Rails.root}/app/models/validators"
   end
 end
