@@ -6,7 +6,7 @@ class NewSectionAttachmentService
   end
 
   def call
-    [manual, document, attachment]
+    [manual, section, attachment]
   end
 
 private
@@ -17,8 +17,8 @@ private
     builder.call(initial_params)
   end
 
-  def document
-    @document ||= manual.sections.find { |d| d.id == document_id }
+  def section
+    @section ||= manual.sections.find { |s| s.id == section_id }
   end
 
   def manual
@@ -33,7 +33,7 @@ private
     context.params.fetch("manual_id")
   end
 
-  def document_id
+  def section_id
     context.params.fetch("section_id")
   end
 end
