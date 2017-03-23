@@ -1,7 +1,6 @@
 class WithdrawManualService
-  def initialize(manual_repository:, listeners: [], manual_id:)
+  def initialize(manual_repository:, manual_id:)
     @manual_repository = manual_repository
-    @listeners = listeners
     @manual_id = manual_id
   end
 
@@ -10,7 +9,8 @@ class WithdrawManualService
 
     if manual.withdrawn?
       persist
-      notify_listeners
+      withdraw_via_publishing_api
+      withdraw_from_rummager
     end
 
     manual
@@ -18,7 +18,7 @@ class WithdrawManualService
 
 private
 
-  attr_reader :manual_repository, :listeners, :manual_id
+  attr_reader :manual_repository, :manual_id
 
   def withdraw
     manual.withdraw
@@ -28,8 +28,12 @@ private
     manual_repository.store(manual)
   end
 
-  def notify_listeners
-    listeners.each { |l| l.call(manual) }
+  def withdraw_via_publishing_api
+    PublishingApiManualWithSectionsWithdrawer.new.call(manual)
+  end
+
+  def withdraw_from_rummager
+    RummagerManualWithSectionsWithdrawer.new.call(manual)
   end
 
   def manual

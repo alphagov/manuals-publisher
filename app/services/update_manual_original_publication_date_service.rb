@@ -3,7 +3,6 @@ class UpdateManualOriginalPublicationDateService
     @manual_repository = manual_repository
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
-    @listeners = ManualObserversRegistry.new.update_original_publication_date
   end
 
   def call
@@ -12,7 +11,7 @@ class UpdateManualOriginalPublicationDateService
     update_documents
     persist
 
-    notify_listeners
+    export_draft_to_publishing_api
 
     manual
   end
@@ -23,7 +22,6 @@ private
     :manual_id,
     :manual_repository,
     :attributes,
-    :listeners,
   )
 
   def update
@@ -46,10 +44,8 @@ private
     end
   end
 
-  def notify_listeners
-    listeners.each do |listener|
-      listener.call(manual)
-    end
+  def export_draft_to_publishing_api
+    PublishingApiDraftManualWithSectionsExporter.new.call(manual)
   end
 
   def fetch_manual

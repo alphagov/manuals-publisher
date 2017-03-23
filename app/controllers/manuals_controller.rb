@@ -6,7 +6,6 @@ require "queue_publish_manual_service"
 require "publish_manual_worker"
 require "preview_manual_service"
 require "builders/manual_builder"
-require "manual_observers_registry"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]

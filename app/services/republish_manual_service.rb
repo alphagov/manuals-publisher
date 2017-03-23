@@ -1,32 +1,52 @@
 class RepublishManualService
   def initialize(manual_id:)
-    registry = ManualObserversRegistry.new
-    @published_listeners = registry.republication
-    @draft_listeners = registry.update
     @manual_id = manual_id
   end
 
   def call
-    notify_published_listeners if manual_versions[:published].present?
-    notify_draft_listeners if manual_versions[:draft].present?
+    if published_manual_version.present?
+      export_published_manual_via_publishing_api
+      republish_published_manual_to_publishing_api
+      republish_published_manual_to_rummager
+    end
+
+    if draft_manual_version.present?
+      export_draft_manual_via_publishing_api
+    end
 
     manual_versions
   end
 
 private
 
-  attr_reader :published_listeners, :draft_listeners, :manual_id
+  attr_reader :manual_id
+
+  def published_manual_version
+    manual_versions[:published]
+  end
+
+  def draft_manual_version
+    manual_versions[:draft]
+  end
 
   def manual_repository
     VersionedManualRepository
   end
 
-  def notify_published_listeners
-    published_listeners.each { |l| l.call(manual_versions[:published], :republish) }
+  def export_published_manual_via_publishing_api
+    PublishingApiDraftManualWithSectionsExporter.new.call(published_manual_version, :republish)
   end
 
-  def notify_draft_listeners
-    draft_listeners.each { |l| l.call(manual_versions[:draft], :republish) }
+  def republish_published_manual_to_publishing_api
+    PublishingApiManualWithSectionsPublisher.new.call(published_manual_version, :republish)
+  end
+
+  def republish_published_manual_to_rummager
+    RummagerManualWithSectionsExporter.new.call(published_manual_version, :republish)
+  end
+
+  def export_draft_manual_via_publishing_api
+    PublishingApiDraftManualWithSectionsExporter.new.call(draft_manual_version, :republish)
   end
 
   def manual_versions
