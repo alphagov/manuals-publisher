@@ -4,9 +4,9 @@ class PublishingApiManualWithSectionsWithdrawer
       entity: manual,
     ).call
 
-    manual.sections.each do |document|
+    manual.sections.each do |section|
       PublishingAPIWithdrawer.new(
-        entity: document,
+        entity: section,
       ).call
     end
   end
