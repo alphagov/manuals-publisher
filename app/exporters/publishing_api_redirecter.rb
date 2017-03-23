@@ -8,7 +8,7 @@ class PublishingAPIRedirecter
   end
 
   def call
-    raise 'GdsApi::PublishingApi#put_content_item was removed in gds-api-adapters v38.0.0'
+    publishing_api.put_content(content_id, exportable_attributes)
   end
 
 private
@@ -25,9 +25,9 @@ private
 
   def exportable_attributes
     {
-      format: "redirect",
+      document_type: 'redirect',
+      schema_name: 'redirect',
       publishing_app: "manuals-publisher",
-      update_type: "major",
       base_path: base_path,
       redirects: [
         {
@@ -36,7 +36,6 @@ private
           destination: redirect_to_location
         }
       ],
-      content_id: content_id,
     }
   end
 

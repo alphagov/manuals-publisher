@@ -1,5 +1,4 @@
 require "gds_api/content_store"
-require "manual_service_registry"
 require "services"
 require "update_section_service"
 
@@ -45,7 +44,7 @@ private
 
   def validate_current_section_in_content_store
     raise Error.new("Manual Section does not exist in content store") if current_section_in_content_store.nil?
-    raise Error.new("Manual Section already withdrawn") if current_section_in_content_store.format == "gone"
+    raise Error.new("Manual Section already withdrawn") if current_section_in_content_store['format'] == "gone"
   end
 
   def validate_new_section
@@ -61,11 +60,12 @@ private
   def validate_new_section_in_content_store
     section = section_in_content_store(full_new_section_slug)
     raise Error.new("Manual Section already exists in content store") if section
+  rescue GdsApi::ContentStore::ItemNotFound # rubocop:disable Lint/HandleExceptions
   end
 
   def redirect_section
     PublishingAPIRedirecter.new(
-      publishing_api: Services.publishing_api,
+      publishing_api: Services.publishing_api_v2,
       entity: current_section_edition,
       redirect_to_location: "/#{full_new_section_slug}"
     ).call
@@ -90,7 +90,7 @@ private
   def context_for_section_edition_update
     params_hash = {
       "id" => current_section_edition.document_id,
-      "document" => {
+      "section" => {
         title: current_section_edition.title,
         summary: current_section_edition.summary,
         body: current_section_edition.body,
@@ -107,10 +107,8 @@ private
   end
 
   def publish_manual
-    observers = ManualObserversRegistry.new
     service = PublishManualService.new(
       manual_repository: RepositoryRegistry.new.manual_repository,
-      listeners: observers.publication,
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
     )

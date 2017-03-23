@@ -1,4 +1,5 @@
 require "gds_api/asset_manager"
+require "gds_api/content_store"
 require "gds_api/organisations"
 require "gds_api/publishing_api"
 require "gds_api/publishing_api_v2"
