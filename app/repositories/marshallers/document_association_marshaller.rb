@@ -5,32 +5,32 @@ class DocumentAssociationMarshaller
   end
 
   def load(manual, record)
-    document_repository = section_repository_factory.call(manual)
+    section_repository = section_repository_factory.call(manual)
 
-    docs = Array(record.document_ids).map { |doc_id|
-      document_repository.fetch(doc_id)
+    sections = Array(record.document_ids).map { |section_id|
+      section_repository.fetch(section_id)
     }
 
-    removed_docs = Array(record.removed_document_ids).map { |doc_id|
+    removed_sections = Array(record.removed_document_ids).map { |section_id|
       begin
-        document_repository.fetch(doc_id)
+        section_repository.fetch(section_id)
       rescue KeyError
-        raise RemovedDocumentIdNotFoundError, "No document found for ID #{doc_id}"
+        raise RemovedDocumentIdNotFoundError, "No section found for ID #{section_id}"
       end
     }
 
-    decorator.call(manual, sections: docs, removed_sections: removed_docs)
+    decorator.call(manual, sections: sections, removed_sections: removed_sections)
   end
 
   def dump(manual, record)
-    document_repository = section_repository_factory.call(manual)
+    section_repository = section_repository_factory.call(manual)
 
-    manual.sections.each do |document|
-      document_repository.store(document)
+    manual.sections.each do |section|
+      section_repository.store(section)
     end
 
-    manual.removed_sections.each do |document|
-      document_repository.store(document)
+    manual.removed_sections.each do |section|
+      section_repository.store(section)
     end
 
     record.document_ids = manual.sections.map(&:id)
