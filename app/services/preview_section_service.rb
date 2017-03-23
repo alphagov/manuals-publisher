@@ -40,7 +40,7 @@ private
   end
 
   def section_params
-    context.params.fetch("document")
+    context.params.fetch("section")
   end
 
   def section_id
