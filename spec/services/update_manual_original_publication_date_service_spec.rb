@@ -4,10 +4,10 @@ require "update_manual_original_publication_date_service"
 RSpec.describe UpdateManualOriginalPublicationDateService do
   let(:manual_id) { double(:manual_id) }
   let(:manual_repository) { double(:manual_repository) }
-  let(:manual) { double(:manual, id: manual_id, sections: documents) }
-  let(:document_1) { double(:document, update: nil) }
-  let(:document_2) { double(:document, update: nil) }
-  let(:documents) { [document_1, document_2] }
+  let(:manual) { double(:manual, id: manual_id, sections: sections) }
+  let(:section_1) { double(:section, update: nil) }
+  let(:section_2) { double(:section, update: nil) }
+  let(:sections) { [section_1, section_2] }
   let(:originally_published_at) { 10.years.ago }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
 
@@ -41,11 +41,11 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
       )
   end
 
-  it "forces all the manuals documents to require an export with an empty update message" do
+  it "forces all the manuals sections to require an export with an empty update message" do
     subject.call
 
-    expect(document_1).to have_received(:update).with({})
-    expect(document_2).to have_received(:update).with({})
+    expect(section_1).to have_received(:update).with({})
+    expect(section_2).to have_received(:update).with({})
   end
 
   it "persists the manual after it has been updated" do
