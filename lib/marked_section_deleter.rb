@@ -5,8 +5,10 @@ class MarkedSectionDeleter
     @logger = logger
   end
 
-  def execute
-    @logger.puts "**** DRY RUN - NOTHING WILL BE DONE ****" unless ENV["DO_IT"].present?
+  def execute(dry_run: true)
+    dry_run = false if ENV["DO_IT"].present?
+
+    @logger.puts "**** DRY RUN - NOTHING WILL BE DONE ****" if dry_run
 
     duplicated_editions = fetch_duplicated_editions
 
@@ -20,13 +22,13 @@ class MarkedSectionDeleter
     @logger.puts "The following #{unknown_editions.count} are unknown to Publishing API and are safe to delete:"
     unknown_editions.each do |edition|
       @logger.puts [edition[:slug], edition[:content_id], edition[:state], edition[:created_at]].join(",")
-      SectionEdition.where(document_id: edition[:content_id]).delete_all if ENV["DO_IT"].present?
+      SectionEdition.where(document_id: edition[:content_id]).delete_all unless dry_run
     end
 
     @logger.puts "The following #{known_editions.count} are known to Publishing API and will be deleted after the draft is discarded:"
     known_editions.each do |edition|
       @logger.puts [edition[:slug], edition[:content_id], edition[:state], edition[:created_at]].join(",")
-      if ENV["DO_IT"].present?
+      unless dry_run
         publishing_api.discard_draft(edition[:content_id])
         SectionEdition.where(document_id: edition[:content_id]).delete_all
       end
