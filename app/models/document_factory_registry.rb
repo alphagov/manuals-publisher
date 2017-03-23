@@ -3,7 +3,6 @@ require "validators/section_validator"
 require "validators/manual_validator"
 require "validators/null_validator"
 
-require "builders/section_builder"
 require "manual_with_sections"
 require "slug_generator"
 require "section"
