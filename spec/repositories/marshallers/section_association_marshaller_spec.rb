@@ -1,6 +1,6 @@
 require "spec_helper"
 
-require "marshallers/document_association_marshaller"
+require "marshallers/section_association_marshaller"
 
 describe SectionAssociationMarshaller do
   subject(:marshaller) {

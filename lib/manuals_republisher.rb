@@ -1,4 +1,4 @@
-require "marshallers/document_association_marshaller"
+require "marshallers/section_association_marshaller"
 
 class ManualsRepublisher
   attr_reader :logger
