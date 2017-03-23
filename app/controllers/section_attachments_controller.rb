@@ -39,7 +39,7 @@ class SectionAttachmentsController < ApplicationController
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: SectionViewAdapter.new(manual, document),
+      section: SectionViewAdapter.new(manual, document),
       attachment: attachment,
     })
   end
@@ -56,7 +56,7 @@ class SectionAttachmentsController < ApplicationController
     else
       render(:edit, locals: {
         manual: ManualViewAdapter.new(manual),
-        document: SectionViewAdapter.new(manual, document),
+        section: SectionViewAdapter.new(manual, document),
         attachment: attachment,
       })
     end
