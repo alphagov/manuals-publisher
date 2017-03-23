@@ -20,7 +20,7 @@ class ManualsRepublisher
           manual_id: manual_record.manual_id,
         )
         service.call
-      rescue DocumentAssociationMarshaller::RemovedDocumentIdNotFoundError => e
+      rescue SectionAssociationMarshaller::RemovedDocumentIdNotFoundError => e
         logger.error("Did not publish manual with id=#{manual_record.manual_id} slug=#{manual_record.slug}. It has at least one removed document which was not found: #{e.message}")
         next
       end

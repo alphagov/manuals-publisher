@@ -24,7 +24,7 @@ class RepositoryRegistry
   def scoped_manual_repository(collection)
     ManualRepository.new(
       association_marshallers: [
-        DocumentAssociationMarshaller.new(
+        SectionAssociationMarshaller.new(
           section_repository_factory: section_repository_factory,
           decorator: ->(manual, attrs) {
             DocumentFactoryRegistry.new.manual_with_sections.call(manual, attrs)

@@ -2,9 +2,9 @@ require "spec_helper"
 
 require "marshallers/document_association_marshaller"
 
-describe DocumentAssociationMarshaller do
+describe SectionAssociationMarshaller do
   subject(:marshaller) {
-    DocumentAssociationMarshaller.new(
+    SectionAssociationMarshaller.new(
       decorator: decorator,
       section_repository_factory: section_repository_factory,
     )

@@ -1,4 +1,4 @@
-class DocumentAssociationMarshaller
+class SectionAssociationMarshaller
   def initialize(decorator:, section_repository_factory:)
     @decorator = decorator
     @section_repository_factory = section_repository_factory
