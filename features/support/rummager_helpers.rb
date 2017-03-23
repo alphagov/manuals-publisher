@@ -16,7 +16,7 @@ module RummagerHelpers
     allow(fake_rummager).to receive(:add_document).and_call_original
     allow(fake_rummager).to receive(:delete_document).and_call_original
 
-    allow(GdsApi::Rummager).to receive(:new)
+    allow(Services).to receive(:rummager)
       .and_return(fake_rummager)
   end
 
