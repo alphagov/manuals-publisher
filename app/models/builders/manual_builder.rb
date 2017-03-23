@@ -1,4 +1,6 @@
 require "securerandom"
+require "validators/manual_validator"
+require "validators/null_validator"
 
 class ManualBuilder
   def self.create

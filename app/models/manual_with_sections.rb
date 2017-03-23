@@ -1,4 +1,5 @@
 require "delegate"
+require "builders/section_builder"
 
 class ManualWithSections < SimpleDelegator
   def self.create(attrs)

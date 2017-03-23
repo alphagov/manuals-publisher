@@ -1,4 +1,5 @@
 require "delegate"
+require "validators/safe_html_validator"
 
 class ManualValidator < SimpleDelegator
   include ActiveModel::Validations
