@@ -1,8 +1,7 @@
 require "manual_publish_task"
 
 class QueuePublishManualService
-  def initialize(worker, repository, manual_id)
-    @worker = worker
+  def initialize(repository, manual_id)
     @repository = repository
     @manual_id = manual_id
   end
@@ -10,7 +9,7 @@ class QueuePublishManualService
   def call
     if manual.draft?
       task = create_publish_task(manual)
-      worker.perform_async(task.to_param, govuk_header_params)
+      PublishManualWorker.perform_async(task.to_param, govuk_header_params)
       manual
     else
       raise InvalidStateError.new(
@@ -22,7 +21,6 @@ class QueuePublishManualService
 private
 
   attr_reader(
-    :worker,
     :repository,
     :manual_id,
   )
