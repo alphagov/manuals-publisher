@@ -7,11 +7,11 @@ describe SectionRepository do
     )
   end
 
-  let(:section_factory) { double(:section_factory, call: document) }
+  let(:section_factory) { double(:section_factory, call: section) }
 
-  let(:document_id) { "document-id" }
-  let(:document) {
-    Section.new(slug_generator, document_id, editions, edition_factory)
+  let(:section_id) { "section-id" }
+  let(:section) {
+    Section.new(slug_generator, section_id, editions, edition_factory)
   }
 
   let(:slug_generator) { double(:slug_generator) }
@@ -22,8 +22,8 @@ describe SectionRepository do
   let(:new_draft_edition) {
     double(
       :new_draft_edition,
-      title: "Example document about oil reserves",
-      slug: "example-document-about-oil-reserves",
+      title: "Example section about oil reserves",
+      slug: "example-section-about-oil-reserves",
       "document_id=": nil,
       "slug=": nil,
       changed?: true,
@@ -40,7 +40,7 @@ describe SectionRepository do
   def build_published_edition(version: 1)
     double(
       :published_edition,
-      title: "Example document about oil reserves #{version}",
+      title: "Example section about oil reserves #{version}",
       "document_id=": nil,
       changed?: false,
       save!: nil,
@@ -60,21 +60,21 @@ describe SectionRepository do
   describe "#all" do
     before do
       @edition_1, @edition_2 = [2, 1].map do |n|
-        document_id = "document-id-#{n}"
+        section_id = "section-id-#{n}"
 
         edition = FactoryGirl.create(:section_edition,
-                                     document_id: document_id,
+                                     document_id: section_id,
                                      updated_at: n.days.ago)
 
         allow(section_factory).to receive(:call)
-          .with(document_id, [edition])
-          .and_return(Section.new(slug_generator, document_id, [edition]))
+          .with(section_id, [edition])
+          .and_return(Section.new(slug_generator, section_id, [edition]))
 
         edition
       end
     end
 
-    it "returns all documents by date updated desc" do
+    it "returns all sections by date updated desc" do
       expect(
         section_repository.all.map(&:title).to_a
       ).to eq([@edition_2, @edition_1].map(&:title))
@@ -86,19 +86,19 @@ describe SectionRepository do
     let(:editions)       { [published_edition] }
 
     before do
-      allow(Section).to receive(:new).and_return(document)
+      allow(Section).to receive(:new).and_return(section)
       allow(SectionEdition).to receive(:all)
         .and_return(editions_proxy)
     end
 
-    it "populates the document with all editions for that document id" do
-      section_repository[document_id]
+    it "populates the section with all editions for that section id" do
+      section_repository[section_id]
 
-      expect(section_factory).to have_received(:call).with(document_id, editions)
+      expect(section_factory).to have_received(:call).with(section_id, editions)
     end
 
-    it "returns the document" do
-      expect(section_repository[document_id]).to eq(document)
+    it "returns the section" do
+      expect(section_repository[section_id]).to eq(section)
     end
 
     context "when there are no editions" do
@@ -107,12 +107,12 @@ describe SectionRepository do
       end
 
       it "returns nil" do
-        expect(section_repository[document_id]).to be_nil
+        expect(section_repository[section_id]).to be_nil
       end
     end
   end
 
-  describe "#store(document)" do
+  describe "#store(section)" do
     context "with a valid editions" do
       let(:previous_edition) { build_published_edition(version: 1) }
       let(:current_published_edition) { build_published_edition(version: 2) }
@@ -126,13 +126,13 @@ describe SectionRepository do
       }
 
       it "returns self" do
-        expect(section_repository.store(document)).to be(
+        expect(section_repository.store(section)).to be(
           section_repository
         )
       end
 
       it "saves the the two most recent editions" do
-        section_repository.store(document)
+        section_repository.store(section)
 
         expect(new_draft_edition).to have_received(:save!)
         expect(current_published_edition).to have_received(:save!)
