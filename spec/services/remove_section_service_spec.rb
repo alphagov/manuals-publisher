@@ -2,13 +2,13 @@ require "spec_helper"
 require "remove_section_service"
 
 RSpec.describe RemoveSectionService do
-  let(:document_id) { "123" }
+  let(:section_id) { "123" }
 
   let(:manual) {
     double(
       draft: nil,
       sections: [
-        document,
+        section,
       ],
       remove_section: nil,
     )
@@ -24,7 +24,7 @@ RSpec.describe RemoveSectionService do
   let(:service_context) {
     double(
       params: {
-        "id" => document_id,
+        "id" => section_id,
         "manual_id" => "ABC",
         "section" => change_note_params
       },
@@ -45,9 +45,9 @@ RSpec.describe RemoveSectionService do
     allow(PublishingApiDraftSectionDiscarder).to receive(:new).and_return(discarder)
   end
 
-  context "with a document id that doesn't belong to the manual" do
-    let(:document) {
-      double(id: document_id)
+  context "with a section id that doesn't belong to the manual" do
+    let(:section) {
+      double(id: section_id)
     }
     let(:manual) {
       double(
@@ -66,7 +66,7 @@ RSpec.describe RemoveSectionService do
     it "raises a SectionNotFoundError" do
       expect {
         service.call
-      }.to raise_error(described_class::SectionNotFoundError, document_id)
+      }.to raise_error(described_class::SectionNotFoundError, section_id)
     end
 
     context "when SectionNotFoundError is raised" do
@@ -94,9 +94,9 @@ RSpec.describe RemoveSectionService do
   end
 
   context "with invalid change_note params" do
-    let(:document) {
+    let(:section) {
       double(
-        id: document_id,
+        id: section_id,
         published?: true,
         update: nil,
         valid?: false,
@@ -113,12 +113,12 @@ RSpec.describe RemoveSectionService do
       service.call
     end
 
-    it "tries to save the change note to the document" do
-      expect(document).to have_received(:update).with(change_note_params)
+    it "tries to save the change note to the section" do
+      expect(section).to have_received(:update).with(change_note_params)
     end
 
     it "does not removes the section" do
-      expect(manual).not_to have_received(:remove_section).with(document.id)
+      expect(manual).not_to have_received(:remove_section).with(section.id)
     end
 
     it "does not mark the manual as a draft" do
@@ -147,9 +147,9 @@ RSpec.describe RemoveSectionService do
     end
 
     context "with a section that's previously been published" do
-      let(:document) {
+      let(:section) {
         double(
-          id: document_id,
+          id: section_id,
           published?: true,
           update: nil,
           valid?: true,
@@ -160,12 +160,12 @@ RSpec.describe RemoveSectionService do
         service.call
       end
 
-      it "saves the change note to the document" do
-        expect(document).to have_received(:update).with(change_note_params)
+      it "saves the change note to the section" do
+        expect(section).to have_received(:update).with(change_note_params)
       end
 
       it "removes the section" do
-        expect(manual).to have_received(:remove_section).with(document.id)
+        expect(manual).to have_received(:remove_section).with(section.id)
       end
 
       it "marks the manual as a draft" do
@@ -181,14 +181,14 @@ RSpec.describe RemoveSectionService do
       end
 
       it "discards a section" do
-        expect(discarder).to have_received(:call).with(document, manual)
+        expect(discarder).to have_received(:call).with(section, manual)
       end
     end
 
     context "with a section that's never been published" do
-      let(:document) {
+      let(:section) {
         double(
-          id: document_id,
+          id: section_id,
           published?: false,
           update: nil,
           valid?: true,
@@ -199,12 +199,12 @@ RSpec.describe RemoveSectionService do
         service.call
       end
 
-      it "saves the change note to the document" do
-        expect(document).to have_received(:update).with("minor_update" => "0", "change_note" => "Make a change")
+      it "saves the change note to the section" do
+        expect(section).to have_received(:update).with("minor_update" => "0", "change_note" => "Make a change")
       end
 
       it "removes the section" do
-        expect(manual).to have_received(:remove_section).with(document_id)
+        expect(manual).to have_received(:remove_section).with(section_id)
       end
 
       it "marks the manual as a draft" do
@@ -221,14 +221,14 @@ RSpec.describe RemoveSectionService do
       end
 
       it "discards a section" do
-        expect(discarder).to have_received(:call).with(document, manual)
+        expect(discarder).to have_received(:call).with(section, manual)
       end
     end
 
-    context "with extra document params" do
-      let(:document) {
+    context "with extra section params" do
+      let(:section) {
         double(
-          id: document_id,
+          id: section_id,
           published?: true,
           update: nil,
           valid?: true,
@@ -246,8 +246,8 @@ RSpec.describe RemoveSectionService do
         service.call
       end
 
-      it "only saves the change note params to the document ignoring others" do
-        expect(document).to have_received(:update).with(change_note_params.slice("change_note", "minor_update"))
+      it "only saves the change note params to the section ignoring others" do
+        expect(section).to have_received(:update).with(change_note_params.slice("change_note", "minor_update"))
       end
     end
   end

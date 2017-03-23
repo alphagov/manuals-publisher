@@ -7,9 +7,9 @@ class PreviewSectionService
   end
 
   def call
-    document.update(document_params)
+    section.update(section_params)
 
-    document_renderer.call(document)
+    document_renderer.call(section)
   end
 
 private
@@ -21,29 +21,29 @@ private
     :context,
   )
 
-  def document
-    document_id ? existing_document : ephemeral_document
+  def section
+    section_id ? existing_section : ephemeral_section
   end
 
   def manual
     manual_repository.fetch(manual_id)
   end
 
-  def ephemeral_document
-    document_builder.call(manual, document_params)
+  def ephemeral_section
+    document_builder.call(manual, section_params)
   end
 
-  def existing_document
-    @existing_document ||= manual.sections.find { |document|
-      document.id == document_id
+  def existing_section
+    @existing_section ||= manual.sections.find { |section|
+      section.id == section_id
     }
   end
 
-  def document_params
+  def section_params
     context.params.fetch("document")
   end
 
-  def document_id
+  def section_id
     context.params.fetch("id", nil)
   end
 

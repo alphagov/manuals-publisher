@@ -5,14 +5,14 @@ class ListSectionsService
   end
 
   def call
-    [manual, documents]
+    [manual, sections]
   end
 
 private
 
   attr_reader :manual_repository, :context
 
-  def documents
+  def sections
     manual.sections
   end
 
