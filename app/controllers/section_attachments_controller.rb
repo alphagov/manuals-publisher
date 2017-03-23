@@ -15,7 +15,7 @@ class SectionAttachmentsController < ApplicationController
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: SectionViewAdapter.new(manual, document),
+      section: SectionViewAdapter.new(manual, document),
       attachment: attachment,
     })
   end
