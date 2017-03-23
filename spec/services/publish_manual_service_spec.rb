@@ -23,8 +23,6 @@ RSpec.describe PublishManualService do
     allow(manual_repository).to receive(:fetch) { manual }
     allow(manual_repository).to receive(:store)
     allow(manual).to receive(:publish)
-    allow(manual).to receive(:update)
-    allow(manual).to receive(:documents)
     allow(PublicationLogger).to receive(:new) { publication_logger }
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { new_publishing_api_publisher }
