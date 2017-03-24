@@ -5,15 +5,16 @@ development:
     default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: manuals_publisher_development
+      # database: manuals_publisher_development
       # Provides the hosts the default session can connect to. Must be an array
       # of host:port pairs. (required)
-      hosts:
-        - localhost:27017
+      # hosts:
+      #  - localhost:27017
+      uri: 'mongodb://localhost/govuk_content_development'
       options:
         # Change whether the session persists in safe mode by default.
         # (default: false)
-        # safe: false
+        safe: true
 
         # Change the default consistency model to :eventual or :strong.
         # :eventual will send reads to secondaries, :strong sends everything
