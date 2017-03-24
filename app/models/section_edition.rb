@@ -4,7 +4,7 @@ class SectionEdition
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  store_in "manual_section_editions"
+  store_in collection: "manual_section_editions"
 
   field :section_id,           type: String
   field :version_number,       type: Integer, default: 1
