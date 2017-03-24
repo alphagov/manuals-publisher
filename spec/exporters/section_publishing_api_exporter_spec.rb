@@ -9,12 +9,12 @@ describe SectionPublishingAPIExporter do
     described_class.new(
       organisation,
       manual,
-      document
+      section
     )
   }
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
-  let(:document_renderer) { ->(_) { double(:rendered_document, attributes: rendered_attributes) } }
+  let(:section_renderer) { ->(_) { double(:rendered_section, attributes: rendered_attributes) } }
 
   let(:organisation) {
     {
@@ -56,11 +56,11 @@ describe SectionPublishingAPIExporter do
     ]
   }
 
-  let(:document_base_path) { "/guidance/my-first-manual/first-section" }
+  let(:section_base_path) { "/guidance/my-first-manual/first-section" }
 
-  let(:document) {
+  let(:section) {
     double(
-      :document,
+      :section,
       id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       minor_update?: true,
       attributes: { body: "##Some heading\nmanual section body" },
@@ -81,7 +81,7 @@ describe SectionPublishingAPIExporter do
 
   before {
     allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
-    allow(SectionRenderer).to receive(:new).and_return(document_renderer)
+    allow(SectionRenderer).to receive(:new).and_return(section_renderer)
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do
@@ -89,7 +89,7 @@ describe SectionPublishingAPIExporter do
       described_class.new(
         organisation,
         manual,
-        document,
+        section,
         update_type: "reticulate-splines"
       )
     }.to raise_error(ArgumentError, "update_type 'reticulate-splines' not recognised")
@@ -101,7 +101,7 @@ describe SectionPublishingAPIExporter do
         described_class.new(
           organisation,
           manual,
-          document,
+          section,
           update_type: update_type
         )
       }.not_to raise_error
@@ -113,7 +113,7 @@ describe SectionPublishingAPIExporter do
       described_class.new(
         organisation,
         manual,
-        document,
+        section,
         update_type: nil
       )
     }.not_to raise_error
@@ -123,14 +123,14 @@ describe SectionPublishingAPIExporter do
     expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema("manual_section")
   end
 
-  it "exports the serialized document attributes" do
+  it "exports the serialized section attributes" do
     subject.call
 
     expect(publishing_api).to have_received(:put_content).with(
-      document.id,
+      section.id,
       all_of(
         hash_including(
-          base_path: document_base_path,
+          base_path: section_base_path,
           schema_name: SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
           document_type: SectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
           title: "Document title",
@@ -140,7 +140,7 @@ describe SectionPublishingAPIExporter do
           rendering_app: "manuals-frontend",
           routes: [
             {
-              path: document_base_path,
+              path: section_base_path,
               type: "exact",
             }
           ],
@@ -160,7 +160,7 @@ describe SectionPublishingAPIExporter do
       subject.call
 
       expect(publishing_api).to have_received(:put_content).with(
-        document.id,
+        section.id,
         hash_including(
           first_published_at: previously_published_date.iso8601,
         )
@@ -172,7 +172,7 @@ describe SectionPublishingAPIExporter do
       subject.call
 
       expect(publishing_api).to have_received(:put_content).with(
-        document.id,
+        section.id,
         hash_including(
           public_updated_at: previously_published_date.iso8601,
         )
@@ -184,16 +184,16 @@ describe SectionPublishingAPIExporter do
       subject.call
 
       expect(publishing_api).to have_received(:put_content).with(
-        document.id,
+        section.id,
         hash_excluding(:public_updated_at)
       )
     end
   end
 
   context "exporting update_type correctly" do
-    let(:document) {
+    let(:section) {
       double(
-        :document,
+        :section,
         id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
         minor_update?: update_type_attributes[:minor_update?],
         attributes: { body: "##Some heading\nmanual section body" },
@@ -207,7 +207,7 @@ describe SectionPublishingAPIExporter do
         described_class.new(
           organisation,
           manual,
-          document,
+          section,
           update_type: explicit_update_type
         )
       }
@@ -246,7 +246,7 @@ describe SectionPublishingAPIExporter do
       end
     end
 
-    context "the document is a minor update" do
+    context "the section is a minor update" do
       let(:update_type_attributes) do
         {
           minor_update?: true,
@@ -254,8 +254,8 @@ describe SectionPublishingAPIExporter do
         }
       end
 
-      it "sets it to major if the document has never been published" do
-        allow(document).to receive(:has_ever_been_published?).and_return(false)
+      it "sets it to major if the section has never been published" do
+        allow(section).to receive(:has_ever_been_published?).and_return(false)
         subject.call
 
         expect(publishing_api).to have_received(:put_content).with(
@@ -264,7 +264,7 @@ describe SectionPublishingAPIExporter do
         )
       end
 
-      it "sets it to minor if the document has been published before" do
+      it "sets it to minor if the section has been published before" do
         subject.call
 
         expect(publishing_api).to have_received(:put_content).with(
@@ -276,7 +276,7 @@ describe SectionPublishingAPIExporter do
       it_behaves_like "obeying the provided update_type"
     end
 
-    context "the document is a major update" do
+    context "the section is a major update" do
       let(:update_type_attributes) do
         {
           minor_update?: false,
@@ -284,7 +284,7 @@ describe SectionPublishingAPIExporter do
         }
       end
 
-      it "sets it to major if the document has never been published" do
+      it "sets it to major if the section has never been published" do
         update_type_attributes[:ever_been_published] = false
         subject.call
 
@@ -294,7 +294,7 @@ describe SectionPublishingAPIExporter do
         )
       end
 
-      it "sets it to major if the document has been published before" do
+      it "sets it to major if the section has been published before" do
         subject.call
 
         expect(publishing_api).to have_received(:put_content).with(
@@ -307,11 +307,11 @@ describe SectionPublishingAPIExporter do
     end
   end
 
-  it "exports section metadata for the document" do
+  it "exports section metadata for the section" do
     subject.call
 
     expect(publishing_api).to have_received(:put_content).with(
-      document.id,
+      section.id,
       hash_including(
         details: {
           body:

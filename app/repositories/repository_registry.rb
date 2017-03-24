@@ -1,7 +1,7 @@
 require "section_repository"
 require "manual_repository"
 require "section_edition"
-require "marshallers/document_association_marshaller"
+require "marshallers/section_association_marshaller"
 require "marshallers/manual_publish_task_association_marshaller"
 require "manual_publish_task"
 require "manual_with_publish_tasks"
@@ -24,7 +24,7 @@ class RepositoryRegistry
   def scoped_manual_repository(collection)
     ManualRepository.new(
       association_marshallers: [
-        DocumentAssociationMarshaller.new(
+        SectionAssociationMarshaller.new(
           section_repository_factory: section_repository_factory,
           decorator: ->(manual, attrs) {
             DocumentFactoryRegistry.new.manual_with_sections.call(manual, attrs)

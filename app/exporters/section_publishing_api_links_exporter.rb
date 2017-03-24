@@ -1,8 +1,8 @@
 class SectionPublishingAPILinksExporter
-  def initialize(organisation, manual, document)
+  def initialize(organisation, manual, section)
     @organisation = organisation
     @manual = manual
-    @document = document
+    @section = section
   end
 
   def call
@@ -11,10 +11,10 @@ class SectionPublishingAPILinksExporter
 
 private
 
-  attr_reader :organisation, :manual, :document
+  attr_reader :organisation, :manual, :section
 
   def content_id
-    document.id
+    section.id
   end
 
   def exportable_attributes

@@ -11,13 +11,13 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   let!(:highway_code_manual_record) { ManualRecord.create(slug: highway_code_manual_slug, organisation_slug: highway_code_organisation_slug) }
 
   # one published before the start date with a PDF
-  let!(:early_document_edition_with_pdf) do
+  let!(:early_section_edition_with_pdf) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
       exported_at: start_date - 1.day,
-    ).tap do |document_edition|
-      document_edition.attachments.create!(
+    ).tap do |section_edition|
+      section_edition.attachments.create!(
         filename: 'attachy.pdf',
         file_id: '1'
       )
@@ -25,13 +25,13 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   end
 
   # one published before the start date with a non-PDF attachment
-  let!(:early_document_edition_with_non_pdf) do
+  let!(:early_section_edition_with_non_pdf) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
       exported_at: start_date - 1.day,
-    ).tap do |document_edition|
-      document_edition.attachments.create!(
+    ).tap do |section_edition|
+      section_edition.attachments.create!(
         filename: 'attachy.txt',
         file_id: '2'
       )
@@ -39,13 +39,13 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   end
 
   # one only drafted before the start date with a PDF attachment
-  let!(:early_document_edition_draft_with_pdf) do
+  let!(:early_section_edition_draft_with_pdf) do
     FactoryGirl.create(
       :section_edition,
       state: "draft",
       exported_at: start_date - 1.day,
-    ).tap do |document_edition|
-      document_edition.attachments.create!(
+    ).tap do |section_edition|
+      section_edition.attachments.create!(
         filename: 'attachy.pdf',
         file_id: '3'
       )
@@ -53,13 +53,13 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   end
 
   # one created between the start date and the last time period
-  let!(:more_recent_document_edition) do
+  let!(:more_recent_section_edition) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
       exported_at: (Date.today - last_time_period_days) - 1.day,
-    ).tap do |document_edition|
-      document_edition.attachments.create!(
+    ).tap do |section_edition|
+      section_edition.attachments.create!(
         filename: 'attachy.pdf',
         file_id: '4'
       )
@@ -67,13 +67,13 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   end
 
   # one created after the last time period
-  let!(:very_recent_document_edition) do
+  let!(:very_recent_section_edition) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
       exported_at: (Date.today - last_time_period_days) + 1.day,
-    ).tap do |document_edition|
-      document_edition.attachments.create!(
+    ).tap do |section_edition|
+      section_edition.attachments.create!(
         filename: 'attachy.pdf',
         file_id: '5'
       )
@@ -85,11 +85,11 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
       state: "published",
       version_number: 1,
       document_ids: [
-        early_document_edition_with_pdf.document_id,
-        early_document_edition_with_non_pdf.document_id,
-        early_document_edition_draft_with_pdf.document_id,
-        more_recent_document_edition.document_id,
-        very_recent_document_edition.document_id
+        early_section_edition_with_pdf.document_id,
+        early_section_edition_with_non_pdf.document_id,
+        early_section_edition_draft_with_pdf.document_id,
+        more_recent_section_edition.document_id,
+        very_recent_section_edition.document_id
       ],
     )
   }
@@ -98,13 +98,13 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   let(:patent_manual_organisation_slug) { 'intellectual-property-office' }
   let!(:patent_manual_record) { ManualRecord.create(slug: patent_manual_slug, organisation_slug: patent_manual_organisation_slug) }
 
-  let!(:very_recent_draft_patent_document_edition) do
+  let!(:very_recent_draft_patent_section_edition) do
     FactoryGirl.create(
       :section_edition,
       state: "draft",
       exported_at: Date.today,
-    ).tap do |document_edition|
-      document_edition.attachments.create!(
+    ).tap do |section_edition|
+      section_edition.attachments.create!(
         filename: 'attachy.pdf',
         file_id: '6'
       )
@@ -116,7 +116,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
       state: "published",
       version_number: 1,
       document_ids: [
-        very_recent_draft_patent_document_edition.document_id
+        very_recent_draft_patent_section_edition.document_id
       ],
     )
   }

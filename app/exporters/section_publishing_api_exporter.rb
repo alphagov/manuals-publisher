@@ -4,10 +4,10 @@ class SectionPublishingAPIExporter
   PUBLISHING_API_SCHEMA_NAME = "manual_section".freeze
   PUBLISHING_API_DOCUMENT_TYPE = "manual_section".freeze
 
-  def initialize(organisation, manual, document, update_type: nil)
+  def initialize(organisation, manual, section, update_type: nil)
     @organisation = organisation
     @manual = manual
-    @document = document
+    @section = section
     @update_type = update_type
     check_update_type!(@update_type)
   end
@@ -18,14 +18,14 @@ class SectionPublishingAPIExporter
 
 private
 
-  attr_reader :organisation, :manual, :document
+  attr_reader :organisation, :manual, :section
 
   def content_id
-    document.id
+    section.id
   end
 
   def base_path
-    "/#{rendered_document_attributes.fetch(:slug)}"
+    "/#{rendered_section_attributes.fetch(:slug)}"
   end
 
   def exportable_attributes
@@ -33,8 +33,8 @@ private
       base_path: base_path,
       schema_name: PUBLISHING_API_SCHEMA_NAME,
       document_type: PUBLISHING_API_DOCUMENT_TYPE,
-      title: rendered_document_attributes.fetch(:title),
-      description: rendered_document_attributes.fetch(:summary),
+      title: rendered_section_attributes.fetch(:title),
+      description: rendered_section_attributes.fetch(:summary),
       update_type: update_type,
       publishing_app: "manuals-publisher",
       rendering_app: "manuals-frontend",
@@ -63,11 +63,11 @@ private
       body: [
         {
           content_type: "text/govspeak",
-          content: document.attributes.fetch(:body)
+          content: section.attributes.fetch(:body)
         },
         {
           content_type: "text/html",
-          content: rendered_document_attributes.fetch(:body)
+          content: rendered_section_attributes.fetch(:body)
         }
       ],
       manual: {
@@ -77,12 +77,12 @@ private
         organisation_info
       ],
     }.tap do |details_hash|
-      details_hash[:attachments] = attachments if document.attachments.present?
+      details_hash[:attachments] = attachments if section.attachments.present?
     end
   end
 
   def attachments
-    document.attachments.map { |attachment| attachment_json_builder(attachment.attributes) }
+    section.attachments.map { |attachment| attachment_json_builder(attachment.attributes) }
   end
 
   def build_content_type(file_url)
@@ -106,13 +106,13 @@ private
     return @update_type if @update_type.present?
     # The first edition to be sent to the publishing-api must always be sent as
     # a major update
-    return "major" unless document.has_ever_been_published?
+    return "major" unless section.has_ever_been_published?
 
-    document.minor_update? ? "minor" : "major"
+    section.minor_update? ? "minor" : "major"
   end
 
-  def rendered_document_attributes
-    @rendered_document_attributes ||= SectionRenderer.new.call(document).attributes
+  def rendered_section_attributes
+    @rendered_section_attributes ||= SectionRenderer.new.call(section).attributes
   end
 
   def organisation_info

@@ -5,31 +5,31 @@ class UpdateSectionService
   end
 
   def call
-    document.update(document_params)
+    section.update(section_params)
 
-    if document.valid?
+    if section.valid?
       manual.draft
       manual_repository.store(manual)
       export_draft_manual_to_publishing_api
       export_draft_section_to_publishing_api
     end
 
-    [manual, document]
+    [manual, section]
   end
 
 private
 
   attr_reader :manual_repository, :context, :listeners
 
-  def document
-    @document ||= manual.sections.find { |d| d.id == document_id }
+  def section
+    @section ||= manual.sections.find { |s| s.id == section_id }
   end
 
   def manual
     @manual ||= manual_repository.fetch(manual_id)
   end
 
-  def document_id
+  def section_id
     context.params.fetch("id")
   end
 
@@ -37,7 +37,7 @@ private
     context.params.fetch("manual_id")
   end
 
-  def document_params
+  def section_params
     context.params.fetch("section")
   end
 
@@ -46,6 +46,6 @@ private
   end
 
   def export_draft_section_to_publishing_api
-    PublishingApiDraftSectionExporter.new.call(document, manual)
+    PublishingApiDraftSectionExporter.new.call(section, manual)
   end
 end

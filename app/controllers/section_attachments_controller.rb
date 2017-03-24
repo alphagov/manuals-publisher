@@ -7,15 +7,15 @@ class SectionAttachmentsController < ApplicationController
   def new
     service = NewSectionAttachmentService.new(
       repository,
-      # TODO: This be should be created from the document or just be a form object
+      # TODO: This be should be created from the section or just be a form object
       Attachment.method(:new),
       self,
     )
-    manual, document, attachment = service.call
+    manual, section, attachment = service.call
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: SectionViewAdapter.new(manual, document),
+      section: SectionViewAdapter.new(manual, section),
       attachment: attachment,
     })
   end
@@ -25,9 +25,9 @@ class SectionAttachmentsController < ApplicationController
       repository,
       self,
     )
-    manual, document, _attachment = service.call
+    manual, section, _attachment = service.call
 
-    redirect_to edit_manual_section_path(manual, document)
+    redirect_to edit_manual_section_path(manual, section)
   end
 
   def edit
@@ -35,11 +35,11 @@ class SectionAttachmentsController < ApplicationController
       repository,
       self,
     )
-    manual, document, attachment = service.call
+    manual, section, attachment = service.call
 
     render(:edit, locals: {
       manual: ManualViewAdapter.new(manual),
-      document: SectionViewAdapter.new(manual, document),
+      section: SectionViewAdapter.new(manual, section),
       attachment: attachment,
     })
   end
@@ -49,14 +49,14 @@ class SectionAttachmentsController < ApplicationController
       repository,
       self,
     )
-    manual, document, attachment = service.call
+    manual, section, attachment = service.call
 
     if attachment.persisted?
-      redirect_to(edit_manual_section_path(manual, document))
+      redirect_to(edit_manual_section_path(manual, section))
     else
       render(:edit, locals: {
         manual: ManualViewAdapter.new(manual),
-        document: SectionViewAdapter.new(manual, document),
+        section: SectionViewAdapter.new(manual, section),
         attachment: attachment,
       })
     end

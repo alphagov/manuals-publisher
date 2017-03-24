@@ -1,4 +1,4 @@
-require "marshallers/document_association_marshaller"
+require "marshallers/section_association_marshaller"
 
 class ManualsRepublisher
   attr_reader :logger
@@ -20,7 +20,7 @@ class ManualsRepublisher
           manual_id: manual_record.manual_id,
         )
         service.call
-      rescue DocumentAssociationMarshaller::RemovedDocumentIdNotFoundError => e
+      rescue SectionAssociationMarshaller::RemovedSectionIdNotFoundError => e
         logger.error("Did not publish manual with id=#{manual_record.manual_id} slug=#{manual_record.slug}. It has at least one removed document which was not found: #{e.message}")
         next
       end

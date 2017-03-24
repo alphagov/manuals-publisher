@@ -24,8 +24,8 @@ private
 
     build_manual_for(manual_record, manual_record.latest_edition) do
       {
-        sections: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
-        removed_sections: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
+        sections: get_latest_version_of_sections(manual_record.latest_edition.document_ids),
+        removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_document_ids),
       }
     end
   end
@@ -36,8 +36,8 @@ private
     if manual_record.latest_edition.state == "published"
       build_manual_for(manual_record, manual_record.latest_edition) do
         {
-          sections: get_latest_version_of_documents(manual_record.latest_edition.document_ids),
-          removed_sections: get_latest_version_of_documents(manual_record.latest_edition.removed_document_ids),
+          sections: get_latest_version_of_sections(manual_record.latest_edition.document_ids),
+          removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_document_ids),
         }
       end
     elsif manual_record.latest_edition.state == "draft"
@@ -45,8 +45,8 @@ private
       if previous_edition.state == "published"
         build_manual_for(manual_record, previous_edition) do
           {
-            sections: get_published_version_of_documents(previous_edition.document_ids),
-            removed_sections: get_latest_version_of_documents(previous_edition.removed_document_ids)
+            sections: get_published_version_of_sections(previous_edition.document_ids),
+            removed_sections: get_latest_version_of_sections(previous_edition.removed_document_ids)
           }
         end
       else
@@ -78,33 +78,33 @@ private
       use_originally_published_at_for_public_timestamp: edition.use_originally_published_at_for_public_timestamp,
     )
 
-    document_attrs = yield
+    section_attrs = yield
 
     ManualWithSections.new(
       ->(_manual, _attrs) { raise RuntimeError, "read only manaul" },
       base_manual,
-      document_attrs
+      section_attrs
     )
   end
 
-  def get_latest_version_of_documents(document_ids)
-    (document_ids || []).map do |document_id|
-      build_section(document_id) { |editions| editions }
+  def get_latest_version_of_sections(section_ids)
+    (section_ids || []).map do |section_id|
+      build_section(section_id) { |editions| editions }
     end
   end
 
-  def build_section(document_id)
-    all_editions = SectionEdition.where(document_id: document_id).order_by([:version_number, :desc]).to_a
+  def build_section(section_id)
+    all_editions = SectionEdition.where(document_id: section_id).order_by([:version_number, :desc]).to_a
     Section.new(
       ->(_title) { raise RuntimeError, "read only manual" },
-      document_id,
+      section_id,
       yield(all_editions).take(2).reverse,
     )
   end
 
-  def get_published_version_of_documents(document_ids)
-    (document_ids || []).map do |document_id|
-      build_section(document_id) { |editions| editions.drop_while { |e| e.state != "published" } }
+  def get_published_version_of_sections(section_ids)
+    (section_ids || []).map do |section_id|
+      build_section(section_id) { |editions| editions.drop_while { |e| e.state != "published" } }
     end
   end
 end

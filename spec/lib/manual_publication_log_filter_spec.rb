@@ -5,77 +5,77 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   let(:manual_slug) { "guidance/the-highway-code" }
   let!(:manual_record) { ManualRecord.create(slug: manual_slug) }
   let(:other_slug) { "guidance/sellotape" }
-  let(:document_edition_exported_time) { Time.current }
+  let(:section_edition_exported_time) { Time.current }
 
-  let(:document_a_edition_published_version_1_major_update) do
+  let(:section_a_edition_published_version_1_major_update) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
       slug: "#{manual_slug}/first-further-info",
-      exported_at: document_edition_exported_time,
+      exported_at: section_edition_exported_time,
       version_number: 1,
     )
   end
 
-  let(:document_a_edition_published_version_2_major_update) do
+  let(:section_a_edition_published_version_2_major_update) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
-      slug: document_a_edition_published_version_1_major_update.slug,
-      document_id: document_a_edition_published_version_1_major_update.document_id,
-      exported_at: document_edition_exported_time,
+      slug: section_a_edition_published_version_1_major_update.slug,
+      document_id: section_a_edition_published_version_1_major_update.document_id,
+      exported_at: section_edition_exported_time,
       version_number: 2
     )
   end
 
-  let(:document_b_edition_published_version_1_major_update) do
+  let(:section_b_edition_published_version_1_major_update) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
       slug: "#{manual_slug}/second-further-info",
-      exported_at: document_edition_exported_time,
+      exported_at: section_edition_exported_time,
       version_number: 1,
     )
   end
 
-  let(:document_b_edition_published_version_2_minor_update) do
+  let(:section_b_edition_published_version_2_minor_update) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
-      slug: document_b_edition_published_version_1_major_update.slug,
-      document_id: document_b_edition_published_version_1_major_update.document_id,
-      exported_at: document_edition_exported_time,
+      slug: section_b_edition_published_version_1_major_update.slug,
+      document_id: section_b_edition_published_version_1_major_update.document_id,
+      exported_at: section_edition_exported_time,
       minor_update: true,
       version_number: 2
     )
   end
 
-  let(:document_c_edition_archived_version_1_major_update) do
+  let(:section_c_edition_archived_version_1_major_update) do
     FactoryGirl.create(
       :section_edition,
       state: "archived",
       slug: "#{manual_slug}/additional-data",
-      exported_at: document_edition_exported_time,
+      exported_at: section_edition_exported_time,
       version_number: 1
     )
   end
 
-  let(:document_d_edition_draft_version_1_major_update) do
+  let(:section_d_edition_draft_version_1_major_update) do
     FactoryGirl.create(
       :section_edition,
       state: "draft",
       slug: "#{manual_slug}/draft-info",
-      exported_at: document_edition_exported_time,
+      exported_at: section_edition_exported_time,
       version_number: 1
     )
   end
 
-  let(:document_e_edition_published_version_1_major_update) do
+  let(:section_e_edition_published_version_1_major_update) do
     FactoryGirl.create(
       :section_edition,
       state: "published",
       slug: "#{manual_slug}/third-further-info",
-      exported_at: document_edition_exported_time,
+      exported_at: section_edition_exported_time,
       version_number: 1,
     )
   end
@@ -98,9 +98,9 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       state: "published",
       version_number: 1,
       document_ids: [
-        document_a_edition_published_version_1_major_update.document_id,
-        document_b_edition_published_version_1_major_update.document_id,
-        document_c_edition_archived_version_1_major_update.document_id,
+        section_a_edition_published_version_1_major_update.document_id,
+        section_b_edition_published_version_1_major_update.document_id,
+        section_c_edition_archived_version_1_major_update.document_id,
       ],
       created_at: first_manual_edition_creation_time,
       updated_at: first_manual_edition_creation_time
@@ -112,11 +112,11 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       state: "published",
       version_number: 2,
       document_ids: [
-        document_a_edition_published_version_2_major_update.document_id,
-        document_b_edition_published_version_2_minor_update.document_id,
-        document_c_edition_archived_version_1_major_update.document_id,
-        document_d_edition_draft_version_1_major_update.document_id,
-        document_e_edition_published_version_1_major_update.document_id
+        section_a_edition_published_version_2_major_update.document_id,
+        section_b_edition_published_version_2_minor_update.document_id,
+        section_c_edition_archived_version_1_major_update.document_id,
+        section_d_edition_draft_version_1_major_update.document_id,
+        section_e_edition_published_version_1_major_update.document_id
       ],
       created_at: second_manual_edition_creation_time,
       updated_at: first_manual_edition_creation_time
@@ -139,10 +139,10 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
     expect(publication_logs_for_supplied_slug.count).to eq 5
 
-    # First versions of document editions should have their associated logs "re-set"
+    # First versions of section editions should have their associated logs "re-set"
     # to the associated manual edition updated time. There are some cases where such editions have
     # timestamps that post-date the manual edition update time. This is thought
-    # to be "wrong" because the first manual and first editions of its documents
+    # to be "wrong" because the first manual and first editions of its sections
     # are expected to all be exported at the same time.
 
     # NOTE: we compare using match_array because the timestamps are all the same
@@ -151,15 +151,15 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
     publication_logs_for_first_manual_edition = publication_logs_for_supplied_slug[0..2].map { |pl| extract_attributes_from_log(pl) }
     expect(publication_logs_for_first_manual_edition).to match_array([
-      build_attributes_for_expected_log(document_a_edition_published_version_1_major_update, first_manual_edition.updated_at),
-      build_attributes_for_expected_log(document_b_edition_published_version_1_major_update, first_manual_edition.updated_at),
-      build_attributes_for_expected_log(document_c_edition_archived_version_1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(section_a_edition_published_version_1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(section_b_edition_published_version_1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(section_c_edition_archived_version_1_major_update, first_manual_edition.updated_at),
     ])
 
     publication_logs_for_next_editions = publication_logs_for_supplied_slug[3..4].map { |pl| extract_attributes_from_log(pl) }
     expect(publication_logs_for_next_editions).to match_array([
-      build_attributes_for_expected_log(document_a_edition_published_version_2_major_update, document_a_edition_published_version_2_major_update.exported_at),
-      build_attributes_for_expected_log(document_e_edition_published_version_1_major_update, document_e_edition_published_version_1_major_update.exported_at),
+      build_attributes_for_expected_log(section_a_edition_published_version_2_major_update, section_a_edition_published_version_2_major_update.exported_at),
+      build_attributes_for_expected_log(section_e_edition_published_version_1_major_update, section_e_edition_published_version_1_major_update.exported_at),
     ])
   end
 
@@ -174,12 +174,12 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     }
   end
 
-  def build_attributes_for_expected_log(document_edition, expected_time)
+  def build_attributes_for_expected_log(section_edition, expected_time)
     {
-      slug: document_edition.slug,
-      title: document_edition.title,
-      version_number: document_edition.version_number,
-      change_note: document_edition.change_note,
+      slug: section_edition.slug,
+      title: section_edition.title,
+      version_number: section_edition.version_number,
+      change_note: section_edition.change_note,
       created_at: expected_time,
       updated_at: expected_time
     }
@@ -203,7 +203,7 @@ describe ManualPublicationLogFilter::EditionOrdering do
       ]
     }
 
-    let(:expected_document_order) {
+    let(:expected_section_order) {
       document_ids.concat([other_edition_older.document_id, other_edition_newer.document_id])
     }
 
@@ -212,7 +212,7 @@ describe ManualPublicationLogFilter::EditionOrdering do
     it "returns editions in the supplied document id and created_at order" do
       ordered_editions = subject.sort_by_document_ids_and_created_at
 
-      expect(ordered_editions.map(&:document_id)).to eq expected_document_order
+      expect(ordered_editions.map(&:document_id)).to eq expected_section_order
     end
   end
 end

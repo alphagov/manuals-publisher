@@ -19,7 +19,7 @@ class SectionRepository
     lower_bound = offset
     upper_bound = limit < 0 ? limit : offset + limit - 1
 
-    all_document_ids[lower_bound..upper_bound]
+    all_section_ids[lower_bound..upper_bound]
       .map { |id| self[id] }
   end
 
@@ -41,16 +41,16 @@ class SectionRepository
   def search(query)
     conditions = search_conditions(query)
 
-    all_document_ids_scoped(conditions)
+    all_section_ids_scoped(conditions)
       .map { |id| fetch(id) }
   end
 
-  def slug_unique?(document)
+  def slug_unique?(section)
     # TODO: push this method down into persistence layer
-    if document.draft?
+    if section.draft?
       section_editions.where(
-        :slug => document.slug,
-        :document_id.ne => document.id,
+        :slug => section.slug,
+        :document_id.ne => section.id,
         :state => "published"
       ).empty?
     else
@@ -58,12 +58,12 @@ class SectionRepository
     end
   end
 
-  def store(document)
+  def store(section)
     # It is actually only necessary to save the latest edition, however, I
     # think it's safer to save latest two as both are exposed to the and have
     # potential to change. This extra write may save a potential future
     # headache.
-    document.editions.last(2).each(&:save!)
+    section.editions.last(2).each(&:save!)
 
     self
   end
@@ -92,14 +92,14 @@ private
     ]
   end
 
-  def all_document_ids_scoped(conditions)
-    only_document_ids_for(
+  def all_section_ids_scoped(conditions)
+    only_section_ids_for(
       section_editions
         .any_of(conditions)
     )
   end
 
-  def only_document_ids_for(collection)
+  def only_section_ids_for(collection)
     collection.all
       .order_by(updated_at: "desc")
       .only(:document_id, :updated_at)
@@ -107,8 +107,8 @@ private
       .uniq
   end
 
-  def all_document_ids
-    only_document_ids_for(
+  def all_section_ids
+    only_section_ids_for(
       section_editions
         .all
     )

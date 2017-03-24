@@ -5,7 +5,7 @@ class ShowSectionAttachmentService
   end
 
   def call
-    [manual, document, attachment]
+    [manual, section, attachment]
   end
 
 private
@@ -13,11 +13,11 @@ private
   attr_reader :manual_repository, :context
 
   def attachment
-    @attachment ||= document.find_attachment_by_id(attachment_id)
+    @attachment ||= section.find_attachment_by_id(attachment_id)
   end
 
-  def document
-    @document ||= manual.sections.find { |d| d.id == document_id }
+  def section
+    @section ||= manual.sections.find { |s| s.id == section_id }
   end
 
   def manual
@@ -28,7 +28,7 @@ private
     context.params.fetch("manual_id")
   end
 
-  def document_id
+  def section_id
     context.params.fetch("section_id")
   end
 

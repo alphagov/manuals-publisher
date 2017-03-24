@@ -1,49 +1,49 @@
 class PreviewSectionService
-  def initialize(manual_repository, document_builder, document_renderer, context)
+  def initialize(manual_repository, section_builder, section_renderer, context)
     @manual_repository = manual_repository
-    @document_builder = document_builder
-    @document_renderer = document_renderer
+    @section_builder = section_builder
+    @section_renderer = section_renderer
     @context = context
   end
 
   def call
-    document.update(document_params)
+    section.update(section_params)
 
-    document_renderer.call(document)
+    section_renderer.call(section)
   end
 
 private
 
   attr_reader(
     :manual_repository,
-    :document_builder,
-    :document_renderer,
+    :section_builder,
+    :section_renderer,
     :context,
   )
 
-  def document
-    document_id ? existing_document : ephemeral_document
+  def section
+    section_id ? existing_section : ephemeral_section
   end
 
   def manual
     manual_repository.fetch(manual_id)
   end
 
-  def ephemeral_document
-    document_builder.call(manual, document_params)
+  def ephemeral_section
+    section_builder.call(manual, section_params)
   end
 
-  def existing_document
-    @existing_document ||= manual.sections.find { |document|
-      document.id == document_id
+  def existing_section
+    @existing_section ||= manual.sections.find { |section|
+      section.id == section_id
     }
   end
 
-  def document_params
-    context.params.fetch("document")
+  def section_params
+    context.params.fetch("section")
   end
 
-  def document_id
+  def section_id
     context.params.fetch("id", nil)
   end
 

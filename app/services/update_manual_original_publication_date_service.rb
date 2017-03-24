@@ -8,7 +8,7 @@ class UpdateManualOriginalPublicationDateService
   def call
     manual.draft
     update
-    update_documents
+    update_sections
     persist
 
     export_draft_to_publishing_api
@@ -37,10 +37,10 @@ private
     @manual ||= fetch_manual
   end
 
-  def update_documents
-    manual.sections.each do |document|
+  def update_sections
+    manual.sections.each do |section|
       # a no-op update will force a new draft if we need it
-      document.update({})
+      section.update({})
     end
   end
 

@@ -12,15 +12,15 @@ class PublishingApiDraftManualWithSectionsExporter
       organisation, manual, update_type: update_type
     ).call
 
-    manual.sections.each do |document|
-      next if !document.needs_exporting? && action != :republish
+    manual.sections.each do |section|
+      next if !section.needs_exporting? && action != :republish
 
       SectionPublishingAPILinksExporter.new(
-        organisation, manual, document
+        organisation, manual, section
       ).call
 
       SectionPublishingAPIExporter.new(
-        organisation, manual, document, update_type: update_type
+        organisation, manual, section, update_type: update_type
       ).call
     end
   end

@@ -39,22 +39,22 @@ RSpec.describe VersionedManualRepository do
       end
 
       it "has the first draft of the section editions as Section instances attached" do
-        documents = subject.sections.to_a
-        expect(documents.size).to eq 2
+        sections = subject.sections.to_a
+        expect(sections.size).to eq 2
 
-        document_1 = documents[0]
-        expect(document_1).to be_a ::Section
-        expect(document_1.id).to eq "12345"
-        expect(document_1).to be_draft
-        expect(document_1.version_number).to eq 1
-        expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+        section_1 = sections[0]
+        expect(section_1).to be_a ::Section
+        expect(section_1.id).to eq "12345"
+        expect(section_1).to be_draft
+        expect(section_1.version_number).to eq 1
+        expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-        document_2 = documents[1]
-        expect(document_2).to be_a ::Section
-        expect(document_2.id).to eq "67890"
-        expect(document_2).to be_draft
-        expect(document_2.version_number).to eq 1
-        expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+        section_2 = sections[1]
+        expect(section_2).to be_a ::Section
+        expect(section_2.id).to eq "67890"
+        expect(section_2).to be_draft
+        expect(section_2.version_number).to eq 1
+        expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
       end
     end
   end
@@ -81,22 +81,22 @@ RSpec.describe VersionedManualRepository do
       end
 
       it "has the published version of the section editions as Section instances attached" do
-        documents = subject.sections.to_a
-        expect(documents.size).to eq 2
+        sections = subject.sections.to_a
+        expect(sections.size).to eq 2
 
-        document_1 = documents[0]
-        expect(document_1).to be_a ::Section
-        expect(document_1.id).to eq "12345"
-        expect(document_1).to be_published
-        expect(document_1.version_number).to eq 1
-        expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+        section_1 = sections[0]
+        expect(section_1).to be_a ::Section
+        expect(section_1.id).to eq "12345"
+        expect(section_1).to be_published
+        expect(section_1.version_number).to eq 1
+        expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-        document_2 = documents[1]
-        expect(document_2).to be_a ::Section
-        expect(document_2.id).to eq "67890"
-        expect(document_2).to be_published
-        expect(document_2.version_number).to eq 1
-        expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+        section_2 = sections[1]
+        expect(section_2).to be_a ::Section
+        expect(section_2.id).to eq "67890"
+        expect(section_2).to be_published
+        expect(section_2.version_number).to eq 1
+        expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
       end
     end
 
@@ -164,22 +164,22 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.sections.to_a
-          expect(documents.size).to eq 2
+          sections = subject.sections.to_a
+          expect(sections.size).to eq 2
 
-          document_1 = documents[0]
-          expect(document_1).to be_a ::Section
-          expect(document_1.id).to eq "12345"
-          expect(document_1).to be_published
-          expect(document_1.version_number).to eq 1
-          expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section_1 = sections[0]
+          expect(section_1).to be_a ::Section
+          expect(section_1.id).to eq "12345"
+          expect(section_1).to be_published
+          expect(section_1.version_number).to eq 1
+          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          document_2 = documents[1]
-          expect(document_2).to be_a ::Section
-          expect(document_2.id).to eq "67890"
-          expect(document_2).to be_published
-          expect(document_2.version_number).to eq 1
-          expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section_2 = sections[1]
+          expect(section_2).to be_a ::Section
+          expect(section_2.id).to eq "67890"
+          expect(section_2).to be_published
+          expect(section_2.version_number).to eq 1
+          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
 
@@ -195,22 +195,22 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the new drafts of the section editions as Section instances attached" do
-          documents = subject.sections.to_a
-          expect(documents.size).to eq 2
+          sections = subject.sections.to_a
+          expect(sections.size).to eq 2
 
-          document_1 = documents[0]
-          expect(document_1).to be_a ::Section
-          expect(document_1.id).to eq "12345"
-          expect(document_1).to be_draft
-          expect(document_1.version_number).to eq 2
-          expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section_1 = sections[0]
+          expect(section_1).to be_a ::Section
+          expect(section_1.id).to eq "12345"
+          expect(section_1).to be_draft
+          expect(section_1.version_number).to eq 2
+          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          document_2 = documents[1]
-          expect(document_2).to be_a ::Section
-          expect(document_2.id).to eq "67890"
-          expect(document_2).to be_draft
-          expect(document_2.version_number).to eq 2
-          expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section_2 = sections[1]
+          expect(section_2).to be_a ::Section
+          expect(section_2.id).to eq "67890"
+          expect(section_2).to be_draft
+          expect(section_2.version_number).to eq 2
+          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
     end
@@ -231,22 +231,22 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.sections.to_a
-          expect(documents.size).to eq 2
+          sections = subject.sections.to_a
+          expect(sections.size).to eq 2
 
-          document_1 = documents[0]
-          expect(document_1).to be_a ::Section
-          expect(document_1.id).to eq "12345"
-          expect(document_1).to be_published
-          expect(document_1.version_number).to eq 1
-          expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section_1 = sections[0]
+          expect(section_1).to be_a ::Section
+          expect(section_1.id).to eq "12345"
+          expect(section_1).to be_published
+          expect(section_1.version_number).to eq 1
+          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          document_2 = documents[1]
-          expect(document_2).to be_a ::Section
-          expect(document_2.id).to eq "67890"
-          expect(document_2).to be_published
-          expect(document_2.version_number).to eq 1
-          expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section_2 = sections[1]
+          expect(section_2).to be_a ::Section
+          expect(section_2.id).to eq "67890"
+          expect(section_2).to be_published
+          expect(section_2.version_number).to eq 1
+          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
 
@@ -262,22 +262,22 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.sections.to_a
-          expect(documents.size).to eq 2
+          sections = subject.sections.to_a
+          expect(sections.size).to eq 2
 
-          document_1 = documents[0]
-          expect(document_1).to be_a ::Section
-          expect(document_1.id).to eq "12345"
-          expect(document_1).to be_published
-          expect(document_1.version_number).to eq 1
-          expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section_1 = sections[0]
+          expect(section_1).to be_a ::Section
+          expect(section_1.id).to eq "12345"
+          expect(section_1).to be_published
+          expect(section_1.version_number).to eq 1
+          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          document_2 = documents[1]
-          expect(document_2).to be_a ::Section
-          expect(document_2.id).to eq "67890"
-          expect(document_2).to be_published
-          expect(document_2.version_number).to eq 1
-          expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section_2 = sections[1]
+          expect(section_2).to be_a ::Section
+          expect(section_2.id).to eq "67890"
+          expect(section_2).to be_published
+          expect(section_2.version_number).to eq 1
+          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
     end
@@ -299,22 +299,22 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          documents = subject.sections.to_a
-          expect(documents.size).to eq 2
+          sections = subject.sections.to_a
+          expect(sections.size).to eq 2
 
-          document_1 = documents[0]
-          expect(document_1).to be_a ::Section
-          expect(document_1.id).to eq "12345"
-          expect(document_1).to be_published
-          expect(document_1.version_number).to eq 1
-          expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section_1 = sections[0]
+          expect(section_1).to be_a ::Section
+          expect(section_1.id).to eq "12345"
+          expect(section_1).to be_published
+          expect(section_1.version_number).to eq 1
+          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          document_2 = documents[1]
-          expect(document_2).to be_a ::Section
-          expect(document_2.id).to eq "67890"
-          expect(document_2).to be_published
-          expect(document_2.version_number).to eq 1
-          expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section_2 = sections[1]
+          expect(section_2).to be_a ::Section
+          expect(section_2.id).to eq "67890"
+          expect(section_2).to be_published
+          expect(section_2.version_number).to eq 1
+          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
 
@@ -330,22 +330,22 @@ RSpec.describe VersionedManualRepository do
         end
 
         it "has correct draft or published version of the section editions as Section instances attached" do
-          documents = subject.sections.to_a
-          expect(documents.size).to eq 2
+          sections = subject.sections.to_a
+          expect(sections.size).to eq 2
 
-          document_1 = documents[0]
-          expect(document_1).to be_a ::Section
-          expect(document_1.id).to eq "12345"
-          expect(document_1).to be_published
-          expect(document_1.version_number).to eq 1
-          expect(document_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section_1 = sections[0]
+          expect(section_1).to be_a ::Section
+          expect(section_1.id).to eq "12345"
+          expect(section_1).to be_published
+          expect(section_1.version_number).to eq 1
+          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          document_2 = documents[1]
-          expect(document_2).to be_a ::Section
-          expect(document_2.id).to eq "67890"
-          expect(document_2).to be_draft
-          expect(document_2.version_number).to eq 2
-          expect(document_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section_2 = sections[1]
+          expect(section_2).to be_a ::Section
+          expect(section_2.id).to eq "67890"
+          expect(section_2).to be_draft
+          expect(section_2.version_number).to eq 2
+          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
     end

@@ -19,27 +19,27 @@ class AttachmentReporting
 
       unique_pdf_attachment_file_ids_for_manual = Set.new
 
-      # Rather than examine each manual edition and its set of document editions and attachments in turn,
+      # Rather than examine each manual edition and its set of section editions and attachments in turn,
       # we instead get all unique document ids associated with this manual, then walk through
-      # the editions of these documents in version order to find unique PDF attachments and their
+      # the editions of these sections in version order to find unique PDF attachments and their
       # publication times.
       all_unique_document_ids_for_manual(manual).each do |document_id|
-        document_editions = SectionEdition.where(document_id: document_id).order(:version_number)
+        section_editions = SectionEdition.where(document_id: document_id).order(:version_number)
 
-        document_editions.each do |document_edition|
-          next if document_edition_never_published?(document_edition)
+        section_editions.each do |section_edition|
+          next if section_edition_never_published?(section_edition)
 
-          document_edition.attachments.each do |attachment|
+          section_edition.attachments.each do |attachment|
             next if unique_pdf_attachment_file_ids_for_manual.include? attachment.file_id
             next unless report_attachment_extension_matches?(attachment.filename)
 
             organisation_published_pdfs_counts_hash[manual.organisation_slug][0] += 1
 
-            if document_published_after_date?(document_edition, @first_period_start_date)
+            if section_published_after_date?(section_edition, @first_period_start_date)
               organisation_published_pdfs_counts_hash[manual.organisation_slug][1] += 1
             end
 
-            if document_published_after_date?(document_edition, last_time_period_start_date)
+            if section_published_after_date?(section_edition, last_time_period_start_date)
               organisation_published_pdfs_counts_hash[manual.organisation_slug][2] += 1
             end
 
@@ -71,12 +71,12 @@ private
     @_last_time_period_start_date ||= @last_time_period_days.days.ago
   end
 
-  def document_published_after_date?(document_edition, date)
-    (document_edition.exported_at || document_edition.updated_at) >= date
+  def section_published_after_date?(section_edition, date)
+    (section_edition.exported_at || section_edition.updated_at) >= date
   end
 
-  def document_edition_never_published?(document_edition)
-    !POST_PUBLICATION_STATES.include?(document_edition.state)
+  def section_edition_never_published?(section_edition)
+    !POST_PUBLICATION_STATES.include?(section_edition.state)
   end
 
   def all_unique_document_ids_for_manual(manual)

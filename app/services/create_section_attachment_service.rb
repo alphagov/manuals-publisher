@@ -5,19 +5,19 @@ class CreateSectionAttachmentService
   end
 
   def call
-    attachment = document.add_attachment(attachment_params)
+    attachment = section.add_attachment(attachment_params)
 
     manual_repository.store(manual)
 
-    [manual, document, attachment]
+    [manual, section, attachment]
   end
 
 private
 
   attr_reader :manual_repository, :context
 
-  def document
-    @document ||= manual.sections.find { |d| d.id == document_id }
+  def section
+    @section ||= manual.sections.find { |s| s.id == section_id }
   end
 
   def manual
@@ -32,7 +32,7 @@ private
     context.params.fetch("manual_id")
   end
 
-  def document_id
+  def section_id
     context.params.fetch("section_id")
   end
 end

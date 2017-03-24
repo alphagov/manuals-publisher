@@ -5,12 +5,12 @@ class RemoveSectionService
   end
 
   def call
-    raise SectionNotFoundError.new(document_id) unless document.present?
+    raise SectionNotFoundError.new(section_id) unless section.present?
 
-    document.update(change_note_params)
+    section.update(change_note_params)
 
-    if document.valid?
-      # Removing a document always makes the manual a draft
+    if section.valid?
+      # Removing a section always makes the manual a draft
       manual.draft
 
       remove
@@ -19,7 +19,7 @@ class RemoveSectionService
       discard_section_via_publishing_api
     end
 
-    [manual, document]
+    [manual, section]
   end
 
 private
@@ -27,15 +27,15 @@ private
   attr_reader :manual_repository, :context
 
   def remove
-    manual.remove_section(document_id)
+    manual.remove_section(section_id)
   end
 
   def persist
     manual_repository.store(manual)
   end
 
-  def document
-    @document ||= manual.sections.find { |d| d.id == document_id }
+  def section
+    @section ||= manual.sections.find { |s| s.id == section_id }
   end
 
   def manual
@@ -44,7 +44,7 @@ private
     raise ManualNotFoundError.new(manual_id)
   end
 
-  def document_id
+  def section_id
     context.params.fetch("id")
   end
 
@@ -53,15 +53,15 @@ private
   end
 
   def change_note_params
-    document_params = context.params.fetch("section")
+    section_params = context.params.fetch("section")
     {
-      "minor_update" => document_params.fetch("minor_update", "0"),
-      "change_note" => document_params.fetch("change_note", ""),
+      "minor_update" => section_params.fetch("minor_update", "0"),
+      "change_note" => section_params.fetch("change_note", ""),
     }
   end
 
   def discard_section_via_publishing_api
-    PublishingApiDraftSectionDiscarder.new.call(document, manual)
+    PublishingApiDraftSectionDiscarder.new.call(section, manual)
   end
 
   def export_draft_manual_to_publishing_api
