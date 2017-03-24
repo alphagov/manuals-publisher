@@ -135,7 +135,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   end
 
   it "builds logs for major updates in the 'archived' and 'published' status" do
-    publication_logs_for_supplied_slug = PublicationLog.with_slug_prefix(manual_slug).order_by(:_id, :asc)
+    publication_logs_for_supplied_slug = PublicationLog.with_slug_prefix(manual_slug).order_by([:_id, :asc])
 
     expect(publication_logs_for_supplied_slug.count).to eq 5
 
