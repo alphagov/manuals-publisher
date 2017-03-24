@@ -12,7 +12,6 @@ test:
 
 production:
   database: govuk_content_production
-  refresh_mode: :sync
   logger: false
   use_activesupport_time_zone: true
   hosts:
