@@ -101,7 +101,7 @@ private
 
   def only_section_ids_for(collection)
     collection.all
-      .order_by([:updated_at, "desc"])
+      .order_by([:updated_at, :desc])
       .only(:document_id, :updated_at)
       .map(&:document_id)
       .uniq
