@@ -70,9 +70,11 @@ development:
 test:
   sessions:
     default:
-      database: manuals_publisher_test
-      hosts:
-        - localhost:27017
+      # Don't want this interfering with a concurrent publisher/content_api test run
+      # database: manuals_publisher_test
+      # hosts:
+      #   - localhost:27017
+      uri: 'mongodb://localhost/govuk_content_manuals_publisher_test'
       options:
         consistency: :strong
         # In the test environment we lower the retries and retry interval to
