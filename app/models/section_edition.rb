@@ -39,9 +39,9 @@ class SectionEdition
 
   scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
 
-  index "section_id"
-  index "state"
-  index "updated_at"
+  index section_id: 1
+  index state: 1
+  index updated_at: 1
 
   def build_attachment(attributes)
     attachments.build(
