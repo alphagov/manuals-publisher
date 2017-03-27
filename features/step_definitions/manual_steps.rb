@@ -310,9 +310,9 @@ end
 Then(/^the manual and its new section are published$/) do
   check_manual_and_sections_were_published(
     @manual,
-    @new_document,
+    @new_section,
     @manual_fields,
-    section_fields(@new_document),
+    section_fields(@new_section),
   )
 end
 
@@ -566,7 +566,7 @@ When(/^I add another section to the manual$/) do
 
   create_section(@manual_title, fields)
 
-  @new_document = most_recently_created_manual.sections.to_a.last
+  @new_section = most_recently_created_manual.sections.to_a.last
 end
 
 Then(/^I see no visible change note in the section edit form$/) do
