@@ -563,7 +563,7 @@ module ManualHelpers
     expect(page).to have_text("You don't have permission to withdraw manual sections.")
   end
 
-  def change_notes_sent_to_publishing_api_include_document(document)
+  def change_notes_sent_to_publishing_api_include_section(document)
     ->(request) do
       data = JSON.parse(request.body)
       change_notes = data["details"]["change_notes"]

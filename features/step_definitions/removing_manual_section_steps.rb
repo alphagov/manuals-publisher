@@ -63,7 +63,7 @@ Then(/^the removed section change note is included$/) do
 
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
-    with_matcher: change_notes_sent_to_publishing_api_include_document(@removed_section),
+    with_matcher: change_notes_sent_to_publishing_api_include_section(@removed_section),
     number_of_drafts: 1
   )
 end
@@ -74,6 +74,6 @@ Then(/^the removed section change note is not included$/) do
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
     number_of_drafts: 0,
-    with_matcher: change_notes_sent_to_publishing_api_include_document(@removed_section)
+    with_matcher: change_notes_sent_to_publishing_api_include_section(@removed_section)
   )
 end
