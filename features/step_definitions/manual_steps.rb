@@ -260,12 +260,12 @@ When(/^I add another section and publish the manual later$/) do
 end
 
 Then(/^the manual and all its sections are published$/) do
-  @sections.each do |document|
+  @sections.each do |section|
     check_manual_and_sections_were_published(
       @manual,
-      document,
+      section,
       @manual_fields,
-      section_fields(document),
+      section_fields(section),
     )
   end
 end
@@ -278,11 +278,11 @@ end
 
 Then(/^the updated section is available to preview$/) do
   check_section_is_drafted_to_publishing_api(@updated_section.id)
-  sections = @sections.map do |document|
+  sections = @sections.map do |section|
     {
-      title: document == @updated_section ? @updated_fields[:section_title] : document.title,
-      description: document == @updated_section ? @updated_fields[:section_summary] : document.summary,
-      base_path: "/#{document.slug}",
+      title: section == @updated_section ? @updated_fields[:section_title] : section.title,
+      description: section == @updated_section ? @updated_fields[:section_summary] : section.summary,
+      base_path: "/#{section.slug}",
     }
   end
   manual_table_of_contents_attributes = {
@@ -302,8 +302,8 @@ Then(/^the updated section is available to preview$/) do
 end
 
 Then(/^the sections that I didn't edit were not republished$/) do
-  @sections.reject { |d| d.id == @updated_section.id }.each do |document|
-    check_section_was_not_published(document)
+  @sections.reject { |s| s.id == @updated_section.id }.each do |section|
+    check_section_was_not_published(section)
   end
 end
 
@@ -355,7 +355,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
 
   @manual = create_manual_without_ui(@manual_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
-  doc_1 = create_section_without_ui(
+  sec_1 = create_section_without_ui(
     @manual,
     {
       title: "1st example section",
@@ -364,7 +364,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
     },
     organisation_slug: GDS::SSO.test_user.organisation_slug
   )
-  doc_2 = create_section_without_ui(
+  sec_2 = create_section_without_ui(
     @manual,
     {
       title: "2nd example section",
@@ -373,7 +373,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
     },
     organisation_slug: GDS::SSO.test_user.organisation_slug
   )
-  @sections = [doc_1, doc_2]
+  @sections = [sec_1, sec_2]
 
   publish_manual_without_ui(@manual)
 
@@ -523,9 +523,9 @@ Then(/^the section is published as a minor update including a change note draft$
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do
-  @sections.each do |document|
+  @sections.each do |section|
     go_to_manual_page(@manual.title)
-    click_on document.title
+    click_on section.title
     click_on "Edit section"
 
     check_that_change_note_fields_are_present
@@ -570,8 +570,8 @@ When(/^I add another section to the manual$/) do
 end
 
 Then(/^I see no visible change note in the section edit form$/) do
-  document = @sections.first
-  check_change_note_value(@manual_title, document.title, "")
+  section = @sections.first
+  check_change_note_value(@manual_title, section.title, "")
 end
 
 When(/^I add invalid HTML to the section body$/) do
@@ -691,7 +691,7 @@ When(/^I reorder the sections$/) do
 end
 
 Then(/^the order of the sections in the manual should have been updated$/) do
-  @reordered_section_attributes.map { |doc| doc[:title] }.each.with_index do |title, index|
+  @reordered_section_attributes.map { |sec| sec[:title] }.each.with_index do |title, index|
     expect(page).to have_css(".document-list li.document:nth-child(#{index + 1}) .document-title", text: title)
   end
 end
@@ -702,11 +702,11 @@ Then(/^the new order should be visible in the preview environment$/) do
       child_section_groups: [
         {
           title: "Contents",
-          child_sections: @reordered_section_attributes.map do |doc|
+          child_sections: @reordered_section_attributes.map do |sec|
             {
-              title: doc[:fields][:section_title],
-              description: doc[:fields][:section_summary],
-              base_path: "/#{doc[:slug]}",
+              title: sec[:fields][:section_title],
+              description: sec[:fields][:section_summary],
+              base_path: "/#{sec[:slug]}",
             }
           end
         }
