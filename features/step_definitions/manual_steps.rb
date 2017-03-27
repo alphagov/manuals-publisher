@@ -684,14 +684,14 @@ When(/^I reorder the sections$/) do
   elems = page.all(".reorderable-document-list li.ui-sortable-handle")
   elems[0].drag_to(elems[1])
   click_on("Save section order")
-  @reordered_document_attributes = [
+  @reordered_section_attributes = [
     @attributes_for_sections[1],
     @attributes_for_sections[0]
   ]
 end
 
 Then(/^the order of the sections in the manual should have been updated$/) do
-  @reordered_document_attributes.map { |doc| doc[:title] }.each.with_index do |title, index|
+  @reordered_section_attributes.map { |doc| doc[:title] }.each.with_index do |title, index|
     expect(page).to have_css(".document-list li.document:nth-child(#{index + 1}) .document-title", text: title)
   end
 end
@@ -702,7 +702,7 @@ Then(/^the new order should be visible in the preview environment$/) do
       child_section_groups: [
         {
           title: "Contents",
-          child_sections: @reordered_document_attributes.map do |doc|
+          child_sections: @reordered_section_attributes.map do |doc|
             {
               title: doc[:fields][:section_title],
               description: doc[:fields][:section_summary],
