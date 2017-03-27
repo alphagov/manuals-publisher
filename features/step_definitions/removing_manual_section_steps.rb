@@ -9,23 +9,23 @@ When(/^I remove the edited section from the manual$/) do
 end
 
 When(/^I remove one of the sections from the manual$/) do
-  withdraw_section(@manual_fields.fetch(:title), @documents.first.title)
-  @removed_document = @documents.first
+  withdraw_section(@manual_fields.fetch(:title), @sections.first.title)
+  @removed_document = @sections.first
 end
 
 When(/^I remove one of the sections from the manual with a major update omitting the note$/) do
-  withdraw_section(@manual_fields.fetch(:title), @documents.first.title, minor_update: false)
-  @removed_document = @documents.first
+  withdraw_section(@manual_fields.fetch(:title), @sections.first.title, minor_update: false)
+  @removed_document = @sections.first
 end
 
 When(/^I remove one of the sections from the manual with a major update$/) do
-  withdraw_section(@manual_fields.fetch(:title), @documents.first.title, minor_update: false, change_note: "Removing #{@documents.first.title} section as content is covered elsewhere.")
-  @removed_document = @documents.first
+  withdraw_section(@manual_fields.fetch(:title), @sections.first.title, minor_update: false, change_note: "Removing #{@sections.first.title} section as content is covered elsewhere.")
+  @removed_document = @sections.first
 end
 
 When(/^I remove one of the sections from the manual with a minor update$/) do
-  withdraw_section(@manual_fields.fetch(:title), @documents.first.title, minor_update: true, change_note: "Should never have published this section, let's pretend we never did with this secret removal.")
-  @removed_document = @documents.first
+  withdraw_section(@manual_fields.fetch(:title), @sections.first.title, minor_update: true, change_note: "Should never have published this section, let's pretend we never did with this secret removal.")
+  @removed_document = @sections.first
 end
 
 Then(/^the section is removed from the manual$/) do

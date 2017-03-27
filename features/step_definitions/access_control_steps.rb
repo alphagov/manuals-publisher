@@ -54,5 +54,5 @@ Then(/^I cannot publish manuals$/) do
 end
 
 Then(/^I cannot remove a section from the manual$/) do
-  check_section_withdraw_link_not_visible(@manual, @documents.first)
+  check_section_withdraw_link_not_visible(@manual, @sections.first)
 end

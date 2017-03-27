@@ -62,8 +62,8 @@ Given(/^a draft manual exists with some sections$/) do
   )
 
   @manual = most_recently_created_manual
-  @documents = @manual.sections.to_a
-  @document = @documents.first
+  @sections = @manual.sections.to_a
+  @document = @sections.first
 
   WebMock::RequestRegistry.instance.reset!
 end
@@ -205,8 +205,8 @@ Given(/^a draft section exists for the manual$/) do
 
   @document = most_recently_created_manual.sections.to_a.last
 
-  @documents ||= []
-  @documents << @document
+  @sections ||= []
+  @sections << @document
 
   WebMock::RequestRegistry.instance.reset!
 end
@@ -260,7 +260,7 @@ When(/^I add another section and publish the manual later$/) do
 end
 
 Then(/^the manual and all its sections are published$/) do
-  @documents.each do |document|
+  @sections.each do |document|
     check_manual_and_sections_were_published(
       @manual,
       document,
@@ -278,7 +278,7 @@ end
 
 Then(/^the updated section is available to preview$/) do
   check_section_is_drafted_to_publishing_api(@updated_document.id)
-  sections = @documents.map do |document|
+  sections = @sections.map do |document|
     {
       title: document == @updated_document ? @updated_fields[:section_title] : document.title,
       description: document == @updated_document ? @updated_fields[:section_summary] : document.summary,
@@ -302,7 +302,7 @@ Then(/^the updated section is available to preview$/) do
 end
 
 Then(/^the sections that I didn't edit were not republished$/) do
-  @documents.reject { |d| d.id == @updated_document.id }.each do |document|
+  @sections.reject { |d| d.id == @updated_document.id }.each do |document|
     check_section_was_not_published(document)
   end
 end
@@ -337,7 +337,7 @@ Given(/^a published manual exists$/) do
   )
 
   @manual = most_recently_created_manual
-  @documents = @manual.sections.to_a
+  @sections = @manual.sections.to_a
 
   publish_manual
 
@@ -373,7 +373,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
     },
     organisation_slug: GDS::SSO.test_user.organisation_slug
   )
-  @documents = [doc_1, doc_2]
+  @sections = [doc_1, doc_2]
 
   publish_manual_without_ui(@manual)
 
@@ -400,7 +400,7 @@ end
 
 When(/^I edit one of the manual's sections(?: as a major change)?$/) do
   WebMock::RequestRegistry.instance.reset!
-  @updated_document = @documents.first
+  @updated_document = @sections.first
 
   @updated_fields = {
     section_title: @updated_document.title,
@@ -416,7 +416,7 @@ end
 
 When(/^I edit one of the manual's sections without a change note$/) do
   WebMock::RequestRegistry.instance.reset!
-  @updated_document = @documents.first
+  @updated_document = @sections.first
 
   @updated_fields = {
     section_title: @updated_document.title,
@@ -432,7 +432,7 @@ end
 
 When(/^I edit one of the manual's sections as a minor change$/) do
   WebMock::RequestRegistry.instance.reset!
-  @updated_document = @documents.first
+  @updated_document = @sections.first
 
   @updated_fields = {
     section_title: @updated_document.title,
@@ -523,7 +523,7 @@ Then(/^the section is published as a minor update including a change note draft$
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do
-  @documents.each do |document|
+  @sections.each do |document|
     go_to_manual_page(@manual.title)
     click_on document.title
     click_on "Edit section"
@@ -570,7 +570,7 @@ When(/^I add another section to the manual$/) do
 end
 
 Then(/^I see no visible change note in the section edit form$/) do
-  document = @documents.first
+  document = @sections.first
   check_change_note_value(@manual_title, document.title, "")
 end
 
@@ -668,7 +668,7 @@ When(/^a DevOps specialist withdraws the manual for me$/) do
 end
 
 Then(/^the manual should be withdrawn$/) do
-  check_manual_is_withdrawn(@manual, @documents)
+  check_manual_is_withdrawn(@manual, @sections)
 end
 
 Then(/^the manual should belong to "(.*?)"$/) do |organisation_slug|

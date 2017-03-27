@@ -21,7 +21,7 @@ RSpec.describe "Republishing manuals", type: :feature do
 
   def create_manual_with_sections(published: true)
     manual = create_manual_without_ui(manual_fields)
-    @documents = create_sections_for_manual_without_ui(manual: manual, count: 2)
+    @sections = create_sections_for_manual_without_ui(manual: manual, count: 2)
 
     # Re-fetch manual to include documents
     @manual = manual_repository.fetch(manual.id)
@@ -45,7 +45,7 @@ RSpec.describe "Republishing manuals", type: :feature do
   def edit_manual_and_sections
     @edited_manual = edit_manual_without_ui(@manual, edited_manual_fields)
 
-    @edited_documents = @documents.map do |document|
+    @edited_documents = @sections.map do |document|
       edit_section_without_ui(@manual, document, edited_section_fields(document))
     end
 
@@ -70,7 +70,7 @@ RSpec.describe "Republishing manuals", type: :feature do
       })
       check_manual_is_published_to_publishing_api(@manual.id)
       check_manual_is_published_to_rummager(@manual.slug, manual_fields)
-      @documents.each do |document|
+      @sections.each do |document|
         check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
           title: document.attributes[:title],
           description: document.attributes[:summary],
@@ -81,7 +81,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "does not change the exported timestamp" do
-      expect(@documents.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
+      expect(@sections.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe "Republishing manuals", type: :feature do
       })
       check_manual_is_not_published_to_publishing_api(@manual.id)
       check_manual_is_not_published_to_rummager(@manual.slug)
-      @documents.each do |document|
+      @sections.each do |document|
         check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
           title: document.attributes[:title],
           description: document.attributes[:summary],
@@ -110,7 +110,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "does not change the exported timestamp" do
-      expect(@documents.first.latest_edition.reload.exported_at).to be_nil
+      expect(@sections.first.latest_edition.reload.exported_at).to be_nil
     end
   end
 
@@ -130,7 +130,7 @@ RSpec.describe "Republishing manuals", type: :feature do
       })
       check_manual_is_published_to_publishing_api(@manual.id)
       check_manual_is_published_to_rummager(@manual.slug, manual_fields)
-      @documents.each do |document|
+      @sections.each do |document|
         edited_fields = edited_section_fields(document)
         check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
           title: edited_fields[:title],
@@ -167,7 +167,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "does not set the exported timestamp of the previously published version of the section" do
-      expect(@documents.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
+      expect(@sections.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
     end
   end
 end
