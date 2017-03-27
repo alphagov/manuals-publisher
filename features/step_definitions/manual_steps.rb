@@ -56,7 +56,7 @@ Given(/^a draft manual exists with some sections$/) do
 
   create_manual(@manual_fields)
 
-  @attributes_for_documents = create_sections_for_manual(
+  @attributes_for_sections = create_sections_for_manual(
     manual_fields: @manual_fields,
     count: 2,
   )
@@ -685,8 +685,8 @@ When(/^I reorder the sections$/) do
   elems[0].drag_to(elems[1])
   click_on("Save section order")
   @reordered_document_attributes = [
-    @attributes_for_documents[1],
-    @attributes_for_documents[0]
+    @attributes_for_sections[1],
+    @attributes_for_sections[0]
   ]
 end
 
