@@ -60,9 +60,9 @@ module ManualHelpers
       manual_repository: organisational_manual_repository,
       context: create_service_context,
     )
-    _, document = service.call
+    _, section = service.call
 
-    document
+    section
   end
 
   def edit_manual(manual_title, new_fields)
@@ -101,7 +101,7 @@ module ManualHelpers
     save_as_draft
   end
 
-  def edit_section_without_ui(manual, document, fields, organisation_slug: "ministry-of-tea")
+  def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
     manual_repository_factory = RepositoryRegistry.new.
       organisation_scoped_manual_repository_factory
     organisational_manual_repository = manual_repository_factory.call(organisation_slug)
@@ -109,7 +109,7 @@ module ManualHelpers
     service_context = OpenStruct.new(
       params: {
         "manual_id" => manual.id,
-        "id" => document.id,
+        "id" => section.id,
         "section" => fields,
       }
     )
@@ -118,9 +118,9 @@ module ManualHelpers
       manual_repository: organisational_manual_repository,
       context: service_context,
     )
-    _, document = service.call
+    _, section = service.call
 
-    document
+    section
   end
 
   def edit_manual_original_publication_date(manual_title)
@@ -193,13 +193,13 @@ module ManualHelpers
   def check_section_exists(manual_id, section_id)
     manual = manual_repository.fetch(manual_id)
 
-    manual.sections.any? { |document| document.id == section_id }
+    manual.sections.any? { |section| section.id == section_id }
   end
 
   def check_section_was_removed(manual_id, section_id)
     manual = manual_repository.fetch(manual_id)
 
-    manual.removed_sections.any? { |document| document.id == section_id }
+    manual.removed_sections.any? { |section| section.id == section_id }
   end
 
   def go_to_edit_page_for_manual(manual_title)
@@ -226,12 +226,12 @@ module ManualHelpers
     click_link manual_title
   end
 
-  def check_manual_and_sections_were_published(manual, document, manual_attrs, document_attrs)
+  def check_manual_and_sections_were_published(manual, section, manual_attrs, section_attrs)
     check_manual_is_published_to_publishing_api(manual.id)
-    check_section_is_published_to_publishing_api(document.id)
+    check_section_is_published_to_publishing_api(section.id)
 
     check_manual_is_published_to_rummager(manual.slug, manual_attrs)
-    check_section_is_published_to_rummager(document.slug, document_attrs, manual_attrs)
+    check_section_is_published_to_rummager(section.slug, section_attrs, manual_attrs)
   end
 
   def check_manual_was_published(manual)
@@ -242,25 +242,25 @@ module ManualHelpers
     check_manual_is_not_published_to_publishing_api(manual.id)
   end
 
-  def check_section_was_published(document)
-    check_section_is_published_to_publishing_api(document.id)
+  def check_section_was_published(section)
+    check_section_is_published_to_publishing_api(section.id)
   end
 
-  def check_section_was_not_published(document)
-    check_section_is_not_published_to_publishing_api(document.id)
+  def check_section_was_not_published(section)
+    check_section_is_not_published_to_publishing_api(section.id)
   end
 
-  def check_section_was_withdrawn_with_redirect(document, redirect_path)
-    check_section_is_unpublished_from_publishing_api(document.id, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
-    check_section_is_withdrawn_from_rummager(document)
+  def check_section_was_withdrawn_with_redirect(section, redirect_path)
+    check_section_is_unpublished_from_publishing_api(section.id, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
+    check_section_is_withdrawn_from_rummager(section)
   end
 
   def section_repository(manual)
     RepositoryRegistry.new.section_repository_factory.call(manual)
   end
 
-  def check_section_is_archived_in_db(manual, document_id)
-    expect(section_repository(manual).fetch(document_id)).to be_withdrawn
+  def check_section_is_archived_in_db(manual, section_id)
+    expect(section_repository(manual).fetch(section_id)).to be_withdrawn
   end
 
   def check_manual_is_published_to_rummager(slug, attrs)
@@ -469,33 +469,33 @@ module ManualHelpers
     withdrawer.execute(manual.id)
   end
 
-  def check_manual_is_withdrawn(manual, documents)
+  def check_manual_is_withdrawn(manual, sections)
     assert_publishing_api_unpublish(manual.id, type: "gone")
-    documents.each { |d| assert_publishing_api_unpublish(d.id, type: "gone") }
-    check_manual_is_withdrawn_from_rummager(manual, documents)
+    sections.each { |s| assert_publishing_api_unpublish(s.id, type: "gone") }
+    check_manual_is_withdrawn_from_rummager(manual, sections)
   end
 
-  def check_manual_is_withdrawn_from_rummager(manual, documents)
+  def check_manual_is_withdrawn_from_rummager(manual, sections)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
         ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
         "/#{manual.slug}",
       )
 
-    documents.each do |document|
+    sections.each do |section|
       expect(fake_rummager).to have_received(:delete_document)
         .with(
           SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
-          "/#{document.slug}",
+          "/#{section.slug}",
         )
     end
   end
 
-  def check_section_is_withdrawn_from_rummager(document)
+  def check_section_is_withdrawn_from_rummager(section)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
         SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
-        "/#{document.slug}",
+        "/#{section.slug}",
       )
   end
 
@@ -506,7 +506,7 @@ module ManualHelpers
   end
 
   def create_sections_for_manual(count:, manual_fields:)
-    attributes_for_documents = (1..count).map do |n|
+    attributes_for_sections = (1..count).map do |n|
       title = "Section #{n}"
 
       {
@@ -520,11 +520,11 @@ module ManualHelpers
       }
     end
 
-    attributes_for_documents.each do |attributes|
+    attributes_for_sections.each do |attributes|
       create_section(manual_fields.fetch(:title), attributes[:fields])
     end
 
-    attributes_for_documents
+    attributes_for_sections
   end
 
   def create_sections_for_manual_without_ui(manual:, count:)
@@ -543,34 +543,34 @@ module ManualHelpers
     RepositoryRegistry.new.manual_repository.all.first
   end
 
-  def section_fields(document)
+  def section_fields(section)
     {
-      section_title: document.title,
-      section_summary: document.summary,
-      section_body: document.body,
+      section_title: section.title,
+      section_summary: section.summary,
+      section_body: section.body,
     }
   end
 
-  def check_section_withdraw_link_not_visible(manual, document)
+  def check_section_withdraw_link_not_visible(manual, section)
     # Don't give them the option...
     go_to_manual_page(manual.title)
-    click_on document.title
+    click_on section.title
     expect(page).not_to have_button("Withdraw")
 
     # ...and if they get here anyway, throw them out
-    visit withdraw_manual_section_path(manual, document)
-    expect(current_path).to eq manual_section_path(manual.id, document.id)
+    visit withdraw_manual_section_path(manual, section)
+    expect(current_path).to eq manual_section_path(manual.id, section.id)
     expect(page).to have_text("You don't have permission to withdraw manual sections.")
   end
 
-  def change_notes_sent_to_publishing_api_include_section(document)
+  def change_notes_sent_to_publishing_api_include_section(section)
     ->(request) do
       data = JSON.parse(request.body)
       change_notes = data["details"]["change_notes"]
       change_notes.detect { |change_note|
-        (change_note["base_path"] == "/#{document.slug}") &&
-          (change_note["title"] == document.title) &&
-          (change_note["change_note"] == document.change_note)
+        (change_note["base_path"] == "/#{section.slug}") &&
+          (change_note["title"] == section.title) &&
+          (change_note["change_note"] == section.change_note)
       }.present?
     end
   end
@@ -590,11 +590,11 @@ module ManualHelpers
     check_manual_was_published(manual)
   end
 
-  def check_section_is_drafted_and_published_with_first_published_date_only(document, expected_date, how_many_times: 1)
+  def check_section_is_drafted_and_published_with_first_published_date_only(section, expected_date, how_many_times: 1)
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
-      document.id,
+      section.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.iso8601) &&
@@ -603,7 +603,7 @@ module ManualHelpers
       number_of_drafts: how_many_times
     )
 
-    check_section_was_published(document)
+    check_section_was_published(section)
   end
 
   def check_manual_is_drafted_and_published_with_all_public_timestamps(manual, expected_date, how_many_times: 1)
@@ -621,11 +621,11 @@ module ManualHelpers
     check_manual_was_published(manual)
   end
 
-  def check_section_is_drafted_and_published_with_all_public_timestamps(document, expected_date, how_many_times: 1)
+  def check_section_is_drafted_and_published_with_all_public_timestamps(section, expected_date, how_many_times: 1)
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
-      document.id,
+      section.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.iso8601) &&
@@ -634,7 +634,7 @@ module ManualHelpers
       number_of_drafts: how_many_times
     )
 
-    check_section_was_published(document)
+    check_section_was_published(section)
   end
 
   def check_manual_is_drafted_and_published_with_no_public_timestamps(manual, how_many_times: 1)
