@@ -20,7 +20,7 @@ describe ManualPublishingAPIExporter do
       :manual,
       id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       attributes: manual_attributes,
-      sections: documents,
+      sections: sections,
       has_ever_been_published?: manual_attributes[:ever_been_published],
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp?: false,
@@ -29,19 +29,19 @@ describe ManualPublishingAPIExporter do
 
   let(:manual_slug) { "guidance/my-first-manual" }
 
-  let(:documents) {
+  let(:sections) {
     [
       double(
-        :document,
+        :section,
         id: "60023f27-0657-4812-9339-264f1c0fd90d",
-        attributes: document_attributes,
+        attributes: section_attributes,
         minor_update?: false,
         needs_exporting?: true,
       )
     ]
   }
 
-  let(:document_attributes) {
+  let(:section_attributes) {
     {
       title: "Document title",
       summary: "This is the first section",
@@ -141,7 +141,7 @@ describe ManualPublishingAPIExporter do
     expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema(ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME)
   end
 
-  it "exports the serialized document attributes" do
+  it "exports the serialized section attributes" do
     subject.call
 
     expect(publishing_api).to have_received(:put_content).with(
@@ -324,21 +324,21 @@ describe ManualPublishingAPIExporter do
     end
   end
 
-  context "when no documents need exporting" do
-    let(:documents) {
+  context "when no sections need exporting" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: false,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: false,
           has_ever_been_published?: true,
@@ -359,21 +359,21 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when one document needs exporting and it is a minor update" do
-    let(:documents) {
+  context "when one section needs exporting and it is a minor update" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: false,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: true,
           has_ever_been_published?: true,
@@ -394,21 +394,21 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when one document needs exporting and it is a minor update that has never been published" do
-    let(:documents) {
+  context "when one section needs exporting and it is a minor update that has never been published" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: false,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: true,
           has_ever_been_published?: false,
@@ -428,21 +428,21 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when one document needs exporting and it is a major update" do
-    let(:documents) {
+  context "when one section needs exporting and it is a major update" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: false,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: true,
           has_ever_been_published?: true,
@@ -463,21 +463,21 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when multiple documents need exporting, but none are major updates" do
-    let(:documents) {
+  context "when multiple sections need exporting, but none are major updates" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: true,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: true,
           has_ever_been_published?: true,
@@ -498,21 +498,21 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when multiple documents need exporting, but none are major updates, but one has never been published" do
-    let(:documents) {
+  context "when multiple sections need exporting, but none are major updates, but one has never been published" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: true,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: true,
           has_ever_been_published?: false,
@@ -531,21 +531,21 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when multiple documents need exporting, and at least one is a major updates" do
-    let(:documents) {
+  context "when multiple sections need exporting, and at least one is a major updates" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: true,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: true,
           needs_exporting?: true,
           has_ever_been_published?: true,
@@ -566,21 +566,21 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when multiple documents need exporting, and all are major updates" do
-    let(:documents) {
+  context "when multiple sections need exporting, and all are major updates" do
+    let(:sections) {
       [
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: true,
           has_ever_been_published?: true,
         ),
         double(
-          :document,
+          :section,
           id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: document_attributes,
+          attributes: section_attributes,
           minor_update?: false,
           needs_exporting?: true,
           has_ever_been_published?: true,
