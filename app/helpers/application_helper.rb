@@ -1,14 +1,14 @@
 # encoding: UTF-8
 
 module ApplicationHelper
-  def state(document)
-    state = document.publication_state
+  def state(manual)
+    state = manual.publication_state
 
-    if %w(published withdrawn).include?(state) && document.draft?
+    if %w(published withdrawn).include?(state) && manual.draft?
       state << " with new draft"
     end
 
-    classes = if document.draft?
+    classes = if manual.draft?
                 "label label-primary"
               else
                 "label label-default"
