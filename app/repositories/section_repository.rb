@@ -11,8 +11,8 @@ class SectionRepository
     raise e.extend(NotFoundError)
   end
 
-  def initialize(section_factory:)
-    @section_factory = section_factory
+  def initialize(manual:)
+    @section_factory = SectionFactory.new(manual)
   end
 
   def all(limit = -1, offset = 0)

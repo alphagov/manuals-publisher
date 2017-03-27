@@ -47,10 +47,8 @@ class RepositoryRegistry
 
   def section_repository_factory
     ->(manual) {
-      section_factory = SectionFactory.new(manual)
-
       SectionRepository.new(
-        section_factory: section_factory,
+        manual: manual,
       )
     }
   end
