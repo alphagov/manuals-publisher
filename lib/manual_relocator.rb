@@ -62,23 +62,23 @@ private
     if old_manual.editions.any?
       # Redirect all sections of the manual we're going to remove
       # to prevent dead bookmarked URLs.
-      old_section_ids.each do |document_id|
-        editions = all_editions_of_section(document_id)
+      old_section_ids.each do |section_id|
+        editions = all_editions_of_section(section_id)
         section_slug = editions.first.slug
 
         begin
-          if old_sections_reused_in_new_manual.include? document_id
+          if old_sections_reused_in_new_manual.include? section_id
             puts "Issuing gone for content item '/#{section_slug}' as it will be reused by a section in '#{new_manual.slug}'"
-            send_gone(document_id, section_slug)
+            send_gone(section_id, section_slug)
           else
             puts "Redirecting content item '/#{section_slug}' to '/#{old_manual.slug}'"
-            publishing_api.unpublish(document_id,
+            publishing_api.unpublish(section_id,
                                      type: "redirect",
                                      alternative_path: "/#{old_manual.slug}",
                                      discard_drafts: true)
           end
         rescue GdsApi::HTTPNotFound
-          puts "Content item with content_id #{document_id} not present in the publishing API"
+          puts "Content item with content_id #{section_id} not present in the publishing API"
         end
 
         # Destroy all the editons of this manual as it's going away
@@ -102,35 +102,35 @@ private
   end
 
   def _calculate_old_sections_reused_in_new_manual
-    old_document_ids_and_section_slugs = old_section_ids.map do |document_id|
-      [document_id, most_recent_edition_of_section(document_id).slug.gsub(to_slug, "")]
+    old_section_ids_and_section_slugs = old_section_ids.map do |section_id|
+      [section_id, most_recent_edition_of_section(section_id).slug.gsub(to_slug, "")]
     end
 
-    new_section_slugs = new_section_ids.map do |document_id|
-      most_recent_edition_of_section(document_id).slug.gsub(from_slug, "")
+    new_section_slugs = new_section_ids.map do |section_id|
+      most_recent_edition_of_section(section_id).slug.gsub(from_slug, "")
     end
 
-    old_document_ids_and_section_slugs.
-      select { |_document_id, slug| new_section_slugs.include? slug }.
-      map { |document_id, _slug| document_id }
+    old_section_ids_and_section_slugs.
+      select { |_section_id, slug| new_section_slugs.include? slug }.
+      map { |section_id, _slug| section_id }
   end
 
-  def most_recent_published_edition_of_section(document_id)
-    all_editions_of_section(document_id).select { |edition| edition.state == "published" }.first
+  def most_recent_published_edition_of_section(section_id)
+    all_editions_of_section(section_id).select { |edition| edition.state == "published" }.first
   end
 
-  def most_recent_edition_of_section(document_id)
-    all_editions_of_section(document_id).first
+  def most_recent_edition_of_section(section_id)
+    all_editions_of_section(section_id).first
   end
 
-  def all_editions_of_section(document_id)
-    SectionEdition.where(document_id: document_id).order_by([:version_number, :desc])
+  def all_editions_of_section(section_id)
+    SectionEdition.where(document_id: section_id).order_by([:version_number, :desc])
   end
 
   def reslug
     # Reslug the manual sections
-    new_section_ids.each do |document_id|
-      sections = all_editions_of_section(document_id)
+    new_section_ids.each do |section_id|
+      sections = all_editions_of_section(section_id)
       sections.each do |section|
         reslug_msg = "Reslugging section '#{section.slug}'"
         new_section_slug = section.slug.gsub(from_slug, to_slug)
@@ -150,10 +150,10 @@ private
     end
 
     # Clean up manual sections belonging to the temporary manual path
-    new_section_ids.each do |document_id|
-      puts "Redirecting #{document_id} to '/#{to_slug}'"
-      most_recent_edition = most_recent_edition_of_section(document_id)
-      publishing_api.unpublish(document_id,
+    new_section_ids.each do |section_id|
+      puts "Redirecting #{section_id} to '/#{to_slug}'"
+      most_recent_edition = most_recent_edition_of_section(section_id)
+      publishing_api.unpublish(section_id,
                                type: "redirect",
                                alternative_path: "/#{most_recent_edition.slug}",
                                discard_drafts: true)
@@ -176,9 +176,9 @@ private
 
       puts "Publishing published edition of manual: #{manual_to_publish.id}"
       publishing_api.publish(manual_to_publish.id, "republish")
-      manual_to_publish.sections.each do |document|
-        puts "Publishing published edition of manual section: #{document.id}"
-        publishing_api.publish(document.id, "republish")
+      manual_to_publish.sections.each do |section|
+        puts "Publishing published edition of manual section: #{section.id}"
+        publishing_api.publish(section.id, "republish")
       end
     end
 
@@ -193,24 +193,24 @@ private
       organisation, manual
     ).call
 
-    manual.sections.each do |document|
-      puts "Sending a draft of manual section #{document.id} (version: #{document.version_number})"
+    manual.sections.each do |section|
+      puts "Sending a draft of manual section #{section.id} (version: #{section.version_number})"
       SectionPublishingAPIExporter.new(
-        organisation, manual, document
+        organisation, manual, section
       ).call
     end
   end
 
-  def send_gone(document_id, slug)
+  def send_gone(section_id, slug)
     # We should be able to use
-    #   publishing_api.unpublish(document_id, type: 'gone')
+    #   publishing_api.unpublish(section_id, type: 'gone')
     # here, but that doesn't leave the base_path in a state where
     # publishing_api will let us re-use it.  Sending a draft gone object
     # and then publishing it does though.  Might want to check if we can
     # go back to the unpublish version at some point though.
     gone_item = {
       base_path: "/#{slug}",
-      content_id: document_id,
+      content_id: section_id,
       document_type: "gone",
       publishing_app: "manuals-publisher",
       schema_name: "gone",
@@ -221,8 +221,8 @@ private
         }
       ]
     }
-    publishing_api.put_content(document_id, gone_item)
-    publishing_api.publish(document_id, "major")
+    publishing_api.put_content(section_id, gone_item)
+    publishing_api.publish(section_id, "major")
   end
 
   def publishing_api
