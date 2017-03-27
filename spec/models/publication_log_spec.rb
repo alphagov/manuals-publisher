@@ -78,7 +78,7 @@ describe PublicationLog, hits_db: true do
         expect(PublicationLog.change_notes_for(slug)).to eq(change_notes_for_first_doc)
       end
 
-      context "and some are for documents with similar slugs" do
+      context "and some are for sections with similar slugs" do
         let!(:similar_slug) { "guidance/my-slug-belongs-to-me" }
 
         let!(:change_note_for_similar_slug) {
@@ -95,8 +95,8 @@ describe PublicationLog, hits_db: true do
         end
       end
 
-      context "and some are for child documents of the slug" do
-        let!(:child_slug) { "guidance/my-slug/my-lovely-document-slug" }
+      context "and some are for child sections of the slug" do
+        let!(:child_slug) { "guidance/my-slug/my-lovely-section-slug" }
 
         let!(:change_note_for_child_slug) {
           PublicationLog.create(
