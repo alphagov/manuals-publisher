@@ -77,8 +77,8 @@ private
   end
 
   def organisational_repository
-    manual_repository_factory = RepositoryRegistry.new
-      .organisation_scoped_manual_repository_factory
-    manual_repository_factory.call(current_organisation_slug)
+    RepositoryRegistry.new.scoped_manual_repository(
+      ManualRecord.where(organisation_slug: current_organisation_slug)
+    )
   end
 end

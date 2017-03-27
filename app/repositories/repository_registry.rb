@@ -10,14 +10,6 @@ require "manual_record"
 require "manual_with_sections"
 
 class RepositoryRegistry
-  def organisation_scoped_manual_repository_factory
-    ->(organisation_slug) {
-      scoped_manual_repository(
-        ManualRecord.where(organisation_slug: organisation_slug)
-      )
-    }
-  end
-
   def manual_repository
     scoped_manual_repository(ManualRecord.all)
   end

@@ -19,9 +19,9 @@ module ManualHelpers
 
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_repository_factory = RepositoryRegistry.new
-      .organisation_scoped_manual_repository_factory
-    repository = manual_repository_factory.call(organisation_slug)
+    repository = RepositoryRegistry.new.scoped_manual_repository(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     service = CreateManualService.new(
       manual_repository: repository,
@@ -45,9 +45,9 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    manual_repository_factory = RepositoryRegistry.new.
-      organisation_scoped_manual_repository_factory
-    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
+    organisational_manual_repository = RepositoryRegistry.new.scoped_manual_repository(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     create_service_context = OpenStruct.new(
       params: {
@@ -76,9 +76,9 @@ module ManualHelpers
 
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_repository_factory = RepositoryRegistry.new
-      .organisation_scoped_manual_repository_factory
-    repository = manual_repository_factory.call(organisation_slug)
+    repository = RepositoryRegistry.new.scoped_manual_repository(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     service = UpdateManualService.new(
       manual_repository: repository,
@@ -102,9 +102,9 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
-    manual_repository_factory = RepositoryRegistry.new.
-      organisation_scoped_manual_repository_factory
-    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
+    organisational_manual_repository = RepositoryRegistry.new.scoped_manual_repository(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     service_context = OpenStruct.new(
       params: {

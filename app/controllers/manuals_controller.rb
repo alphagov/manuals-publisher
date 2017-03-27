@@ -231,9 +231,9 @@ private
     if current_user_is_gds_editor?
       RepositoryRegistry.new.manual_repository
     else
-      manual_repository_factory = RepositoryRegistry.new
-        .organisation_scoped_manual_repository_factory
-      manual_repository_factory.call(current_organisation_slug)
+      RepositoryRegistry.new.scoped_manual_repository(
+        ManualRecord.where(organisation_slug: current_organisation_slug)
+      )
     end
   end
 
