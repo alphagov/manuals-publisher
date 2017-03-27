@@ -10,7 +10,7 @@ class ReorderSectionsService
     persist
     export_draft_manual_to_publishing_api
 
-    [manual, documents]
+    [manual, sections]
   end
 
 private
@@ -18,14 +18,14 @@ private
   attr_reader :manual_repository, :context
 
   def update
-    manual.reorder_sections(document_order)
+    manual.reorder_sections(section_order)
   end
 
   def persist
     manual_repository.store(manual)
   end
 
-  def documents
+  def sections
     manual.sections
   end
 
@@ -37,7 +37,7 @@ private
     context.params.fetch("manual_id")
   end
 
-  def document_order
+  def section_order
     context.params.fetch("section_order")
   end
 
