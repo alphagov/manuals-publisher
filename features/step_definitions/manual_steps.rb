@@ -107,7 +107,7 @@ end
 
 When(/^I create a section for the manual$/) do
   @section_title = "Created Section 1"
-  @document_slug = [@manual_slug, "created-section-1"].join("/")
+  @section_slug = [@manual_slug, "created-section-1"].join("/")
 
   @section_fields = {
     section_title: @section_title,
@@ -122,7 +122,7 @@ end
 
 When(/^I create a section for the manual with a change note$/) do
   @section_title = "Created Section 1"
-  @document_slug = [@manual_slug, "created-section-1"].join("/")
+  @section_slug = [@manual_slug, "created-section-1"].join("/")
 
   @change_note = "Adding a brand new exciting section"
   @section_fields = {
@@ -154,7 +154,7 @@ Then(/^the section and table of contents will have been sent to the draft publis
             {
               title: @section_title,
               description: @section_fields[:section_summary],
-              base_path: "/#{@document_slug}",
+              base_path: "/#{@section_slug}",
             }
           ]
         }
@@ -193,7 +193,7 @@ end
 
 Given(/^a draft section exists for the manual$/) do
   @section_title = "New section"
-  @document_slug = "guidance/example-manual-title/new-section"
+  @section_slug = "guidance/example-manual-title/new-section"
 
   @section_fields = {
     section_title: @section_title,
@@ -382,7 +382,7 @@ end
 
 When(/^I create a section for the manual as a minor change without the UI$/) do
   @section_title = "Created Section 1"
-  @document_slug = [@manual_slug, "created-section-1"].join("/")
+  @section_slug = [@manual_slug, "created-section-1"].join("/")
 
   @section_fields = {
     title: @section_title,
