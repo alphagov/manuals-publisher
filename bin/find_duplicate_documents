@@ -11,8 +11,8 @@ end
 
 slug_hash.reject! { |_slug, document_ids| document_ids.size == 1 }
 
-slug_hash.each do |slug, documents|
-  documents.each do |document_id, data|
+slug_hash.each do |slug, sections|
+  sections.each do |document_id, data|
     puts [slug, document_id, data[:state], data[:created_at], data[:editions]].join(",")
   end
 end
