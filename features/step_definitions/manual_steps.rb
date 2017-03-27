@@ -106,11 +106,11 @@ Then(/^I see errors for the title field$/) do
 end
 
 When(/^I create a section for the manual$/) do
-  @document_title = "Created Section 1"
+  @section_title = "Created Section 1"
   @document_slug = [@manual_slug, "created-section-1"].join("/")
 
   @section_fields = {
-    section_title: @document_title,
+    section_title: @section_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
   }
@@ -121,12 +121,12 @@ When(/^I create a section for the manual$/) do
 end
 
 When(/^I create a section for the manual with a change note$/) do
-  @document_title = "Created Section 1"
+  @section_title = "Created Section 1"
   @document_slug = [@manual_slug, "created-section-1"].join("/")
 
   @change_note = "Adding a brand new exciting section"
   @section_fields = {
-    section_title: @document_title,
+    section_title: @section_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
     change_note: @change_note
@@ -152,7 +152,7 @@ Then(/^the section and table of contents will have been sent to the draft publis
           title: "Contents",
           child_sections: [
             {
-              title: @document_title,
+              title: @section_title,
               description: @section_fields[:section_summary],
               base_path: "/#{@document_slug}",
             }
@@ -192,11 +192,11 @@ Then(/^the updated section at the new slug and updated table of contents will ha
 end
 
 Given(/^a draft section exists for the manual$/) do
-  @document_title = "New section"
+  @section_title = "New section"
   @document_slug = "guidance/example-manual-title/new-section"
 
   @section_fields = {
-    section_title: @document_title,
+    section_title: @section_title,
     section_summary: "New section summary",
     section_body: "New section body",
   }
@@ -381,11 +381,11 @@ Given(/^a published manual with some sections was created without the UI$/) do
 end
 
 When(/^I create a section for the manual as a minor change without the UI$/) do
-  @document_title = "Created Section 1"
+  @section_title = "Created Section 1"
   @document_slug = [@manual_slug, "created-section-1"].join("/")
 
   @section_fields = {
-    title: @document_title,
+    title: @section_title,
     summary: "Section 1 summary",
     body: "Section 1 body",
     minor_update: true
