@@ -261,7 +261,7 @@ end
 
 Then(/^the manual and all its sections are published$/) do
   @documents.each do |document|
-    check_manual_and_documents_were_published(
+    check_manual_and_sections_were_published(
       @manual,
       document,
       @manual_fields,
@@ -271,7 +271,7 @@ Then(/^the manual and all its sections are published$/) do
 end
 
 Then(/^the manual and the edited section are published$/) do
-  check_manual_and_documents_were_published(
+  check_manual_and_sections_were_published(
     @manual, @updated_document, @manual_fields, @updated_fields
   )
 end
@@ -308,7 +308,7 @@ Then(/^the sections that I didn't edit were not republished$/) do
 end
 
 Then(/^the manual and its new section are published$/) do
-  check_manual_and_documents_were_published(
+  check_manual_and_sections_were_published(
     @manual,
     @new_document,
     @manual_fields,
