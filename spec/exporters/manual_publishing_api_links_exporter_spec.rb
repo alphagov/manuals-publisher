@@ -29,14 +29,14 @@ describe ManualPublishingAPILinksExporter do
         slug: "guidance/my-first-manual",
         organisation_slug: "cabinet-office",
       },
-      sections: documents,
+      sections: sections,
     )
   }
 
-  let(:documents) {
+  let(:sections) {
     [
-      double(:document, id: "c19ffb7d-448c-4cc8-bece-022662ef9611"),
-      double(:document, id: "f9c91a07-6a41-4b97-94a8-ecdc81997d49"),
+      double(:section, id: "c19ffb7d-448c-4cc8-bece-022662ef9611"),
+      double(:section, id: "f9c91a07-6a41-4b97-94a8-ecdc81997d49"),
     ]
   }
 
