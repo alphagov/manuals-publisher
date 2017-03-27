@@ -436,12 +436,12 @@ module ManualHelpers
   end
 
   def check_manual_cannot_be_published
-    document_fields = {
+    section_fields = {
       section_title: "Section 1",
       section_summary: "Section 1 summary",
       section_body: "Section 1 body",
     }
-    create_section(@manual_fields.fetch(:title), document_fields)
+    create_section(@manual_fields.fetch(:title), section_fields)
 
     go_to_manual_page(@manual_fields.fetch(:title))
     expect(page).not_to have_button("Publish")
