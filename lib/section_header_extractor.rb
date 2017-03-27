@@ -3,21 +3,21 @@ require "active_support/core_ext/hash"
 
 class SectionHeaderExtractor < SimpleDelegator
   def self.create
-    ->(doc) {
+    ->(section) {
       SectionHeaderExtractor.new(
         GovspeakHeaderExtractor.new,
-        doc,
+        section,
       )
     }
   end
 
-  def initialize(header_parser, doc)
+  def initialize(header_parser, section)
     @header_parser = header_parser
-    super(doc)
+    super(section)
   end
 
   def headers
-    header_parser.call(doc.body)
+    header_parser.call(section.body)
   end
 
   def serialized_headers
@@ -27,7 +27,7 @@ class SectionHeaderExtractor < SimpleDelegator
   def attributes
     {
       headers: serialized_headers,
-    }.merge(doc.attributes)
+    }.merge(section.attributes)
   end
 
 private
@@ -36,7 +36,7 @@ private
     :header_parser,
   )
 
-  def doc
+  def section
     __getobj__
   end
 end
