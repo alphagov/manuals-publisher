@@ -21,7 +21,7 @@ RSpec.describe "Republishing manuals", type: :feature do
 
   def create_manual_with_sections(published: true)
     manual = create_manual_without_ui(manual_fields)
-    @documents = create_documents_for_manual_without_ui(manual: manual, count: 2)
+    @documents = create_sections_for_manual_without_ui(manual: manual, count: 2)
 
     # Re-fetch manual to include documents
     @manual = manual_repository.fetch(manual.id)

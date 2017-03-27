@@ -527,7 +527,7 @@ module ManualHelpers
     attributes_for_documents
   end
 
-  def create_documents_for_manual_without_ui(manual:, count:)
+  def create_sections_for_manual_without_ui(manual:, count:)
     (1..count).map do |n|
       attributes = {
         title: "Section #{n}",
