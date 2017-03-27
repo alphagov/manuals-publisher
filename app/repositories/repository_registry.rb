@@ -62,12 +62,4 @@ class RepositoryRegistry
       )
     }
   end
-
-  def associationless_organisation_scoped_manual_repository_factory
-    ->(organisation_slug) {
-      ManualRepository.new(
-        collection: ManualRecord.where(organisation_slug: organisation_slug)
-      )
-    }
-  end
 end

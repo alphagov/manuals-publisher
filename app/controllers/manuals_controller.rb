@@ -241,9 +241,9 @@ private
     if current_user_is_gds_editor?
       ManualRepository.new(collection: ManualRecord.all)
     else
-      associationless_manual_repository_factory = RepositoryRegistry.new
-        .associationless_organisation_scoped_manual_repository_factory
-      associationless_manual_repository_factory.call(current_organisation_slug)
+      ManualRepository.new(
+        collection: ManualRecord.where(organisation_slug: current_organisation_slug)
+      )
     end
   end
 
