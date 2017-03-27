@@ -239,8 +239,7 @@ private
 
   def associationless_repository
     if current_user_is_gds_editor?
-      RepositoryRegistry.new
-        .associationless_manual_repository
+      ManualRepository.new(collection: ManualRecord.all)
     else
       associationless_manual_repository_factory = RepositoryRegistry.new
         .associationless_organisation_scoped_manual_repository_factory
