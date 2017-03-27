@@ -86,8 +86,8 @@ module ApplicationHelper
     "#{Plek.current.website_root}/government/organisations/#{organisation_slug}"
   end
 
-  def content_preview_url(document)
-    "#{Plek.current.find('draft-origin')}/#{document.slug}"
+  def content_preview_url(manual)
+    "#{Plek.current.find('draft-origin')}/#{manual.slug}"
   end
 
   def publish_text(manual, slug_unique)
