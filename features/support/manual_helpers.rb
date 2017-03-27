@@ -551,7 +551,7 @@ module ManualHelpers
     }
   end
 
-  def check_document_withdraw_link_not_visible(manual, document)
+  def check_section_withdraw_link_not_visible(manual, document)
     # Don't give them the option...
     go_to_manual_page(manual.title)
     click_on document.title
