@@ -4,13 +4,13 @@ require "manual_with_sections"
 
 describe ManualWithSections do
   subject(:manual_with_sections) {
-    ManualWithSections.new(document_builder, manual, sections: documents)
+    ManualWithSections.new(section_builder, manual, sections: sections)
   }
 
   let(:manual) { double(:manual, publish: nil) }
-  let(:document_builder) { double(:document_builder) }
-  let(:documents) { [document] }
-  let(:document) { double(:document, publish!: nil) }
+  let(:section_builder) { double(:section_builder) }
+  let(:sections) { [section] }
+  let(:section) { double(:section, publish!: nil) }
 
   let(:id) { double(:id) }
   let(:updated_at) { double(:updated_at) }
@@ -34,35 +34,35 @@ describe ManualWithSections do
       it "passes a block which publishes" do
         manual_with_sections.publish
 
-        expect(document).to have_received(:publish!)
+        expect(section).to have_received(:publish!)
       end
     end
 
     context "when the manual publish does not succeed" do
-      it "does not publish the documents" do
+      it "does not publish the sections" do
         manual_with_sections.publish
 
-        expect(document).not_to have_received(:publish!)
+        expect(section).not_to have_received(:publish!)
       end
     end
   end
 
   describe "#reorder_sections" do
-    let(:documents) {
+    let(:sections) {
       [
-        alpha_document,
-        beta_document,
-        gamma_document,
+        alpha_section,
+        beta_section,
+        gamma_section,
       ]
     }
 
-    let(:alpha_document) { double(:document, id: "alpha") }
-    let(:beta_document) { double(:document, id: "beta") }
-    let(:gamma_document) { double(:document, id: "gamma") }
+    let(:alpha_section) { double(:section, id: "alpha") }
+    let(:beta_section) { double(:section, id: "beta") }
+    let(:gamma_section) { double(:section, id: "gamma") }
 
-    let(:document_order) { %w(gamma alpha beta) }
+    let(:section_order) { %w(gamma alpha beta) }
 
-    it "reorders the documents to match the given order" do
+    it "reorders the sections to match the given order" do
       manual_with_sections.reorder_sections(%w(
         gamma
         alpha
@@ -70,13 +70,13 @@ describe ManualWithSections do
       ))
 
       expect(manual_with_sections.sections.to_a).to eq([
-        gamma_document,
-        alpha_document,
-        beta_document,
+        gamma_section,
+        alpha_section,
+        beta_section,
       ])
     end
 
-    it "raises an error if document_order doesn't contain all IDs" do
+    it "raises an error if section_order doesn't contain all IDs" do
       expect {
         manual_with_sections.reorder_sections(%w(
           alpha
@@ -85,7 +85,7 @@ describe ManualWithSections do
       }.to raise_error(ArgumentError)
     end
 
-    it "raises an error if document_order contains non-existent IDs" do
+    it "raises an error if section_order contains non-existent IDs" do
       expect {
         manual_with_sections.reorder_sections(%w(
           alpha
@@ -96,7 +96,7 @@ describe ManualWithSections do
       }.to raise_error(ArgumentError)
     end
 
-    it "raises an error if document_order contains duplicate IDs" do
+    it "raises an error if section_order contains duplicate IDs" do
       expect {
         manual_with_sections.reorder_sections(%w(
           alpha
@@ -111,38 +111,38 @@ describe ManualWithSections do
   describe "#remove_section" do
     subject(:manual_with_sections) {
       ManualWithSections.new(
-        document_builder,
+        section_builder,
         manual,
-        sections: documents,
-        removed_sections: removed_documents,
+        sections: sections,
+        removed_sections: removed_sections,
       )
     }
 
-    let(:documents) {
+    let(:sections) {
       [
-        document_a,
-        document_b,
+        section_a,
+        section_b,
       ]
     }
-    let(:document_a) { double(:document, id: "a") }
-    let(:document_b) { double(:document, id: "b") }
+    let(:section_a) { double(:section, id: "a") }
+    let(:section_b) { double(:section, id: "b") }
 
-    let(:removed_documents) { [document_c] }
-    let(:document_c) { double(:document, id: "c") }
+    let(:removed_sections) { [section_c] }
+    let(:section_c) { double(:section, id: "c") }
 
-    it "removes the document from #documents" do
-      manual_with_sections.remove_section(document_a.id)
+    it "removes the section from #sections" do
+      manual_with_sections.remove_section(section_a.id)
 
-      expect(manual_with_sections.sections.to_a).to eq([document_b])
+      expect(manual_with_sections.sections.to_a).to eq([section_b])
     end
 
-    it "adds the document to #removed_sections" do
-      manual_with_sections.remove_section(document_a.id)
+    it "adds the section to #removed_sections" do
+      manual_with_sections.remove_section(section_a.id)
 
       expect(manual_with_sections.removed_sections.to_a).to eq(
         [
-          document_c,
-          document_a,
+          section_c,
+          section_a,
         ]
       )
     end
