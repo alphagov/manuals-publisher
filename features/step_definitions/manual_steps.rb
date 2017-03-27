@@ -56,7 +56,7 @@ Given(/^a draft manual exists with some sections$/) do
 
   create_manual(@manual_fields)
 
-  @attributes_for_documents = create_documents_for_manual(
+  @attributes_for_documents = create_sections_for_manual(
     manual_fields: @manual_fields,
     count: 2,
   )
@@ -331,7 +331,7 @@ Given(/^a published manual exists$/) do
 
   create_manual(@manual_fields)
 
-  create_documents_for_manual(
+  create_sections_for_manual(
     manual_fields: @manual_fields,
     count: 2,
   )

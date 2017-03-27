@@ -505,7 +505,7 @@ module ManualHelpers
     expect(page.body).to have_content(organisation_slug)
   end
 
-  def create_documents_for_manual(count:, manual_fields:)
+  def create_sections_for_manual(count:, manual_fields:)
     attributes_for_documents = (1..count).map do |n|
       title = "Section #{n}"
 
