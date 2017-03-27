@@ -405,9 +405,9 @@ module ManualHelpers
     fill_in("Section body", with: body_text + snippet)
   end
 
-  def check_change_note_value(manual_title, document_title, expected_value)
+  def check_change_note_value(manual_title, section_title, expected_value)
     go_to_manual_page(manual_title)
-    click_on document_title
+    click_on section_title
     click_on "Edit section"
 
     change_note_field_value = page.find("textarea[name='section[change_note]']").text

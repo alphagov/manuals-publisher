@@ -3,9 +3,9 @@ module AttachmentHelpers
     Plek.current.find("asset-manager")
   end
 
-  def add_attachment_to_section(document_title, attachment_title)
-    if page.has_css?("a", text: document_title)
-      click_on(document_title)
+  def add_attachment_to_section(section_title, attachment_title)
+    if page.has_css?("a", text: section_title)
+      click_on(section_title)
     elsif page.has_css?("a", text: "Edit")
       click_on("Edit")
     end
@@ -63,7 +63,7 @@ module AttachmentHelpers
     end
   end
 
-  def edit_attachment(_document_title, attachment_title, new_attachment_title, new_attachment_file_name)
+  def edit_attachment(_section_title, attachment_title, new_attachment_title, new_attachment_file_name)
     attachment_li = page.find(".attachments li", text: attachment_title)
 
     within(attachment_li) do
@@ -82,7 +82,7 @@ module AttachmentHelpers
     click_button "Save attachment"
   end
 
-  def check_for_attachment_update(_document_title, _attachment_title, _attachment_file_name)
+  def check_for_attachment_update(_section_title, _attachment_title, _attachment_file_name)
     expect(page).to have_css(".attachments li", text: @new_attachment_title)
     expect(page).to have_css(".attachments li", text: @new_attachment_file_name)
   end
