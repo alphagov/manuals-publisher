@@ -3,14 +3,34 @@ module AttachmentHelpers
     Plek.current.find("asset-manager")
   end
 
-  def add_attachment_to_section(document_title, attachment_title)
-    if page.has_css?("a", text: document_title)
-      click_on(document_title)
+  def add_attachment_to_section(section_title, attachment_title)
+    if page.has_css?("a", text: section_title)
+      click_on(section_title)
     elsif page.has_css?("a", text: "Edit")
       click_on("Edit")
     end
 
-    add_attachment_to_document(document_title, attachment_title)
+    unless current_path.include?("edit")
+      click_link "Edit"
+    end
+
+    click_on "Add attachment"
+    fill_in "Title", with: attachment_title
+    attach_file "File", File.expand_path("../fixtures/greenpaper.pdf", File.dirname(__FILE__))
+
+    stub_request(:post, "#{test_asset_manager_base_url}/assets")
+      .to_return(
+        body: JSON.dump(asset_manager_response),
+        status: 201,
+      )
+
+    stub_request(:get, "#{test_asset_manager_base_url}/assets/#{asset_id}")
+      .to_return(
+        body: JSON.dump(asset_manager_response),
+        status: 200,
+      )
+
+    click_on "Save attachment"
   end
 
   def asset_id
@@ -43,7 +63,7 @@ module AttachmentHelpers
     end
   end
 
-  def edit_attachment(_document_title, attachment_title, new_attachment_title, new_attachment_file_name)
+  def edit_attachment(_section_title, attachment_title, new_attachment_title, new_attachment_file_name)
     attachment_li = page.find(".attachments li", text: attachment_title)
 
     within(attachment_li) do
@@ -62,33 +82,9 @@ module AttachmentHelpers
     click_button "Save attachment"
   end
 
-  def check_for_attachment_update(_document_title, _attachment_title, _attachment_file_name)
+  def check_for_attachment_update(_section_title, _attachment_title, _attachment_file_name)
     expect(page).to have_css(".attachments li", text: @new_attachment_title)
     expect(page).to have_css(".attachments li", text: @new_attachment_file_name)
-  end
-
-  def add_attachment_to_document(_document_title, attachment_title)
-    unless current_path.include?("edit")
-      click_link "Edit"
-    end
-
-    click_on "Add attachment"
-    fill_in "Title", with: attachment_title
-    attach_file "File", File.expand_path("../fixtures/greenpaper.pdf", File.dirname(__FILE__))
-
-    stub_request(:post, "#{test_asset_manager_base_url}/assets")
-      .to_return(
-        body: JSON.dump(asset_manager_response),
-        status: 201,
-      )
-
-    stub_request(:get, "#{test_asset_manager_base_url}/assets/#{asset_id}")
-      .to_return(
-        body: JSON.dump(asset_manager_response),
-        status: 200,
-      )
-
-    click_on "Save attachment"
   end
 end
 RSpec.configuration.include AttachmentHelpers, type: :feature

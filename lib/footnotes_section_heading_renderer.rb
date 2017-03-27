@@ -6,11 +6,11 @@ class FootnotesSectionHeadingRenderer < SimpleDelegator
   end
 
   def body
-    document.body.gsub(footnote_open_tag, "#{heading_tag}\\&")
+    section.body.gsub(footnote_open_tag, "#{heading_tag}\\&")
   end
 
   def attributes
-    document.attributes.merge(
+    section.attributes.merge(
       body: body,
     )
   end
@@ -25,7 +25,7 @@ private
     '<h2 id="footnotes">Footnotes</h2>'
   end
 
-  def document
+  def section
     __getobj__
   end
 end

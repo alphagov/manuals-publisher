@@ -1,14 +1,14 @@
 # encoding: UTF-8
 
 module ApplicationHelper
-  def state(document)
-    state = document.publication_state
+  def state(manual)
+    state = manual.publication_state
 
-    if %w(published withdrawn).include?(state) && document.draft?
+    if %w(published withdrawn).include?(state) && manual.draft?
       state << " with new draft"
     end
 
-    classes = if document.draft?
+    classes = if manual.draft?
                 "label label-primary"
               else
                 "label label-default"
@@ -70,9 +70,9 @@ module ApplicationHelper
     end
   end
 
-  def preview_path_for_section(manual, document)
-    if document.persisted?
-      preview_manual_section_path(manual, document)
+  def preview_path_for_section(manual, section)
+    if section.persisted?
+      preview_manual_section_path(manual, section)
     else
       preview_new_section_path(manual)
     end
@@ -86,8 +86,8 @@ module ApplicationHelper
     "#{Plek.current.website_root}/government/organisations/#{organisation_slug}"
   end
 
-  def content_preview_url(document)
-    "#{Plek.current.find('draft-origin')}/#{document.slug}"
+  def content_preview_url(manual)
+    "#{Plek.current.find('draft-origin')}/#{manual.slug}"
   end
 
   def publish_text(manual, slug_unique)

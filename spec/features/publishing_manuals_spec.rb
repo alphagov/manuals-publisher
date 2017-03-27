@@ -20,12 +20,12 @@ RSpec.describe "Publishing manuals", type: :feature do
     before do
       manual = create_manual_without_ui(manual_fields)
 
-      @documents = [].tap do |documents|
-        documents << create_section_without_ui(manual, title: "Section 1 major", summary: "Section 1 summary", body: "Section body")
-        documents << create_section_without_ui(manual, title: "Section 1", summary: "Section 1 minor summary", body: "Section body minor update", minor_update: true)
+      @sections = [].tap do |sections|
+        sections << create_section_without_ui(manual, title: "Section 1 major", summary: "Section 1 summary", body: "Section body")
+        sections << create_section_without_ui(manual, title: "Section 1", summary: "Section 1 minor summary", body: "Section body minor update", minor_update: true)
       end
 
-      # Re-fetch manual to include documents
+      # Re-fetch manual to include sections
       @manual = manual_repository.fetch(manual.id)
 
       Timecop.freeze(publish_time) do
@@ -36,19 +36,19 @@ RSpec.describe "Publishing manuals", type: :feature do
     end
 
     it "drafts the manual and sections and publishes them to the Publishing API" do
-      @documents.each do |document|
-        check_section_is_drafted_to_publishing_api(document.id, number_of_drafts: 2)
-        check_manual_and_documents_were_published(@manual, document, manual_fields, document_fields(document))
+      @sections.each do |section|
+        check_section_is_drafted_to_publishing_api(section.id, number_of_drafts: 2)
+        check_manual_and_sections_were_published(@manual, section, manual_fields, section_fields(section))
       end
     end
 
-    it "creates publication logs for major updates to documents only" do
+    it "creates publication logs for major updates to sections only" do
       expect(PublicationLog.count).to eq 1
       expect(PublicationLog.first.title).to eq "Section 1 major"
     end
 
-    it "sets the exported_at timestamp on the document" do
-      expect(@documents.first.latest_edition.reload.exported_at).to be_within(1.second).of publish_time
+    it "sets the exported_at timestamp on the section" do
+      expect(@sections.first.latest_edition.reload.exported_at).to be_within(1.second).of publish_time
     end
   end
 end

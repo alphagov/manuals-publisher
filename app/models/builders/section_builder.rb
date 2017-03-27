@@ -3,11 +3,11 @@ require "securerandom"
 class SectionBuilder
   def call(manual, attrs)
     section_factory = SectionFactory.new(manual)
-    document = section_factory.call(SecureRandom.uuid, [])
+    section = section_factory.call(SecureRandom.uuid, [])
 
-    document.update(attrs.reverse_merge(defaults))
+    section.update(attrs.reverse_merge(defaults))
 
-    document
+    section
   end
 
 private

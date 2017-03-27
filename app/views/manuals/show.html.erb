@@ -69,11 +69,11 @@
     </div>
     <% if manual.sections.any? %>
     <ul class="document-list">
-     <% manual.sections.each do |document| %>
+     <% manual.sections.each do |section| %>
         <li class="document">
-          <%= link_to(document.title, manual_section_path(manual, document), class: 'document-title') %>
+          <%= link_to(section.title, manual_section_path(manual, section), class: 'document-title') %>
           <ul class="metadata">
-            <li class="text-muted">Updated <%= time_ago_in_words(document.updated_at) %> ago</li>
+            <li class="text-muted">Updated <%= time_ago_in_words(section.updated_at) %> ago</li>
           </ul>
         </li>
       <% end %>

@@ -15,7 +15,7 @@ RSpec.describe ManualUpdateType do
   describe "for a manual that has been published before" do
     before { allow(manual).to receive(:has_ever_been_published?).and_return true }
 
-    context "and has no documents" do
+    context "and has no sections" do
       before { allow(manual).to receive(:sections).and_return [] }
 
       it "is 'minor'" do
@@ -48,7 +48,7 @@ RSpec.describe ManualUpdateType do
           allow(section_3).to receive(:needs_exporting?).and_return true
         end
 
-        it "is 'minor' when all documents are minor updates that have been published before" do
+        it "is 'minor' when all sections are minor updates that have been published before" do
           allow(section_1).to receive(:minor_update?).and_return true
           allow(section_2).to receive(:minor_update?).and_return true
           allow(section_3).to receive(:minor_update?).and_return true
@@ -59,7 +59,7 @@ RSpec.describe ManualUpdateType do
           expect(subject).to eql "minor"
         end
 
-        it "is 'major' when at least one document is a minor update that has never been published before" do
+        it "is 'major' when at least one section is a minor update that has never been published before" do
           allow(section_1).to receive(:minor_update?).and_return true
           allow(section_2).to receive(:minor_update?).and_return true
           allow(section_3).to receive(:minor_update?).and_return true
@@ -70,7 +70,7 @@ RSpec.describe ManualUpdateType do
           expect(subject).to eql "major"
         end
 
-        it "is 'major' when at least one documents is a major update" do
+        it "is 'major' when at least one sections is a major update" do
           allow(section_1).to receive(:minor_update?).and_return false
           allow(section_2).to receive(:minor_update?).and_return true
           allow(section_3).to receive(:minor_update?).and_return true
