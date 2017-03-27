@@ -23,7 +23,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     manual = create_manual_without_ui(manual_fields)
     @sections = create_sections_for_manual_without_ui(manual: manual, count: 2)
 
-    # Re-fetch manual to include documents
+    # Re-fetch manual to include sections
     @manual = manual_repository.fetch(manual.id)
 
     if published
@@ -45,8 +45,8 @@ RSpec.describe "Republishing manuals", type: :feature do
   def edit_manual_and_sections
     @edited_manual = edit_manual_without_ui(@manual, edited_manual_fields)
 
-    @edited_sections = @sections.map do |document|
-      edit_section_without_ui(@manual, document, edited_section_fields(document))
+    @edited_sections = @sections.map do |section|
+      edit_section_without_ui(@manual, section, edited_section_fields(section))
     end
 
     WebMock::RequestRegistry.instance.reset!
@@ -70,13 +70,13 @@ RSpec.describe "Republishing manuals", type: :feature do
       })
       check_manual_is_published_to_publishing_api(@manual.id)
       check_manual_is_published_to_rummager(@manual.slug, manual_fields)
-      @sections.each do |document|
-        check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
-          title: document.attributes[:title],
-          description: document.attributes[:summary],
+      @sections.each do |section|
+        check_section_is_drafted_to_publishing_api(section.id, extra_attributes: {
+          title: section.attributes[:title],
+          description: section.attributes[:summary],
         })
-        check_section_is_published_to_publishing_api(document.id)
-        check_section_is_published_to_rummager(document.slug, section_fields(document), manual_fields)
+        check_section_is_published_to_publishing_api(section.id)
+        check_section_is_published_to_rummager(section.slug, section_fields(section), manual_fields)
       end
     end
 
@@ -99,13 +99,13 @@ RSpec.describe "Republishing manuals", type: :feature do
       })
       check_manual_is_not_published_to_publishing_api(@manual.id)
       check_manual_is_not_published_to_rummager(@manual.slug)
-      @sections.each do |document|
-        check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
-          title: document.attributes[:title],
-          description: document.attributes[:summary],
+      @sections.each do |section|
+        check_section_is_drafted_to_publishing_api(section.id, extra_attributes: {
+          title: section.attributes[:title],
+          description: section.attributes[:summary],
         })
-        check_section_is_not_published_to_publishing_api(document.id)
-        check_section_is_not_published_to_rummager(document.slug)
+        check_section_is_not_published_to_publishing_api(section.id)
+        check_section_is_not_published_to_rummager(section.slug)
       end
     end
 
@@ -130,14 +130,14 @@ RSpec.describe "Republishing manuals", type: :feature do
       })
       check_manual_is_published_to_publishing_api(@manual.id)
       check_manual_is_published_to_rummager(@manual.slug, manual_fields)
-      @sections.each do |document|
-        edited_fields = edited_section_fields(document)
-        check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
+      @sections.each do |section|
+        edited_fields = edited_section_fields(section)
+        check_section_is_drafted_to_publishing_api(section.id, extra_attributes: {
           title: edited_fields[:title],
           description: edited_fields[:summary],
         })
-        check_section_is_published_to_publishing_api(document.id)
-        check_section_is_published_to_rummager(document.slug, section_fields(document), manual_fields)
+        check_section_is_published_to_publishing_api(section.id)
+        check_section_is_published_to_rummager(section.slug, section_fields(section), manual_fields)
       end
     end
 
@@ -150,15 +150,15 @@ RSpec.describe "Republishing manuals", type: :feature do
       # all we can check is that it was only published once
       check_manual_is_published_to_publishing_api(@manual.id, times: 1)
       check_manual_is_not_published_to_rummager_with_attrs(@manual.slug, edited_manual_fields)
-      @edited_sections.each do |document|
-        check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
-          title: document.title,
-          description: document.summary,
+      @edited_sections.each do |section|
+        check_section_is_drafted_to_publishing_api(section.id, extra_attributes: {
+          title: section.title,
+          description: section.summary,
         })
         # we can't check that it's not published (because one version will be)
         # all we can check is that it was only published once
-        check_section_is_published_to_publishing_api(document.id, times: 1)
-        check_section_is_not_published_to_rummager_with_attrs(document.slug, section_fields(document), edited_manual_fields)
+        check_section_is_published_to_publishing_api(section.id, times: 1)
+        check_section_is_not_published_to_rummager_with_attrs(section.slug, section_fields(section), edited_manual_fields)
       end
     end
 
