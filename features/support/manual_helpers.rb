@@ -543,7 +543,7 @@ module ManualHelpers
     RepositoryRegistry.new.manual_repository.all.first
   end
 
-  def document_fields(document)
+  def section_fields(document)
     {
       section_title: document.title,
       section_summary: document.summary,

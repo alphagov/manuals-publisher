@@ -265,7 +265,7 @@ Then(/^the manual and all its sections are published$/) do
       @manual,
       document,
       @manual_fields,
-      document_fields(document),
+      section_fields(document),
     )
   end
 end
@@ -312,7 +312,7 @@ Then(/^the manual and its new section are published$/) do
     @manual,
     @new_document,
     @manual_fields,
-    document_fields(@new_document),
+    section_fields(@new_document),
   )
 end
 

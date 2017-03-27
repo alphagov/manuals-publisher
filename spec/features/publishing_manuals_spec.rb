@@ -38,7 +38,7 @@ RSpec.describe "Publishing manuals", type: :feature do
     it "drafts the manual and sections and publishes them to the Publishing API" do
       @documents.each do |document|
         check_section_is_drafted_to_publishing_api(document.id, number_of_drafts: 2)
-        check_manual_and_sections_were_published(@manual, document, manual_fields, document_fields(document))
+        check_manual_and_sections_were_published(@manual, document, manual_fields, section_fields(document))
       end
     end
 
