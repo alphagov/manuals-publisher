@@ -109,13 +109,13 @@ When(/^I create a section for the manual$/) do
   @document_title = "Created Section 1"
   @document_slug = [@manual_slug, "created-section-1"].join("/")
 
-  @document_fields = {
+  @section_fields = {
     section_title: @document_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
   }
 
-  create_section(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @section_fields)
 
   @document = most_recently_created_manual.sections.to_a.last
 end
@@ -125,14 +125,14 @@ When(/^I create a section for the manual with a change note$/) do
   @document_slug = [@manual_slug, "created-section-1"].join("/")
 
   @change_note = "Adding a brand new exciting section"
-  @document_fields = {
+  @section_fields = {
     section_title: @document_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
     change_note: @change_note
   }
 
-  create_section(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @section_fields)
 
   @document = most_recently_created_manual.sections.to_a.last
 end
@@ -140,7 +140,7 @@ end
 Then(/^I see the manual has the new section$/) do
   visit manuals_path
   click_on @manual_fields.fetch(:title)
-  expect(page).to have_content(@document_fields.fetch(:section_title))
+  expect(page).to have_content(@section_fields.fetch(:section_title))
 end
 
 Then(/^the section and table of contents will have been sent to the draft publishing api$/) do
@@ -153,7 +153,7 @@ Then(/^the section and table of contents will have been sent to the draft publis
           child_sections: [
             {
               title: @document_title,
-              description: @document_fields[:section_summary],
+              description: @section_fields[:section_summary],
               base_path: "/#{@document_slug}",
             }
           ]
@@ -177,7 +177,7 @@ Then(/^the updated section at the new slug and updated table of contents will ha
           child_sections: [
             {
               title: @new_title,
-              description: @document_fields[:section_summary],
+              description: @section_fields[:section_summary],
               base_path: "/#{@new_slug}",
             }
           ]
@@ -195,13 +195,13 @@ Given(/^a draft section exists for the manual$/) do
   @document_title = "New section"
   @document_slug = "guidance/example-manual-title/new-section"
 
-  @document_fields = {
+  @section_fields = {
     section_title: @document_title,
     section_summary: "New section summary",
     section_body: "New section body",
   }
 
-  create_section(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @section_fields)
 
   @document = most_recently_created_manual.sections.to_a.last
 
@@ -216,7 +216,7 @@ When(/^I edit the section$/) do
   @new_slug = "#{@manual_slug}/a-new-section-title"
   edit_section(
     @manual_fields.fetch(:title),
-    @document_fields.fetch(:section_title),
+    @section_fields.fetch(:section_title),
     section_title: @new_title,
   )
 end
@@ -229,7 +229,7 @@ Then(/^the section should have been updated$/) do
 end
 
 Then(/^the manual's sections won't have changed$/) do
-  expect(page).to have_content(@document_fields.fetch(:section_title))
+  expect(page).to have_content(@section_fields.fetch(:section_title))
 end
 
 When(/^I create a section with empty fields$/) do
@@ -384,14 +384,14 @@ When(/^I create a section for the manual as a minor change without the UI$/) do
   @document_title = "Created Section 1"
   @document_slug = [@manual_slug, "created-section-1"].join("/")
 
-  @document_fields = {
+  @section_fields = {
     title: @document_title,
     summary: "Section 1 summary",
     body: "Section 1 body",
     minor_update: true
   }
 
-  @document = create_section_without_ui(@manual, @document_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
+  @document = create_section_without_ui(@manual, @section_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
   go_to_manual_page(@manual.title)
 
@@ -450,7 +450,7 @@ When(/^I preview the section$/) do
 end
 
 When(/^I create a section to preview$/) do
-  @document_fields = {
+  @section_fields = {
     section_title: "Section 1",
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
@@ -458,7 +458,7 @@ When(/^I create a section to preview$/) do
 
   go_to_manual_page(@manual_fields[:title])
   click_on "Add section"
-  fill_in_fields(@document_fields)
+  fill_in_fields(@section_fields)
 end
 
 Then(/^I see the section body preview$/) do
@@ -583,7 +583,7 @@ When(/^I create another manual with the same slug$/) do
 end
 
 When(/^I create a section with duplicate title$/) do
-  create_section(@manual_fields.fetch(:title), @document_fields)
+  create_section(@manual_fields.fetch(:title), @section_fields)
 end
 
 Then(/^the manual and its sections have failed to publish$/) do
