@@ -2,22 +2,22 @@ require "spec_helper"
 
 describe Section do
   subject(:doc) {
-    Section.new(slug_generator, document_id, editions, edition_factory)
+    Section.new(slug_generator, section_id, editions, edition_factory)
   }
 
   def key_classes_for(hash)
     hash.keys.map(&:class).uniq
   end
 
-  let(:document_id)         { "a-document-id" }
-  let(:slug)                { double(:slug) }
-  let(:published_slug)      { double(:published_slug) }
-  let(:slug_generator)      { double(:slug_generator, call: slug) }
-  let(:edition_factory)     { double(:edition_factory, call: new_edition) }
-  let(:new_edition)         { double(:new_edition, published?: false, draft?: true, assign_attributes: nil, version_number: 2) }
-  let(:attachments)         { double(:attachments) }
+  let(:section_id) { "a-section-id" }
+  let(:slug) { double(:slug) }
+  let(:published_slug) { double(:published_slug) }
+  let(:slug_generator) { double(:slug_generator, call: slug) }
+  let(:edition_factory) { double(:edition_factory, call: new_edition) }
+  let(:new_edition) { double(:new_edition, published?: false, draft?: true, assign_attributes: nil, version_number: 2) }
+  let(:attachments) { double(:attachments) }
 
-  let(:edition_messages)    {
+  let(:edition_messages) {
     {
       build_attachment: nil,
       assign_attributes: nil,
@@ -240,7 +240,7 @@ describe Section do
       end
     end
 
-    context "document is new, with no previous editions" do
+    context "section is new, with no previous editions" do
       let(:editions) { [] }
       let(:attrs)    { { title: "Test title" } }
 
@@ -250,12 +250,12 @@ describe Section do
         expect(edition_factory).to have_received(:call).with(
           version_number: 1,
           state: "draft",
-          document_id: document_id,
+          document_id: section_id,
         )
       end
     end
 
-    context "before the document is published" do
+    context "before the section is published" do
       context "with an existing draft edition" do
         let(:editions) { [draft_edition_v1] }
 
@@ -284,7 +284,7 @@ describe Section do
       end
     end
 
-    context "when the current document is published" do
+    context "when the current section is published" do
       let(:editions) { [published_edition_v1] }
 
       let(:params) { { title: "It is a new title" } }
@@ -381,7 +381,7 @@ describe Section do
       end
     end
 
-    context "when the current document is withdrawn" do
+    context "when the current section is withdrawn" do
       let(:editions) { [withdrawn_edition_v2] }
 
       let(:params) { { title: "It is a new title" } }
@@ -499,9 +499,9 @@ describe Section do
   end
 
   describe "#attributes" do
-    let(:relevant_document_attrs) {
+    let(:relevant_section_attrs) {
       {
-        "title" => "document_title",
+        "title" => "section_title",
       }
     }
 
@@ -513,7 +513,7 @@ describe Section do
 
     let(:edition) {
       draft_edition_v2.tap do |e|
-        allow(e).to receive(:attributes).and_return(relevant_document_attrs.merge(undesirable_edtion_attrs))
+        allow(e).to receive(:attributes).and_return(relevant_section_attrs.merge(undesirable_edtion_attrs))
       end
     }
 
@@ -531,13 +531,13 @@ describe Section do
 
     it "returns the latest edition's attributes" do
       expect(doc.attributes).to include(
-        relevant_document_attrs.symbolize_keys
+        relevant_section_attrs.symbolize_keys
       )
     end
 
-    it "returns a has including the document's id" do
+    it "returns a has including the section's id" do
       expect(doc.attributes).to include(
-        id: document_id,
+        id: section_id,
       )
     end
   end
