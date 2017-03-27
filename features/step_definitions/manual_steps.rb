@@ -63,7 +63,7 @@ Given(/^a draft manual exists with some sections$/) do
 
   @manual = most_recently_created_manual
   @sections = @manual.sections.to_a
-  @document = @sections.first
+  @section = @sections.first
 
   WebMock::RequestRegistry.instance.reset!
 end
@@ -117,7 +117,7 @@ When(/^I create a section for the manual$/) do
 
   create_section(@manual_fields.fetch(:title), @section_fields)
 
-  @document = most_recently_created_manual.sections.to_a.last
+  @section = most_recently_created_manual.sections.to_a.last
 end
 
 When(/^I create a section for the manual with a change note$/) do
@@ -134,7 +134,7 @@ When(/^I create a section for the manual with a change note$/) do
 
   create_section(@manual_fields.fetch(:title), @section_fields)
 
-  @document = most_recently_created_manual.sections.to_a.last
+  @section = most_recently_created_manual.sections.to_a.last
 end
 
 Then(/^I see the manual has the new section$/) do
@@ -144,7 +144,7 @@ Then(/^I see the manual has the new section$/) do
 end
 
 Then(/^the section and table of contents will have been sent to the draft publishing api$/) do
-  check_section_is_drafted_to_publishing_api(@document.id)
+  check_section_is_drafted_to_publishing_api(@section.id)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -168,7 +168,7 @@ Then(/^the section and table of contents will have been sent to the draft publis
 end
 
 Then(/^the updated section at the new slug and updated table of contents will have been sent to the draft publishing api$/) do
-  check_section_is_drafted_to_publishing_api(@document.id)
+  check_section_is_drafted_to_publishing_api(@section.id)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -203,10 +203,10 @@ Given(/^a draft section exists for the manual$/) do
 
   create_section(@manual_fields.fetch(:title), @section_fields)
 
-  @document = most_recently_created_manual.sections.to_a.last
+  @section = most_recently_created_manual.sections.to_a.last
 
   @sections ||= []
-  @sections << @document
+  @sections << @section
 
   WebMock::RequestRegistry.instance.reset!
 end
@@ -391,7 +391,7 @@ When(/^I create a section for the manual as a minor change without the UI$/) do
     minor_update: true
   }
 
-  @document = create_section_without_ui(@manual, @section_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
+  @section = create_section_without_ui(@manual, @section_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
   go_to_manual_page(@manual.title)
 
@@ -507,19 +507,19 @@ end
 Then(/^the section is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
 end
 
 Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do
@@ -541,7 +541,7 @@ end
 
 Then(/^the change note form for the section is clear$/) do
   go_to_manual_page(@manual.title)
-  click_on((@updated_section || @document).title)
+  click_on((@updated_section || @section).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(minor_update: false, note: "")
@@ -549,7 +549,7 @@ end
 
 Then(/^the change note form for the section contains my note$/) do
   go_to_manual_page(@manual.title)
-  click_on((@updated_section || @document).title)
+  click_on((@updated_section || @section).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(note_field_only: true, note: @change_note)
