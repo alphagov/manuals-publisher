@@ -4,12 +4,12 @@ require "footnotes_section_heading_renderer"
 
 RSpec.describe FootnotesSectionHeadingRenderer do
   subject(:renderer) {
-    FootnotesSectionHeadingRenderer.new(document)
+    FootnotesSectionHeadingRenderer.new(section)
   }
 
-  let(:document) { double(:document, body: html_fragment) }
+  let(:section) { double(:section, body: html_fragment) }
 
-  context "with footnotes in the document body" do
+  context "with footnotes in the section body" do
     let(:html_fragment) {
       '
         <h2 id="heading">First heading</h2>
