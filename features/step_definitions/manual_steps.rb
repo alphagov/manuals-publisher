@@ -272,16 +272,16 @@ end
 
 Then(/^the manual and the edited section are published$/) do
   check_manual_and_sections_were_published(
-    @manual, @updated_document, @manual_fields, @updated_fields
+    @manual, @updated_section, @manual_fields, @updated_fields
   )
 end
 
 Then(/^the updated section is available to preview$/) do
-  check_section_is_drafted_to_publishing_api(@updated_document.id)
+  check_section_is_drafted_to_publishing_api(@updated_section.id)
   sections = @sections.map do |document|
     {
-      title: document == @updated_document ? @updated_fields[:section_title] : document.title,
-      description: document == @updated_document ? @updated_fields[:section_summary] : document.summary,
+      title: document == @updated_section ? @updated_fields[:section_title] : document.title,
+      description: document == @updated_section ? @updated_fields[:section_summary] : document.summary,
       base_path: "/#{document.slug}",
     }
   end
@@ -302,7 +302,7 @@ Then(/^the updated section is available to preview$/) do
 end
 
 Then(/^the sections that I didn't edit were not republished$/) do
-  @sections.reject { |d| d.id == @updated_document.id }.each do |document|
+  @sections.reject { |d| d.id == @updated_section.id }.each do |document|
     check_section_was_not_published(document)
   end
 end
@@ -400,47 +400,47 @@ end
 
 When(/^I edit one of the manual's sections(?: as a major change)?$/) do
   WebMock::RequestRegistry.instance.reset!
-  @updated_document = @sections.first
+  @updated_section = @sections.first
 
   @updated_fields = {
-    section_title: @updated_document.title,
+    section_title: @updated_section.title,
     section_summary: "Updated section",
     section_body: "Updated section",
     change_note: "Updated section",
   }
 
-  edit_section(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+  edit_section(@manual_title || @manual.title, @updated_section.title, @updated_fields) do
     choose("Major update")
   end
 end
 
 When(/^I edit one of the manual's sections without a change note$/) do
   WebMock::RequestRegistry.instance.reset!
-  @updated_document = @sections.first
+  @updated_section = @sections.first
 
   @updated_fields = {
-    section_title: @updated_document.title,
+    section_title: @updated_section.title,
     section_summary: "Updated section",
     section_body: "Updated section",
     change_note: "",
   }
 
-  edit_section(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+  edit_section(@manual_title || @manual.title, @updated_section.title, @updated_fields) do
     choose("Major update")
   end
 end
 
 When(/^I edit one of the manual's sections as a minor change$/) do
   WebMock::RequestRegistry.instance.reset!
-  @updated_document = @sections.first
+  @updated_section = @sections.first
 
   @updated_fields = {
-    section_title: @updated_document.title,
+    section_title: @updated_section.title,
     section_summary: "Updated section",
     section_body: "Updated section",
   }
 
-  edit_section(@manual_title || @manual.title, @updated_document.title, @updated_fields) do
+  edit_section(@manual_title || @manual.title, @updated_section.title, @updated_fields) do
     choose("Minor update")
   end
 end
@@ -481,7 +481,7 @@ end
 Then(/^the section is updated without a change note$/) do
   check_section_exists_with(
     @manual_title,
-    section_title: @updated_document.title,
+    section_title: @updated_section.title,
     section_summary: @updated_fields[:section_summary],
   )
 end
@@ -507,19 +507,19 @@ end
 Then(/^the section is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
 end
 
 Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
+  check_section_is_drafted_to_publishing_api((@updated_section || @document).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_document || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @document).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do
@@ -541,7 +541,7 @@ end
 
 Then(/^the change note form for the section is clear$/) do
   go_to_manual_page(@manual.title)
-  click_on((@updated_document || @document).title)
+  click_on((@updated_section || @document).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(minor_update: false, note: "")
@@ -549,7 +549,7 @@ end
 
 Then(/^the change note form for the section contains my note$/) do
   go_to_manual_page(@manual.title)
-  click_on((@updated_document || @document).title)
+  click_on((@updated_section || @document).title)
   click_on "Edit section"
 
   check_that_change_note_fields_are_present(note_field_only: true, note: @change_note)

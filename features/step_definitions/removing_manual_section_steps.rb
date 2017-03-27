@@ -5,7 +5,7 @@ end
 
 When(/^I remove the edited section from the manual$/) do
   withdraw_section(@manual_fields.fetch(:title), @updated_fields.fetch(:section_title))
-  @removed_document = @updated_document
+  @removed_document = @updated_section
 end
 
 When(/^I remove one of the sections from the manual$/) do
