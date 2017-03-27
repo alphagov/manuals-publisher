@@ -32,8 +32,8 @@ Then(/^the section is removed from the manual$/) do
   check_section_was_removed(@manual.id, @removed_section.id)
   check_draft_has_been_discarded_in_publishing_api(@removed_section.id)
 
-  # Check that no child section has the removed document's title
-  without_removed_document_matcher = ->(request) do
+  # Check that no child section has the removed section's title
+  without_removed_section_matcher = ->(request) do
     data = JSON.parse(request.body)
     contents = data["details"]["child_section_groups"].first
     contents["child_sections"].none? do |child_section|
@@ -41,7 +41,7 @@ Then(/^the section is removed from the manual$/) do
     end
   end
 
-  check_manual_is_drafted_to_publishing_api(@manual.id, with_matcher: without_removed_document_matcher)
+  check_manual_is_drafted_to_publishing_api(@manual.id, with_matcher: without_removed_section_matcher)
 end
 
 Then(/^the removed section is not published$/) do
