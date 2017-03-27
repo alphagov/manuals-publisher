@@ -45,7 +45,7 @@ RSpec.describe "Republishing manuals", type: :feature do
   def edit_manual_and_sections
     @edited_manual = edit_manual_without_ui(@manual, edited_manual_fields)
 
-    @edited_documents = @sections.map do |document|
+    @edited_sections = @sections.map do |document|
       edit_section_without_ui(@manual, document, edited_section_fields(document))
     end
 
@@ -118,7 +118,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     before do
       create_manual_with_sections(published: true)
 
-      @edited_document = edit_manual_and_sections
+      @edited_section = edit_manual_and_sections
 
       republish_manuals_without_ui
     end
@@ -150,7 +150,7 @@ RSpec.describe "Republishing manuals", type: :feature do
       # all we can check is that it was only published once
       check_manual_is_published_to_publishing_api(@manual.id, times: 1)
       check_manual_is_not_published_to_rummager_with_attrs(@manual.slug, edited_manual_fields)
-      @edited_documents.each do |document|
+      @edited_sections.each do |document|
         check_section_is_drafted_to_publishing_api(document.id, extra_attributes: {
           title: document.title,
           description: document.summary,
@@ -163,7 +163,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "does not set the exported timestamp of the draft version of the section" do
-      expect(@edited_documents.first.latest_edition.reload.exported_at).to be_nil
+      expect(@edited_sections.first.latest_edition.reload.exported_at).to be_nil
     end
 
     it "does not set the exported timestamp of the previously published version of the section" do
