@@ -256,7 +256,7 @@ module ManualHelpers
   end
 
   def section_repository(manual)
-    RepositoryRegistry.new.section_repository_factory.call(manual)
+    SectionRepository.new(manual: manual)
   end
 
   def check_section_is_archived_in_db(manual, section_id)
