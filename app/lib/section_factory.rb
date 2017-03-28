@@ -1,3 +1,6 @@
+require "slug_generator"
+require "section"
+
 class SectionFactory
   def initialize(manual)
     @manual = manual
