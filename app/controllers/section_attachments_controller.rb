@@ -73,7 +73,7 @@ private
   end
 
   def gds_editor_repository
-    RepositoryRegistry.new.manual_repository
+    ScopedManualRepository.new(ManualRecord.all)
   end
 
   def organisational_repository

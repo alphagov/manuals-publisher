@@ -176,7 +176,7 @@ private
 
   def manual_repository
     if current_user_is_gds_editor?
-      RepositoryRegistry.new.manual_repository
+      ScopedManualRepository.new(ManualRecord.all)
     else
       RepositoryRegistry.new.scoped_manual_repository(
         ManualRecord.where(organisation_slug: current_organisation_slug)

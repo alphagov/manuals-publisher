@@ -5,7 +5,7 @@ require "manual_withdrawer"
 
 module ManualHelpers
   def manual_repository
-    RepositoryRegistry.new.manual_repository
+    ScopedManualRepository.new(ManualRecord.all)
   end
 
   def create_manual(fields, save: true)
@@ -164,7 +164,7 @@ module ManualHelpers
     stub_manual_publication_observers(organisation_slug)
 
     service = PublishManualService.new(
-      manual_repository: RepositoryRegistry.new.manual_repository,
+      manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual.id,
       version_number: manual.version_number,
     )
@@ -540,7 +540,7 @@ module ManualHelpers
   end
 
   def most_recently_created_manual
-    RepositoryRegistry.new.manual_repository.all.first
+    ScopedManualRepository.new(ManualRecord.all).all.first
   end
 
   def section_fields(section)

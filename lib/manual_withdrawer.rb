@@ -7,7 +7,7 @@ class ManualWithdrawer
 
   def execute(manual_id)
     service = WithdrawManualService.new(
-      manual_repository: RepositoryRegistry.new.manual_repository,
+      manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual_id,
     )
     manual = service.call

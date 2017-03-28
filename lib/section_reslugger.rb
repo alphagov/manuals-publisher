@@ -76,7 +76,8 @@ private
   end
 
   def new_edition_for_slug_change
-    manual_repository = RepositoryRegistry.new.manual_repository
+    manual_repository = ScopedManualRepository.new(ManualRecord.all)
+
     service = UpdateSectionService.new(
       manual_repository: manual_repository,
       context: context_for_section_edition_update,
@@ -108,7 +109,7 @@ private
 
   def publish_manual
     service = PublishManualService.new(
-      manual_repository: RepositoryRegistry.new.manual_repository,
+      manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
     )
@@ -124,7 +125,7 @@ private
   end
 
   def manual_repository
-    RepositoryRegistry.new.manual_repository
+    ScopedManualRepository.new(ManualRecord.all)
   end
 
   def current_section_edition
