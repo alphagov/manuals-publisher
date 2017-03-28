@@ -15,32 +15,6 @@ class RepositoryRegistry
   end
 
   def scoped_manual_repository(collection)
-    ManualRepository.new(
-      association_marshallers: [
-        SectionAssociationMarshaller.new(
-          decorator: ->(manual, attrs) {
-            ManualValidator.new(
-              NullValidator.new(
-                ManualWithSections.new(
-                  SectionBuilder.new,
-                  manual,
-                  attrs,
-                )
-              )
-            )
-          }
-        ),
-        ManualPublishTaskAssociationMarshaller.new(
-          collection: ManualPublishTask,
-          decorator: ->(manual, attrs) {
-            ManualWithPublishTasks.new(
-              manual,
-              attrs,
-            )
-          }
-        ),
-      ],
-      collection: collection,
-    )
+    ScopedManualRepository.new(collection)
   end
 end
