@@ -1,6 +1,16 @@
 class SectionAssociationMarshaller
-  def initialize(decorator:)
-    @decorator = decorator
+  def initialize
+    @decorator = ->(manual, attrs) {
+      ManualValidator.new(
+        NullValidator.new(
+          ManualWithSections.new(
+            SectionBuilder.new,
+            manual,
+            attrs,
+          )
+        )
+      )
+    }
   end
 
   def load(manual, record)

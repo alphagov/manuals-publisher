@@ -4,12 +4,8 @@ require "marshallers/section_association_marshaller"
 
 describe SectionAssociationMarshaller do
   subject(:marshaller) {
-    SectionAssociationMarshaller.new(
-      decorator: decorator,
-    )
+    SectionAssociationMarshaller.new
   }
-
-  let(:decorator) { double(:decorator, call: nil) }
 
   let(:section_repository) {
     double(
@@ -45,14 +41,11 @@ describe SectionAssociationMarshaller do
   end
 
   describe "#load" do
-    let(:decorated_entity) { double(:decorated_entity) }
-
     before do
       allow(section_repository).to receive(:fetch).
         with(section_id).and_return(section)
       allow(section_repository).to receive(:fetch).
         with(removed_section_id).and_return(removed_section)
-      allow(decorator).to receive(:call).and_return(decorated_entity)
     end
 
     it "fetches associated sections and removed sections by ids" do
@@ -64,16 +57,22 @@ describe SectionAssociationMarshaller do
     end
 
     it "decorates the entity with the attributes" do
+      allow(ManualWithSections).to receive(:new)
+      allow(SectionBuilder).to receive(:new).and_return(:section_builder)
+      allow(NullValidator).to receive(:new)
+      allow(ManualValidator).to receive(:new)
+
       marshaller.load(entity, record)
 
-      expect(decorator).to have_received(:call).
-        with(entity, sections: sections, removed_sections: removed_sections)
+      expect(ManualWithSections).to have_received(:new).with(:section_builder, entity, sections: [section], removed_sections: [removed_section])
+      expect(NullValidator).to have_received(:new)
+      expect(ManualValidator).to have_received(:new)
     end
 
     it "returns the decorated entity" do
       expect(
         marshaller.load(entity, record)
-      ).to eq(decorated_entity)
+      ).to eq(entity)
     end
   end
 
