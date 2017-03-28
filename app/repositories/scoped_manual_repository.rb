@@ -19,14 +19,7 @@ class ScopedManualRepository
             )
           }
         ),
-        ManualPublishTaskAssociationMarshaller.new(
-          decorator: ->(manual, attrs) {
-            ManualWithPublishTasks.new(
-              manual,
-              attrs,
-            )
-          }
-        ),
+        ManualPublishTaskAssociationMarshaller.new
       ],
       collection: collection,
     )
