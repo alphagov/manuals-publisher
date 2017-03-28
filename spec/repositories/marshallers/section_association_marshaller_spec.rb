@@ -15,7 +15,7 @@ describe SectionAssociationMarshaller do
     )
   }
 
-  let(:entity) { double(:entity) }
+  let(:manual) { double(:manual) }
   let(:record) {
     double(
       :record,
@@ -37,7 +37,7 @@ describe SectionAssociationMarshaller do
   let(:removed_sections) { [removed_section] }
 
   before do
-    allow(SectionRepository).to receive(:new).with(manual: entity).and_return(section_repository)
+    allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
   end
 
   describe "#load" do
@@ -49,41 +49,41 @@ describe SectionAssociationMarshaller do
     end
 
     it "fetches associated sections and removed sections by ids" do
-      marshaller.load(entity, record)
+      marshaller.load(manual, record)
 
       expect(section_repository).to have_received(:fetch).with(section_id)
       expect(section_repository).to have_received(:fetch).
         with(removed_section_id)
     end
 
-    it "decorates the entity with the attributes" do
+    it "decorates the manual with the attributes" do
       allow(ManualWithSections).to receive(:new)
       allow(SectionBuilder).to receive(:new).and_return(:section_builder)
       allow(NullValidator).to receive(:new)
       allow(ManualValidator).to receive(:new)
 
-      marshaller.load(entity, record)
+      marshaller.load(manual, record)
 
-      expect(ManualWithSections).to have_received(:new).with(:section_builder, entity, sections: [section], removed_sections: [removed_section])
+      expect(ManualWithSections).to have_received(:new).with(:section_builder, manual, sections: [section], removed_sections: [removed_section])
       expect(NullValidator).to have_received(:new)
       expect(ManualValidator).to have_received(:new)
     end
 
-    it "returns the decorated entity" do
+    it "returns the decorated manual" do
       expect(
-        marshaller.load(entity, record)
-      ).to eq(entity)
+        marshaller.load(manual, record)
+      ).to eq(manual)
     end
   end
 
   describe "#dump" do
     before do
-      allow(entity).to receive(:sections).and_return(sections)
-      allow(entity).to receive(:removed_sections).and_return(removed_sections)
+      allow(manual).to receive(:sections).and_return(sections)
+      allow(manual).to receive(:removed_sections).and_return(removed_sections)
     end
 
     it "saves associated sections and removed sections" do
-      marshaller.dump(entity, record)
+      marshaller.dump(manual, record)
 
       expect(section_repository).to have_received(:store).with(section)
       expect(section_repository).to have_received(:store).
@@ -91,20 +91,20 @@ describe SectionAssociationMarshaller do
     end
 
     it "updates associated document ids on the record" do
-      marshaller.dump(entity, record)
+      marshaller.dump(manual, record)
 
       expect(record).to have_received(:document_ids=).with(section_ids)
     end
 
     it "updates associated removed document ids on the record" do
-      marshaller.dump(entity, record)
+      marshaller.dump(manual, record)
 
       expect(record).to have_received(:removed_document_ids=).
         with(removed_section_ids)
     end
 
     it "returns nil" do
-      expect(marshaller.dump(entity, record)).to eq(nil)
+      expect(marshaller.dump(manual, record)).to eq(nil)
     end
   end
 end
