@@ -446,7 +446,7 @@ When(/^I edit one of the manual's sections as a minor change$/) do
 end
 
 When(/^I preview the section$/) do
-  generate_preview
+  click_button("Preview")
 end
 
 When(/^I create a section to preview$/) do
@@ -628,7 +628,7 @@ When(/^I make changes and preview the manual$/) do
     title: "Title for preview",
     body: "Body for preview",
   )
-  generate_preview
+  click_button("Preview")
 end
 
 When(/^I start creating a new manual$/) do
@@ -644,7 +644,7 @@ When(/^I start creating a new manual$/) do
 end
 
 When(/^I preview the manual$/) do
-  generate_preview
+  click_button("Preview")
 end
 
 Then(/^I see the manual body preview$/) do
