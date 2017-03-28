@@ -10,7 +10,4 @@ require "manual_record"
 require "manual_with_sections"
 
 class RepositoryRegistry
-  def scoped_manual_repository(collection)
-    ScopedManualRepository.new(collection)
-  end
 end

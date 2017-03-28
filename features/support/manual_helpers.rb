@@ -19,7 +19,8 @@ module ManualHelpers
 
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    repository = RepositoryRegistry.new.scoped_manual_repository(
+
+    repository = ScopedManualRepository.new(
       ManualRecord.where(organisation_slug: organisation_slug)
     )
 
@@ -45,7 +46,7 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    organisational_manual_repository = RepositoryRegistry.new.scoped_manual_repository(
+    organisational_manual_repository = ScopedManualRepository.new(
       ManualRecord.where(organisation_slug: organisation_slug)
     )
 
@@ -76,7 +77,8 @@ module ManualHelpers
 
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    repository = RepositoryRegistry.new.scoped_manual_repository(
+
+    repository = ScopedManualRepository.new(
       ManualRecord.where(organisation_slug: organisation_slug)
     )
 
@@ -102,7 +104,7 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
-    organisational_manual_repository = RepositoryRegistry.new.scoped_manual_repository(
+    organisational_manual_repository = ScopedManualRepository.new(
       ManualRecord.where(organisation_slug: organisation_slug)
     )
 

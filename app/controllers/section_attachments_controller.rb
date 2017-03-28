@@ -77,7 +77,7 @@ private
   end
 
   def organisational_repository
-    RepositoryRegistry.new.scoped_manual_repository(
+    ScopedManualRepository.new(
       ManualRecord.where(organisation_slug: current_organisation_slug)
     )
   end
