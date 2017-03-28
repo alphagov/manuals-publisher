@@ -659,5 +659,9 @@ module ManualHelpers
     republisher = ManualsRepublisher.new(logger)
     republisher.execute
   end
+
+  def check_for_slug_clash_warning
+    expect(page).to have_content("You can't publish it until you change the title.")
+  end
 end
 RSpec.configuration.include ManualHelpers, type: :feature
