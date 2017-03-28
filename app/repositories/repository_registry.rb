@@ -18,7 +18,6 @@ class RepositoryRegistry
     ManualRepository.new(
       association_marshallers: [
         SectionAssociationMarshaller.new(
-          section_repository_factory: section_repository_factory,
           decorator: ->(manual, attrs) {
             ManualValidator.new(
               NullValidator.new(
@@ -43,13 +42,5 @@ class RepositoryRegistry
       ],
       collection: collection,
     )
-  end
-
-  def section_repository_factory
-    ->(manual) {
-      SectionRepository.new(
-        manual: manual,
-      )
-    }
   end
 end

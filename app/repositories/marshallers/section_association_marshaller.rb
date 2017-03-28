@@ -1,11 +1,10 @@
 class SectionAssociationMarshaller
-  def initialize(decorator:, section_repository_factory:)
+  def initialize(decorator:)
     @decorator = decorator
-    @section_repository_factory = section_repository_factory
   end
 
   def load(manual, record)
-    section_repository = section_repository_factory.call(manual)
+    section_repository = SectionRepository.new(manual: manual)
 
     sections = Array(record.document_ids).map { |section_id|
       section_repository.fetch(section_id)
@@ -23,7 +22,7 @@ class SectionAssociationMarshaller
   end
 
   def dump(manual, record)
-    section_repository = section_repository_factory.call(manual)
+    section_repository = SectionRepository.new(manual: manual)
 
     manual.sections.each do |section|
       section_repository.store(section)
@@ -41,7 +40,7 @@ class SectionAssociationMarshaller
 
 private
 
-  attr_reader :section_repository_factory, :decorator
+  attr_reader :decorator
 
   class RemovedSectionIdNotFoundError < StandardError; end
 end

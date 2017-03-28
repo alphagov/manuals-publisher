@@ -6,17 +6,10 @@ describe SectionAssociationMarshaller do
   subject(:marshaller) {
     SectionAssociationMarshaller.new(
       decorator: decorator,
-      section_repository_factory: section_repository_factory,
     )
   }
 
   let(:decorator) { double(:decorator, call: nil) }
-  let(:section_repository_factory) {
-    double(
-      :section_repository_factory,
-      call: section_repository,
-    )
-  }
 
   let(:section_repository) {
     double(
@@ -46,6 +39,10 @@ describe SectionAssociationMarshaller do
   let(:removed_section_ids) { [removed_section_id] }
   let(:removed_section) { double(:removed_section, id: removed_section_id) }
   let(:removed_sections) { [removed_section] }
+
+  before do
+    allow(SectionRepository).to receive(:new).with(manual: entity).and_return(section_repository)
+  end
 
   describe "#load" do
     let(:decorated_entity) { double(:decorated_entity) }
