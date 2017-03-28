@@ -7,6 +7,7 @@ require "manual_publish_task"
 require "manual_with_publish_tasks"
 require "manual"
 require "manual_record"
+require "manual_with_sections"
 
 class RepositoryRegistry
   def organisation_scoped_manual_repository_factory
@@ -27,7 +28,15 @@ class RepositoryRegistry
         SectionAssociationMarshaller.new(
           section_repository_factory: section_repository_factory,
           decorator: ->(manual, attrs) {
-            DocumentFactoryRegistry.new.manual_with_sections.call(manual, attrs)
+            ManualValidator.new(
+              NullValidator.new(
+                ManualWithSections.new(
+                  SectionBuilder.new,
+                  manual,
+                  attrs,
+                )
+              )
+            )
           }
         ),
         ManualPublishTaskAssociationMarshaller.new(
