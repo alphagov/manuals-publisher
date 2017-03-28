@@ -475,7 +475,7 @@ end
 
 When(/^I indicate that the change is minor$/) do
   choose("Minor update")
-  save_document
+  click_on "Save as draft"
 end
 
 Then(/^the section is updated without a change note$/) do

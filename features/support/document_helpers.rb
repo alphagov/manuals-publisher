@@ -1,8 +1,4 @@
 module DocumentHelpers
-  def save_document
-    click_on "Save as draft"
-  end
-
   def generate_preview
     click_button("Preview")
   end
