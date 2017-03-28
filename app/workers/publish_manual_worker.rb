@@ -34,7 +34,7 @@ class PublishManualWorker
 private
 
   def repository
-    RepositoryRegistry.new.manual_repository
+    ScopedManualRepository.new(ManualRecord.all)
   end
 
   def requeue_task(manual_id, error)

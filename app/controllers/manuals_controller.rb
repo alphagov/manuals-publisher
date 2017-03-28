@@ -229,22 +229,21 @@ private
 
   def repository
     if current_user_is_gds_editor?
-      RepositoryRegistry.new.manual_repository
+      ScopedManualRepository.new(ManualRecord.all)
     else
-      manual_repository_factory = RepositoryRegistry.new
-        .organisation_scoped_manual_repository_factory
-      manual_repository_factory.call(current_organisation_slug)
+      ScopedManualRepository.new(
+        ManualRecord.where(organisation_slug: current_organisation_slug)
+      )
     end
   end
 
   def associationless_repository
     if current_user_is_gds_editor?
-      RepositoryRegistry.new
-        .associationless_manual_repository
+      ManualRepository.new(collection: ManualRecord.all)
     else
-      associationless_manual_repository_factory = RepositoryRegistry.new
-        .associationless_organisation_scoped_manual_repository_factory
-      associationless_manual_repository_factory.call(current_organisation_slug)
+      ManualRepository.new(
+        collection: ManualRecord.where(organisation_slug: current_organisation_slug)
+      )
     end
   end
 

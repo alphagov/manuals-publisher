@@ -5,7 +5,7 @@ require "manual_withdrawer"
 
 module ManualHelpers
   def manual_repository
-    RepositoryRegistry.new.manual_repository
+    ScopedManualRepository.new(ManualRecord.all)
   end
 
   def create_manual(fields, save: true)
@@ -19,9 +19,10 @@ module ManualHelpers
 
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_repository_factory = RepositoryRegistry.new
-      .organisation_scoped_manual_repository_factory
-    repository = manual_repository_factory.call(organisation_slug)
+
+    repository = ScopedManualRepository.new(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     service = CreateManualService.new(
       manual_repository: repository,
@@ -45,9 +46,9 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    manual_repository_factory = RepositoryRegistry.new.
-      organisation_scoped_manual_repository_factory
-    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
+    organisational_manual_repository = ScopedManualRepository.new(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     create_service_context = OpenStruct.new(
       params: {
@@ -76,9 +77,10 @@ module ManualHelpers
 
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
-    manual_repository_factory = RepositoryRegistry.new
-      .organisation_scoped_manual_repository_factory
-    repository = manual_repository_factory.call(organisation_slug)
+
+    repository = ScopedManualRepository.new(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     service = UpdateManualService.new(
       manual_repository: repository,
@@ -102,9 +104,9 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
-    manual_repository_factory = RepositoryRegistry.new.
-      organisation_scoped_manual_repository_factory
-    organisational_manual_repository = manual_repository_factory.call(organisation_slug)
+    organisational_manual_repository = ScopedManualRepository.new(
+      ManualRecord.where(organisation_slug: organisation_slug)
+    )
 
     service_context = OpenStruct.new(
       params: {
@@ -164,7 +166,7 @@ module ManualHelpers
     stub_manual_publication_observers(organisation_slug)
 
     service = PublishManualService.new(
-      manual_repository: RepositoryRegistry.new.manual_repository,
+      manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual.id,
       version_number: manual.version_number,
     )
@@ -256,7 +258,7 @@ module ManualHelpers
   end
 
   def section_repository(manual)
-    RepositoryRegistry.new.section_repository_factory.call(manual)
+    SectionRepository.new(manual: manual)
   end
 
   def check_section_is_archived_in_db(manual, section_id)
@@ -540,7 +542,7 @@ module ManualHelpers
   end
 
   def most_recently_created_manual
-    RepositoryRegistry.new.manual_repository.all.first
+    ScopedManualRepository.new(ManualRecord.all).all.first
   end
 
   def section_fields(section)

@@ -3,11 +3,12 @@ require "spec_helper"
 describe SectionRepository do
   let(:section_repository) do
     SectionRepository.new(
-      section_factory: section_factory,
+      manual: manual,
     )
   end
 
   let(:section_factory) { double(:section_factory, call: section) }
+  let(:manual) { double(:manual) }
 
   let(:section_id) { "section-id" }
   let(:section) {
@@ -55,6 +56,10 @@ describe SectionRepository do
 
   it "supports the fetch interface" do
     expect(section_repository).to be_a_kind_of(Fetchable)
+  end
+
+  before do
+    allow(SectionFactory).to receive(:new).with(manual).and_return(section_factory)
   end
 
   describe "#all" do
