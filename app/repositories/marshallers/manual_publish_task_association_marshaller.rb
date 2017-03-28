@@ -1,7 +1,7 @@
 class ManualPublishTaskAssociationMarshaller
-  def initialize(decorator:, collection:)
+  def initialize(decorator:)
     @decorator = decorator
-    @collection = collection
+    @collection = ManualPublishTask
   end
 
   def load(manual, _record)
