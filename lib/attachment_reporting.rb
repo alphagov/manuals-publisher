@@ -80,6 +80,6 @@ private
   end
 
   def all_unique_section_ids_for_manual(manual)
-    manual.editions.map(&:document_ids).flatten.uniq
+    manual.editions.map(&:section_ids).flatten.uniq
   end
 end

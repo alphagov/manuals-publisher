@@ -19,8 +19,8 @@ describe SectionAssociationMarshaller do
   let(:record) {
     double(
       :record,
-      document_ids: section_ids,
-      "document_ids=": nil,
+      section_ids: section_ids,
+      "section_ids=": nil,
       removed_section_ids: removed_section_ids,
       "removed_section_ids=": nil,
     )
@@ -91,7 +91,7 @@ describe SectionAssociationMarshaller do
     it "updates associated document ids on the record" do
       marshaller.dump(manual, record)
 
-      expect(record).to have_received(:document_ids=).with(section_ids)
+      expect(record).to have_received(:section_ids=).with(section_ids)
     end
 
     it "updates associated removed document ids on the record" do

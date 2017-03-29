@@ -37,11 +37,11 @@ private
   end
 
   def old_section_ids
-    @old_section_ids ||= old_manual.editions.flat_map(&:document_ids).uniq
+    @old_section_ids ||= old_manual.editions.flat_map(&:section_ids).uniq
   end
 
   def new_section_ids
-    @new_section_ids ||= new_manual.editions.flat_map(&:document_ids).uniq
+    @new_section_ids ||= new_manual.editions.flat_map(&:section_ids).uniq
   end
 
   def validate_manuals

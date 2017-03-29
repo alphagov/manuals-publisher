@@ -31,7 +31,7 @@ describe SectionReslugger do
       body: 'section-edition-body'
     )
     manual_record.editions.create!(
-      document_ids: [
+      section_ids: [
         'document-id'
       ]
     )

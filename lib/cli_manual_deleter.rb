@@ -60,7 +60,7 @@ private
   end
 
   def section_ids_for(manual_record)
-    manual_record.editions.flat_map(&:document_ids).uniq
+    manual_record.editions.flat_map(&:section_ids).uniq
   end
 
   # Some of this method violates SRP -- we could move it out to a service if we

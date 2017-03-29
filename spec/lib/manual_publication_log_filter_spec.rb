@@ -97,7 +97,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     manual_record.editions.create!(
       state: "published",
       version_number: 1,
-      document_ids: [
+      section_ids: [
         section_a_edition_published_version_1_major_update.document_id,
         section_b_edition_published_version_1_major_update.document_id,
         section_c_edition_archived_version_1_major_update.document_id,
@@ -111,7 +111,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     manual_record.editions.create!(
       state: "published",
       version_number: 2,
-      document_ids: [
+      section_ids: [
         section_a_edition_published_version_2_major_update.document_id,
         section_b_edition_published_version_2_minor_update.document_id,
         section_c_edition_archived_version_1_major_update.document_id,
