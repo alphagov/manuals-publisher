@@ -10,6 +10,9 @@ test:
   database: govuk_content_manuals_publisher_test
   autocreate_indexes: true
 
+<% mongo_nodes = (ENV['MONGODB_NODES'] || '').split("\n") %>
+<% first_mongo_node = mongo_nodes.shift %>
+
 production:
   database: govuk_content_production
   refresh_mode: :sync
@@ -17,4 +20,7 @@ production:
   refresh_interval: 120
   use_activesupport_time_zone: true
   hosts:
-    - <%= ENV['MONGODB_NODES'] %>
+    - <%= first_mongo_node %>
+      <% mongo_nodes.each do |node| %>
+      <%= node.strip %>
+      <% end %>
