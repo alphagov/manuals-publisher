@@ -22,7 +22,7 @@ class MarkedSectionDeleter
     @logger.puts "The following #{unknown_editions.count} are unknown to Publishing API and are safe to delete:"
     unknown_editions.each do |edition|
       @logger.puts [edition[:slug], edition[:content_id], edition[:state], edition[:created_at]].join(",")
-      SectionEdition.where(document_id: edition[:content_id]).delete_all unless dry_run
+      SectionEdition.where(section_id: edition[:content_id]).delete_all unless dry_run
     end
 
     @logger.puts "The following #{known_editions.count} are known to Publishing API and will be deleted after the draft is discarded:"
@@ -30,7 +30,7 @@ class MarkedSectionDeleter
       @logger.puts [edition[:slug], edition[:content_id], edition[:state], edition[:created_at]].join(",")
       unless dry_run
         publishing_api.discard_draft(edition[:content_id])
-        SectionEdition.where(document_id: edition[:content_id]).delete_all
+        SectionEdition.where(section_id: edition[:content_id]).delete_all
       end
     end
   end

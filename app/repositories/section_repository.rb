@@ -25,7 +25,7 @@ class SectionRepository
 
   def [](id)
     editions = section_editions
-      .where(document_id: id)
+      .where(section_id: id)
       .order_by([:version_number, :desc])
       .limit(2)
       .to_a
@@ -50,7 +50,7 @@ class SectionRepository
     if section.draft?
       section_editions.where(
         :slug => section.slug,
-        :document_id.ne => section.id,
+        :section_id.ne => section.id,
         :state => "published"
       ).empty?
     else
@@ -69,7 +69,7 @@ class SectionRepository
   end
 
   def count
-    section_editions.distinct(:document_id).count
+    section_editions.distinct(:section_id).count
   end
 
 private
@@ -102,7 +102,7 @@ private
   def only_section_ids_for(collection)
     collection.all
       .order_by([:updated_at, :desc])
-      .only(:document_id, :updated_at)
+      .only(:section_id, :updated_at)
       .map(&:section_id)
       .uniq
   end

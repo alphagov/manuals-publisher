@@ -94,7 +94,7 @@ private
   end
 
   def build_section(section_id)
-    all_editions = SectionEdition.where(document_id: section_id).order_by([:version_number, :desc]).to_a
+    all_editions = SectionEdition.where(section_id: section_id).order_by([:version_number, :desc]).to_a
     Section.new(
       ->(_title) { raise RuntimeError, "read only manual" },
       section_id,

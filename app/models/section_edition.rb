@@ -6,7 +6,7 @@ class SectionEdition
 
   store_in "manual_section_editions"
 
-  field :document_id,          type: String, as: :section_id
+  field :section_id,          type: String
   field :version_number,       type: Integer, default: 1
   field :title,                type: String
   field :slug,                 type: String
@@ -39,7 +39,7 @@ class SectionEdition
 
   scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
 
-  index "document_id"
+  index "section_id"
   index "state"
   index "updated_at"
 
