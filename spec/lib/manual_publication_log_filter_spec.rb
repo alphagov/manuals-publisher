@@ -187,7 +187,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 end
 
 describe ManualPublicationLogFilter::EditionOrdering do
-  describe ".sort_by_document_ids_and_created_at" do
+  describe ".sort_by_section_ids_and_created_at" do
     let!(:edition_in_third_position) { FactoryGirl.create :section_edition }
     let!(:edition_in_first_position) { FactoryGirl.create :section_edition }
     let!(:edition_in_second_position) { FactoryGirl.create :section_edition }
@@ -195,7 +195,7 @@ describe ManualPublicationLogFilter::EditionOrdering do
     let!(:other_edition_newer) { FactoryGirl.create :section_edition, created_at: Time.now - 1.day }
     let!(:other_edition_older) { FactoryGirl.create :section_edition, created_at: Time.now - 1.week }
 
-    let!(:document_ids) {
+    let!(:section_ids) {
       [
         edition_in_first_position.document_id,
         edition_in_second_position.document_id,
@@ -204,13 +204,13 @@ describe ManualPublicationLogFilter::EditionOrdering do
     }
 
     let(:expected_section_order) {
-      document_ids.concat([other_edition_older.document_id, other_edition_newer.document_id])
+      section_ids.concat([other_edition_older.document_id, other_edition_newer.document_id])
     }
 
-    let(:subject) { described_class.new(SectionEdition.all, document_ids) }
+    let(:subject) { described_class.new(SectionEdition.all, section_ids) }
 
-    it "returns editions in the supplied document id and created_at order" do
-      ordered_editions = subject.sort_by_document_ids_and_created_at
+    it "returns editions in the supplied section id and created_at order" do
+      ordered_editions = subject.sort_by_section_ids_and_created_at
 
       expect(ordered_editions.map(&:document_id)).to eq expected_section_order
     end
