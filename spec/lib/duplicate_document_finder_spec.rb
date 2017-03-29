@@ -25,7 +25,7 @@ describe DuplicateDocumentFinder do
     end
   end
 
-  context 'when there are multiple editions with the same slug and same document id' do
+  context 'when there are multiple editions with the same slug and same section id' do
     before {
       FactoryGirl.create(:section_edition, slug: 'slug', document_id: 1)
       FactoryGirl.create(:section_edition, slug: 'slug', document_id: 1)
@@ -38,7 +38,7 @@ describe DuplicateDocumentFinder do
     end
   end
 
-  context 'when there are multiple editions with the same slug and different document ids' do
+  context 'when there are multiple editions with the same slug and different section ids' do
     let!(:edition_1) {
       FactoryGirl.create(:section_edition, slug: 'slug', document_id: 1)
     }
