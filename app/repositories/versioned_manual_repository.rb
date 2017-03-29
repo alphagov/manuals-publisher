@@ -25,7 +25,7 @@ private
     build_manual_for(manual_record, manual_record.latest_edition) do
       {
         sections: get_latest_version_of_sections(manual_record.latest_edition.document_ids),
-        removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_document_ids),
+        removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_section_ids),
       }
     end
   end
@@ -37,7 +37,7 @@ private
       build_manual_for(manual_record, manual_record.latest_edition) do
         {
           sections: get_latest_version_of_sections(manual_record.latest_edition.document_ids),
-          removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_document_ids),
+          removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_section_ids),
         }
       end
     elsif manual_record.latest_edition.state == "draft"
@@ -46,7 +46,7 @@ private
         build_manual_for(manual_record, previous_edition) do
           {
             sections: get_published_version_of_sections(previous_edition.document_ids),
-            removed_sections: get_latest_version_of_sections(previous_edition.removed_document_ids)
+            removed_sections: get_latest_version_of_sections(previous_edition.removed_section_ids)
           }
         end
       else
