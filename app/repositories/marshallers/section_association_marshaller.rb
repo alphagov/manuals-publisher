@@ -1,6 +1,6 @@
 class SectionAssociationMarshaller
-  def initialize
-    @decorator = ->(manual, attrs) {
+  class Decorator
+    def call(manual, attrs)
       ManualValidator.new(
         NullValidator.new(
           ManualWithSections.new(
@@ -10,7 +10,7 @@ class SectionAssociationMarshaller
           )
         )
       )
-    }
+    end
   end
 
   def load(manual, record)
@@ -28,7 +28,7 @@ class SectionAssociationMarshaller
       end
     }
 
-    decorator.call(manual, sections: sections, removed_sections: removed_sections)
+    Decorator.new.call(manual, sections: sections, removed_sections: removed_sections)
   end
 
   def dump(manual, record)

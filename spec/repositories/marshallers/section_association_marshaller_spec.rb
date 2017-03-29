@@ -36,8 +36,12 @@ describe SectionAssociationMarshaller do
   let(:removed_section) { double(:removed_section, id: removed_section_id) }
   let(:removed_sections) { [removed_section] }
 
+  let(:decorator) { double(:decorator) }
+  let(:decorated_manual) { double(:decorated_manual) }
+
   before do
     allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+    allow(SectionAssociationMarshaller::Decorator).to receive(:new).and_return(decorator)
   end
 
   describe "#load" do
@@ -46,6 +50,7 @@ describe SectionAssociationMarshaller do
         with(section_id).and_return(section)
       allow(section_repository).to receive(:fetch).
         with(removed_section_id).and_return(removed_section)
+      allow(decorator).to receive(:call).and_return(decorated_manual)
     end
 
     it "fetches associated sections and removed sections by ids" do
@@ -57,22 +62,15 @@ describe SectionAssociationMarshaller do
     end
 
     it "decorates the manual with the attributes" do
-      allow(ManualWithSections).to receive(:new)
-      allow(SectionBuilder).to receive(:new).and_return(:section_builder)
-      allow(NullValidator).to receive(:new)
-      allow(ManualValidator).to receive(:new)
-
       marshaller.load(manual, record)
 
-      expect(ManualWithSections).to have_received(:new).with(:section_builder, manual, sections: [section], removed_sections: [removed_section])
-      expect(NullValidator).to have_received(:new)
-      expect(ManualValidator).to have_received(:new)
+      expect(decorator).to have_received(:call).with(manual, sections: [section], removed_sections: [removed_section])
     end
 
     it "returns the decorated manual" do
       expect(
         marshaller.load(manual, record)
-      ).to eq(manual)
+      ).to eq(decorated_manual)
     end
   end
 
