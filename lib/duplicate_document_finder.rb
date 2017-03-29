@@ -7,8 +7,8 @@ class DuplicateDocumentFinder
     slug_hash = {}
     SectionEdition.all.each do |edition|
       slug_hash[edition.slug] ||= {}
-      slug_hash[edition.slug][edition.document_id] ||= { state: edition.state, created_at: edition.created_at, editions: 0 }
-      slug_hash[edition.slug][edition.document_id][:editions] += 1
+      slug_hash[edition.slug][edition.section_id] ||= { state: edition.state, created_at: edition.created_at, editions: 0 }
+      slug_hash[edition.slug][edition.section_id][:editions] += 1
     end
 
     slug_hash.reject! { |_slug, section_ids| section_ids.size == 1 }

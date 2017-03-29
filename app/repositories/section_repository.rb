@@ -103,7 +103,7 @@ private
     collection.all
       .order_by([:updated_at, :desc])
       .only(:document_id, :updated_at)
-      .map(&:document_id)
+      .map(&:section_id)
       .uniq
   end
 

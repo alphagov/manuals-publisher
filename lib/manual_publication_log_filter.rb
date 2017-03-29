@@ -28,8 +28,8 @@ class ManualPublicationLogFilter
 
     def order_by_section_ids(section_editions)
       section_editions.to_a.sort do |a, b|
-        a_index = @section_ids.index(a.document_id)
-        b_index = @section_ids.index(b.document_id)
+        a_index = @section_ids.index(a.section_id)
+        b_index = @section_ids.index(b.section_id)
 
         a_index <=> b_index
       end
@@ -49,7 +49,7 @@ private
         updated_at: first_manual_edition.updated_at
       )
 
-      section_edition.document_id
+      section_edition.section_id
     end
   end
 

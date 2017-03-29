@@ -250,7 +250,7 @@ describe Section do
         expect(edition_factory).to have_received(:call).with(
           version_number: 1,
           state: "draft",
-          document_id: section_id,
+          section_id: section_id,
         )
       end
     end

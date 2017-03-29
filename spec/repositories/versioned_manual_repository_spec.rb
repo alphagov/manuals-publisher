@@ -13,8 +13,8 @@ RSpec.describe VersionedManualRepository do
     let(:manual_id) { SecureRandom.uuid }
     let(:manual) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
     let(:manual_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 1, state: "draft") }
-    let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", document_id: "12345", version_number: 1, state: "draft") }
-    let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 1, state: "draft") }
+    let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", section_id: "12345", version_number: 1, state: "draft") }
+    let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 1, state: "draft") }
     before do
       manual.editions << manual_edition
     end
@@ -63,8 +63,8 @@ RSpec.describe VersionedManualRepository do
     let(:manual_id) { SecureRandom.uuid }
     let(:manual) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
     let(:manual_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 1, state: "published") }
-    let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", document_id: "12345", version_number: 1, state: "published") }
-    let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 1, state: "published") }
+    let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", section_id: "12345", version_number: 1, state: "published") }
+    let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 1, state: "published") }
     before do
       manual.editions << manual_edition
     end
@@ -113,8 +113,8 @@ RSpec.describe VersionedManualRepository do
     let(:manual_id) { SecureRandom.uuid }
     let(:manual) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
     let(:manual_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 1, state: "withdrawn") }
-    let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", document_id: "12345", version_number: 1, state: "archived") }
-    let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 1, state: "archived") }
+    let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", section_id: "12345", version_number: 1, state: "archived") }
+    let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 1, state: "archived") }
     before do
       manual.editions << manual_edition
     end
@@ -147,10 +147,10 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "including new drafts of all sections" do
-      let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", document_id: "12345", version_number: 1, state: "published") }
-      let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 1, state: "published") }
-      let!(:section_1_draft) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", document_id: "12345", version_number: 2, state: "draft") }
-      let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 2, state: "draft") }
+      let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", section_id: "12345", version_number: 1, state: "published") }
+      let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 1, state: "published") }
+      let!(:section_1_draft) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", section_id: "12345", version_number: 2, state: "draft") }
+      let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 2, state: "draft") }
 
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
@@ -216,8 +216,8 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "without new drafts of any sections" do
-      let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", document_id: "12345", version_number: 1, state: "published") }
-      let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 1, state: "published") }
+      let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", section_id: "12345", version_number: 1, state: "published") }
+      let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 1, state: "published") }
 
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
@@ -283,9 +283,9 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "including new drafts of some sections" do
-      let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", document_id: "12345", version_number: 1, state: "published") }
-      let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 1, state: "published") }
-      let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", document_id: "67890", version_number: 2, state: "draft") }
+      let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-1", section_id: "12345", version_number: 1, state: "published") }
+      let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 1, state: "published") }
+      let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual.slug}/section-2", section_id: "67890", version_number: 2, state: "draft") }
 
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }

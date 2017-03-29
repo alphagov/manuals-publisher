@@ -6,7 +6,7 @@ class SectionEdition
 
   store_in "manual_section_editions"
 
-  field :document_id,          type: String
+  field :document_id,          type: String, as: :section_id
   field :version_number,       type: Integer, default: 1
   field :title,                type: String
   field :slug,                 type: String
@@ -18,7 +18,7 @@ class SectionEdition
   field :public_updated_at, type: DateTime
   field :exported_at, type: DateTime
 
-  validates :document_id, presence: true
+  validates :section_id, presence: true
   validates :slug, presence: true
 
   embeds_many :attachments, cascade_callbacks: true
