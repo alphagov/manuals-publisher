@@ -29,6 +29,10 @@ class Manual
     ManualRepository.new(collection: user.manual_records).all
   end
 
+  def slug_unique?(user)
+    ScopedManualRepository.new(user.manual_records).slug_unique?(self)
+  end
+
   def initialize(attributes)
     @id = attributes.fetch(:id)
     @updated_at = attributes.fetch(:updated_at, nil)

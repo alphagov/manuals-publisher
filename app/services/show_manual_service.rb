@@ -26,13 +26,9 @@ private
 
   def other_metadata
     {
-      slug_unique: slug_unique?,
+      slug_unique: manual.slug_unique?(context.current_user),
       clashing_sections: clashing_sections,
     }
-  end
-
-  def slug_unique?
-    manual_repository.slug_unique?(manual)
   end
 
   def clashing_sections
