@@ -11,7 +11,6 @@ class ManualsController < ApplicationController
 
   def index
     service = ListManualsService.new(
-      manual_repository: associationless_repository,
       context: self,
     )
     all_manuals = service.call
