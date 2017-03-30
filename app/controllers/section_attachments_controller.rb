@@ -65,20 +65,6 @@ class SectionAttachmentsController < ApplicationController
 private
 
   def repository
-    if current_user_is_gds_editor?
-      gds_editor_repository
-    else
-      organisational_repository
-    end
-  end
-
-  def gds_editor_repository
-    ScopedManualRepository.new(ManualRecord.all)
-  end
-
-  def organisational_repository
-    ScopedManualRepository.new(
-      ManualRecord.where(organisation_slug: current_organisation_slug)
-    )
+    ScopedManualRepository.new(current_user.manual_records)
   end
 end

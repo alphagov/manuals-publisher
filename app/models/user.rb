@@ -20,4 +20,13 @@ class User
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :name, :uid
   attr_accessible :email, :name, :uid, :permissions, as: :oauth
+
+  def manual_records
+    permission_checker = PermissionChecker.new(self)
+    if permission_checker.is_gds_editor?
+      ManualRecord.all
+    else
+      ManualRecord.where(organisation_slug: organisation_slug)
+    end
+  end
 end
