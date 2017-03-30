@@ -23,7 +23,7 @@ private
   )
 
   def manual
-    @manual ||= manual_builder.call(attributes)
+    @manual ||= Manual.build(attributes)
   end
 
   def persist
