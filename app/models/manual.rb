@@ -21,6 +21,10 @@ class Manual
 
   attr_accessor :sections, :removed_sections
 
+  def self.find(id, user)
+    ScopedManualRepository.new(user.manual_records).fetch(id)
+  end
+
   def self.all(user)
     ManualRepository.new(collection: user.manual_records).all
   end

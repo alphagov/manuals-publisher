@@ -1,12 +1,13 @@
 class ShowManualService
-  def initialize(manual_id:, manual_repository:)
+  def initialize(manual_id:, manual_repository:, context:)
     @manual_id = manual_id
     @manual_repository = manual_repository
+    @context = context
   end
 
   def call
     [
-      manual_repository.fetch(manual_id),
+      Manual.find(manual_id, context.current_user),
       other_metadata,
     ]
   end
@@ -16,10 +17,11 @@ private
   attr_reader(
     :manual_id,
     :manual_repository,
+    :context,
   )
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def other_metadata

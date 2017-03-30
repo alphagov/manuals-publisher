@@ -22,6 +22,7 @@ class ManualsController < ApplicationController
     service = ShowManualService.new(
       manual_repository: repository,
       manual_id: manual_id,
+      context: self,
     )
     manual, metadata = service.call
     slug_unique = metadata.fetch(:slug_unique)
@@ -67,6 +68,7 @@ class ManualsController < ApplicationController
     service = ShowManualService.new(
       manual_repository: repository,
       manual_id: manual_id,
+      context: self,
     )
     manual, _metadata = service.call
 
@@ -95,6 +97,7 @@ class ManualsController < ApplicationController
     service = ShowManualService.new(
       manual_repository: repository,
       manual_id: manual_id,
+      context: self,
     )
     manual, _metadata = service.call
 
