@@ -5,7 +5,7 @@ class ListManualsService
   end
 
   def call
-    manual_repository.all
+    Manual.all(context.current_user)
   end
 
 private

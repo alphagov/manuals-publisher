@@ -21,6 +21,10 @@ class Manual
 
   attr_accessor :sections, :removed_sections
 
+  def self.all(user)
+    ManualRepository.new(collection: user.manual_records).all
+  end
+
   def initialize(attributes)
     @id = attributes.fetch(:id)
     @updated_at = attributes.fetch(:updated_at, nil)
