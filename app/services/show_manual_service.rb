@@ -5,10 +5,7 @@ class ShowManualService
   end
 
   def call
-    [
-      manual,
-      other_metadata,
-    ]
+    manual
   end
 
 private
@@ -20,12 +17,5 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, context.current_user)
-  end
-
-  def other_metadata
-    {
-      slug_unique: manual.slug_unique?(context.current_user),
-      clashing_sections: manual.clashing_sections,
-    }
   end
 end

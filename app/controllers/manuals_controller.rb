@@ -23,9 +23,9 @@ class ManualsController < ApplicationController
       manual_id: manual_id,
       context: self,
     )
-    manual, metadata = service.call
-    slug_unique = metadata.fetch(:slug_unique)
-    clashing_sections = metadata.fetch(:clashing_sections)
+    manual = service.call
+    slug_unique = manual.slug_unique?(current_user)
+    clashing_sections = manual.clashing_sections
 
     unless slug_unique
       flash.now[:error] = "Warning: This manual's URL is already used on GOV.UK. You can't publish it until you change the title."
@@ -68,7 +68,7 @@ class ManualsController < ApplicationController
       manual_id: manual_id,
       context: self,
     )
-    manual, _metadata = service.call
+    manual = service.call
 
     render(:edit, locals: { manual: manual_form(manual) })
   end
@@ -96,7 +96,7 @@ class ManualsController < ApplicationController
       manual_id: manual_id,
       context: self,
     )
-    manual, _metadata = service.call
+    manual = service.call
 
     render(:edit_original_publication_date, locals: { manual: manual_form(manual) })
   end
