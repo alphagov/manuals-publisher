@@ -1,7 +1,6 @@
 class ShowManualService
-  def initialize(manual_id:, manual_repository:, context:)
+  def initialize(manual_id:, context:)
     @manual_id = manual_id
-    @manual_repository = manual_repository
     @context = context
   end
 
@@ -16,7 +15,6 @@ private
 
   attr_reader(
     :manual_id,
-    :manual_repository,
     :context,
   )
 

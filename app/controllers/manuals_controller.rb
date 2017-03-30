@@ -20,7 +20,6 @@ class ManualsController < ApplicationController
 
   def show
     service = ShowManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
       context: self,
     )
@@ -66,7 +65,6 @@ class ManualsController < ApplicationController
 
   def edit
     service = ShowManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
       context: self,
     )
@@ -95,7 +93,6 @@ class ManualsController < ApplicationController
 
   def edit_original_publication_date
     service = ShowManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
       context: self,
     )
