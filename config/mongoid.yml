@@ -1,20 +1,19 @@
 development:
-  host: localhost
+  uri: 'mongodb://localhost'
   database: govuk_content_development
   persist_in_safe_mode: true
   autocreate_indexes: true
 
 test:
-  host: localhost
+  uri: 'mongodb://localhost'
   # Don't want this interfering with a concurrent publisher/content_api test run
   database: govuk_content_manuals_publisher_test
   autocreate_indexes: true
 
 production:
+  uri: <%= ENV['MONGODB_URI'] %>
   database: govuk_content_production
   refresh_mode: :sync
   logger: false
   refresh_interval: 120
   use_activesupport_time_zone: true
-  hosts:
-    - <%= ENV['MONGODB_NODES'] %>
