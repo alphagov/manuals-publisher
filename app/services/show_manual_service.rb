@@ -7,7 +7,7 @@ class ShowManualService
 
   def call
     [
-      Manual.find(manual_id, context.current_user),
+      manual,
       other_metadata,
     ]
   end
