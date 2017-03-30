@@ -27,13 +27,7 @@ private
   def other_metadata
     {
       slug_unique: manual.slug_unique?(context.current_user),
-      clashing_sections: clashing_sections,
+      clashing_sections: manual.clashing_sections,
     }
-  end
-
-  def clashing_sections
-    manual.sections
-      .group_by(&:slug)
-      .select { |_slug, docs| docs.size > 1 }
   end
 end

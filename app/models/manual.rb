@@ -33,6 +33,12 @@ class Manual
     ScopedManualRepository.new(user.manual_records).slug_unique?(self)
   end
 
+  def clashing_sections
+    sections
+      .group_by(&:slug)
+      .select { |_slug, docs| docs.size > 1 }
+  end
+
   def initialize(attributes)
     @id = attributes.fetch(:id)
     @updated_at = attributes.fetch(:updated_at, nil)
