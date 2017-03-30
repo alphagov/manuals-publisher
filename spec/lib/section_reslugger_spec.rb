@@ -24,15 +24,15 @@ describe SectionReslugger do
       organisation_slug: 'organisation-slug'
     )
     SectionEdition.create!(
-      document_id: 'document-id',
+      section_id: 'section-id',
       slug: 'manual-slug/current-section-slug',
       title: 'section-edition-title',
       summary: 'section-edition-summary',
       body: 'section-edition-body'
     )
     manual_record.editions.create!(
-      document_ids: [
-        'document-id'
+      section_ids: [
+        'section-id'
       ]
     )
 

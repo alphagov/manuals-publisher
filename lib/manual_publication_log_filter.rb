@@ -12,24 +12,24 @@ class ManualPublicationLogFilter
   end
 
   class EditionOrdering
-    def initialize(section_editions, document_ids)
+    def initialize(section_editions, section_ids)
       @section_editions = section_editions
-      @document_ids = document_ids
+      @section_ids = section_ids
     end
 
-    def sort_by_document_ids_and_created_at
-      editions_not_matching_supplied_sections = @section_editions.where(:document_id.nin => @document_ids)
-      editions_matching_supplied_sections = @section_editions.where(:document_id.in => @document_ids)
+    def sort_by_section_ids_and_created_at
+      editions_not_matching_supplied_sections = @section_editions.where(:section_id.nin => @section_ids)
+      editions_matching_supplied_sections = @section_editions.where(:section_id.in => @section_ids)
 
-      order_by_document_ids(editions_matching_supplied_sections).concat(editions_not_matching_supplied_sections.order_by([:created_at, :asc]).to_a)
+      order_by_section_ids(editions_matching_supplied_sections).concat(editions_not_matching_supplied_sections.order_by([:created_at, :asc]).to_a)
     end
 
   private
 
-    def order_by_document_ids(section_editions)
+    def order_by_section_ids(section_editions)
       section_editions.to_a.sort do |a, b|
-        a_index = @document_ids.index(a.document_id)
-        b_index = @document_ids.index(b.document_id)
+        a_index = @section_ids.index(a.section_id)
+        b_index = @section_ids.index(b.section_id)
 
         a_index <=> b_index
       end
@@ -49,14 +49,14 @@ private
         updated_at: first_manual_edition.updated_at
       )
 
-      section_edition.document_id
+      section_edition.section_id
     end
   end
 
   def build_logs_for_all_other_suitable_section_editions
-    edition_ordering = EditionOrdering.new(section_editions_for_rebuild, @manual_record.latest_edition.document_ids)
+    edition_ordering = EditionOrdering.new(section_editions_for_rebuild, @manual_record.latest_edition.section_ids)
 
-    edition_ordering.sort_by_document_ids_and_created_at.each do |edition|
+    edition_ordering.sort_by_section_ids_and_created_at.each do |edition|
       PublicationLog.create!(
         title: edition.title,
         slug: edition.slug,
@@ -69,7 +69,7 @@ private
   end
 
   def section_editions_for_first_manual_edition
-    @section_editions_for_first_manual_edition ||= SectionEdition.where(:document_id.in => first_manual_edition.document_ids, :minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
+    @section_editions_for_first_manual_edition ||= SectionEdition.where(:section_id.in => first_manual_edition.section_ids, :minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
   end
 
   def first_manual_edition

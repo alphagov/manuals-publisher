@@ -24,8 +24,8 @@ private
 
     build_manual_for(manual_record, manual_record.latest_edition) do
       {
-        sections: get_latest_version_of_sections(manual_record.latest_edition.document_ids),
-        removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_document_ids),
+        sections: get_latest_version_of_sections(manual_record.latest_edition.section_ids),
+        removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_section_ids),
       }
     end
   end
@@ -36,8 +36,8 @@ private
     if manual_record.latest_edition.state == "published"
       build_manual_for(manual_record, manual_record.latest_edition) do
         {
-          sections: get_latest_version_of_sections(manual_record.latest_edition.document_ids),
-          removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_document_ids),
+          sections: get_latest_version_of_sections(manual_record.latest_edition.section_ids),
+          removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_section_ids),
         }
       end
     elsif manual_record.latest_edition.state == "draft"
@@ -45,8 +45,8 @@ private
       if previous_edition.state == "published"
         build_manual_for(manual_record, previous_edition) do
           {
-            sections: get_published_version_of_sections(previous_edition.document_ids),
-            removed_sections: get_latest_version_of_sections(previous_edition.removed_document_ids)
+            sections: get_published_version_of_sections(previous_edition.section_ids),
+            removed_sections: get_latest_version_of_sections(previous_edition.removed_section_ids)
           }
         end
       else
@@ -94,7 +94,7 @@ private
   end
 
   def build_section(section_id)
-    all_editions = SectionEdition.where(document_id: section_id).order_by([:version_number, :desc]).to_a
+    all_editions = SectionEdition.where(section_id: section_id).order_by([:version_number, :desc]).to_a
     Section.new(
       ->(_title) { raise RuntimeError, "read only manual" },
       section_id,

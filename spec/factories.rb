@@ -35,7 +35,7 @@ FactoryGirl.define do
   end
 
   factory :section_edition do
-    document_id { BSON::ObjectId.new }
+    section_id { BSON::ObjectId.new }
     sequence(:slug) { |n| "test-section-edition-#{n}" }
     sequence(:title) { |n| "Test Section Edition #{n}" }
     summary "My summary"

@@ -37,11 +37,11 @@ private
   end
 
   def old_section_ids
-    @old_section_ids ||= old_manual.editions.flat_map(&:document_ids).uniq
+    @old_section_ids ||= old_manual.editions.flat_map(&:section_ids).uniq
   end
 
   def new_section_ids
-    @new_section_ids ||= new_manual.editions.flat_map(&:document_ids).uniq
+    @new_section_ids ||= new_manual.editions.flat_map(&:section_ids).uniq
   end
 
   def validate_manuals
@@ -124,7 +124,7 @@ private
   end
 
   def all_editions_of_section(section_id)
-    SectionEdition.where(document_id: section_id).order_by([:version_number, :desc])
+    SectionEdition.where(section_id: section_id).order_by([:version_number, :desc])
   end
 
   def reslug

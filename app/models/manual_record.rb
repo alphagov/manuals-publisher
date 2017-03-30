@@ -75,8 +75,8 @@ private
     field :body, type: String
     field :state, type: String
     field :version_number, type: Integer
-    field :document_ids, type: Array
-    field :removed_document_ids, type: Array
+    field :section_ids, type: Array
+    field :removed_section_ids, type: Array
     field :originally_published_at, type: DateTime
     field :use_originally_published_at_for_public_timestamp, type: Boolean
 

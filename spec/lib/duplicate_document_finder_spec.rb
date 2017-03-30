@@ -25,10 +25,10 @@ describe DuplicateDocumentFinder do
     end
   end
 
-  context 'when there are multiple editions with the same slug and same document id' do
+  context 'when there are multiple editions with the same slug and same section id' do
     before {
-      FactoryGirl.create(:section_edition, slug: 'slug', document_id: 1)
-      FactoryGirl.create(:section_edition, slug: 'slug', document_id: 1)
+      FactoryGirl.create(:section_edition, slug: 'slug', section_id: 1)
+      FactoryGirl.create(:section_edition, slug: 'slug', section_id: 1)
     }
 
     it "doesn't report them as duplicates" do
@@ -38,20 +38,20 @@ describe DuplicateDocumentFinder do
     end
   end
 
-  context 'when there are multiple editions with the same slug and different document ids' do
+  context 'when there are multiple editions with the same slug and different section ids' do
     let!(:edition_1) {
-      FactoryGirl.create(:section_edition, slug: 'slug', document_id: 1)
+      FactoryGirl.create(:section_edition, slug: 'slug', section_id: 1)
     }
     let!(:edition_2) {
-      FactoryGirl.create(:section_edition, slug: 'slug', document_id: 2)
+      FactoryGirl.create(:section_edition, slug: 'slug', section_id: 2)
     }
 
     it "reports them as duplicates" do
       edition_1_data = [
-        edition_1.slug, edition_1.document_id, edition_1.state, edition_1.created_at, 1
+        edition_1.slug, edition_1.section_id, edition_1.state, edition_1.created_at, 1
       ]
       edition_2_data = [
-        edition_2.slug, edition_2.document_id, edition_2.state, edition_2.created_at, 1
+        edition_2.slug, edition_2.section_id, edition_2.state, edition_2.created_at, 1
       ]
 
       expect(io).to receive(:puts).with(edition_1_data.join(','))

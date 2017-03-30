@@ -16,11 +16,11 @@ class SectionAssociationMarshaller
   def load(manual, record)
     section_repository = SectionRepository.new(manual: manual)
 
-    sections = Array(record.document_ids).map { |section_id|
+    sections = Array(record.section_ids).map { |section_id|
       section_repository.fetch(section_id)
     }
 
-    removed_sections = Array(record.removed_document_ids).map { |section_id|
+    removed_sections = Array(record.removed_section_ids).map { |section_id|
       begin
         section_repository.fetch(section_id)
       rescue KeyError
@@ -42,8 +42,8 @@ class SectionAssociationMarshaller
       section_repository.store(section)
     end
 
-    record.document_ids = manual.sections.map(&:id)
-    record.removed_document_ids = manual.removed_sections.map(&:id)
+    record.section_ids = manual.sections.map(&:id)
+    record.removed_section_ids = manual.removed_sections.map(&:id)
 
     nil
   end

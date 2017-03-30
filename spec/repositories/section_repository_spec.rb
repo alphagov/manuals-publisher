@@ -25,7 +25,7 @@ describe SectionRepository do
       :new_draft_edition,
       title: "Example section about oil reserves",
       slug: "example-section-about-oil-reserves",
-      "document_id=": nil,
+      "section_id=": nil,
       "slug=": nil,
       changed?: true,
       save!: true,
@@ -42,7 +42,7 @@ describe SectionRepository do
     double(
       :published_edition,
       title: "Example section about oil reserves #{version}",
-      "document_id=": nil,
+      "section_id=": nil,
       changed?: false,
       save!: nil,
       archive: nil,
@@ -68,7 +68,7 @@ describe SectionRepository do
         section_id = "section-id-#{n}"
 
         edition = FactoryGirl.create(:section_edition,
-                                     document_id: section_id,
+                                     section_id: section_id,
                                      updated_at: n.days.ago)
 
         allow(section_factory).to receive(:call)

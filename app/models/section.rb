@@ -166,7 +166,7 @@ protected
       state: "draft",
       version_number: 1,
       # TODO: Remove persistence conern
-      document_id: id,
+      section_id: id,
     }
   end
 

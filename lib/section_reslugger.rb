@@ -90,7 +90,7 @@ private
 
   def context_for_section_edition_update
     params_hash = {
-      "id" => current_section_edition.document_id,
+      "id" => current_section_edition.section_id,
       "section" => {
         title: current_section_edition.title,
         summary: current_section_edition.summary,
