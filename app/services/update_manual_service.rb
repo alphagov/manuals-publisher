@@ -33,7 +33,7 @@ private
   end
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def export_draft_to_publishing_api
