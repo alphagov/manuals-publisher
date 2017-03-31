@@ -1,8 +1,9 @@
 class UpdateManualService
-  def initialize(manual_repository:, manual_id:, attributes:)
+  def initialize(manual_repository:, manual_id:, attributes:, context:)
     @manual_repository = manual_repository
     @manual_id = manual_id
     @attributes = attributes
+    @context = context
   end
 
   def call
@@ -20,6 +21,7 @@ private
     :manual_id,
     :manual_repository,
     :attributes,
+    :context,
   )
 
   def update
@@ -27,7 +29,7 @@ private
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
   end
 
   def manual

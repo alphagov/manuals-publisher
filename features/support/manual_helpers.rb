@@ -76,14 +76,15 @@ module ManualHelpers
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
 
-    repository = ScopedManualRepository.new(
-      ManualRecord.where(organisation_slug: organisation_slug)
-    )
+    manual_records = ManualRecord.where(organisation_slug: organisation_slug)
+    repository = ScopedManualRepository.new(manual_records)
+    user = double(:user, manual_records: manual_records)
 
     service = UpdateManualService.new(
       manual_repository: repository,
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
+      context: double(:context, current_user: user)
     )
     manual = service.call
 
