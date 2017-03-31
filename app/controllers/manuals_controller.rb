@@ -74,7 +74,6 @@ class ManualsController < ApplicationController
 
   def update
     service = UpdateManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
       attributes: update_manual_params,
       context: self,

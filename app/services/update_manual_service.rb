@@ -1,6 +1,5 @@
 class UpdateManualService
-  def initialize(manual_repository:, manual_id:, attributes:, context:)
-    @manual_repository = manual_repository
+  def initialize(manual_id:, attributes:, context:)
     @manual_id = manual_id
     @attributes = attributes
     @context = context
@@ -19,7 +18,6 @@ private
 
   attr_reader(
     :manual_id,
-    :manual_repository,
     :attributes,
     :context,
   )
