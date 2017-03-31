@@ -228,23 +228,11 @@ private
   end
 
   def repository
-    if current_user_is_gds_editor?
-      ScopedManualRepository.new(ManualRecord.all)
-    else
-      ScopedManualRepository.new(
-        ManualRecord.where(organisation_slug: current_organisation_slug)
-      )
-    end
+    ScopedManualRepository.new(current_user.manual_records)
   end
 
   def associationless_repository
-    if current_user_is_gds_editor?
-      ManualRepository.new(collection: ManualRecord.all)
-    else
-      ManualRepository.new(
-        collection: ManualRecord.where(organisation_slug: current_organisation_slug)
-      )
-    end
+    ManualRepository.new(collection: current_user.manual_records)
   end
 
   def authorize_user_for_publishing
