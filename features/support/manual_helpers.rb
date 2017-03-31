@@ -21,11 +21,9 @@ module ManualHelpers
     stub_organisation_details(organisation_slug)
 
     manual_records = ManualRecord.where(organisation_slug: organisation_slug)
-    repository = ScopedManualRepository.new(manual_records)
     user = double(:user, manual_records: manual_records)
 
     service = CreateManualService.new(
-      manual_repository: repository,
       manual_builder: ManualBuilder.create,
       attributes: fields.merge(organisation_slug: organisation_slug),
       context: double(:context, current_user: user)

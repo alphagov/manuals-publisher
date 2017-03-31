@@ -47,7 +47,6 @@ class ManualsController < ApplicationController
 
   def create
     service = CreateManualService.new(
-      manual_repository: repository,
       manual_builder: ManualBuilder.create,
       attributes: create_manual_params,
       context: self,
