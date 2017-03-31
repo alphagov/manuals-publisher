@@ -13,14 +13,14 @@ class SectionAssociationMarshaller
     end
   end
 
-  def load(manual, record)
+  def load(manual, edition)
     section_repository = SectionRepository.new(manual: manual)
 
-    sections = Array(record.section_ids).map { |section_id|
+    sections = Array(edition.section_ids).map { |section_id|
       section_repository.fetch(section_id)
     }
 
-    removed_sections = Array(record.removed_section_ids).map { |section_id|
+    removed_sections = Array(edition.removed_section_ids).map { |section_id|
       begin
         section_repository.fetch(section_id)
       rescue KeyError
@@ -31,7 +31,7 @@ class SectionAssociationMarshaller
     Decorator.new.call(manual, sections: sections, removed_sections: removed_sections)
   end
 
-  def dump(manual, record)
+  def dump(manual, edition)
     section_repository = SectionRepository.new(manual: manual)
 
     manual.sections.each do |section|
@@ -42,8 +42,8 @@ class SectionAssociationMarshaller
       section_repository.store(section)
     end
 
-    record.section_ids = manual.sections.map(&:id)
-    record.removed_section_ids = manual.removed_sections.map(&:id)
+    edition.section_ids = manual.sections.map(&:id)
+    edition.removed_section_ids = manual.removed_sections.map(&:id)
 
     nil
   end
