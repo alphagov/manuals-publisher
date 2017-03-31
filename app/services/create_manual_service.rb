@@ -1,6 +1,5 @@
 class CreateManualService
-  def initialize(manual_builder:, attributes:, context:)
-    @manual_builder = manual_builder
+  def initialize(attributes:, context:)
     @attributes = attributes
     @context = context
   end
@@ -17,7 +16,6 @@ class CreateManualService
 private
 
   attr_reader(
-    :manual_builder,
     :attributes,
     :context,
   )
