@@ -43,6 +43,10 @@ class Manual
       .select { |_slug, docs| docs.size > 1 }
   end
 
+  def save(user)
+    ScopedManualRepository.new(user.manual_records).store(self)
+  end
+
   def initialize(attributes)
     @id = attributes.fetch(:id)
     @updated_at = attributes.fetch(:updated_at, nil)

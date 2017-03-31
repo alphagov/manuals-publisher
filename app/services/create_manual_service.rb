@@ -1,8 +1,9 @@
 class CreateManualService
-  def initialize(manual_repository:, manual_builder:, attributes:)
+  def initialize(manual_repository:, manual_builder:, attributes:, context:)
     @manual_repository = manual_repository
     @manual_builder = manual_builder
     @attributes = attributes
+    @context = context
   end
 
   def call
@@ -20,6 +21,7 @@ private
     :manual_repository,
     :manual_builder,
     :attributes,
+    :context,
   )
 
   def manual
@@ -27,7 +29,7 @@ private
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
   end
 
   def export_draft_to_publishing_api
