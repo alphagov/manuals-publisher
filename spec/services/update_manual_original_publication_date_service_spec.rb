@@ -3,7 +3,6 @@ require "update_manual_original_publication_date_service"
 
 RSpec.describe UpdateManualOriginalPublicationDateService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual_repository) { double(:manual_repository) }
   let(:manual) { double(:manual, id: manual_id, sections: sections) }
   let(:section_1) { double(:section, update: nil) }
   let(:section_2) { double(:section, update: nil) }
@@ -16,7 +15,6 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
   subject {
     described_class.new(
       manual_id: manual_id,
-      manual_repository: manual_repository,
       attributes: {
         originally_published_at: originally_published_at,
         use_originally_published_at_for_public_timestamp: "1",

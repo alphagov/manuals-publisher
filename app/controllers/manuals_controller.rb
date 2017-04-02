@@ -102,7 +102,6 @@ class ManualsController < ApplicationController
 
   def update_original_publication_date
     service = UpdateManualOriginalPublicationDateService.new(
-      manual_repository: repository,
       manual_id: manual_id,
       attributes: publication_date_manual_params,
       context: self,

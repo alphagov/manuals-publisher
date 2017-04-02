@@ -1,6 +1,5 @@
 class UpdateManualOriginalPublicationDateService
-  def initialize(manual_repository:, manual_id:, attributes:, context:)
-    @manual_repository = manual_repository
+  def initialize(manual_id:, attributes:, context:)
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
     @context = context
@@ -21,7 +20,6 @@ private
 
   attr_reader(
     :manual_id,
-    :manual_repository,
     :attributes,
     :context,
   )
