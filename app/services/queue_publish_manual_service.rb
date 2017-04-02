@@ -35,7 +35,7 @@ private
   end
 
   def manual
-    @manual ||= repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def govuk_header_params

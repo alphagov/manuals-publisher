@@ -7,12 +7,13 @@ RSpec.describe QueuePublishManualService do
   let(:repository) { double(:repository) }
   let(:manual) { double(:manual, id: manual_id, version_number: 1, draft?: draft) }
   let(:draft) { true }
-  let(:context) { double(:context) }
+  let(:context) { double(:context, current_user: user) }
+  let(:user) { double(:user) }
 
   subject { QueuePublishManualService.new(repository: repository, manual_id: manual_id, context: context) }
 
   before do
-    allow(repository).to receive(:fetch) { manual }
+    allow(Manual).to receive(:find) { manual }
     allow(PublishManualWorker).to receive(:perform_async)
   end
 
