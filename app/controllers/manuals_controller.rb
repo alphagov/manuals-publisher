@@ -122,6 +122,7 @@ class ManualsController < ApplicationController
     service = QueuePublishManualService.new(
       repository: repository,
       manual_id: manual_id,
+      context: self,
     )
     manual = service.call
 
