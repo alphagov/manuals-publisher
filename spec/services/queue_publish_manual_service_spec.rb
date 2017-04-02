@@ -8,7 +8,7 @@ RSpec.describe QueuePublishManualService do
   let(:manual) { double(:manual, id: manual_id, version_number: 1, draft?: draft) }
   let(:draft) { true }
 
-  subject { QueuePublishManualService.new(repository, manual_id) }
+  subject { QueuePublishManualService.new(repository: repository, manual_id: manual_id) }
 
   before do
     allow(repository).to receive(:fetch) { manual }
