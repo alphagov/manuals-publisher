@@ -10,6 +10,8 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
   let(:sections) { [section_1, section_2] }
   let(:originally_published_at) { 10.years.ago }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
+  let(:context) { double(:context, current_user: user) }
+  let(:user) { double(:user) }
 
   subject {
     described_class.new(
@@ -19,15 +21,16 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
         originally_published_at: originally_published_at,
         use_originally_published_at_for_public_timestamp: "1",
         title: "hats",
-      }
+      },
+      context: context
     )
   }
 
   before do
     allow(manual_repository).to receive(:fetch) { manual }
-    allow(manual_repository).to receive(:store)
     allow(manual).to receive(:draft)
     allow(manual).to receive(:update)
+    allow(manual).to receive(:save)
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(publishing_api_draft_exporter).to receive(:call)
   end
@@ -52,13 +55,13 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
     subject.call
 
     expect(manual).to have_received(:update).ordered
-    expect(manual_repository).to have_received(:store).with(manual).ordered
+    expect(manual).to have_received(:save).with(user).ordered
   end
 
   it "tells each listener about the event after the manual has been stored" do
     subject.call
 
-    expect(manual_repository).to have_received(:store).with(manual).ordered
+    expect(manual).to have_received(:save).with(user).ordered
     expect(publishing_api_draft_exporter).to have_received(:call).with(manual).ordered
   end
 end

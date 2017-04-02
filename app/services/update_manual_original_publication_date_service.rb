@@ -1,8 +1,9 @@
 class UpdateManualOriginalPublicationDateService
-  def initialize(manual_repository:, manual_id:, attributes:)
+  def initialize(manual_repository:, manual_id:, attributes:, context:)
     @manual_repository = manual_repository
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
+    @context = context
   end
 
   def call
@@ -22,6 +23,7 @@ private
     :manual_id,
     :manual_repository,
     :attributes,
+    :context,
   )
 
   def update
@@ -29,7 +31,7 @@ private
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
     @manual = fetch_manual
   end
 

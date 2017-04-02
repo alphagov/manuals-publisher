@@ -105,6 +105,7 @@ class ManualsController < ApplicationController
       manual_repository: repository,
       manual_id: manual_id,
       attributes: publication_date_manual_params,
+      context: self,
     )
     manual = service.call
     manual = manual_form(manual)
