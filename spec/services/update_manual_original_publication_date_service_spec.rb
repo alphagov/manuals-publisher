@@ -27,7 +27,7 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
   }
 
   before do
-    allow(manual_repository).to receive(:fetch) { manual }
+    allow(Manual).to receive(:find).and_return(manual)
     allow(manual).to receive(:draft)
     allow(manual).to receive(:update)
     allow(manual).to receive(:save)

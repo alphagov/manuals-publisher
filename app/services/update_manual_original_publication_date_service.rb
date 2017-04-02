@@ -51,6 +51,6 @@ private
   end
 
   def fetch_manual
-    manual_repository.fetch(manual_id)
+    Manual.find(manual_id, context.current_user)
   end
 end
