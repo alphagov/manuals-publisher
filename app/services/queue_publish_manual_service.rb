@@ -1,8 +1,7 @@
 require "manual_publish_task"
 
 class QueuePublishManualService
-  def initialize(repository:, manual_id:, context:)
-    @repository = repository
+  def initialize(manual_id:, context:)
     @manual_id = manual_id
     @context = context
   end
@@ -22,7 +21,6 @@ class QueuePublishManualService
 private
 
   attr_reader(
-    :repository,
     :manual_id,
     :context,
   )
