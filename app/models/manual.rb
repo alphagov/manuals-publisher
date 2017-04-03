@@ -13,7 +13,7 @@ class Manual
     :use_originally_published_at_for_public_timestamp,
   )
 
-  delegate :sections, :sections=, :removed_sections, :removed_sections=, :build_section, :remove_section, :reorder_sections, :publish, to: :@manual_with_sections
+  delegate :sections, :sections=, :removed_sections, :removed_sections=, :build_section, :remove_section, :reorder_sections, to: :@manual_with_sections
 
   def initialize(attributes)
     @id = attributes.fetch(:id)
@@ -69,9 +69,9 @@ class Manual
     self
   end
 
-  def __publish__(&block)
+  def publish
     @state = "published"
-    yield if block
+    sections.each(&:publish!)
 
     self
   end

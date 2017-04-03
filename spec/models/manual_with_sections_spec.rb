@@ -7,7 +7,7 @@ describe ManualWithSections do
     ManualWithSections.new(manual, sections: sections)
   }
 
-  let(:manual) { double(:manual, __publish__: nil) }
+  let(:manual) { double(:manual) }
   let(:sections) { [section] }
   let(:section) { double(:section, publish!: nil) }
 
@@ -17,34 +17,6 @@ describe ManualWithSections do
   let(:summary) { double(:summary) }
   let(:organisation_slug) { double(:organisation_slug) }
   let(:state) { double(:state) }
-
-  describe "#publish" do
-    it "notifies the underlying manual" do
-      manual_with_sections.publish
-
-      expect(manual).to have_received(:__publish__)
-    end
-
-    context "when the manual publish succeeds" do
-      before do
-        allow(manual).to receive(:__publish__).and_yield
-      end
-
-      it "passes a block which publishes" do
-        manual_with_sections.publish
-
-        expect(section).to have_received(:publish!)
-      end
-    end
-
-    context "when the manual publish does not succeed" do
-      it "does not publish the sections" do
-        manual_with_sections.publish
-
-        expect(section).not_to have_received(:publish!)
-      end
-    end
-  end
 
   describe "#reorder_sections" do
     let(:sections) {

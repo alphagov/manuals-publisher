@@ -62,23 +62,35 @@ describe Manual do
     end
   end
 
-  describe "#__publish__" do
+  describe "#publish" do
     it "returns self" do
-      expect(manual.__publish__).to be(manual)
+      expect(manual.publish).to be(manual)
     end
 
     let(:state) { "draft" }
 
     it "sets the state to 'published'" do
-      manual.__publish__
+      manual.publish
 
       expect(manual.state).to eq("published")
     end
 
-    it "yields to the block" do
-      expect { |block|
-        manual.__publish__(&block)
-      }.to yield_with_no_args
+    context "when manual has sections" do
+      let(:section_1) { double(:section) }
+      let(:section_2) { double(:section) }
+
+      before do
+        allow(section_1).to receive(:publish!)
+        allow(section_2).to receive(:publish!)
+        manual.sections = [section_1, section_2]
+      end
+
+      it "calls publish! on each section" do
+        manual.publish
+
+        expect(section_1).to have_received(:publish!)
+        expect(section_2).to have_received(:publish!)
+      end
     end
   end
 

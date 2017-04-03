@@ -27,12 +27,6 @@ class ManualWithSections
     section
   end
 
-  def publish
-    manual.__publish__ do
-      sections.each(&:publish!)
-    end
-  end
-
   def reorder_sections(section_order)
     unless section_order.sort == @sections.map(&:id).sort
       raise(
