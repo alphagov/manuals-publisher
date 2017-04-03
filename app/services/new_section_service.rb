@@ -1,6 +1,5 @@
 class NewSectionService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -11,7 +10,6 @@ class NewSectionService
 private
 
   attr_reader(
-    :manual_repository,
     :context,
   )
 
