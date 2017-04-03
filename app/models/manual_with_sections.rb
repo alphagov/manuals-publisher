@@ -1,17 +1,9 @@
 class ManualWithSections
-  attr_writer :sections, :removed_sections
+  attr_accessor :sections, :removed_sections
 
   def initialize(sections: [], removed_sections: [])
     @sections = sections
     @removed_sections = removed_sections
-  end
-
-  def sections
-    @sections.to_enum
-  end
-
-  def removed_sections
-    @removed_sections.to_enum
   end
 
   def reorder_sections(section_order)
