@@ -142,7 +142,6 @@ class SectionsController < ApplicationController
 
   def destroy
     service = RemoveSectionService.new(
-      manual_repository: manual_repository,
       context: self,
     )
     manual, section = service.call

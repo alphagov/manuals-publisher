@@ -14,10 +14,6 @@ RSpec.describe RemoveSectionService do
     )
   }
 
-  let(:repository) {
-    double(:repository)
-  }
-
   let(:user) { double(:user) }
 
   let(:service_context) {
@@ -33,7 +29,6 @@ RSpec.describe RemoveSectionService do
 
   let(:service) {
     described_class.new(
-      manual_repository: repository,
       context: service_context,
     )
   }

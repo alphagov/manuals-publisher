@@ -1,6 +1,5 @@
 class RemoveSectionService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -24,7 +23,7 @@ class RemoveSectionService
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   def remove
     manual.remove_section(section_id)
