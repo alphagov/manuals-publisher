@@ -1,6 +1,5 @@
 class PreviewSectionService
-  def initialize(manual_repository:, section_builder:, section_renderer:, context:)
-    @manual_repository = manual_repository
+  def initialize(section_builder:, section_renderer:, context:)
     @section_builder = section_builder
     @section_renderer = section_renderer
     @context = context
@@ -15,7 +14,6 @@ class PreviewSectionService
 private
 
   attr_reader(
-    :manual_repository,
     :section_builder,
     :section_renderer,
     :context,
