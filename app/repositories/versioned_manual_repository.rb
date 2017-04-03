@@ -81,7 +81,6 @@ private
     section_attrs = yield
 
     ManualWithSections.new(
-      ->(_manual, _attrs) { raise RuntimeError, "read only manaul" },
       base_manual,
       section_attrs
     )

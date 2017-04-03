@@ -4,11 +4,10 @@ require "manual_with_sections"
 
 describe ManualWithSections do
   subject(:manual_with_sections) {
-    ManualWithSections.new(section_builder, manual, sections: sections)
+    ManualWithSections.new(manual, sections: sections)
   }
 
   let(:manual) { double(:manual, publish: nil) }
-  let(:section_builder) { double(:section_builder) }
   let(:sections) { [section] }
   let(:section) { double(:section, publish!: nil) }
 
@@ -111,7 +110,6 @@ describe ManualWithSections do
   describe "#remove_section" do
     subject(:manual_with_sections) {
       ManualWithSections.new(
-        section_builder,
         manual,
         sections: sections,
         removed_sections: removed_sections,

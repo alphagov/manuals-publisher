@@ -4,7 +4,6 @@ class SectionAssociationMarshaller
       ManualValidator.new(
         NullValidator.new(
           ManualWithSections.new(
-            SectionBuilder.new,
             manual,
             attrs,
           )
