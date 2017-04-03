@@ -8,9 +8,7 @@ class ManualBuilder
         manual = Manual.new(attrs)
         manual.sections = attrs.fetch(:sections, [])
         manual.removed_sections = attrs.fetch(:removed_sections, [])
-        ManualValidator.new(
-          manual
-        )
+        manual
       }
     )
   end

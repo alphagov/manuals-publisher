@@ -1,4 +1,10 @@
 class Manual
+  include ActiveModel::Validations
+
+  validates :title, presence: true
+  validates :summary, presence: true
+  validates :body, safe_html: true
+
   attr_reader(
     :id,
     :slug,
@@ -146,14 +152,6 @@ class Manual
     return if removed.nil?
 
     removed_sections << removed
-  end
-
-  def valid?
-    true
-  end
-
-  def errors
-    {}
   end
 
 private
