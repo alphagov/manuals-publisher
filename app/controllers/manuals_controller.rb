@@ -224,10 +224,6 @@ private
     ManualViewAdapter.new(manual)
   end
 
-  def repository
-    ScopedManualRepository.new(current_user.manual_records)
-  end
-
   def authorize_user_for_publishing
     unless current_user_can_publish?
       redirect_to(
