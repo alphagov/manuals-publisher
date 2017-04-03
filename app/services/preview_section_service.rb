@@ -28,7 +28,7 @@ private
   end
 
   def ephemeral_section
-    section_builder.call(manual, section_params)
+    manual.build_section(section_params)
   end
 
   def existing_section
