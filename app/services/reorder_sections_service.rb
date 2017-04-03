@@ -1,6 +1,5 @@
 class ReorderSectionsService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -15,7 +14,7 @@ class ReorderSectionsService
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   def update
     manual.reorder_sections(section_order)
