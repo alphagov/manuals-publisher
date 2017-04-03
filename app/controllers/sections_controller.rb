@@ -12,8 +12,8 @@ class SectionsController < ApplicationController
 
   def show
     service = ShowSectionService.new(
-      manual_repository,
-      self,
+      manual_repository: manual_repository,
+      context: self,
     )
     manual, section = service.call
 
@@ -55,8 +55,8 @@ class SectionsController < ApplicationController
 
   def edit
     service = ShowSectionService.new(
-      manual_repository,
-      self,
+      manual_repository: manual_repository,
+      context: self,
     )
     manual, section = service.call
 
@@ -139,8 +139,8 @@ class SectionsController < ApplicationController
 
   def withdraw
     service = ShowSectionService.new(
-      manual_repository,
-      self,
+      manual_repository: manual_repository,
+      context: self,
     )
     manual, section = service.call
 
