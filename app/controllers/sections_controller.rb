@@ -64,7 +64,6 @@ class SectionsController < ApplicationController
 
   def update
     service = UpdateSectionService.new(
-      manual_repository: manual_repository,
       context: self,
     )
     manual, section = service.call

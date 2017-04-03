@@ -77,11 +77,9 @@ private
 
   def new_edition_for_slug_change
     manual_records = ManualRecord.all
-    manual_repository = ScopedManualRepository.new(manual_records)
     user = OpenStruct.new(manual_records: manual_records)
 
     service = UpdateSectionService.new(
-      manual_repository: manual_repository,
       context: context_for_section_edition_update(user),
     )
     _manual, document = service.call

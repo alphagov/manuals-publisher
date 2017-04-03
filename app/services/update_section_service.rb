@@ -1,6 +1,5 @@
 class UpdateSectionService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -19,7 +18,7 @@ class UpdateSectionService
 
 private
 
-  attr_reader :manual_repository, :context, :listeners
+  attr_reader :context, :listeners
 
   def section
     @section ||= manual.sections.find { |s| s.id == section_id }

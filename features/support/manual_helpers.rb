@@ -101,9 +101,6 @@ module ManualHelpers
 
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
     manual_records = ManualRecord.where(organisation_slug: organisation_slug)
-    organisational_manual_repository = ScopedManualRepository.new(
-      manual_records
-    )
     user = double(:user, manual_records: manual_records)
 
     service_context = OpenStruct.new(
@@ -116,7 +113,6 @@ module ManualHelpers
     )
 
     service = UpdateSectionService.new(
-      manual_repository: organisational_manual_repository,
       context: service_context,
     )
     _, section = service.call
