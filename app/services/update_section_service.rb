@@ -9,7 +9,7 @@ class UpdateSectionService
 
     if section.valid?
       manual.draft
-      manual_repository.store(manual)
+      manual.save(context.current_user)
       export_draft_manual_to_publishing_api
       export_draft_section_to_publishing_api
     end
