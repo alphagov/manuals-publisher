@@ -5,8 +5,4 @@ class ManualWithSections
     @sections = sections
     @removed_sections = removed_sections
   end
-
-  def add_section(section)
-    sections << section
-  end
 end

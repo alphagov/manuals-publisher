@@ -13,7 +13,7 @@ class Manual
     :use_originally_published_at_for_public_timestamp,
   )
 
-  delegate :sections, :sections=, :removed_sections, :removed_sections=, :add_section, to: :@manual_with_sections
+  delegate :sections, :sections=, :removed_sections, :removed_sections=, to: :@manual_with_sections
 
   def initialize(attributes)
     @id = attributes.fetch(:id)
@@ -119,7 +119,7 @@ class Manual
       attributes
     )
 
-    add_section(section)
+    sections << section
 
     section
   end
