@@ -148,6 +148,14 @@ class Manual
     removed_sections << removed
   end
 
+  def valid?
+    true
+  end
+
+  def errors
+    {}
+  end
+
 private
 
   attr_reader :section_builder
