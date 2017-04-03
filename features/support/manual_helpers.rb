@@ -45,9 +45,6 @@ module ManualHelpers
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     manual_records = ManualRecord.where(organisation_slug: organisation_slug)
-    organisational_manual_repository = ScopedManualRepository.new(
-      manual_records
-    )
     user = double(:user, manual_records: manual_records)
 
     create_service_context = OpenStruct.new(
@@ -59,7 +56,6 @@ module ManualHelpers
     )
 
     service = CreateSectionService.new(
-      manual_repository: organisational_manual_repository,
       context: create_service_context,
     )
     _, section = service.call

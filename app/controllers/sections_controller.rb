@@ -36,7 +36,6 @@ class SectionsController < ApplicationController
 
   def create
     service = CreateSectionService.new(
-      manual_repository: manual_repository,
       context: self,
     )
     manual, section = service.call

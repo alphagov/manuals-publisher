@@ -1,6 +1,5 @@
 class CreateSectionService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -19,7 +18,7 @@ class CreateSectionService
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   attr_reader :new_section
 
