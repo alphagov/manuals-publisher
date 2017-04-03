@@ -30,8 +30,8 @@ RSpec.describe VersionedManualRepository do
     context "the draft version returned" do
       subject { repository.get_manual(manual_id)[:draft] }
 
-      it "is the first draft as a ManualWithSections instance" do
-        expect(subject).to be_a ::ManualWithSections
+      it "is the first draft as a Manual instance" do
+        expect(subject).to be_a ::Manual
         expect(subject.id).to eq manual_id
         expect(subject.state).to eq "draft"
         expect(subject.version_number).to eq 1
@@ -72,8 +72,8 @@ RSpec.describe VersionedManualRepository do
     context "the published version returned" do
       subject { repository.get_manual(manual_id)[:published] }
 
-      it "is the published version as a ManualWithSections instance" do
-        expect(subject).to be_a ::ManualWithSections
+      it "is the published version as a Manual instance" do
+        expect(subject).to be_a ::Manual
         expect(subject.id).to eq manual_id
         expect(subject.state).to eq "published"
         expect(subject.version_number).to eq 1
@@ -155,8 +155,8 @@ RSpec.describe VersionedManualRepository do
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
 
-        it "is the published version as a ManualWithSections instance" do
-          expect(subject).to be_a ::ManualWithSections
+        it "is the published version as a Manual instance" do
+          expect(subject).to be_a ::Manual
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "published"
           expect(subject.version_number).to eq 1
@@ -186,8 +186,8 @@ RSpec.describe VersionedManualRepository do
       context "the draft version returned" do
         subject { repository.get_manual(manual_id)[:draft] }
 
-        it "is the new draft as a ManualWithSections instance" do
-          expect(subject).to be_a ::ManualWithSections
+        it "is the new draft as a Manual instance" do
+          expect(subject).to be_a ::Manual
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "draft"
           expect(subject.version_number).to eq 2
@@ -222,8 +222,8 @@ RSpec.describe VersionedManualRepository do
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
 
-        it "is the published version as a ManualWithSections instance" do
-          expect(subject).to be_a ::ManualWithSections
+        it "is the published version as a Manual instance" do
+          expect(subject).to be_a ::Manual
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "published"
           expect(subject.version_number).to eq 1
@@ -253,8 +253,8 @@ RSpec.describe VersionedManualRepository do
       context "the draft version returned" do
         subject { repository.get_manual(manual_id)[:draft] }
 
-        it "is the new draft as a ManualWithSections instance" do
-          expect(subject).to be_a ::ManualWithSections
+        it "is the new draft as a Manual instance" do
+          expect(subject).to be_a ::Manual
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "draft"
           expect(subject.version_number).to eq 2
@@ -290,8 +290,8 @@ RSpec.describe VersionedManualRepository do
       context "the published version returned" do
         subject { repository.get_manual(manual_id)[:published] }
 
-        it "is the published version as a ManualWithSections instance" do
-          expect(subject).to be_a ::ManualWithSections
+        it "is the published version as a Manual instance" do
+          expect(subject).to be_a ::Manual
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "published"
           expect(subject.version_number).to eq 1
@@ -321,8 +321,8 @@ RSpec.describe VersionedManualRepository do
       context "the draft version returned" do
         subject { repository.get_manual(manual_id)[:draft] }
 
-        it "is the new draft as a ManualWithSections instance" do
-          expect(subject).to be_a ::ManualWithSections
+        it "is the new draft as a Manual instance" do
+          expect(subject).to be_a ::Manual
           expect(subject.id).to eq manual_id
           expect(subject.state).to eq "draft"
           expect(subject.version_number).to eq 2

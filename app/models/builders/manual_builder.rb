@@ -5,11 +5,12 @@ class ManualBuilder
     ManualBuilder.new(
       slug_generator: SlugGenerator.new(prefix: "guidance"),
       factory: ->(attrs) {
+        manual = Manual.new(attrs)
+        manual.sections = attrs.fetch(:sections, [])
+        manual.removed_sections = attrs.fetch(:removed_sections, [])
         ManualValidator.new(
           NullValidator.new(
-            ManualWithSections.new(
-              Manual.new(attrs)
-            )
+            manual
           ),
         )
       }

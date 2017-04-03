@@ -7,7 +7,7 @@ describe ManualWithSections do
     ManualWithSections.new(manual, sections: sections)
   }
 
-  let(:manual) { double(:manual, publish: nil) }
+  let(:manual) { double(:manual, __publish__: nil) }
   let(:sections) { [section] }
   let(:section) { double(:section, publish!: nil) }
 
@@ -22,12 +22,12 @@ describe ManualWithSections do
     it "notifies the underlying manual" do
       manual_with_sections.publish
 
-      expect(manual).to have_received(:publish)
+      expect(manual).to have_received(:__publish__)
     end
 
     context "when the manual publish succeeds" do
       before do
-        allow(manual).to receive(:publish).and_yield
+        allow(manual).to receive(:__publish__).and_yield
       end
 
       it "passes a block which publishes" do

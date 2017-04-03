@@ -1,12 +1,11 @@
 class SectionAssociationMarshaller
   class Decorator
     def call(manual, attrs)
+      manual.sections = attrs.fetch(:sections, [])
+      manual.removed_sections = attrs.fetch(:removed_sections, [])
       ManualValidator.new(
         NullValidator.new(
-          ManualWithSections.new(
-            manual,
-            attrs,
-          )
+          manual
         )
       )
     end

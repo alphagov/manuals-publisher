@@ -62,22 +62,22 @@ describe Manual do
     end
   end
 
-  describe "#publish" do
+  describe "#__publish__" do
     it "returns self" do
-      expect(manual.publish).to be(manual)
+      expect(manual.__publish__).to be(manual)
     end
 
     let(:state) { "draft" }
 
     it "sets the state to 'published'" do
-      manual.publish
+      manual.__publish__
 
       expect(manual.state).to eq("published")
     end
 
     it "yields to the block" do
       expect { |block|
-        manual.publish(&block)
+        manual.__publish__(&block)
       }.to yield_with_no_args
     end
   end

@@ -1,6 +1,8 @@
 require "delegate"
 
 class ManualWithSections < SimpleDelegator
+  attr_writer :sections, :removed_sections
+
   def initialize(manual, sections: [], removed_sections: [])
     @manual = manual
     @sections = sections
@@ -29,7 +31,7 @@ class ManualWithSections < SimpleDelegator
   end
 
   def publish
-    manual.publish do
+    manual.__publish__ do
       sections.each(&:publish!)
     end
   end

@@ -80,10 +80,9 @@ private
 
     section_attrs = yield
 
-    ManualWithSections.new(
-      base_manual,
-      section_attrs
-    )
+    base_manual.sections = section_attrs.fetch(:sections, [])
+    base_manual.removed_sections = section_attrs.fetch(:removed_sections, [])
+    base_manual
   end
 
   def get_latest_version_of_sections(section_ids)
