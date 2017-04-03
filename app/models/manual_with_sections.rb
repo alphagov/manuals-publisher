@@ -1,12 +1,6 @@
 require "delegate"
 
 class ManualWithSections < SimpleDelegator
-  def self.create(attrs)
-    ManualWithSections.new(
-      Manual.new(attrs)
-    )
-  end
-
   def initialize(manual, sections: [], removed_sections: [])
     @manual = manual
     @sections = sections
