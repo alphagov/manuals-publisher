@@ -104,7 +104,6 @@ class SectionsController < ApplicationController
 
   def reorder
     service = ListSectionsService.new(
-      manual_repository: manual_repository,
       context: self,
     )
     manual, sections = service.call
