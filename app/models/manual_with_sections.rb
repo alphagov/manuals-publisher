@@ -5,7 +5,6 @@ class ManualWithSections
     @manual = manual
     @sections = sections
     @removed_sections = removed_sections
-    @section_builder = SectionBuilder.new
   end
 
   def sections
@@ -14,17 +13,6 @@ class ManualWithSections
 
   def removed_sections
     @removed_sections.to_enum
-  end
-
-  def build_section(attributes)
-    section = section_builder.call(
-      manual,
-      attributes
-    )
-
-    add_section(section)
-
-    section
   end
 
   def reorder_sections(section_order)
@@ -50,11 +38,11 @@ class ManualWithSections
     @removed_sections << removed
   end
 
-private
-
-  attr_reader :section_builder, :manual
-
   def add_section(section)
     @sections << section
   end
+
+private
+
+  attr_reader :manual
 end

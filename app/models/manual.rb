@@ -13,7 +13,7 @@ class Manual
     :use_originally_published_at_for_public_timestamp,
   )
 
-  delegate :sections, :sections=, :removed_sections, :removed_sections=, :build_section, :remove_section, :reorder_sections, to: :@manual_with_sections
+  delegate :sections, :sections=, :removed_sections, :removed_sections=, :remove_section, :reorder_sections, :add_section, to: :@manual_with_sections
 
   def initialize(attributes)
     @id = attributes.fetch(:id)
@@ -24,6 +24,7 @@ class Manual
     update(attributes)
 
     @manual_with_sections = ManualWithSections.new(self)
+    @section_builder = SectionBuilder.new
   end
 
   def to_param
@@ -111,4 +112,19 @@ class Manual
   def use_originally_published_at_for_public_timestamp?
     !!use_originally_published_at_for_public_timestamp
   end
+
+  def build_section(attributes)
+    section = section_builder.call(
+      self,
+      attributes
+    )
+
+    add_section(section)
+
+    section
+  end
+
+private
+
+  attr_reader :section_builder
 end
