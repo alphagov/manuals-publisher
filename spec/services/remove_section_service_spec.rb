@@ -16,10 +16,11 @@ RSpec.describe RemoveSectionService do
 
   let(:repository) {
     double(
-      fetch: manual,
       store: nil,
     )
   }
+
+  let(:user) { double(:user) }
 
   let(:service_context) {
     double(
@@ -28,6 +29,7 @@ RSpec.describe RemoveSectionService do
         "manual_id" => "ABC",
         "section" => change_note_params
       },
+      current_user: user
     )
   }
 
@@ -41,6 +43,7 @@ RSpec.describe RemoveSectionService do
   let(:exporter) { spy(PublishingApiDraftManualExporter) }
 
   before do
+    allow(Manual).to receive(:find).and_return(manual)
     allow(PublishingApiDraftManualExporter).to receive(:new).and_return(exporter)
     allow(PublishingApiDraftSectionDiscarder).to receive(:new).and_return(discarder)
   end
