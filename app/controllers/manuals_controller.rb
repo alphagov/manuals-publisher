@@ -11,7 +11,6 @@ class ManualsController < ApplicationController
 
   def index
     service = ListManualsService.new(
-      manual_repository: associationless_repository,
       context: self,
     )
     all_manuals = service.call
@@ -21,12 +20,12 @@ class ManualsController < ApplicationController
 
   def show
     service = ShowManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
+      context: self,
     )
-    manual, metadata = service.call
-    slug_unique = metadata.fetch(:slug_unique)
-    clashing_sections = metadata.fetch(:clashing_sections)
+    manual = service.call
+    slug_unique = manual.slug_unique?(current_user)
+    clashing_sections = manual.clashing_sections
 
     unless slug_unique
       flash.now[:error] = "Warning: This manual's URL is already used on GOV.UK. You can't publish it until you change the title."
@@ -48,9 +47,8 @@ class ManualsController < ApplicationController
 
   def create
     service = CreateManualService.new(
-      manual_repository: repository,
-      manual_builder: ManualBuilder.create,
       attributes: create_manual_params,
+      context: self,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -66,19 +64,19 @@ class ManualsController < ApplicationController
 
   def edit
     service = ShowManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
+      context: self,
     )
-    manual, _metadata = service.call
+    manual = service.call
 
     render(:edit, locals: { manual: manual_form(manual) })
   end
 
   def update
     service = UpdateManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
       attributes: update_manual_params,
+      context: self,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -94,19 +92,19 @@ class ManualsController < ApplicationController
 
   def edit_original_publication_date
     service = ShowManualService.new(
-      manual_repository: repository,
       manual_id: manual_id,
+      context: self,
     )
-    manual, _metadata = service.call
+    manual = service.call
 
     render(:edit_original_publication_date, locals: { manual: manual_form(manual) })
   end
 
   def update_original_publication_date
     service = UpdateManualOriginalPublicationDateService.new(
-      manual_repository: repository,
       manual_id: manual_id,
       attributes: publication_date_manual_params,
+      context: self,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -122,8 +120,8 @@ class ManualsController < ApplicationController
 
   def publish
     service = QueuePublishManualService.new(
-      repository,
-      manual_id,
+      manual_id: manual_id,
+      context: self,
     )
     manual = service.call
 
@@ -135,11 +133,10 @@ class ManualsController < ApplicationController
 
   def preview
     service = PreviewManualService.new(
-      repository: repository,
-      builder: ManualBuilder.create,
       renderer: ManualRenderer.new,
       manual_id: params[:id],
       attributes: update_manual_params,
+      context: self,
     )
     manual = service.call
 
@@ -225,14 +222,6 @@ private
 
   def manual_form(manual)
     ManualViewAdapter.new(manual)
-  end
-
-  def repository
-    ScopedManualRepository.new(current_user.manual_records)
-  end
-
-  def associationless_repository
-    ManualRepository.new(collection: current_user.manual_records)
   end
 
   def authorize_user_for_publishing

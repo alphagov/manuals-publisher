@@ -1,9 +1,9 @@
 require "manual_publish_task"
 
 class QueuePublishManualService
-  def initialize(repository, manual_id)
-    @repository = repository
+  def initialize(manual_id:, context:)
     @manual_id = manual_id
+    @context = context
   end
 
   def call
@@ -21,8 +21,8 @@ class QueuePublishManualService
 private
 
   attr_reader(
-    :repository,
     :manual_id,
+    :context,
   )
 
   def create_publish_task(manual)
@@ -33,7 +33,7 @@ private
   end
 
   def manual
-    @manual ||= repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def govuk_header_params

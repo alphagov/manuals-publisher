@@ -3,31 +3,32 @@ require "update_manual_original_publication_date_service"
 
 RSpec.describe UpdateManualOriginalPublicationDateService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual_repository) { double(:manual_repository) }
   let(:manual) { double(:manual, id: manual_id, sections: sections) }
   let(:section_1) { double(:section, update: nil) }
   let(:section_2) { double(:section, update: nil) }
   let(:sections) { [section_1, section_2] }
   let(:originally_published_at) { 10.years.ago }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
+  let(:context) { double(:context, current_user: user) }
+  let(:user) { double(:user) }
 
   subject {
     described_class.new(
       manual_id: manual_id,
-      manual_repository: manual_repository,
       attributes: {
         originally_published_at: originally_published_at,
         use_originally_published_at_for_public_timestamp: "1",
         title: "hats",
-      }
+      },
+      context: context
     )
   }
 
   before do
-    allow(manual_repository).to receive(:fetch) { manual }
-    allow(manual_repository).to receive(:store)
+    allow(Manual).to receive(:find).and_return(manual)
     allow(manual).to receive(:draft)
     allow(manual).to receive(:update)
+    allow(manual).to receive(:save)
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(publishing_api_draft_exporter).to receive(:call)
   end
@@ -52,13 +53,13 @@ RSpec.describe UpdateManualOriginalPublicationDateService do
     subject.call
 
     expect(manual).to have_received(:update).ordered
-    expect(manual_repository).to have_received(:store).with(manual).ordered
+    expect(manual).to have_received(:save).with(user).ordered
   end
 
   it "tells each listener about the event after the manual has been stored" do
     subject.call
 
-    expect(manual_repository).to have_received(:store).with(manual).ordered
+    expect(manual).to have_received(:save).with(user).ordered
     expect(publishing_api_draft_exporter).to have_received(:call).with(manual).ordered
   end
 end

@@ -1,14 +1,13 @@
 class ListManualsService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
   def call
-    manual_repository.all
+    Manual.all(context.current_user)
   end
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 end

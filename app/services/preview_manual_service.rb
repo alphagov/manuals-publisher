@@ -1,10 +1,9 @@
 class PreviewManualService
-  def initialize(repository:, builder:, renderer:, manual_id:, attributes:)
-    @repository = repository
-    @builder = builder
+  def initialize(renderer:, manual_id:, attributes:, context:)
     @renderer = renderer
     @manual_id = manual_id
     @attributes = attributes
+    @context = context
   end
 
   def call
@@ -16,11 +15,10 @@ class PreviewManualService
 private
 
   attr_reader(
-    :repository,
-    :builder,
     :renderer,
     :manual_id,
     :attributes,
+    :context,
   )
 
   def manual
@@ -28,7 +26,7 @@ private
   end
 
   def ephemeral_manual
-    builder.call(
+    Manual.build(
       attributes.reverse_merge(
         title: ""
       )
@@ -36,6 +34,6 @@ private
   end
 
   def existing_manual
-    @existing_manual ||= repository.fetch(manual_id)
+    @existing_manual ||= Manual.find(manual_id, context.current_user)
   end
 end

@@ -1,8 +1,8 @@
 class UpdateManualOriginalPublicationDateService
-  def initialize(manual_repository:, manual_id:, attributes:)
-    @manual_repository = manual_repository
+  def initialize(manual_id:, attributes:, context:)
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
+    @context = context
   end
 
   def call
@@ -20,8 +20,8 @@ private
 
   attr_reader(
     :manual_id,
-    :manual_repository,
     :attributes,
+    :context,
   )
 
   def update
@@ -29,7 +29,7 @@ private
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
     @manual = fetch_manual
   end
 
@@ -49,6 +49,6 @@ private
   end
 
   def fetch_manual
-    manual_repository.fetch(manual_id)
+    Manual.find(manual_id, context.current_user)
   end
 end

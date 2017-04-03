@@ -21,6 +21,32 @@ class Manual
 
   attr_accessor :sections, :removed_sections
 
+  def self.find(id, user)
+    ScopedManualRepository.new(user.manual_records).fetch(id)
+  end
+
+  def self.all(user)
+    ManualRepository.new(collection: user.manual_records).all
+  end
+
+  def self.build(attributes)
+    ManualBuilder.create.call(attributes)
+  end
+
+  def slug_unique?(user)
+    ScopedManualRepository.new(user.manual_records).slug_unique?(self)
+  end
+
+  def clashing_sections
+    sections
+      .group_by(&:slug)
+      .select { |_slug, docs| docs.size > 1 }
+  end
+
+  def save(user)
+    ScopedManualRepository.new(user.manual_records).store(self)
+  end
+
   def initialize(attributes)
     @id = attributes.fetch(:id)
     @updated_at = attributes.fetch(:updated_at, nil)

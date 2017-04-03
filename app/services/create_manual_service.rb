@@ -1,8 +1,7 @@
 class CreateManualService
-  def initialize(manual_repository:, manual_builder:, attributes:)
-    @manual_repository = manual_repository
-    @manual_builder = manual_builder
+  def initialize(attributes:, context:)
     @attributes = attributes
+    @context = context
   end
 
   def call
@@ -17,21 +16,20 @@ class CreateManualService
 private
 
   attr_reader(
-    :manual_repository,
-    :manual_builder,
     :attributes,
+    :context,
   )
 
   def manual
-    @manual ||= manual_builder.call(attributes)
+    @manual ||= Manual.build(attributes)
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
   end
 
   def export_draft_to_publishing_api
-    reloaded_manual = manual_repository[manual.id]
+    reloaded_manual = Manual.find(manual.id, context.current_user)
     PublishingApiDraftManualWithSectionsExporter.new.call(reloaded_manual)
   end
 end
