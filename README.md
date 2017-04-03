@@ -74,8 +74,6 @@ Non standard Rails directories and what they're used for:
     Ruby objects for building a new document by setting ID and subclasses for setting the document type, if needed
   * `app/models/validators`
     Not validators. Decorators for providing validation logic.
-* `app/observers`
-  Define ordered lists of exporters, called at different stages of a document's life cycle, for example, publication
 * `app/repositories`
   Provide interaction with the persistance layer (Mongoid)
 * `app/services`
