@@ -24,7 +24,7 @@ private
   attr_reader :new_section
 
   def manual
-    @manual ||= manual_repository.fetch(context.params.fetch("manual_id"))
+    @manual ||= Manual.find(context.params.fetch("manual_id"), context.current_user)
   end
 
   def export_draft_manual_to_publishing_api
