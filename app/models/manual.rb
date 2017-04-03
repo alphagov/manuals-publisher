@@ -13,7 +13,7 @@ class Manual
     :use_originally_published_at_for_public_timestamp,
   )
 
-  delegate :sections, :sections=, :removed_sections, :removed_sections=, to: :@manual_with_sections
+  attr_accessor :sections, :removed_sections
 
   def initialize(attributes)
     @id = attributes.fetch(:id)
@@ -23,7 +23,8 @@ class Manual
 
     update(attributes)
 
-    @manual_with_sections = ManualWithSections.new
+    @sections = []
+    @removed_sections = []
     @section_builder = SectionBuilder.new
   end
 
