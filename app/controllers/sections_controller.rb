@@ -80,7 +80,6 @@ class SectionsController < ApplicationController
 
   def preview
     service = PreviewSectionService.new(
-      section_builder: SectionBuilder.new,
       section_renderer: SectionRenderer.new,
       context: self,
     )
