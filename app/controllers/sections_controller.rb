@@ -163,10 +163,6 @@ class SectionsController < ApplicationController
 
 private
 
-  def manual_repository
-    ScopedManualRepository.new(current_user.manual_records)
-  end
-
   def authorize_user_for_withdrawing
     unless current_user_can_withdraw?
       redirect_to(
