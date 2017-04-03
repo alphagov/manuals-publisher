@@ -17,67 +17,6 @@ describe ManualWithSections do
   let(:organisation_slug) { double(:organisation_slug) }
   let(:state) { double(:state) }
 
-  describe "#reorder_sections" do
-    let(:sections) {
-      [
-        alpha_section,
-        beta_section,
-        gamma_section,
-      ]
-    }
-
-    let(:alpha_section) { double(:section, id: "alpha") }
-    let(:beta_section) { double(:section, id: "beta") }
-    let(:gamma_section) { double(:section, id: "gamma") }
-
-    let(:section_order) { %w(gamma alpha beta) }
-
-    it "reorders the sections to match the given order" do
-      manual_with_sections.reorder_sections(%w(
-        gamma
-        alpha
-        beta
-      ))
-
-      expect(manual_with_sections.sections.to_a).to eq([
-        gamma_section,
-        alpha_section,
-        beta_section,
-      ])
-    end
-
-    it "raises an error if section_order doesn't contain all IDs" do
-      expect {
-        manual_with_sections.reorder_sections(%w(
-          alpha
-          beta
-        ))
-      }.to raise_error(ArgumentError)
-    end
-
-    it "raises an error if section_order contains non-existent IDs" do
-      expect {
-        manual_with_sections.reorder_sections(%w(
-          alpha
-          beta
-          gamma
-          delta
-        ))
-      }.to raise_error(ArgumentError)
-    end
-
-    it "raises an error if section_order contains duplicate IDs" do
-      expect {
-        manual_with_sections.reorder_sections(%w(
-          alpha
-          beta
-          gamma
-          beta
-        ))
-      }.to raise_error(ArgumentError)
-    end
-  end
-
   describe "#remove_section" do
     subject(:manual_with_sections) {
       ManualWithSections.new(

@@ -13,7 +13,7 @@ class Manual
     :use_originally_published_at_for_public_timestamp,
   )
 
-  delegate :sections, :sections=, :removed_sections, :removed_sections=, :remove_section, :reorder_sections, :add_section, to: :@manual_with_sections
+  delegate :sections, :sections=, :removed_sections, :removed_sections=, :remove_section, :add_section, to: :@manual_with_sections
 
   def initialize(attributes)
     @id = attributes.fetch(:id)
@@ -122,6 +122,17 @@ class Manual
     add_section(section)
 
     section
+  end
+
+  def reorder_sections(section_order)
+    unless section_order.sort == sections.map(&:id).sort
+      raise(
+        ArgumentError,
+        "section_order must contain each section_id exactly once",
+      )
+    end
+
+    sections.sort_by! { |sec| section_order.index(sec.id) }
   end
 
 private

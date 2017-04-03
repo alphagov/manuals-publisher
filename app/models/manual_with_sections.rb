@@ -6,17 +6,6 @@ class ManualWithSections
     @removed_sections = removed_sections
   end
 
-  def reorder_sections(section_order)
-    unless section_order.sort == sections.map(&:id).sort
-      raise(
-        ArgumentError,
-        "section_order must contain each section_id exactly once",
-      )
-    end
-
-    sections.sort_by! { |sec| section_order.index(sec.id) }
-  end
-
   def remove_section(section_id)
     found_section = sections.find { |d| d.id == section_id }
 
