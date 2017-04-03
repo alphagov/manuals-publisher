@@ -75,10 +75,22 @@ describe Manual do
       expect(manual.state).to eq("published")
     end
 
-    it "yields to the block" do
-      expect { |block|
-        manual.publish(&block)
-      }.to yield_with_no_args
+    context "when manual has sections" do
+      let(:section_1) { double(:section) }
+      let(:section_2) { double(:section) }
+
+      before do
+        allow(section_1).to receive(:publish!)
+        allow(section_2).to receive(:publish!)
+        manual.sections = [section_1, section_2]
+      end
+
+      it "calls publish! on each section" do
+        manual.publish
+
+        expect(section_1).to have_received(:publish!)
+        expect(section_2).to have_received(:publish!)
+      end
     end
   end
 
@@ -202,6 +214,107 @@ describe Manual do
         expect(manual.id).to eq(id)
         expect(manual.updated_at).to eq(updated_at)
       end
+    end
+  end
+
+  describe "#reorder_sections" do
+    let(:sections) {
+      [
+        alpha_section,
+        beta_section,
+        gamma_section,
+      ]
+    }
+
+    let(:alpha_section) { double(:section, id: "alpha") }
+    let(:beta_section) { double(:section, id: "beta") }
+    let(:gamma_section) { double(:section, id: "gamma") }
+
+    let(:section_order) { %w(gamma alpha beta) }
+
+    before do
+      manual.sections = sections
+    end
+
+    it "reorders the sections to match the given order" do
+      manual.reorder_sections(%w(
+        gamma
+        alpha
+        beta
+      ))
+
+      expect(manual.sections.to_a).to eq([
+        gamma_section,
+        alpha_section,
+        beta_section,
+      ])
+    end
+
+    it "raises an error if section_order doesn't contain all IDs" do
+      expect {
+        manual.reorder_sections(%w(
+          alpha
+          beta
+        ))
+      }.to raise_error(ArgumentError)
+    end
+
+    it "raises an error if section_order contains non-existent IDs" do
+      expect {
+        manual.reorder_sections(%w(
+          alpha
+          beta
+          gamma
+          delta
+        ))
+      }.to raise_error(ArgumentError)
+    end
+
+    it "raises an error if section_order contains duplicate IDs" do
+      expect {
+        manual.reorder_sections(%w(
+          alpha
+          beta
+          gamma
+          beta
+        ))
+      }.to raise_error(ArgumentError)
+    end
+  end
+
+  describe "#remove_section" do
+    let(:sections) {
+      [
+        section_a,
+        section_b,
+      ]
+    }
+    let(:section_a) { double(:section, id: "a") }
+    let(:section_b) { double(:section, id: "b") }
+
+    let(:removed_sections) { [section_c] }
+    let(:section_c) { double(:section, id: "c") }
+
+    before do
+      manual.sections = sections
+      manual.removed_sections = removed_sections
+    end
+
+    it "removes the section from #sections" do
+      manual.remove_section(section_a.id)
+
+      expect(manual.sections.to_a).to eq([section_b])
+    end
+
+    it "adds the section to #removed_sections" do
+      manual.remove_section(section_a.id)
+
+      expect(manual.removed_sections.to_a).to eq(
+        [
+          section_c,
+          section_a,
+        ]
+      )
     end
   end
 end
