@@ -22,7 +22,7 @@ class ManualWithSections
       )
     end
 
-    @sections.sort_by! { |doc| section_order.index(doc.id) }
+    @sections.sort_by! { |sec| section_order.index(sec.id) }
   end
 
   def remove_section(section_id)
