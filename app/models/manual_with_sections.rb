@@ -1,6 +1,4 @@
-require "delegate"
-
-class ManualWithSections < SimpleDelegator
+class ManualWithSections
   attr_writer :sections, :removed_sections
 
   def initialize(manual, sections: [], removed_sections: [])
@@ -8,7 +6,6 @@ class ManualWithSections < SimpleDelegator
     @sections = sections
     @removed_sections = removed_sections
     @section_builder = SectionBuilder.new
-    super(manual)
   end
 
   def sections
@@ -21,7 +18,7 @@ class ManualWithSections < SimpleDelegator
 
   def build_section(attributes)
     section = section_builder.call(
-      self,
+      manual,
       attributes
     )
 
