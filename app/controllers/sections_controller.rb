@@ -80,10 +80,10 @@ class SectionsController < ApplicationController
 
   def preview
     service = PreviewSectionService.new(
-      manual_repository,
-      SectionBuilder.new,
-      SectionRenderer.new,
-      self,
+      manual_repository: manual_repository,
+      section_builder: SectionBuilder.new,
+      section_renderer: SectionRenderer.new,
+      context: self,
     )
     section = service.call
 

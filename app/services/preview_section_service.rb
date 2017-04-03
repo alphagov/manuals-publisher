@@ -1,5 +1,5 @@
 class PreviewSectionService
-  def initialize(manual_repository, section_builder, section_renderer, context)
+  def initialize(manual_repository:, section_builder:, section_renderer:, context:)
     @manual_repository = manual_repository
     @section_builder = section_builder
     @section_renderer = section_renderer
