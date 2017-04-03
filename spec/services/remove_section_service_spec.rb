@@ -33,8 +33,8 @@ RSpec.describe RemoveSectionService do
 
   let(:service) {
     described_class.new(
-      repository,
-      service_context,
+      manual_repository: repository,
+      context: service_context,
     )
   }
   let(:discarder) { spy(PublishingApiDraftSectionDiscarder) }
