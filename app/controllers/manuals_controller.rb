@@ -133,7 +133,6 @@ class ManualsController < ApplicationController
 
   def preview
     service = PreviewManualService.new(
-      repository: repository,
       builder: ManualBuilder.create,
       renderer: ManualRenderer.new,
       manual_id: params[:id],
