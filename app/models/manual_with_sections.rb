@@ -1,8 +1,7 @@
 class ManualWithSections
   attr_writer :sections, :removed_sections
 
-  def initialize(manual, sections: [], removed_sections: [])
-    @manual = manual
+  def initialize(sections: [], removed_sections: [])
     @sections = sections
     @removed_sections = removed_sections
   end
@@ -41,8 +40,4 @@ class ManualWithSections
   def add_section(section)
     @sections << section
   end
-
-private
-
-  attr_reader :manual
 end

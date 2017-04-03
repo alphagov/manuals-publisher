@@ -23,7 +23,7 @@ class Manual
 
     update(attributes)
 
-    @manual_with_sections = ManualWithSections.new(self)
+    @manual_with_sections = ManualWithSections.new
     @section_builder = SectionBuilder.new
   end
 
