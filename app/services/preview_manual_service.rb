@@ -38,6 +38,6 @@ private
   end
 
   def existing_manual
-    @existing_manual ||= repository.fetch(manual_id)
+    @existing_manual ||= Manual.find(manual_id, context.current_user)
   end
 end
