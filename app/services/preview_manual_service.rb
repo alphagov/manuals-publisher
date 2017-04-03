@@ -1,10 +1,11 @@
 class PreviewManualService
-  def initialize(repository:, builder:, renderer:, manual_id:, attributes:)
+  def initialize(repository:, builder:, renderer:, manual_id:, attributes:, context:)
     @repository = repository
     @builder = builder
     @renderer = renderer
     @manual_id = manual_id
     @attributes = attributes
+    @context = context
   end
 
   def call
@@ -21,6 +22,7 @@ private
     :renderer,
     :manual_id,
     :attributes,
+    :context,
   )
 
   def manual

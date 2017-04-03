@@ -138,6 +138,7 @@ class ManualsController < ApplicationController
       renderer: ManualRenderer.new,
       manual_id: params[:id],
       attributes: update_manual_params,
+      context: self,
     )
     manual = service.call
 
