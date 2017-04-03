@@ -1,6 +1,5 @@
 class PreviewManualService
-  def initialize(builder:, renderer:, manual_id:, attributes:, context:)
-    @builder = builder
+  def initialize(renderer:, manual_id:, attributes:, context:)
     @renderer = renderer
     @manual_id = manual_id
     @attributes = attributes
@@ -16,7 +15,6 @@ class PreviewManualService
 private
 
   attr_reader(
-    :builder,
     :renderer,
     :manual_id,
     :attributes,
