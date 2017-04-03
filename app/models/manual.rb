@@ -13,7 +13,7 @@ class Manual
     :use_originally_published_at_for_public_timestamp,
   )
 
-  delegate :sections, :sections=, :removed_sections, :removed_sections=, :remove_section, :add_section, to: :@manual_with_sections
+  delegate :sections, :sections=, :removed_sections, :removed_sections=, :add_section, to: :@manual_with_sections
 
   def initialize(attributes)
     @id = attributes.fetch(:id)
@@ -133,6 +133,18 @@ class Manual
     end
 
     sections.sort_by! { |sec| section_order.index(sec.id) }
+  end
+
+  def remove_section(section_id)
+    found_section = sections.find { |d| d.id == section_id }
+
+    return if found_section.nil?
+
+    removed = sections.delete(found_section)
+
+    return if removed.nil?
+
+    removed_sections << removed
   end
 
 private

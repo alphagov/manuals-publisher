@@ -281,4 +281,40 @@ describe Manual do
       }.to raise_error(ArgumentError)
     end
   end
+
+  describe "#remove_section" do
+    let(:sections) {
+      [
+        section_a,
+        section_b,
+      ]
+    }
+    let(:section_a) { double(:section, id: "a") }
+    let(:section_b) { double(:section, id: "b") }
+
+    let(:removed_sections) { [section_c] }
+    let(:section_c) { double(:section, id: "c") }
+
+    before do
+      manual.sections = sections
+      manual.removed_sections = removed_sections
+    end
+
+    it "removes the section from #sections" do
+      manual.remove_section(section_a.id)
+
+      expect(manual.sections.to_a).to eq([section_b])
+    end
+
+    it "adds the section to #removed_sections" do
+      manual.remove_section(section_a.id)
+
+      expect(manual.removed_sections.to_a).to eq(
+        [
+          section_c,
+          section_a,
+        ]
+      )
+    end
+  end
 end
