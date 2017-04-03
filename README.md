@@ -68,8 +68,6 @@ Non standard Rails directories and what they're used for:
   These export information to various GOV.UK APIs
   * `app/exporters/formatters`
     These are used by exporters to format information for transferring as JSON
-* `app/importers`
-  Generic code used when writing importers for scraped content of new document formats
 * `app/models`
   Combination of Mongoid documents and Ruby objects for handling Documents and various behaviours
   * `app/models/builders`
