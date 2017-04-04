@@ -91,3 +91,27 @@ Non standard Rails directories and what they're used for:
 ### Services
 
  Services do things such as previewing a document, creation, updating, showing, withdrawing, queueing. This replaces the normal Rails behaviour of completing these actions directly from a controller, instead we call a service registry.
+
+## Deleting or removing draft manuals
+
+### Deleting a draft manual
+
+If a manual has been created in draft but never been published it can be deleted using a script to delete draft manuals:
+
+```
+$ cd /var/apps/manuals-publisher
+$ sudo -u deploy govuk_setenv manuals-publisher ./bin/delete_draft_manual slug-to-manual
+```
+
+This would need to be run on one of the backend boxes.
+
+### Removing a draft manual section
+
+If a manual section (also known as a ‘manual document’) has been created in draft but never been published, it can be removed using the `remove_draft_manual_section script`. On one of the backend boxes, run:
+
+```
+$ cd /var/apps/manuals-publisher
+$ sudo -u deploy govuk_setenv manuals-publisher ./bin/remove_draft_manual_section manual_id section_id
+```
+
+The `manual_id` and `section_id` can easily be found in the URL for the manual section, like so `/manuals/<manual_id>/sections/<section_id>?id=<section_id>&manual_id=<manual_id>`
