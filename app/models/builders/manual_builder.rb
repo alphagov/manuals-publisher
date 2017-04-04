@@ -3,12 +3,6 @@ require "securerandom"
 class ManualBuilder
   def initialize
     @slug_generator = SlugGenerator.new(prefix: "guidance")
-    @factory = ->(attrs) {
-      manual = Manual.new(attrs)
-      manual.sections = attrs.fetch(:sections, [])
-      manual.removed_sections = attrs.fetch(:removed_sections, [])
-      manual
-    }
   end
 
   def call(attrs)
@@ -24,10 +18,14 @@ class ManualBuilder
       use_originally_published_at_for_public_timestamp: true,
     }
 
-    factory.call(default_attrs.merge(attrs))
+    manual_attrs = default_attrs.merge(attrs)
+    manual = Manual.new(manual_attrs)
+    manual.sections = manual_attrs.fetch(:sections, [])
+    manual.removed_sections = manual_attrs.fetch(:removed_sections, [])
+    manual
   end
 
 private
 
-  attr_reader :slug_generator, :factory
+  attr_reader :slug_generator
 end
