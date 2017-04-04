@@ -2,19 +2,17 @@ require "securerandom"
 
 class ManualBuilder
   def self.create
-    ManualBuilder.new(
-      factory: ->(attrs) {
-        manual = Manual.new(attrs)
-        manual.sections = attrs.fetch(:sections, [])
-        manual.removed_sections = attrs.fetch(:removed_sections, [])
-        manual
-      }
-    )
+    ManualBuilder.new
   end
 
-  def initialize(factory:)
+  def initialize
     @slug_generator = SlugGenerator.new(prefix: "guidance")
-    @factory = factory
+    @factory = ->(attrs) {
+      manual = Manual.new(attrs)
+      manual.sections = attrs.fetch(:sections, [])
+      manual.removed_sections = attrs.fetch(:removed_sections, [])
+      manual
+    }
   end
 
   def call(attrs)
