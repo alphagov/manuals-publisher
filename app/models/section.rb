@@ -3,7 +3,13 @@ require "active_model/conversion"
 require "active_model/naming"
 
 class Section
+  include ActiveModel::Validations
+
   extend Forwardable
+
+  validates :summary, presence: true
+  validates :title, presence: true
+  validates :body, presence: true, safe_html: true
 
   def self.edition_attributes
     [
