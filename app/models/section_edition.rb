@@ -6,7 +6,7 @@ class SectionEdition
 
   store_in "manual_section_editions"
 
-  field :section_id,          type: String
+  field :section_id,           type: String
   field :version_number,       type: Integer, default: 1
   field :title,                type: String
   field :slug,                 type: String
