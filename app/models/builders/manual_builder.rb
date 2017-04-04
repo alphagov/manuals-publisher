@@ -1,11 +1,9 @@
 require "securerandom"
 
 class ManualBuilder
-  def initialize
-    @slug_generator = SlugGenerator.new(prefix: "guidance")
-  end
-
   def call(attrs)
+    slug_generator = SlugGenerator.new(prefix: "guidance")
+
     default_attrs = {
       id: SecureRandom.uuid,
       slug: slug_generator.call(attrs.fetch(:title)),
@@ -24,8 +22,4 @@ class ManualBuilder
     manual.removed_sections = manual_attrs.fetch(:removed_sections, [])
     manual
   end
-
-private
-
-  attr_reader :slug_generator
 end
