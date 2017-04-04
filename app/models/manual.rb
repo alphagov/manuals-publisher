@@ -30,7 +30,7 @@ class Manual
   end
 
   def self.build(attributes)
-    ManualBuilder.create.call(attributes)
+    ManualBuilder.new.call(attributes)
   end
 
   def slug_unique?(user)

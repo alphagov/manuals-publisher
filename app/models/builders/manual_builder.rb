@@ -1,10 +1,6 @@
 require "securerandom"
 
 class ManualBuilder
-  def self.create
-    ManualBuilder.new
-  end
-
   def initialize
     @slug_generator = SlugGenerator.new(prefix: "guidance")
     @factory = ->(attrs) {
