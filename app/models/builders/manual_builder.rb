@@ -12,17 +12,7 @@ class ManualBuilder
   end
 
   def call(attrs)
-    @attrs = attrs
-
-    factory.call(defaults.merge(attrs))
-  end
-
-private
-
-  attr_reader :slug_generator, :factory, :attrs
-
-  def defaults
-    {
+    default_attrs = {
       id: SecureRandom.uuid,
       slug: slug_generator.call(attrs.fetch(:title)),
       summary: "",
@@ -33,5 +23,11 @@ private
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp: true,
     }
+
+    factory.call(default_attrs.merge(attrs))
   end
+
+private
+
+  attr_reader :slug_generator, :factory
 end
