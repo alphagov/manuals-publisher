@@ -7,7 +7,7 @@ class CreateSectionAttachmentService
   def call
     attachment = section.add_attachment(attachment_params)
 
-    manual_repository.store(manual)
+    manual.save(context.current_user)
 
     [manual, section, attachment]
   end

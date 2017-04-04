@@ -7,7 +7,7 @@ class UpdateSectionAttachmentService
   def call
     attachment.update_attributes(attachment_params)
 
-    manual_repository.store(manual)
+    manual.save(context.current_user)
 
     [manual, section, attachment]
   end
