@@ -57,10 +57,4 @@ class SectionAttachmentsController < ApplicationController
       })
     end
   end
-
-private
-
-  def repository
-    ScopedManualRepository.new(current_user.manual_records)
-  end
 end
