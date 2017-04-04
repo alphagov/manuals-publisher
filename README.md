@@ -4,13 +4,11 @@ Manuals Publisher is a Ruby on Rails content management application for the 'man
 The manuals format is currently in a rendered phase of migration, so content is stored in a local
 datastore but also drafted and published through the publishing-pipeline via the [Publishing API](https://github.com/alphagov/publishing-api).
 
-
-This is the renamed repository of the original Specialist Publisher, the compositional (or 'hexagonal')
-Rails app based heavily on dependency injection.
-
-
-Specialist Publisher has been divided into two publishing applications to accommodate Specialist Documents and Manuals separately.
-_Specialist Document_ or _Finders_ publishing now lives at https://github.com/alphagov/specialist-publisher
+This is the renamed repository of the original Specialist
+Publisher. Specialist Publisher has been divided into two publishing
+applications to accommodate Specialist Documents and Manuals
+separately.  _Specialist Document_ or _Finders_ publishing now lives
+at https://github.com/alphagov/specialist-publisher
 
 ## Purpose
 
@@ -35,7 +33,7 @@ Publishing app for manuals.
 
 ## Running the application
 
-To run the application in development you will need at least one user in the application database. 
+To run the application in development you will need at least one user in the application database.
 In a rails console do:
 
 ```
@@ -68,16 +66,12 @@ Non standard Rails directories and what they're used for:
   These export information to various GOV.UK APIs
   * `app/exporters/formatters`
     These are used by exporters to format information for transferring as JSON
-* `app/importers`
-  Generic code used when writing importers for scraped content of new document formats
 * `app/models`
   Combination of Mongoid documents and Ruby objects for handling Documents and various behaviours
   * `app/models/builders`
     Ruby objects for building a new document by setting ID and subclasses for setting the document type, if needed
   * `app/models/validators`
     Not validators. Decorators for providing validation logic.
-* `app/observers`
-  Define ordered lists of exporters, called at different stages of a document's life cycle, for example, publication
 * `app/repositories`
   Provide interaction with the persistance layer (Mongoid)
 * `app/services`
