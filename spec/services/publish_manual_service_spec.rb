@@ -4,7 +4,6 @@ require "ostruct"
 
 RSpec.describe PublishManualService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual_repository) { double(:manual_repository) }
   let(:manual) { double(:manual, id: manual_id, version_number: 3) }
   let(:publication_logger) { double(:publication_logger) }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
@@ -16,7 +15,6 @@ RSpec.describe PublishManualService do
   subject {
     PublishManualService.new(
       manual_id: manual_id,
-      manual_repository: manual_repository,
       version_number: version_number,
       context: context,
     )

@@ -109,7 +109,6 @@ private
 
   def publish_manual
     service = PublishManualService.new(
-      manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
       context: context,

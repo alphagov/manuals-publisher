@@ -1,7 +1,6 @@
 class PublishManualService
-  def initialize(manual_id:, manual_repository:, version_number:, context:)
+  def initialize(manual_id:, version_number:, context:)
     @manual_id = manual_id
-    @manual_repository = manual_repository
     @version_number = version_number
     @context = context
   end
@@ -28,7 +27,6 @@ private
 
   attr_reader(
     :manual_id,
-    :manual_repository,
     :version_number,
     :context,
   )
