@@ -42,7 +42,7 @@ private
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
   end
 
   def log_publication
