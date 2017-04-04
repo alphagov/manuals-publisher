@@ -24,7 +24,7 @@ private
   def defaults
     {
       id: SecureRandom.uuid,
-      slug: slug,
+      slug: slug_generator.call(attrs.fetch(:title)),
       summary: "",
       body: "",
       state: "draft",
@@ -33,9 +33,5 @@ private
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp: true,
     }
-  end
-
-  def slug
-    slug_generator.call(attrs.fetch(:title))
   end
 end
