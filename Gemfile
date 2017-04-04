@@ -4,7 +4,6 @@ gem "rails", "3.2.22.3"
 
 # Alphabetical order please :)
 gem "airbrake", "~> 4.3"
-gem "bson_ext", "1.12.1"
 gem "faraday", "0.9.0"
 gem "fetchable", "1.0.0"
 gem "gds-sso", "~> 11.0" # can't go higher because govuk_content_models needs this version (also > 12 need rails 4+)
