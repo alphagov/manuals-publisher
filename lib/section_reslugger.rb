@@ -112,8 +112,13 @@ private
       manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
+      context: context,
     )
     service.call
+  end
+
+  def context
+    OpenStruct.new
   end
 
   def manual_record

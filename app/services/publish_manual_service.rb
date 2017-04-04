@@ -1,8 +1,9 @@
 class PublishManualService
-  def initialize(manual_id:, manual_repository:, version_number:)
+  def initialize(manual_id:, manual_repository:, version_number:, context:)
     @manual_id = manual_id
     @manual_repository = manual_repository
     @version_number = version_number
+    @context = context
   end
 
   def call
@@ -29,6 +30,7 @@ private
     :manual_id,
     :manual_repository,
     :version_number,
+    :context,
   )
 
   def versions_match?

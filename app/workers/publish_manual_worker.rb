@@ -18,6 +18,7 @@ class PublishManualWorker
       manual_repository: repository,
       manual_id: task.manual_id,
       version_number: task.version_number,
+      context: context,
     )
     service.call
 
@@ -35,6 +36,10 @@ private
 
   def repository
     ScopedManualRepository.new(ManualRecord.all)
+  end
+
+  def context
+    OpenStruct.new
   end
 
   def requeue_task(manual_id, error)

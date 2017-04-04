@@ -97,8 +97,7 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
-    manual_records = ManualRecord.where(organisation_slug: organisation_slug)
-    user = double(:user, manual_records: manual_records)
+    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
     service_context = OpenStruct.new(
       params: {
@@ -161,6 +160,7 @@ module ManualHelpers
       manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual.id,
       version_number: manual.version_number,
+      context: OpenStruct.new
     )
     service.call
   end
