@@ -1,20 +1,19 @@
 class UpdateSectionAttachmentService
-  def initialize(manual_repository, context)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
   def call
     attachment.update_attributes(attachment_params)
 
-    manual_repository.store(manual)
+    manual.save(context.current_user)
 
     [manual, section, attachment]
   end
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   def attachment
     @attachment ||= section.find_attachment_by_id(attachment_id)
@@ -25,7 +24,7 @@ private
   end
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def attachment_params

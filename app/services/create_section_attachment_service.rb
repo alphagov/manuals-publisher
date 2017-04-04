@@ -1,27 +1,26 @@
 class CreateSectionAttachmentService
-  def initialize(manual_repository, context)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
   def call
     attachment = section.add_attachment(attachment_params)
 
-    manual_repository.store(manual)
+    manual.save(context.current_user)
 
     [manual, section, attachment]
   end
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   def section
     @section ||= manual.sections.find { |s| s.id == section_id }
   end
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def attachment_params
