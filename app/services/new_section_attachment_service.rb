@@ -1,6 +1,5 @@
 class NewSectionAttachmentService
   def initialize(context:)
-    @builder = Attachment.method(:new)
     @context = context
   end
 
@@ -10,10 +9,10 @@ class NewSectionAttachmentService
 
 private
 
-  attr_reader :builder, :context
+  attr_reader :context
 
   def attachment
-    builder.call(initial_params)
+    Attachment.new(initial_params)
   end
 
   def section
