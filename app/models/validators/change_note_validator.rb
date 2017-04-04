@@ -1,34 +1,34 @@
 require "delegate"
 
 class ChangeNoteValidator < SimpleDelegator
-  def initialize(entity)
-    @entity = entity
+  def initialize(section)
+    @section = section
     reset_errors
-    super(entity)
+    super(section)
   end
 
   def valid?
     reset_errors
-    entity_valid = entity.valid?
+    section_valid = section.valid?
     change_note_ok = (change_note_not_required? || change_note_provided?)
 
-    entity_valid && change_note_ok
+    section_valid && change_note_ok
   end
 
   def errors
-    entity.errors.to_hash.merge(@errors)
+    section.errors.to_hash.merge(@errors)
   end
 
 private
 
-  attr_reader :entity
+  attr_reader :section
 
   def change_note_not_required?
     never_published? || minor_update?
   end
 
   def never_published?
-    !entity.published?
+    !section.published?
   end
 
   def change_note_provided?
