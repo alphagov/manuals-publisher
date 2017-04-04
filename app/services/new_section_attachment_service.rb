@@ -1,6 +1,6 @@
 class NewSectionAttachmentService
-  def initialize(builder:, context:)
-    @builder = builder
+  def initialize(context:)
+    @builder = Attachment.method(:new)
     @context = context
   end
 

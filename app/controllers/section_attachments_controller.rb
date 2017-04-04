@@ -6,8 +6,6 @@ require "new_section_attachment_service"
 class SectionAttachmentsController < ApplicationController
   def new
     service = NewSectionAttachmentService.new(
-      # TODO: This be should be created from the section or just be a form object
-      builder: Attachment.method(:new),
       context: self,
     )
     manual, section, attachment = service.call
