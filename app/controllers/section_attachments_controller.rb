@@ -6,10 +6,10 @@ require "new_section_attachment_service"
 class SectionAttachmentsController < ApplicationController
   def new
     service = NewSectionAttachmentService.new(
-      repository,
+      manual_repository: repository,
       # TODO: This be should be created from the section or just be a form object
-      Attachment.method(:new),
-      self,
+      builder: Attachment.method(:new),
+      context: self,
     )
     manual, section, attachment = service.call
 
@@ -22,8 +22,8 @@ class SectionAttachmentsController < ApplicationController
 
   def create
     service = CreateSectionAttachmentService.new(
-      repository,
-      self,
+      manual_repository: repository,
+      context: self,
     )
     manual, section, _attachment = service.call
 
@@ -32,8 +32,8 @@ class SectionAttachmentsController < ApplicationController
 
   def edit
     service = ShowSectionAttachmentService.new(
-      repository,
-      self,
+      manual_repository: repository,
+      context: self,
     )
     manual, section, attachment = service.call
 
@@ -46,8 +46,8 @@ class SectionAttachmentsController < ApplicationController
 
   def update
     service = UpdateSectionAttachmentService.new(
-      repository,
-      self,
+      manual_repository: repository,
+      context: self,
     )
     manual, section, attachment = service.call
 
