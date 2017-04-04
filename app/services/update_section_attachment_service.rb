@@ -1,6 +1,5 @@
 class UpdateSectionAttachmentService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -14,7 +13,7 @@ class UpdateSectionAttachmentService
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   def attachment
     @attachment ||= section.find_attachment_by_id(attachment_id)

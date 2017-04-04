@@ -1,6 +1,5 @@
 class NewSectionAttachmentService
-  def initialize(manual_repository:, builder:, context:)
-    @manual_repository = manual_repository
+  def initialize(builder:, context:)
     @builder = builder
     @context = context
   end
@@ -11,7 +10,7 @@ class NewSectionAttachmentService
 
 private
 
-  attr_reader :manual_repository, :builder, :context
+  attr_reader :builder, :context
 
   def attachment
     builder.call(initial_params)
