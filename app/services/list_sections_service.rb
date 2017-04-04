@@ -1,6 +1,5 @@
 class ListSectionsService
-  def initialize(manual_repository, context)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -10,14 +9,14 @@ class ListSectionsService
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   def sections
     manual.sections
   end
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def manual_id

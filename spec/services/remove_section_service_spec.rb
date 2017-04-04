@@ -14,12 +14,7 @@ RSpec.describe RemoveSectionService do
     )
   }
 
-  let(:repository) {
-    double(
-      fetch: manual,
-      store: nil,
-    )
-  }
+  let(:user) { double(:user) }
 
   let(:service_context) {
     double(
@@ -28,19 +23,21 @@ RSpec.describe RemoveSectionService do
         "manual_id" => "ABC",
         "section" => change_note_params
       },
+      current_user: user
     )
   }
 
   let(:service) {
     described_class.new(
-      repository,
-      service_context,
+      context: service_context,
     )
   }
   let(:discarder) { spy(PublishingApiDraftSectionDiscarder) }
   let(:exporter) { spy(PublishingApiDraftManualExporter) }
 
   before do
+    allow(Manual).to receive(:find).and_return(manual)
+    allow(manual).to receive(:save)
     allow(PublishingApiDraftManualExporter).to receive(:new).and_return(exporter)
     allow(PublishingApiDraftSectionDiscarder).to receive(:new).and_return(discarder)
   end
@@ -126,7 +123,7 @@ RSpec.describe RemoveSectionService do
     end
 
     it "does not persists the manual" do
-      expect(repository).not_to have_received(:store).with(manual)
+      expect(manual).not_to have_received(:save).with(user)
     end
 
     it "does not export a manual" do
@@ -173,7 +170,7 @@ RSpec.describe RemoveSectionService do
       end
 
       it "persists the manual" do
-        expect(repository).to have_received(:store).with(manual)
+        expect(manual).to have_received(:save).with(user)
       end
 
       it "exports a manual" do
@@ -213,7 +210,7 @@ RSpec.describe RemoveSectionService do
       end
 
       it "persists the manual" do
-        expect(repository).to have_received(:store).with(manual)
+        expect(manual).to have_received(:save).with(user)
       end
 
       it "exports a manual" do

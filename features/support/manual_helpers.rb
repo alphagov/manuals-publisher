@@ -44,19 +44,18 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    organisational_manual_repository = ScopedManualRepository.new(
-      ManualRecord.where(organisation_slug: organisation_slug)
-    )
+    manual_records = ManualRecord.where(organisation_slug: organisation_slug)
+    user = double(:user, manual_records: manual_records)
 
     create_service_context = OpenStruct.new(
       params: {
         "manual_id" => manual.id,
         "section" => fields,
-      }
+      },
+      current_user: user
     )
 
     service = CreateSectionService.new(
-      manual_repository: organisational_manual_repository,
       context: create_service_context,
     )
     _, section = service.call
@@ -101,20 +100,19 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
-    organisational_manual_repository = ScopedManualRepository.new(
-      ManualRecord.where(organisation_slug: organisation_slug)
-    )
+    manual_records = ManualRecord.where(organisation_slug: organisation_slug)
+    user = double(:user, manual_records: manual_records)
 
     service_context = OpenStruct.new(
       params: {
         "manual_id" => manual.id,
         "id" => section.id,
         "section" => fields,
-      }
+      },
+      current_user: user
     )
 
     service = UpdateSectionService.new(
-      manual_repository: organisational_manual_repository,
       context: service_context,
     )
     _, section = service.call

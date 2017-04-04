@@ -1,7 +1,5 @@
 class PreviewSectionService
-  def initialize(manual_repository, section_builder, section_renderer, context)
-    @manual_repository = manual_repository
-    @section_builder = section_builder
+  def initialize(section_renderer:, context:)
     @section_renderer = section_renderer
     @context = context
   end
@@ -15,8 +13,6 @@ class PreviewSectionService
 private
 
   attr_reader(
-    :manual_repository,
-    :section_builder,
     :section_renderer,
     :context,
   )
@@ -26,11 +22,11 @@ private
   end
 
   def manual
-    manual_repository.fetch(manual_id)
+    Manual.find(manual_id, context.current_user)
   end
 
   def ephemeral_section
-    section_builder.call(manual, section_params)
+    manual.build_section(section_params)
   end
 
   def existing_section

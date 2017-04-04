@@ -76,19 +76,19 @@ private
   end
 
   def new_edition_for_slug_change
-    manual_repository = ScopedManualRepository.new(ManualRecord.all)
+    manual_records = ManualRecord.all
+    user = OpenStruct.new(manual_records: manual_records)
 
     service = UpdateSectionService.new(
-      manual_repository: manual_repository,
-      context: context_for_section_edition_update,
+      context: context_for_section_edition_update(user),
     )
     _manual, document = service.call
     document.latest_edition
   end
 
-  FakeController = Struct.new(:params)
+  FakeController = Struct.new(:params, :current_user)
 
-  def context_for_section_edition_update
+  def context_for_section_edition_update(user)
     params_hash = {
       "id" => current_section_edition.section_id,
       "section" => {
@@ -98,9 +98,9 @@ private
         minor_update: false,
         change_note: change_note
       },
-      "manual_id" => manual_record.manual_id
+      "manual_id" => manual_record.manual_id,
     }
-    FakeController.new(params_hash)
+    FakeController.new(params_hash, user)
   end
 
   def change_note

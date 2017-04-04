@@ -12,8 +12,7 @@ class SectionsController < ApplicationController
 
   def show
     service = ShowSectionService.new(
-      manual_repository,
-      self,
+      context: self,
     )
     manual, section = service.call
 
@@ -25,8 +24,7 @@ class SectionsController < ApplicationController
 
   def new
     service = NewSectionService.new(
-      manual_repository,
-      self,
+      context: self,
     )
     manual, section = service.call
 
@@ -38,7 +36,6 @@ class SectionsController < ApplicationController
 
   def create
     service = CreateSectionService.new(
-      manual_repository: manual_repository,
       context: self,
     )
     manual, section = service.call
@@ -55,8 +52,7 @@ class SectionsController < ApplicationController
 
   def edit
     service = ShowSectionService.new(
-      manual_repository,
-      self,
+      context: self,
     )
     manual, section = service.call
 
@@ -68,7 +64,6 @@ class SectionsController < ApplicationController
 
   def update
     service = UpdateSectionService.new(
-      manual_repository: manual_repository,
       context: self,
     )
     manual, section = service.call
@@ -85,10 +80,8 @@ class SectionsController < ApplicationController
 
   def preview
     service = PreviewSectionService.new(
-      manual_repository,
-      SectionBuilder.new,
-      SectionRenderer.new,
-      self,
+      section_renderer: SectionRenderer.new,
+      context: self,
     )
     section = service.call
 
@@ -111,8 +104,7 @@ class SectionsController < ApplicationController
 
   def reorder
     service = ListSectionsService.new(
-      manual_repository,
-      self,
+      context: self,
     )
     manual, sections = service.call
 
@@ -124,8 +116,7 @@ class SectionsController < ApplicationController
 
   def update_order
     service = ReorderSectionsService.new(
-      manual_repository,
-      self,
+      context: self,
     )
     manual, _sections = service.call
 
@@ -139,8 +130,7 @@ class SectionsController < ApplicationController
 
   def withdraw
     service = ShowSectionService.new(
-      manual_repository,
-      self,
+      context: self,
     )
     manual, section = service.call
 
@@ -152,8 +142,7 @@ class SectionsController < ApplicationController
 
   def destroy
     service = RemoveSectionService.new(
-      manual_repository,
-      self,
+      context: self,
     )
     manual, section = service.call
 
@@ -173,10 +162,6 @@ class SectionsController < ApplicationController
   end
 
 private
-
-  def manual_repository
-    ScopedManualRepository.new(current_user.manual_records)
-  end
 
   def authorize_user_for_withdrawing
     unless current_user_can_withdraw?

@@ -1,6 +1,5 @@
 class CreateSectionService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -9,7 +8,7 @@ class CreateSectionService
 
     if new_section.valid?
       manual.draft
-      manual_repository.store(manual)
+      manual.save(context.current_user)
       export_draft_manual_to_publishing_api
       export_draft_section_to_publishing_api
     end
@@ -19,12 +18,12 @@ class CreateSectionService
 
 private
 
-  attr_reader :manual_repository, :context
+  attr_reader :context
 
   attr_reader :new_section
 
   def manual
-    @manual ||= manual_repository.fetch(context.params.fetch("manual_id"))
+    @manual ||= Manual.find(context.params.fetch("manual_id"), context.current_user)
   end
 
   def export_draft_manual_to_publishing_api

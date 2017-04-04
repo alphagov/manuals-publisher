@@ -1,6 +1,5 @@
 class UpdateSectionService
-  def initialize(manual_repository:, context:)
-    @manual_repository = manual_repository
+  def initialize(context:)
     @context = context
   end
 
@@ -9,7 +8,7 @@ class UpdateSectionService
 
     if section.valid?
       manual.draft
-      manual_repository.store(manual)
+      manual.save(context.current_user)
       export_draft_manual_to_publishing_api
       export_draft_section_to_publishing_api
     end
@@ -19,14 +18,14 @@ class UpdateSectionService
 
 private
 
-  attr_reader :manual_repository, :context, :listeners
+  attr_reader :context, :listeners
 
   def section
     @section ||= manual.sections.find { |s| s.id == section_id }
   end
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def section_id
