@@ -17,10 +17,6 @@ node {
       'SCHEMA_BRANCH': DEFAULT_SCHEMA_BRANCH,
     ])
 
-    if (!govuk.isAllowedBranchBuild(env.BRANCH_NAME)) {
-      return
-    }
-
     stage('Checkout') {
       checkout scm
       govuk.cleanupGit()
