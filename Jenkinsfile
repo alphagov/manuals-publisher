@@ -11,7 +11,6 @@ def runTests() {
 node {
   def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
 
-  try {
     govuk.initializeParameters([
       'IS_SCHEMA_TEST': 'false',
       'SCHEMA_BRANCH': DEFAULT_SCHEMA_BRANCH,
@@ -28,12 +27,4 @@ node {
     stage('Tests') {
       runTests()
     }
-  } catch (e) {
-    currentBuild.result = 'FAILED'
-    step([$class: 'Mailer',
-          notifyEveryUnstableBuild: true,
-          recipients: 'govuk-ci-notifications@digital.cabinet-office.gov.uk',
-          sendToIndividuals: true])
-    throw e
-  }
 }
