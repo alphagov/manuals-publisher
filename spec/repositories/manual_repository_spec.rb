@@ -4,10 +4,7 @@ require "manual_repository"
 
 describe ManualRepository do
   subject(:repo) {
-    ManualRepository.new(
-      collection: record_collection,
-      association_marshallers: association_marshallers,
-    )
+    ManualRepository.new(record_collection)
   }
 
   let(:record_collection) {
@@ -15,8 +12,6 @@ describe ManualRepository do
       find_or_initialize_by: nil,
     )
   }
-
-  let(:association_marshallers) { [] }
 
   let(:manual_id) { double(:manual_id) }
   let(:manual_slug) { double(:manual_slug) }
@@ -77,6 +72,14 @@ describe ManualRepository do
     }
   }
 
+  let(:section_association_marshaller) { double(:section_association_marshaller, dump: nil, load: manual) }
+  let(:manual_publish_task_association_marshaller) { double(:manual_publish_task_association_marshaller, dump: nil, load: manual) }
+
+  before do
+    allow(SectionAssociationMarshaller).to receive(:new).and_return(section_association_marshaller)
+    allow(ManualPublishTaskAssociationMarshaller).to receive(:new).and_return(manual_publish_task_association_marshaller)
+  end
+
   it "supports the fetch interface" do
     expect(repo).to be_a_kind_of(Fetchable)
   end
@@ -130,18 +133,16 @@ describe ManualRepository do
       expect(manual_record).to have_received(:save!)
     end
 
-    context "with an association_marshaller" do
-      let(:association_marshallers) { [association_marshaller] }
+    it "calls dump on the section association marshaller with the manual domain object and edition" do
+      repo.store(manual)
 
-      let(:association_marshaller) {
-        double(:association_marshaller, dump: nil)
-      }
+      expect(section_association_marshaller).to have_received(:dump).with(manual, edition)
+    end
 
-      it "calls dump on each marshaller with the manual domain object and edition" do
-        repo.store(manual)
+    it "calls dump on the manual publish task association marshaller with the manual domain object and edition" do
+      repo.store(manual)
 
-        expect(association_marshaller).to have_received(:dump).with(manual, edition)
-      end
+      expect(manual_publish_task_association_marshaller).to have_received(:dump).with(manual, edition)
     end
   end
 
@@ -172,24 +173,16 @@ describe ManualRepository do
       expect(repo[manual_id]).to be(manual)
     end
 
-    context "with an association_marshaller" do
-      let(:association_marshallers) { [association_marshaller] }
+    it "calls load on the section association marshaller with the manual domain object and edition" do
+      repo[manual_id]
 
-      let(:association_marshaller) {
-        double(:association_marshaller, load: unmarshalled_manual)
-      }
+      expect(section_association_marshaller).to have_received(:load).with(manual, edition)
+    end
 
-      let(:unmarshalled_manual) { double(:unmarshalled_manual) }
+    it "calls load on the manual publish task association marshaller with the manual domain object and edition" do
+      repo[manual_id]
 
-      it "calls load on each marshaller with the manual domain object and edition" do
-        repo[manual_id]
-
-        expect(association_marshaller).to have_received(:load).with(manual, edition)
-      end
-
-      it "returns the result of the marshaller" do
-        expect(repo[manual_id]).to eq(unmarshalled_manual)
-      end
+      expect(manual_publish_task_association_marshaller).to have_received(:load).with(manual, edition)
     end
   end
 

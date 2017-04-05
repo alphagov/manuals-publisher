@@ -22,11 +22,11 @@ class Manual
   attr_accessor :sections, :removed_sections
 
   def self.find(id, user)
-    ScopedManualRepository.new(user.manual_records).fetch(id)
+    ManualRepository.new(user.manual_records).fetch(id)
   end
 
   def self.all(user)
-    ScopedManualRepository.new(user.manual_records).all
+    ManualRepository.new(user.manual_records).all
   end
 
   def self.build(attributes)
@@ -34,7 +34,7 @@ class Manual
   end
 
   def slug_unique?(user)
-    ScopedManualRepository.new(user.manual_records).slug_unique?(self)
+    ManualRepository.new(user.manual_records).slug_unique?(self)
   end
 
   def clashing_sections
@@ -44,7 +44,7 @@ class Manual
   end
 
   def save(user)
-    ScopedManualRepository.new(user.manual_records).store(self)
+    ManualRepository.new(user.manual_records).store(self)
   end
 
   def initialize(attributes)
