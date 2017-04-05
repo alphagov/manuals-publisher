@@ -23,7 +23,7 @@ RSpec.describe PublishManualService do
   }
 
   before do
-    allow(manual_repository).to receive(:fetch) { manual }
+    allow(Manual).to receive(:find) { manual }
     allow(manual_repository).to receive(:store)
     allow(manual).to receive(:publish)
     allow(PublicationLogger).to receive(:new) { publication_logger }
