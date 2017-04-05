@@ -1,37 +1,12 @@
 require "securerandom"
 
 class ManualBuilder
-  def self.create
-    ManualBuilder.new(
-      slug_generator: SlugGenerator.new(prefix: "guidance"),
-      factory: ->(attrs) {
-        manual = Manual.new(attrs)
-        manual.sections = attrs.fetch(:sections, [])
-        manual.removed_sections = attrs.fetch(:removed_sections, [])
-        manual
-      }
-    )
-  end
-
-  def initialize(slug_generator:, factory:)
-    @slug_generator = slug_generator
-    @factory = factory
-  end
-
   def call(attrs)
-    @attrs = attrs
+    slug_generator = SlugGenerator.new(prefix: "guidance")
 
-    factory.call(defaults.merge(attrs))
-  end
-
-private
-
-  attr_reader :slug_generator, :factory, :attrs
-
-  def defaults
-    {
+    default_attrs = {
       id: SecureRandom.uuid,
-      slug: slug,
+      slug: slug_generator.call(attrs.fetch(:title)),
       summary: "",
       body: "",
       state: "draft",
@@ -40,9 +15,11 @@ private
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp: true,
     }
-  end
 
-  def slug
-    slug_generator.call(attrs.fetch(:title))
+    manual_attrs = default_attrs.merge(attrs)
+    manual = Manual.new(manual_attrs)
+    manual.sections = manual_attrs.fetch(:sections, [])
+    manual.removed_sections = manual_attrs.fetch(:removed_sections, [])
+    manual
   end
 end
