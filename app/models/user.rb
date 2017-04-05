@@ -21,6 +21,12 @@ class User
   attr_accessible :email, :name, :uid
   attr_accessible :email, :name, :uid, :permissions, as: :oauth
 
+  def self.gds_editor
+    User.new.tap do |user|
+      user.permissions = [PermissionChecker::GDS_EDITOR_PERMISSION]
+    end
+  end
+
   def manual_records
     permission_checker = PermissionChecker.new(self)
     if permission_checker.is_gds_editor?

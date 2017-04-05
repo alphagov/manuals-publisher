@@ -109,11 +109,15 @@ private
 
   def publish_manual
     service = PublishManualService.new(
-      manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
+      context: context,
     )
     service.call
+  end
+
+  def context
+    OpenStruct.new(current_user: User.gds_editor)
   end
 
   def manual_record
@@ -121,11 +125,8 @@ private
   end
 
   def manual_version_number
-    manual_repository.fetch(manual_record.manual_id).version_number
-  end
-
-  def manual_repository
-    ScopedManualRepository.new(ManualRecord.all)
+    manual = Manual.find(manual_record.manual_id, context.current_user)
+    manual.version_number
   end
 
   def current_section_edition

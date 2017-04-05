@@ -1,8 +1,8 @@
 class PublishManualService
-  def initialize(manual_id:, manual_repository:, version_number:)
+  def initialize(manual_id:, version_number:, context:)
     @manual_id = manual_id
-    @manual_repository = manual_repository
     @version_number = version_number
+    @context = context
   end
 
   def call
@@ -27,8 +27,8 @@ private
 
   attr_reader(
     :manual_id,
-    :manual_repository,
     :version_number,
+    :context,
   )
 
   def versions_match?
@@ -40,7 +40,7 @@ private
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
   end
 
   def log_publication
@@ -60,7 +60,7 @@ private
   end
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   class VersionMismatchError < StandardError

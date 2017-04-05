@@ -4,24 +4,25 @@ require "ostruct"
 
 RSpec.describe PublishManualService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual_repository) { double(:manual_repository) }
   let(:manual) { double(:manual, id: manual_id, version_number: 3) }
   let(:publication_logger) { double(:publication_logger) }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
   let(:new_publishing_api_publisher) { double(:new_publishing_api_publisher) }
   let(:rummager_exporter) { double(:rummager_exporter) }
+  let(:user) { double(:user) }
+  let(:context) { double(:context, current_user: user) }
 
   subject {
     PublishManualService.new(
       manual_id: manual_id,
-      manual_repository: manual_repository,
       version_number: version_number,
+      context: context,
     )
   }
 
   before do
-    allow(manual_repository).to receive(:fetch) { manual }
-    allow(manual_repository).to receive(:store)
+    allow(Manual).to receive(:find) { manual }
+    allow(manual).to receive(:save)
     allow(manual).to receive(:publish)
     allow(PublicationLogger).to receive(:new) { publication_logger }
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }

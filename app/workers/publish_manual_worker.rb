@@ -15,9 +15,9 @@ class PublishManualWorker
     task.start!
 
     service = PublishManualService.new(
-      manual_repository: repository,
       manual_id: task.manual_id,
       version_number: task.version_number,
+      context: context,
     )
     service.call
 
@@ -33,8 +33,8 @@ class PublishManualWorker
 
 private
 
-  def repository
-    ScopedManualRepository.new(ManualRecord.all)
+  def context
+    OpenStruct.new(current_user: User.gds_editor)
   end
 
   def requeue_task(manual_id, error)
