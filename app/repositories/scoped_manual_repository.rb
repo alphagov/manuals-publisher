@@ -5,10 +5,6 @@ class ScopedManualRepository
 
   def initialize(collection)
     @repository = ManualRepository.new(
-      association_marshallers: [
-        SectionAssociationMarshaller.new,
-        ManualPublishTaskAssociationMarshaller.new
-      ],
       collection: collection,
     )
   end

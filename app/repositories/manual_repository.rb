@@ -6,9 +6,12 @@ class ManualRepository
 
   NotFoundError = Module.new
 
-  def initialize(collection:, association_marshallers: [])
+  def initialize(collection:)
     @collection = collection
-    @association_marshallers = association_marshallers
+    @association_marshallers = [
+      SectionAssociationMarshaller.new,
+      ManualPublishTaskAssociationMarshaller.new
+    ]
   end
 
   def fetch(*args, &block)
