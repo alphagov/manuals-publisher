@@ -1,12 +1,4 @@
 class SectionAssociationMarshaller
-  class Decorator
-    def call(manual, attrs)
-      manual.sections = attrs.fetch(:sections, [])
-      manual.removed_sections = attrs.fetch(:removed_sections, [])
-      manual
-    end
-  end
-
   def load(manual, edition)
     section_repository = SectionRepository.new(manual: manual)
 
@@ -22,7 +14,9 @@ class SectionAssociationMarshaller
       end
     }
 
-    Decorator.new.call(manual, sections: sections, removed_sections: removed_sections)
+    manual.sections = sections
+    manual.removed_sections = removed_sections
+    manual
   end
 
   def dump(manual, edition)
@@ -41,10 +35,6 @@ class SectionAssociationMarshaller
 
     nil
   end
-
-private
-
-  attr_reader :decorator
 
   class RemovedSectionIdNotFoundError < StandardError; end
 end
