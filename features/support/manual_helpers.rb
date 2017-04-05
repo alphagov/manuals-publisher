@@ -531,7 +531,7 @@ module ManualHelpers
   end
 
   def most_recently_created_manual
-    ScopedManualRepository.new(ManualRecord.all).all.first
+    Manual.all(FactoryGirl.build(:gds_editor)).first
   end
 
   def section_fields(section)

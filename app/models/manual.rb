@@ -26,7 +26,7 @@ class Manual
   end
 
   def self.all(user)
-    ManualRepository.new(collection: user.manual_records).all
+    ScopedManualRepository.new(user.manual_records).all
   end
 
   def self.build(attributes)
