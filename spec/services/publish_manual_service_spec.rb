@@ -10,7 +10,8 @@ RSpec.describe PublishManualService do
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
   let(:new_publishing_api_publisher) { double(:new_publishing_api_publisher) }
   let(:rummager_exporter) { double(:rummager_exporter) }
-  let(:context) { double(:context) }
+  let(:user) { double(:user) }
+  let(:context) { double(:context, current_user: user) }
 
   subject {
     PublishManualService.new(

@@ -156,11 +156,13 @@ module ManualHelpers
   def publish_manual_without_ui(manual, organisation_slug: "ministry-of-tea")
     stub_manual_publication_observers(organisation_slug)
 
+    user = FactoryGirl.build(:gds_editor)
+
     service = PublishManualService.new(
       manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual.id,
       version_number: manual.version_number,
-      context: OpenStruct.new
+      context: OpenStruct.new(current_user: user)
     )
     service.call
   end

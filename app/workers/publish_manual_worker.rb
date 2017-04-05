@@ -39,7 +39,7 @@ private
   end
 
   def context
-    OpenStruct.new
+    OpenStruct.new(current_user: User.gds_editor)
   end
 
   def requeue_task(manual_id, error)

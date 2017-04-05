@@ -118,7 +118,7 @@ private
   end
 
   def context
-    OpenStruct.new
+    OpenStruct.new(current_user: User.gds_editor)
   end
 
   def manual_record
