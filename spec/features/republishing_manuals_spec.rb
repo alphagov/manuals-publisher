@@ -24,7 +24,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     @sections = create_sections_for_manual_without_ui(manual: manual, count: 2)
 
     # Re-fetch manual to include sections
-    @manual = manual_repository.fetch(manual.id)
+    @manual = Manual.find(manual.id, User.gds_editor)
 
     if published
       Timecop.freeze(original_publish_time) do
@@ -50,10 +50,6 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     WebMock::RequestRegistry.instance.reset!
-  end
-
-  def manual_repository
-    ScopedManualRepository.new(ManualRecord.all)
   end
 
   describe "republishing a published manual with sections" do
