@@ -6,10 +6,6 @@ class ManualRepository
 
   def initialize(collection)
     @collection = collection
-    @association_marshallers = [
-      SectionAssociationMarshaller.new,
-      ManualPublishTaskAssociationMarshaller.new
-    ]
   end
 
   def store(manual)
@@ -20,9 +16,8 @@ class ManualRepository
     edition = manual_record.new_or_existing_draft_edition
     edition.attributes = attributes_for(manual)
 
-    association_marshallers.each do |marshaller|
-      marshaller.dump(manual, edition)
-    end
+    SectionAssociationMarshaller.new.dump(manual, edition)
+    ManualPublishTaskAssociationMarshaller.new.dump(manual, edition)
 
     manual_record.save!
   end
@@ -49,7 +44,7 @@ class ManualRepository
 
 private
 
-  attr_reader :collection, :factory, :association_marshallers
+  attr_reader :collection, :factory
 
   def attributes_for(manual)
     {
@@ -80,8 +75,7 @@ private
       use_originally_published_at_for_public_timestamp: edition.use_originally_published_at_for_public_timestamp,
     )
 
-    association_marshallers.reduce(base_manual) { |manual, marshaller|
-      marshaller.load(manual, edition)
-    }
+    manual_with_sections = SectionAssociationMarshaller.new.load(base_manual, edition)
+    ManualPublishTaskAssociationMarshaller.new.load(manual_with_sections, edition)
   end
 end
