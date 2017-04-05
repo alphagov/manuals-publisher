@@ -20,8 +20,7 @@ module ManualHelpers
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
 
-    manual_records = ManualRecord.where(organisation_slug: organisation_slug)
-    user = double(:user, manual_records: manual_records)
+    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = CreateManualService.new(
       attributes: fields.merge(organisation_slug: organisation_slug),
@@ -44,8 +43,7 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    manual_records = ManualRecord.where(organisation_slug: organisation_slug)
-    user = double(:user, manual_records: manual_records)
+    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
     create_service_context = OpenStruct.new(
       params: {
@@ -75,8 +73,7 @@ module ManualHelpers
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
 
-    manual_records = ManualRecord.where(organisation_slug: organisation_slug)
-    user = double(:user, manual_records: manual_records)
+    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = UpdateManualService.new(
       manual_id: manual.id,
