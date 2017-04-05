@@ -18,6 +18,7 @@ class ManualsRepublisher
         logger.info("[ #{i} / #{count} ] id=#{manual_record.manual_id} slug=#{manual_record.slug}]")
         service = RepublishManualService.new(
           manual_id: manual_record.manual_id,
+          context: OpenStruct.new(current_user: User.gds_editor),
         )
         service.call
       rescue SectionAssociationMarshaller::RemovedSectionIdNotFoundError => e

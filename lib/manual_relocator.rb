@@ -168,7 +168,8 @@ private
   end
 
   def redraft_and_republish
-    manual_versions = VersionedManualRepository.get_manual(new_manual.manual_id)
+    manual = Manual.find(new_manual.manual_id, User.gds_editor)
+    manual_versions = manual.current_versions
 
     if manual_versions[:published].present?
       manual_to_publish = manual_versions[:published]

@@ -47,6 +47,11 @@ class Manual
     ManualRepository.new(user.manual_records).store(self)
   end
 
+  def current_versions
+    repository = VersionedManualRepository.new
+    repository.get_manual(id)
+  end
+
   def initialize(attributes)
     @id = attributes.fetch(:id)
     @updated_at = attributes.fetch(:updated_at, nil)

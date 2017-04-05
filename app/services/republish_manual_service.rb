@@ -1,6 +1,7 @@
 class RepublishManualService
-  def initialize(manual_id:)
+  def initialize(manual_id:, context:)
     @manual_id = manual_id
+    @context = context
   end
 
   def call
@@ -19,7 +20,7 @@ class RepublishManualService
 
 private
 
-  attr_reader :manual_id
+  attr_reader :manual_id, :context
 
   def published_manual_version
     manual_versions[:published]
@@ -27,10 +28,6 @@ private
 
   def draft_manual_version
     manual_versions[:draft]
-  end
-
-  def manual_repository
-    VersionedManualRepository
   end
 
   def export_published_manual_via_publishing_api
@@ -50,7 +47,7 @@ private
   end
 
   def manual_versions
-    @manual_versions ||= manual_repository.get_manual(manual_id)
+    @manual_versions ||= Manual.find(manual_id, context.current_user).current_versions
   rescue ManualRepository::NotFoundError => error
     raise ManualNotFoundError.new(error)
   end
