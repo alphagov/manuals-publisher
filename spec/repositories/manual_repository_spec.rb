@@ -138,12 +138,6 @@ describe ManualRepository do
 
       expect(section_association_marshaller).to have_received(:dump).with(manual, edition)
     end
-
-    it "calls dump on the manual publish task association marshaller with the manual domain object and edition" do
-      repo.store(manual)
-
-      expect(manual_publish_task_association_marshaller).to have_received(:dump).with(manual, edition)
-    end
   end
 
   describe "#[]" do

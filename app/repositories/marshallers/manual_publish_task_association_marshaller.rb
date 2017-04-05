@@ -4,9 +4,4 @@ class ManualPublishTaskAssociationMarshaller
 
     ManualWithPublishTasks.new(manual, publish_tasks: tasks)
   end
-
-  def dump(_manual, _edition)
-    # PublishTasks are read only
-    nil
-  end
 end

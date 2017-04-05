@@ -17,7 +17,6 @@ class ManualRepository
     edition.attributes = attributes_for(manual)
 
     SectionAssociationMarshaller.new.dump(manual, edition)
-    ManualPublishTaskAssociationMarshaller.new.dump(manual, edition)
 
     manual_record.save!
   end
