@@ -12,14 +12,6 @@ node {
   def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
 
   properties([
-    [$class: 'ThrottleJobProperty',
-      categories: [],
-      limitOneJobWithMatchingParams: true,
-      maxConcurrentPerNode: 1,
-      maxConcurrentTotal: 0,
-      paramsToUseForLimit: 'manuals-publisher',
-      throttleEnabled: true,
-      throttleOption: 'category'],
     [$class: 'ParametersDefinitionProperty',
       parameterDefinitions: [
         [$class: 'BooleanParameterDefinition',
