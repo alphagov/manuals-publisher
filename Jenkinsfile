@@ -1,7 +1,5 @@
 #!/usr/bin/env groovy
 
-REPOSITORY = 'manuals-publisher'
-
 def runTests() {
   echo 'Running tests'
   sh("TEST_COVERAGE=true bundle exec rake")
