@@ -4,9 +4,7 @@ require "manual_repository"
 
 describe ManualRepository do
   subject(:repo) {
-    ManualRepository.new(
-      collection: record_collection,
-    )
+    ManualRepository.new(record_collection)
   }
 
   let(:record_collection) {

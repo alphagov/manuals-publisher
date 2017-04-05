@@ -4,8 +4,6 @@ class ScopedManualRepository
   def_delegators :@repository, :all, :store, :[], :fetch, :slug_unique?
 
   def initialize(collection)
-    @repository = ManualRepository.new(
-      collection: collection,
-    )
+    @repository = ManualRepository.new(collection)
   end
 end

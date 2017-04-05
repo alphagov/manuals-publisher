@@ -6,7 +6,7 @@ class ManualRepository
 
   NotFoundError = Module.new
 
-  def initialize(collection:)
+  def initialize(collection)
     @collection = collection
     @association_marshallers = [
       SectionAssociationMarshaller.new,
