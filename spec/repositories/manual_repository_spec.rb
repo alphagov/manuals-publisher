@@ -73,11 +73,9 @@ describe ManualRepository do
   }
 
   let(:section_association_marshaller) { double(:section_association_marshaller, dump: nil, load: manual) }
-  let(:manual_publish_task_association_marshaller) { double(:manual_publish_task_association_marshaller, dump: nil, load: manual) }
 
   before do
     allow(SectionAssociationMarshaller).to receive(:new).and_return(section_association_marshaller)
-    allow(ManualPublishTaskAssociationMarshaller).to receive(:new).and_return(manual_publish_task_association_marshaller)
   end
 
   it "supports the fetch interface" do
@@ -163,20 +161,18 @@ describe ManualRepository do
         .with(arguments)
     end
 
-    it "returns the built manual" do
-      expect(repo[manual_id]).to be(manual)
-    end
-
     it "calls load on the section association marshaller with the manual domain object and edition" do
       repo[manual_id]
 
       expect(section_association_marshaller).to have_received(:load).with(manual, edition)
     end
 
-    it "calls load on the manual publish task association marshaller with the manual domain object and edition" do
-      repo[manual_id]
+    it "adds a publish task association to the manual" do
+      expect(manual).to_not respond_to(:publish_tasks)
 
-      expect(manual_publish_task_association_marshaller).to have_received(:load).with(manual, edition)
+      manual = repo[manual_id]
+
+      expect(manual).to respond_to(:publish_tasks)
     end
   end
 

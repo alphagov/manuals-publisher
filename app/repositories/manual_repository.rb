@@ -75,6 +75,11 @@ private
     )
 
     manual_with_sections = SectionAssociationMarshaller.new.load(base_manual, edition)
-    ManualPublishTaskAssociationMarshaller.new.load(manual_with_sections, edition)
+    add_publish_tasks_to_manual(manual_with_sections)
+  end
+
+  def add_publish_tasks_to_manual(manual)
+    tasks = ManualPublishTask.for_manual(manual)
+    ManualWithPublishTasks.new(manual, publish_tasks: tasks)
   end
 end
