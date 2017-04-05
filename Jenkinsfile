@@ -3,13 +3,6 @@
 REPOSITORY = 'manuals-publisher'
 DEFAULT_SCHEMA_BRANCH = 'deployed-to-production'
 
-// local overrides for govuk methods.
-// because < Rails 5
-def setupDb() {
-  echo 'Setting up database'
-  sh('RAILS_ENV=test bundle exec rake db:drop db:create db:environment:set db:schema:load')
-}
-
 def runTests() {
   echo 'Running tests'
   sh("TEST_COVERAGE=true bundle exec rake")
