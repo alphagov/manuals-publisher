@@ -21,10 +21,6 @@ node {
       checkout scm
     }
 
-    stage('Bundle') {
-      govuk.bundleApp()
-    }
-
     stage("rubylinter") {
       govuk.rubyLinter("app bin config features Gemfile lib spec")
     }
