@@ -7,8 +7,8 @@ class ManualWithdrawer
 
   def execute(manual_id)
     service = WithdrawManualService.new(
-      manual_repository: ScopedManualRepository.new(ManualRecord.all),
       manual_id: manual_id,
+      context: OpenStruct.new(current_user: User.gds_editor),
     )
     manual = service.call
 
