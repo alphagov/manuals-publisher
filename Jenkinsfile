@@ -11,9 +11,6 @@ def runTests() {
 node {
   def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
 
-  properties([
-  ])
-
   try {
     govuk.initializeParameters([
       'IS_SCHEMA_TEST': 'false',
