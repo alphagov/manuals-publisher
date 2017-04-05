@@ -4,10 +4,6 @@ require "manuals_republisher"
 require "manual_withdrawer"
 
 module ManualHelpers
-  def manual_repository
-    ScopedManualRepository.new(ManualRecord.all)
-  end
-
   def create_manual(fields, save: true)
     visit new_manual_path
     fill_in_fields(fields)
@@ -28,7 +24,7 @@ module ManualHelpers
     )
     manual = service.call
 
-    manual_repository.fetch(manual.id)
+    Manual.find(manual.id, FactoryGirl.build(:gds_editor))
   end
 
   def create_section(manual_title, fields)
@@ -186,13 +182,13 @@ module ManualHelpers
   end
 
   def check_section_exists(manual_id, section_id)
-    manual = manual_repository.fetch(manual_id)
+    manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
 
     manual.sections.any? { |section| section.id == section_id }
   end
 
   def check_section_was_removed(manual_id, section_id)
-    manual = manual_repository.fetch(manual_id)
+    manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
 
     manual.removed_sections.any? { |section| section.id == section_id }
   end
