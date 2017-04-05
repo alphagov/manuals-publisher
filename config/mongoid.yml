@@ -13,7 +13,5 @@ test:
 production:
   uri: <%= ENV['MONGODB_URI'] %>
   database: govuk_content_production
-  refresh_mode: :sync
   logger: false
-  refresh_interval: 120
   use_activesupport_time_zone: true
