@@ -12,10 +12,6 @@ node {
   def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
 
   properties([
-    buildDiscarder(
-      logRotator(numToKeepStr: '10')
-      ),
-    [$class: 'RebuildSettings', autoRebuild: false, rebuildDisabled: false],
     [$class: 'ThrottleJobProperty',
       categories: [],
       limitOneJobWithMatchingParams: true,
