@@ -1,7 +1,7 @@
 class WithdrawManualService
-  def initialize(manual_repository:, manual_id:)
-    @manual_repository = manual_repository
+  def initialize(manual_id:, context:)
     @manual_id = manual_id
+    @context = context
   end
 
   def call
@@ -18,14 +18,14 @@ class WithdrawManualService
 
 private
 
-  attr_reader :manual_repository, :manual_id
+  attr_reader :manual_id, :context
 
   def withdraw
     manual.withdraw
   end
 
   def persist
-    manual_repository.store(manual)
+    manual.save(context.current_user)
   end
 
   def withdraw_via_publishing_api
@@ -37,7 +37,7 @@ private
   end
 
   def manual
-    @manual ||= manual_repository.fetch(manual_id)
+    @manual ||= Manual.find(manual_id, context.current_user)
   rescue KeyError => error
     raise ManualNotFoundError.new(error)
   end

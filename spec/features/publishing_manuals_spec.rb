@@ -10,10 +10,6 @@ RSpec.describe "Publishing manuals", type: :feature do
 
   let(:manual_fields) { { title: "Example manual title", summary: "A summary" } }
 
-  def manual_repository
-    ScopedManualRepository.new(ManualRecord.all)
-  end
-
   describe "publishing a manual with major and minor updates" do
     let(:publish_time) { DateTime.now }
 
@@ -26,7 +22,7 @@ RSpec.describe "Publishing manuals", type: :feature do
       end
 
       # Re-fetch manual to include sections
-      @manual = manual_repository.fetch(manual.id)
+      @manual = Manual.find(manual.id, User.gds_editor)
 
       Timecop.freeze(publish_time) do
         publish_manual_without_ui(@manual)
