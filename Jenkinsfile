@@ -12,17 +12,6 @@ node {
   def govuk = load '/var/lib/jenkins/groovy_scripts/govuk_jenkinslib.groovy'
 
   properties([
-    [$class: 'ParametersDefinitionProperty',
-      parameterDefinitions: [
-        [$class: 'BooleanParameterDefinition',
-          name: 'IS_SCHEMA_TEST',
-          defaultValue: false,
-          description: 'Identifies whether this build is being triggered to test a change to the content schemas'],
-        [$class: 'StringParameterDefinition',
-          name: 'SCHEMA_BRANCH',
-          defaultValue: DEFAULT_SCHEMA_BRANCH,
-          description: 'The branch of govuk-content-schemas to test against']]
-    ],
   ])
 
   try {
