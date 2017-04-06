@@ -4,7 +4,7 @@ class ListManualsService
   end
 
   def call
-    Manual.all(context.current_user)
+    Manual.all(context.current_user, load_associations: false)
   end
 
 private
