@@ -113,19 +113,15 @@ RSpec.describe RepublishManualService do
   end
 
   context "(for a manual that doesn't exist)" do
+    let(:arbitrary_exception) { Class.new(StandardError) }
+
     before do
       allow(manual).to receive(:current_versions)
-        .and_raise(VersionedManualRepository::NotFoundError.new("uh-oh!"))
-    end
-
-    it "raises an exception" do
-      expect {
-        subject.call
-      }.to raise_error(RepublishManualService::ManualNotFoundError)
+        .and_raise(arbitrary_exception)
     end
 
     it "tells none of the listeners to do anything" do
-      begin; subject.call; rescue(RepublishManualService::ManualNotFoundError); end
+      begin; subject.call; rescue(arbitrary_exception); end
       expect(publishing_api_draft_exporter).not_to have_received(:call)
       expect(publishing_api_publisher).not_to have_received(:call)
       expect(rummager_exporter).not_to have_received(:call)
