@@ -3,10 +3,6 @@ require "manual_repository"
 class VersionedManualRepository
   class NotFoundError < StandardError; include ManualRepository::NotFoundError; end
 
-  def self.get_manual(manual_id)
-    new.get_manual(manual_id)
-  end
-
   def get_manual(manual_id)
     manual_record = ManualRecord.find_by(manual_id: manual_id)
     raise NotFoundError if manual_record.nil?
