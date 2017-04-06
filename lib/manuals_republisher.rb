@@ -1,5 +1,3 @@
-require "marshallers/section_association_marshaller"
-
 class ManualsRepublisher
   attr_reader :logger
 
