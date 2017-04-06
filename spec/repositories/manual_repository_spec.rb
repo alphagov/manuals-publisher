@@ -77,11 +77,19 @@ describe ManualRepository do
   end
 
   describe "#store" do
-    let(:section_association_marshaller) { double(:section_association_marshaller, dump: nil) }
+    let(:section_repository) {
+      double(
+        :section_repository,
+        fetch: nil,
+        store: nil,
+      )
+    }
 
-    before do
-      allow(SectionAssociationMarshaller).to receive(:new).and_return(section_association_marshaller)
-    end
+    let(:section) { double(:section, id: 1) }
+    let(:sections) { [section] }
+
+    let(:removed_section) { double(:removed_section, id: 2) }
+    let(:removed_sections) { [removed_section] }
 
     let(:draft_edition) { double(:draft_edition, :attributes= => nil) }
 
@@ -89,8 +97,15 @@ describe ManualRepository do
       allow(record_collection).to receive(:find_or_initialize_by)
         .and_return(manual_record)
 
+      allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+
       allow(manual_record).to receive(:new_or_existing_draft_edition)
         .and_return(edition)
+
+      allow(manual).to receive(:sections).and_return(sections)
+      allow(manual).to receive(:removed_sections).and_return(removed_sections)
+      allow(edition).to receive(:'section_ids=')
+      allow(edition).to receive(:'removed_section_ids=')
     end
 
     it "retrieves the manual record from the record collection" do
@@ -131,10 +146,25 @@ describe ManualRepository do
       expect(manual_record).to have_received(:save!)
     end
 
-    it "calls dump on the section association marshaller with the manual domain object and edition" do
+    it "saves associated sections and removed sections" do
       repo.store(manual)
 
-      expect(section_association_marshaller).to have_received(:dump).with(manual, edition)
+      expect(section_repository).to have_received(:store).with(section)
+      expect(section_repository).to have_received(:store).
+        with(removed_section)
+    end
+
+    it "updates associated section ids on the edition" do
+      repo.store(manual)
+
+      expect(edition).to have_received(:section_ids=).with([section.id])
+    end
+
+    it "updates associated removed section ids on the edition" do
+      repo.store(manual)
+
+      expect(edition).to have_received(:removed_section_ids=).
+        with([removed_section.id])
     end
   end
 
