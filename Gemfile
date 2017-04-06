@@ -4,7 +4,6 @@ gem "rails", "3.2.22.3"
 
 # Alphabetical order please :)
 gem "airbrake", "~> 4.3"
-gem "bson_ext", "1.12.1"
 gem "faraday", "0.9.0"
 gem "fetchable", "1.0.0"
 gem "gds-sso", "~> 11.0" # can't go higher because govuk_content_models needs this version (also > 12 need rails 4+)
@@ -12,7 +11,7 @@ gem "generic_form_builder", "0.11.0"
 gem "govuk_admin_template", "~> 4.0" # higher versions require rails 4
 gem "kaminari", "0.16.1"
 gem "logstasher", "0.4.8"
-gem "mongoid", "~> 2.5"
+gem "mongoid", "~> 3.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code"
 gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"

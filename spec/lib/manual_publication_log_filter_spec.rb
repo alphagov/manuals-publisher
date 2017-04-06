@@ -169,8 +169,8 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       title: log.title,
       version_number: log.version_number,
       change_note: log.change_note,
-      created_at: log.created_at,
-      updated_at: log.updated_at,
+      created_at: log.created_at.to_i,
+      updated_at: log.updated_at.to_i,
     }
   end
 
@@ -180,8 +180,8 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       title: section_edition.title,
       version_number: section_edition.version_number,
       change_note: section_edition.change_note,
-      created_at: expected_time,
-      updated_at: expected_time
+      created_at: expected_time.to_i,
+      updated_at: expected_time.to_i
     }
   end
 end
