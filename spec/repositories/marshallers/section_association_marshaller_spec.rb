@@ -40,43 +40,6 @@ describe SectionAssociationMarshaller do
     allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
   end
 
-  describe "#load" do
-    before do
-      allow(section_repository).to receive(:fetch).
-        with(section_id).and_return(section)
-      allow(section_repository).to receive(:fetch).
-        with(removed_section_id).and_return(removed_section)
-      allow(manual).to receive(:'sections=')
-      allow(manual).to receive(:'removed_sections=')
-    end
-
-    it "fetches associated sections and removed sections by ids" do
-      marshaller.load(manual, record)
-
-      expect(section_repository).to have_received(:fetch).with(section_id)
-      expect(section_repository).to have_received(:fetch).
-        with(removed_section_id)
-    end
-
-    it "adds the sections to the manual" do
-      marshaller.load(manual, record)
-
-      expect(manual).to have_received(:'sections=').with([section])
-    end
-
-    it "adds the removed sections to the manual" do
-      marshaller.load(manual, record)
-
-      expect(manual).to have_received(:'removed_sections=').with([removed_section])
-    end
-
-    it "returns the manual" do
-      expect(
-        marshaller.load(manual, record)
-      ).to eq(manual)
-    end
-  end
-
   describe "#dump" do
     before do
       allow(manual).to receive(:sections).and_return(sections)

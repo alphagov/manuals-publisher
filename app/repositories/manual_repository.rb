@@ -79,11 +79,29 @@ private
   end
 
   def add_sections_to_manual(manual, edition)
-    SectionAssociationMarshaller.new.load(manual, edition)
+    section_repository = SectionRepository.new(manual: manual)
+
+    sections = Array(edition.section_ids).map { |section_id|
+      section_repository.fetch(section_id)
+    }
+
+    removed_sections = Array(edition.removed_section_ids).map { |section_id|
+      begin
+        section_repository.fetch(section_id)
+      rescue KeyError
+        raise RemovedSectionIdNotFoundError, "No section found for ID #{section_id}"
+      end
+    }
+
+    manual.sections = sections
+    manual.removed_sections = removed_sections
+    manual
   end
 
   def add_publish_tasks_to_manual(manual)
     tasks = ManualPublishTask.for_manual(manual)
     ManualWithPublishTasks.new(manual, publish_tasks: tasks)
   end
+
+  class RemovedSectionIdNotFoundError < StandardError; end
 end
