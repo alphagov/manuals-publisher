@@ -12,7 +12,7 @@ class ManualRecord
     autosave: true
 
   def self.find_by(attributes)
-    where(attributes).first
+    first(conditions: attributes)
   end
 
   def self.find_by_organisation(organisation_slug)
