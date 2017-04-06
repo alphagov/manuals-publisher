@@ -39,36 +39,4 @@ describe SectionAssociationMarshaller do
   before do
     allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
   end
-
-  describe "#dump" do
-    before do
-      allow(manual).to receive(:sections).and_return(sections)
-      allow(manual).to receive(:removed_sections).and_return(removed_sections)
-    end
-
-    it "saves associated sections and removed sections" do
-      marshaller.dump(manual, record)
-
-      expect(section_repository).to have_received(:store).with(section)
-      expect(section_repository).to have_received(:store).
-        with(removed_section)
-    end
-
-    it "updates associated document ids on the record" do
-      marshaller.dump(manual, record)
-
-      expect(record).to have_received(:section_ids=).with(section_ids)
-    end
-
-    it "updates associated removed document ids on the record" do
-      marshaller.dump(manual, record)
-
-      expect(record).to have_received(:removed_section_ids=).
-        with(removed_section_ids)
-    end
-
-    it "returns nil" do
-      expect(marshaller.dump(manual, record)).to eq(nil)
-    end
-  end
 end
