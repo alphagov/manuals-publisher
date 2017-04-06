@@ -21,8 +21,12 @@ class Manual
 
   attr_accessor :sections, :removed_sections
 
+  NotFoundError = Module.new
+
   def self.find(id, user)
     ManualRepository.new(user.manual_records).fetch(id)
+  rescue KeyError => e
+    raise e.extend(NotFoundError)
   end
 
   def self.all(user)

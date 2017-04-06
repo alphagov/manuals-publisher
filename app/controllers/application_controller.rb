@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  rescue_from("ManualRepository::NotFoundError") do
+  rescue_from("Manual::NotFoundError") do
     redirect_to(manuals_path, flash: { error: "Manual not found" })
   end
 

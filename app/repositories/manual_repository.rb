@@ -4,20 +4,12 @@ require 'manual'
 class ManualRepository
   include Fetchable
 
-  NotFoundError = Module.new
-
   def initialize(collection)
     @collection = collection
     @association_marshallers = [
       SectionAssociationMarshaller.new,
       ManualPublishTaskAssociationMarshaller.new
     ]
-  end
-
-  def fetch(*args, &block)
-    super
-  rescue KeyError => e
-    raise e.extend(NotFoundError)
   end
 
   def store(manual)

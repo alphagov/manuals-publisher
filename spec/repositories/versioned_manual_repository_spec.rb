@@ -5,7 +5,7 @@ RSpec.describe VersionedManualRepository do
 
   context "when the provided id doesn't refer to a manual" do
     it "raises a Not Found error" do
-      expect { subject.get_manual("i-dont-exist") }.to raise_error(ManualRepository::NotFoundError)
+      expect { subject.get_manual("i-dont-exist") }.to raise_error(Manual::NotFoundError)
     end
   end
 
