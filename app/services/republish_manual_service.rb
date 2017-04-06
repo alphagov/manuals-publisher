@@ -48,9 +48,5 @@ private
 
   def manual_versions
     @manual_versions ||= Manual.find(manual_id, context.current_user).current_versions
-  rescue ManualRepository::NotFoundError => error
-    raise ManualNotFoundError.new(error)
   end
-
-  class ManualNotFoundError < StandardError; end
 end
