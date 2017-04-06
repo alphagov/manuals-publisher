@@ -74,8 +74,12 @@ private
       use_originally_published_at_for_public_timestamp: edition.use_originally_published_at_for_public_timestamp,
     )
 
-    manual_with_sections = SectionAssociationMarshaller.new.load(base_manual, edition)
+    manual_with_sections = add_sections_to_manual(base_manual, edition)
     add_publish_tasks_to_manual(manual_with_sections)
+  end
+
+  def add_sections_to_manual(manual, edition)
+    SectionAssociationMarshaller.new.load(manual, edition)
   end
 
   def add_publish_tasks_to_manual(manual)
