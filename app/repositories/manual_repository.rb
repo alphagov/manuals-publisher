@@ -6,13 +6,7 @@ class ManualRepository
   end
 
   def fetch(key)
-    result = public_send(:[], key)
-
-    if result.nil?
-      raise KeyError.new("key not found #{key}")
-    else
-      result
-    end
+    public_send(:[], key) || raise(KeyError.new("key not found #{key}"))
   end
 
   def [](manual_id)
