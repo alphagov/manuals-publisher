@@ -5,10 +5,6 @@ class ManualRepository
     @collection = collection
   end
 
-  def fetch(key)
-    public_send(:[], key) || raise(KeyError.new("key not found #{key}"))
-  end
-
   def [](manual_id)
     manual_record = collection.find_by(manual_id: manual_id)
     return nil unless manual_record

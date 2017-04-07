@@ -24,7 +24,8 @@ class Manual
   NotFoundError = Module.new
 
   def self.find(id, user)
-    ManualRepository.new(user.manual_records).fetch(id)
+    repository = ManualRepository.new(user.manual_records)
+    repository[id] || raise(KeyError.new("key not found #{id}"))
   rescue KeyError => e
     raise e.extend(NotFoundError)
   end
