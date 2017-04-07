@@ -18,13 +18,6 @@ class ManualRepository
     }
   end
 
-  def slug_unique?(manual)
-    collection.where(
-      :slug => manual.slug,
-      :manual_id.ne => manual.id,
-    ).empty?
-  end
-
 private
 
   attr_reader :collection

@@ -37,7 +37,10 @@ class Manual
   end
 
   def slug_unique?(user)
-    ManualRepository.new(user.manual_records).slug_unique?(self)
+    user.manual_records.where(
+      :slug => slug,
+      :manual_id.ne => id,
+    ).empty?
   end
 
   def clashing_sections
