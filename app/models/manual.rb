@@ -48,10 +48,9 @@ class Manual
   end
 
   def save(user)
-    collection = user.manual_records
     manual = self
 
-    manual_record = collection.find_or_initialize_by(manual_id: manual.id)
+    manual_record = user.manual_records.find_or_initialize_by(manual_id: manual.id)
     # TODO: slug must not change after publication
     manual_record.slug = manual.slug
     manual_record.organisation_slug = manual.organisation_slug
