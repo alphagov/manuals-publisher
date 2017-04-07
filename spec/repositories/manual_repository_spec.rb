@@ -72,10 +72,6 @@ describe ManualRepository do
     }
   }
 
-  it "supports the fetch interface" do
-    expect(repo).to be_a_kind_of(Fetchable)
-  end
-
   describe "#[]" do
     let(:section_repository) { double(:section_repository) }
 
