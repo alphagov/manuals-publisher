@@ -39,9 +39,9 @@ class ManualRepository
     build_manual_for(manual_record)
   end
 
-  def all
+  def all(load_associations: true)
     collection.all_by_updated_at.lazy.map { |manual_record|
-      build_manual_for(manual_record)
+      build_manual_for(manual_record, load_associations: load_associations)
     }
   end
 
@@ -67,7 +67,7 @@ private
     }
   end
 
-  def build_manual_for(manual_record)
+  def build_manual_for(manual_record, load_associations: true)
     edition = manual_record.latest_edition
 
     base_manual = Manual.new(
@@ -85,8 +85,12 @@ private
       use_originally_published_at_for_public_timestamp: edition.use_originally_published_at_for_public_timestamp,
     )
 
-    manual_with_sections = add_sections_to_manual(base_manual, edition)
-    add_publish_tasks_to_manual(manual_with_sections)
+    if load_associations
+      manual_with_sections = add_sections_to_manual(base_manual, edition)
+      add_publish_tasks_to_manual(manual_with_sections)
+    else
+      base_manual
+    end
   end
 
   def add_sections_to_manual(manual, edition)

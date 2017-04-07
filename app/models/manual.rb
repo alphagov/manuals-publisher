@@ -29,8 +29,8 @@ class Manual
     raise e.extend(NotFoundError)
   end
 
-  def self.all(user)
-    ManualRepository.new(user.manual_records).all
+  def self.all(user, load_associations: true)
+    ManualRepository.new(user.manual_records).all(load_associations: load_associations)
   end
 
   def self.build(attributes)
