@@ -14,7 +14,14 @@ class ManualRepository
     manual_record.slug = manual.slug
     manual_record.organisation_slug = manual.organisation_slug
     edition = manual_record.new_or_existing_draft_edition
-    edition.attributes = attributes_for(manual)
+    edition.attributes = {
+      title: manual.title,
+      summary: manual.summary,
+      body: manual.body,
+      state: manual.state,
+      originally_published_at: manual.originally_published_at,
+      use_originally_published_at_for_public_timestamp: manual.use_originally_published_at_for_public_timestamp,
+    }
 
     section_repository = SectionRepository.new(manual: manual)
 
@@ -55,17 +62,6 @@ class ManualRepository
 private
 
   attr_reader :collection
-
-  def attributes_for(manual)
-    {
-      title: manual.title,
-      summary: manual.summary,
-      body: manual.body,
-      state: manual.state,
-      originally_published_at: manual.originally_published_at,
-      use_originally_published_at_for_public_timestamp: manual.use_originally_published_at_for_public_timestamp,
-    }
-  end
 
   def build_manual_for(manual_record, load_associations: true)
     edition = manual_record.latest_edition
