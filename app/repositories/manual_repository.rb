@@ -54,7 +54,7 @@ class ManualRepository
 
 private
 
-  attr_reader :collection, :factory
+  attr_reader :collection
 
   def attributes_for(manual)
     {
