@@ -8,37 +8,6 @@ class ManualRepository
     @collection = collection
   end
 
-  def store(manual)
-    manual_record = collection.find_or_initialize_by(manual_id: manual.id)
-    # TODO: slug must not change after publication
-    manual_record.slug = manual.slug
-    manual_record.organisation_slug = manual.organisation_slug
-    edition = manual_record.new_or_existing_draft_edition
-    edition.attributes = {
-      title: manual.title,
-      summary: manual.summary,
-      body: manual.body,
-      state: manual.state,
-      originally_published_at: manual.originally_published_at,
-      use_originally_published_at_for_public_timestamp: manual.use_originally_published_at_for_public_timestamp,
-    }
-
-    section_repository = SectionRepository.new(manual: manual)
-
-    manual.sections.each do |section|
-      section_repository.store(section)
-    end
-
-    manual.removed_sections.each do |section|
-      section_repository.store(section)
-    end
-
-    edition.section_ids = manual.sections.map(&:id)
-    edition.removed_section_ids = manual.removed_sections.map(&:id)
-
-    manual_record.save!
-  end
-
   def [](manual_id)
     manual_record = collection.find_by(manual_id: manual_id)
     return nil unless manual_record
