@@ -6,10 +6,6 @@ class ManualRepository
 
   def initialize(collection)
     @collection = collection
-    @association_marshallers = [
-      SectionAssociationMarshaller.new,
-      ManualPublishTaskAssociationMarshaller.new
-    ]
   end
 
   def store(manual)
@@ -20,9 +16,18 @@ class ManualRepository
     edition = manual_record.new_or_existing_draft_edition
     edition.attributes = attributes_for(manual)
 
-    association_marshallers.each do |marshaller|
-      marshaller.dump(manual, edition)
+    section_repository = SectionRepository.new(manual: manual)
+
+    manual.sections.each do |section|
+      section_repository.store(section)
     end
+
+    manual.removed_sections.each do |section|
+      section_repository.store(section)
+    end
+
+    edition.section_ids = manual.sections.map(&:id)
+    edition.removed_section_ids = manual.removed_sections.map(&:id)
 
     manual_record.save!
   end
@@ -49,7 +54,7 @@ class ManualRepository
 
 private
 
-  attr_reader :collection, :factory, :association_marshallers
+  attr_reader :collection, :factory
 
   def attributes_for(manual)
     {
@@ -80,8 +85,34 @@ private
       use_originally_published_at_for_public_timestamp: edition.use_originally_published_at_for_public_timestamp,
     )
 
-    association_marshallers.reduce(base_manual) { |manual, marshaller|
-      marshaller.load(manual, edition)
-    }
+    manual_with_sections = add_sections_to_manual(base_manual, edition)
+    add_publish_tasks_to_manual(manual_with_sections)
   end
+
+  def add_sections_to_manual(manual, edition)
+    section_repository = SectionRepository.new(manual: manual)
+
+    sections = Array(edition.section_ids).map { |section_id|
+      section_repository.fetch(section_id)
+    }
+
+    removed_sections = Array(edition.removed_section_ids).map { |section_id|
+      begin
+        section_repository.fetch(section_id)
+      rescue KeyError
+        raise RemovedSectionIdNotFoundError, "No section found for ID #{section_id}"
+      end
+    }
+
+    manual.sections = sections
+    manual.removed_sections = removed_sections
+    manual
+  end
+
+  def add_publish_tasks_to_manual(manual)
+    tasks = ManualPublishTask.for_manual(manual)
+    ManualWithPublishTasks.new(manual, publish_tasks: tasks)
+  end
+
+  class RemovedSectionIdNotFoundError < StandardError; end
 end

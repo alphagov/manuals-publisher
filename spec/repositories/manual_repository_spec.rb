@@ -72,27 +72,40 @@ describe ManualRepository do
     }
   }
 
-  let(:section_association_marshaller) { double(:section_association_marshaller, dump: nil, load: manual) }
-  let(:manual_publish_task_association_marshaller) { double(:manual_publish_task_association_marshaller, dump: nil, load: manual) }
-
-  before do
-    allow(SectionAssociationMarshaller).to receive(:new).and_return(section_association_marshaller)
-    allow(ManualPublishTaskAssociationMarshaller).to receive(:new).and_return(manual_publish_task_association_marshaller)
-  end
-
   it "supports the fetch interface" do
     expect(repo).to be_a_kind_of(Fetchable)
   end
 
   describe "#store" do
+    let(:section_repository) {
+      double(
+        :section_repository,
+        fetch: nil,
+        store: nil,
+      )
+    }
+
+    let(:section) { double(:section, id: 1) }
+    let(:sections) { [section] }
+
+    let(:removed_section) { double(:removed_section, id: 2) }
+    let(:removed_sections) { [removed_section] }
+
     let(:draft_edition) { double(:draft_edition, :attributes= => nil) }
 
     before do
       allow(record_collection).to receive(:find_or_initialize_by)
         .and_return(manual_record)
 
+      allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+
       allow(manual_record).to receive(:new_or_existing_draft_edition)
         .and_return(edition)
+
+      allow(manual).to receive(:sections).and_return(sections)
+      allow(manual).to receive(:removed_sections).and_return(removed_sections)
+      allow(edition).to receive(:'section_ids=')
+      allow(edition).to receive(:'removed_section_ids=')
     end
 
     it "retrieves the manual record from the record collection" do
@@ -133,24 +146,42 @@ describe ManualRepository do
       expect(manual_record).to have_received(:save!)
     end
 
-    it "calls dump on the section association marshaller with the manual domain object and edition" do
+    it "saves associated sections and removed sections" do
       repo.store(manual)
 
-      expect(section_association_marshaller).to have_received(:dump).with(manual, edition)
+      expect(section_repository).to have_received(:store).with(section)
+      expect(section_repository).to have_received(:store).
+        with(removed_section)
     end
 
-    it "calls dump on the manual publish task association marshaller with the manual domain object and edition" do
+    it "updates associated section ids on the edition" do
       repo.store(manual)
 
-      expect(manual_publish_task_association_marshaller).to have_received(:dump).with(manual, edition)
+      expect(edition).to have_received(:section_ids=).with([section.id])
+    end
+
+    it "updates associated removed section ids on the edition" do
+      repo.store(manual)
+
+      expect(edition).to have_received(:removed_section_ids=).
+        with([removed_section.id])
     end
   end
 
   describe "#[]" do
+    let(:section_repository) { double(:section_repository) }
+
     before do
       allow(record_collection).to receive(:find_by).and_return(manual_record)
       allow(manual_record).to receive(:latest_edition).and_return(edition)
       allow(Manual).to receive(:new).and_return(manual)
+      allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+      allow(manual).to receive(:'sections=')
+      allow(manual).to receive(:'removed_sections=')
+      allow(edition).to receive(:section_ids).and_return([:section_id])
+      allow(edition).to receive(:removed_section_ids).and_return([:removed_section_id])
+      allow(section_repository).to receive(:fetch).with(:section_id).and_return(:section)
+      allow(section_repository).to receive(:fetch).with(:removed_section_id).and_return(:removed_section)
     end
 
     it "finds the manual record by manual id" do
@@ -169,20 +200,24 @@ describe ManualRepository do
         .with(arguments)
     end
 
-    it "returns the built manual" do
-      expect(repo[manual_id]).to be(manual)
-    end
-
-    it "calls load on the section association marshaller with the manual domain object and edition" do
+    it 'adds the sections to the manual' do
       repo[manual_id]
 
-      expect(section_association_marshaller).to have_received(:load).with(manual, edition)
+      expect(manual).to have_received(:'sections=').with([:section])
     end
 
-    it "calls load on the manual publish task association marshaller with the manual domain object and edition" do
+    it 'adds the removed sections to the manual' do
       repo[manual_id]
 
-      expect(manual_publish_task_association_marshaller).to have_received(:load).with(manual, edition)
+      expect(manual).to have_received(:'removed_sections=').with([:removed_section])
+    end
+
+    it "adds a publish task association to the manual" do
+      expect(manual).to_not respond_to(:publish_tasks)
+
+      manual = repo[manual_id]
+
+      expect(manual).to respond_to(:publish_tasks)
     end
   end
 
@@ -190,7 +225,11 @@ describe ManualRepository do
     before do
       allow(record_collection).to receive(:all_by_updated_at).and_return([manual_record])
       allow(manual_record).to receive(:latest_edition).and_return(edition)
-      allow(Manual).to receive(:new)
+      allow(Manual).to receive(:new).and_return(manual)
+      allow(edition).to receive(:section_ids).and_return([])
+      allow(edition).to receive(:removed_section_ids).and_return([])
+      allow(manual).to receive(:'sections=')
+      allow(manual).to receive(:'removed_sections=')
     end
 
     it "retrieves all records from the collection" do

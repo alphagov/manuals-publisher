@@ -1,5 +1,3 @@
-require "marshallers/section_association_marshaller"
-
 class ManualsRepublisher
   attr_reader :logger
 
@@ -21,7 +19,7 @@ class ManualsRepublisher
           context: OpenStruct.new(current_user: User.gds_editor),
         )
         service.call
-      rescue SectionAssociationMarshaller::RemovedSectionIdNotFoundError => e
+      rescue ManualRepository::RemovedSectionIdNotFoundError => e
         logger.error("Did not publish manual with id=#{manual_record.manual_id} slug=#{manual_record.slug}. It has at least one removed document which was not found: #{e.message}")
         next
       end
