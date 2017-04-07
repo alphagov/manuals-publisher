@@ -91,3 +91,4 @@ production:
         use_activesupport_time_zone: true
         refresh_interval: 120
         refresh_mode: :sync
+        consistency: :strong
