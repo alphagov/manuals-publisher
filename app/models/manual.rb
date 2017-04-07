@@ -48,34 +48,32 @@ class Manual
   end
 
   def save(user)
-    manual = self
-
-    manual_record = user.manual_records.find_or_initialize_by(manual_id: manual.id)
+    manual_record = user.manual_records.find_or_initialize_by(manual_id: id)
     # TODO: slug must not change after publication
-    manual_record.slug = manual.slug
-    manual_record.organisation_slug = manual.organisation_slug
+    manual_record.slug = slug
+    manual_record.organisation_slug = organisation_slug
     edition = manual_record.new_or_existing_draft_edition
     edition.attributes = {
-      title: manual.title,
-      summary: manual.summary,
-      body: manual.body,
-      state: manual.state,
-      originally_published_at: manual.originally_published_at,
-      use_originally_published_at_for_public_timestamp: manual.use_originally_published_at_for_public_timestamp,
+      title: title,
+      summary: summary,
+      body: body,
+      state: state,
+      originally_published_at: originally_published_at,
+      use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
     }
 
-    section_repository = SectionRepository.new(manual: manual)
+    section_repository = SectionRepository.new(manual: self)
 
-    manual.sections.each do |section|
+    sections.each do |section|
       section_repository.store(section)
     end
 
-    manual.removed_sections.each do |section|
+    removed_sections.each do |section|
       section_repository.store(section)
     end
 
-    edition.section_ids = manual.sections.map(&:id)
-    edition.removed_section_ids = manual.removed_sections.map(&:id)
+    edition.section_ids = sections.map(&:id)
+    edition.removed_section_ids = removed_sections.map(&:id)
 
     manual_record.save!
   end
