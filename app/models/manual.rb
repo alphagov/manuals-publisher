@@ -21,13 +21,11 @@ class Manual
 
   attr_accessor :sections, :removed_sections
 
-  NotFoundError = Module.new
+  class NotFoundError < StandardError; end
 
   def self.find(id, user)
     repository = ManualRepository.new(user.manual_records)
-    repository[id] || raise(KeyError.new("key not found #{id}"))
-  rescue KeyError => e
-    raise e.extend(NotFoundError)
+    repository[id] || raise(NotFoundError.new("Manual ID not found: #{id}"))
   end
 
   def self.all(user, load_associations: true)
