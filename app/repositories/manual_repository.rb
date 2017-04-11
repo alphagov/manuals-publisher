@@ -5,12 +5,6 @@ class ManualRepository
     @collection = collection
   end
 
-  def all(load_associations: true)
-    collection.all_by_updated_at.lazy.map { |manual_record|
-      build_manual_for(manual_record, load_associations: load_associations)
-    }
-  end
-
   def build_manual_for(manual_record, load_associations: true)
     edition = manual_record.latest_edition
 

@@ -35,7 +35,13 @@ class Manual
   end
 
   def self.all(user, load_associations: true)
-    ManualRepository.new(user.manual_records).all(load_associations: load_associations)
+    collection = user.manual_records
+
+    repository = ManualRepository.new(collection)
+
+    collection.all_by_updated_at.lazy.map { |manual_record|
+      repository.build_manual_for(manual_record, load_associations: load_associations)
+    }
   end
 
   def self.build(attributes)
