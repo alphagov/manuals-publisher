@@ -5,22 +5,11 @@ class ManualRepository
     @collection = collection
   end
 
-  def [](manual_id)
-    manual_record = collection.find_by(manual_id: manual_id)
-    return nil unless manual_record
-
-    build_manual_for(manual_record)
-  end
-
   def all(load_associations: true)
     collection.all_by_updated_at.lazy.map { |manual_record|
       build_manual_for(manual_record, load_associations: load_associations)
     }
   end
-
-private
-
-  attr_reader :collection
 
   def build_manual_for(manual_record, load_associations: true)
     edition = manual_record.latest_edition
@@ -47,6 +36,10 @@ private
       base_manual
     end
   end
+
+private
+
+  attr_reader :collection
 
   def add_sections_to_manual(manual, edition)
     section_repository = SectionRepository.new(manual: manual)

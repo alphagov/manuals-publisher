@@ -477,5 +477,58 @@ describe Manual do
           with([removed_section.id])
       end
     end
+
+    describe ".find" do
+      let(:section_repository) { double(:section_repository) }
+
+      before do
+        allow(record_collection).to receive(:find_by).and_return(manual_record)
+        allow(manual_record).to receive(:latest_edition).and_return(edition)
+        allow(Manual).to receive(:new).and_return(manual)
+        allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+        allow(manual).to receive(:'sections=')
+        allow(manual).to receive(:'removed_sections=')
+        allow(edition).to receive(:section_ids).and_return([:section_id])
+        allow(edition).to receive(:removed_section_ids).and_return([:removed_section_id])
+        allow(section_repository).to receive(:fetch).with(:section_id).and_return(:section)
+        allow(section_repository).to receive(:fetch).with(:removed_section_id).and_return(:removed_section)
+      end
+
+      it "finds the manual record by manual id" do
+        Manual.find(manual_id, user)
+
+        expect(record_collection).to have_received(:find_by)
+          .with(manual_id: manual_id)
+      end
+
+      it "builds a new manual from the latest edition" do
+        Manual.find(manual_id, user)
+
+        arguments = edition_attributes.merge(id: manual_id)
+
+        expect(Manual).to have_received(:new)
+          .with(arguments)
+      end
+
+      it 'adds the sections to the manual' do
+        Manual.find(manual_id, user)
+
+        expect(manual).to have_received(:'sections=').with([:section])
+      end
+
+      it 'adds the removed sections to the manual' do
+        Manual.find(manual_id, user)
+
+        expect(manual).to have_received(:'removed_sections=').with([:removed_section])
+      end
+
+      it "adds a publish task association to the manual" do
+        expect(manual).to_not respond_to(:publish_tasks)
+
+        manual = Manual.find(manual_id, user)
+
+        expect(manual).to respond_to(:publish_tasks)
+      end
+    end
   end
 end

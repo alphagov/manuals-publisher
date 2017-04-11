@@ -24,8 +24,14 @@ class Manual
   class NotFoundError < StandardError; end
 
   def self.find(id, user)
-    repository = ManualRepository.new(user.manual_records)
-    repository[id] || raise(NotFoundError.new("Manual ID not found: #{id}"))
+    collection = user.manual_records
+    repository = ManualRepository.new(collection)
+    manual_record = collection.find_by(manual_id: id)
+    unless manual_record
+      raise(NotFoundError.new("Manual ID not found: #{id}"))
+    end
+
+    repository.build_manual_for(manual_record)
   end
 
   def self.all(user, load_associations: true)
