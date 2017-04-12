@@ -318,6 +318,54 @@ describe Manual do
     end
   end
 
+  describe '.find' do
+    let(:user) { FactoryGirl.create(:gds_editor) }
+
+    context 'when a manual record with the given id exists in the users collection' do
+      let!(:manual_record) {
+        ManualRecord.create(
+          slug: 'slug',
+          manual_id: 'abc-123',
+          organisation_slug: 'organisation-slug'
+        )
+      }
+
+      let!(:edition) {
+        manual_record.editions.create(
+          title: 'title',
+          summary: 'summary',
+          body: 'body',
+          state: 'state',
+          version_number: 1,
+          originally_published_at: Time.now,
+          use_originally_published_at_for_public_timestamp: true
+        )
+      }
+
+      it 'builds and returns a manual from the manual record and its edition' do
+        manual = Manual.find(manual_record.manual_id, user)
+
+        expect(manual.id).to eq(manual_record.manual_id)
+        expect(manual.slug).to eq(manual_record.slug)
+        expect(manual.title).to eq(edition.title)
+        expect(manual.summary).to eq(edition.summary)
+        expect(manual.body).to eq(edition.body)
+        expect(manual.organisation_slug).to eq(manual.organisation_slug)
+        expect(manual.state).to eq(edition.state)
+        expect(manual.version_number).to eq(edition.version_number)
+        expect(manual.updated_at.to_i).to eq(edition.updated_at.to_i)
+        expect(manual.originally_published_at.to_i).to eq(edition.originally_published_at.to_i)
+        expect(manual.use_originally_published_at_for_public_timestamp).to eq(edition.use_originally_published_at_for_public_timestamp)
+      end
+    end
+
+    context 'when a manual record with the given id does not exist in the users collection' do
+      it 'raises a NotFoundError' do
+        expect { Manual.find(1, user) }.to raise_error(Manual::NotFoundError)
+      end
+    end
+  end
+
   describe "#save" do
     let(:user) { FactoryGirl.create(:gds_editor) }
 
@@ -496,59 +544,6 @@ describe Manual do
         use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
       }
     }
-
-    describe ".find" do
-      let(:section_repository) { double(:section_repository) }
-
-      before do
-        allow(record_collection).to receive(:find_by).and_return(manual_record)
-        allow(manual_record).to receive(:latest_edition).and_return(edition)
-        allow(Manual).to receive(:new).and_return(manual)
-        allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
-        allow(manual).to receive(:'sections=')
-        allow(manual).to receive(:'removed_sections=')
-        allow(edition).to receive(:section_ids).and_return([:section_id])
-        allow(edition).to receive(:removed_section_ids).and_return([:removed_section_id])
-        allow(section_repository).to receive(:fetch).with(:section_id).and_return(:section)
-        allow(section_repository).to receive(:fetch).with(:removed_section_id).and_return(:removed_section)
-      end
-
-      it "finds the manual record by manual id" do
-        Manual.find(manual_id, user)
-
-        expect(record_collection).to have_received(:find_by)
-          .with(manual_id: manual_id)
-      end
-
-      it "builds a new manual from the latest edition" do
-        Manual.find(manual_id, user)
-
-        arguments = edition_attributes.merge(id: manual_id)
-
-        expect(Manual).to have_received(:new)
-          .with(arguments)
-      end
-
-      it 'adds the sections to the manual' do
-        Manual.find(manual_id, user)
-
-        expect(manual).to have_received(:'sections=').with([:section])
-      end
-
-      it 'adds the removed sections to the manual' do
-        Manual.find(manual_id, user)
-
-        expect(manual).to have_received(:'removed_sections=').with([:removed_section])
-      end
-
-      it "adds a publish task association to the manual" do
-        expect(manual).to_not respond_to(:publish_tasks)
-
-        manual = Manual.find(manual_id, user)
-
-        expect(manual).to respond_to(:publish_tasks)
-      end
-    end
 
     describe ".all" do
       before do
