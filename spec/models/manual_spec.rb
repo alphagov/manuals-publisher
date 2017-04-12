@@ -318,6 +318,22 @@ describe Manual do
     end
   end
 
+  describe '.all' do
+    let(:user) { FactoryGirl.create(:gds_editor) }
+    let!(:manual_records) { FactoryGirl.create_list(:manual_record, 2) }
+
+    it 'evaluates lazily' do
+      expect(Manual.all(user)).to be_a_kind_of(Enumerator::Lazy)
+    end
+
+    it 'returns all the manuals' do
+      manual_ids = Manual.all(user).to_a.map(&:id)
+      record_ids = manual_records.map(&:manual_id)
+
+      expect(manual_ids).to match_array(record_ids)
+    end
+  end
+
   describe '.find' do
     let(:user) { FactoryGirl.create(:gds_editor) }
 
@@ -527,43 +543,5 @@ describe Manual do
         use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
       }
     }
-
-    describe ".all" do
-      before do
-        allow(record_collection).to receive(:all_by_updated_at).and_return([manual_record])
-        allow(manual_record).to receive(:latest_edition).and_return(edition)
-        allow(Manual).to receive(:new).and_return(manual)
-        allow(edition).to receive(:section_ids).and_return([])
-        allow(edition).to receive(:removed_section_ids).and_return([])
-        allow(manual).to receive(:'sections=')
-        allow(manual).to receive(:'removed_sections=')
-      end
-
-      it "retrieves all records from the collection" do
-        Manual.all(user)
-
-        expect(record_collection).to have_received(:all_by_updated_at)
-      end
-
-      it "builds a manual for each record" do
-        Manual.all(user).to_a
-
-        arguments = edition_attributes.merge(id: manual_id)
-
-        expect(Manual).to have_received(:new).with(arguments)
-      end
-
-      it "builds lazily" do
-        Manual.all(user)
-
-        expect(Manual).not_to have_received(:new)
-      end
-
-      it "returns the built manuals" do
-        allow(Manual).to receive(:new).and_return(manual)
-
-        expect(Manual.all(user).to_a).to eq([manual])
-      end
-    end
   end
 end
