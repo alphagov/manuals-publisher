@@ -322,25 +322,8 @@ describe Manual do
     let(:user) { FactoryGirl.create(:gds_editor) }
 
     context 'when a manual record with the given id exists in the users collection' do
-      let!(:manual_record) {
-        ManualRecord.create(
-          slug: 'slug',
-          manual_id: 'abc-123',
-          organisation_slug: 'organisation-slug'
-        )
-      }
-
-      let!(:edition) {
-        manual_record.editions.create(
-          title: 'title',
-          summary: 'summary',
-          body: 'body',
-          state: 'state',
-          version_number: 1,
-          originally_published_at: Time.now,
-          use_originally_published_at_for_public_timestamp: true
-        )
-      }
+      let(:manual_record) { FactoryGirl.create(:manual_record) }
+      let(:edition) { manual_record.editions.first }
 
       it 'builds and returns a manual from the manual record and its edition' do
         manual = Manual.find(manual_record.manual_id, user)
