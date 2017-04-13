@@ -9,7 +9,7 @@ node {
     beforeTest: {
       govuk.setEnvar("TEST_COVERAGE", "true")
       stage("Set up the database") {
-        sh("bundle exec rake db:drop")
+        sh("RAILS_ENV=test bundle exec rake db:drop")
       }
     }
   )
