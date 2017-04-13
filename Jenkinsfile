@@ -8,6 +8,9 @@ node {
     sassLint: false,
     beforeTest: {
       govuk.setEnvar("TEST_COVERAGE", "true")
+      stage("Set up the database") {
+        runRakeTask("db:drop db:create db:schema:load")
+      }
     }
   )
 }
