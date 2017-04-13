@@ -9,7 +9,7 @@ node {
     beforeTest: {
       govuk.setEnvar("TEST_COVERAGE", "true")
       stage("Set up the database") {
-        runRakeTask("db:drop")
+        sh("bundle exec rake db:drop")
       }
     }
   )
