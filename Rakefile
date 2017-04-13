@@ -6,13 +6,8 @@ require File.expand_path("../config/application", __FILE__)
 ManualsPublisher::Application.load_tasks
 
 task default: [
-  # "lint",
-  # "spec:javascript",
-  # "spec",
-  # "cucumber",
-  "foo"
+  "lint",
+  "spec:javascript",
+  "spec",
+  "cucumber",
 ]
-
-task :foo do
-  raise "hello world".inspect
-end
