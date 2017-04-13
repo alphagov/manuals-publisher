@@ -1,11 +1,3 @@
 #!/usr/bin/env ruby
 
-require File.expand_path("../../config/environment", __FILE__)
-require "manuals_republisher"
-require "logger"
-
-logger = Logger.new(STDOUT)
-logger.formatter = Logger::Formatter.new
-
-republisher = ManualsRepublisher.new(logger)
-republisher.execute
+puts "This script is now a rake task: `rake republish_manuals`"
