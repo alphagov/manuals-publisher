@@ -5,8 +5,7 @@ class ManualsRepublisher
     @logger = logger
   end
 
-  def execute
-    manual_records = ManualRecord.all
+  def execute(manual_records = ManualRecord.all)
     count = manual_records.count
 
     logger.info "Republishing #{count} manuals..."
