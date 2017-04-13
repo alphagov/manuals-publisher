@@ -1,7 +1,6 @@
 Given(/^I am logged in as a GDS editor$/) do
   login_as(:gds_editor)
   stub_organisation_details(GDS::SSO.test_user.organisation_slug)
-  raise "broken"
 end
 
 Given(/^I am logged in as an editor$/) do
