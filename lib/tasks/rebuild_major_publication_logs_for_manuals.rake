@@ -2,11 +2,16 @@ require "manual_publication_log_filter"
 require "logger"
 
 desc "Rebuild major publication logs for manuals"
-task rebuild_major_publication_logs_for_manuals: [:environment] do
+task :rebuild_major_publication_logs_for_manuals, [:slug] => :environment do |_, args|
   logger = Logger.new(STDOUT)
   logger.formatter = Logger::Formatter.new
 
-  manual_records = ManualRecord.all
+  manual_records = if args.has_key?(:slug)
+                     ManualRecord.where(slug: args[:slug])
+                   else
+                     ManualRecord.all
+                   end
+
   count = manual_records.count
 
   logger.info "Deleting publication logs and rebuilding for major updates only for #{count} manuals"
