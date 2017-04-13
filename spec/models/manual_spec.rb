@@ -320,17 +320,48 @@ describe Manual do
 
   describe '.all' do
     let(:user) { FactoryGirl.create(:gds_editor) }
-    let!(:manual_records) { FactoryGirl.create_list(:manual_record, 2) }
+    let!(:manual_records) {
+      FactoryGirl.create_list(:manual_record, 2, :with_sections, :with_removed_sections)
+    }
+    let(:all_manuals) { Manual.all(user) }
 
     it 'evaluates lazily' do
-      expect(Manual.all(user)).to be_a_kind_of(Enumerator::Lazy)
+      expect(all_manuals).to be_a_kind_of(Enumerator::Lazy)
     end
 
     it 'returns all the manuals' do
-      manual_ids = Manual.all(user).to_a.map(&:id)
+      manual_ids = all_manuals.to_a.map(&:id)
       record_ids = manual_records.map(&:manual_id)
 
       expect(manual_ids).to match_array(record_ids)
+    end
+
+    it 'adds associated sections to each manual' do
+      all_manuals.each do |manual|
+        expect(manual.sections).to_not be_empty
+      end
+    end
+
+    it 'adds associated removed sections to each manual' do
+      all_manuals.each do |manual|
+        expect(manual.removed_sections).to_not be_empty
+      end
+    end
+
+    context 'when requested not to load associations' do
+      let(:all_manuals) { Manual.all(user, load_associations: false) }
+
+      it 'adds associated sections to each manual' do
+        all_manuals.each do |manual|
+          expect(manual.sections).to be_empty
+        end
+      end
+
+      it 'adds associated removed sections to each manual' do
+        all_manuals.each do |manual|
+          expect(manual.removed_sections).to be_empty
+        end
+      end
     end
   end
 
