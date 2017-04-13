@@ -29,6 +29,7 @@ module ManualsPublisher
 
     # These paths are non-standard (they are subdirectories of
     # app/models) so they need to be added to the autoload_paths
+    config.autoload_paths << "#{Rails.root}/app/exporters/formatters"
     config.autoload_paths << "#{Rails.root}/app/models/builders"
     config.autoload_paths << "#{Rails.root}/app/models/validators"
     config.autoload_paths << "#{Rails.root}/app/repositories/marshallers"
