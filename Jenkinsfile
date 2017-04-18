@@ -8,9 +8,6 @@ node {
     sassLint: false,
     beforeTest: {
       govuk.setEnvar("TEST_COVERAGE", "true")
-      stage("Set up the database") {
-        sh("RAILS_ENV=test bundle exec rake db:drop")
-      }
     }
   )
 }
