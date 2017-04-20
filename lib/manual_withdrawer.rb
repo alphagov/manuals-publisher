@@ -6,7 +6,7 @@ class ManualWithdrawer
   end
 
   def execute(manual_id)
-    service = WithdrawManualService.new(
+    service = Manual::WithdrawService.new(
       manual_id: manual_id,
       context: OpenStruct.new(current_user: User.gds_editor),
     )
@@ -19,7 +19,7 @@ class ManualWithdrawer
       logger.error "FAILURE: #{message}"
       raise message
     end
-  rescue WithdrawManualService::ManualNotFoundError
+  rescue Manual::WithdrawService::ManualNotFoundError
     message = "Manual not found for manual_id `#{manual_id}`"
     STDERR.puts "ERROR: #{message}"
     raise message
