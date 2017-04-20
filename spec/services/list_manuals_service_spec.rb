@@ -1,5 +1,4 @@
 require "spec_helper"
-require "list_manuals_service"
 
 RSpec.describe ListManualsService do
   let(:user) { double(:user) }

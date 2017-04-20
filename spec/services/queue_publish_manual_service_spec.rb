@@ -1,5 +1,4 @@
 require "spec_helper"
-require "queue_publish_manual_service"
 require "ostruct"
 
 RSpec.describe QueuePublishManualService do

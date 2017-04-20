@@ -1,5 +1,3 @@
-require "create_section_service"
-require "update_section_service"
 require "manuals_republisher"
 require "manual_withdrawer"
 

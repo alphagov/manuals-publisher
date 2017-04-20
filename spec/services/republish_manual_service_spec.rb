@@ -1,5 +1,4 @@
 require "spec_helper"
-require "republish_manual_service"
 require "versioned_manual_repository"
 
 RSpec.describe RepublishManualService do

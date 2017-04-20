@@ -1,10 +1,4 @@
-require "list_manuals_service"
-require "show_manual_service"
-require "create_manual_service"
-require "update_manual_service"
-require "queue_publish_manual_service"
 require "publish_manual_worker"
-require "preview_manual_service"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]

@@ -1,12 +1,3 @@
-require "show_section_service"
-require "new_section_service"
-require "create_section_service"
-require "update_section_service"
-require "preview_section_service"
-require "list_sections_service"
-require "reorder_sections_service"
-require "remove_section_service"
-
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 

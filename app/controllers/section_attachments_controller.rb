@@ -1,8 +1,3 @@
-require "create_section_attachment_service"
-require "update_section_attachment_service"
-require "show_section_attachment_service"
-require "new_section_attachment_service"
-
 class SectionAttachmentsController < ApplicationController
   def new
     service = NewSectionAttachmentService.new(

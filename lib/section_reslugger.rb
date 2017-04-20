@@ -1,6 +1,5 @@
 require "gds_api/content_store"
 require "services"
-require "update_section_service"
 
 class SectionReslugger
   RUMMAGER_FORMAT = "manual_section".freeze
