@@ -3,14 +3,6 @@ require "spec_helper"
 RSpec.describe VersionedManualRepository do
   let(:manual) { Manual.find(manual_id, User.gds_editor) }
 
-  context "when the provided id doesn't refer to a manual" do
-    let(:manual_id) { "i-dont-exist" }
-
-    it "raises a Not Found error" do
-      expect { manual.current_versions }.to raise_error(Manual::NotFoundError)
-    end
-  end
-
   context "when the provided id refers to the first draft of a manual" do
     let(:manual_id) { SecureRandom.uuid }
     let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
