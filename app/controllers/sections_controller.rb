@@ -14,7 +14,7 @@ class SectionsController < ApplicationController
   end
 
   def new
-    service = NewSectionService.new(
+    service = Section::NewService.new(
       context: self,
     )
     manual, section = service.call
