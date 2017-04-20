@@ -13,7 +13,7 @@ class ManualsController < ApplicationController
   end
 
   def show
-    service = ShowManualService.new(
+    service = Manual::ShowService.new(
       manual_id: manual_id,
       context: self,
     )
@@ -57,7 +57,7 @@ class ManualsController < ApplicationController
   end
 
   def edit
-    service = ShowManualService.new(
+    service = Manual::ShowService.new(
       manual_id: manual_id,
       context: self,
     )
@@ -85,7 +85,7 @@ class ManualsController < ApplicationController
   end
 
   def edit_original_publication_date
-    service = ShowManualService.new(
+    service = Manual::ShowService.new(
       manual_id: manual_id,
       context: self,
     )
