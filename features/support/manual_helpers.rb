@@ -47,7 +47,7 @@ module ManualHelpers
       current_user: user
     )
 
-    service = CreateSectionService.new(
+    service = Section::CreateService.new(
       context: create_service_context,
     )
     _, section = service.call
