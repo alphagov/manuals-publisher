@@ -4,7 +4,7 @@ class PublishingAPIWithdrawer
   end
 
   def call
-    Services.publishing_api_v2.unpublish(content_id, exportable_attributes)
+    Services.publishing_api.unpublish(content_id, exportable_attributes)
   end
 
 private

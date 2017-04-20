@@ -44,7 +44,7 @@ describe SectionPublishingAPILinksExporter do
   }
 
   before {
-    allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
+    allow(Services).to receive(:publishing_api).and_return(publishing_api)
   }
 
   it "exports links for the section" do
