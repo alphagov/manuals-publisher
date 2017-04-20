@@ -1,4 +1,4 @@
-class ReorderSectionsService
+class Section::ReorderService
   def initialize(context:)
     @context = context
   end
