@@ -132,7 +132,7 @@ class SectionsController < ApplicationController
   end
 
   def destroy
-    service = RemoveSectionService.new(
+    service = Section::RemoveService.new(
       context: self,
     )
     manual, section = service.call

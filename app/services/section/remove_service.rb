@@ -1,4 +1,4 @@
-class RemoveSectionService
+class Section::RemoveService
   def initialize(context:)
     @context = context
   end
