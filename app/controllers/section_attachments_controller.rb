@@ -13,7 +13,7 @@ class SectionAttachmentsController < ApplicationController
   end
 
   def create
-    service = CreateSectionAttachmentService.new(
+    service = Attachment::CreateService.new(
       context: self,
     )
     manual, section, _attachment = service.call
