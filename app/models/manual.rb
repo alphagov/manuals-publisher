@@ -103,7 +103,14 @@ class Manual
 
   def current_versions
     repository = VersionedManualRepository.new
-    repository.get_manual(id)
+
+    manual_record = ManualRecord.find_by(manual_id: id)
+    raise NotFoundError if manual_record.nil?
+
+    {
+      draft: repository.get_current_draft_version_of_manual(manual_record),
+      published: repository.get_current_published_version_of_manual(manual_record),
+    }
   end
 
   def initialize(attributes)

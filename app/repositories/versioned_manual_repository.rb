@@ -1,17 +1,8 @@
 class VersionedManualRepository
-  class NotFoundError < Manual::NotFoundError; end
-
   def get_manual(manual_id)
-    manual_record = ManualRecord.find_by(manual_id: manual_id)
-    raise NotFoundError if manual_record.nil?
-
-    {
-      draft: get_current_draft_version_of_manual(manual_record),
-      published: get_current_published_version_of_manual(manual_record),
-    }
+    manual = Manual.find(manual_id, User.gds_editor)
+    manual.current_versions
   end
-
-private
 
   def get_current_draft_version_of_manual(manual_record)
     return nil unless manual_record.latest_edition.state == "draft"
@@ -55,6 +46,8 @@ private
       return nil
     end
   end
+
+private
 
   def build_manual_for(manual_record, edition)
     base_manual = Manual.new(
