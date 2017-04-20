@@ -94,7 +94,7 @@ class SectionsController < ApplicationController
   end
 
   def reorder
-    service = ListSectionsService.new(
+    service = Section::ListService.new(
       context: self,
     )
     manual, sections = service.call

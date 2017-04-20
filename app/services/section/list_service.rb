@@ -1,4 +1,4 @@
-class ListSectionsService
+class Section::ListService
   def initialize(context:)
     @context = context
   end
