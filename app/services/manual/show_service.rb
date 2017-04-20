@@ -1,4 +1,4 @@
-class ShowManualService
+class Manual::ShowService
   def initialize(manual_id:, context:)
     @manual_id = manual_id
     @context = context

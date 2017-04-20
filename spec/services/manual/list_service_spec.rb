@@ -1,12 +1,11 @@
 require "spec_helper"
-require "list_manuals_service"
 
-RSpec.describe ListManualsService do
+RSpec.describe Manual::ListService do
   let(:user) { double(:user) }
   let(:context) { double(:context, current_user: user) }
 
   subject {
-    ListManualsService.new(
+    Manual::ListService.new(
       context: context,
     )
   }

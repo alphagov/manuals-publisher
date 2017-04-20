@@ -1,26 +1,20 @@
-class ShowSectionService
+class Section::NewService
   def initialize(context:)
     @context = context
   end
 
   def call
-    [manual, section]
+    [manual, manual.build_section({})]
   end
 
 private
 
-  attr_reader :context
-
-  def section
-    @section ||= manual.sections.find { |s| s.id == section_id }
-  end
+  attr_reader(
+    :context,
+  )
 
   def manual
     @manual ||= Manual.find(manual_id, context.current_user)
-  end
-
-  def section_id
-    context.params.fetch("id")
   end
 
   def manual_id

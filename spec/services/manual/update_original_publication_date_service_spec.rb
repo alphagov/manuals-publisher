@@ -1,7 +1,6 @@
 require "spec_helper"
-require "update_manual_original_publication_date_service"
 
-RSpec.describe UpdateManualOriginalPublicationDateService do
+RSpec.describe Manual::UpdateOriginalPublicationDateService do
   let(:manual_id) { double(:manual_id) }
   let(:manual) { double(:manual, id: manual_id, sections: sections) }
   let(:section_1) { double(:section, update: nil) }

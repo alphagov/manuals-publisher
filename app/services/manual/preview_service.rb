@@ -1,4 +1,4 @@
-class PreviewManualService
+class Manual::PreviewService
   def initialize(renderer:, manual_id:, attributes:, context:)
     @renderer = renderer
     @manual_id = manual_id

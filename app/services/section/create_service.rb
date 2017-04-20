@@ -1,4 +1,4 @@
-class CreateSectionService
+class Section::CreateService
   def initialize(context:)
     @context = context
   end

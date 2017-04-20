@@ -1,6 +1,5 @@
 require "gds_api/content_store"
 require "services"
-require "update_section_service"
 
 class SectionReslugger
   RUMMAGER_FORMAT = "manual_section".freeze
@@ -79,7 +78,7 @@ private
     manual_records = ManualRecord.all
     user = OpenStruct.new(manual_records: manual_records)
 
-    service = UpdateSectionService.new(
+    service = Section::UpdateService.new(
       context: context_for_section_edition_update(user),
     )
     _manual, document = service.call
@@ -108,7 +107,7 @@ private
   end
 
   def publish_manual
-    service = PublishManualService.new(
+    service = Manual::PublishService.new(
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
       context: context,

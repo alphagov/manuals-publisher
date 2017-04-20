@@ -1,13 +1,9 @@
-class UpdateSectionAttachmentService
+class Attachment::ShowService
   def initialize(context:)
     @context = context
   end
 
   def call
-    attachment.update_attributes(attachment_params)
-
-    manual.save(context.current_user)
-
     [manual, section, attachment]
   end
 
@@ -25,19 +21,6 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, context.current_user)
-  end
-
-  def attachment_params
-    context.params
-      .fetch("attachment")
-      .merge("filename" => uploaded_filename)
-  end
-
-  def uploaded_filename
-    context.params
-      .fetch("attachment")
-      .fetch("file")
-      .original_filename
   end
 
   def manual_id

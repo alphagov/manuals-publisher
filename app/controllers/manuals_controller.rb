@@ -1,16 +1,10 @@
-require "list_manuals_service"
-require "show_manual_service"
-require "create_manual_service"
-require "update_manual_service"
-require "queue_publish_manual_service"
 require "publish_manual_worker"
-require "preview_manual_service"
 
 class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
 
   def index
-    service = ListManualsService.new(
+    service = Manual::ListService.new(
       context: self,
     )
     all_manuals = service.call
@@ -19,7 +13,7 @@ class ManualsController < ApplicationController
   end
 
   def show
-    service = ShowManualService.new(
+    service = Manual::ShowService.new(
       manual_id: manual_id,
       context: self,
     )
@@ -46,7 +40,7 @@ class ManualsController < ApplicationController
   end
 
   def create
-    service = CreateManualService.new(
+    service = Manual::CreateService.new(
       attributes: create_manual_params,
       context: self,
     )
@@ -63,7 +57,7 @@ class ManualsController < ApplicationController
   end
 
   def edit
-    service = ShowManualService.new(
+    service = Manual::ShowService.new(
       manual_id: manual_id,
       context: self,
     )
@@ -73,7 +67,7 @@ class ManualsController < ApplicationController
   end
 
   def update
-    service = UpdateManualService.new(
+    service = Manual::UpdateService.new(
       manual_id: manual_id,
       attributes: update_manual_params,
       context: self,
@@ -91,7 +85,7 @@ class ManualsController < ApplicationController
   end
 
   def edit_original_publication_date
-    service = ShowManualService.new(
+    service = Manual::ShowService.new(
       manual_id: manual_id,
       context: self,
     )
@@ -101,7 +95,7 @@ class ManualsController < ApplicationController
   end
 
   def update_original_publication_date
-    service = UpdateManualOriginalPublicationDateService.new(
+    service = Manual::UpdateOriginalPublicationDateService.new(
       manual_id: manual_id,
       attributes: publication_date_manual_params,
       context: self,
@@ -119,7 +113,7 @@ class ManualsController < ApplicationController
   end
 
   def publish
-    service = QueuePublishManualService.new(
+    service = Manual::QueuePublishService.new(
       manual_id: manual_id,
       context: self,
     )
@@ -132,7 +126,7 @@ class ManualsController < ApplicationController
   end
 
   def preview
-    service = PreviewManualService.new(
+    service = Manual::PreviewService.new(
       renderer: ManualRenderer.new,
       manual_id: params[:id],
       attributes: update_manual_params,

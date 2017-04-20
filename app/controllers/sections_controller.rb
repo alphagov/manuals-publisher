@@ -1,17 +1,8 @@
-require "show_section_service"
-require "new_section_service"
-require "create_section_service"
-require "update_section_service"
-require "preview_section_service"
-require "list_sections_service"
-require "reorder_sections_service"
-require "remove_section_service"
-
 class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 
   def show
-    service = ShowSectionService.new(
+    service = Section::ShowService.new(
       context: self,
     )
     manual, section = service.call
@@ -23,7 +14,7 @@ class SectionsController < ApplicationController
   end
 
   def new
-    service = NewSectionService.new(
+    service = Section::NewService.new(
       context: self,
     )
     manual, section = service.call
@@ -35,7 +26,7 @@ class SectionsController < ApplicationController
   end
 
   def create
-    service = CreateSectionService.new(
+    service = Section::CreateService.new(
       context: self,
     )
     manual, section = service.call
@@ -51,7 +42,7 @@ class SectionsController < ApplicationController
   end
 
   def edit
-    service = ShowSectionService.new(
+    service = Section::ShowService.new(
       context: self,
     )
     manual, section = service.call
@@ -63,7 +54,7 @@ class SectionsController < ApplicationController
   end
 
   def update
-    service = UpdateSectionService.new(
+    service = Section::UpdateService.new(
       context: self,
     )
     manual, section = service.call
@@ -79,7 +70,7 @@ class SectionsController < ApplicationController
   end
 
   def preview
-    service = PreviewSectionService.new(
+    service = Section::PreviewService.new(
       section_renderer: SectionRenderer.new,
       context: self,
     )
@@ -103,7 +94,7 @@ class SectionsController < ApplicationController
   end
 
   def reorder
-    service = ListSectionsService.new(
+    service = Section::ListService.new(
       context: self,
     )
     manual, sections = service.call
@@ -115,7 +106,7 @@ class SectionsController < ApplicationController
   end
 
   def update_order
-    service = ReorderSectionsService.new(
+    service = Section::ReorderService.new(
       context: self,
     )
     manual, _sections = service.call
@@ -129,7 +120,7 @@ class SectionsController < ApplicationController
   end
 
   def withdraw
-    service = ShowSectionService.new(
+    service = Section::ShowService.new(
       context: self,
     )
     manual, section = service.call
@@ -141,7 +132,7 @@ class SectionsController < ApplicationController
   end
 
   def destroy
-    service = RemoveSectionService.new(
+    service = Section::RemoveService.new(
       context: self,
     )
     manual, section = service.call

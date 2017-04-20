@@ -1,15 +1,14 @@
-class UpdateManualService
-  def initialize(manual_id:, attributes:, context:)
-    @manual_id = manual_id
+class Manual::CreateService
+  def initialize(attributes:, context:)
     @attributes = attributes
     @context = context
   end
 
   def call
-    manual.draft
-    update
-    persist
-    export_draft_to_publishing_api
+    if manual.valid?
+      persist
+      export_draft_to_publishing_api
+    end
 
     manual
   end
@@ -17,21 +16,16 @@ class UpdateManualService
 private
 
   attr_reader(
-    :manual_id,
     :attributes,
     :context,
   )
 
-  def update
-    manual.update(attributes)
+  def manual
+    @manual ||= Manual.build(attributes)
   end
 
   def persist
     manual.save(context.current_user)
-  end
-
-  def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
   end
 
   def export_draft_to_publishing_api

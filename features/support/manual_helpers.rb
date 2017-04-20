@@ -1,5 +1,3 @@
-require "create_section_service"
-require "update_section_service"
 require "manuals_republisher"
 require "manual_withdrawer"
 
@@ -18,7 +16,7 @@ module ManualHelpers
 
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
-    service = CreateManualService.new(
+    service = Manual::CreateService.new(
       attributes: fields.merge(organisation_slug: organisation_slug),
       context: OpenStruct.new(current_user: user)
     )
@@ -49,7 +47,7 @@ module ManualHelpers
       current_user: user
     )
 
-    service = CreateSectionService.new(
+    service = Section::CreateService.new(
       context: create_service_context,
     )
     _, section = service.call
@@ -71,7 +69,7 @@ module ManualHelpers
 
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
-    service = UpdateManualService.new(
+    service = Manual::UpdateService.new(
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
       context: OpenStruct.new(current_user: user)
@@ -104,7 +102,7 @@ module ManualHelpers
       current_user: user
     )
 
-    service = UpdateSectionService.new(
+    service = Section::UpdateService.new(
       context: service_context,
     )
     _, section = service.call
@@ -154,7 +152,7 @@ module ManualHelpers
 
     user = FactoryGirl.build(:gds_editor)
 
-    service = PublishManualService.new(
+    service = Manual::PublishService.new(
       manual_id: manual.id,
       version_number: manual.version_number,
       context: OpenStruct.new(current_user: user)

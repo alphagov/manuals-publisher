@@ -1,4 +1,4 @@
-class WithdrawManualService
+class Manual::WithdrawService
   def initialize(manual_id:, context:)
     @manual_id = manual_id
     @context = context

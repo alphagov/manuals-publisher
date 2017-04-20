@@ -1,11 +1,6 @@
-require "create_section_attachment_service"
-require "update_section_attachment_service"
-require "show_section_attachment_service"
-require "new_section_attachment_service"
-
 class SectionAttachmentsController < ApplicationController
   def new
-    service = NewSectionAttachmentService.new(
+    service = Attachment::NewService.new(
       context: self,
     )
     manual, section, attachment = service.call
@@ -18,7 +13,7 @@ class SectionAttachmentsController < ApplicationController
   end
 
   def create
-    service = CreateSectionAttachmentService.new(
+    service = Attachment::CreateService.new(
       context: self,
     )
     manual, section, _attachment = service.call
@@ -27,7 +22,7 @@ class SectionAttachmentsController < ApplicationController
   end
 
   def edit
-    service = ShowSectionAttachmentService.new(
+    service = Attachment::ShowService.new(
       context: self,
     )
     manual, section, attachment = service.call
@@ -40,7 +35,7 @@ class SectionAttachmentsController < ApplicationController
   end
 
   def update
-    service = UpdateSectionAttachmentService.new(
+    service = Attachment::UpdateService.new(
       context: self,
     )
     manual, section, attachment = service.call

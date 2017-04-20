@@ -1,7 +1,6 @@
 require "spec_helper"
-require "remove_section_service"
 
-RSpec.describe RemoveSectionService do
+RSpec.describe Section::RemoveService do
   let(:section_id) { "123" }
 
   let(:manual) {
