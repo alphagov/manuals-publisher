@@ -1,4 +1,4 @@
-class UpdateSectionAttachmentService
+class Attachment::UpdateService
   def initialize(context:)
     @context = context
   end
