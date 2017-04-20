@@ -317,4 +317,193 @@ describe Manual do
       )
     end
   end
+
+  describe '.all' do
+    let(:user) { FactoryGirl.create(:gds_editor) }
+    let!(:manual_records) {
+      FactoryGirl.create_list(:manual_record, 2, :with_sections, :with_removed_sections)
+    }
+    let(:all_manuals) { Manual.all(user) }
+
+    it 'evaluates lazily' do
+      expect(all_manuals).to be_a_kind_of(Enumerator::Lazy)
+    end
+
+    it 'returns all the manuals' do
+      manual_ids = all_manuals.to_a.map(&:id)
+      record_ids = manual_records.map(&:manual_id)
+
+      expect(manual_ids).to match_array(record_ids)
+    end
+
+    it 'adds associated sections to each manual' do
+      all_manuals.each do |manual|
+        expect(manual.sections).to_not be_empty
+      end
+    end
+
+    it 'adds associated removed sections to each manual' do
+      all_manuals.each do |manual|
+        expect(manual.removed_sections).to_not be_empty
+      end
+    end
+
+    context 'when requested not to load associations' do
+      let(:all_manuals) { Manual.all(user, load_associations: false) }
+
+      it 'adds associated sections to each manual' do
+        all_manuals.each do |manual|
+          expect(manual.sections).to be_empty
+        end
+      end
+
+      it 'adds associated removed sections to each manual' do
+        all_manuals.each do |manual|
+          expect(manual.removed_sections).to be_empty
+        end
+      end
+    end
+  end
+
+  describe '.find' do
+    let(:user) { FactoryGirl.create(:gds_editor) }
+
+    context 'when a manual record with the given id exists in the users collection' do
+      let(:manual_record) { FactoryGirl.create(:manual_record) }
+      let(:edition) { manual_record.editions.first }
+
+      it 'builds and returns a manual from the manual record and its edition' do
+        manual = Manual.find(manual_record.manual_id, user)
+
+        expect(manual.id).to eq(manual_record.manual_id)
+        expect(manual.slug).to eq(manual_record.slug)
+        expect(manual.title).to eq(edition.title)
+        expect(manual.summary).to eq(edition.summary)
+        expect(manual.body).to eq(edition.body)
+        expect(manual.organisation_slug).to eq(manual.organisation_slug)
+        expect(manual.state).to eq(edition.state)
+        expect(manual.version_number).to eq(edition.version_number)
+        expect(manual.updated_at.to_i).to eq(edition.updated_at.to_i)
+        expect(manual.originally_published_at.to_i).to eq(edition.originally_published_at.to_i)
+        expect(manual.use_originally_published_at_for_public_timestamp).to eq(edition.use_originally_published_at_for_public_timestamp)
+      end
+    end
+
+    context 'when a manual record with the given id does not exist in the users collection' do
+      it 'raises a NotFoundError' do
+        expect { Manual.find(1, user) }.to raise_error(Manual::NotFoundError)
+      end
+    end
+  end
+
+  describe "#save" do
+    let(:user) { FactoryGirl.create(:gds_editor) }
+
+    subject(:manual) {
+      Manual.new(
+        id: 'id',
+        slug: 'manual-slug',
+        title: 'title',
+        summary: 'summary',
+        body: 'body',
+        organisation_slug: 'organisation-slug',
+        state: 'state',
+        updated_at: Time.now,
+        version_number: 1,
+        originally_published_at: Time.now,
+        use_originally_published_at_for_public_timestamp: true
+      )
+    }
+
+    context 'without sections or removed_sections' do
+      it "sets the associated records slug" do
+        manual.save(user)
+
+        record = ManualRecord.where(manual_id: manual.id).first
+        expect(record.slug).to eq(manual.slug)
+      end
+
+      it "sets the associated records organisation slug" do
+        manual.save(user)
+
+        record = ManualRecord.where(manual_id: manual.id).first
+        expect(record.organisation_slug).to eq(manual.organisation_slug)
+      end
+
+      it "sets the properties of the associated edition" do
+        manual.save(user)
+
+        record = ManualRecord.where(manual_id: manual.id).first
+        edition = ManualRecord::Edition.where(
+          manual_record_id: record.id
+        ).first
+
+        expect(edition.title).to eq(manual.title)
+        expect(edition.summary).to eq(manual.summary)
+        expect(edition.body).to eq(manual.body)
+        expect(edition.state).to eq(manual.state)
+        # TODO: something better than `to_i` to compare times?
+        expect(edition.originally_published_at.to_i).to eq(manual.originally_published_at.to_i)
+        expect(edition.use_originally_published_at_for_public_timestamp).to eq(manual.use_originally_published_at_for_public_timestamp)
+      end
+    end
+
+    context 'with sections' do
+      let(:section_repository) { double(:section_repository) }
+      let(:section) { double(:section, id: 'section-id') }
+
+      before do
+        allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+        allow(section_repository).to receive(:store)
+
+        manual.sections = [section]
+      end
+
+      it "uses the section repository to store the sections" do
+        expect(section_repository).to receive(:store).with(section)
+
+        manual.save(user)
+      end
+
+      it "associates the sections with the manual record edition" do
+        manual.save(user)
+
+        record = ManualRecord.where(manual_id: manual.id).first
+        edition = ManualRecord::Edition.where(
+          manual_record_id: record.id
+        ).first
+
+        expect(edition.section_ids).to eq(['section-id'])
+      end
+    end
+
+    context 'with removed sections' do
+      let(:section_repository) { double(:section_repository) }
+      let(:section) { double(:section, id: 'section-id') }
+
+      before do
+        allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+        allow(section_repository).to receive(:store)
+
+        manual.removed_sections = [section]
+      end
+
+      it "uses the section repository to store the removed sections" do
+        expect(section_repository).to receive(:store).with(section)
+
+        manual.save(user)
+      end
+
+      it "associates the removed sections with the manual record edition" do
+        manual.save(user)
+
+        record = ManualRecord.where(manual_id: manual.id).first
+        edition = ManualRecord::Edition.where(
+          manual_record_id: record.id
+        ).first
+
+        expect(edition.removed_section_ids).to eq(['section-id'])
+      end
+    end
+  end
 end

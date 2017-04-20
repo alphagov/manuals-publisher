@@ -48,4 +48,42 @@ FactoryGirl.define do
     version_number { [1, 2, 3].sample }
     sequence(:change_note) { |n| "Change note #{n}" }
   end
+
+  factory :manual_record do
+    slug 'slug'
+    manual_id 'abc-123'
+    organisation_slug 'organisation_slug'
+
+    after(:build) do |manual_record|
+      manual_record.editions << FactoryGirl.build(:manual_record_edition)
+    end
+
+    trait :with_sections do
+      after(:build) do |manual_record|
+        manual_record.editions.each do |edition|
+          section = FactoryGirl.create(:section_edition)
+          edition.section_ids = [section.section_id]
+        end
+      end
+    end
+
+    trait :with_removed_sections do
+      after(:build) do |manual_record|
+        manual_record.editions.each do |edition|
+          section = FactoryGirl.create(:section_edition)
+          edition.removed_section_ids = [section.section_id]
+        end
+      end
+    end
+  end
+
+  factory :manual_record_edition, class: 'ManualRecord::Edition' do
+    title 'title'
+    summary 'summary'
+    body 'body'
+    state 'state'
+    version_number 1
+    originally_published_at Time.now
+    use_originally_published_at_for_public_timestamp true
+  end
 end

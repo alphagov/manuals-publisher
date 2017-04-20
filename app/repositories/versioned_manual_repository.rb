@@ -1,5 +1,5 @@
 class VersionedManualRepository
-  class NotFoundError < StandardError; include Manual::NotFoundError; end
+  class NotFoundError < Manual::NotFoundError; end
 
   def get_manual(manual_id)
     manual_record = ManualRecord.find_by(manual_id: manual_id)
