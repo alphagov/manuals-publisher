@@ -5,7 +5,7 @@ class ManualPublishingAPILinksExporter
   end
 
   def call
-    Services.publishing_api_v2.patch_links(content_id, exportable_attributes)
+    Services.publishing_api.patch_links(content_id, exportable_attributes)
   end
 
 private

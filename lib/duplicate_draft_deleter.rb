@@ -16,7 +16,7 @@ class DuplicateDraftDeleter
 private
 
   def publishing_api
-    Services.publishing_api_v2
+    Services.publishing_api
   end
 
   def in_publishing_api?(content_id)

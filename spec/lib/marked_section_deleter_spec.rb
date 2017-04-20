@@ -9,7 +9,7 @@ describe MarkedSectionDeleter do
   let(:publishing_api) { double(:publishing_api) }
 
   before {
-    allow(Services).to receive(:publishing_api_v2).and_return(publishing_api)
+    allow(Services).to receive(:publishing_api).and_return(publishing_api)
   }
 
   context "when edition is marked for deletion but isn't in publishing api" do

@@ -22,15 +22,7 @@ module Services
   end
 
   def self.publishing_api
-    @publishing_api ||= GdsApi::PublishingApi.new(
-      Plek.find("publishing-api"),
-      bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example",
-      timeout: 30
-    )
-  end
-
-  def self.publishing_api_v2
-    @publishing_api_v2 ||= GdsApi::PublishingApiV2.new(
+    @publishing_api ||= GdsApi::PublishingApiV2.new(
       Plek.find("publishing-api"),
       bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
     )

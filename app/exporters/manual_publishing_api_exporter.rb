@@ -12,7 +12,7 @@ class ManualPublishingAPIExporter
   end
 
   def call
-    Services.publishing_api_v2.put_content(content_id, exportable_attributes)
+    Services.publishing_api.put_content(content_id, exportable_attributes)
   end
 
 private

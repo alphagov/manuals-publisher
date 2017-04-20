@@ -8,7 +8,7 @@ class PublishingAPIPublisher
   end
 
   def call
-    Services.publishing_api_v2.publish(entity.id, update_type)
+    Services.publishing_api.publish(entity.id, update_type)
   end
 
 private
