@@ -1,4 +1,4 @@
-class UpdateManualService
+class Manual::UpdateService
   def initialize(manual_id:, attributes:, context:)
     @manual_id = manual_id
     @attributes = attributes
