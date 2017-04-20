@@ -95,7 +95,7 @@ class ManualsController < ApplicationController
   end
 
   def update_original_publication_date
-    service = UpdateManualOriginalPublicationDateService.new(
+    service = Manual::UpdateOriginalPublicationDateService.new(
       manual_id: manual_id,
       attributes: publication_date_manual_params,
       context: self,

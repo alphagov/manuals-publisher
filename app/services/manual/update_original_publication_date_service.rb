@@ -1,4 +1,4 @@
-class UpdateManualOriginalPublicationDateService
+class Manual::UpdateOriginalPublicationDateService
   def initialize(manual_id:, attributes:, context:)
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
