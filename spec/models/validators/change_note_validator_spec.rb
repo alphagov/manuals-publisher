@@ -10,7 +10,7 @@ RSpec.describe ChangeNoteValidator do
       :section,
       change_note: change_note,
       minor_update?: minor_update,
-      published?: published,
+      never_published?: never_published,
       errors: section_errors,
       valid?: section_valid,
     )
@@ -18,7 +18,7 @@ RSpec.describe ChangeNoteValidator do
 
   let(:change_note) { nil }
   let(:minor_update) { false }
-  let(:published) { false }
+  let(:never_published) { true }
   let(:section_errors) {
     double(
       :section_errors_uncast,
@@ -45,7 +45,7 @@ RSpec.describe ChangeNoteValidator do
       end
 
       context "when the section has never been published" do
-        let(:published) { false }
+        let(:never_published) { true }
 
         it "is valid without a change note" do
           expect(validatable).to be_valid
@@ -53,7 +53,7 @@ RSpec.describe ChangeNoteValidator do
       end
 
       context "when the section has been published" do
-        let(:published) { true }
+        let(:never_published) { false }
         context "when the section has a change note" do
           let(:change_note) { "Awesome update!" }
 
@@ -93,7 +93,7 @@ RSpec.describe ChangeNoteValidator do
     context "when a change note is missing" do
       let(:change_note) { nil }
       let(:minor_update) { false }
-      let(:published) { true }
+      let(:never_published) { false }
 
       before do
         validatable.valid?
@@ -121,7 +121,7 @@ RSpec.describe ChangeNoteValidator do
     context "transitioning from invalid to valid" do
       let(:change_note) { nil }
       let(:minor_update) { false }
-      let(:published) { true }
+      let(:never_published) { false }
       let(:section_valid) { true }
 
       before do

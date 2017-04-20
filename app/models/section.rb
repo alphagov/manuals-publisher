@@ -159,13 +159,13 @@ class Section
     id.eql?(other.id)
   end
 
-protected
-
-  attr_reader :slug_generator, :edition_factory
-
   def never_published?
     !published?
   end
+
+protected
+
+  attr_reader :slug_generator, :edition_factory
 
   def new_edition_defaults
     {

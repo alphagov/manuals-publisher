@@ -27,10 +27,6 @@ private
     never_published? || minor_update?
   end
 
-  def never_published?
-    !section.published?
-  end
-
   def change_note_provided?
     if change_note.present?
       true
