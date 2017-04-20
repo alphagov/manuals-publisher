@@ -4,7 +4,7 @@ class ManualsController < ApplicationController
   before_filter :authorize_user_for_publishing, only: [:publish]
 
   def index
-    service = ListManualsService.new(
+    service = Manual::ListService.new(
       context: self,
     )
     all_manuals = service.call
