@@ -31,11 +31,7 @@ private
   end
 
   def change_note_provided?
-    if change_note.present?
-      true
-    else
-      false
-    end
+    change_note.present?
   end
 
   def reset_errors
