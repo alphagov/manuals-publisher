@@ -96,13 +96,9 @@ private
 
   def discard_draft_from_publishing_api(content_id)
     begin
-      publishing_api_v2.discard_draft(content_id)
+      Services.publishing_api_v2.discard_draft(content_id)
     rescue GdsApi::HTTPNotFound
       log "Draft for #{content_id} already discarded."
     end
-  end
-
-  def publishing_api_v2
-    Services.publishing_api_v2
   end
 end
