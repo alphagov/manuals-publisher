@@ -1,4 +1,4 @@
-class ShowSectionAttachmentService
+class Attachment::ShowService
   def initialize(context:)
     @context = context
   end

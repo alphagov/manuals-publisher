@@ -22,7 +22,7 @@ class SectionAttachmentsController < ApplicationController
   end
 
   def edit
-    service = ShowSectionAttachmentService.new(
+    service = Attachment::ShowService.new(
       context: self,
     )
     manual, section, attachment = service.call
