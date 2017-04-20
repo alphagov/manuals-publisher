@@ -16,7 +16,7 @@ module ManualHelpers
 
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
-    service = CreateManualService.new(
+    service = Manual::CreateService.new(
       attributes: fields.merge(organisation_slug: organisation_slug),
       context: OpenStruct.new(current_user: user)
     )

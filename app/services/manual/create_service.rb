@@ -1,4 +1,4 @@
-class CreateManualService
+class Manual::CreateService
   def initialize(attributes:, context:)
     @attributes = attributes
     @context = context

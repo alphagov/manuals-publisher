@@ -40,7 +40,7 @@ class ManualsController < ApplicationController
   end
 
   def create
-    service = CreateManualService.new(
+    service = Manual::CreateService.new(
       attributes: create_manual_params,
       context: self,
     )
