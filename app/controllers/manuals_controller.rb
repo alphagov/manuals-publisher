@@ -126,7 +126,7 @@ class ManualsController < ApplicationController
   end
 
   def preview
-    service = PreviewManualService.new(
+    service = Manual::PreviewService.new(
       renderer: ManualRenderer.new,
       manual_id: params[:id],
       attributes: update_manual_params,
