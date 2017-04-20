@@ -1,4 +1,4 @@
-class NewSectionAttachmentService
+class Attachment::NewService
   def initialize(context:)
     @context = context
   end
