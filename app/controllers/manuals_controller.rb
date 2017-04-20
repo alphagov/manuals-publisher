@@ -113,7 +113,7 @@ class ManualsController < ApplicationController
   end
 
   def publish
-    service = QueuePublishManualService.new(
+    service = Manual::QueuePublishService.new(
       manual_id: manual_id,
       context: self,
     )

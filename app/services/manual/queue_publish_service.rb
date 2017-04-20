@@ -1,6 +1,6 @@
 require "manual_publish_task"
 
-class QueuePublishManualService
+class Manual::QueuePublishService
   def initialize(manual_id:, context:)
     @manual_id = manual_id
     @context = context
