@@ -33,5 +33,8 @@ module ManualsPublisher
     config.autoload_paths << "#{Rails.root}/app/models/builders"
     config.autoload_paths << "#{Rails.root}/app/models/validators"
     config.autoload_paths << "#{Rails.root}/app/repositories/marshallers"
+    config.autoload_paths << "#{Rails.root}/app/services/manual"
+    config.autoload_paths << "#{Rails.root}/app/services/section"
+    config.autoload_paths << "#{Rails.root}/app/services/attachment"
   end
 end
