@@ -78,7 +78,7 @@ private
     manual_records = ManualRecord.all
     user = OpenStruct.new(manual_records: manual_records)
 
-    service = UpdateSectionService.new(
+    service = Section::UpdateService.new(
       context: context_for_section_edition_update(user),
     )
     _manual, document = service.call

@@ -102,7 +102,7 @@ module ManualHelpers
       current_user: user
     )
 
-    service = UpdateSectionService.new(
+    service = Section::UpdateService.new(
       context: service_context,
     )
     _, section = service.call

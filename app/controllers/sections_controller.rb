@@ -54,7 +54,7 @@ class SectionsController < ApplicationController
   end
 
   def update
-    service = UpdateSectionService.new(
+    service = Section::UpdateService.new(
       context: self,
     )
     manual, section = service.call
