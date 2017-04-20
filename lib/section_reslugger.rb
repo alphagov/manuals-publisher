@@ -107,7 +107,7 @@ private
   end
 
   def publish_manual
-    service = PublishManualService.new(
+    service = Manual::PublishService.new(
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
       context: context,

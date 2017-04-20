@@ -17,7 +17,7 @@ RSpec.describe PublishManualWorker do
   it "repopulates worker request headers" do
     task = double(:task, start!: nil, finish!: nil, manual_id: 1, version_number: 2)
     expect(ManualPublishTask).to receive(:find).with("1").and_return(task)
-    expect(PublishManualService).to receive(:new).and_return(double(:publish, call: nil))
+    expect(Manual::PublishService).to receive(:new).and_return(double(:publish, call: nil))
 
     Sidekiq::Testing.inline! do
       PublishManualWorker.perform_async("1", request_id: "12345", authenticated_user: "abc123")

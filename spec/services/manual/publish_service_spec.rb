@@ -1,7 +1,7 @@
 require "spec_helper"
 require "ostruct"
 
-RSpec.describe PublishManualService do
+RSpec.describe Manual::PublishService do
   let(:manual_id) { double(:manual_id) }
   let(:manual) { double(:manual, id: manual_id, version_number: 3) }
   let(:publication_logger) { double(:publication_logger) }
@@ -12,7 +12,7 @@ RSpec.describe PublishManualService do
   let(:context) { double(:context, current_user: user) }
 
   subject {
-    PublishManualService.new(
+    Manual::PublishService.new(
       manual_id: manual_id,
       version_number: version_number,
       context: context,
@@ -74,8 +74,8 @@ RSpec.describe PublishManualService do
   context "when the version numbers differ" do
     let(:version_number) { 4 }
 
-    it "should raise a PublishManualService::VersionMismatchError" do
-      expect { subject.call }.to raise_error(PublishManualService::VersionMismatchError)
+    it "should raise a Manual::PublishService::VersionMismatchError" do
+      expect { subject.call }.to raise_error(Manual::PublishService::VersionMismatchError)
     end
   end
 end

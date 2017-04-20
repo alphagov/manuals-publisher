@@ -605,7 +605,7 @@ Given(/^an unrecoverable error occurs$/) do
 end
 
 Given(/^a version mismatch occurs$/) do
-  PublishManualService.any_instance.stub(:versions_match?).and_return(false)
+  Manual::PublishService.any_instance.stub(:versions_match?).and_return(false)
 end
 
 When(/^I publish the manual expecting a recoverable error$/) do

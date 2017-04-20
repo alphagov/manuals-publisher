@@ -1,4 +1,4 @@
-class PublishManualService
+class Manual::PublishService
   def initialize(manual_id:, version_number:, context:)
     @manual_id = manual_id
     @version_number = version_number

@@ -14,7 +14,7 @@ class PublishManualWorker
     task = ManualPublishTask.find(task_id)
     task.start!
 
-    service = PublishManualService.new(
+    service = Manual::PublishService.new(
       manual_id: task.manual_id,
       version_number: task.version_number,
       context: context,
@@ -25,7 +25,7 @@ class PublishManualWorker
   rescue GdsApi::HTTPServerError => error
     log_error(error)
     requeue_task(task_id, error)
-  rescue PublishManualService::VersionMismatchError,
+  rescue Manual::PublishService::VersionMismatchError,
          GdsApi::HTTPErrorResponse => error
     log_error(error)
     abort_task(task, error)
