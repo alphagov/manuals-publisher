@@ -193,10 +193,14 @@ class Manual
   end
 
   def build_section(attributes)
-    section = SectionBuilder.new.call(
-      self,
-      attributes
-    )
+    section_factory = SectionFactory.new(self)
+    section = section_factory.call(SecureRandom.uuid, [])
+
+    defaults = {
+      minor_update: false,
+      change_note: "New section added.",
+    }
+    section.update(attributes.reverse_merge(defaults))
 
     sections << section
 
