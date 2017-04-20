@@ -13,7 +13,7 @@ class ManualsRepublisher
     manual_records.to_a.each.with_index do |manual_record, i|
       begin
         logger.info("[ #{i} / #{count} ] id=#{manual_record.manual_id} slug=#{manual_record.slug}]")
-        service = RepublishManualService.new(
+        service = Manual::RepublishService.new(
           manual_id: manual_record.manual_id,
           context: OpenStruct.new(current_user: User.gds_editor),
         )
