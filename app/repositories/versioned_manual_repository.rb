@@ -1,9 +1,4 @@
 class VersionedManualRepository
-  def get_manual(manual_id)
-    manual = Manual.find(manual_id, User.gds_editor)
-    manual.current_versions
-  end
-
   def get_current_draft_version_of_manual(manual_record)
     return nil unless manual_record.latest_edition.state == "draft"
 

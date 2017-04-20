@@ -1,11 +1,13 @@
 require "spec_helper"
 
 RSpec.describe VersionedManualRepository do
-  subject(:repository) { described_class.new }
+  let(:manual) { Manual.find(manual_id, User.gds_editor) }
 
   context "when the provided id doesn't refer to a manual" do
+    let(:manual_id) { "i-dont-exist" }
+
     it "raises a Not Found error" do
-      expect { subject.get_manual("i-dont-exist") }.to raise_error(Manual::NotFoundError)
+      expect { manual.current_versions }.to raise_error(Manual::NotFoundError)
     end
   end
 
@@ -20,7 +22,7 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the published version returned" do
-      subject { repository.get_manual(manual_id)[:published] }
+      subject { manual.current_versions[:published] }
 
       it "is blank" do
         expect(subject).to be_nil
@@ -28,7 +30,7 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the draft version returned" do
-      subject { repository.get_manual(manual_id)[:draft] }
+      subject { manual.current_versions[:draft] }
 
       it "is the first draft as a Manual instance" do
         expect(subject).to be_a ::Manual
@@ -70,7 +72,7 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the published version returned" do
-      subject { repository.get_manual(manual_id)[:published] }
+      subject { manual.current_versions[:published] }
 
       it "is the published version as a Manual instance" do
         expect(subject).to be_a ::Manual
@@ -101,7 +103,7 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the draft version returned" do
-      subject { repository.get_manual(manual_id)[:draft] }
+      subject { manual.current_versions[:draft] }
 
       it "is blank" do
         expect(subject).to be_nil
@@ -120,7 +122,7 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the published version returned" do
-      subject { repository.get_manual(manual_id)[:published] }
+      subject { manual.current_versions[:published] }
 
       it "is blank" do
         expect(subject).to be_nil
@@ -128,7 +130,7 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the draft version returned" do
-      subject { repository.get_manual(manual_id)[:draft] }
+      subject { manual.current_versions[:draft] }
 
       it "is blank" do
         expect(subject).to be_nil
@@ -153,7 +155,7 @@ RSpec.describe VersionedManualRepository do
       let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 2, state: "draft") }
 
       context "the published version returned" do
-        subject { repository.get_manual(manual_id)[:published] }
+        subject { manual.current_versions[:published] }
 
         it "is the published version as a Manual instance" do
           expect(subject).to be_a ::Manual
@@ -184,7 +186,7 @@ RSpec.describe VersionedManualRepository do
       end
 
       context "the draft version returned" do
-        subject { repository.get_manual(manual_id)[:draft] }
+        subject { manual.current_versions[:draft] }
 
         it "is the new draft as a Manual instance" do
           expect(subject).to be_a ::Manual
@@ -220,7 +222,7 @@ RSpec.describe VersionedManualRepository do
       let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 1, state: "published") }
 
       context "the published version returned" do
-        subject { repository.get_manual(manual_id)[:published] }
+        subject { manual.current_versions[:published] }
 
         it "is the published version as a Manual instance" do
           expect(subject).to be_a ::Manual
@@ -251,7 +253,7 @@ RSpec.describe VersionedManualRepository do
       end
 
       context "the draft version returned" do
-        subject { repository.get_manual(manual_id)[:draft] }
+        subject { manual.current_versions[:draft] }
 
         it "is the new draft as a Manual instance" do
           expect(subject).to be_a ::Manual
@@ -288,7 +290,7 @@ RSpec.describe VersionedManualRepository do
       let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 2, state: "draft") }
 
       context "the published version returned" do
-        subject { repository.get_manual(manual_id)[:published] }
+        subject { manual.current_versions[:published] }
 
         it "is the published version as a Manual instance" do
           expect(subject).to be_a ::Manual
@@ -319,7 +321,7 @@ RSpec.describe VersionedManualRepository do
       end
 
       context "the draft version returned" do
-        subject { repository.get_manual(manual_id)[:draft] }
+        subject { manual.current_versions[:draft] }
 
         it "is the new draft as a Manual instance" do
           expect(subject).to be_a ::Manual
