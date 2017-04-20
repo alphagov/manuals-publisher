@@ -11,6 +11,9 @@ class ChangeNoteValidator < SimpleDelegator
     reset_errors
     section_valid = section.valid?
     change_note_ok = (change_note_not_required? || change_note_provided?)
+    unless change_note_ok
+      add_errors
+    end
 
     section_valid && change_note_ok
   end
@@ -31,7 +34,6 @@ private
     if change_note.present?
       true
     else
-      add_errors
       false
     end
   end
