@@ -104,7 +104,6 @@ class Manual
 
     @sections = []
     @removed_sections = []
-    @section_builder = SectionBuilder.new
   end
 
   def to_param
@@ -194,10 +193,14 @@ class Manual
   end
 
   def build_section(attributes)
-    section = section_builder.call(
-      self,
-      attributes
-    )
+    section_factory = SectionFactory.new(self)
+    section = section_factory.call(SecureRandom.uuid, [])
+
+    defaults = {
+      minor_update: false,
+      change_note: "New section added.",
+    }
+    section.update(attributes.reverse_merge(defaults))
 
     sections << section
 
@@ -226,10 +229,6 @@ class Manual
 
     removed_sections << removed
   end
-
-private
-
-  attr_reader :section_builder
 
   class << self
     def build_manual_for(manual_record, load_associations: true)
