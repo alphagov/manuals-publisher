@@ -2,7 +2,7 @@ class SectionsController < ApplicationController
   before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 
   def show
-    service = ShowSectionService.new(
+    service = Section::ShowService.new(
       context: self,
     )
     manual, section = service.call
@@ -42,7 +42,7 @@ class SectionsController < ApplicationController
   end
 
   def edit
-    service = ShowSectionService.new(
+    service = Section::ShowService.new(
       context: self,
     )
     manual, section = service.call
@@ -120,7 +120,7 @@ class SectionsController < ApplicationController
   end
 
   def withdraw
-    service = ShowSectionService.new(
+    service = Section::ShowService.new(
       context: self,
     )
     manual, section = service.call
