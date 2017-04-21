@@ -11,15 +11,19 @@ class SectionSlugSynchroniser
   def report
     amendments, conflicts = analyse_sections
 
-    if amendments.any?
-      log "The following sections can be reslugged:"
-      amendments.each { |k, v| log "'#{section_slug(k)}' to '#{section_slug(v)}'" }
-    end
+    if amendments.empty? && conflicts.empty?
+      log "All section slugs are in sync with their titles."
+    else
+      if amendments.any?
+        log "The following sections can be reslugged:"
+        amendments.each { |k, v| log "'#{section_slug(k)}' to '#{section_slug(v)}'" }
+      end
 
-    if conflicts.any?
-      log "The following sections cannot be reslugged:"
-      conflicts.each do |k, v|
-        log "'#{section_slug(k)}' would change to '#{section_slug(v)}' but this is already in use."
+      if conflicts.any?
+        log "The following sections cannot be reslugged:"
+        conflicts.each do |k, v|
+          log "'#{section_slug(k)}' would change to '#{section_slug(v)}' but this is already in use."
+        end
       end
     end
   end
