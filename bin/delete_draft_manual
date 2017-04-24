@@ -1,8 +1,3 @@
 #!/usr/bin/env ruby
 
-require File.expand_path("../../config/environment", __FILE__)
-require "cli_manual_deleter"
-
-manual_slug = ARGV.any? ? ARGV.fetch(0) : nil
-manual_id = ARGV.any? ? ARGV.fetch(1, nil) : nil
-CliManualDeleter.new(manual_slug, manual_id: manual_id).call
+puts "This script is now a rake task: `rake delete_draft_manual[manual_slug,manual_id]`"

@@ -1,7 +1,3 @@
 #!/usr/bin/env ruby
 
-require File.expand_path("../../config/environment", __FILE__)
-
-require "duplicate_draft_deleter"
-
-DuplicateDraftDeleter.new.call
+puts "This script is now a rake task: `rake delete_duplicate_drafts`"

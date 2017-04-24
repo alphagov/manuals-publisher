@@ -90,11 +90,10 @@ Non standard Rails directories and what they're used for:
 
 ### Deleting a draft manual
 
-If a manual has been created in draft but never been published it can be deleted using a script to delete draft manuals:
+If a manual has been created in draft but never published it can be deleted using a rake task to delete draft manuals:
 
 ```
-$ cd /var/apps/manuals-publisher
-$ sudo -u deploy govuk_setenv manuals-publisher ./bin/delete_draft_manual slug-to-manual
+rake delete_draft_manual[manual-slug,manual-id]
 ```
 
-This would need to be run on one of the backend boxes.
+This would need to be run using Jenkins on one of the backend boxes.

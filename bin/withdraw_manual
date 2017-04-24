@@ -1,13 +1,3 @@
 #!/usr/bin/env ruby
 
-require File.expand_path("../../config/environment", __FILE__)
-require "manual_withdrawer"
-require "logger"
-
-logger = Logger.new(STDOUT)
-logger.formatter = Logger::Formatter.new
-
-manual_id = ARGV.any? ? ARGV.fetch(0) : nil
-
-withdrawer = ManualWithdrawer.new(logger)
-withdrawer.execute(manual_id)
+puts "This script is now a rake task: `rake withdraw_manual[manual_id]`"
