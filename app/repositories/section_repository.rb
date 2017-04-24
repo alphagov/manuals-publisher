@@ -1,18 +1,14 @@
 class SectionRepository
   NotFoundError = Module.new
 
-  def fetchable_fetch(key)
-    result = public_send(:[], key)
+  def fetch(section_id)
+    result = public_send(:[], section_id)
 
     if result.nil?
-      raise KeyError.new("key not found #{key}")
+      raise KeyError.new("key not found #{section_id}")
     else
       result
     end
-  end
-
-  def fetch(section_id)
-    fetchable_fetch(section_id)
   rescue KeyError => e
     raise e.extend(NotFoundError)
   end
