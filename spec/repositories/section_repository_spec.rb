@@ -62,30 +62,6 @@ describe SectionRepository do
       .and_return(section)
   end
 
-  describe "#all" do
-    before do
-      @edition_1, @edition_2 = [2, 1].map do |n|
-        section_id = "section-id-#{n}"
-
-        edition = FactoryGirl.create(:section_edition,
-                                     section_id: section_id,
-                                     updated_at: n.days.ago)
-
-        allow(Section).to receive(:build)
-          .with(manual: manual, id: section_id, editions: [edition])
-          .and_return(Section.new(slug_generator, section_id, [edition]))
-
-        edition
-      end
-    end
-
-    it "returns all sections by date updated desc" do
-      expect(
-        section_repository.all.map(&:title).to_a
-      ).to eq([@edition_2, @edition_1].map(&:title))
-    end
-  end
-
   describe "#[]" do
     let(:editions_proxy) { double(:editions_proxy, to_a: editions).as_null_object }
     let(:editions)       { [published_edition] }

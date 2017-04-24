@@ -15,14 +15,6 @@ class SectionRepository
     @manual = manual
   end
 
-  def all(limit = -1, offset = 0)
-    lower_bound = offset
-    upper_bound = limit < 0 ? limit : offset + limit - 1
-
-    all_section_ids[lower_bound..upper_bound]
-      .map { |id| self[id] }
-  end
-
   def [](id)
     editions = section_editions
       .where(section_id: id)
@@ -105,13 +97,6 @@ private
       .only(:section_id, :updated_at)
       .map(&:section_id)
       .uniq
-  end
-
-  def all_section_ids
-    only_section_ids_for(
-      section_editions
-        .all
-    )
   end
 
   def section_editions
