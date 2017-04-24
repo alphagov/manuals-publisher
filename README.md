@@ -98,14 +98,3 @@ $ sudo -u deploy govuk_setenv manuals-publisher ./bin/delete_draft_manual slug-t
 ```
 
 This would need to be run on one of the backend boxes.
-
-### Removing a draft manual section
-
-If a manual section (also known as a ‘manual document’) has been created in draft but never been published, it can be removed using the `remove_draft_manual_section script`. On one of the backend boxes, run:
-
-```
-$ cd /var/apps/manuals-publisher
-$ sudo -u deploy govuk_setenv manuals-publisher ./bin/remove_draft_manual_section manual_id section_id
-```
-
-The `manual_id` and `section_id` can easily be found in the URL for the manual section, like so `/manuals/<manual_id>/sections/<section_id>?id=<section_id>&manual_id=<manual_id>`
