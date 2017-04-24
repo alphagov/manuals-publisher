@@ -1,6 +1,4 @@
 class SectionRepository
-  NotFoundError = Module.new
-
   def fetch(section_id)
     editions = SectionEdition.all
       .where(section_id: section_id)
@@ -10,7 +8,7 @@ class SectionRepository
       .reverse
 
     if editions.empty?
-      raise KeyError.new("key not found #{section_id}").extend(NotFoundError)
+      raise KeyError.new("key not found #{section_id}")
     else
       Section.build(manual: manual, id: section_id, editions: editions)
     end
