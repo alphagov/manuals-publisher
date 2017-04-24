@@ -10,6 +10,7 @@ class Section
   validates :summary, presence: true
   validates :title, presence: true
   validates :body, presence: true, safe_html: true
+  validate :change_note_ok
 
   def self.edition_attributes
     [
@@ -236,5 +237,12 @@ protected
       updated_at
       exported_at
     ]
+  end
+
+  def change_note_ok
+    change_note_ok = (change_note_not_required? || change_note_provided?)
+    unless change_note_ok
+      errors.add(:change_note, "You must provide a change note or indicate minor update")
+    end
   end
 end

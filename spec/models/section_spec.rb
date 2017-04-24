@@ -805,4 +805,54 @@ describe Section do
       end
     end
   end
+
+  describe "#valid?" do
+    let(:editions) { [FactoryGirl.build(:section_edition)] }
+
+    before do
+      allow(section).to receive(:change_note_not_required?).and_return(change_note_not_required)
+      allow(section).to receive(:change_note_provided?).and_return(change_note_provided)
+    end
+
+    context "when change note not required" do
+      let(:change_note_not_required) { true }
+
+      context "and change note provided" do
+        let(:change_note_provided) { true }
+
+        it "is valid" do
+          expect(section.valid?).to be_truthy
+        end
+      end
+
+      context "and change note not provided" do
+        let(:change_note_provided) { false }
+
+        it "is valid" do
+          expect(section.valid?).to be_truthy
+        end
+      end
+    end
+
+    context "when change note required" do
+      let(:change_note_not_required) { false }
+
+      context "and change note provided" do
+        let(:change_note_provided) { true }
+
+        it "is valid" do
+          expect(section.valid?).to be_truthy
+        end
+      end
+
+      context "and change note not provided" do
+        let(:change_note_provided) { false }
+
+        it "is not valid" do
+          expect(section.valid?).to be_falsey
+          expect(section.errors[:change_note]).to include("You must provide a change note or indicate minor update")
+        end
+      end
+    end
+  end
 end

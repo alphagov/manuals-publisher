@@ -78,7 +78,7 @@ class SectionsController < ApplicationController
 
     section.valid? # Force validation check or errors will be empty
 
-    if section.errors[:body].nil?
+    if section.errors[:body].empty?
       render json: { preview_html: section.body }
     else
       render json: {
