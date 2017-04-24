@@ -40,10 +40,6 @@ class SectionRepository
     self
   end
 
-  def count
-    section_editions.distinct(:section_id).count
-  end
-
 private
 
   attr_reader(
