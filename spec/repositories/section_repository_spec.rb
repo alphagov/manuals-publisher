@@ -64,7 +64,7 @@ describe SectionRepository do
 
     before do
       allow(Section).to receive(:new).and_return(section)
-      allow(SectionEdition).to receive(:all)
+      allow(SectionEdition).to receive(:two_latest_versions)
         .and_return(editions_proxy)
     end
 

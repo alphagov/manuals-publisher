@@ -1,11 +1,6 @@
 class SectionRepository
   def fetch(section_id)
-    editions = SectionEdition.all
-      .where(section_id: section_id)
-      .order_by([:version_number, :desc])
-      .limit(2)
-      .to_a
-      .reverse
+    editions = SectionEdition.two_latest_versions(section_id).to_a.reverse
 
     if editions.empty?
       raise KeyError.new("key not found #{section_id}")
