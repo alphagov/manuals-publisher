@@ -51,6 +51,10 @@ class Section
     @latest_edition = @editions.last
   end
 
+  def save
+    SectionRepository.new.store(self)
+  end
+
   def minor_update?
     !!minor_update
   end

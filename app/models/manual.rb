@@ -92,15 +92,8 @@ class Manual
       use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
     }
 
-    section_repository = SectionRepository.new
-
-    sections.each do |section|
-      section_repository.store(section)
-    end
-
-    removed_sections.each do |section|
-      section_repository.store(section)
-    end
+    sections.each(&:save)
+    removed_sections.each(&:save)
 
     edition.section_ids = sections.map(&:id)
     edition.removed_section_ids = removed_sections.map(&:id)

@@ -449,18 +449,14 @@ describe Manual do
     end
 
     context 'with sections' do
-      let(:section_repository) { double(:section_repository) }
-      let(:section) { double(:section, id: 'section-id') }
+      let(:section) { double(:section, id: 'section-id', save: nil) }
 
       before do
-        allow(SectionRepository).to receive(:new).and_return(section_repository)
-        allow(section_repository).to receive(:store)
-
         manual.sections = [section]
       end
 
-      it "uses the section repository to store the sections" do
-        expect(section_repository).to receive(:store).with(section)
+      it "tells the sections to save themselves" do
+        expect(section).to receive(:save)
 
         manual.save(user)
       end
@@ -478,18 +474,14 @@ describe Manual do
     end
 
     context 'with removed sections' do
-      let(:section_repository) { double(:section_repository) }
-      let(:section) { double(:section, id: 'section-id') }
+      let(:section) { double(:section, id: 'section-id', save: nil) }
 
       before do
-        allow(SectionRepository).to receive(:new).and_return(section_repository)
-        allow(section_repository).to receive(:store)
-
         manual.removed_sections = [section]
       end
 
-      it "uses the section repository to store the removed sections" do
-        expect(section_repository).to receive(:store).with(section)
+      it "tells the removed sections to save themselves" do
+        expect(section).to receive(:save)
 
         manual.save(user)
       end
