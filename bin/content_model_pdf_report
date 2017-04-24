@@ -7,13 +7,11 @@ require 'csv'
 first_period_start_date = ENV.fetch('FIRST_PERIOD_START_DATE', Date.parse('2016-01-01'))
 last_time_period_days = ENV.fetch('LAST_TIME_PERIOD_DAYS', 30)
 
-document_report_filename = Rails.root.join("content-operating-report-for-pdf-documents-#{Time.zone.today.strftime('%Y-%m-%d')}.csv")
-
 attachment_reporter = AttachmentReporting.new(first_period_start_date, last_time_period_days, 'pdf')
 
 organisation_attachment_count_hash = attachment_reporter.create_organisation_attachment_count_hash
 
-CSV.open(document_report_filename, 'w') do |document_csv|
+CSV($stdout) do |document_csv|
   document_csv << [
     "Organisation",
     "Total published PDF attachments",
