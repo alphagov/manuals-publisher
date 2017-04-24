@@ -1,6 +1,7 @@
 require "forwardable"
 require "active_model/conversion"
 require "active_model/naming"
+require "slug_generator"
 
 class Section
   include ActiveModel::Validations
@@ -11,6 +12,16 @@ class Section
   validates :title, presence: true
   validates :body, presence: true, safe_html: true
   validate :change_note_ok
+
+  def self.build(manual:, id:, editions:)
+    slug_generator = SlugGenerator.new(prefix: manual.slug)
+
+    Section.new(
+      slug_generator,
+      id,
+      editions,
+    )
+  end
 
   def self.edition_attributes
     [

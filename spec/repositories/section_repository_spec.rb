@@ -7,7 +7,6 @@ describe SectionRepository do
     )
   end
 
-  let(:section_factory) { double(:section_factory, call: section) }
   let(:manual) { double(:manual) }
 
   let(:section_id) { "section-id" }
@@ -59,7 +58,9 @@ describe SectionRepository do
   end
 
   before do
-    allow(SectionFactory).to receive(:new).with(manual).and_return(section_factory)
+    allow(Section).to receive(:build)
+      .with(manual: manual, id: section_id, editions: [published_edition])
+      .and_return(section)
   end
 
   describe "#all" do
@@ -71,8 +72,8 @@ describe SectionRepository do
                                      section_id: section_id,
                                      updated_at: n.days.ago)
 
-        allow(section_factory).to receive(:call)
-          .with(section_id, [edition])
+        allow(Section).to receive(:build)
+          .with(manual: manual, id: section_id, editions: [edition])
           .and_return(Section.new(slug_generator, section_id, [edition]))
 
         edition
@@ -99,7 +100,8 @@ describe SectionRepository do
     it "populates the section with all editions for that section id" do
       section_repository[section_id]
 
-      expect(section_factory).to have_received(:call).with(section_id, editions)
+      expect(Section).to have_received(:build)
+        .with(manual: manual, id: section_id, editions: editions)
     end
 
     it "returns the section" do

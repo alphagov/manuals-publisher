@@ -211,8 +211,7 @@ class Manual
   end
 
   def build_section(attributes)
-    section_factory = SectionFactory.new(self)
-    section = section_factory.call(SecureRandom.uuid, [])
+    section = Section.build(manual: self, id: SecureRandom.uuid, editions: [])
 
     defaults = {
       minor_update: false,
