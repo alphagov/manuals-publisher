@@ -168,10 +168,6 @@ class Section
     !(never_published? || minor_update?)
   end
 
-  def change_note_provided?
-    change_note.present?
-  end
-
 protected
 
   attr_reader :slug_generator, :edition_factory
@@ -240,7 +236,7 @@ protected
   end
 
   def change_note_ok
-    if change_note_required? && !change_note_provided?
+    if change_note_required? && !change_note.present?
       errors.add(:change_note, "You must provide a change note or indicate minor update")
     end
   end

@@ -784,41 +784,19 @@ describe Section do
     end
   end
 
-  describe "#change_note_provided?" do
-    before do
-      allow(section).to receive(:change_note).and_return(change_note)
-    end
-
-    context "when change note is present" do
-      let(:change_note) { "Awesome update!" }
-
-      it "returns truthy" do
-        expect(section.change_note_provided?).to be_truthy
-      end
-    end
-
-    context "when change note is not present" do
-      let(:change_note) { nil }
-
-      it "returns falsey" do
-        expect(section.change_note_provided?).to be_falsey
-      end
-    end
-  end
-
   describe "#valid?" do
     let(:editions) { [FactoryGirl.build(:section_edition)] }
 
     before do
       allow(section).to receive(:change_note_required?).and_return(change_note_required)
-      allow(section).to receive(:change_note_provided?).and_return(change_note_provided)
+      allow(section).to receive(:change_note).and_return(change_note)
     end
 
     context "when change note not required" do
       let(:change_note_required) { false }
 
       context "and change note provided" do
-        let(:change_note_provided) { true }
+        let(:change_note) { "Awesome update!" }
 
         it "is valid" do
           expect(section.valid?).to be_truthy
@@ -826,7 +804,7 @@ describe Section do
       end
 
       context "and change note not provided" do
-        let(:change_note_provided) { false }
+        let(:change_note) { "" }
 
         it "is valid" do
           expect(section.valid?).to be_truthy
@@ -838,7 +816,7 @@ describe Section do
       let(:change_note_required) { true }
 
       context "and change note provided" do
-        let(:change_note_provided) { true }
+        let(:change_note) { "Awesome update!" }
 
         it "is valid" do
           expect(section.valid?).to be_truthy
@@ -846,7 +824,7 @@ describe Section do
       end
 
       context "and change note not provided" do
-        let(:change_note_provided) { false }
+        let(:change_note) { "" }
 
         it "is not valid" do
           expect(section.valid?).to be_falsey
