@@ -11,12 +11,11 @@ describe SectionRepository do
 
   let(:section_id) { "section-id" }
   let(:section) {
-    Section.new(slug_generator, section_id, editions, edition_factory)
+    Section.new(slug_generator, section_id, editions)
   }
 
   let(:slug_generator) { double(:slug_generator) }
 
-  let(:edition_factory) { double(:edition_factory) }
   let(:editions) { [new_draft_edition] }
 
   let(:new_draft_edition) {

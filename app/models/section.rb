@@ -39,11 +39,10 @@ class Section
 
   attr_reader :id, :editions, :latest_edition
 
-  def initialize(slug_generator, id, editions, edition_factory = SectionEdition.method(:new))
+  def initialize(slug_generator, id, editions)
     @slug_generator = slug_generator
     @id = id
     @editions = editions
-    @edition_factory = edition_factory
     @editions.push(create_first_edition) if @editions.empty?
     @latest_edition = @editions.last
   end
@@ -177,7 +176,7 @@ class Section
 
 protected
 
-  attr_reader :slug_generator, :edition_factory
+  attr_reader :slug_generator
 
   def new_edition_defaults
     {
@@ -189,7 +188,7 @@ protected
   end
 
   def create_first_edition
-    edition_factory.call(new_edition_defaults)
+    SectionEdition.new(new_edition_defaults)
   end
 
   def new_draft(params = {})
@@ -202,7 +201,7 @@ protected
         attachments: attachments,
       )
 
-    edition_factory.call(new_edition_attributes)
+    SectionEdition.new(new_edition_attributes)
   end
 
   def current_version_number
