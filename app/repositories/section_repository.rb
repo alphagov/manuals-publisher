@@ -5,12 +5,10 @@ class SectionRepository
     result = public_send(:[], section_id)
 
     if result.nil?
-      raise KeyError.new("key not found #{section_id}")
+      raise KeyError.new("key not found #{section_id}").extend(NotFoundError)
     else
       result
     end
-  rescue KeyError => e
-    raise e.extend(NotFoundError)
   end
 
   def initialize(manual:)
