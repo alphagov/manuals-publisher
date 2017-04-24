@@ -30,19 +30,6 @@ class SectionRepository
     end
   end
 
-  def slug_unique?(section)
-    # TODO: push this method down into persistence layer
-    if section.draft?
-      section_editions.where(
-        :slug => section.slug,
-        :section_id.ne => section.id,
-        :state => "published"
-      ).empty?
-    else
-      true
-    end
-  end
-
   def store(section)
     # It is actually only necessary to save the latest edition, however, I
     # think it's safer to save latest two as both are exposed to the and have
