@@ -244,12 +244,8 @@ module ManualHelpers
     check_section_is_withdrawn_from_rummager(section)
   end
 
-  def section_repository(manual)
-    SectionRepository.new(manual: manual)
-  end
-
   def find_section(manual, section_id)
-    section_repository(manual).fetch(section_id)
+    SectionRepository.new(manual: manual).fetch(section_id)
   end
 
   def check_section_is_archived_in_db(manual, section_id)
