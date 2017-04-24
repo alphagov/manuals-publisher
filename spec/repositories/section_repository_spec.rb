@@ -55,33 +55,4 @@ describe SectionRepository do
       .with(manual: manual, id: section_id, editions: [published_edition])
       .and_return(section)
   end
-
-  describe "#store(section)" do
-    context "with a valid editions" do
-      let(:previous_edition) { build_published_edition(version: 1) }
-      let(:current_published_edition) { build_published_edition(version: 2) }
-
-      let(:editions) {
-        [
-          previous_edition,
-          current_published_edition,
-          new_draft_edition,
-        ]
-      }
-
-      it "returns self" do
-        expect(section_repository.store(section)).to be(
-          section_repository
-        )
-      end
-
-      it "saves the the two most recent editions" do
-        section_repository.store(section)
-
-        expect(new_draft_edition).to have_received(:save!)
-        expect(current_published_edition).to have_received(:save!)
-        expect(previous_edition).not_to have_received(:save!)
-      end
-    end
-  end
 end

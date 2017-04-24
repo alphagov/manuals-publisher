@@ -141,6 +141,24 @@ describe Section do
     end
   end
 
+  describe '#save' do
+    it 'saves the last two editions' do
+      slug_generator = double(:slug_generator)
+      editions = [
+        edition_1 = double(:edition_1),
+        edition_2 = double(:edition_2),
+        edition_3 = double(:edition_3)
+      ]
+      section = Section.new(slug_generator, 'section-id', editions)
+
+      expect(edition_1).to_not receive(:save!)
+      expect(edition_2).to receive(:save!)
+      expect(edition_3).to receive(:save!)
+
+      section.save
+    end
+  end
+
   describe "#eql?" do
     let(:editions) { [draft_edition_v1] }
 
