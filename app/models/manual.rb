@@ -268,11 +268,10 @@ class Manual
       )
 
       if load_associations
-        manual_with_sections = add_sections_to_manual(base_manual, edition)
-        add_publish_tasks_to_manual(manual_with_sections)
-      else
-        base_manual
+        add_sections_to_manual(base_manual, edition)
+        add_publish_tasks_to_manual(base_manual)
       end
+      base_manual
     end
 
     def add_sections_to_manual(manual, edition)
@@ -292,13 +291,10 @@ class Manual
 
       manual.sections = sections
       manual.removed_sections = removed_sections
-      manual
     end
 
     def add_publish_tasks_to_manual(manual)
-      manual.tap do |m|
-        m.publish_tasks = ManualPublishTask.for_manual(m)
-      end
+      manual.publish_tasks = ManualPublishTask.for_manual(manual)
     end
   end
 
