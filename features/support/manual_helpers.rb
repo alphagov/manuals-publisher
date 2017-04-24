@@ -245,7 +245,7 @@ module ManualHelpers
   end
 
   def find_section(manual, section_id)
-    SectionRepository.new(manual: manual).fetch(section_id)
+    Section.find(manual, section_id)
   end
 
   def check_section_is_archived_in_db(manual, section_id)
