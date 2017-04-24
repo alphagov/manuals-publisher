@@ -20,8 +20,8 @@ class SectionRepository
     end
   end
 
-  def fetch(*args, &block)
-    fetchable_fetch(*args, &block)
+  def fetch(section_id)
+    fetchable_fetch(section_id)
   rescue KeyError => e
     raise e.extend(NotFoundError)
   end
