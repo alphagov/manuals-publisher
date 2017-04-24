@@ -248,8 +248,12 @@ module ManualHelpers
     SectionRepository.new(manual: manual)
   end
 
+  def find_section(manual, section_id)
+    section_repository(manual).fetch(section_id)
+  end
+
   def check_section_is_archived_in_db(manual, section_id)
-    expect(section_repository(manual).fetch(section_id)).to be_withdrawn
+    expect(find_section(manual, section_id)).to be_withdrawn
   end
 
   def check_manual_is_published_to_rummager(slug, attrs)
