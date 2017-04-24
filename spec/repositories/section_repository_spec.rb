@@ -58,7 +58,7 @@ describe SectionRepository do
       .and_return(section)
   end
 
-  describe "#[]" do
+  describe "#fetch" do
     let(:editions_proxy) { double(:editions_proxy, to_a: editions).as_null_object }
     let(:editions)       { [published_edition] }
 
@@ -69,14 +69,14 @@ describe SectionRepository do
     end
 
     it "populates the section with all editions for that section id" do
-      section_repository[section_id]
+      section_repository.fetch(section_id)
 
       expect(Section).to have_received(:build)
         .with(manual: manual, id: section_id, editions: editions)
     end
 
     it "returns the section" do
-      expect(section_repository[section_id]).to eq(section)
+      expect(section_repository.fetch(section_id)).to eq(section)
     end
 
     context "when there are no editions" do
@@ -84,8 +84,8 @@ describe SectionRepository do
         allow(editions_proxy).to receive(:to_a).and_return([])
       end
 
-      it "returns nil" do
-        expect(section_repository[section_id]).to be_nil
+      it "raises a key error" do
+        expect { section_repository.fetch(section_id) }.to raise_error(KeyError)
       end
     end
   end

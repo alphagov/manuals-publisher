@@ -2,7 +2,18 @@ class SectionRepository
   NotFoundError = Module.new
 
   def fetch(section_id)
-    result = public_send(:[], section_id)
+    editions = SectionEdition.all
+      .where(section_id: section_id)
+      .order_by([:version_number, :desc])
+      .limit(2)
+      .to_a
+      .reverse
+
+    if editions.empty?
+      result = nil
+    else
+      result = Section.build(manual: manual, id: section_id, editions: editions)
+    end
 
     if result.nil?
       raise KeyError.new("key not found #{section_id}").extend(NotFoundError)
@@ -13,21 +24,6 @@ class SectionRepository
 
   def initialize(manual:)
     @manual = manual
-  end
-
-  def [](id)
-    editions = SectionEdition.all
-      .where(section_id: id)
-      .order_by([:version_number, :desc])
-      .limit(2)
-      .to_a
-      .reverse
-
-    if editions.empty?
-      nil
-    else
-      Section.build(manual: manual, id: id, editions: editions)
-    end
   end
 
   def store(section)
