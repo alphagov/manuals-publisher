@@ -10,6 +10,7 @@ class Section
   validates :summary, presence: true
   validates :title, presence: true
   validates :body, presence: true, safe_html: true
+  validate :change_note_ok
 
   def self.edition_attributes
     [
@@ -159,13 +160,17 @@ class Section
     id.eql?(other.id)
   end
 
-protected
-
-  attr_reader :slug_generator, :edition_factory
-
   def never_published?
     !published?
   end
+
+  def change_note_required?
+    !(never_published? || minor_update?)
+  end
+
+protected
+
+  attr_reader :slug_generator, :edition_factory
 
   def new_edition_defaults
     {
@@ -228,5 +233,11 @@ protected
       updated_at
       exported_at
     ]
+  end
+
+  def change_note_ok
+    if change_note_required? && !change_note.present?
+      errors.add(:change_note, "You must provide a change note or indicate minor update")
+    end
   end
 end
