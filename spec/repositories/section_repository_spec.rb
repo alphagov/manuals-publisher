@@ -2,9 +2,7 @@ require "spec_helper"
 
 describe SectionRepository do
   let(:section_repository) do
-    SectionRepository.new(
-      manual: manual,
-    )
+    SectionRepository.new
   end
 
   let(:manual) { double(:manual) }
@@ -69,14 +67,14 @@ describe SectionRepository do
     end
 
     it "populates the section with all editions for that section id" do
-      section_repository.fetch(section_id)
+      section_repository.fetch(manual, section_id)
 
       expect(Section).to have_received(:build)
         .with(manual: manual, id: section_id, editions: editions)
     end
 
     it "returns the section" do
-      expect(section_repository.fetch(section_id)).to eq(section)
+      expect(section_repository.fetch(manual, section_id)).to eq(section)
     end
 
     context "when there are no editions" do
@@ -85,7 +83,7 @@ describe SectionRepository do
       end
 
       it "raises a key error" do
-        expect { section_repository.fetch(section_id) }.to raise_error(KeyError)
+        expect { section_repository.fetch(manual, section_id) }.to raise_error(KeyError)
       end
     end
   end

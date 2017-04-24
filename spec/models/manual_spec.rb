@@ -453,7 +453,7 @@ describe Manual do
       let(:section) { double(:section, id: 'section-id') }
 
       before do
-        allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+        allow(SectionRepository).to receive(:new).and_return(section_repository)
         allow(section_repository).to receive(:store)
 
         manual.sections = [section]
@@ -482,7 +482,7 @@ describe Manual do
       let(:section) { double(:section, id: 'section-id') }
 
       before do
-        allow(SectionRepository).to receive(:new).with(manual: manual).and_return(section_repository)
+        allow(SectionRepository).to receive(:new).and_return(section_repository)
         allow(section_repository).to receive(:store)
 
         manual.removed_sections = [section]

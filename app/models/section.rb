@@ -36,7 +36,7 @@ class Section
   end
 
   def self.find(manual, section_id)
-    SectionRepository.new(manual: manual).fetch(section_id)
+    SectionRepository.new.fetch(manual, section_id)
   end
 
   def_delegators :latest_edition, *edition_attributes

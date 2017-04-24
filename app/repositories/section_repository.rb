@@ -1,5 +1,5 @@
 class SectionRepository
-  def fetch(section_id)
+  def fetch(manual, section_id)
     editions = SectionEdition.two_latest_versions(section_id).to_a.reverse
 
     if editions.empty?
@@ -7,10 +7,6 @@ class SectionRepository
     else
       Section.build(manual: manual, id: section_id, editions: editions)
     end
-  end
-
-  def initialize(manual:)
-    @manual = manual
   end
 
   def store(section)
@@ -22,10 +18,4 @@ class SectionRepository
 
     self
   end
-
-private
-
-  attr_reader(
-    :manual,
-  )
 end

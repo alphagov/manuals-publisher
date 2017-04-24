@@ -92,7 +92,7 @@ class Manual
       use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
     }
 
-    section_repository = SectionRepository.new(manual: self)
+    section_repository = SectionRepository.new
 
     sections.each do |section|
       section_repository.store(section)
