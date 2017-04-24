@@ -163,6 +163,14 @@ class Section
     !published?
   end
 
+  def change_note_not_required?
+    never_published? || minor_update?
+  end
+
+  def change_note_provided?
+    change_note.present?
+  end
+
 protected
 
   attr_reader :slug_generator, :edition_factory

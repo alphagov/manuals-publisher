@@ -13,6 +13,7 @@ describe Section do
   let(:slug) { double(:slug) }
   let(:published_slug) { double(:published_slug) }
   let(:slug_generator) { double(:slug_generator, call: slug) }
+  let(:editions) { [] }
   let(:edition_factory) { double(:edition_factory, call: new_edition) }
   let(:new_edition) { double(:new_edition, published?: false, draft?: true, assign_attributes: nil, version_number: 2) }
   let(:attachments) { double(:attachments) }
@@ -737,12 +738,71 @@ describe Section do
   end
 
   describe "#change_note_not_required?" do
-    it 'foo' do
+    before do
+      allow(section).to receive(:never_published?).and_return(never_published)
+      allow(section).to receive(:minor_update?).and_return(minor_update)
+    end
 
+    context "when never published" do
+      let(:never_published) { true }
+
+      context "and update is minor" do
+        let(:minor_update) { true }
+
+        it "returns truthy" do
+          expect(section.change_note_not_required?).to be_truthy
+        end
+      end
+
+      context "and update is not minor" do
+        let(:minor_update) { false }
+
+        it "returns truthy" do
+          expect(section.change_note_not_required?).to be_truthy
+        end
+      end
+    end
+
+    context "when has been published" do
+      let(:never_published) { false }
+
+      context "and update is minor" do
+        let(:minor_update) { true }
+
+        it "returns truthy" do
+          expect(section.change_note_not_required?).to be_truthy
+        end
+      end
+
+      context "and update is not minor" do
+        let(:minor_update) { false }
+
+        it "returns falsey" do
+          expect(section.change_note_not_required?).to be_falsey
+        end
+      end
     end
   end
 
   describe "#change_note_provided?" do
+    before do
+      allow(section).to receive(:change_note).and_return(change_note)
+    end
 
+    context "when change note is present" do
+      let(:change_note) { "Awesome update!" }
+
+      it "returns truthy" do
+        expect(section.change_note_provided?).to be_truthy
+      end
+    end
+
+    context "when change note is not present" do
+      let(:change_note) { nil }
+
+      it "returns falsey" do
+        expect(section.change_note_provided?).to be_falsey
+      end
+    end
   end
 end

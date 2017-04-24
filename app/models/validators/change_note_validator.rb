@@ -26,14 +26,6 @@ private
 
   attr_reader :section
 
-  def change_note_not_required?
-    never_published? || minor_update?
-  end
-
-  def change_note_provided?
-    change_note.present?
-  end
-
   def reset_errors
     @errors = {}
   end

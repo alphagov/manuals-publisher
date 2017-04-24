@@ -8,17 +8,15 @@ RSpec.describe ChangeNoteValidator do
   let(:section) {
     double(
       :section,
-      change_note: change_note,
-      minor_update?: minor_update,
-      never_published?: never_published,
+      change_note_not_required?: change_note_not_required,
+      change_note_provided?: change_note_provided,
       errors: section_errors,
       valid?: section_valid,
     )
   }
 
-  let(:change_note) { nil }
-  let(:minor_update) { false }
-  let(:never_published) { true }
+  let(:change_note_not_required) { true }
+  let(:change_note_provided) { false }
   let(:section_errors) {
     double(
       :section_errors_uncast,
@@ -44,18 +42,19 @@ RSpec.describe ChangeNoteValidator do
         allow(section).to receive(:valid?).and_return(true)
       end
 
-      context "when the section has never been published" do
-        let(:never_published) { true }
+      context "when change note is not required" do
+        let(:change_note_not_required) { true }
 
         it "is valid without a change note" do
           expect(validatable).to be_valid
         end
       end
 
-      context "when the section has been published" do
-        let(:never_published) { false }
+      context "when change note is required" do
+        let(:change_note_not_required) { false }
+
         context "when the section has a change note" do
-          let(:change_note) { "Awesome update!" }
+          let(:change_note_provided) { true }
 
           it "is valid" do
             expect(validatable).to be_valid
@@ -63,26 +62,16 @@ RSpec.describe ChangeNoteValidator do
         end
 
         context "when the section does not have a change note" do
-          context "when the update is minor" do
-            let(:minor_update) { true }
+          let(:change_note_provided) { false }
 
-            it "is valid" do
-              expect(validatable).to be_valid
-            end
+          it "calls #valid? on the section" do
+            validatable.valid?
+
+            expect(section).to have_received(:valid?)
           end
 
-          context "when the update is not minor" do
-            let(:minor_update) { false }
-
-            it "calls #valid? on the section" do
-              validatable.valid?
-
-              expect(section).to have_received(:valid?)
-            end
-
-            it "is not valid" do
-              expect(validatable).not_to be_valid
-            end
+          it "is not valid" do
+            expect(validatable).not_to be_valid
           end
         end
       end
@@ -91,9 +80,8 @@ RSpec.describe ChangeNoteValidator do
 
   describe "#errors" do
     context "when a change note is missing" do
-      let(:change_note) { nil }
-      let(:minor_update) { false }
-      let(:never_published) { false }
+      let(:change_note_provided) { false }
+      let(:change_note_not_required) { false }
 
       before do
         validatable.valid?
@@ -119,14 +107,13 @@ RSpec.describe ChangeNoteValidator do
     end
 
     context "transitioning from invalid to valid" do
-      let(:change_note) { nil }
-      let(:minor_update) { false }
-      let(:never_published) { false }
+      let(:change_note_provided) { false }
+      let(:change_note_not_required) { false }
       let(:section_valid) { true }
 
       before do
         validatable.valid?
-        allow(section).to receive(:change_note).and_return("Updated")
+        allow(section).to receive(:change_note_provided?).and_return(true)
         validatable.valid?
       end
 
