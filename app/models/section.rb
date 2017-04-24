@@ -240,8 +240,7 @@ protected
   end
 
   def change_note_ok
-    change_note_ok = (change_note_not_required? || change_note_provided?)
-    unless change_note_ok
+    unless change_note_not_required? || change_note_provided?
       errors.add(:change_note, "You must provide a change note or indicate minor update")
     end
   end
