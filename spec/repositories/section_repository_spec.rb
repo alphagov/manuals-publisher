@@ -52,10 +52,6 @@ describe SectionRepository do
 
   let(:published_edition) { build_published_edition }
 
-  it "supports the fetch interface" do
-    expect(section_repository).to be_a_kind_of(Fetchable)
-  end
-
   before do
     allow(Section).to receive(:build)
       .with(manual: manual, id: section_id, editions: [published_edition])
