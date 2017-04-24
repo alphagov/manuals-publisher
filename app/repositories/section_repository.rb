@@ -30,13 +30,6 @@ class SectionRepository
     end
   end
 
-  def search(query)
-    conditions = search_conditions(query)
-
-    all_section_ids_scoped(conditions)
-      .map { |id| fetch(id) }
-  end
-
   def slug_unique?(section)
     # TODO: push this method down into persistence layer
     if section.draft?
@@ -69,35 +62,6 @@ private
   attr_reader(
     :manual,
   )
-
-  def search_conditions(query)
-    matcher = /#{query}/i
-    searchable_attributes.map { |attr|
-      { attr => matcher }
-    }
-  end
-
-  def searchable_attributes
-    [
-      :title,
-      :slug,
-    ]
-  end
-
-  def all_section_ids_scoped(conditions)
-    only_section_ids_for(
-      section_editions
-        .any_of(conditions)
-    )
-  end
-
-  def only_section_ids_for(collection)
-    collection.all
-      .order_by([:updated_at, :desc])
-      .only(:section_id, :updated_at)
-      .map(&:section_id)
-      .uniq
-  end
 
   def section_editions
     SectionEdition.all
