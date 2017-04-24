@@ -16,7 +16,7 @@ class SectionRepository
   end
 
   def [](id)
-    editions = section_editions
+    editions = SectionEdition.all
       .where(section_id: id)
       .order_by([:version_number, :desc])
       .limit(2)
@@ -45,8 +45,4 @@ private
   attr_reader(
     :manual,
   )
-
-  def section_editions
-    SectionEdition.all
-  end
 end
