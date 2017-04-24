@@ -20,6 +20,7 @@ class Manual
   )
 
   attr_accessor :sections, :removed_sections
+  attr_accessor :publish_tasks
 
   class NotFoundError < StandardError; end
 
@@ -267,11 +268,10 @@ class Manual
       )
 
       if load_associations
-        manual_with_sections = add_sections_to_manual(base_manual, edition)
-        add_publish_tasks_to_manual(manual_with_sections)
-      else
-        base_manual
+        add_sections_to_manual(base_manual, edition)
+        add_publish_tasks_to_manual(base_manual)
       end
+      base_manual
     end
 
     def add_sections_to_manual(manual, edition)
@@ -291,12 +291,10 @@ class Manual
 
       manual.sections = sections
       manual.removed_sections = removed_sections
-      manual
     end
 
     def add_publish_tasks_to_manual(manual)
-      tasks = ManualPublishTask.for_manual(manual)
-      ManualWithPublishTasks.new(manual, publish_tasks: tasks)
+      manual.publish_tasks = ManualPublishTask.for_manual(manual)
     end
   end
 
