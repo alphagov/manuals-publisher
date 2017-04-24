@@ -12,7 +12,7 @@ class SectionRepository
   end
 
   def initialize(manual:)
-    @section_factory = SectionFactory.new(manual)
+    @manual = manual
   end
 
   def all(limit = -1, offset = 0)
@@ -34,7 +34,7 @@ class SectionRepository
     if editions.empty?
       nil
     else
-      section_factory.call(id, editions)
+      Section.build(manual: manual, id: id, editions: editions)
     end
   end
 
@@ -75,7 +75,7 @@ class SectionRepository
 private
 
   attr_reader(
-    :section_factory,
+    :manual,
   )
 
   def search_conditions(query)
