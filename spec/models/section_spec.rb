@@ -737,7 +737,7 @@ describe Section do
     end
   end
 
-  describe "#change_note_not_required?" do
+  describe "#change_note_required?" do
     before do
       allow(section).to receive(:never_published?).and_return(never_published)
       allow(section).to receive(:minor_update?).and_return(minor_update)
@@ -749,16 +749,16 @@ describe Section do
       context "and update is minor" do
         let(:minor_update) { true }
 
-        it "returns truthy" do
-          expect(section.change_note_not_required?).to be_truthy
+        it "returns falsey" do
+          expect(section.change_note_required?).to be_falsey
         end
       end
 
       context "and update is not minor" do
         let(:minor_update) { false }
 
-        it "returns truthy" do
-          expect(section.change_note_not_required?).to be_truthy
+        it "returns falsey" do
+          expect(section.change_note_required?).to be_falsey
         end
       end
     end
@@ -769,16 +769,16 @@ describe Section do
       context "and update is minor" do
         let(:minor_update) { true }
 
-        it "returns truthy" do
-          expect(section.change_note_not_required?).to be_truthy
+        it "returns falsey" do
+          expect(section.change_note_required?).to be_falsey
         end
       end
 
       context "and update is not minor" do
         let(:minor_update) { false }
 
-        it "returns falsey" do
-          expect(section.change_note_not_required?).to be_falsey
+        it "returns truthy" do
+          expect(section.change_note_required?).to be_truthy
         end
       end
     end
@@ -810,12 +810,12 @@ describe Section do
     let(:editions) { [FactoryGirl.build(:section_edition)] }
 
     before do
-      allow(section).to receive(:change_note_not_required?).and_return(change_note_not_required)
+      allow(section).to receive(:change_note_required?).and_return(change_note_required)
       allow(section).to receive(:change_note_provided?).and_return(change_note_provided)
     end
 
     context "when change note not required" do
-      let(:change_note_not_required) { true }
+      let(:change_note_required) { false }
 
       context "and change note provided" do
         let(:change_note_provided) { true }
@@ -835,7 +835,7 @@ describe Section do
     end
 
     context "when change note required" do
-      let(:change_note_not_required) { false }
+      let(:change_note_required) { true }
 
       context "and change note provided" do
         let(:change_note_provided) { true }
