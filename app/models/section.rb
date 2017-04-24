@@ -16,11 +16,7 @@ class Section
   def self.build(manual:, id:, editions:)
     slug_generator = SlugGenerator.new(prefix: manual.slug)
 
-    Section.new(
-      slug_generator,
-      id,
-      editions,
-    )
+    Section.new(slug_generator, id, editions)
   end
 
   def self.edition_attributes
