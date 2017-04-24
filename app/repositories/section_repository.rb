@@ -10,15 +10,9 @@ class SectionRepository
       .reverse
 
     if editions.empty?
-      result = nil
-    else
-      result = Section.build(manual: manual, id: section_id, editions: editions)
-    end
-
-    if result.nil?
       raise KeyError.new("key not found #{section_id}").extend(NotFoundError)
     else
-      result
+      Section.build(manual: manual, id: section_id, editions: editions)
     end
   end
 
