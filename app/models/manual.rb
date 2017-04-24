@@ -20,6 +20,7 @@ class Manual
   )
 
   attr_accessor :sections, :removed_sections
+  attr_accessor :publish_tasks
 
   class NotFoundError < StandardError; end
 
@@ -295,8 +296,9 @@ class Manual
     end
 
     def add_publish_tasks_to_manual(manual)
-      tasks = ManualPublishTask.for_manual(manual)
-      ManualWithPublishTasks.new(manual, publish_tasks: tasks)
+      manual.tap do |m|
+        m.publish_tasks = ManualPublishTask.for_manual(m)
+      end
     end
   end
 
