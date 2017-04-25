@@ -11,7 +11,7 @@ class VersionedManualRepository
     if manual_record.latest_edition.state == "published"
       Manual.build_manual_for(manual_record)
     elsif manual_record.latest_edition.state == "draft"
-      previous_edition = manual_record.editions.order_by([:version_number, :desc]).limit(2).last
+      previous_edition = manual_record.previous_edition
       if previous_edition.state == "published"
         Manual.build_manual_for(manual_record, edition: previous_edition, published: true)
       else
