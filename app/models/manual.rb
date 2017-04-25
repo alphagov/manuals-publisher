@@ -249,7 +249,7 @@ class Manual
   end
 
   class << self
-    def build_manual_for(manual_record, edition: nil, load_associations: true)
+    def build_manual_for(manual_record, edition: nil, load_associations: true, published: false)
       edition ||= manual_record.latest_edition
 
       base_manual = Manual.new(
@@ -268,15 +268,15 @@ class Manual
       )
 
       if load_associations
-        add_sections_to_manual(base_manual, edition)
+        add_sections_to_manual(base_manual, edition, published: published)
         add_publish_tasks_to_manual(base_manual)
       end
       base_manual
     end
 
-    def add_sections_to_manual(manual, edition)
+    def add_sections_to_manual(manual, edition, published: false)
       sections = Array(edition.section_ids).map { |section_id|
-        Section.find(manual, section_id)
+        Section.find(manual, section_id, published: published)
       }
 
       removed_sections = Array(edition.removed_section_ids).map { |section_id|

@@ -35,11 +35,12 @@ class Section
     ]
   end
 
-  def self.find(manual, section_id)
+  def self.find(manual, section_id, published: false)
     editions = SectionEdition
       .where(section_id: section_id)
       .order_by([:version_number, :desc])
       .to_a
+      .drop_while { |e| published ? (e.state != "published") : false }
       .take(2)
       .reverse
 
