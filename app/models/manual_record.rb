@@ -15,10 +15,6 @@ class ManualRecord
     where(attributes).first
   end
 
-  def self.find_by_organisation(organisation_slug)
-    where(organisation_slug: organisation_slug)
-  end
-
   def self.all_by_updated_at
     order_by([:updated_at, :desc])
   end
