@@ -79,20 +79,6 @@ describe ManualRecord, hits_db: true do
     end
   end
 
-  describe "#find_by_organisation" do
-    let!(:org_1_manual) {
-      ManualRecord.create!(organisation_slug: "org-1")
-    }
-
-    let!(:org_2_manual) {
-      ManualRecord.create!(organisation_slug: "org-2")
-    }
-
-    it "filters by organisation" do
-      expect(ManualRecord.find_by_organisation("org-1").to_a).to eq([org_1_manual])
-    end
-  end
-
   describe "#all_by_updated_at" do
     let!(:middle_edition) {
       ManualRecord.create!(updated_at: 2.days.ago)
