@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Section do
   subject(:section) {
-    Section.new(slug_generator, section_id, editions, edition_factory)
+    Section.new(slug_generator, section_id, editions)
   }
 
   def key_classes_for(hash)
@@ -14,7 +14,6 @@ describe Section do
   let(:published_slug) { double(:published_slug) }
   let(:slug_generator) { double(:slug_generator, call: slug) }
   let(:editions) { [] }
-  let(:edition_factory) { double(:edition_factory, call: new_edition) }
   let(:new_edition) { double(:new_edition, published?: false, draft?: true, assign_attributes: nil, version_number: 2) }
   let(:attachments) { double(:attachments) }
 
@@ -245,10 +244,14 @@ describe Section do
       let(:editions) { [] }
       let(:attrs)    { { title: "Test title" } }
 
+      before do
+        allow(SectionEdition).to receive(:new).and_return(new_edition)
+      end
+
       it "creates the first edition" do
         section.update(attrs)
 
-        expect(edition_factory).to have_received(:call).with(
+        expect(SectionEdition).to have_received(:new).with(
           version_number: 1,
           state: "draft",
           section_id: section_id,
@@ -302,25 +305,26 @@ describe Section do
       before do
         allow(published_edition_v1).to receive(:attributes)
           .and_return(edition_attributes)
+        allow(SectionEdition).to receive(:new).and_return(new_edition)
       end
 
       it "builds a new edition with the new params" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(params))
+        expect(SectionEdition).to have_received(:new).with(hash_including(params))
       end
 
       it "builds the new edition with attributes carried over from the previous edition" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call)
+        expect(SectionEdition).to have_received(:new)
           .with(hash_including(body: edition_body))
       end
 
       it "filters the previous edition's attributes" do
         section.update(params)
 
-        expect(edition_factory).not_to have_received(:call)
+        expect(SectionEdition).not_to have_received(:new)
           .with(
             hash_including(
               _id: "superfluous id",
@@ -328,7 +332,7 @@ describe Section do
             )
           )
 
-        expect(edition_factory).not_to have_received(:call)
+        expect(SectionEdition).not_to have_received(:new)
           .with(
             hash_including(
               "_id" => "superfluous id",
@@ -340,19 +344,19 @@ describe Section do
       it "builds a new edition with an incremented version number" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(version_number: 2))
+        expect(SectionEdition).to have_received(:new).with(hash_including(version_number: 2))
       end
 
       it "builds a new edition in the 'draft' state" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(state: "draft"))
+        expect(SectionEdition).to have_received(:new).with(hash_including(state: "draft"))
       end
 
       it "builds a new edition copying over the previous edition's attachments" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call)
+        expect(SectionEdition).to have_received(:new)
           .with(hash_including(attachments: attachments))
       end
 
@@ -370,10 +374,14 @@ describe Section do
         let(:new_title) { double(:new_title) }
         let(:slug)      { double(:slug) }
 
+        before do
+          allow(SectionEdition).to receive(:new).and_return(new_edition)
+        end
+
         it "does not update the slug" do
           section.update(title: new_title)
 
-          expect(edition_factory).to have_received(:call).with(
+          expect(SectionEdition).to have_received(:new).with(
             hash_including(
               slug: published_slug,
             )
@@ -387,28 +395,32 @@ describe Section do
 
       let(:params) { { title: "It is a new title" } }
 
+      before do
+        allow(SectionEdition).to receive(:new).and_return(new_edition)
+      end
+
       it "builds a new edition with the new params" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(params))
+        expect(SectionEdition).to have_received(:new).with(hash_including(params))
       end
 
       it "builds a new edition with an incremented version number" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(version_number: 3))
+        expect(SectionEdition).to have_received(:new).with(hash_including(version_number: 3))
       end
 
       it "builds a new edition in the 'draft' state" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call).with(hash_including(state: "draft"))
+        expect(SectionEdition).to have_received(:new).with(hash_including(state: "draft"))
       end
 
       it "builds a new edition copying over the previous edition's attachments" do
         section.update(params)
 
-        expect(edition_factory).to have_received(:call)
+        expect(SectionEdition).to have_received(:new)
           .with(hash_including(attachments: attachments))
       end
 
@@ -429,7 +441,7 @@ describe Section do
         it "does not update the slug" do
           section.update(title: new_title)
 
-          expect(edition_factory).to have_received(:call).with(
+          expect(SectionEdition).to have_received(:new).with(
             hash_including(
               slug: published_slug,
             )
