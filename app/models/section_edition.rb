@@ -40,6 +40,12 @@ class SectionEdition
 
   scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
 
+  scope :two_latest_versions, ->(section_id) {
+    where(section_id: section_id)
+    .order_by([:version_number, :desc])
+    .limit(2)
+  }
+
   index section_id: 1
   index state: 1
   index updated_at: 1

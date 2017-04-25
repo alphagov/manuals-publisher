@@ -59,7 +59,7 @@ Then(/^the removed section is archived$/) do
 end
 
 Then(/^the removed section change note is included$/) do
-  @removed_section = section_repository(@manual).fetch(@removed_section.id)
+  @removed_section = Section.find(@manual, @removed_section.id)
 
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -69,7 +69,7 @@ Then(/^the removed section change note is included$/) do
 end
 
 Then(/^the removed section change note is not included$/) do
-  @removed_section = section_repository(@manual).fetch(@removed_section.id)
+  @removed_section = Section.find(@manual, @removed_section.id)
 
   check_manual_is_drafted_to_publishing_api(
     @manual.id,

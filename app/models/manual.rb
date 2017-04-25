@@ -92,15 +92,8 @@ class Manual
       use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
     }
 
-    section_repository = SectionRepository.new(manual: self)
-
-    sections.each do |section|
-      section_repository.store(section)
-    end
-
-    removed_sections.each do |section|
-      section_repository.store(section)
-    end
+    sections.each(&:save)
+    removed_sections.each(&:save)
 
     edition.section_ids = sections.map(&:id)
     edition.removed_section_ids = removed_sections.map(&:id)
@@ -275,15 +268,13 @@ class Manual
     end
 
     def add_sections_to_manual(manual, edition)
-      section_repository = SectionRepository.new(manual: manual)
-
       sections = Array(edition.section_ids).map { |section_id|
-        section_repository.fetch(section_id)
+        Section.find(manual, section_id)
       }
 
       removed_sections = Array(edition.removed_section_ids).map { |section_id|
         begin
-          section_repository.fetch(section_id)
+          Section.find(manual, section_id)
         rescue KeyError
           raise RemovedSectionIdNotFoundError, "No section found for ID #{section_id}"
         end

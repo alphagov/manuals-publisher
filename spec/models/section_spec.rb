@@ -104,6 +104,61 @@ describe Section do
     )
   }
 
+  describe '.find' do
+    let(:manual) { double(:manual, slug: 'manual-slug') }
+
+    context 'when there are associated section editions' do
+      let(:section_edition) { FactoryGirl.build(:section_edition) }
+
+      before do
+        allow(SectionEdition).to receive(:two_latest_versions).with('section-id').and_return([section_edition])
+      end
+
+      it 'builds a section using the manual' do
+        expect(Section).to receive(:build).with(including(manual: manual))
+        Section.find(manual, 'section-id')
+      end
+
+      it 'builds a section using the section id' do
+        expect(Section).to receive(:build).with(including(id: 'section-id'))
+        Section.find(manual, 'section-id')
+      end
+
+      it 'builds a section using the editions' do
+        expect(Section).to receive(:build).with(including(editions: [section_edition]))
+        Section.find(manual, 'section-id')
+      end
+    end
+
+    context "when there aren't any associated section editions" do
+      before do
+        allow(SectionEdition).to receive(:two_latest_versions).with('section-id').and_return([])
+      end
+
+      it 'raises a key error exception' do
+        expect { Section.find(manual, 'section-id') }.to raise_error(KeyError)
+      end
+    end
+  end
+
+  describe '#save' do
+    it 'saves the last two editions' do
+      slug_generator = double(:slug_generator)
+      editions = [
+        edition_1 = double(:edition_1),
+        edition_2 = double(:edition_2),
+        edition_3 = double(:edition_3)
+      ]
+      section = Section.new(slug_generator, 'section-id', editions)
+
+      expect(edition_1).to_not receive(:save!)
+      expect(edition_2).to receive(:save!)
+      expect(edition_3).to receive(:save!)
+
+      section.save
+    end
+  end
+
   describe "#eql?" do
     let(:editions) { [draft_edition_v1] }
 

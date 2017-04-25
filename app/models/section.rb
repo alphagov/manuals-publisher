@@ -36,6 +36,16 @@ class Section
     ]
   end
 
+  def self.find(manual, section_id)
+    editions = SectionEdition.two_latest_versions(section_id).to_a.reverse
+
+    if editions.empty?
+      raise KeyError.new("key not found #{section_id}")
+    else
+      Section.build(manual: manual, id: section_id, editions: editions)
+    end
+  end
+
   def_delegators :latest_edition, *edition_attributes
 
   attr_reader :id, :editions, :latest_edition
@@ -46,6 +56,14 @@ class Section
     @editions = editions
     @editions.push(create_first_edition) if @editions.empty?
     @latest_edition = @editions.last
+  end
+
+  def save
+    # It is actually only necessary to save the latest edition, however, I
+    # think it's safer to save latest two as both are exposed to the and have
+    # potential to change. This extra write may save a potential future
+    # headache.
+    editions.last(2).each(&:save!)
   end
 
   def minor_update?
