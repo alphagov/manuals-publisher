@@ -2,24 +2,14 @@ class VersionedManualRepository
   def get_current_draft_version_of_manual(manual_record)
     return nil unless manual_record.latest_edition.state == "draft"
 
-    build_manual_for(manual_record, manual_record.latest_edition) do
-      {
-        sections: get_latest_version_of_sections(manual_record.latest_edition.section_ids),
-        removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_section_ids),
-      }
-    end
+    Manual.build_manual_for(manual_record)
   end
 
   def get_current_published_version_of_manual(manual_record)
     return nil unless manual_record.has_ever_been_published?
 
     if manual_record.latest_edition.state == "published"
-      build_manual_for(manual_record, manual_record.latest_edition) do
-        {
-          sections: get_latest_version_of_sections(manual_record.latest_edition.section_ids),
-          removed_sections: get_latest_version_of_sections(manual_record.latest_edition.removed_section_ids),
-        }
-      end
+      Manual.build_manual_for(manual_record)
     elsif manual_record.latest_edition.state == "draft"
       previous_edition = manual_record.editions.order_by([:version_number, :desc]).limit(2).last
       if previous_edition.state == "published"
