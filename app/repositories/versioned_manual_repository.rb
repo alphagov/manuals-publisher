@@ -13,11 +13,8 @@ class VersionedManualRepository
     elsif manual_record.latest_edition.state == "draft"
       previous_edition = manual_record.editions.order_by([:version_number, :desc]).limit(2).last
       if previous_edition.state == "published"
-        build_manual_for(manual_record, previous_edition) do
-          {
-            sections: get_published_version_of_sections(previous_edition.section_ids),
-            removed_sections: get_latest_version_of_sections(previous_edition.removed_section_ids)
-          }
+        Manual.build_manual_for(manual_record, edition: previous_edition).tap do |manual|
+          manual.sections = get_published_version_of_sections(previous_edition.section_ids)
         end
       else
         # This means the previous edition is withdrawn so we shouldn't
@@ -33,35 +30,6 @@ class VersionedManualRepository
   end
 
 private
-
-  def build_manual_for(manual_record, edition)
-    base_manual = Manual.new(
-      id: manual_record.manual_id,
-      slug: manual_record.slug,
-      title: edition.title,
-      summary: edition.summary,
-      body: edition.body,
-      organisation_slug: manual_record.organisation_slug,
-      state: edition.state,
-      version_number: edition.version_number,
-      updated_at: edition.updated_at,
-      ever_been_published: manual_record.has_ever_been_published?,
-      originally_published_at: edition.originally_published_at,
-      use_originally_published_at_for_public_timestamp: edition.use_originally_published_at_for_public_timestamp,
-    )
-
-    section_attrs = yield
-
-    base_manual.sections = section_attrs.fetch(:sections, [])
-    base_manual.removed_sections = section_attrs.fetch(:removed_sections, [])
-    base_manual
-  end
-
-  def get_latest_version_of_sections(section_ids)
-    (section_ids || []).map do |section_id|
-      build_section(section_id) { |editions| editions }
-    end
-  end
 
   def build_section(section_id)
     all_editions = SectionEdition.where(section_id: section_id).order_by([:version_number, :desc]).to_a

@@ -249,8 +249,8 @@ class Manual
   end
 
   class << self
-    def build_manual_for(manual_record, load_associations: true)
-      edition = manual_record.latest_edition
+    def build_manual_for(manual_record, edition: nil, load_associations: true)
+      edition ||= manual_record.latest_edition
 
       base_manual = Manual.new(
         id: manual_record.manual_id,
