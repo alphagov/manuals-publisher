@@ -6,8 +6,6 @@ class VersionedManualRepository
   end
 
   def get_current_published_version_of_manual(manual_record)
-    return nil unless manual_record.has_ever_been_published?
-
     if manual_record.latest_edition.state == "published"
       Manual.build_manual_for(manual_record)
     elsif manual_record.latest_edition.state == "draft"
