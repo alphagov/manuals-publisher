@@ -3,6 +3,7 @@ class PublicationLogger
     manual.sections.each do |doc|
       next unless doc.needs_exporting?
       next if doc.minor_update?
+      next if doc.cloned?
 
       PublicationLog.create!(
         title: doc.title,
@@ -15,6 +16,7 @@ class PublicationLogger
     manual.removed_sections.each do |doc|
       next if doc.withdrawn?
       next if doc.minor_update?
+      next if doc.cloned?
 
       PublicationLog.create!(
         title: doc.title,
