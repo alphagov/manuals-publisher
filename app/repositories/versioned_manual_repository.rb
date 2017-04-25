@@ -31,18 +31,14 @@ class VersionedManualRepository
 
 private
 
-  def build_section(section_id)
-    all_editions = SectionEdition.where(section_id: section_id).order_by([:version_number, :desc]).to_a
-    Section.new(
-      ->(_title) { raise RuntimeError, "read only manual" },
-      section_id,
-      yield(all_editions).take(2).reverse,
-    )
-  end
-
   def get_published_version_of_sections(section_ids)
     (section_ids || []).map do |section_id|
-      build_section(section_id) { |editions| editions.drop_while { |e| e.state != "published" } }
+      all_editions = SectionEdition.where(section_id: section_id).order_by([:version_number, :desc]).to_a
+      Section.new(
+        ->(_title) { raise RuntimeError, "read only manual" },
+        section_id,
+        all_editions.drop_while { |e| e.state != "published" }.take(2).reverse,
+      )
     end
   end
 end
