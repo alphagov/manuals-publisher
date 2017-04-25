@@ -39,8 +39,8 @@ class Section
     editions = SectionEdition
       .where(section_id: section_id)
       .order_by([:version_number, :desc])
-      .limit(2)
       .to_a
+      .take(2)
       .reverse
 
     if editions.empty?
