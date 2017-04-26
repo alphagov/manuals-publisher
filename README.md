@@ -68,8 +68,6 @@ Non standard Rails directories and what they're used for:
     These are used by exporters to format information for transferring as JSON
 * `app/models`
   Combination of Mongoid documents and Ruby objects for handling Documents and various behaviours
-  * `app/models/builders`
-    Ruby objects for building a new document by setting ID and subclasses for setting the document type, if needed
   * `app/models/validators`
     Not validators. Decorators for providing validation logic.
 * `app/repositories`
