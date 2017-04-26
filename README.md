@@ -70,8 +70,6 @@ Non standard Rails directories and what they're used for:
   Combination of Mongoid documents and Ruby objects for handling Documents and various behaviours
   * `app/models/validators`
     Not validators. Decorators for providing validation logic.
-* `app/repositories`
-  Provide interaction with the persistance layer (Mongoid)
 * `app/services`
   Reusable classes for completing actions on documents
 * `app/view_adapters`

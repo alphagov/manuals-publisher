@@ -35,8 +35,14 @@ class Section
     ]
   end
 
-  def self.find(manual, section_id)
-    editions = SectionEdition.two_latest_versions(section_id).to_a.reverse
+  def self.find(manual, section_id, published: false)
+    editions = SectionEdition
+      .where(section_id: section_id)
+      .order_by([:version_number, :desc])
+      .to_a
+      .drop_while { |e| published && !e.published? }
+      .take(2)
+      .reverse
 
     if editions.empty?
       raise KeyError.new("key not found #{section_id}")

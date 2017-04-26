@@ -109,9 +109,10 @@ describe Section do
 
     context 'when there are associated section editions' do
       let(:section_edition) { FactoryGirl.build(:section_edition) }
+      let(:editions_proxy) { double(:editions_proxy, to_a: [section_edition]).as_null_object }
 
       before do
-        allow(SectionEdition).to receive(:two_latest_versions).with('section-id').and_return([section_edition])
+        allow(SectionEdition).to receive(:where).with(section_id: 'section-id').and_return(editions_proxy)
       end
 
       it 'builds a section using the manual' do
@@ -131,8 +132,10 @@ describe Section do
     end
 
     context "when there aren't any associated section editions" do
+      let(:editions_proxy) { double(:editions_proxy, to_a: []).as_null_object }
+
       before do
-        allow(SectionEdition).to receive(:two_latest_versions).with('section-id').and_return([])
+        allow(SectionEdition).to receive(:where).with(section_id: 'section-id').and_return(editions_proxy)
       end
 
       it 'raises a key error exception' do
