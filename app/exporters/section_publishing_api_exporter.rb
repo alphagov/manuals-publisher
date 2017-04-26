@@ -112,7 +112,7 @@ private
   end
 
   def rendered_section_attributes
-    @rendered_section_attributes ||= SectionRenderer.new.call(section).attributes
+    @rendered_section_attributes ||= Section::PreviewService.new(context: nil).render(section).attributes
   end
 
   def organisation_info
