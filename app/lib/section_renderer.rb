@@ -5,15 +5,5 @@ require "footnotes_section_heading_renderer"
 
 class SectionRenderer
   def call(doc)
-    pipeline = [
-      MarkdownAttachmentProcessor.method(:new),
-      SectionHeaderExtractor.create,
-      GovspeakToHTMLRenderer.create,
-      FootnotesSectionHeadingRenderer.create,
-    ]
-
-    pipeline.reduce(doc) { |current_doc, next_renderer|
-      next_renderer.call(current_doc)
-    }
   end
 end
