@@ -11,9 +11,4 @@ namespace :sections do
   task :synchronise, [:manual_slug] => :environment do |_, args|
     SectionSlugSynchroniser.new(args[:manual_slug]).synchronise
   end
-
-  desc "Updates the section slug for a given manual."
-  task :reslug_section, [:manual_slug, :current_section_slug, :new_section_slug] => :environment do |args|
-    SectionReslugger.new(args[:manual_slug], args[:current_section_slug], args[:new_section_slug]).call
-  end
 end
