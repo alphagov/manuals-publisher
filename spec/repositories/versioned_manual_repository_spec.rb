@@ -14,26 +14,26 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the published version returned" do
-      subject { manual.current_versions[:published] }
-
       it "is blank" do
-        expect(subject).to be_nil
+        expect(manual.current_versions[:published]).to be_nil
       end
     end
 
     context "the draft version returned" do
-      subject { manual.current_versions[:draft] }
-
       it "is the first draft as a Manual instance" do
-        expect(subject).to be_a ::Manual
-        expect(subject.id).to eq manual_id
-        expect(subject.state).to eq "draft"
-        expect(subject.version_number).to eq 1
-        expect(subject.slug).to eq "guidance/my-amazing-manual"
+        result = manual.current_versions[:draft]
+
+        expect(result).to be_a ::Manual
+        expect(result.id).to eq manual_id
+        expect(result.state).to eq "draft"
+        expect(result.version_number).to eq 1
+        expect(result.slug).to eq "guidance/my-amazing-manual"
       end
 
       it "has the first draft of the section editions as Section instances attached" do
-        sections = subject.sections.to_a
+        result = manual.current_versions[:draft]
+
+        sections = result.sections.to_a
         expect(sections.size).to eq 2
 
         section_1 = sections[0]
@@ -64,18 +64,20 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the published version returned" do
-      subject { manual.current_versions[:published] }
-
       it "is the published version as a Manual instance" do
-        expect(subject).to be_a ::Manual
-        expect(subject.id).to eq manual_id
-        expect(subject.state).to eq "published"
-        expect(subject.version_number).to eq 1
-        expect(subject.slug).to eq "guidance/my-amazing-manual"
+        result = manual.current_versions[:published]
+
+        expect(result).to be_a ::Manual
+        expect(result.id).to eq manual_id
+        expect(result.state).to eq "published"
+        expect(result.version_number).to eq 1
+        expect(result.slug).to eq "guidance/my-amazing-manual"
       end
 
       it "has the published version of the section editions as Section instances attached" do
-        sections = subject.sections.to_a
+        result = manual.current_versions[:published]
+
+        sections = result.sections.to_a
         expect(sections.size).to eq 2
 
         section_1 = sections[0]
@@ -95,10 +97,8 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the draft version returned" do
-      subject { manual.current_versions[:draft] }
-
       it "is blank" do
-        expect(subject).to be_nil
+        expect(manual.current_versions[:draft]).to be_nil
       end
     end
   end
@@ -114,18 +114,14 @@ RSpec.describe VersionedManualRepository do
     end
 
     context "the published version returned" do
-      subject { manual.current_versions[:published] }
-
       it "is blank" do
-        expect(subject).to be_nil
+        expect(manual.current_versions[:published]).to be_nil
       end
     end
 
     context "the draft version returned" do
-      subject { manual.current_versions[:draft] }
-
       it "is blank" do
-        expect(subject).to be_nil
+        expect(manual.current_versions[:draft]).to be_nil
       end
     end
   end
@@ -147,18 +143,20 @@ RSpec.describe VersionedManualRepository do
       let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 2, state: "draft") }
 
       context "the published version returned" do
-        subject { manual.current_versions[:published] }
-
         it "is the published version as a Manual instance" do
-          expect(subject).to be_a ::Manual
-          expect(subject.id).to eq manual_id
-          expect(subject.state).to eq "published"
-          expect(subject.version_number).to eq 1
-          expect(subject.slug).to eq "guidance/my-amazing-manual"
+          result = manual.current_versions[:published]
+
+          expect(result).to be_a ::Manual
+          expect(result.id).to eq manual_id
+          expect(result.state).to eq "published"
+          expect(result.version_number).to eq 1
+          expect(result.slug).to eq "guidance/my-amazing-manual"
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          sections = subject.sections.to_a
+          result = manual.current_versions[:published]
+
+          sections = result.sections.to_a
           expect(sections.size).to eq 2
 
           section_1 = sections[0]
@@ -178,18 +176,20 @@ RSpec.describe VersionedManualRepository do
       end
 
       context "the draft version returned" do
-        subject { manual.current_versions[:draft] }
-
         it "is the new draft as a Manual instance" do
-          expect(subject).to be_a ::Manual
-          expect(subject.id).to eq manual_id
-          expect(subject.state).to eq "draft"
-          expect(subject.version_number).to eq 2
-          expect(subject.slug).to eq "guidance/my-amazing-manual"
+          result = manual.current_versions[:draft]
+
+          expect(result).to be_a ::Manual
+          expect(result.id).to eq manual_id
+          expect(result.state).to eq "draft"
+          expect(result.version_number).to eq 2
+          expect(result.slug).to eq "guidance/my-amazing-manual"
         end
 
         it "has the new drafts of the section editions as Section instances attached" do
-          sections = subject.sections.to_a
+          result = manual.current_versions[:draft]
+
+          sections = result.sections.to_a
           expect(sections.size).to eq 2
 
           section_1 = sections[0]
@@ -214,18 +214,20 @@ RSpec.describe VersionedManualRepository do
       let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 1, state: "published") }
 
       context "the published version returned" do
-        subject { manual.current_versions[:published] }
-
         it "is the published version as a Manual instance" do
-          expect(subject).to be_a ::Manual
-          expect(subject.id).to eq manual_id
-          expect(subject.state).to eq "published"
-          expect(subject.version_number).to eq 1
-          expect(subject.slug).to eq "guidance/my-amazing-manual"
+          result = manual.current_versions[:published]
+
+          expect(result).to be_a ::Manual
+          expect(result.id).to eq manual_id
+          expect(result.state).to eq "published"
+          expect(result.version_number).to eq 1
+          expect(result.slug).to eq "guidance/my-amazing-manual"
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          sections = subject.sections.to_a
+          result = manual.current_versions[:published]
+
+          sections = result.sections.to_a
           expect(sections.size).to eq 2
 
           section_1 = sections[0]
@@ -245,18 +247,20 @@ RSpec.describe VersionedManualRepository do
       end
 
       context "the draft version returned" do
-        subject { manual.current_versions[:draft] }
-
         it "is the new draft as a Manual instance" do
-          expect(subject).to be_a ::Manual
-          expect(subject.id).to eq manual_id
-          expect(subject.state).to eq "draft"
-          expect(subject.version_number).to eq 2
-          expect(subject.slug).to eq "guidance/my-amazing-manual"
+          result = manual.current_versions[:draft]
+
+          expect(result).to be_a ::Manual
+          expect(result.id).to eq manual_id
+          expect(result.state).to eq "draft"
+          expect(result.version_number).to eq 2
+          expect(result.slug).to eq "guidance/my-amazing-manual"
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          sections = subject.sections.to_a
+          result = manual.current_versions[:published]
+
+          sections = result.sections.to_a
           expect(sections.size).to eq 2
 
           section_1 = sections[0]
@@ -282,18 +286,20 @@ RSpec.describe VersionedManualRepository do
       let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 2, state: "draft") }
 
       context "the published version returned" do
-        subject { manual.current_versions[:published] }
-
         it "is the published version as a Manual instance" do
-          expect(subject).to be_a ::Manual
-          expect(subject.id).to eq manual_id
-          expect(subject.state).to eq "published"
-          expect(subject.version_number).to eq 1
-          expect(subject.slug).to eq "guidance/my-amazing-manual"
+          result = manual.current_versions[:published]
+
+          expect(result).to be_a ::Manual
+          expect(result.id).to eq manual_id
+          expect(result.state).to eq "published"
+          expect(result.version_number).to eq 1
+          expect(result.slug).to eq "guidance/my-amazing-manual"
         end
 
         it "has the published versions of the section editions as Section instances attached" do
-          sections = subject.sections.to_a
+          result = manual.current_versions[:published]
+
+          sections = result.sections.to_a
           expect(sections.size).to eq 2
 
           section_1 = sections[0]
@@ -313,18 +319,20 @@ RSpec.describe VersionedManualRepository do
       end
 
       context "the draft version returned" do
-        subject { manual.current_versions[:draft] }
-
         it "is the new draft as a Manual instance" do
-          expect(subject).to be_a ::Manual
-          expect(subject.id).to eq manual_id
-          expect(subject.state).to eq "draft"
-          expect(subject.version_number).to eq 2
-          expect(subject.slug).to eq "guidance/my-amazing-manual"
+          result = manual.current_versions[:draft]
+
+          expect(result).to be_a ::Manual
+          expect(result.id).to eq manual_id
+          expect(result.state).to eq "draft"
+          expect(result.version_number).to eq 2
+          expect(result.slug).to eq "guidance/my-amazing-manual"
         end
 
         it "has correct draft or published version of the section editions as Section instances attached" do
-          sections = subject.sections.to_a
+          result = manual.current_versions[:draft]
+
+          sections = result.sections.to_a
           expect(sections.size).to eq 2
 
           section_1 = sections[0]
