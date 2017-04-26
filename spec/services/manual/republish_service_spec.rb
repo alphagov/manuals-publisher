@@ -1,5 +1,4 @@
 require "spec_helper"
-require "versioned_manual_repository"
 
 RSpec.describe Manual::RepublishService do
   let(:manual_id) { double(:manual_id) }
