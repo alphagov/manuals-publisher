@@ -86,14 +86,7 @@ Non standard Rails directories and what they're used for:
 
  Services do things such as previewing a document, creation, updating, showing, withdrawing, queueing. This replaces the normal Rails behaviour of completing these actions directly from a controller, instead we call a service registry.
 
-## Deleting or removing draft manuals
 
-### Deleting a draft manual
+### Supporting Rake tasks
 
-If a manual has been created in draft but never published it can be deleted using a rake task to delete draft manuals:
-
-```
-rake delete_draft_manual[manual-slug,manual-id]
-```
-
-This would need to be run using Jenkins on one of the backend boxes.
+See [rake task documentation](docs/rake-tasks.md) for common manual and section management tasks.
