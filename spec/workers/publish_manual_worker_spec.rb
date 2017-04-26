@@ -27,17 +27,21 @@ RSpec.describe PublishManualWorker do
   end
 
   context 'when publishing and encountering' do
+    let(:publish_service) { double(:publish_service) }
+    let(:task) { ManualPublishTask.create! }
+    let(:worker) { PublishManualWorker.new }
+    let(:logger) { double(:logger, error: nil) }
+
+    before do
+      allow(Manual::PublishService).to receive(:new).and_return(publish_service)
+      allow(Rails).to receive(:logger).and_return(logger)
+    end
+
     context 'an HTTP server error connecting to the GDS API' do
-      let(:publish_service) { double(:publish_service) }
-      let(:task) { ManualPublishTask.create! }
-      let(:worker) { PublishManualWorker.new }
       let(:http_error) { GdsApi::HTTPServerError.new(500) }
-      let(:logger) { double(:logger, error: nil) }
 
       before do
-        allow(Manual::PublishService).to receive(:new).and_return(publish_service)
         allow(publish_service).to receive(:call).and_raise(http_error)
-        allow(Rails).to receive(:logger).and_return(logger)
       end
 
       it 'raises a failed to publish error so that Sidekiq can retry the job' do
@@ -59,16 +63,10 @@ RSpec.describe PublishManualWorker do
     end
 
     context 'an HTTP error connecting to the GDS API' do
-      let(:publish_service) { double(:publish_service) }
-      let(:task) { ManualPublishTask.create! }
-      let(:worker) { PublishManualWorker.new }
       let(:http_error) { GdsApi::HTTPErrorResponse.new(400) }
-      let(:logger) { double(:logger, error: nil) }
 
       before do
-        allow(Manual::PublishService).to receive(:new).and_return(publish_service)
         allow(publish_service).to receive(:call).and_raise(http_error)
-        allow(Rails).to receive(:logger).and_return(logger)
       end
 
       it 'stores the error message on the task' do
@@ -98,16 +96,10 @@ RSpec.describe PublishManualWorker do
     end
 
     context 'a version mismatch error' do
-      let(:publish_service) { double(:publish_service) }
-      let(:task) { ManualPublishTask.create! }
-      let(:worker) { PublishManualWorker.new }
       let(:version_error) { Manual::PublishService::VersionMismatchError.new }
-      let(:logger) { double(:logger, error: nil) }
 
       before do
-        allow(Manual::PublishService).to receive(:new).and_return(publish_service)
         allow(publish_service).to receive(:call).and_raise(version_error)
-        allow(Rails).to receive(:logger).and_return(logger)
       end
 
       it 'stores the error message on the task' do
