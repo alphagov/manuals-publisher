@@ -508,6 +508,7 @@ describe Manual do
       let(:manual_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 1, state: "draft") }
       let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_id: "12345", version_number: 1, state: "draft") }
       let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 1, state: "draft") }
+
       before do
         manual_record.editions << manual_edition
       end
@@ -558,6 +559,7 @@ describe Manual do
       let(:manual_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 1, state: "published") }
       let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_id: "12345", version_number: 1, state: "published") }
       let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 1, state: "published") }
+
       before do
         manual_record.editions << manual_edition
       end
@@ -608,6 +610,7 @@ describe Manual do
       let(:manual_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 1, state: "withdrawn") }
       let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_id: "12345", version_number: 1, state: "archived") }
       let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_id: "67890", version_number: 1, state: "archived") }
+
       before do
         manual_record.editions << manual_edition
       end
@@ -630,6 +633,7 @@ describe Manual do
       let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_published_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 1, state: "published") }
       let(:manual_draft_edition) { ManualRecord::Edition.new(section_ids: %w(12345 67890), version_number: 2, state: "draft") }
+
       before do
         manual_record.editions << manual_published_edition
         manual_record.editions << manual_draft_edition
