@@ -50,6 +50,7 @@ private
   end
 
   def log_error(error)
+    Rails.logger.error "#{self.class} error: #{error}"
     Airbrake.notify(error)
   end
 

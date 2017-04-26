@@ -31,10 +31,12 @@ RSpec.describe PublishManualWorker do
     let(:task) { ManualPublishTask.create! }
     let(:worker) { PublishManualWorker.new }
     let(:http_error) { GdsApi::HTTPServerError.new(500) }
+    let(:logger) { double(:logger, error: nil) }
 
     before do
       allow(Manual::PublishService).to receive(:new).and_return(publish_service)
       allow(publish_service).to receive(:call).and_raise(http_error)
+      allow(Rails).to receive(:logger).and_return(logger)
     end
 
     it 'raises a failed to publish error so that Sidekiq can retry the job' do
@@ -47,6 +49,12 @@ RSpec.describe PublishManualWorker do
 
       worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
     end
+
+    it 'logs the error to the Rails log' do
+      expect(logger).to receive(:error).with(/#{http_error}/)
+
+      worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+    end
   end
 
   context 'when encountering an HTTP error connecting to the GDS API' do
@@ -54,10 +62,12 @@ RSpec.describe PublishManualWorker do
     let(:task) { ManualPublishTask.create! }
     let(:worker) { PublishManualWorker.new }
     let(:http_error) { GdsApi::HTTPErrorResponse.new(400) }
+    let(:logger) { double(:logger, error: nil) }
 
     before do
       allow(Manual::PublishService).to receive(:new).and_return(publish_service)
       allow(publish_service).to receive(:call).and_raise(http_error)
+      allow(Rails).to receive(:logger).and_return(logger)
     end
 
     it 'stores the error message on the task' do
@@ -78,6 +88,12 @@ RSpec.describe PublishManualWorker do
 
       worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
     end
+
+    it 'logs the error to the Rails log' do
+      expect(logger).to receive(:error).with(/#{http_error}/)
+
+      worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+    end
   end
 
   context 'when encountering a version mismatch error' do
@@ -85,10 +101,12 @@ RSpec.describe PublishManualWorker do
     let(:task) { ManualPublishTask.create! }
     let(:worker) { PublishManualWorker.new }
     let(:version_error) { Manual::PublishService::VersionMismatchError.new }
+    let(:logger) { double(:logger, error: nil) }
 
     before do
       allow(Manual::PublishService).to receive(:new).and_return(publish_service)
       allow(publish_service).to receive(:call).and_raise(version_error)
+      allow(Rails).to receive(:logger).and_return(logger)
     end
 
     it 'stores the error message on the task' do
@@ -106,6 +124,12 @@ RSpec.describe PublishManualWorker do
 
     it 'notifies Airbrake of the error' do
       expect(Airbrake).to receive(:notify).with(version_error)
+
+      worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+    end
+
+    it 'logs the error to the Rails log' do
+      expect(logger).to receive(:error).with(/#{version_error}/)
 
       worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
     end
