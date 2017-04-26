@@ -79,4 +79,35 @@ RSpec.describe PublishManualWorker do
       worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
     end
   end
+
+  context 'when encountering a version mismatch error' do
+    let(:publish_service) { double(:publish_service) }
+    let(:task) { ManualPublishTask.create! }
+    let(:worker) { PublishManualWorker.new }
+    let(:version_error) { Manual::PublishService::VersionMismatchError.new }
+
+    before do
+      allow(Manual::PublishService).to receive(:new).and_return(publish_service)
+      allow(publish_service).to receive(:call).and_raise(version_error)
+    end
+
+    it 'stores the error message on the task' do
+      allow(version_error).to receive(:message).and_return('version-mismatch-message')
+      worker.perform(task.id)
+      task.reload
+      expect(task.error).to eql('version-mismatch-message')
+    end
+
+    it 'marks the task as aborted' do
+      worker.perform(task.id)
+      task.reload
+      expect(task).to be_aborted
+    end
+
+    it 'notifies Airbrake of the error' do
+      expect(Airbrake).to receive(:notify).with(version_error)
+
+      worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+    end
+  end
 end
