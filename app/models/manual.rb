@@ -106,8 +106,8 @@ class Manual
     raise NotFoundError if manual_record.nil?
 
     {
-      draft: get_current_draft_version_of_manual(manual_record),
-      published: get_current_published_version_of_manual(manual_record),
+      draft: current_draft_version(manual_record),
+      published: current_published_version(manual_record),
     }
   end
 
@@ -294,13 +294,13 @@ class Manual
     end
   end
 
-  def get_current_draft_version_of_manual(manual_record)
+  def current_draft_version(manual_record)
     return nil unless manual_record.latest_edition.state == "draft"
 
     Manual.build_manual_for(manual_record)
   end
 
-  def get_current_published_version_of_manual(manual_record)
+  def current_published_version(manual_record)
     if manual_record.latest_edition.state == "published"
       Manual.build_manual_for(manual_record)
     elsif manual_record.latest_edition.state == "draft"
