@@ -102,14 +102,12 @@ class Manual
   end
 
   def current_versions
-    repository = VersionedManualRepository.new
-
     manual_record = ManualRecord.find_by(manual_id: id)
     raise NotFoundError if manual_record.nil?
 
     {
-      draft: repository.get_current_draft_version_of_manual(manual_record),
-      published: repository.get_current_published_version_of_manual(manual_record),
+      draft: get_current_draft_version_of_manual(manual_record),
+      published: get_current_published_version_of_manual(manual_record),
     }
   end
 
@@ -293,6 +291,32 @@ class Manual
 
     def add_publish_tasks_to_manual(manual)
       manual.publish_tasks = ManualPublishTask.for_manual(manual)
+    end
+  end
+
+  def get_current_draft_version_of_manual(manual_record)
+    return nil unless manual_record.latest_edition.state == "draft"
+
+    Manual.build_manual_for(manual_record)
+  end
+
+  def get_current_published_version_of_manual(manual_record)
+    if manual_record.latest_edition.state == "published"
+      Manual.build_manual_for(manual_record)
+    elsif manual_record.latest_edition.state == "draft"
+      previous_edition = manual_record.previous_edition
+      if previous_edition.state == "published"
+        Manual.build_manual_for(manual_record, edition: previous_edition, published: true)
+      else
+        # This means the previous edition is withdrawn so we shouldn't
+        # expose it as it's not actually published (we've got a new
+        # draft waiting in the wings for a withdrawn manual)
+        return nil
+      end
+    else
+      # This means the current edition is withdrawn so we shouldn't find
+      # the previously published one
+      return nil
     end
   end
 
