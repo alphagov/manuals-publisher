@@ -5,7 +5,6 @@ require 'footnotes_section_heading_renderer'
 
 class Section::PreviewService
   def initialize(context:)
-    @section_renderer = SectionRenderer.new
     @context = context
   end
 
@@ -30,10 +29,7 @@ class Section::PreviewService
 
 private
 
-  attr_reader(
-    :section_renderer,
-    :context,
-  )
+  attr_reader(:context)
 
   def section
     section_id ? existing_section : ephemeral_section
