@@ -7,6 +7,10 @@ class Section::PreviewService
   def call
     section.update(section_params)
 
+    render(section)
+  end
+
+  def render(section)
     section_renderer.call(section)
   end
 
