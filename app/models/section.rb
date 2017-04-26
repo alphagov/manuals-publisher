@@ -40,7 +40,7 @@ class Section
       .where(section_id: section_id)
       .order_by([:version_number, :desc])
       .to_a
-      .drop_while { |e| published ? (e.state != "published") : false }
+      .drop_while { |e| published && !e.published? }
       .take(2)
       .reverse
 
