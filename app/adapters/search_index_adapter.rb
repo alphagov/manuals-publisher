@@ -1,15 +1,17 @@
 require "rummager_indexer"
 
 class SearchIndexAdapter
-  def add(manual)
-    indexer = RummagerIndexer.new
+  def initialize
+    @indexer = RummagerIndexer.new
+  end
 
-    indexer.add(
+  def add(manual)
+    @indexer.add(
       ManualIndexableFormatter.new(manual)
     )
 
     manual.sections.each do |section|
-      indexer.add(
+      @indexer.add(
         SectionIndexableFormatter.new(
           MarkdownAttachmentProcessor.new(section),
           manual,
@@ -18,21 +20,19 @@ class SearchIndexAdapter
     end
 
     manual.removed_sections.each do |section|
-      indexer.delete(
+      @indexer.delete(
         SectionIndexableFormatter.new(section, manual),
       )
     end
   end
 
   def remove(manual)
-    indexer = RummagerIndexer.new
-
-    indexer.delete(
+    @indexer.delete(
       ManualIndexableFormatter.new(manual)
     )
 
     manual.sections.each do |section|
-      indexer.delete(
+      @indexer.delete(
         SectionIndexableFormatter.new(
           MarkdownAttachmentProcessor.new(section),
           manual,
