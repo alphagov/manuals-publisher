@@ -20,7 +20,7 @@ describe MarkedSectionDeleter do
     before {
       allow(publishing_api).
         to receive(:get_content).
-        with(edition.section_id).
+        with(edition.section_uuid).
         and_raise(GdsApi::HTTPNotFound.new(nil))
     }
 
@@ -39,11 +39,11 @@ describe MarkedSectionDeleter do
     before {
       allow(publishing_api).
         to receive(:get_content).
-        with(edition.section_id).
+        with(edition.section_uuid).
         and_return(double(:gds_api_response))
       allow(publishing_api).
         to receive(:discard_draft).
-        with(edition.section_id)
+        with(edition.section_uuid)
     }
 
     it "deletes the edition" do
@@ -55,7 +55,7 @@ describe MarkedSectionDeleter do
     it 'discards the draft from the publishing api' do
       expect(publishing_api).
         to receive(:discard_draft).
-        with(edition.section_id)
+        with(edition.section_uuid)
 
       subject.execute(dry_run: false)
     end
