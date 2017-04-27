@@ -8,16 +8,16 @@ describe SectionEdition do
   end
 
   describe 'validation' do
-    it 'is valid if section_id and slug are present' do
-      subject.section_id = 'section-id'
+    it 'is valid if section_uuid and slug are present' do
+      subject.section_uuid = 'section-uuid'
       subject.slug = 'section-slug'
       expect(subject).to be_valid
     end
 
-    it 'is invalid if section_id is missing' do
-      subject.section_id = nil
+    it 'is invalid if section_uuid is missing' do
+      subject.section_uuid = nil
       expect(subject).not_to be_valid
-      expect(subject.errors[:section_id]).to include("can't be blank")
+      expect(subject.errors[:section_uuid]).to include("can't be blank")
     end
 
     it 'is invalid if slug is missing' do

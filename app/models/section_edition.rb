@@ -18,7 +18,7 @@ class SectionEdition
   field :public_updated_at, type: DateTime
   field :exported_at, type: DateTime
 
-  validates :section_id, presence: true
+  validates :section_uuid, presence: true
   validates :slug, presence: true
 
   embeds_many :attachments, cascade_callbacks: true
@@ -33,12 +33,12 @@ class SectionEdition
     end
   end
 
-  scope :all_for_section, ->(section_id) do
-    where(section_id: section_id)
+  scope :all_for_section, ->(section_uuid) do
+    where(section_uuid: section_uuid)
   end
 
-  scope :all_for_sections, ->(*section_ids) do
-    where(:section_id.in => section_ids)
+  scope :all_for_sections, ->(*section_uuids) do
+    where(:section_uuid.in => section_uuids)
   end
 
   scope :draft,               where(state: "draft")
@@ -47,7 +47,7 @@ class SectionEdition
 
   scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
 
-  index section_id: 1
+  index section_uuid: 1
   index state: 1
   index updated_at: 1
 
