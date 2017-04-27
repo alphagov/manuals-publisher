@@ -123,8 +123,11 @@ private
     @manual_record ||= ManualRecord.where(slug: @manual_slug).last
   end
 
+  def manual
+    Manual.find(manual_record.manual_id, context.current_user)
+  end
+
   def manual_version_number
-    manual = Manual.find(manual_record.manual_id, context.current_user)
     manual.version_number
   end
 
