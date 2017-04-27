@@ -29,9 +29,9 @@ describe SectionEdition do
 
   describe '.all_for_section' do
     it 'returns all editions for a section' do
-      section_1_edition_1 = FactoryGirl.create(:section_edition, section_id: 'section-1')
-      section_1_edition_2 = FactoryGirl.create(:section_edition, section_id: 'section-1')
-      section_2_edition = FactoryGirl.create(:section_edition, section_id: 'section-2')
+      section_1_edition_1 = FactoryGirl.create(:section_edition, section_uuid: 'section-1')
+      section_1_edition_2 = FactoryGirl.create(:section_edition, section_uuid: 'section-1')
+      section_2_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-2')
 
       editions = SectionEdition.all_for_section('section-1')
 
@@ -43,9 +43,9 @@ describe SectionEdition do
 
   describe '.all_for_sections' do
     it 'returns all editions for sections' do
-      section_1_edition = FactoryGirl.create(:section_edition, section_id: 'section-1')
-      section_2_edition = FactoryGirl.create(:section_edition, section_id: 'section-2')
-      section_3_edition = FactoryGirl.create(:section_edition, section_id: 'section-3')
+      section_1_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-1')
+      section_2_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-2')
+      section_3_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-3')
 
       editions = SectionEdition.all_for_sections('section-1', 'section-2')
 
