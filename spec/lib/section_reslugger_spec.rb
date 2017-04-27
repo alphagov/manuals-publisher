@@ -24,7 +24,7 @@ describe SectionReslugger do
       organisation_slug: 'organisation-slug'
     )
     SectionEdition.create!(
-      section_id: 'section-id',
+      section_uuid: 'section-id',
       slug: 'manual-slug/current-section-slug',
       title: 'section-edition-title',
       summary: 'section-edition-summary',
