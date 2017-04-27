@@ -35,7 +35,7 @@ FactoryGirl.define do
   end
 
   factory :section_edition do
-    section_id { Moped::BSON::ObjectId.new }
+    section_id { SecureRandom.uuid }
     sequence(:slug) { |n| "test-section-edition-#{n}" }
     sequence(:title) { |n| "Test Section Edition #{n}" }
     summary "My summary"
