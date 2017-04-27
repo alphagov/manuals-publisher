@@ -1,11 +1,14 @@
 require "spec_helper"
 
 RSpec.describe PublicationLogger do
-  let(:slug_generator) { SlugGenerator.new(prefix: "manual-slug") }
-  let(:manual) { double(:manual, sections: sections, removed_sections: []) }
+  let(:manual) { double(:manual, slug: 'manual-slug', removed_sections: []) }
   let(:sections) { [section] }
-  let(:section) { Section.new(slug_generator, "section-id-1", [section_edition]) }
+  let(:section) { Section.new(manual, "section-id-1", [section_edition]) }
   let(:section_edition) { FactoryGirl.create(:section_edition) }
+
+  before do
+    allow(manual).to receive(:sections).and_return(sections)
+  end
 
   describe "call" do
     it "creates a PublicationLog for each Section" do
@@ -17,7 +20,7 @@ RSpec.describe PublicationLogger do
     # It's possible to pass a nil change_note, this indicates that the section
     # update is not to be logged by the PublicationLogger
     context "when a section edition has no change note" do
-      let(:cloned_section) { Section.new(slug_generator, "section-id-2", [cloned_section_edition]) }
+      let(:cloned_section) { Section.new(manual, "section-id-2", [cloned_section_edition]) }
       let(:cloned_section_edition) { FactoryGirl.create(:section_edition, change_note: nil) }
       let(:sections) { [section, cloned_section] }
       it "does not create a PublicationLog for a cloned Section" do
