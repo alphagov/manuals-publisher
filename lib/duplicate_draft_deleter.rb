@@ -8,7 +8,7 @@ class DuplicateDraftDeleter
 
     puts "The following #{editions_to_delete.count} editions are unknown to Publishing API and will be deleted:"
     editions_to_delete.each do |edition|
-      puts [edition[:slug], edition[:section_id], edition[:state], edition[:created_at]].join(",")
+      puts [edition.slug, edition.section_id, edition.state, edition.created_at].join(",")
       edition.delete
     end
   end
