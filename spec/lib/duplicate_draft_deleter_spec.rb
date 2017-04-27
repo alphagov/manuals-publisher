@@ -9,7 +9,7 @@ describe DuplicateDraftDeleter do
     original_content_id = SecureRandom.uuid
     FactoryGirl.create(:section_edition,
       slug: "guidance/manual-slug/section-slug",
-      section_id: original_content_id,
+      section_uuid: original_content_id,
       state: "draft",
     )
     publishing_api_has_item(content_id: original_content_id)
@@ -17,12 +17,12 @@ describe DuplicateDraftDeleter do
     duplicate_content_id = SecureRandom.uuid
     FactoryGirl.create(:section_edition,
       slug: "guidance/manual-slug/section-slug",
-      section_id: duplicate_content_id,
+      section_uuid: duplicate_content_id,
       state: "draft",
     )
     FactoryGirl.create(:section_edition,
       slug: "guidance/manual-slug/section-slug",
-      section_id: duplicate_content_id,
+      section_uuid: duplicate_content_id,
       state: "archived",
     )
     publishing_api_does_not_have_item(duplicate_content_id)
@@ -37,12 +37,12 @@ describe DuplicateDraftDeleter do
   it "leaves non-duplicated editions alone" do
     content_id = SecureRandom.uuid
     FactoryGirl.create(:section_edition,
-     section_id: content_id,
+     section_uuid: content_id,
     )
 
     another_content_id = SecureRandom.uuid
     FactoryGirl.create(:section_edition,
-      section_id: another_content_id,
+      section_uuid: another_content_id,
     )
 
     expect { DuplicateDraftDeleter.new.call }.to output.to_stdout
