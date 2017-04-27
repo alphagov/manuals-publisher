@@ -48,7 +48,7 @@ GEM
     ast (2.3.0)
     autoprefixer-rails (6.7.7.2)
       execjs
-    awesome_print (1.2.0)
+    awesome_print (1.7.0)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
