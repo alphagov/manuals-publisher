@@ -111,8 +111,6 @@ describe Section do
   end
 
   describe '.find' do
-    let(:manual) { double(:manual, slug: 'manual-slug') }
-
     context 'when there are associated section editions' do
       let(:section_edition) { FactoryGirl.build(:section_edition) }
       let(:editions_proxy) { double(:editions_proxy, to_a: [section_edition]).as_null_object }
@@ -122,17 +120,17 @@ describe Section do
       end
 
       it 'builds a section using the manual' do
-        expect(Section).to receive(:build).with(including(manual: manual))
+        expect(Section).to receive(:new).with(including(manual: manual))
         Section.find(manual, 'section-id')
       end
 
       it 'builds a section using the section id' do
-        expect(Section).to receive(:build).with(including(uuid: 'section-id'))
+        expect(Section).to receive(:new).with(including(uuid: 'section-id'))
         Section.find(manual, 'section-id')
       end
 
       it 'builds a section using the editions' do
-        expect(Section).to receive(:build).with(including(editions: [section_edition]))
+        expect(Section).to receive(:new).with(including(editions: [section_edition]))
         Section.find(manual, 'section-id')
       end
     end

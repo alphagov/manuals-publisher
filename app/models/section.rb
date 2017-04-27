@@ -13,10 +13,6 @@ class Section
   validates :body, presence: true, safe_html: true
   validate :change_note_ok
 
-  def self.build(manual:, uuid:, editions:)
-    Section.new(manual: manual, uuid: uuid, editions: editions)
-  end
-
   def self.edition_attributes
     [
       :title,
@@ -45,7 +41,7 @@ class Section
     if editions.empty?
       raise KeyError.new("key not found #{section_uuid}")
     else
-      Section.build(manual: manual, uuid: section_uuid, editions: editions)
+      Section.new(manual: manual, uuid: section_uuid, editions: editions)
     end
   end
 

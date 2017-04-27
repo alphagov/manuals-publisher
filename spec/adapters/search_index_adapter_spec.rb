@@ -17,7 +17,7 @@ describe SearchIndexAdapter do
   }
 
   let(:section) {
-    Section.build(
+    Section.new(
       manual: manual,
       uuid: "section-id",
       editions: [section_edition],
@@ -34,7 +34,7 @@ describe SearchIndexAdapter do
   }
 
   let(:removed_section) {
-    Section.build(
+    Section.new(
       manual: manual,
       uuid: "removed-section-id",
       editions: [removed_section_edition],
