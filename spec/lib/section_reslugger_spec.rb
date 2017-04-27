@@ -46,10 +46,17 @@ describe SectionReslugger do
     stub_any_publishing_api_publish
 
     stub_any_rummager_post
-    stub_any_rummager_delete
+
+    allow(Services.rummager).to receive(:delete_document)
   }
 
   it "doesn't raise any exceptions" do
     subject.call
+  end
+
+  it "removes content stored against the old section slug from the search index" do
+    subject.call
+
+    expect(Services.rummager).to have_received(:delete_document).with("manual_section", "/manual-slug/old-section-slug")
   end
 end
