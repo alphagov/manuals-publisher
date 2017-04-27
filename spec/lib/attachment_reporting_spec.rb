@@ -85,11 +85,11 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
       state: "published",
       version_number: 1,
       section_ids: [
-        early_section_edition_with_pdf.section_id,
-        early_section_edition_with_non_pdf.section_id,
-        early_section_edition_draft_with_pdf.section_id,
-        more_recent_section_edition.section_id,
-        very_recent_section_edition.section_id
+        early_section_edition_with_pdf.section_uuid,
+        early_section_edition_with_non_pdf.section_uuid,
+        early_section_edition_draft_with_pdf.section_uuid,
+        more_recent_section_edition.section_uuid,
+        very_recent_section_edition.section_uuid
       ],
     )
   }
@@ -116,7 +116,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
       state: "published",
       version_number: 1,
       section_ids: [
-        very_recent_draft_patent_section_edition.section_id
+        very_recent_draft_patent_section_edition.section_uuid
       ],
     )
   }
