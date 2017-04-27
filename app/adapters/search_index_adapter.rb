@@ -20,9 +20,7 @@ class SearchIndexAdapter
     end
 
     manual.removed_sections.each do |section|
-      @indexer.delete(
-        SectionIndexableFormatter.new(section, manual),
-      )
+      remove_section(section, manual)
     end
   end
 
@@ -32,9 +30,13 @@ class SearchIndexAdapter
     )
 
     manual.sections.each do |section|
-      @indexer.delete(
-        SectionIndexableFormatter.new(section, manual),
-      )
+      remove_section(section, manual)
     end
+  end
+
+  def remove_section(section, manual)
+    @indexer.delete(
+      SectionIndexableFormatter.new(section, manual),
+    )
   end
 end
