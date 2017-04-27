@@ -81,8 +81,8 @@ private
     service = Section::UpdateService.new(
       context: context_for_section_edition_update(user),
     )
-    _manual, document = service.call
-    document.latest_edition
+    _manual, section = service.call
+    section.latest_edition
   end
 
   FakeController = Struct.new(:params, :current_user)
