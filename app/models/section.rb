@@ -35,9 +35,9 @@ class Section
     ]
   end
 
-  def self.find(manual, section_id, published: false)
+  def self.find(manual, section_uuid, published: false)
     editions = SectionEdition
-      .all_for_section(section_id)
+      .all_for_section(section_uuid)
       .order_by([:version_number, :desc])
       .to_a
       .drop_while { |e| published && !e.published? }
@@ -45,9 +45,9 @@ class Section
       .reverse
 
     if editions.empty?
-      raise KeyError.new("key not found #{section_id}")
+      raise KeyError.new("key not found #{section_uuid}")
     else
-      Section.build(manual: manual, id: section_id, editions: editions)
+      Section.build(manual: manual, id: section_uuid, editions: editions)
     end
   end
 
@@ -207,7 +207,7 @@ protected
       state: "draft",
       version_number: 1,
       # TODO: Remove persistence conern
-      section_id: id,
+      section_uuid: id,
     }
   end
 

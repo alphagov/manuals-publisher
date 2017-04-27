@@ -2,14 +2,14 @@ require "spec_helper"
 
 describe Section do
   subject(:section) {
-    Section.new(slug_generator, section_id, editions)
+    Section.new(slug_generator, section_uuid, editions)
   }
 
   def key_classes_for(hash)
     hash.keys.map(&:class).uniq
   end
 
-  let(:section_id) { "a-section-id" }
+  let(:section_uuid) { "a-section-uuid" }
   let(:slug) { double(:slug) }
   let(:published_slug) { double(:published_slug) }
   let(:slug_generator) { double(:slug_generator, call: slug) }
@@ -312,7 +312,7 @@ describe Section do
         expect(SectionEdition).to have_received(:new).with(
           version_number: 1,
           state: "draft",
-          section_id: section_id,
+          section_uuid: section_uuid,
         )
       end
     end
@@ -608,7 +608,7 @@ describe Section do
 
     it "returns a has including the section's id" do
       expect(section.attributes).to include(
-        id: section_id,
+        id: section_uuid,
       )
     end
   end
