@@ -40,4 +40,18 @@ describe SectionEdition do
       expect(editions).not_to include(section_2_edition)
     end
   end
+
+  describe '.all_for_sections' do
+    it 'returns all editions for sections' do
+      section_1_edition = FactoryGirl.create(:section_edition, section_id: 'section-1')
+      section_2_edition = FactoryGirl.create(:section_edition, section_id: 'section-2')
+      section_3_edition = FactoryGirl.create(:section_edition, section_id: 'section-3')
+
+      editions = SectionEdition.all_for_sections('section-1', 'section-2')
+
+      expect(editions).to include(section_1_edition)
+      expect(editions).to include(section_2_edition)
+      expect(editions).not_to include(section_3_edition)
+    end
+  end
 end

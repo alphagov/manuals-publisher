@@ -19,7 +19,7 @@ class ManualPublicationLogFilter
 
     def sort_by_section_ids_and_created_at
       editions_not_matching_supplied_sections = @section_editions.where(:section_id.nin => @section_ids)
-      editions_matching_supplied_sections = @section_editions.where(:section_id.in => @section_ids)
+      editions_matching_supplied_sections = @section_editions.all_for_sections(*@section_ids)
 
       order_by_section_ids(editions_matching_supplied_sections).concat(editions_not_matching_supplied_sections.order_by([:created_at, :asc]).to_a)
     end
@@ -69,7 +69,7 @@ private
   end
 
   def section_editions_for_first_manual_edition
-    @section_editions_for_first_manual_edition ||= SectionEdition.where(:section_id.in => first_manual_edition.section_ids, :minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
+    @section_editions_for_first_manual_edition ||= SectionEdition.all_for_sections(*first_manual_edition.section_ids).where(:minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
   end
 
   def first_manual_edition

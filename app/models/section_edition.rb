@@ -37,6 +37,10 @@ class SectionEdition
     where(section_id: section_id)
   end
 
+  scope :all_for_sections, ->(*section_ids) do
+    where(:section_id.in => section_ids)
+  end
+
   scope :draft,               where(state: "draft")
   scope :published,           where(state: "published")
   scope :archived,            where(state: "archived")
