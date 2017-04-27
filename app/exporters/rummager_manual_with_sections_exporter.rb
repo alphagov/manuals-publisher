@@ -1,7 +1,7 @@
 require "rummager_indexer"
 
 class RummagerManualWithSectionsExporter
-  def call(manual, _ = nil)
+  def call(manual)
     indexer = RummagerIndexer.new
 
     indexer.add(

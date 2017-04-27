@@ -39,7 +39,7 @@ private
   end
 
   def republish_published_manual_to_rummager
-    RummagerManualWithSectionsExporter.new.call(published_manual_version, :republish)
+    RummagerManualWithSectionsExporter.new.call(published_manual_version)
   end
 
   def export_draft_manual_via_publishing_api

@@ -49,7 +49,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the rummager exporter" do
       subject.call
-      expect(rummager_exporter).to have_received(:call).with(published_manual_version, :republish)
+      expect(rummager_exporter).to have_received(:call).with(published_manual_version)
     end
 
     it "tells the draft listeners nothing" do
@@ -101,7 +101,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the rummager exporter" do
       subject.call
-      expect(rummager_exporter).to have_received(:call).with(published_manual_version, :republish)
+      expect(rummager_exporter).to have_received(:call).with(published_manual_version)
     end
 
     it "tells the draft listeners to republish the draft version of the manual" do

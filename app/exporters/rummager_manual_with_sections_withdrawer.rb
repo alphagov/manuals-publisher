@@ -1,5 +1,5 @@
 class RummagerManualWithSectionsWithdrawer
-  def call(manual, _ = nil)
+  def call(manual)
     indexer = RummagerIndexer.new
 
     indexer.delete(
