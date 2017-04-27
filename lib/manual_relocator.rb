@@ -132,9 +132,8 @@ private
     new_section_ids.each do |section_id|
       sections = all_editions_of_section(section_id)
       sections.each do |section|
-        reslug_msg = "Reslugging section '#{section.slug}'"
         new_section_slug = section.slug.gsub(from_slug, to_slug)
-        puts "#{reslug_msg} as '#{section.slug}'"
+        puts "Reslugging section '#{section.slug}' as '#{section.slug}'"
         section.set(:slug, new_section_slug)
       end
     end
