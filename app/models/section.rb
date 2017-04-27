@@ -37,7 +37,7 @@ class Section
 
   def self.find(manual, section_id, published: false)
     editions = SectionEdition
-      .where(section_id: section_id)
+      .all_for_section(section_id)
       .order_by([:version_number, :desc])
       .to_a
       .drop_while { |e| published && !e.published? }

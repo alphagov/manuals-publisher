@@ -30,8 +30,8 @@ describe DuplicateDraftDeleter do
     expected_output = /The following 2 editions are unknown to Publishing API and will be deleted:.*#{duplicate_content_id}/m
     expect { DuplicateDraftDeleter.new.call }.to output(expected_output).to_stdout
 
-    expect(SectionEdition.where(section_id: original_content_id)).to be_present
-    expect(SectionEdition.where(section_id: duplicate_content_id)).to be_empty
+    expect(SectionEdition.all_for_section(original_content_id)).to be_present
+    expect(SectionEdition.all_for_section(duplicate_content_id)).to be_empty
   end
 
   it "leaves non-duplicated editions alone" do
@@ -47,7 +47,7 @@ describe DuplicateDraftDeleter do
 
     expect { DuplicateDraftDeleter.new.call }.to output.to_stdout
 
-    expect(SectionEdition.where(section_id: content_id)).to be_present
-    expect(SectionEdition.where(section_id: another_content_id)).to be_present
+    expect(SectionEdition.all_for_section(content_id)).to be_present
+    expect(SectionEdition.all_for_section(another_content_id)).to be_present
   end
 end

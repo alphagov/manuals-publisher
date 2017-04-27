@@ -112,7 +112,7 @@ describe Section do
       let(:editions_proxy) { double(:editions_proxy, to_a: [section_edition]).as_null_object }
 
       before do
-        allow(SectionEdition).to receive(:where).with(section_id: 'section-id').and_return(editions_proxy)
+        allow(SectionEdition).to receive(:all_for_section).with('section-id').and_return(editions_proxy)
       end
 
       it 'builds a section using the manual' do
@@ -135,7 +135,7 @@ describe Section do
       let(:editions_proxy) { double(:editions_proxy, to_a: []).as_null_object }
 
       before do
-        allow(SectionEdition).to receive(:where).with(section_id: 'section-id').and_return(editions_proxy)
+        allow(SectionEdition).to receive(:all_for_section).with('section-id').and_return(editions_proxy)
       end
 
       it 'raises a key error exception' do

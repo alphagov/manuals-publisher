@@ -26,4 +26,18 @@ describe SectionEdition do
       expect(subject.errors[:slug]).to include("can't be blank")
     end
   end
+
+  describe '.all_for_section' do
+    it 'returns all editions for a section' do
+      section_1_edition_1 = FactoryGirl.create(:section_edition, section_id: 'section-1')
+      section_1_edition_2 = FactoryGirl.create(:section_edition, section_id: 'section-1')
+      section_2_edition = FactoryGirl.create(:section_edition, section_id: 'section-2')
+
+      editions = SectionEdition.all_for_section('section-1')
+
+      expect(editions).to include(section_1_edition_1)
+      expect(editions).to include(section_1_edition_2)
+      expect(editions).not_to include(section_2_edition)
+    end
+  end
 end
