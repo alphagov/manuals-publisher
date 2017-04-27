@@ -7,7 +7,7 @@ RSpec.describe Manual::PublishService do
   let(:publication_logger) { double(:publication_logger) }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
   let(:new_publishing_api_publisher) { double(:new_publishing_api_publisher) }
-  let(:rummager_exporter) { double(:rummager_exporter) }
+  let(:search_index_adapter) { double(:search_index_adapter) }
   let(:user) { double(:user) }
   let(:context) { double(:context, current_user: user) }
 
@@ -26,11 +26,11 @@ RSpec.describe Manual::PublishService do
     allow(PublicationLogger).to receive(:new) { publication_logger }
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { new_publishing_api_publisher }
-    allow(RummagerManualWithSectionsExporter).to receive(:new) { rummager_exporter }
+    allow(SearchIndexAdapter).to receive(:new) { search_index_adapter }
     allow(publication_logger).to receive(:call)
     allow(publishing_api_draft_exporter).to receive(:call)
     allow(new_publishing_api_publisher).to receive(:call)
-    allow(rummager_exporter).to receive(:call)
+    allow(search_index_adapter).to receive(:add)
   end
 
   context "when the version number is up to date" do
@@ -56,9 +56,9 @@ RSpec.describe Manual::PublishService do
       expect(new_publishing_api_publisher).to have_received(:call).with(manual)
     end
 
-    it "calls the rummager exporter" do
+    it "adds the manual to the search index" do
       subject.call
-      expect(rummager_exporter).to have_received(:call).with(manual)
+      expect(search_index_adapter).to have_received(:add).with(manual)
     end
 
     it "makes the calls to the collaborators in the correct order" do
@@ -67,7 +67,7 @@ RSpec.describe Manual::PublishService do
       expect(publication_logger).to have_received(:call).ordered
       expect(publishing_api_draft_exporter).to have_received(:call).ordered
       expect(new_publishing_api_publisher).to have_received(:call).ordered
-      expect(rummager_exporter).to have_received(:call).ordered
+      expect(search_index_adapter).to have_received(:add).ordered
     end
   end
 

@@ -10,7 +10,7 @@ class Manual::WithdrawService
     if manual.withdrawn?
       persist
       withdraw_via_publishing_api
-      withdraw_from_rummager
+      remove_from_search_index
     end
 
     manual
@@ -32,8 +32,8 @@ private
     PublishingApiManualWithSectionsWithdrawer.new.call(manual)
   end
 
-  def withdraw_from_rummager
-    RummagerManualWithSectionsWithdrawer.new.call(manual)
+  def remove_from_search_index
+    SearchIndexAdapter.new.remove(manual)
   end
 
   def manual

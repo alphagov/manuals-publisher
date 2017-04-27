@@ -6,7 +6,7 @@ RSpec.describe Manual::RepublishService do
   let(:draft_manual_version) { double(:manual) }
   let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
   let(:publishing_api_publisher) { double(:publishing_api_publisher) }
-  let(:rummager_exporter) { double(:rummager_exporter) }
+  let(:search_index_adapter) { double(:search_index_adapter) }
   let(:manual) { double(:manual) }
   let(:user) { double(:user) }
   let(:context) { double(:context, current_user: user) }
@@ -21,10 +21,10 @@ RSpec.describe Manual::RepublishService do
   before do
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { publishing_api_publisher }
-    allow(RummagerManualWithSectionsExporter).to receive(:new) { rummager_exporter }
+    allow(SearchIndexAdapter).to receive(:new) { search_index_adapter }
     allow(publishing_api_draft_exporter).to receive(:call)
     allow(publishing_api_publisher).to receive(:call)
-    allow(rummager_exporter).to receive(:call)
+    allow(search_index_adapter).to receive(:add)
     allow(Manual).to receive(:find).with(manual_id, user) { manual }
   end
 
@@ -47,9 +47,9 @@ RSpec.describe Manual::RepublishService do
       expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, :republish)
     end
 
-    it "calls the rummager exporter" do
+    it "adds the manual to the search index" do
       subject.call
-      expect(rummager_exporter).to have_received(:call).with(published_manual_version)
+      expect(search_index_adapter).to have_received(:add).with(published_manual_version)
     end
 
     it "tells the draft listeners nothing" do
@@ -71,7 +71,7 @@ RSpec.describe Manual::RepublishService do
       subject.call
       expect(publishing_api_publisher).not_to have_received(:call)
       expect(publishing_api_draft_exporter).not_to have_received(:call).with(published_manual_version, :republish)
-      expect(rummager_exporter).not_to have_received(:call)
+      expect(search_index_adapter).not_to have_received(:add)
     end
 
     it "tells the draft listeners to republish the draft version of the manual" do
@@ -99,9 +99,9 @@ RSpec.describe Manual::RepublishService do
       expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, :republish)
     end
 
-    it "calls the rummager exporter" do
+    it "adds the manual to the search index" do
       subject.call
-      expect(rummager_exporter).to have_received(:call).with(published_manual_version)
+      expect(search_index_adapter).to have_received(:add).with(published_manual_version)
     end
 
     it "tells the draft listeners to republish the draft version of the manual" do
@@ -122,7 +122,7 @@ RSpec.describe Manual::RepublishService do
       begin; subject.call; rescue(arbitrary_exception); end
       expect(publishing_api_draft_exporter).not_to have_received(:call)
       expect(publishing_api_publisher).not_to have_received(:call)
-      expect(rummager_exporter).not_to have_received(:call)
+      expect(search_index_adapter).not_to have_received(:add)
     end
   end
 
@@ -139,7 +139,7 @@ RSpec.describe Manual::RepublishService do
       subject.call
       expect(publishing_api_draft_exporter).not_to have_received(:call)
       expect(publishing_api_publisher).not_to have_received(:call)
-      expect(rummager_exporter).not_to have_received(:call)
+      expect(search_index_adapter).not_to have_received(:add)
     end
   end
 end
