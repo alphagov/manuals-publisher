@@ -14,7 +14,7 @@ class Section
   validate :change_note_ok
 
   def self.build(manual:, uuid:, editions:)
-    Section.new(manual, uuid, editions)
+    Section.new(manual: manual, uuid: uuid, editions: editions)
   end
 
   def self.edition_attributes
@@ -53,7 +53,7 @@ class Section
 
   attr_reader :uuid, :editions, :latest_edition
 
-  def initialize(manual, uuid, editions)
+  def initialize(manual:, uuid:, editions:)
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
     @uuid = uuid
     @editions = editions

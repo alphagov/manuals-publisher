@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Section do
   subject(:section) {
-    Section.new(manual, section_uuid, editions)
+    Section.new(manual: manual, uuid: section_uuid, editions: editions)
   }
 
   def key_classes_for(hash)
@@ -157,7 +157,7 @@ describe Section do
         edition_2 = double(:edition_2),
         edition_3 = double(:edition_3)
       ]
-      section = Section.new(manual, 'section-id', editions)
+      section = Section.new(manual: manual, uuid: 'section-id', editions: editions)
 
       expect(edition_1).to_not receive(:save!)
       expect(edition_2).to receive(:save!)
@@ -172,12 +172,12 @@ describe Section do
 
     it "is considered the same as another section instance if they have the same uuid" do
       expect(section).to eql(section)
-      expect(section).to eql(Section.new(manual, section.uuid, [draft_edition_v1]))
-      expect(section).not_to eql(Section.new(manual, section.uuid.reverse, [draft_edition_v1]))
+      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, editions: [draft_edition_v1]))
+      expect(section).not_to eql(Section.new(manual: manual, uuid: section.uuid.reverse, editions: [draft_edition_v1]))
     end
 
     it "is considered the same as another section instance with the same uuid even if they have different version numbers" do
-      expect(section).to eql(Section.new(manual, section.uuid, [draft_edition_v2]))
+      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, editions: [draft_edition_v2]))
     end
   end
 
