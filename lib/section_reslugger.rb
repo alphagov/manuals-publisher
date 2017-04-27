@@ -2,7 +2,6 @@ require "gds_api/content_store"
 require "services"
 
 class SectionReslugger
-  RUMMAGER_FORMAT = "manual_section".freeze
   class Error < RuntimeError; end
 
   def initialize(manual_slug, old_section_slug, new_section_slug)
@@ -14,10 +13,12 @@ class SectionReslugger
   def call
     validate
 
+    old_section = Section.find(manual, old_section_edition.section_uuid)
+
     update_slug
     publish_manual
     redirect_section
-    remove_old_section_from_rummager
+    remove_from_search_index(old_section)
   end
 
 private
@@ -163,8 +164,7 @@ private
     "#{manual_record.slug}/#{slug}"
   end
 
-  def remove_old_section_from_rummager
-    rummager = Services.rummager
-    rummager.delete_document(RUMMAGER_FORMAT, "/#{full_old_section_slug}")
+  def remove_from_search_index(section)
+    SearchIndexAdapter.new.remove_section(section, manual)
   end
 end
