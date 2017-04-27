@@ -1,4 +1,3 @@
-require 'section_reslugger'
 require 'section_slug_synchroniser'
 
 namespace :sections do
