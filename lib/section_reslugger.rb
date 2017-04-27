@@ -52,8 +52,8 @@ private
   end
 
   def validate_new_section_in_database
-    section = section_in_database(full_new_section_slug)
-    raise Error.new("Manual Section already exists in database") if section
+    section_edition = section_edition_in_database(full_new_section_slug)
+    raise Error.new("Manual Section already exists in database") if section_edition
   end
 
   def validate_new_section_in_content_store
@@ -129,14 +129,14 @@ private
   end
 
   def old_section_edition
-    @old_section_edition ||= section_in_database(full_old_section_slug)
+    @old_section_edition ||= section_edition_in_database(full_old_section_slug)
   end
 
   def old_section_in_content_store
     @old_section_in_cs ||= section_in_content_store(full_old_section_slug)
   end
 
-  def section_in_database(slug)
+  def section_edition_in_database(slug)
     SectionEdition.where(slug: slug).last
   end
 
