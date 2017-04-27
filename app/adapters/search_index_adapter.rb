@@ -33,10 +33,7 @@ class SearchIndexAdapter
 
     manual.sections.each do |section|
       @indexer.delete(
-        SectionIndexableFormatter.new(
-          MarkdownAttachmentProcessor.new(section),
-          manual,
-        )
+        SectionIndexableFormatter.new(section, manual),
       )
     end
   end
