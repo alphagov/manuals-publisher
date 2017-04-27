@@ -12,7 +12,7 @@ describe SectionReslugger do
   subject {
     described_class.new(
       'manual-slug',
-      'current-section-slug',
+      'old-section-slug',
       'new-section-slug'
     )
   }
@@ -25,7 +25,7 @@ describe SectionReslugger do
     )
     SectionEdition.create!(
       section_uuid: 'section-id',
-      slug: 'manual-slug/current-section-slug',
+      slug: 'manual-slug/old-section-slug',
       title: 'section-edition-title',
       summary: 'section-edition-summary',
       body: 'section-edition-body'
@@ -36,7 +36,7 @@ describe SectionReslugger do
       ]
     )
 
-    content_store_has_item('/manual-slug/current-section-slug')
+    content_store_has_item('/manual-slug/old-section-slug')
     content_store_does_not_have_item('/manual-slug/new-section-slug')
 
     organisations_api_has_organisation('organisation-slug')
