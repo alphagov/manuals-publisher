@@ -1,10 +1,6 @@
 require "rummager_indexer"
 
 class SearchIndexAdapter
-  def initialize
-    @withdrawer = RummagerManualWithSectionsWithdrawer.new
-  end
-
   def add(manual)
     indexer = RummagerIndexer.new
 
@@ -29,6 +25,19 @@ class SearchIndexAdapter
   end
 
   def remove(manual)
-    @withdrawer.call(manual)
+    indexer = RummagerIndexer.new
+
+    indexer.delete(
+      ManualIndexableFormatter.new(manual)
+    )
+
+    manual.sections.each do |section|
+      indexer.delete(
+        SectionIndexableFormatter.new(
+          MarkdownAttachmentProcessor.new(section),
+          manual,
+        )
+      )
+    end
   end
 end
