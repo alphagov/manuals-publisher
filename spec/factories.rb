@@ -35,7 +35,7 @@ FactoryGirl.define do
   end
 
   factory :section_edition do
-    section_id { Moped::BSON::ObjectId.new }
+    section_uuid { SecureRandom.uuid }
     sequence(:slug) { |n| "test-section-edition-#{n}" }
     sequence(:title) { |n| "Test Section Edition #{n}" }
     summary "My summary"
@@ -62,7 +62,7 @@ FactoryGirl.define do
       after(:build) do |manual_record|
         manual_record.editions.each do |edition|
           section = FactoryGirl.create(:section_edition)
-          edition.section_ids = [section.section_id]
+          edition.section_ids = [section.section_uuid]
         end
       end
     end
@@ -71,7 +71,7 @@ FactoryGirl.define do
       after(:build) do |manual_record|
         manual_record.editions.each do |edition|
           section = FactoryGirl.create(:section_edition)
-          edition.removed_section_ids = [section.section_id]
+          edition.removed_section_ids = [section.section_uuid]
         end
       end
     end

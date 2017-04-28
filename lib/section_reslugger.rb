@@ -89,7 +89,7 @@ private
 
   def context_for_section_edition_update(user)
     params_hash = {
-      "id" => current_section_edition.section_id,
+      "id" => current_section_edition.section_uuid,
       "section" => {
         title: current_section_edition.title,
         summary: current_section_edition.summary,
