@@ -41,11 +41,11 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
       )
   end
 
-  it "forces all the manuals sections to require an export with an empty update message" do
+  it "forces all the manuals sections to require an export with a nil change note" do
     subject.call
 
-    expect(section_1).to have_received(:update).with({})
-    expect(section_2).to have_received(:update).with({})
+    expect(section_1).to have_received(:update).with(change_note: nil)
+    expect(section_2).to have_received(:update).with(change_note: nil)
   end
 
   it "persists the manual after it has been updated" do
