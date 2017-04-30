@@ -31,7 +31,8 @@ class Section
       :change_note,
       :change_history,
       :minor_update,
-      :public_updated_at
+      :public_updated_at,
+      :cloned
     ]
   end
 
@@ -196,6 +197,10 @@ class Section
 
   def change_note_required?
     !(never_published? || minor_update?)
+  end
+
+  def cloned?
+    !!cloned
   end
 
 protected

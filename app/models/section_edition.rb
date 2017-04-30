@@ -17,6 +17,7 @@ class SectionEdition
   field :minor_update, type: Boolean
   field :public_updated_at, type: DateTime
   field :exported_at, type: DateTime
+  field :cloned, type: Boolean, default: false
 
   validates :section_uuid, presence: true
   validates :slug, presence: true

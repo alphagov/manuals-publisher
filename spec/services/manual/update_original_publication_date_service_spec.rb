@@ -44,8 +44,8 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
   it "forces all the manuals sections to require an export with an empty update message" do
     subject.call
 
-    expect(section_1).to have_received(:update).with({})
-    expect(section_2).to have_received(:update).with({})
+    expect(section_1).to have_received(:update).with(cloned: true)
+    expect(section_2).to have_received(:update).with(cloned: true)
   end
 
   it "persists the manual after it has been updated" do

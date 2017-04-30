@@ -39,8 +39,7 @@ private
 
   def update_sections
     manual.sections.each do |section|
-      # a no-op update will force a new draft if we need it
-      section.update({})
+      section.update(cloned: true)
     end
   end
 
