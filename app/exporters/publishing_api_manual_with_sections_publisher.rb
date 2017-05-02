@@ -20,7 +20,7 @@ class PublishingApiManualWithSectionsPublisher
     manual.removed_sections.each do |section|
       next if section.withdrawn? && action != :republish
       begin
-        Services.publishing_api.unpublish(section.id, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+        Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
       rescue GdsApi::HTTPNotFound # rubocop:disable Lint/HandleExceptions
       end
       section.withdraw_and_mark_as_exported! if action != :republish
