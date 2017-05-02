@@ -144,7 +144,7 @@ Then(/^I see the manual has the new section$/) do
 end
 
 Then(/^the section and table of contents will have been sent to the draft publishing api$/) do
-  check_section_is_drafted_to_publishing_api(@section.id)
+  check_section_is_drafted_to_publishing_api(@section.uuid)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -168,7 +168,7 @@ Then(/^the section and table of contents will have been sent to the draft publis
 end
 
 Then(/^the updated section at the new slug and updated table of contents will have been sent to the draft publishing api$/) do
-  check_section_is_drafted_to_publishing_api(@section.id)
+  check_section_is_drafted_to_publishing_api(@section.uuid)
   manual_table_of_contents_attributes = {
     details: {
       child_section_groups: [
@@ -277,7 +277,7 @@ Then(/^the manual and the edited section are published$/) do
 end
 
 Then(/^the updated section is available to preview$/) do
-  check_section_is_drafted_to_publishing_api(@updated_section.id)
+  check_section_is_drafted_to_publishing_api(@updated_section.uuid)
   sections = @sections.map do |section|
     {
       title: section == @updated_section ? @updated_fields[:section_title] : section.title,
@@ -302,7 +302,7 @@ Then(/^the updated section is available to preview$/) do
 end
 
 Then(/^the sections that I didn't edit were not republished$/) do
-  @sections.reject { |s| s.id == @updated_section.id }.each do |section|
+  @sections.reject { |s| s.uuid == @updated_section.uuid }.each do |section|
     check_section_was_not_published(section)
   end
 end
@@ -507,19 +507,19 @@ end
 Then(/^the section is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
 end
 
 Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do
