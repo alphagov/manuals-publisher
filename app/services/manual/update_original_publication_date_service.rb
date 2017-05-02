@@ -39,8 +39,8 @@ private
 
   def update_sections
     manual.sections.each do |section|
-      # a no-op update will force a new draft if we need it
-      section.update({})
+      # a nil change note will omit this update from publication logs
+      section.update(change_note: nil)
     end
   end
 

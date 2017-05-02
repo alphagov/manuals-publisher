@@ -40,6 +40,7 @@ FactoryGirl.define do
     sequence(:title) { |n| "Test Section Edition #{n}" }
     summary "My summary"
     body "My body"
+    change_note "New section added"
   end
 
   factory :publication_log do
