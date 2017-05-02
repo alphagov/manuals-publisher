@@ -16,7 +16,7 @@ private
   end
 
   def section
-    @section ||= manual.sections.find { |s| s.id == section_id }
+    @section ||= manual.sections.find { |s| s.uuid == section_uuid }
   end
 
   def manual
@@ -31,7 +31,7 @@ private
     context.params.fetch("manual_id")
   end
 
-  def section_id
+  def section_uuid
     context.params.fetch("section_id")
   end
 end
