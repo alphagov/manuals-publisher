@@ -23,7 +23,7 @@ class SectionViewAdapter < SimpleDelegator
   end
 
   def to_param
-    section.id
+    section.uuid
   end
 
   def self.model_name
