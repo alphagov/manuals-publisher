@@ -188,7 +188,7 @@ class Section
   end
 
   def eql?(other)
-    id.eql?(other.id)
+    uuid.eql?(other.uuid)
   end
 
   def never_published?
