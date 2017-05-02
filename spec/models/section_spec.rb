@@ -606,9 +606,9 @@ describe Section do
       )
     end
 
-    it "returns a has including the section's id" do
+    it "returns a has including the section's uuid" do
       expect(section.attributes).to include(
-        id: section_uuid,
+        uuid: section_uuid,
       )
     end
   end

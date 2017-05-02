@@ -88,7 +88,7 @@ class Section
         self.class.edition_attributes.include?(k)
       }
       .merge(
-        id: id,
+        uuid: uuid,
       )
   end
 
