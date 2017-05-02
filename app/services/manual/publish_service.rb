@@ -11,7 +11,7 @@ class Manual::PublishService
       log_publication
       export_draft_to_publishing_api
       publish_to_publishing_api
-      export_to_rummager
+      add_to_search_index
       persist
     else
       raise VersionMismatchError.new(
@@ -55,8 +55,8 @@ private
     PublishingApiManualWithSectionsPublisher.new.call(manual)
   end
 
-  def export_to_rummager
-    RummagerManualWithSectionsExporter.new.call(manual)
+  def add_to_search_index
+    SearchIndexAdapter.new.add(manual)
   end
 
   def manual

@@ -8,7 +8,7 @@ class Manual::RepublishService
     if published_manual_version.present?
       export_published_manual_via_publishing_api
       republish_published_manual_to_publishing_api
-      republish_published_manual_to_rummager
+      add_published_manual_to_search_index
     end
 
     if draft_manual_version.present?
@@ -38,8 +38,8 @@ private
     PublishingApiManualWithSectionsPublisher.new.call(published_manual_version, :republish)
   end
 
-  def republish_published_manual_to_rummager
-    RummagerManualWithSectionsExporter.new.call(published_manual_version, :republish)
+  def add_published_manual_to_search_index
+    SearchIndexAdapter.new.add(published_manual_version)
   end
 
   def export_draft_manual_via_publishing_api
