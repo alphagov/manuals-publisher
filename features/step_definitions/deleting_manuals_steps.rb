@@ -24,7 +24,7 @@ end
 Then(/^the manual and its sections are deleted$/) do
   check_manual_does_not_exist_with(@manual_fields)
   check_draft_has_been_discarded_in_publishing_api(@manual.id)
-  check_draft_has_been_discarded_in_publishing_api(@section.id)
+  check_draft_has_been_discarded_in_publishing_api(@section.uuid)
 end
 
 Then(/^the manual and its sections still exist$/) do
