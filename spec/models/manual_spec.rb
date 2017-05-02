@@ -226,9 +226,9 @@ describe Manual do
       ]
     }
 
-    let(:alpha_section) { double(:section, id: "alpha") }
-    let(:beta_section) { double(:section, id: "beta") }
-    let(:gamma_section) { double(:section, id: "gamma") }
+    let(:alpha_section) { double(:section, uuid: "alpha") }
+    let(:beta_section) { double(:section, uuid: "beta") }
+    let(:gamma_section) { double(:section, uuid: "gamma") }
 
     let(:section_order) { %w(gamma alpha beta) }
 
@@ -289,11 +289,11 @@ describe Manual do
         section_b,
       ]
     }
-    let(:section_a) { double(:section, id: "a") }
-    let(:section_b) { double(:section, id: "b") }
+    let(:section_a) { double(:section, uuid: "a") }
+    let(:section_b) { double(:section, uuid: "b") }
 
     let(:removed_sections) { [section_c] }
-    let(:section_c) { double(:section, id: "c") }
+    let(:section_c) { double(:section, uuid: "c") }
 
     before do
       manual.sections = sections
@@ -301,13 +301,13 @@ describe Manual do
     end
 
     it "removes the section from #sections" do
-      manual.remove_section(section_a.id)
+      manual.remove_section(section_a.uuid)
 
       expect(manual.sections.to_a).to eq([section_b])
     end
 
     it "adds the section to #removed_sections" do
-      manual.remove_section(section_a.id)
+      manual.remove_section(section_a.uuid)
 
       expect(manual.removed_sections.to_a).to eq(
         [
@@ -449,7 +449,7 @@ describe Manual do
     end
 
     context 'with sections' do
-      let(:section) { double(:section, id: 'section-id', save: nil) }
+      let(:section) { double(:section, uuid: 'section-uuid', save: nil) }
 
       before do
         manual.sections = [section]
@@ -469,12 +469,12 @@ describe Manual do
           manual_record_id: record.id
         ).first
 
-        expect(edition.section_ids).to eq(['section-id'])
+        expect(edition.section_ids).to eq(['section-uuid'])
       end
     end
 
     context 'with removed sections' do
-      let(:section) { double(:section, id: 'section-id', save: nil) }
+      let(:section) { double(:section, uuid: 'section-uuid', save: nil) }
 
       before do
         manual.removed_sections = [section]
@@ -494,7 +494,7 @@ describe Manual do
           manual_record_id: record.id
         ).first
 
-        expect(edition.removed_section_ids).to eq(['section-id'])
+        expect(edition.removed_section_ids).to eq(['section-uuid'])
       end
     end
   end
@@ -538,14 +538,14 @@ describe Manual do
 
           section_1 = sections[0]
           expect(section_1).to be_a ::Section
-          expect(section_1.id).to eq "12345"
+          expect(section_1.uuid).to eq "12345"
           expect(section_1).to be_draft
           expect(section_1.version_number).to eq 1
           expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
           section_2 = sections[1]
           expect(section_2).to be_a ::Section
-          expect(section_2.id).to eq "67890"
+          expect(section_2.uuid).to eq "67890"
           expect(section_2).to be_draft
           expect(section_2.version_number).to eq 1
           expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
@@ -583,14 +583,14 @@ describe Manual do
 
           section_1 = sections[0]
           expect(section_1).to be_a ::Section
-          expect(section_1.id).to eq "12345"
+          expect(section_1.uuid).to eq "12345"
           expect(section_1).to be_published
           expect(section_1.version_number).to eq 1
           expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
           section_2 = sections[1]
           expect(section_2).to be_a ::Section
-          expect(section_2.id).to eq "67890"
+          expect(section_2.uuid).to eq "67890"
           expect(section_2).to be_published
           expect(section_2.version_number).to eq 1
           expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
@@ -664,14 +664,14 @@ describe Manual do
 
             section_1 = sections[0]
             expect(section_1).to be_a ::Section
-            expect(section_1.id).to eq "12345"
+            expect(section_1.uuid).to eq "12345"
             expect(section_1).to be_published
             expect(section_1.version_number).to eq 1
             expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
             section_2 = sections[1]
             expect(section_2).to be_a ::Section
-            expect(section_2.id).to eq "67890"
+            expect(section_2.uuid).to eq "67890"
             expect(section_2).to be_published
             expect(section_2.version_number).to eq 1
             expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
@@ -697,14 +697,14 @@ describe Manual do
 
             section_1 = sections[0]
             expect(section_1).to be_a ::Section
-            expect(section_1.id).to eq "12345"
+            expect(section_1.uuid).to eq "12345"
             expect(section_1).to be_draft
             expect(section_1.version_number).to eq 2
             expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
             section_2 = sections[1]
             expect(section_2).to be_a ::Section
-            expect(section_2.id).to eq "67890"
+            expect(section_2.uuid).to eq "67890"
             expect(section_2).to be_draft
             expect(section_2.version_number).to eq 2
             expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
@@ -735,14 +735,14 @@ describe Manual do
 
             section_1 = sections[0]
             expect(section_1).to be_a ::Section
-            expect(section_1.id).to eq "12345"
+            expect(section_1.uuid).to eq "12345"
             expect(section_1).to be_published
             expect(section_1.version_number).to eq 1
             expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
             section_2 = sections[1]
             expect(section_2).to be_a ::Section
-            expect(section_2.id).to eq "67890"
+            expect(section_2.uuid).to eq "67890"
             expect(section_2).to be_published
             expect(section_2.version_number).to eq 1
             expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
@@ -768,14 +768,14 @@ describe Manual do
 
             section_1 = sections[0]
             expect(section_1).to be_a ::Section
-            expect(section_1.id).to eq "12345"
+            expect(section_1.uuid).to eq "12345"
             expect(section_1).to be_published
             expect(section_1.version_number).to eq 1
             expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
             section_2 = sections[1]
             expect(section_2).to be_a ::Section
-            expect(section_2.id).to eq "67890"
+            expect(section_2.uuid).to eq "67890"
             expect(section_2).to be_published
             expect(section_2.version_number).to eq 1
             expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
@@ -807,14 +807,14 @@ describe Manual do
 
             section_1 = sections[0]
             expect(section_1).to be_a ::Section
-            expect(section_1.id).to eq "12345"
+            expect(section_1.uuid).to eq "12345"
             expect(section_1).to be_published
             expect(section_1.version_number).to eq 1
             expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
             section_2 = sections[1]
             expect(section_2).to be_a ::Section
-            expect(section_2.id).to eq "67890"
+            expect(section_2.uuid).to eq "67890"
             expect(section_2).to be_published
             expect(section_2.version_number).to eq 1
             expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
@@ -840,14 +840,14 @@ describe Manual do
 
             section_1 = sections[0]
             expect(section_1).to be_a ::Section
-            expect(section_1.id).to eq "12345"
+            expect(section_1.uuid).to eq "12345"
             expect(section_1).to be_published
             expect(section_1.version_number).to eq 1
             expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
 
             section_2 = sections[1]
             expect(section_2).to be_a ::Section
-            expect(section_2.id).to eq "67890"
+            expect(section_2.uuid).to eq "67890"
             expect(section_2).to be_draft
             expect(section_2.version_number).to eq 2
             expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
