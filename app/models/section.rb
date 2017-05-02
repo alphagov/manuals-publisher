@@ -54,7 +54,6 @@ class Section
   def_delegators :latest_edition, *edition_attributes
 
   attr_reader :uuid, :editions, :latest_edition
-  alias_attribute :id, :uuid
 
   def initialize(slug_generator, uuid, editions)
     @slug_generator = slug_generator
