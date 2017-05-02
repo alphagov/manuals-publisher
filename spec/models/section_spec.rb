@@ -121,7 +121,7 @@ describe Section do
       end
 
       it 'builds a section using the section id' do
-        expect(Section).to receive(:build).with(including(id: 'section-id'))
+        expect(Section).to receive(:build).with(including(uuid: 'section-id'))
         Section.find(manual, 'section-id')
       end
 

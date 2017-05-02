@@ -13,10 +13,10 @@ class Section
   validates :body, presence: true, safe_html: true
   validate :change_note_ok
 
-  def self.build(manual:, id:, editions:)
+  def self.build(manual:, uuid:, editions:)
     slug_generator = SlugGenerator.new(prefix: manual.slug)
 
-    Section.new(slug_generator, id, editions)
+    Section.new(slug_generator, uuid, editions)
   end
 
   def self.edition_attributes
@@ -47,7 +47,7 @@ class Section
     if editions.empty?
       raise KeyError.new("key not found #{section_uuid}")
     else
-      Section.build(manual: manual, id: section_uuid, editions: editions)
+      Section.build(manual: manual, uuid: section_uuid, editions: editions)
     end
   end
 
