@@ -77,7 +77,7 @@ class Section
   end
 
   def to_param
-    id
+    uuid
   end
 
   def attributes
