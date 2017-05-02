@@ -53,11 +53,12 @@ class Section
 
   def_delegators :latest_edition, *edition_attributes
 
-  attr_reader :id, :editions, :latest_edition
+  attr_reader :uuid, :editions, :latest_edition
+  alias_attribute :id, :uuid
 
-  def initialize(slug_generator, id, editions)
+  def initialize(slug_generator, uuid, editions)
     @slug_generator = slug_generator
-    @id = id
+    @uuid = uuid
     @editions = editions
     @editions.push(create_first_edition) if @editions.empty?
     @latest_edition = @editions.last
