@@ -7,10 +7,6 @@ class ManualPresenter
     @manual = manual
   end
 
-  def call
-    GovspeakToHTMLRenderer.create.call(manual)
-  end
-
   def title
     call.attributes.fetch(:title)
   end
@@ -21,5 +17,19 @@ class ManualPresenter
 
   def body
     call.attributes.fetch(:body)
+  end
+
+  def valid?
+    call.valid?
+  end
+
+  def errors
+    call.errors
+  end
+
+private
+
+  def call
+    GovspeakToHTMLRenderer.create.call(manual)
   end
 end

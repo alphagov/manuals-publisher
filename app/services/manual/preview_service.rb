@@ -8,7 +8,7 @@ class Manual::PreviewService
   def call
     manual.update(attributes)
 
-    ManualPresenter.new(manual).call
+    ManualPresenter.new(manual)
   end
 
 private
