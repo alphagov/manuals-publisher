@@ -20,7 +20,7 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
       indexable_content: entity.body,
       public_timestamp: nil,
       content_store_document_type: type,
-      manual: manual_slug
+      manual: manual_path
     }
   end
 
@@ -28,7 +28,7 @@ private
 
   attr_reader :manual
 
-  def manual_slug
+  def manual_path
     with_leading_slash(manual.slug)
   end
 
