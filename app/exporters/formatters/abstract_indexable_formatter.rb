@@ -24,6 +24,10 @@ private
   end
 
   def with_leading_slash(slug)
-    slug.start_with?("/") ? slug : "/#{slug}"
+    root_path.join(slug).to_s
+  end
+
+  def root_path
+    Pathname.new('/')
   end
 end
