@@ -8,7 +8,7 @@ class AbstractIndexableFormatter
   end
 
   def id
-    link
+    path
   end
 
   def indexable_attributes
@@ -19,7 +19,7 @@ private
 
   attr_reader :entity
 
-  def link
+  def path
     with_leading_slash(entity.slug)
   end
 

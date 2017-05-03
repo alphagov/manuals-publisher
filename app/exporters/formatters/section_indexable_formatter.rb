@@ -16,7 +16,7 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
     {
       title: "#{manual.title}: #{entity.title}",
       description: entity.summary,
-      link: link,
+      link: path,
       indexable_content: entity.body,
       public_timestamp: nil,
       content_store_document_type: type,
@@ -32,7 +32,7 @@ private
     with_leading_slash(manual.slug)
   end
 
-  def link
+  def path
     with_leading_slash(entity.slug)
   end
 end
