@@ -13,7 +13,7 @@ describe ManualPublishingAPIExporter do
   }
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
-  let(:presented_manual) { double(:presented_manual, attributes: rendered_manual_attributes) }
+  let(:presented_manual) { double(:presented_manual, attributes: presented_manual_attributes) }
   let(:manual_renderer) { double(:rendered_manual, call: presented_manual) }
 
   let(:manual) {
@@ -64,7 +64,7 @@ describe ManualPublishingAPIExporter do
     }
   }
 
-  let(:rendered_manual_attributes) {
+  let(:presented_manual_attributes) {
     {
       title: "My first manual",
       summary: "This is my first manual",
