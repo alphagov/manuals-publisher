@@ -1,6 +1,6 @@
 class Manual::PreviewService
-  def initialize(renderer:, manual_id:, attributes:, context:)
-    @renderer = renderer
+  def initialize(manual_id:, attributes:, context:)
+    @renderer = ManualPresenter.new
     @manual_id = manual_id
     @attributes = attributes
     @context = context
