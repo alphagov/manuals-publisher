@@ -186,7 +186,7 @@ private
   end
 
   def send_draft(manual)
-    organisation = fetch_organisation(manual.organisation_slug)
+    organisation = OrganisationFetcher.fetch(manual.organisation_slug)
 
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
     ManualPublishingAPIExporter.new(
@@ -227,9 +227,5 @@ private
 
   def publishing_api
     Services.publishing_api
-  end
-
-  def fetch_organisation(slug)
-    OrganisationFetcher.fetch(slug)
   end
 end
