@@ -34,7 +34,18 @@ class SearchIndexAdapter
 private
 
   def indexable_manual(manual)
-    ManualIndexableFormatter.new(manual)
+    OpenStruct.new(
+      id: Pathname.new('/').join(manual.slug).to_s,
+      type: ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+      indexable_attributes: {
+        title: manual.title,
+        description: manual.summary,
+        link: Pathname.new('/').join(manual.slug).to_s,
+        indexable_content: manual.summary,
+        public_timestamp: manual.updated_at,
+        content_store_document_type: ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+      }
+    )
   end
 
   def indexable_section(section, manual)
