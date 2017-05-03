@@ -1,5 +1,6 @@
 class SearchIndexAdapter
   RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL = "manual".freeze
+  RUMMAGER_DOCUMENT_TYPE_FOR_SECTION = "manual_section".freeze
 
   def initialize
     @rummager = Services.rummager
@@ -53,14 +54,14 @@ private
   def indexable_section(section, manual)
     OpenStruct.new(
       id: Pathname.new('/').join(section.slug).to_s,
-      type: SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+      type: RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
       indexable_attributes: {
         title: "#{manual.title}: #{section.title}",
         description: section.summary,
         link: Pathname.new('/').join(section.slug).to_s,
         indexable_content: MarkdownAttachmentProcessor.new(section).body,
         public_timestamp: nil,
-        content_store_document_type: SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        content_store_document_type: RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
         manual: Pathname.new('/').join(manual.slug).to_s
       }
     )
