@@ -26,8 +26,4 @@ private
   def with_leading_slash(slug)
     slug.start_with?("/") ? slug : "/#{slug}"
   end
-
-  def public_timestamp
-    entity.updated_at
-  end
 end

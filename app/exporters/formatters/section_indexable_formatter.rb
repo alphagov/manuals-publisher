@@ -18,7 +18,7 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
       description: entity.summary,
       link: link,
       indexable_content: entity.body,
-      public_timestamp: public_timestamp,
+      public_timestamp: nil,
       content_store_document_type: type,
       manual: manual_slug
     }
@@ -34,9 +34,5 @@ private
 
   def link
     with_leading_slash(entity.slug)
-  end
-
-  def public_timestamp
-    nil
   end
 end

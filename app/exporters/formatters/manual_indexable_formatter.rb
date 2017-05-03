@@ -13,7 +13,7 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
       description: entity.summary,
       link: link,
       indexable_content: entity.summary,
-      public_timestamp: public_timestamp,
+      public_timestamp: entity.updated_at,
       content_store_document_type: type,
     }
   end
