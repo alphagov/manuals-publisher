@@ -1,6 +1,6 @@
 require "govspeak_to_html_renderer"
 
-class ManualRenderer
+class ManualPresenter
   def call(manual)
     GovspeakToHTMLRenderer.create.call(manual)
   end

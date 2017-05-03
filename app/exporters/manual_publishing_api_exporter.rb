@@ -74,7 +74,7 @@ private
   end
 
   def rendered_manual_attributes
-    @rendered_manual_attributes ||= ManualRenderer.new.call(manual).attributes
+    @rendered_manual_attributes ||= ManualPresenter.new.call(manual).attributes
   end
 
   def details_data
