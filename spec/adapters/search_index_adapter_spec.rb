@@ -106,6 +106,22 @@ describe SearchIndexAdapter do
 
       subject.add(manual)
     end
+
+    context "when manual slug starts with a forward-slash" do
+      before do
+        manual.update(slug: "/manual-slug-starting-with-forward-slash")
+      end
+
+      it "uses the slug as the path without adding another forward-slash" do
+        expect(rummager).to receive(:add_document).with(
+          rummager_document_type_for_manual,
+          "/manual-slug-starting-with-forward-slash",
+          anything
+        )
+
+        subject.add(manual)
+      end
+    end
   end
 
   describe "#remove" do
