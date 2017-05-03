@@ -17,4 +17,10 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
       content_store_document_type: type,
     }
   end
+
+private
+
+  def path
+    with_leading_slash(entity.slug)
+  end
 end

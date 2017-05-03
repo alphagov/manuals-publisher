@@ -19,10 +19,6 @@ private
 
   attr_reader :entity
 
-  def path
-    with_leading_slash(entity.slug)
-  end
-
   def with_leading_slash(slug)
     root_path.join(slug).to_s
   end
