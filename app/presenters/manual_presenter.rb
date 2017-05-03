@@ -8,11 +8,11 @@ class ManualPresenter
   end
 
   def title
-    call.attributes.fetch(:title)
+    manual.title
   end
 
   def summary
-    call.attributes.fetch(:summary)
+    manual.summary
   end
 
   def body
