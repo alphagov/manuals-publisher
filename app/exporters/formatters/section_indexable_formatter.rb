@@ -8,6 +8,10 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
     @manual = manual
   end
 
+  def id
+    path
+  end
+
   def type
     RUMMAGER_DOCUMENT_TYPE
   end

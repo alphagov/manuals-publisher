@@ -7,10 +7,6 @@ class AbstractIndexableFormatter
     raise NotImplementedError
   end
 
-  def id
-    path
-  end
-
   def indexable_attributes
     raise NotImplementedError
   end

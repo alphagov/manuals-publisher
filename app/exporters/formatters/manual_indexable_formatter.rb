@@ -3,6 +3,10 @@ require "formatters/abstract_indexable_formatter"
 class ManualIndexableFormatter < AbstractIndexableFormatter
   RUMMAGER_DOCUMENT_TYPE = "manual".freeze
 
+  def id
+    path
+  end
+
   def type
     RUMMAGER_DOCUMENT_TYPE
   end
