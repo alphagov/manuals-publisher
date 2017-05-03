@@ -1,6 +1,4 @@
-require "formatters/abstract_indexable_formatter"
-
-class ManualIndexableFormatter < AbstractIndexableFormatter
+class ManualIndexableFormatter
   RUMMAGER_DOCUMENT_TYPE = "manual".freeze
 
   def initialize(manual)

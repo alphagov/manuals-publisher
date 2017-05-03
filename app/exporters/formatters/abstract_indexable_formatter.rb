@@ -1,2 +1,0 @@
-class AbstractIndexableFormatter
-end
