@@ -14,7 +14,8 @@ describe SectionPublishingAPIExporter do
   }
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
-  let(:section_renderer) { ->(_) { double(:rendered_section, attributes: rendered_attributes) } }
+  let(:rendered_section) { double(:rendered_section, attributes: rendered_attributes) }
+  let(:section_preview_service) { double(:section_preview_service) }
 
   let(:organisation) {
     {
@@ -81,7 +82,8 @@ describe SectionPublishingAPIExporter do
 
   before {
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
-    allow(SectionRenderer).to receive(:new).and_return(section_renderer)
+    allow(Section::PreviewService).to receive(:new).and_return(section_preview_service)
+    allow(section_preview_service).to receive(:render).with(section).and_return(rendered_section)
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do

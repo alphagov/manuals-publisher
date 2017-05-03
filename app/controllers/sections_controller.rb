@@ -71,7 +71,6 @@ class SectionsController < ApplicationController
 
   def preview
     service = Section::PreviewService.new(
-      section_renderer: SectionRenderer.new,
       context: self,
     )
     section = service.call

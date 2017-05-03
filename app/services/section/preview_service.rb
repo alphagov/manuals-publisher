@@ -1,21 +1,35 @@
+require 'markdown_attachment_processor'
+require 'section_header_extractor'
+require 'govspeak_to_html_renderer'
+require 'footnotes_section_heading_renderer'
+
 class Section::PreviewService
-  def initialize(section_renderer:, context:)
-    @section_renderer = section_renderer
+  def initialize(context:)
     @context = context
   end
 
   def call
     section.update(section_params)
 
-    section_renderer.call(section)
+    render(section)
+  end
+
+  def render(section)
+    pipeline = [
+      MarkdownAttachmentProcessor.method(:new),
+      SectionHeaderExtractor.create,
+      GovspeakToHTMLRenderer.create,
+      FootnotesSectionHeadingRenderer.create,
+    ]
+
+    pipeline.reduce(section) { |current_section, next_renderer|
+      next_renderer.call(current_section)
+    }
   end
 
 private
 
-  attr_reader(
-    :section_renderer,
-    :context,
-  )
+  attr_reader(:context)
 
   def section
     section_id ? existing_section : ephemeral_section
