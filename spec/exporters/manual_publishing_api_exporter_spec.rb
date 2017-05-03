@@ -14,7 +14,13 @@ describe ManualPublishingAPIExporter do
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
   let(:presented_manual) { double(:presented_manual, attributes: presented_manual_attributes) }
-  let(:manual_presenter) { double(:rendered_manual, call: presented_manual) }
+  let(:manual_presenter) {
+    double(:rendered_manual,
+      title: presented_manual_attributes.fetch(:title),
+      summary: presented_manual_attributes.fetch(:summary),
+      body: presented_manual_attributes.fetch(:body)
+    )
+  }
 
   let(:manual) {
     double(
