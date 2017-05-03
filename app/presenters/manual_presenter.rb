@@ -1,5 +1,3 @@
-require "govspeak_to_html_renderer"
-
 class ManualPresenter
   attr_reader :manual
 
@@ -16,7 +14,7 @@ class ManualPresenter
   end
 
   def body
-    GovspeakToHTMLRenderer.create.call(manual).attributes.fetch(:body)
+    GovspeakHtmlConverter.new.call(manual.body)
   end
 
   def valid?
