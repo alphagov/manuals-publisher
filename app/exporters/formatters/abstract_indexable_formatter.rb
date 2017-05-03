@@ -19,10 +19,6 @@ private
 
   attr_reader :entity
 
-  def description
-    entity.summary
-  end
-
   def link
     with_leading_slash(entity.slug)
   end

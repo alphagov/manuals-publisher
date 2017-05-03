@@ -15,7 +15,7 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
   def indexable_attributes
     {
       title: "#{manual.title}: #{entity.title}",
-      description: description,
+      description: entity.summary,
       link: link,
       indexable_content: indexable_content,
       public_timestamp: public_timestamp,
@@ -30,10 +30,6 @@ private
 
   def manual_slug
     with_leading_slash(manual.slug)
-  end
-
-  def description
-    entity.summary
   end
 
   def link

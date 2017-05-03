@@ -10,7 +10,7 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
   def indexable_attributes
     {
       title: entity.title,
-      description: description,
+      description: entity.summary,
       link: link,
       indexable_content: indexable_content,
       public_timestamp: public_timestamp,
