@@ -3,8 +3,8 @@ require "spec_helper"
 describe SearchIndexAdapter do
   let(:rummager) { double(:rummager) }
 
-  let(:rummager_document_type_for_manual) { ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE }
-  let(:rummager_document_type_for_section) { SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE }
+  let(:rummager_document_type_for_manual) { SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL }
+  let(:rummager_document_type_for_section) { SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_SECTION }
 
   let(:manual) {
     Manual.build(
@@ -105,6 +105,22 @@ describe SearchIndexAdapter do
       )
 
       subject.add(manual)
+    end
+
+    context "when manual slug starts with a forward-slash" do
+      before do
+        manual.update(slug: "/manual-slug-starting-with-forward-slash")
+      end
+
+      it "uses the slug as the path without adding another forward-slash" do
+        expect(rummager).to receive(:add_document).with(
+          rummager_document_type_for_manual,
+          "/manual-slug-starting-with-forward-slash",
+          anything
+        )
+
+        subject.add(manual)
+      end
     end
   end
 

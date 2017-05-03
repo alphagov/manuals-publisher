@@ -165,6 +165,6 @@ private
   end
 
   def remove_from_search_index(section)
-    SearchIndexAdapter.new.remove_section(section, manual)
+    SearchIndexAdapter.new.remove_section(section)
   end
 end
