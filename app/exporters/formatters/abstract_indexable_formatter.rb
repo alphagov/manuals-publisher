@@ -35,10 +35,6 @@ private
     slug.start_with?("/") ? slug : "/#{slug}"
   end
 
-  def indexable_content
-    entity.body
-  end
-
   def public_timestamp
     entity.updated_at
   end
