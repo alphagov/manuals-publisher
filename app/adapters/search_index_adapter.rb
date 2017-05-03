@@ -19,12 +19,21 @@ class SearchIndexAdapter
     )
 
     manual.sections.each do |section|
-      document = indexable_section(section, manual)
-      @rummager.add_document(document.type, document.id, document.indexable_attributes)
+      @rummager.add_document(
+        RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+        path_for(section),
+        title: "#{manual.title}: #{section.title}",
+        description: section.summary,
+        link: path_for(section),
+        indexable_content: MarkdownAttachmentProcessor.new(section).body,
+        public_timestamp: nil,
+        content_store_document_type: RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+        manual: path_for(manual)
+      )
     end
 
     manual.removed_sections.each do |section|
-      remove_section(section, manual)
+      remove_section(section)
     end
   end
 
@@ -35,32 +44,18 @@ class SearchIndexAdapter
     )
 
     manual.sections.each do |section|
-      remove_section(section, manual)
+      remove_section(section)
     end
   end
 
-  def remove_section(section, manual)
-    document = indexable_section(section, manual)
-    @rummager.delete_document(document.type, document.id)
+  def remove_section(section)
+    @rummager.delete_document(
+      RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+      path_for(section)
+    )
   end
 
 private
-
-  def indexable_section(section, manual)
-    OpenStruct.new(
-      id: path_for(section),
-      type: RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
-      indexable_attributes: {
-        title: "#{manual.title}: #{section.title}",
-        description: section.summary,
-        link: path_for(section),
-        indexable_content: MarkdownAttachmentProcessor.new(section).body,
-        public_timestamp: nil,
-        content_store_document_type: RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
-        manual: path_for(manual)
-      }
-    )
-  end
 
   def path_for(model)
     Pathname.new('/').join(model.slug).to_s
