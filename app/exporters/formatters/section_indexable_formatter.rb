@@ -4,12 +4,12 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
   RUMMAGER_DOCUMENT_TYPE = "manual_section".freeze
 
   def initialize(section, manual)
-    @entity = section
+    @section = section
     @manual = manual
   end
 
   def id
-    root_path.join(entity.slug).to_s
+    root_path.join(@section.slug).to_s
   end
 
   def type
@@ -18,17 +18,13 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
 
   def indexable_attributes
     {
-      title: "#{manual.title}: #{entity.title}",
-      description: entity.summary,
-      link: root_path.join(entity.slug).to_s,
-      indexable_content: entity.body,
+      title: "#{@manual.title}: #{@section.title}",
+      description: @section.summary,
+      link: root_path.join(@section.slug).to_s,
+      indexable_content: @section.body,
       public_timestamp: nil,
       content_store_document_type: type,
-      manual: root_path.join(manual.slug).to_s
+      manual: root_path.join(@manual.slug).to_s
     }
   end
-
-private
-
-  attr_reader :manual
 end

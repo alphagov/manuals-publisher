@@ -3,8 +3,12 @@ require "formatters/abstract_indexable_formatter"
 class ManualIndexableFormatter < AbstractIndexableFormatter
   RUMMAGER_DOCUMENT_TYPE = "manual".freeze
 
+  def initialize(manual)
+    @manual = manual
+  end
+
   def id
-    root_path.join(entity.slug).to_s
+    root_path.join(@manual.slug).to_s
   end
 
   def type
@@ -13,11 +17,11 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
 
   def indexable_attributes
     {
-      title: entity.title,
-      description: entity.summary,
-      link: root_path.join(entity.slug).to_s,
-      indexable_content: entity.summary,
-      public_timestamp: entity.updated_at,
+      title: @manual.title,
+      description: @manual.summary,
+      link: root_path.join(@manual.slug).to_s,
+      indexable_content: @manual.summary,
+      public_timestamp: @manual.updated_at,
       content_store_document_type: type,
     }
   end
