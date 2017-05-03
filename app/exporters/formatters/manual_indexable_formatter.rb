@@ -7,11 +7,18 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
     RUMMAGER_DOCUMENT_TYPE
   end
 
-private
-
-  def extra_attributes
-    {}
+  def indexable_attributes
+    {
+      title: title,
+      description: description,
+      link: link,
+      indexable_content: indexable_content,
+      public_timestamp: public_timestamp,
+      content_store_document_type: type,
+    }
   end
+
+private
 
   def indexable_content
     entity.summary # Manuals don't have a body

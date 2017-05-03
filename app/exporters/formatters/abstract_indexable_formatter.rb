@@ -12,27 +12,12 @@ class AbstractIndexableFormatter
   end
 
   def indexable_attributes
-    base_attributes.merge(extra_attributes)
+    raise NotImplementedError
   end
 
 private
 
   attr_reader :entity
-
-  def base_attributes
-    {
-      title: title,
-      description: description,
-      link: link,
-      indexable_content: indexable_content,
-      public_timestamp: public_timestamp,
-      content_store_document_type: type,
-    }
-  end
-
-  def extra_attributes
-    raise NotImplementedError
-  end
 
   def title
     entity.title

@@ -12,15 +12,21 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
     RUMMAGER_DOCUMENT_TYPE
   end
 
+  def indexable_attributes
+    {
+      title: title,
+      description: description,
+      link: link,
+      indexable_content: indexable_content,
+      public_timestamp: public_timestamp,
+      content_store_document_type: type,
+      manual: manual_slug
+    }
+  end
+
 private
 
   attr_reader :manual
-
-  def extra_attributes
-    {
-      manual: manual_slug,
-    }
-  end
 
   def manual_slug
     with_leading_slash(manual.slug)
