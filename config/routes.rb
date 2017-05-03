@@ -30,9 +30,9 @@ ManualsPublisher::Application.routes.draw do
   end
 
   # This is for new manualss
-  post "manuals/preview" => "Manuals#preview", as: "preview_new_manual"
+  post "manuals/preview" => "manuals#preview", as: "preview_new_manual"
   # This is for new sections
-  post "manuals/:manual_id/sections/preview" => "Sections#preview", as: "preview_new_section"
+  post "manuals/:manual_id/sections/preview" => "sections#preview", as: "preview_new_section"
 
   root to: redirect("/manuals")
 
