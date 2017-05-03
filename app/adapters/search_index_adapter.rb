@@ -1,15 +1,15 @@
-require "rummager_indexer"
-
 class SearchIndexAdapter
   def initialize
-    @indexer = RummagerIndexer.new
+    @rummager = Services.rummager
   end
 
   def add(manual)
-    @indexer.add(indexable_manual(manual))
+    document = indexable_manual(manual)
+    @rummager.add_document(document.type, document.id, document.indexable_attributes)
 
     manual.sections.each do |section|
-      @indexer.add(indexable_section(section, manual))
+      document = indexable_section(section, manual)
+      @rummager.add_document(document.type, document.id, document.indexable_attributes)
     end
 
     manual.removed_sections.each do |section|
@@ -18,7 +18,8 @@ class SearchIndexAdapter
   end
 
   def remove(manual)
-    @indexer.delete(indexable_manual(manual))
+    document = indexable_manual(manual)
+    @rummager.delete_document(document.type, document.id)
 
     manual.sections.each do |section|
       remove_section(section, manual)
@@ -26,7 +27,8 @@ class SearchIndexAdapter
   end
 
   def remove_section(section, manual)
-    @indexer.delete(indexable_section(section, manual))
+    document = indexable_section(section, manual)
+    @rummager.delete_document(document.type, document.id)
   end
 
 private
