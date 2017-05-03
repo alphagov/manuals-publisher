@@ -6,17 +6,10 @@ class SearchIndexAdapter
   end
 
   def add(manual)
-    @indexer.add(
-      ManualIndexableFormatter.new(manual)
-    )
+    @indexer.add(indexable_manual(manual))
 
     manual.sections.each do |section|
-      @indexer.add(
-        SectionIndexableFormatter.new(
-          MarkdownAttachmentProcessor.new(section),
-          manual,
-        )
-      )
+      @indexer.add(indexable_section(section, manual))
     end
 
     manual.removed_sections.each do |section|
@@ -25,9 +18,7 @@ class SearchIndexAdapter
   end
 
   def remove(manual)
-    @indexer.delete(
-      ManualIndexableFormatter.new(manual)
-    )
+    @indexer.delete(indexable_manual(manual))
 
     manual.sections.each do |section|
       remove_section(section, manual)
@@ -35,8 +26,19 @@ class SearchIndexAdapter
   end
 
   def remove_section(section, manual)
-    @indexer.delete(
-      SectionIndexableFormatter.new(section, manual),
+    @indexer.delete(indexable_section(section, manual))
+  end
+
+private
+
+  def indexable_manual(manual)
+    ManualIndexableFormatter.new(manual)
+  end
+
+  def indexable_section(section, manual)
+    SectionIndexableFormatter.new(
+      MarkdownAttachmentProcessor.new(section),
+      manual,
     )
   end
 end
