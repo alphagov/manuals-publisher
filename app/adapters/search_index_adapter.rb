@@ -51,9 +51,18 @@ private
   end
 
   def indexable_section(section, manual)
-    SectionIndexableFormatter.new(
-      MarkdownAttachmentProcessor.new(section),
-      manual,
+    OpenStruct.new(
+      id: Pathname.new('/').join(section.slug).to_s,
+      type: SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+      indexable_attributes: {
+        title: "#{manual.title}: #{section.title}",
+        description: section.summary,
+        link: Pathname.new('/').join(section.slug).to_s,
+        indexable_content: MarkdownAttachmentProcessor.new(section).body,
+        public_timestamp: nil,
+        content_store_document_type: SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        manual: Pathname.new('/').join(manual.slug).to_s
+      }
     )
   end
 end
