@@ -20,11 +20,11 @@ class ManualPresenter
   end
 
   def valid?
-    call.valid?
+    manual.valid?
   end
 
   def errors
-    call.errors
+    manual.errors
   end
 
 private
