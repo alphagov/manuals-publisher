@@ -21,6 +21,6 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
 private
 
   def path
-    with_leading_slash(entity.slug)
+    root_path.join(entity.slug).to_s
   end
 end

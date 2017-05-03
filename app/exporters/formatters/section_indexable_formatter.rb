@@ -29,10 +29,10 @@ private
   attr_reader :manual
 
   def manual_path
-    with_leading_slash(manual.slug)
+    root_path.join(manual.slug).to_s
   end
 
   def path
-    with_leading_slash(entity.slug)
+    root_path.join(entity.slug).to_s
   end
 end
