@@ -16,7 +16,7 @@ class ManualPresenter
   end
 
   def body
-    call.attributes.fetch(:body)
+    GovspeakToHTMLRenderer.create.call(manual).attributes.fetch(:body)
   end
 
   def valid?
@@ -25,11 +25,5 @@ class ManualPresenter
 
   def errors
     manual.errors
-  end
-
-private
-
-  def call
-    GovspeakToHTMLRenderer.create.call(manual)
   end
 end
