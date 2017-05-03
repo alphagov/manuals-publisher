@@ -14,7 +14,7 @@ describe ManualPublishingAPIExporter do
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
   let(:presented_manual) { double(:presented_manual, attributes: presented_manual_attributes) }
-  let(:manual_renderer) { double(:rendered_manual, call: presented_manual) }
+  let(:manual_presenter) { double(:rendered_manual, call: presented_manual) }
 
   let(:manual) {
     double(
@@ -96,7 +96,7 @@ describe ManualPublishingAPIExporter do
 
   before {
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
-    allow(ManualPresenter).to receive(:new).with(manual).and_return(manual_renderer)
+    allow(ManualPresenter).to receive(:new).with(manual).and_return(manual_presenter)
     allow(PublicationLog).to receive(:change_notes_for).and_return(publication_logs)
   }
 
