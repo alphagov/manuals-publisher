@@ -16,7 +16,6 @@ gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"
 gem "quiet_assets", "1.0.3"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
-gem "rack", "~> 1.4.6" # explicitly requiring patched version re: CVE-2015-3225
 gem "rake", "< 12.0.0" # versions newer than this break in rails 3.2
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
