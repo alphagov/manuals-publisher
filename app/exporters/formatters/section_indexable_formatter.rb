@@ -9,7 +9,7 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
   end
 
   def id
-    path
+    root_path.join(entity.slug).to_s
   end
 
   def type
@@ -20,23 +20,15 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
     {
       title: "#{manual.title}: #{entity.title}",
       description: entity.summary,
-      link: path,
+      link: root_path.join(entity.slug).to_s,
       indexable_content: entity.body,
       public_timestamp: nil,
       content_store_document_type: type,
-      manual: manual_path
+      manual: root_path.join(manual.slug).to_s
     }
   end
 
 private
 
   attr_reader :manual
-
-  def manual_path
-    root_path.join(manual.slug).to_s
-  end
-
-  def path
-    root_path.join(entity.slug).to_s
-  end
 end

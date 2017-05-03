@@ -4,7 +4,7 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
   RUMMAGER_DOCUMENT_TYPE = "manual".freeze
 
   def id
-    path
+    root_path.join(entity.slug).to_s
   end
 
   def type
@@ -15,16 +15,10 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
     {
       title: entity.title,
       description: entity.summary,
-      link: path,
+      link: root_path.join(entity.slug).to_s,
       indexable_content: entity.summary,
       public_timestamp: entity.updated_at,
       content_store_document_type: type,
     }
-  end
-
-private
-
-  def path
-    root_path.join(entity.slug).to_s
   end
 end
