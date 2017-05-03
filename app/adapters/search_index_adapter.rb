@@ -7,8 +7,16 @@ class SearchIndexAdapter
   end
 
   def add(manual)
-    document = indexable_manual(manual)
-    @rummager.add_document(document.type, document.id, document.indexable_attributes)
+    @rummager.add_document(
+      RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
+      path_for(manual),
+      title: manual.title,
+      description: manual.summary,
+      link: path_for(manual),
+      indexable_content: manual.summary,
+      public_timestamp: manual.updated_at,
+      content_store_document_type: RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL
+    )
 
     manual.sections.each do |section|
       document = indexable_section(section, manual)
@@ -21,8 +29,10 @@ class SearchIndexAdapter
   end
 
   def remove(manual)
-    document = indexable_manual(manual)
-    @rummager.delete_document(document.type, document.id)
+    @rummager.delete_document(
+      RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
+      path_for(manual)
+    )
 
     manual.sections.each do |section|
       remove_section(section, manual)
@@ -35,21 +45,6 @@ class SearchIndexAdapter
   end
 
 private
-
-  def indexable_manual(manual)
-    OpenStruct.new(
-      id: path_for(manual),
-      type: RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
-      indexable_attributes: {
-        title: manual.title,
-        description: manual.summary,
-        link: path_for(manual),
-        indexable_content: manual.summary,
-        public_timestamp: manual.updated_at,
-        content_store_document_type: RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
-      }
-    )
-  end
 
   def indexable_section(section, manual)
     OpenStruct.new(
