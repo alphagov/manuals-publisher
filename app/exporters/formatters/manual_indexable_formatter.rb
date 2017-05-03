@@ -20,7 +20,7 @@ class ManualIndexableFormatter
       link: Pathname.new('/').join(@manual.slug).to_s,
       indexable_content: @manual.summary,
       public_timestamp: @manual.updated_at,
-      content_store_document_type: type,
+      content_store_document_type: RUMMAGER_DOCUMENT_TYPE,
     }
   end
 end

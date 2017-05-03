@@ -21,7 +21,7 @@ class SectionIndexableFormatter
       link: Pathname.new('/').join(@section.slug).to_s,
       indexable_content: @section.body,
       public_timestamp: nil,
-      content_store_document_type: type,
+      content_store_document_type: RUMMAGER_DOCUMENT_TYPE,
       manual: Pathname.new('/').join(@manual.slug).to_s
     }
   end
