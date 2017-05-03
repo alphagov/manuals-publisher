@@ -9,7 +9,7 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
   end
 
   def id
-    root_path.join(@section.slug).to_s
+    Pathname.new('/').join(@section.slug).to_s
   end
 
   def type
@@ -20,11 +20,11 @@ class SectionIndexableFormatter < AbstractIndexableFormatter
     {
       title: "#{@manual.title}: #{@section.title}",
       description: @section.summary,
-      link: root_path.join(@section.slug).to_s,
+      link: Pathname.new('/').join(@section.slug).to_s,
       indexable_content: @section.body,
       public_timestamp: nil,
       content_store_document_type: type,
-      manual: root_path.join(@manual.slug).to_s
+      manual: Pathname.new('/').join(@manual.slug).to_s
     }
   end
 end

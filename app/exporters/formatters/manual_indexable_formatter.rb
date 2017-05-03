@@ -8,7 +8,7 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
   end
 
   def id
-    root_path.join(@manual.slug).to_s
+    Pathname.new('/').join(@manual.slug).to_s
   end
 
   def type
@@ -19,7 +19,7 @@ class ManualIndexableFormatter < AbstractIndexableFormatter
     {
       title: @manual.title,
       description: @manual.summary,
-      link: root_path.join(@manual.slug).to_s,
+      link: Pathname.new('/').join(@manual.slug).to_s,
       indexable_content: @manual.summary,
       public_timestamp: @manual.updated_at,
       content_store_document_type: type,
