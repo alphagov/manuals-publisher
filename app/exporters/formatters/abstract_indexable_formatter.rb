@@ -19,10 +19,6 @@ private
 
   attr_reader :entity
 
-  def title
-    entity.title
-  end
-
   def description
     entity.summary
   end
