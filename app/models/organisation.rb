@@ -1,8 +1,8 @@
 class Organisation
-  attr_reader :title
-  attr_reader :abbreviation
-  attr_reader :content_id
-  attr_reader :web_url
+  attr_accessor :title
+  attr_accessor :abbreviation
+  attr_accessor :content_id
+  attr_accessor :web_url
 
   def initialize(attributes = {})
     @title = attributes[:title]
