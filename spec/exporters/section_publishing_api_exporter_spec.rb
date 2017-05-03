@@ -17,11 +17,12 @@ describe SectionPublishingAPIExporter do
   let(:section_renderer) { ->(_) { double(:rendered_section, attributes: rendered_attributes) } }
 
   let(:organisation) {
-    {
-      "web_url" => "https://www.gov.uk/government/organisations/cabinet-office",
-      "title" => "Cabinet Office",
-      "details" => { "abbreviation" => "CO", "content_id" => "d94d63a5-ce8e-40a1-ab4c-4956eab27259" },
-    }
+    Organisation.new(
+      web_url: "https://www.gov.uk/government/organisations/cabinet-office",
+      title: "Cabinet Office",
+      abbreviation: "CO",
+      content_id: "d94d63a5-ce8e-40a1-ab4c-4956eab27259"
+    )
   }
 
   let(:manual) {
