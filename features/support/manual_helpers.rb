@@ -251,7 +251,7 @@ module ManualHelpers
   def check_manual_is_published_to_rummager(slug, attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
-        ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
         "/#{slug}",
         hash_including(
           title: attrs.fetch(:title),
@@ -264,7 +264,7 @@ module ManualHelpers
   def check_manual_is_not_published_to_rummager(slug)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
         "/#{slug}",
         anything
       )
@@ -273,7 +273,7 @@ module ManualHelpers
   def check_manual_is_not_published_to_rummager_with_attrs(slug, attrs)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
         "/#{slug}",
         hash_including(
           title: attrs.fetch(:title),
@@ -463,7 +463,7 @@ module ManualHelpers
   def check_manual_is_withdrawn_from_rummager(manual, sections)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
-        ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
         "/#{manual.slug}",
       )
 

@@ -3,7 +3,7 @@ require "spec_helper"
 describe SearchIndexAdapter do
   let(:rummager) { double(:rummager) }
 
-  let(:rummager_document_type_for_manual) { ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE }
+  let(:rummager_document_type_for_manual) { SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL }
   let(:rummager_document_type_for_section) { SectionIndexableFormatter::RUMMAGER_DOCUMENT_TYPE }
 
   let(:manual) {

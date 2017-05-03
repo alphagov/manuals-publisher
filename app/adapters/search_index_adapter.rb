@@ -1,4 +1,6 @@
 class SearchIndexAdapter
+  RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL = "manual".freeze
+
   def initialize
     @rummager = Services.rummager
   end
@@ -36,14 +38,14 @@ private
   def indexable_manual(manual)
     OpenStruct.new(
       id: Pathname.new('/').join(manual.slug).to_s,
-      type: ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+      type: RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
       indexable_attributes: {
         title: manual.title,
         description: manual.summary,
         link: Pathname.new('/').join(manual.slug).to_s,
         indexable_content: manual.summary,
         public_timestamp: manual.updated_at,
-        content_store_document_type: ManualIndexableFormatter::RUMMAGER_DOCUMENT_TYPE,
+        content_store_document_type: RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
       }
     )
   end
