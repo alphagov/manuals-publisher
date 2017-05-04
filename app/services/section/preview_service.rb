@@ -1,6 +1,6 @@
 class Section::PreviewService
-  def initialize(section_renderer:, context:)
-    @section_renderer = section_renderer
+  def initialize(context:)
+    @section_renderer = SectionPresenter.new
     @context = context
   end
 
