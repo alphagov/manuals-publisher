@@ -4,12 +4,8 @@ class SearchIndexAdapter
   RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL = "manual".freeze
   RUMMAGER_DOCUMENT_TYPE_FOR_SECTION = "manual_section".freeze
 
-  def initialize
-    @rummager = Services.rummager
-  end
-
   def add(manual)
-    @rummager.add_document(
+    rummager.add_document(
       RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
       path_for(manual),
       title: manual.title,
@@ -21,7 +17,7 @@ class SearchIndexAdapter
     )
 
     manual.sections.each do |section|
-      @rummager.add_document(
+      rummager.add_document(
         RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
         path_for(section),
         title: "#{manual.title}: #{section.title}",
@@ -40,7 +36,7 @@ class SearchIndexAdapter
   end
 
   def remove(manual)
-    @rummager.delete_document(
+    rummager.delete_document(
       RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
       path_for(manual)
     )
@@ -51,7 +47,7 @@ class SearchIndexAdapter
   end
 
   def remove_section(section)
-    @rummager.delete_document(
+    rummager.delete_document(
       RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
       path_for(section)
     )
@@ -61,5 +57,9 @@ private
 
   def path_for(model)
     Pathname.new('/').join(model.slug).to_s
+  end
+
+  def rummager
+    Services.rummager
   end
 end
