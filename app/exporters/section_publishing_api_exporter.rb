@@ -112,7 +112,7 @@ private
   end
 
   def rendered_section_attributes
-    @rendered_section_attributes ||= SectionPresenter.new.call(section).attributes
+    @rendered_section_attributes ||= SectionPresenter.new(section).call.attributes
   end
 
   def organisation_info
