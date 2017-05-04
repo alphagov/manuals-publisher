@@ -25,7 +25,7 @@ private
   end
 
   def base_path
-    "/#{rendered_section_attributes.fetch(:slug)}"
+    "/#{section_presenter.fetch(:slug)}"
   end
 
   def exportable_attributes
@@ -33,8 +33,8 @@ private
       base_path: base_path,
       schema_name: PUBLISHING_API_SCHEMA_NAME,
       document_type: PUBLISHING_API_DOCUMENT_TYPE,
-      title: rendered_section_attributes.fetch(:title),
-      description: rendered_section_attributes.fetch(:summary),
+      title: section_presenter.fetch(:title),
+      description: section_presenter.fetch(:summary),
       update_type: update_type,
       publishing_app: "manuals-publisher",
       rendering_app: "manuals-frontend",
@@ -67,7 +67,7 @@ private
         },
         {
           content_type: "text/html",
-          content: rendered_section_attributes.fetch(:body)
+          content: section_presenter.fetch(:body)
         }
       ],
       manual: {
@@ -111,8 +111,8 @@ private
     section.minor_update? ? "minor" : "major"
   end
 
-  def rendered_section_attributes
-    @rendered_section_attributes ||= SectionPresenter.new(section)
+  def section_presenter
+    @section_presenter ||= SectionPresenter.new(section)
   end
 
   def organisation_info
