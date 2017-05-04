@@ -16,13 +16,7 @@ describe SectionPublishingAPIExporter do
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
   let(:section_renderer) { ->(_) { double(:rendered_section, attributes: rendered_attributes) } }
 
-  let(:organisation) {
-    {
-      "web_url" => "https://www.gov.uk/government/organisations/cabinet-office",
-      "title" => "Cabinet Office",
-      "details" => { "abbreviation" => "CO", "content_id" => "d94d63a5-ce8e-40a1-ab4c-4956eab27259" },
-    }
-  }
+  let(:organisation) { FactoryGirl.build(:organisation) }
 
   let(:manual) {
     double(

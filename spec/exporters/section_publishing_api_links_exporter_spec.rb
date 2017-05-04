@@ -14,13 +14,7 @@ describe SectionPublishingAPILinksExporter do
 
   let(:publishing_api) { double(:publishing_api, patch_links: nil) }
 
-  let(:organisation) {
-    {
-      "web_url" => "https://www.gov.uk/government/organisations/cabinet-office",
-      "title" => "Cabinet Office",
-      "details" => { "abbreviation" => "CO", "content_id" => "d94d63a5-ce8e-40a1-ab4c-4956eab27259" },
-    }
-  }
+  let(:organisation) { FactoryGirl.build(:organisation) }
 
   let(:manual) {
     double(
@@ -54,7 +48,7 @@ describe SectionPublishingAPILinksExporter do
       section.id,
       hash_including(
         links: {
-          organisations: [organisation["details"]["content_id"]],
+          organisations: [organisation.content_id],
           manual: [manual.id],
         }
       )

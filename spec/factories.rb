@@ -87,4 +87,11 @@ FactoryGirl.define do
     originally_published_at Time.now
     use_originally_published_at_for_public_timestamp true
   end
+
+  factory :organisation do
+    title "Cabinet Office"
+    web_url "https://www.gov.uk/government/organisations/cabinet-office"
+    abbreviation "CO"
+    content_id "d94d63a5-ce8e-40a1-ab4c-4956eab27259"
+  end
 end

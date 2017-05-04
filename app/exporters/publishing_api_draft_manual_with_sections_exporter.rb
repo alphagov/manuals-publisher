@@ -2,7 +2,7 @@ class PublishingApiDraftManualWithSectionsExporter
   def call(manual, action = nil)
     update_type = (action == :republish ? "republish" : nil)
 
-    organisation = organisation(manual.attributes.fetch(:organisation_slug))
+    organisation = OrganisationsAdapter.new.find(manual.organisation_slug)
 
     ManualPublishingAPILinksExporter.new(
       organisation, manual
@@ -23,9 +23,5 @@ class PublishingApiDraftManualWithSectionsExporter
         organisation, manual, section, update_type: update_type
       ).call
     end
-  end
-
-  def organisation(slug)
-    OrganisationFetcher.fetch(slug)
   end
 end

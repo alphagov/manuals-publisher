@@ -19,7 +19,7 @@ private
   def exportable_attributes
     {
       links: {
-        organisations: [organisation["details"]["content_id"]],
+        organisations: [organisation.content_id],
         sections: manual.sections.map(&:id),
       },
     }

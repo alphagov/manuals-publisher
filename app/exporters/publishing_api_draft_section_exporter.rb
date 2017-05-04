@@ -1,15 +1,8 @@
 class PublishingApiDraftSectionExporter
   def call(section, manual)
-    SectionPublishingAPILinksExporter.new(
-      OrganisationFetcher.fetch(manual.attributes.fetch(:organisation_slug)),
-      manual,
-      section
-    ).call
+    organisation = OrganisationsAdapter.new.find(manual.organisation_slug)
 
-    SectionPublishingAPIExporter.new(
-      OrganisationFetcher.fetch(manual.attributes.fetch(:organisation_slug)),
-      manual,
-      section
-    ).call
+    SectionPublishingAPILinksExporter.new(organisation, manual, section).call
+    SectionPublishingAPIExporter.new(organisation, manual, section).call
   end
 end
