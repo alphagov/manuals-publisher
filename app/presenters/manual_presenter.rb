@@ -3,27 +3,12 @@ class ManualPresenter
     @manual = manual
   end
 
-  def title
-    manual.title
-  end
-
-  def summary
-    manual.summary
-  end
+  delegate :title, to: :@manual
+  delegate :summary, to: :@manual
+  delegate :valid?, to: :@manual
+  delegate :errors, to: :@manual
 
   def body
-    GovspeakHtmlConverter.new.call(manual.body)
+    GovspeakHtmlConverter.new.call(@manual.body)
   end
-
-  def valid?
-    manual.valid?
-  end
-
-  def errors
-    manual.errors
-  end
-
-private
-
-  attr_reader :manual
 end
