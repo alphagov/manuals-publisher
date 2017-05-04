@@ -1,6 +1,4 @@
 class ManualPresenter
-  attr_reader :manual
-
   def initialize(manual)
     @manual = manual
   end
@@ -24,4 +22,8 @@ class ManualPresenter
   def errors
     manual.errors
   end
+
+private
+
+  attr_reader :manual
 end
