@@ -1,3 +1,5 @@
+require "services"
+
 class SearchIndexAdapter
   RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL = "manual".freeze
   RUMMAGER_DOCUMENT_TYPE_FOR_SECTION = "manual_section".freeze

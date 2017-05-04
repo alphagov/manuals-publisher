@@ -1,3 +1,5 @@
+require "services"
+
 class OrganisationsAdapter
   def initialize
     @api = Services.organisations
