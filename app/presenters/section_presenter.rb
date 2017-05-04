@@ -8,6 +8,24 @@ class SectionPresenter
     @section = section
   end
 
+  def fetch(key)
+    call.attributes.fetch(key)
+  end
+
+  def valid?
+    call.valid?
+  end
+
+  def errors
+    call.errors
+  end
+
+  def body
+    call.body
+  end
+
+private
+
   def call
     pipeline = [
       MarkdownAttachmentProcessor.method(:new),

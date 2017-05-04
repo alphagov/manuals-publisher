@@ -6,7 +6,7 @@ class Section::PreviewService
   def call
     section.update(section_params)
 
-    SectionPresenter.new(section).call
+    SectionPresenter.new(section)
   end
 
 private
