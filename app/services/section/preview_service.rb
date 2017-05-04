@@ -1,19 +1,17 @@
 class Section::PreviewService
-  def initialize(section_renderer:, context:)
-    @section_renderer = section_renderer
+  def initialize(context:)
     @context = context
   end
 
   def call
     section.update(section_params)
 
-    section_renderer.call(section)
+    SectionPresenter.new(section)
   end
 
 private
 
   attr_reader(
-    :section_renderer,
     :context,
   )
 

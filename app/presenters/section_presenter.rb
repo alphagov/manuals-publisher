@@ -4,7 +4,17 @@ require "govspeak_to_html_renderer"
 require "footnotes_section_heading_renderer"
 
 class SectionPresenter
-  def call(doc)
+  def initialize(section)
+    @section = section
+  end
+
+  delegate :slug, to: :@section
+  delegate :title, to: :@section
+  delegate :summary, to: :@section
+  delegate :valid?, to: :@section
+  delegate :errors, to: :@section
+
+  def body
     pipeline = [
       MarkdownAttachmentProcessor.method(:new),
       SectionHeaderExtractor.create,
@@ -12,8 +22,8 @@ class SectionPresenter
       FootnotesSectionHeadingRenderer.create,
     ]
 
-    pipeline.reduce(doc) { |current_doc, next_renderer|
-      next_renderer.call(current_doc)
-    }
+    pipeline.reduce(@section) { |current_section, next_renderer|
+      next_renderer.call(current_section)
+    }.attributes.fetch(:body)
   end
 end
