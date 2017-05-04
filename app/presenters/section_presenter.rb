@@ -15,12 +15,6 @@ class SectionPresenter
   delegate :errors, to: :@section
 
   def body
-    call.attributes.fetch(:body)
-  end
-
-private
-
-  def call
     pipeline = [
       MarkdownAttachmentProcessor.method(:new),
       SectionHeaderExtractor.create,
@@ -30,6 +24,6 @@ private
 
     pipeline.reduce(@section) { |current_section, next_renderer|
       next_renderer.call(current_section)
-    }
+    }.attributes.fetch(:body)
   end
 end
