@@ -21,7 +21,7 @@ RSpec.describe Manual::RepublishService do
   before do
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { publishing_api_publisher }
-    allow(SearchIndexAdapter).to receive(:new) { search_index_adapter }
+    allow(Adapters).to receive(:search_index) { search_index_adapter }
     allow(publishing_api_draft_exporter).to receive(:call)
     allow(publishing_api_publisher).to receive(:call)
     allow(search_index_adapter).to receive(:add)

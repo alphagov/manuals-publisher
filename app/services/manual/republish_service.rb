@@ -1,3 +1,5 @@
+require "adapters"
+
 class Manual::RepublishService
   def initialize(manual_id:, context:)
     @manual_id = manual_id
@@ -39,7 +41,7 @@ private
   end
 
   def add_published_manual_to_search_index
-    SearchIndexAdapter.new.add(published_manual_version)
+    Adapters.search_index.add(published_manual_version)
   end
 
   def export_draft_manual_via_publishing_api

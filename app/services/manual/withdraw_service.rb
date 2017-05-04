@@ -1,3 +1,5 @@
+require "adapters"
+
 class Manual::WithdrawService
   def initialize(manual_id:, context:)
     @manual_id = manual_id
@@ -33,7 +35,7 @@ private
   end
 
   def remove_from_search_index
-    SearchIndexAdapter.new.remove(manual)
+    Adapters.search_index.remove(manual)
   end
 
   def manual

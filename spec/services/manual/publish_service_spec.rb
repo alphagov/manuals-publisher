@@ -26,7 +26,7 @@ RSpec.describe Manual::PublishService do
     allow(PublicationLogger).to receive(:new) { publication_logger }
     allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
     allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { new_publishing_api_publisher }
-    allow(SearchIndexAdapter).to receive(:new) { search_index_adapter }
+    allow(Adapters).to receive(:search_index) { search_index_adapter }
     allow(publication_logger).to receive(:call)
     allow(publishing_api_draft_exporter).to receive(:call)
     allow(new_publishing_api_publisher).to receive(:call)
