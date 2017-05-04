@@ -8,28 +8,14 @@ class SectionPresenter
     @section = section
   end
 
-  def slug
-    call.attributes.fetch(:slug)
-  end
-
-  def title
-    call.attributes.fetch(:title)
-  end
-
-  def summary
-    call.attributes.fetch(:summary)
-  end
+  delegate :slug, to: :@section
+  delegate :title, to: :@section
+  delegate :summary, to: :@section
+  delegate :valid?, to: :@section
+  delegate :errors, to: :@section
 
   def body
     call.attributes.fetch(:body)
-  end
-
-  def valid?
-    call.valid?
-  end
-
-  def errors
-    call.errors
   end
 
 private
