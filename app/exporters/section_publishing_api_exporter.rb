@@ -25,7 +25,7 @@ private
   end
 
   def base_path
-    "/#{section_presenter.fetch(:slug)}"
+    "/#{section_presenter.slug}"
   end
 
   def exportable_attributes
@@ -33,8 +33,8 @@ private
       base_path: base_path,
       schema_name: PUBLISHING_API_SCHEMA_NAME,
       document_type: PUBLISHING_API_DOCUMENT_TYPE,
-      title: section_presenter.fetch(:title),
-      description: section_presenter.fetch(:summary),
+      title: section_presenter.title,
+      description: section_presenter.summary,
       update_type: update_type,
       publishing_app: "manuals-publisher",
       rendering_app: "manuals-frontend",
@@ -67,7 +67,7 @@ private
         },
         {
           content_type: "text/html",
-          content: section_presenter.fetch(:body)
+          content: section_presenter.body
         }
       ],
       manual: {

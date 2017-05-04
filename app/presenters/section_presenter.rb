@@ -8,8 +8,20 @@ class SectionPresenter
     @section = section
   end
 
-  def fetch(key)
-    call.attributes.fetch(key)
+  def slug
+    call.attributes.fetch(:slug)
+  end
+
+  def title
+    call.attributes.fetch(:title)
+  end
+
+  def summary
+    call.attributes.fetch(:summary)
+  end
+
+  def body
+    call.attributes.fetch(:body)
   end
 
   def valid?
@@ -18,10 +30,6 @@ class SectionPresenter
 
   def errors
     call.errors
-  end
-
-  def body
-    call.body
   end
 
 private

@@ -14,7 +14,14 @@ describe SectionPublishingAPIExporter do
   }
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
-  let(:section_presenter) { double(:section_presenter) }
+  let(:section_presenter) {
+    double(:section_presenter,
+      slug: "guidance/my-first-manual/first-section",
+      title: "Document title",
+      summary: "This is the first section",
+      body: "<h1>Some heading</h1>\nmanual section body"
+    )
+  }
 
   let(:organisation) { FactoryGirl.build(:organisation) }
 
@@ -63,24 +70,9 @@ describe SectionPublishingAPIExporter do
     )
   }
 
-  let(:presented_section_attributes) {
-    {
-      title: "Document title",
-      summary: "This is the first section",
-      slug: "guidance/my-first-manual/first-section",
-      body: "<h1>Some heading</h1>\nmanual section body",
-      updated_at: Time.new(2013, 12, 31, 12, 0, 0),
-    }
-  }
-
   before {
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
     allow(SectionPresenter).to receive(:new).with(section).and_return(section_presenter)
-
-    allow(section_presenter).to receive(:fetch).with(:slug).and_return(presented_section_attributes[:slug])
-    allow(section_presenter).to receive(:fetch).with(:title).and_return(presented_section_attributes[:title])
-    allow(section_presenter).to receive(:fetch).with(:summary).and_return(presented_section_attributes[:summary])
-    allow(section_presenter).to receive(:fetch).with(:body).and_return(presented_section_attributes[:body])
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do
