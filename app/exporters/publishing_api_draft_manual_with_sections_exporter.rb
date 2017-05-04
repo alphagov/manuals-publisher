@@ -1,8 +1,10 @@
+require "adapters"
+
 class PublishingApiDraftManualWithSectionsExporter
   def call(manual, action = nil)
     update_type = (action == :republish ? "republish" : nil)
 
-    organisation = OrganisationsAdapter.new.find(manual.organisation_slug)
+    organisation = Adapters.organisations.find(manual.organisation_slug)
 
     ManualPublishingAPILinksExporter.new(
       organisation, manual

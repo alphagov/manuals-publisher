@@ -1,4 +1,5 @@
 require "services"
+require "adapters"
 
 class ManualRelocator
   attr_reader :from_slug, :to_slug
@@ -186,7 +187,7 @@ private
   end
 
   def send_draft(manual)
-    organisation = OrganisationsAdapter.new.find(manual.organisation_slug)
+    organisation = Adapters.organisations.find(manual.organisation_slug)
 
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
     ManualPublishingAPIExporter.new(

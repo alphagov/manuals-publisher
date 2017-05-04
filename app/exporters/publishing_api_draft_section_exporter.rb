@@ -1,6 +1,8 @@
+require "adapters"
+
 class PublishingApiDraftSectionExporter
   def call(section, manual)
-    organisation = OrganisationsAdapter.new.find(manual.organisation_slug)
+    organisation = Adapters.organisations.find(manual.organisation_slug)
 
     SectionPublishingAPILinksExporter.new(organisation, manual, section).call
     SectionPublishingAPIExporter.new(organisation, manual, section).call
