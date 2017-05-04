@@ -13,7 +13,13 @@ describe ManualPublishingAPIExporter do
   }
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
-  let(:manual_renderer) { ->(_) { double(:rendered_manual, attributes: rendered_manual_attributes) } }
+  let(:presented_manual) {
+    double(:presented_manual,
+      title: "My first manual",
+      summary: "This is my first manual",
+      body: "<h1>Some heading</h1>\nmanual body"
+    )
+  }
 
   let(:manual) {
     double(
@@ -63,17 +69,6 @@ describe ManualPublishingAPIExporter do
     }
   }
 
-  let(:rendered_manual_attributes) {
-    {
-      title: "My first manual",
-      summary: "This is my first manual",
-      body: "<h1>Some heading</h1>\nmanual body",
-      slug: "guidance/my-first-manual",
-      updated_at: Time.new(2013, 12, 31, 12, 0, 0),
-      organisation_slug: "cabinet-office",
-    }
-  }
-
   let(:publication_logs) {
     [
       double(
@@ -95,7 +90,7 @@ describe ManualPublishingAPIExporter do
 
   before {
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
-    allow(ManualRenderer).to receive(:new).and_return(manual_renderer)
+    allow(ManualPresenter).to receive(:new).with(manual).and_return(presented_manual)
     allow(PublicationLog).to receive(:change_notes_for).and_return(publication_logs)
   }
 

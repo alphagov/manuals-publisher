@@ -75,7 +75,7 @@ describe SectionPublishingAPIExporter do
 
   before {
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
-    allow(SectionRenderer).to receive(:new).and_return(section_renderer)
+    allow(SectionPresenter).to receive(:new).and_return(section_renderer)
   }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do

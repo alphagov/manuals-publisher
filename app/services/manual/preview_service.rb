@@ -1,6 +1,5 @@
 class Manual::PreviewService
-  def initialize(renderer:, manual_id:, attributes:, context:)
-    @renderer = renderer
+  def initialize(manual_id:, attributes:, context:)
     @manual_id = manual_id
     @attributes = attributes
     @context = context
@@ -9,13 +8,12 @@ class Manual::PreviewService
   def call
     manual.update(attributes)
 
-    renderer.call(manual)
+    ManualPresenter.new(manual)
   end
 
 private
 
   attr_reader(
-    :renderer,
     :manual_id,
     :attributes,
     :context,

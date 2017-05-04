@@ -39,8 +39,8 @@ private
       base_path: base_path,
       schema_name: PUBLISHING_API_SCHEMA_NAME,
       document_type: PUBLISHING_API_DOCUMENT_TYPE,
-      title: rendered_manual_attributes.fetch(:title),
-      description: rendered_manual_attributes.fetch(:summary),
+      title: presented_manual.title,
+      description: presented_manual.summary,
       update_type: update_type,
       publishing_app: "manuals-publisher",
       rendering_app: "manuals-frontend",
@@ -73,8 +73,8 @@ private
     ManualUpdateType.for(manual)
   end
 
-  def rendered_manual_attributes
-    @rendered_manual_attributes ||= ManualRenderer.new.call(manual).attributes
+  def presented_manual
+    @presented_manual ||= ManualPresenter.new(manual)
   end
 
   def details_data
@@ -86,7 +86,7 @@ private
         },
         {
           content_type: "text/html",
-          content: rendered_manual_attributes.fetch(:body)
+          content: presented_manual.body
         }
       ],
       child_section_groups: [
