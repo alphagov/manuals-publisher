@@ -1,5 +1,4 @@
 require "markdown_attachment_processor"
-require "govspeak_to_html_renderer"
 require "footnotes_section_heading_renderer"
 
 class SectionPresenter
@@ -26,9 +25,7 @@ private
   end
 
   def render_govspeak(body)
-    GovspeakToHTMLRenderer.create.call(
-      OpenStruct.new(body: body)
-    ).body
+    GovspeakHtmlConverter.new.call(body)
   end
 
   def render_footnotes_heading(body)
