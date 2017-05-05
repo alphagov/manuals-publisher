@@ -84,7 +84,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
     highway_code_manual_record.editions.create!(
       state: "published",
       version_number: 1,
-      section_ids: [
+      section_uuids: [
         early_section_edition_with_pdf.section_uuid,
         early_section_edition_with_non_pdf.section_uuid,
         early_section_edition_draft_with_pdf.section_uuid,
@@ -115,7 +115,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
     patent_manual_record.editions.create!(
       state: "published",
       version_number: 1,
-      section_ids: [
+      section_uuids: [
         very_recent_draft_patent_section_edition.section_uuid
       ],
     )
