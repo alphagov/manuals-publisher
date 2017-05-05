@@ -72,7 +72,7 @@ FactoryGirl.define do
       after(:build) do |manual_record|
         manual_record.editions.each do |edition|
           section = FactoryGirl.create(:section_edition)
-          edition.removed_section_ids = [section.section_uuid]
+          edition.removed_section_uuids = [section.section_uuid]
         end
       end
     end
