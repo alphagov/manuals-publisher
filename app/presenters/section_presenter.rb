@@ -1,5 +1,4 @@
 require "markdown_attachment_processor"
-require "footnotes_section_heading_renderer"
 
 class SectionPresenter
   def initialize(section)
@@ -29,8 +28,9 @@ private
   end
 
   def render_footnotes_heading(body)
-    FootnotesSectionHeadingRenderer.create.call(
-      OpenStruct.new(body: body)
-    ).body
+    footnote_open_tag = '<div class="footnotes">'
+    heading_tag = '<h2 id="footnotes">Footnotes</h2>'
+
+    body.gsub(footnote_open_tag, "#{heading_tag}\\&")
   end
 end
