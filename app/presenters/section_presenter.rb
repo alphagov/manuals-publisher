@@ -14,14 +14,12 @@ class SectionPresenter
   delegate :errors, to: :@section
 
   def body
-    pipeline = [
-      MarkdownAttachmentProcessor.method(:new),
-      GovspeakToHTMLRenderer.create,
-      FootnotesSectionHeadingRenderer.create,
-    ]
+    original_section = @section
 
-    pipeline.reduce(@section) { |current_section, next_renderer|
-      next_renderer.call(current_section)
-    }.attributes.fetch(:body)
+    processed_section_1 = MarkdownAttachmentProcessor.method(:new).call(original_section)
+    processed_section_2 = GovspeakToHTMLRenderer.create.call(processed_section_1)
+    processed_section_3 = FootnotesSectionHeadingRenderer.create.call(processed_section_2)
+
+    processed_section_3.attributes.fetch(:body)
   end
 end
