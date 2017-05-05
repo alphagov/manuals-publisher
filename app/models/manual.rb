@@ -95,7 +95,7 @@ class Manual
     sections.each(&:save)
     removed_sections.each(&:save)
 
-    edition.section_ids = sections.map(&:uuid)
+    edition.section_uuids = sections.map(&:uuid)
     edition.removed_section_ids = removed_sections.map(&:uuid)
 
     manual_record.save!
@@ -273,7 +273,7 @@ class Manual
     end
 
     def add_sections_to_manual(manual, edition, published: false)
-      sections = Array(edition.section_ids).map { |section_uuid|
+      sections = Array(edition.section_uuids).map { |section_uuid|
         Section.find(manual, section_uuid, published: published)
       }
 
