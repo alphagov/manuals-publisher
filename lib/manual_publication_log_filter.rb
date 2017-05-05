@@ -54,7 +54,7 @@ private
   end
 
   def build_logs_for_all_other_suitable_section_editions
-    edition_ordering = EditionOrdering.new(section_editions_for_rebuild, @manual_record.latest_edition.section_ids)
+    edition_ordering = EditionOrdering.new(section_editions_for_rebuild, @manual_record.latest_edition.section_uuids)
 
     edition_ordering.sort_by_section_uuids_and_created_at.each do |edition|
       PublicationLog.create!(
@@ -69,7 +69,7 @@ private
   end
 
   def section_editions_for_first_manual_edition
-    @section_editions_for_first_manual_edition ||= SectionEdition.all_for_sections(*first_manual_edition.section_ids).where(:minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
+    @section_editions_for_first_manual_edition ||= SectionEdition.all_for_sections(*first_manual_edition.section_uuids).where(:minor_update.nin => [true], version_number: 1).any_of({ state: "published" }, state: "archived")
   end
 
   def first_manual_edition

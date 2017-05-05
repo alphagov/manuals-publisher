@@ -37,7 +37,7 @@ RSpec.describe SectionSlugSynchroniser do
       end
 
       manual_record.editions.create!(
-        section_ids: section_uuids
+        section_uuids: section_uuids
       )
     end
 
@@ -97,7 +97,7 @@ RSpec.describe SectionSlugSynchroniser do
       end
 
       manual_record.editions.create!(
-        section_ids: section_uuids
+        section_uuids: section_uuids
       )
     end
 
