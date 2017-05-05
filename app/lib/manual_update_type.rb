@@ -26,8 +26,8 @@ private
     manual.
       sections.
       select(&:needs_exporting?).
-      all? { |d|
-        d.minor_update? && d.has_ever_been_published?
+      all? { |s|
+        s.minor_update? && s.has_ever_been_published?
       }
   end
 end
