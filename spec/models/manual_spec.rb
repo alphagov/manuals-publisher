@@ -494,7 +494,7 @@ describe Manual do
           manual_record_id: record.id
         ).first
 
-        expect(edition.removed_section_ids).to eq(['section-uuid'])
+        expect(edition.removed_section_uuids).to eq(['section-uuid'])
       end
     end
   end
