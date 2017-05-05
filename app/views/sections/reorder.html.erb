@@ -13,7 +13,7 @@
       <ol class="reorderable-document-list">
         <% sections.each do |section| %>
           <li>
-            <input type="hidden" name="section_order[]" value="<%= section.id %>">
+            <input type="hidden" name="section_order[]" value="<%= section.uuid %>">
             <%= section.title %>
           </li>
         <% end %>

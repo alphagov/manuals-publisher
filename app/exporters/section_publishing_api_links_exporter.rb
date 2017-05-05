@@ -14,7 +14,7 @@ private
   attr_reader :organisation, :manual, :section
 
   def content_id
-    section.id
+    section.uuid
   end
 
   def exportable_attributes

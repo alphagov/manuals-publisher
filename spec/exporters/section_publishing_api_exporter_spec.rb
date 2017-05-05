@@ -62,7 +62,7 @@ describe SectionPublishingAPIExporter do
   let(:section) {
     double(
       :section,
-      id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
+      uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       minor_update?: true,
       attributes: { body: "##Some heading\nmanual section body" },
       attachments: attachments,
@@ -118,7 +118,7 @@ describe SectionPublishingAPIExporter do
     subject.call
 
     expect(publishing_api).to have_received(:put_content).with(
-      section.id,
+      section.uuid,
       all_of(
         hash_including(
           base_path: section_base_path,
@@ -151,7 +151,7 @@ describe SectionPublishingAPIExporter do
       subject.call
 
       expect(publishing_api).to have_received(:put_content).with(
-        section.id,
+        section.uuid,
         hash_including(
           first_published_at: previously_published_date.iso8601,
         )
@@ -163,7 +163,7 @@ describe SectionPublishingAPIExporter do
       subject.call
 
       expect(publishing_api).to have_received(:put_content).with(
-        section.id,
+        section.uuid,
         hash_including(
           public_updated_at: previously_published_date.iso8601,
         )
@@ -175,7 +175,7 @@ describe SectionPublishingAPIExporter do
       subject.call
 
       expect(publishing_api).to have_received(:put_content).with(
-        section.id,
+        section.uuid,
         hash_excluding(:public_updated_at)
       )
     end
@@ -185,7 +185,7 @@ describe SectionPublishingAPIExporter do
     let(:section) {
       double(
         :section,
-        id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
+        uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611",
         minor_update?: update_type_attributes[:minor_update?],
         attributes: { body: "##Some heading\nmanual section body" },
         attachments: attachments,
@@ -302,7 +302,7 @@ describe SectionPublishingAPIExporter do
     subject.call
 
     expect(publishing_api).to have_received(:put_content).with(
-      section.id,
+      section.uuid,
       hash_including(
         details: {
           body:

@@ -30,7 +30,7 @@ describe SectionPublishingAPILinksExporter do
   let(:section) {
     double(
       :section,
-      id: "c19ffb7d-448c-4cc8-bece-022662ef9611",
+      uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       minor_update?: true,
       attributes: { body: "##Some heading\nmanual section body" },
       attachments: []
@@ -45,7 +45,7 @@ describe SectionPublishingAPILinksExporter do
     subject.call
 
     expect(publishing_api).to have_received(:patch_links).with(
-      section.id,
+      section.uuid,
       hash_including(
         links: {
           organisations: [organisation.content_id],
