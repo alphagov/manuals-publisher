@@ -16,7 +16,7 @@ private
   )
 
   def section
-    section_id ? existing_section : ephemeral_section
+    section_uuid ? existing_section : ephemeral_section
   end
 
   def manual
@@ -29,7 +29,7 @@ private
 
   def existing_section
     @existing_section ||= manual.sections.find { |section|
-      section.id == section_id
+      section.uuid == section_uuid
     }
   end
 
@@ -37,7 +37,7 @@ private
     context.params.fetch("section")
   end
 
-  def section_id
+  def section_uuid
     context.params.fetch("id", nil)
   end
 

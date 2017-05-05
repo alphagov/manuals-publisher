@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Section::RemoveService do
-  let(:section_id) { "123" }
+  let(:section_uuid) { "123" }
 
   let(:manual) {
     double(
@@ -18,7 +18,7 @@ RSpec.describe Section::RemoveService do
   let(:service_context) {
     double(
       params: {
-        "id" => section_id,
+        "id" => section_uuid,
         "manual_id" => "ABC",
         "section" => change_note_params
       },
@@ -43,7 +43,7 @@ RSpec.describe Section::RemoveService do
 
   context "with a section id that doesn't belong to the manual" do
     let(:section) {
-      double(id: section_id)
+      double(uuid: section_uuid)
     }
     let(:manual) {
       double(
@@ -62,7 +62,7 @@ RSpec.describe Section::RemoveService do
     it "raises a SectionNotFoundError" do
       expect {
         service.call
-      }.to raise_error(described_class::SectionNotFoundError, section_id)
+      }.to raise_error(described_class::SectionNotFoundError, section_uuid)
     end
 
     context "when SectionNotFoundError is raised" do
@@ -92,7 +92,7 @@ RSpec.describe Section::RemoveService do
   context "with invalid change_note params" do
     let(:section) {
       double(
-        id: section_id,
+        uuid: section_uuid,
         published?: true,
         update: nil,
         valid?: false,
@@ -114,7 +114,7 @@ RSpec.describe Section::RemoveService do
     end
 
     it "does not removes the section" do
-      expect(manual).not_to have_received(:remove_section).with(section.id)
+      expect(manual).not_to have_received(:remove_section).with(section.uuid)
     end
 
     it "does not mark the manual as a draft" do
@@ -145,7 +145,7 @@ RSpec.describe Section::RemoveService do
     context "with a section that's previously been published" do
       let(:section) {
         double(
-          id: section_id,
+          uuid: section_uuid,
           published?: true,
           update: nil,
           valid?: true,
@@ -161,7 +161,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "removes the section" do
-        expect(manual).to have_received(:remove_section).with(section.id)
+        expect(manual).to have_received(:remove_section).with(section.uuid)
       end
 
       it "marks the manual as a draft" do
@@ -184,7 +184,7 @@ RSpec.describe Section::RemoveService do
     context "with a section that's never been published" do
       let(:section) {
         double(
-          id: section_id,
+          uuid: section_uuid,
           published?: false,
           update: nil,
           valid?: true,
@@ -200,7 +200,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "removes the section" do
-        expect(manual).to have_received(:remove_section).with(section_id)
+        expect(manual).to have_received(:remove_section).with(section_uuid)
       end
 
       it "marks the manual as a draft" do
@@ -224,7 +224,7 @@ RSpec.describe Section::RemoveService do
     context "with extra section params" do
       let(:section) {
         double(
-          id: section_id,
+          uuid: section_uuid,
           published?: true,
           update: nil,
           valid?: true,

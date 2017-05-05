@@ -29,8 +29,8 @@ describe ManualPublishingAPILinksExporter do
 
   let(:sections) {
     [
-      double(:section, id: "c19ffb7d-448c-4cc8-bece-022662ef9611"),
-      double(:section, id: "f9c91a07-6a41-4b97-94a8-ecdc81997d49"),
+      double(:section, uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611"),
+      double(:section, uuid: "f9c91a07-6a41-4b97-94a8-ecdc81997d49"),
     ]
   }
 

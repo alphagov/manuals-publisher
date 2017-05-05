@@ -4,7 +4,7 @@ class Section::RemoveService
   end
 
   def call
-    raise SectionNotFoundError.new(section_id) unless section.present?
+    raise SectionNotFoundError.new(section_uuid) unless section.present?
 
     section.update(change_note_params)
 
@@ -26,7 +26,7 @@ private
   attr_reader :context
 
   def remove
-    manual.remove_section(section_id)
+    manual.remove_section(section_uuid)
   end
 
   def persist
@@ -34,7 +34,7 @@ private
   end
 
   def section
-    @section ||= manual.sections.find { |s| s.id == section_id }
+    @section ||= manual.sections.find { |s| s.uuid == section_uuid }
   end
 
   def manual
@@ -43,7 +43,7 @@ private
     raise ManualNotFoundError.new(manual_id)
   end
 
-  def section_id
+  def section_uuid
     context.params.fetch("id")
   end
 

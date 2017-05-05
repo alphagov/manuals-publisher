@@ -20,7 +20,7 @@ private
     {
       links: {
         organisations: [organisation.content_id],
-        sections: manual.sections.map(&:id),
+        sections: manual.sections.map(&:uuid),
       },
     }
   end

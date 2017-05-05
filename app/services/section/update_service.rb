@@ -21,14 +21,14 @@ private
   attr_reader :context, :listeners
 
   def section
-    @section ||= manual.sections.find { |s| s.id == section_id }
+    @section ||= manual.sections.find { |s| s.uuid == section_uuid }
   end
 
   def manual
     @manual ||= Manual.find(manual_id, context.current_user)
   end
 
-  def section_id
+  def section_uuid
     context.params.fetch("id")
   end
 
