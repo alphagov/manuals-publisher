@@ -15,19 +15,10 @@ class ManualUpdateType
     # Otherwise our update type status depends on the update type status
     # of our children if any of them are major we are major (and they
     # have to send a major for their first edition too).
-    all_sections_are_minor? ? "minor" : "major"
+    manual.all_sections_are_minor? ? "minor" : "major"
   end
 
 private
 
   attr_reader :manual
-
-  def all_sections_are_minor?
-    manual.
-      sections.
-      select(&:needs_exporting?).
-      all? { |d|
-        d.minor_update? && d.has_ever_been_published?
-      }
-  end
 end
