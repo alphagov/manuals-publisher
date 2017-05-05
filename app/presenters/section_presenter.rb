@@ -14,12 +14,20 @@ class SectionPresenter
   delegate :errors, to: :@section
 
   def body
-    original_section = @section
+    original_body = @section.body
 
-    processed_section_1 = MarkdownAttachmentProcessor.method(:new).call(original_section)
-    processed_section_2 = GovspeakToHTMLRenderer.create.call(processed_section_1)
-    processed_section_3 = FootnotesSectionHeadingRenderer.create.call(processed_section_2)
+    processed_body_1 = MarkdownAttachmentProcessor.method(:new).call(
+      OpenStruct.new(body: original_body, attachments: @section.attachments)
+    ).body
 
-    processed_section_3.attributes.fetch(:body)
+    processed_body_2 = GovspeakToHTMLRenderer.create.call(
+      OpenStruct.new(body: processed_body_1)
+    ).body
+
+    processed_body_3 = FootnotesSectionHeadingRenderer.create.call(
+      OpenStruct.new(body: processed_body_2)
+    ).body
+
+    processed_body_3
   end
 end
