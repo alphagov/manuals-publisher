@@ -20,7 +20,7 @@ class SectionPresenter
 private
 
   def add_attachment_links(section)
-    MarkdownAttachmentProcessor.method(:new).call(section).body
+    MarkdownAttachmentProcessor.new(section).body
   end
 
   def render_govspeak(body)
