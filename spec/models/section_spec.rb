@@ -2,13 +2,15 @@ require "spec_helper"
 
 describe Section do
   subject(:section) {
-    Section.new(slug_generator, section_uuid, editions)
+    Section.new(manual: manual, uuid: section_uuid, editions: editions)
   }
 
   def key_classes_for(hash)
     hash.keys.map(&:class).uniq
   end
 
+  let(:manual_slug) { '/guidance/manual-slug' }
+  let(:manual) { double(:manual, slug: manual_slug) }
   let(:section_uuid) { "a-section-uuid" }
   let(:slug) { double(:slug) }
   let(:published_slug) { double(:published_slug) }
@@ -104,9 +106,11 @@ describe Section do
     )
   }
 
-  describe '.find' do
-    let(:manual) { double(:manual, slug: 'manual-slug') }
+  before do
+    allow(SlugGenerator).to receive(:new).with(prefix: manual_slug).and_return(slug_generator)
+  end
 
+  describe '.find' do
     context 'when there are associated section editions' do
       let(:section_edition) { FactoryGirl.build(:section_edition) }
       let(:editions_proxy) { double(:editions_proxy, to_a: [section_edition]).as_null_object }
@@ -116,17 +120,17 @@ describe Section do
       end
 
       it 'builds a section using the manual' do
-        expect(Section).to receive(:build).with(including(manual: manual))
+        expect(Section).to receive(:new).with(including(manual: manual))
         Section.find(manual, 'section-id')
       end
 
       it 'builds a section using the section id' do
-        expect(Section).to receive(:build).with(including(uuid: 'section-id'))
+        expect(Section).to receive(:new).with(including(uuid: 'section-id'))
         Section.find(manual, 'section-id')
       end
 
       it 'builds a section using the editions' do
-        expect(Section).to receive(:build).with(including(editions: [section_edition]))
+        expect(Section).to receive(:new).with(including(editions: [section_edition]))
         Section.find(manual, 'section-id')
       end
     end
@@ -146,13 +150,12 @@ describe Section do
 
   describe '#save' do
     it 'saves the last two editions' do
-      slug_generator = double(:slug_generator)
       editions = [
         edition_1 = double(:edition_1),
         edition_2 = double(:edition_2),
         edition_3 = double(:edition_3)
       ]
-      section = Section.new(slug_generator, 'section-id', editions)
+      section = Section.new(manual: manual, uuid: 'section-id', editions: editions)
 
       expect(edition_1).to_not receive(:save!)
       expect(edition_2).to receive(:save!)
@@ -167,12 +170,12 @@ describe Section do
 
     it "is considered the same as another section instance if they have the same uuid" do
       expect(section).to eql(section)
-      expect(section).to eql(Section.new(slug_generator, section.uuid, [draft_edition_v1]))
-      expect(section).not_to eql(Section.new(slug_generator, section.uuid.reverse, [draft_edition_v1]))
+      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, editions: [draft_edition_v1]))
+      expect(section).not_to eql(Section.new(manual: manual, uuid: section.uuid.reverse, editions: [draft_edition_v1]))
     end
 
     it "is considered the same as another section instance with the same uuid even if they have different version numbers" do
-      expect(section).to eql(Section.new(slug_generator, section.uuid, [draft_edition_v2]))
+      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, editions: [draft_edition_v2]))
     end
   end
 
