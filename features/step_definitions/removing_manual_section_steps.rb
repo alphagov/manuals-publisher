@@ -29,8 +29,8 @@ When(/^I remove one of the sections from the manual with a minor update$/) do
 end
 
 Then(/^the section is removed from the manual$/) do
-  check_section_was_removed(@manual.id, @removed_section.id)
-  check_draft_has_been_discarded_in_publishing_api(@removed_section.id)
+  check_section_was_removed(@manual.id, @removed_section.uuid)
+  check_draft_has_been_discarded_in_publishing_api(@removed_section.uuid)
 
   # Check that no child section has the removed section's title
   without_removed_section_matcher = ->(request) do
@@ -55,11 +55,11 @@ Then(/^the removed section is withdrawn with a redirect to the manual$/) do
 end
 
 Then(/^the removed section is archived$/) do
-  check_section_is_archived_in_db(@manual, @removed_section.id)
+  check_section_is_archived_in_db(@manual, @removed_section.uuid)
 end
 
 Then(/^the removed section change note is included$/) do
-  @removed_section = Section.find(@manual, @removed_section.id)
+  @removed_section = Section.find(@manual, @removed_section.uuid)
 
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -69,7 +69,7 @@ Then(/^the removed section change note is included$/) do
 end
 
 Then(/^the removed section change note is not included$/) do
-  @removed_section = Section.find(@manual, @removed_section.id)
+  @removed_section = Section.find(@manual, @removed_section.uuid)
 
   check_manual_is_drafted_to_publishing_api(
     @manual.id,

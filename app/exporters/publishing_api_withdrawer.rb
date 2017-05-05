@@ -14,7 +14,11 @@ private
   )
 
   def content_id
-    entity.id
+    if entity.is_a?(Section)
+      entity.uuid
+    else
+      entity.id
+    end
   end
 
   def exportable_attributes

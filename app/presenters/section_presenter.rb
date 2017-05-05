@@ -1,5 +1,4 @@
 require "markdown_attachment_processor"
-require "section_header_extractor"
 require "govspeak_to_html_renderer"
 require "footnotes_section_heading_renderer"
 
@@ -17,7 +16,6 @@ class SectionPresenter
   def body
     pipeline = [
       MarkdownAttachmentProcessor.method(:new),
-      SectionHeaderExtractor.create,
       GovspeakToHTMLRenderer.create,
       FootnotesSectionHeadingRenderer.create,
     ]

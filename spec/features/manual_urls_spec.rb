@@ -16,10 +16,10 @@ RSpec.describe "manual urls", type: :feature do
     click_on "A manual"
 
     expect(page).to have_link("Edit manual", href: %r{/manuals/#{manual.id}/edit$})
-    expect(page).to have_link("Section 1", href: %r{/manuals/#{manual.id}/sections/#{section.id}$})
+    expect(page).to have_link("Section 1", href: %r{/manuals/#{manual.id}/sections/#{section.uuid}$})
 
     click_on "Section 1"
 
-    expect(page).to have_link("Edit section", href: %r{/manuals/#{manual.id}/sections/#{section.id}/edit$})
+    expect(page).to have_link("Edit section", href: %r{/manuals/#{manual.id}/sections/#{section.uuid}/edit$})
   end
 end

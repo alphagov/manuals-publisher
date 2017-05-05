@@ -2,6 +2,10 @@ require "manuals_republisher"
 require "manual_withdrawer"
 
 module ManualHelpers
+  def entity_id_for(entity)
+    entity.is_a?(Section) ? entity.uuid : entity.id
+  end
+
   def create_manual(fields, save: true)
     visit new_manual_path
     fill_in_fields(fields)
@@ -96,7 +100,7 @@ module ManualHelpers
     service_context = OpenStruct.new(
       params: {
         "manual_id" => manual.id,
-        "id" => section.id,
+        "id" => section.uuid,
         "section" => fields,
       },
       current_user: user
@@ -182,13 +186,13 @@ module ManualHelpers
   def check_section_exists(manual_id, section_id)
     manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
 
-    manual.sections.any? { |section| section.id == section_id }
+    manual.sections.any? { |section| section.uuid == section_id }
   end
 
   def check_section_was_removed(manual_id, section_id)
     manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
 
-    manual.removed_sections.any? { |section| section.id == section_id }
+    manual.removed_sections.any? { |section| section.uuid == section_id }
   end
 
   def go_to_edit_page_for_manual(manual_title)
@@ -217,14 +221,15 @@ module ManualHelpers
 
   def check_manual_and_sections_were_published(manual, section, manual_attrs, section_attrs)
     check_manual_is_published_to_publishing_api(manual.id)
-    check_section_is_published_to_publishing_api(section.id)
+    check_section_is_published_to_publishing_api(section.uuid)
 
     check_manual_is_published_to_rummager(manual.slug, manual_attrs)
     check_section_is_published_to_rummager(section.slug, section_attrs, manual_attrs)
   end
 
   def check_manual_was_published(manual)
-    check_manual_is_published_to_publishing_api(manual.id)
+    entity_id = entity_id_for(manual)
+    check_manual_is_published_to_publishing_api(entity_id)
   end
 
   def check_manual_was_not_published(manual)
@@ -232,15 +237,15 @@ module ManualHelpers
   end
 
   def check_section_was_published(section)
-    check_section_is_published_to_publishing_api(section.id)
+    check_section_is_published_to_publishing_api(section.uuid)
   end
 
   def check_section_was_not_published(section)
-    check_section_is_not_published_to_publishing_api(section.id)
+    check_section_is_not_published_to_publishing_api(section.uuid)
   end
 
   def check_section_was_withdrawn_with_redirect(section, redirect_path)
-    check_section_is_unpublished_from_publishing_api(section.id, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
+    check_section_is_unpublished_from_publishing_api(section.uuid, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
     check_section_is_withdrawn_from_rummager(section)
   end
 
@@ -456,7 +461,7 @@ module ManualHelpers
 
   def check_manual_is_withdrawn(manual, sections)
     assert_publishing_api_unpublish(manual.id, type: "gone")
-    sections.each { |s| assert_publishing_api_unpublish(s.id, type: "gone") }
+    sections.each { |s| assert_publishing_api_unpublish(s.uuid, type: "gone") }
     check_manual_is_withdrawn_from_rummager(manual, sections)
   end
 
@@ -544,7 +549,7 @@ module ManualHelpers
 
     # ...and if they get here anyway, throw them out
     visit withdraw_manual_section_path(manual, section)
-    expect(current_path).to eq manual_section_path(manual.id, section.id)
+    expect(current_path).to eq manual_section_path(manual.id, section.uuid)
     expect(page).to have_text("You don't have permission to withdraw manual sections.")
   end
 
@@ -579,7 +584,7 @@ module ManualHelpers
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
-      section.id,
+      section.uuid,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.iso8601) &&
@@ -610,7 +615,7 @@ module ManualHelpers
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
-      section.id,
+      section.uuid,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.iso8601) &&
@@ -626,7 +631,7 @@ module ManualHelpers
     # We don't use the update_type on the publish API, we fallback to what we set
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
-      manual.id,
+      entity_id_for(manual),
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
         !data.key?("first_published_at") &&

@@ -10,6 +10,10 @@ class SectionViewAdapter < SimpleDelegator
     super(section)
   end
 
+  def id
+    section.uuid
+  end
+
   def persisted?
     section.updated_at || section.published?
   end
@@ -23,7 +27,7 @@ class SectionViewAdapter < SimpleDelegator
   end
 
   def to_param
-    section.id
+    section.uuid
   end
 
   def self.model_name

@@ -95,8 +95,8 @@ class Manual
     sections.each(&:save)
     removed_sections.each(&:save)
 
-    edition.section_ids = sections.map(&:id)
-    edition.removed_section_ids = removed_sections.map(&:id)
+    edition.section_ids = sections.map(&:uuid)
+    edition.removed_section_ids = removed_sections.map(&:uuid)
 
     manual_record.save!
   end
@@ -210,7 +210,7 @@ class Manual
   end
 
   def build_section(attributes)
-    section = Section.build(manual: self, id: SecureRandom.uuid, editions: [])
+    section = Section.build(manual: self, uuid: SecureRandom.uuid, editions: [])
 
     defaults = {
       minor_update: false,
@@ -224,18 +224,18 @@ class Manual
   end
 
   def reorder_sections(section_order)
-    unless section_order.sort == sections.map(&:id).sort
+    unless section_order.sort == sections.map(&:uuid).sort
       raise(
         ArgumentError,
         "section_order must contain each section_id exactly once",
       )
     end
 
-    sections.sort_by! { |sec| section_order.index(sec.id) }
+    sections.sort_by! { |sec| section_order.index(sec.uuid) }
   end
 
-  def remove_section(section_id)
-    found_section = sections.find { |d| d.id == section_id }
+  def remove_section(section_uuid)
+    found_section = sections.find { |d| d.uuid == section_uuid }
 
     return if found_section.nil?
 
@@ -273,15 +273,15 @@ class Manual
     end
 
     def add_sections_to_manual(manual, edition, published: false)
-      sections = Array(edition.section_ids).map { |section_id|
-        Section.find(manual, section_id, published: published)
+      sections = Array(edition.section_ids).map { |section_uuid|
+        Section.find(manual, section_uuid, published: published)
       }
 
-      removed_sections = Array(edition.removed_section_ids).map { |section_id|
+      removed_sections = Array(edition.removed_section_ids).map { |section_uuid|
         begin
-          Section.find(manual, section_id)
+          Section.find(manual, section_uuid)
         rescue KeyError
-          raise RemovedSectionIdNotFoundError, "No section found for ID #{section_id}"
+          raise RemovedSectionIdNotFoundError, "No section found for UUID #{section_uuid}"
         end
       }
 
