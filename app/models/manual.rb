@@ -96,7 +96,7 @@ class Manual
     removed_sections.each(&:save)
 
     edition.section_uuids = sections.map(&:uuid)
-    edition.removed_section_ids = removed_sections.map(&:uuid)
+    edition.removed_section_uuids = removed_sections.map(&:uuid)
 
     manual_record.save!
   end
@@ -286,7 +286,7 @@ class Manual
         Section.find(manual, section_uuid, published: published)
       }
 
-      removed_sections = Array(edition.removed_section_ids).map { |section_uuid|
+      removed_sections = Array(edition.removed_section_uuids).map { |section_uuid|
         begin
           Section.find(manual, section_uuid)
         rescue KeyError
