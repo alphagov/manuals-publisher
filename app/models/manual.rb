@@ -209,6 +209,15 @@ class Manual
     !!use_originally_published_at_for_public_timestamp
   end
 
+  def all_sections_are_minor?
+    self.
+      sections.
+      select(&:needs_exporting?).
+      all? { |s|
+        s.minor_update? && s.has_ever_been_published?
+      }
+  end
+
   def build_section(attributes)
     section = Section.build(manual: self, uuid: SecureRandom.uuid, editions: [])
 
