@@ -289,28 +289,6 @@ describe ManualPublishingAPIExporter do
         )
       end
     end
-
-    context "when update_type is provided as 'minor'" do
-      let(:explicit_update_type) { "minor" }
-      it "exports with the update_type set to minor" do
-        subject.call
-        expect(publishing_api).to have_received(:put_content).with(
-          "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-          hash_including(update_type: "minor")
-        )
-      end
-    end
-
-    context "when update_type is provided as 'major'" do
-      let(:explicit_update_type) { "major" }
-      it "exports with the update_type set to major" do
-        subject.call
-        expect(publishing_api).to have_received(:put_content).with(
-          "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-          hash_including(update_type: "major")
-        )
-      end
-    end
   end
 
   context "when no sections need exporting" do
