@@ -28,6 +28,7 @@ describe ManualPublishingAPIExporter do
       attributes: manual_attributes,
       sections: sections,
       has_ever_been_published?: manual_attributes[:ever_been_published],
+      all_sections_are_minor?: false,
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp?: false,
     )
@@ -289,51 +290,12 @@ describe ManualPublishingAPIExporter do
         )
       end
     end
-
-    context "when update_type is provided as 'minor'" do
-      let(:explicit_update_type) { "minor" }
-      it "exports with the update_type set to minor" do
-        subject.call
-        expect(publishing_api).to have_received(:put_content).with(
-          "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-          hash_including(update_type: "minor")
-        )
-      end
-    end
-
-    context "when update_type is provided as 'major'" do
-      let(:explicit_update_type) { "major" }
-      it "exports with the update_type set to major" do
-        subject.call
-        expect(publishing_api).to have_received(:put_content).with(
-          "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-          hash_including(update_type: "major")
-        )
-      end
-    end
   end
 
-  context "when no sections need exporting" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: false,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: false,
-          has_ever_been_published?: true,
-        )
-      ]
-    }
+  context "when all sections are minor" do
+    before do
+      allow(manual).to receive(:all_sections_are_minor?).and_return(true)
+    end
 
     it "exports with the update_type set to minor" do
       subject.call
@@ -348,62 +310,10 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when one section needs exporting and it is a minor update" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: false,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        )
-      ]
-    }
-
-    it "exports with the update_type set to minor" do
-      subject.call
-
-      expect(publishing_api).to have_received(:put_content).with(
-        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "minor")
-      )
+  context "when all sections are not minor" do
+    before do
+      allow(manual).to receive(:all_sections_are_minor?).and_return(false)
     end
-
-    it_behaves_like "publishing a manual that has never been published"
-    it_behaves_like "obeying the provided update_type"
-  end
-
-  context "when one section needs exporting and it is a minor update that has never been published" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: false,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: true,
-          has_ever_been_published?: false,
-        )
-      ]
-    }
 
     it "exports with the update_type set to major" do
       subject.call
@@ -414,179 +324,6 @@ describe ManualPublishingAPIExporter do
       )
     end
 
-    it_behaves_like "obeying the provided update_type"
-  end
-
-  context "when one section needs exporting and it is a major update" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: false,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        )
-      ]
-    }
-
-    it "exports with the update_type set to major" do
-      subject.call
-
-      expect(publishing_api).to have_received(:put_content).with(
-        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "major")
-      )
-    end
-
-    it_behaves_like "publishing a manual that has never been published"
-    it_behaves_like "obeying the provided update_type"
-  end
-
-  context "when multiple sections need exporting, but none are major updates" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        )
-      ]
-    }
-
-    it "exports with the update_type set to minor" do
-      subject.call
-
-      expect(publishing_api).to have_received(:put_content).with(
-        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "minor")
-      )
-    end
-
-    it_behaves_like "publishing a manual that has never been published"
-    it_behaves_like "obeying the provided update_type"
-  end
-
-  context "when multiple sections need exporting, but none are major updates, but one has never been published" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: true,
-          has_ever_been_published?: false,
-        )
-      ]
-    }
-
-    it "exports with the update_type set to major" do
-      subject.call
-
-      expect(publishing_api).to have_received(:put_content).with(
-        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "major")
-      )
-    end
-    it_behaves_like "obeying the provided update_type"
-  end
-
-  context "when multiple sections need exporting, and at least one is a major updates" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: true,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        )
-      ]
-    }
-
-    it "exports with the update_type set to major" do
-      subject.call
-
-      expect(publishing_api).to have_received(:put_content).with(
-        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "major")
-      )
-    end
-
-    it_behaves_like "publishing a manual that has never been published"
-    it_behaves_like "obeying the provided update_type"
-  end
-
-  context "when multiple sections need exporting, and all are major updates" do
-    let(:sections) {
-      [
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        ),
-        double(
-          :section,
-          id: "60023f27-0657-4812-9339-264f1c0fd90d",
-          attributes: section_attributes,
-          minor_update?: false,
-          needs_exporting?: true,
-          has_ever_been_published?: true,
-        )
-      ]
-    }
-
-    it "exports with the update_type set to major" do
-      subject.call
-
-      expect(publishing_api).to have_received(:put_content).with(
-        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "major")
-      )
-    end
-
-    it_behaves_like "publishing a manual that has never been published"
     it_behaves_like "obeying the provided update_type"
   end
 end

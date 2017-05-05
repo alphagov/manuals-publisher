@@ -224,17 +224,6 @@ describe SectionPublishingAPIExporter do
           )
         end
       end
-
-      context "when update_type is provided as 'major'" do
-        let(:explicit_update_type) { "major" }
-        it "exports with the update_type set to major" do
-          subject.call
-          expect(publishing_api).to have_received(:put_content).with(
-            "c19ffb7d-448c-4cc8-bece-022662ef9611",
-            hash_including(update_type: "major")
-          )
-        end
-      end
     end
 
     context "the section is a minor update" do

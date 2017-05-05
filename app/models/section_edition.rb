@@ -41,10 +41,6 @@ class SectionEdition
     where(:section_uuid.in => section_uuids)
   end
 
-  scope :draft,               where(state: "draft")
-  scope :published,           where(state: "published")
-  scope :archived,            where(state: "archived")
-
   scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
 
   index section_uuid: 1

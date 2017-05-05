@@ -856,4 +856,74 @@ describe Manual do
       end
     end
   end
+
+  describe "#all_sections_are_minor?" do
+    context "when manual has no sections" do
+      before { allow(manual).to receive(:sections).and_return [] }
+
+      it "returns truthy" do
+        expect(manual.all_sections_are_minor?).to be_truthy
+      end
+    end
+
+    context "when manual has sections" do
+      let(:section_1) { double(:section) }
+      let(:section_2) { double(:section) }
+      let(:section_3) { double(:section) }
+      before { allow(manual).to receive(:sections).and_return [section_1, section_2, section_3] }
+
+      context "none of which need exporting" do
+        before do
+          allow(section_1).to receive(:needs_exporting?).and_return false
+          allow(section_2).to receive(:needs_exporting?).and_return false
+          allow(section_3).to receive(:needs_exporting?).and_return false
+        end
+
+        it "returns truthy" do
+          expect(manual.all_sections_are_minor?).to be_truthy
+        end
+      end
+
+      context "some of which need exporting" do
+        before do
+          allow(section_1).to receive(:needs_exporting?).and_return true
+          allow(section_2).to receive(:needs_exporting?).and_return true
+          allow(section_3).to receive(:needs_exporting?).and_return true
+        end
+
+        it "returns truthy when all sections are minor updates that have been published before" do
+          allow(section_1).to receive(:minor_update?).and_return true
+          allow(section_2).to receive(:minor_update?).and_return true
+          allow(section_3).to receive(:minor_update?).and_return true
+          allow(section_1).to receive(:has_ever_been_published?).and_return true
+          allow(section_2).to receive(:has_ever_been_published?).and_return true
+          allow(section_3).to receive(:has_ever_been_published?).and_return true
+
+          expect(manual.all_sections_are_minor?).to be_truthy
+        end
+
+        it "returns falsey when at least one section is a minor update that has never been published before" do
+          allow(section_1).to receive(:minor_update?).and_return true
+          allow(section_2).to receive(:minor_update?).and_return true
+          allow(section_3).to receive(:minor_update?).and_return true
+          allow(section_1).to receive(:has_ever_been_published?).and_return true
+          allow(section_2).to receive(:has_ever_been_published?).and_return true
+          allow(section_3).to receive(:has_ever_been_published?).and_return false
+
+          expect(manual.all_sections_are_minor?).to be_falsey
+        end
+
+        it "returns falsey when at least one sections is a major update" do
+          allow(section_1).to receive(:minor_update?).and_return false
+          allow(section_2).to receive(:minor_update?).and_return true
+          allow(section_3).to receive(:minor_update?).and_return true
+          allow(section_1).to receive(:has_ever_been_published?).and_return true
+          allow(section_2).to receive(:has_ever_been_published?).and_return true
+          allow(section_3).to receive(:has_ever_been_published?).and_return true
+
+          expect(manual.all_sections_are_minor?).to be_falsey
+        end
+      end
+    end
+  end
 end
