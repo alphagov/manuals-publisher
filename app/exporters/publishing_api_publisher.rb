@@ -8,10 +8,18 @@ class PublishingAPIPublisher
   end
 
   def call
-    Services.publishing_api.publish(entity.id, update_type)
+    Services.publishing_api.publish(entity_id, update_type)
   end
 
 private
+
+  def entity_id
+    if entity.is_a?(Section)
+      entity.uuid
+    else
+      entity.id
+    end
+  end
 
   attr_reader(
     :entity,

@@ -121,7 +121,7 @@ describe Section do
       end
 
       it 'builds a section using the section id' do
-        expect(Section).to receive(:build).with(including(id: 'section-id'))
+        expect(Section).to receive(:build).with(including(uuid: 'section-id'))
         Section.find(manual, 'section-id')
       end
 
@@ -165,14 +165,14 @@ describe Section do
   describe "#eql?" do
     let(:editions) { [draft_edition_v1] }
 
-    it "is considered the same as another section instance if they have the same id" do
+    it "is considered the same as another section instance if they have the same uuid" do
       expect(section).to eql(section)
-      expect(section).to eql(Section.new(slug_generator, section.id, [draft_edition_v1]))
-      expect(section).not_to eql(Section.new(slug_generator, section.id.reverse, [draft_edition_v1]))
+      expect(section).to eql(Section.new(slug_generator, section.uuid, [draft_edition_v1]))
+      expect(section).not_to eql(Section.new(slug_generator, section.uuid.reverse, [draft_edition_v1]))
     end
 
-    it "is considered the same as another section instance with the same id even if they have different version numbers" do
-      expect(section).to eql(Section.new(slug_generator, section.id, [draft_edition_v2]))
+    it "is considered the same as another section instance with the same uuid even if they have different version numbers" do
+      expect(section).to eql(Section.new(slug_generator, section.uuid, [draft_edition_v2]))
     end
   end
 
@@ -606,9 +606,9 @@ describe Section do
       )
     end
 
-    it "returns a has including the section's id" do
+    it "returns a has including the section's uuid" do
       expect(section.attributes).to include(
-        id: section_uuid,
+        uuid: section_uuid,
       )
     end
   end

@@ -21,7 +21,7 @@ private
   attr_reader :organisation, :manual, :section
 
   def content_id
-    section.id
+    section.uuid
   end
 
   def base_path
