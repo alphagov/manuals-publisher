@@ -12,14 +12,14 @@ class SectionPresenter
   delegate :errors, to: :@section
 
   def body
-    processed_body_1 = add_attachment_links(@section)
-    processed_body_2 = render_govspeak(processed_body_1)
-    render_footnotes_heading(processed_body_2)
+    body_with_attachment_links = add_attachment_links_to_section_body(@section)
+    body_with_rendered_govspeak = render_govspeak(body_with_attachment_links)
+    render_footnotes_heading(body_with_rendered_govspeak)
   end
 
 private
 
-  def add_attachment_links(section)
+  def add_attachment_links_to_section_body(section)
     MarkdownAttachmentProcessor.new(section).body
   end
 
