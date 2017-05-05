@@ -14,20 +14,26 @@ class SectionPresenter
   delegate :errors, to: :@section
 
   def body
-    original_body = @section.body
+    processed_body_1 = add_attachment_links(@section)
+    processed_body_2 = render_govspeak(processed_body_1)
+    render_footnotes_heading(processed_body_2)
+  end
 
-    processed_body_1 = MarkdownAttachmentProcessor.method(:new).call(
-      OpenStruct.new(body: original_body, attachments: @section.attachments)
+private
+
+  def add_attachment_links(section)
+    MarkdownAttachmentProcessor.method(:new).call(section).body
+  end
+
+  def render_govspeak(body)
+    GovspeakToHTMLRenderer.create.call(
+      OpenStruct.new(body: body)
     ).body
+  end
 
-    processed_body_2 = GovspeakToHTMLRenderer.create.call(
-      OpenStruct.new(body: processed_body_1)
+  def render_footnotes_heading(body)
+    FootnotesSectionHeadingRenderer.create.call(
+      OpenStruct.new(body: body)
     ).body
-
-    processed_body_3 = FootnotesSectionHeadingRenderer.create.call(
-      OpenStruct.new(body: processed_body_2)
-    ).body
-
-    processed_body_3
   end
 end
