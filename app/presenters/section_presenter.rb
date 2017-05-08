@@ -1,6 +1,4 @@
 require "markdown_attachment_processor"
-require "govspeak_to_html_renderer"
-require "footnotes_section_heading_renderer"
 
 class SectionPresenter
   def initialize(section)
@@ -14,14 +12,25 @@ class SectionPresenter
   delegate :errors, to: :@section
 
   def body
-    pipeline = [
-      MarkdownAttachmentProcessor.method(:new),
-      GovspeakToHTMLRenderer.create,
-      FootnotesSectionHeadingRenderer.create,
-    ]
+    body_with_attachment_links = add_attachment_links_to_section_body(@section)
+    body_with_rendered_govspeak = render_govspeak(body_with_attachment_links)
+    render_footnotes_heading(body_with_rendered_govspeak)
+  end
 
-    pipeline.reduce(@section) { |current_section, next_renderer|
-      next_renderer.call(current_section)
-    }.attributes.fetch(:body)
+private
+
+  def add_attachment_links_to_section_body(section)
+    MarkdownAttachmentProcessor.new(section).body
+  end
+
+  def render_govspeak(body)
+    GovspeakHtmlConverter.new.call(body)
+  end
+
+  def render_footnotes_heading(body)
+    footnote_open_tag = '<div class="footnotes">'
+    heading_tag = '<h2 id="footnotes">Footnotes</h2>'
+
+    body.gsub(footnote_open_tag, "#{heading_tag}\\&")
   end
 end
