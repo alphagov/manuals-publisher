@@ -70,7 +70,14 @@ private
 
   def update_type
     return @update_type if @update_type.present?
-    manual.update_type
+    case manual.version_type
+    when :new, :major
+      "major"
+    when :minor
+      "minor"
+    else
+      raise "Uknown version type: #{manual.version_type}"
+    end
   end
 
   def presented_manual

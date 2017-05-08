@@ -27,7 +27,7 @@ describe ManualPublishingAPIExporter do
       id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       attributes: manual_attributes,
       sections: sections,
-      update_type: "major",
+      version_type: :major,
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp?: false,
     )
@@ -276,9 +276,9 @@ describe ManualPublishingAPIExporter do
     end
   end
 
-  context "when Manual#update_type is minor" do
+  context "when Manual#version_type is minor" do
     before do
-      allow(manual).to receive(:update_type).and_return("minor")
+      allow(manual).to receive(:version_type).and_return(:minor)
     end
 
     it "exports with the update_type set to minor" do
@@ -293,7 +293,24 @@ describe ManualPublishingAPIExporter do
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when Manual#update_type is major" do
+  context "when Manual#version_type is new" do
+    before do
+      allow(manual).to receive(:version_type).and_return(:new)
+    end
+
+    it "exports with the update_type set to major" do
+      subject.call
+
+      expect(publishing_api).to have_received(:put_content).with(
+        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
+        hash_including(update_type: "major")
+      )
+    end
+
+    it_behaves_like "obeying the provided update_type"
+  end
+
+  context "when Manual#version_type is major" do
     before do
       allow(manual).to receive(:update_type).and_return("major")
     end

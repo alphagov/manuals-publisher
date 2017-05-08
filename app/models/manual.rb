@@ -209,15 +209,16 @@ class Manual
     !!use_originally_published_at_for_public_timestamp
   end
 
-  def update_type
-    # The first edition to be sent to the publishing api must always be sent as
-    # a major update
-    return "major" unless self.has_ever_been_published?
-
-    # Otherwise our update type status depends on the update type status
-    # of our children if any of them are major we are major (and they
-    # have to send a major for their first edition too).
-    self.all_sections_are_minor? ? "minor" : "major"
+  def version_type
+    if has_ever_been_published?
+      if all_sections_are_minor?
+        :minor
+      else
+        :major
+      end
+    else
+      :new
+    end
   end
 
   def all_sections_are_minor?

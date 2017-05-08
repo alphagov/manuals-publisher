@@ -927,14 +927,14 @@ describe Manual do
     end
   end
 
-  describe "#update_type" do
+  describe "#version_type" do
     context "when manual has never been published" do
       before do
         allow(manual).to receive(:has_ever_been_published?).and_return(false)
       end
 
-      it "returns 'major'" do
-        expect(manual.update_type).to eq("major")
+      it "returns :new" do
+        expect(manual.version_type).to eq(:new)
       end
     end
 
@@ -948,8 +948,8 @@ describe Manual do
           allow(manual).to receive(:all_sections_are_minor?).and_return(true)
         end
 
-        it "returns 'minor'" do
-          expect(manual.update_type).to eq("minor")
+        it "returns :minor" do
+          expect(manual.version_type).to eq(:minor)
         end
       end
 
@@ -958,8 +958,8 @@ describe Manual do
           allow(manual).to receive(:all_sections_are_minor?).and_return(false)
         end
 
-        it "returns 'major'" do
-          expect(manual.update_type).to eq("major")
+        it "returns :major" do
+          expect(manual.version_type).to eq(:major)
         end
       end
     end
