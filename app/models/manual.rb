@@ -222,12 +222,7 @@ class Manual
   end
 
   def all_sections_are_minor?
-    self.
-      sections.
-      select(&:needs_exporting?).
-      all? { |s|
-        s.version_type == :minor
-      }
+    sections.select(&:needs_exporting?).all? { |s| s.version_type == :minor }
   end
 
   def build_section(attributes)
