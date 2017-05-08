@@ -27,8 +27,7 @@ describe ManualPublishingAPIExporter do
       id: "52ab9439-95c8-4d39-9b83-0a2050a0978b",
       attributes: manual_attributes,
       sections: sections,
-      has_ever_been_published?: manual_attributes[:ever_been_published],
-      all_sections_are_minor?: false,
+      update_type: "major",
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp?: false,
     )
@@ -256,21 +255,6 @@ describe ManualPublishingAPIExporter do
     )
   end
 
-  shared_examples_for "publishing a manual that has never been published" do
-    before do
-      allow(manual).to receive(:has_ever_been_published?).and_return(false)
-    end
-
-    it "exports with the update_type set to major" do
-      subject.call
-
-      expect(publishing_api).to have_received(:put_content).with(
-        "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "major")
-      )
-    end
-  end
-
   shared_examples_for "obeying the provided update_type" do
     subject {
       described_class.new(
@@ -292,9 +276,9 @@ describe ManualPublishingAPIExporter do
     end
   end
 
-  context "when all sections are minor" do
+  context "when Manual#update_type is minor" do
     before do
-      allow(manual).to receive(:all_sections_are_minor?).and_return(true)
+      allow(manual).to receive(:update_type).and_return("minor")
     end
 
     it "exports with the update_type set to minor" do
@@ -306,13 +290,12 @@ describe ManualPublishingAPIExporter do
       )
     end
 
-    it_behaves_like "publishing a manual that has never been published"
     it_behaves_like "obeying the provided update_type"
   end
 
-  context "when all sections are not minor" do
+  context "when Manual#update_type is major" do
     before do
-      allow(manual).to receive(:all_sections_are_minor?).and_return(false)
+      allow(manual).to receive(:update_type).and_return("major")
     end
 
     it "exports with the update_type set to major" do

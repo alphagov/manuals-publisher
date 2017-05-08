@@ -70,7 +70,7 @@ private
 
   def update_type
     return @update_type if @update_type.present?
-    ManualUpdateType.for(manual)
+    manual.update_type
   end
 
   def presented_manual
