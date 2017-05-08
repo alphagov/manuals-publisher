@@ -906,4 +906,42 @@ describe Section do
       end
     end
   end
+
+  describe "#version_type" do
+    context "when section has never been published" do
+      before do
+        allow(section).to receive(:has_ever_been_published?).and_return(false)
+      end
+
+      it "returns :new" do
+        expect(section.version_type).to eq(:new)
+      end
+    end
+
+    context "when section has been published" do
+      before do
+        allow(section).to receive(:has_ever_been_published?).and_return(true)
+      end
+
+      context "and update is minor" do
+        before do
+          allow(section).to receive(:minor_update?).and_return(true)
+        end
+
+        it "returns :minor" do
+          expect(section.version_type).to eq(:minor)
+        end
+      end
+
+      context "and update is major" do
+        before do
+          allow(section).to receive(:minor_update?).and_return(false)
+        end
+
+        it "returns :major" do
+          expect(section.version_type).to eq(:major)
+        end
+      end
+    end
+  end
 end

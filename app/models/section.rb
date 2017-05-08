@@ -192,6 +192,18 @@ class Section
     !(never_published? || minor_update?)
   end
 
+  def version_type
+    if has_ever_been_published?
+      if minor_update?
+        :minor
+      else
+        :major
+      end
+    else
+      :new
+    end
+  end
+
 protected
 
   attr_reader :slug_generator

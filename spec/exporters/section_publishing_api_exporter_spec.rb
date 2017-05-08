@@ -63,10 +63,9 @@ describe SectionPublishingAPIExporter do
     double(
       :section,
       uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611",
-      minor_update?: true,
       attributes: { body: "##Some heading\nmanual section body" },
       attachments: attachments,
-      has_ever_been_published?: true,
+      version_type: :minor,
     )
   }
 
@@ -186,10 +185,9 @@ describe SectionPublishingAPIExporter do
       double(
         :section,
         uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611",
-        minor_update?: update_type_attributes[:minor_update?],
         attributes: { body: "##Some heading\nmanual section body" },
         attachments: attachments,
-        has_ever_been_published?: update_type_attributes[:ever_been_published],
+        version_type: section_version_type,
       )
     }
 
@@ -226,16 +224,10 @@ describe SectionPublishingAPIExporter do
       end
     end
 
-    context "the section is a minor update" do
-      let(:update_type_attributes) do
-        {
-          minor_update?: true,
-          ever_been_published: true,
-        }
-      end
+    context "the section is a new version" do
+      let(:section_version_type) { :new }
 
-      it "sets it to major if the section has never been published" do
-        allow(section).to receive(:has_ever_been_published?).and_return(false)
+      it "sets update_type to major" do
         subject.call
 
         expect(publishing_api).to have_received(:put_content).with(
@@ -244,7 +236,13 @@ describe SectionPublishingAPIExporter do
         )
       end
 
-      it "sets it to minor if the section has been published before" do
+      it_behaves_like "obeying the provided update_type"
+    end
+
+    context "the section is a minor version" do
+      let(:section_version_type) { :minor }
+
+      it "sets update_type to minor" do
         subject.call
 
         expect(publishing_api).to have_received(:put_content).with(
@@ -256,25 +254,10 @@ describe SectionPublishingAPIExporter do
       it_behaves_like "obeying the provided update_type"
     end
 
-    context "the section is a major update" do
-      let(:update_type_attributes) do
-        {
-          minor_update?: false,
-          ever_been_published: true,
-        }
-      end
+    context "the section is a major version" do
+      let(:section_version_type) { :major }
 
-      it "sets it to major if the section has never been published" do
-        update_type_attributes[:ever_been_published] = false
-        subject.call
-
-        expect(publishing_api).to have_received(:put_content).with(
-          "c19ffb7d-448c-4cc8-bece-022662ef9611",
-          hash_including(update_type: "major")
-        )
-      end
-
-      it "sets it to major if the section has been published before" do
+      it "sets update_type to major" do
         subject.call
 
         expect(publishing_api).to have_received(:put_content).with(

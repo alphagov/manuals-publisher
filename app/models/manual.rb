@@ -209,13 +209,20 @@ class Manual
     !!use_originally_published_at_for_public_timestamp
   end
 
+  def version_type
+    if has_ever_been_published?
+      if all_sections_are_minor?
+        :minor
+      else
+        :major
+      end
+    else
+      :new
+    end
+  end
+
   def all_sections_are_minor?
-    self.
-      sections.
-      select(&:needs_exporting?).
-      all? { |s|
-        s.minor_update? && s.has_ever_been_published?
-      }
+    sections.select(&:needs_exporting?).all? { |s| s.version_type == :minor }
   end
 
   def build_section(attributes)

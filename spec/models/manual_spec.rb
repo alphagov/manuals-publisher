@@ -859,7 +859,9 @@ describe Manual do
 
   describe "#all_sections_are_minor?" do
     context "when manual has no sections" do
-      before { allow(manual).to receive(:sections).and_return [] }
+      before do
+        allow(manual).to receive(:sections).and_return([])
+      end
 
       it "returns truthy" do
         expect(manual.all_sections_are_minor?).to be_truthy
@@ -870,13 +872,16 @@ describe Manual do
       let(:section_1) { double(:section) }
       let(:section_2) { double(:section) }
       let(:section_3) { double(:section) }
-      before { allow(manual).to receive(:sections).and_return [section_1, section_2, section_3] }
+
+      before do
+        allow(manual).to receive(:sections).and_return([section_1, section_2, section_3])
+      end
 
       context "none of which need exporting" do
         before do
-          allow(section_1).to receive(:needs_exporting?).and_return false
-          allow(section_2).to receive(:needs_exporting?).and_return false
-          allow(section_3).to receive(:needs_exporting?).and_return false
+          allow(section_1).to receive(:needs_exporting?).and_return(false)
+          allow(section_2).to receive(:needs_exporting?).and_return(false)
+          allow(section_3).to receive(:needs_exporting?).and_return(false)
         end
 
         it "returns truthy" do
@@ -886,42 +891,71 @@ describe Manual do
 
       context "some of which need exporting" do
         before do
-          allow(section_1).to receive(:needs_exporting?).and_return true
-          allow(section_2).to receive(:needs_exporting?).and_return true
-          allow(section_3).to receive(:needs_exporting?).and_return true
+          allow(section_1).to receive(:needs_exporting?).and_return(false)
+          allow(section_2).to receive(:needs_exporting?).and_return(true)
+          allow(section_3).to receive(:needs_exporting?).and_return(true)
         end
 
-        it "returns truthy when all sections are minor updates that have been published before" do
-          allow(section_1).to receive(:minor_update?).and_return true
-          allow(section_2).to receive(:minor_update?).and_return true
-          allow(section_3).to receive(:minor_update?).and_return true
-          allow(section_1).to receive(:has_ever_been_published?).and_return true
-          allow(section_2).to receive(:has_ever_been_published?).and_return true
-          allow(section_3).to receive(:has_ever_been_published?).and_return true
+        it "returns truthy when all those sections are minor versions" do
+          allow(section_1).to receive(:version_type).and_return(:major)
+          allow(section_2).to receive(:version_type).and_return(:minor)
+          allow(section_3).to receive(:version_type).and_return(:minor)
 
           expect(manual.all_sections_are_minor?).to be_truthy
         end
 
-        it "returns falsey when at least one section is a minor update that has never been published before" do
-          allow(section_1).to receive(:minor_update?).and_return true
-          allow(section_2).to receive(:minor_update?).and_return true
-          allow(section_3).to receive(:minor_update?).and_return true
-          allow(section_1).to receive(:has_ever_been_published?).and_return true
-          allow(section_2).to receive(:has_ever_been_published?).and_return true
-          allow(section_3).to receive(:has_ever_been_published?).and_return false
+        it "returns falsey when at least one of those sections is a new version" do
+          allow(section_1).to receive(:version_type).and_return(:minor)
+          allow(section_2).to receive(:version_type).and_return(:minor)
+          allow(section_3).to receive(:version_type).and_return(:new)
 
           expect(manual.all_sections_are_minor?).to be_falsey
         end
 
-        it "returns falsey when at least one sections is a major update" do
-          allow(section_1).to receive(:minor_update?).and_return false
-          allow(section_2).to receive(:minor_update?).and_return true
-          allow(section_3).to receive(:minor_update?).and_return true
-          allow(section_1).to receive(:has_ever_been_published?).and_return true
-          allow(section_2).to receive(:has_ever_been_published?).and_return true
-          allow(section_3).to receive(:has_ever_been_published?).and_return true
+        it "returns falsey when at least one of those sections is a major version" do
+          allow(section_1).to receive(:version_type).and_return(:minor)
+          allow(section_2).to receive(:version_type).and_return(:minor)
+          allow(section_3).to receive(:version_type).and_return(:major)
 
           expect(manual.all_sections_are_minor?).to be_falsey
+        end
+      end
+    end
+  end
+
+  describe "#version_type" do
+    context "when manual has never been published" do
+      before do
+        allow(manual).to receive(:has_ever_been_published?).and_return(false)
+      end
+
+      it "returns :new" do
+        expect(manual.version_type).to eq(:new)
+      end
+    end
+
+    context "when manual has been published before" do
+      before do
+        allow(manual).to receive(:has_ever_been_published?).and_return(true)
+      end
+
+      context "and all sections are minor" do
+        before do
+          allow(manual).to receive(:all_sections_are_minor?).and_return(true)
+        end
+
+        it "returns :minor" do
+          expect(manual.version_type).to eq(:minor)
+        end
+      end
+
+      context "and all sections are not minor" do
+        before do
+          allow(manual).to receive(:all_sections_are_minor?).and_return(false)
+        end
+
+        it "returns :major" do
+          expect(manual.version_type).to eq(:major)
         end
       end
     end

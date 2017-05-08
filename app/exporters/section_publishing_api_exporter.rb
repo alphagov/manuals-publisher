@@ -104,11 +104,14 @@ private
 
   def update_type
     return @update_type if @update_type.present?
-    # The first edition to be sent to the publishing-api must always be sent as
-    # a major update
-    return "major" unless section.has_ever_been_published?
-
-    section.minor_update? ? "minor" : "major"
+    case section.version_type
+    when :new, :major
+      "major"
+    when :minor
+      "minor"
+    else
+      raise "Unknown version type: #{section.version_type}"
+    end
   end
 
   def section_presenter
