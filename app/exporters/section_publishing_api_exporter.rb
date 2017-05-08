@@ -104,7 +104,14 @@ private
 
   def update_type
     return @update_type if @update_type.present?
-    section.update_type
+    case section.version_type
+    when :new, :major
+      "major"
+    when :minor
+      "minor"
+    else
+      raise "Unknown version type: #{section.version_type}"
+    end
   end
 
   def section_presenter

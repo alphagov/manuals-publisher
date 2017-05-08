@@ -192,12 +192,16 @@ class Section
     !(never_published? || minor_update?)
   end
 
-  def update_type
-    # The first edition to be sent to the publishing-api must always be sent as
-    # a major update
-    return "major" unless self.has_ever_been_published?
-
-    self.minor_update? ? "minor" : "major"
+  def version_type
+    if has_ever_been_published?
+      if minor_update?
+        :minor
+      else
+        :major
+      end
+    else
+      :new
+    end
   end
 
 protected

@@ -65,7 +65,7 @@ describe SectionPublishingAPIExporter do
       uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611",
       attributes: { body: "##Some heading\nmanual section body" },
       attachments: attachments,
-      update_type: "minor",
+      version_type: :minor,
     )
   }
 
@@ -187,7 +187,7 @@ describe SectionPublishingAPIExporter do
         uuid: "c19ffb7d-448c-4cc8-bece-022662ef9611",
         attributes: { body: "##Some heading\nmanual section body" },
         attachments: attachments,
-        update_type: section_update_type,
+        version_type: section_version_type,
       )
     }
 
@@ -224,8 +224,23 @@ describe SectionPublishingAPIExporter do
       end
     end
 
-    context "the section is a minor update" do
-      let(:section_update_type) { "minor" }
+    context "the section is a new version" do
+      let(:section_version_type) { :new }
+
+      it "sets update_type to major" do
+        subject.call
+
+        expect(publishing_api).to have_received(:put_content).with(
+          "c19ffb7d-448c-4cc8-bece-022662ef9611",
+          hash_including(update_type: "major")
+        )
+      end
+
+      it_behaves_like "obeying the provided update_type"
+    end
+
+    context "the section is a minor version" do
+      let(:section_version_type) { :minor }
 
       it "sets update_type to minor" do
         subject.call
@@ -239,8 +254,8 @@ describe SectionPublishingAPIExporter do
       it_behaves_like "obeying the provided update_type"
     end
 
-    context "the section is a major update" do
-      let(:section_update_type) { "major" }
+    context "the section is a major version" do
+      let(:section_version_type) { :major }
 
       it "sets update_type to major" do
         subject.call
