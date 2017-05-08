@@ -891,20 +891,20 @@ describe Manual do
 
       context "some of which need exporting" do
         before do
-          allow(section_1).to receive(:needs_exporting?).and_return(true)
+          allow(section_1).to receive(:needs_exporting?).and_return(false)
           allow(section_2).to receive(:needs_exporting?).and_return(true)
           allow(section_3).to receive(:needs_exporting?).and_return(true)
         end
 
-        it "returns truthy when all sections are minor versions" do
-          allow(section_1).to receive(:version_type).and_return(:minor)
+        it "returns truthy when all those sections are minor versions" do
+          allow(section_1).to receive(:version_type).and_return(:major)
           allow(section_2).to receive(:version_type).and_return(:minor)
           allow(section_3).to receive(:version_type).and_return(:minor)
 
           expect(manual.all_sections_are_minor?).to be_truthy
         end
 
-        it "returns falsey when at least one section is a new version" do
+        it "returns falsey when at least one of those sections is a new version" do
           allow(section_1).to receive(:version_type).and_return(:minor)
           allow(section_2).to receive(:version_type).and_return(:minor)
           allow(section_3).to receive(:version_type).and_return(:new)
@@ -912,9 +912,9 @@ describe Manual do
           expect(manual.all_sections_are_minor?).to be_falsey
         end
 
-        it "returns falsey when at least one sections is a major version" do
+        it "returns falsey when at least one of those sections is a major version" do
           allow(section_1).to receive(:version_type).and_return(:minor)
-          allow(section_2).to receive(:version_type).and_return(:major)
+          allow(section_2).to receive(:version_type).and_return(:minor)
           allow(section_3).to receive(:version_type).and_return(:major)
 
           expect(manual.all_sections_are_minor?).to be_falsey
