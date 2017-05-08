@@ -24,7 +24,7 @@ private
   end
 
   def render_govspeak(body)
-    GovspeakHtmlConverter.new.call(body)
+    Govspeak::Document.new(body).to_html
   end
 
   def render_footnotes_heading(body)

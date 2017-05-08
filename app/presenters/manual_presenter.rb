@@ -9,6 +9,6 @@ class ManualPresenter
   delegate :errors, to: :@manual
 
   def body
-    GovspeakHtmlConverter.new.call(@manual.body)
+    Govspeak::Document.new(@manual.body).to_html
   end
 end
