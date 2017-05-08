@@ -891,35 +891,26 @@ describe Manual do
           allow(section_3).to receive(:needs_exporting?).and_return true
         end
 
-        it "returns truthy when all sections are minor updates that have been published before" do
-          allow(section_1).to receive(:minor_update?).and_return true
-          allow(section_2).to receive(:minor_update?).and_return true
-          allow(section_3).to receive(:minor_update?).and_return true
-          allow(section_1).to receive(:has_ever_been_published?).and_return true
-          allow(section_2).to receive(:has_ever_been_published?).and_return true
-          allow(section_3).to receive(:has_ever_been_published?).and_return true
+        it "returns truthy when all sections are minor versions" do
+          allow(section_1).to receive(:version_type).and_return(:minor)
+          allow(section_2).to receive(:version_type).and_return(:minor)
+          allow(section_3).to receive(:version_type).and_return(:minor)
 
           expect(manual.all_sections_are_minor?).to be_truthy
         end
 
-        it "returns falsey when at least one section is a minor update that has never been published before" do
-          allow(section_1).to receive(:minor_update?).and_return true
-          allow(section_2).to receive(:minor_update?).and_return true
-          allow(section_3).to receive(:minor_update?).and_return true
-          allow(section_1).to receive(:has_ever_been_published?).and_return true
-          allow(section_2).to receive(:has_ever_been_published?).and_return true
-          allow(section_3).to receive(:has_ever_been_published?).and_return false
+        it "returns falsey when at least one section is a new version" do
+          allow(section_1).to receive(:version_type).and_return(:minor)
+          allow(section_2).to receive(:version_type).and_return(:minor)
+          allow(section_3).to receive(:version_type).and_return(:new)
 
           expect(manual.all_sections_are_minor?).to be_falsey
         end
 
-        it "returns falsey when at least one sections is a major update" do
-          allow(section_1).to receive(:minor_update?).and_return false
-          allow(section_2).to receive(:minor_update?).and_return true
-          allow(section_3).to receive(:minor_update?).and_return true
-          allow(section_1).to receive(:has_ever_been_published?).and_return true
-          allow(section_2).to receive(:has_ever_been_published?).and_return true
-          allow(section_3).to receive(:has_ever_been_published?).and_return true
+        it "returns falsey when at least one sections is a major version" do
+          allow(section_1).to receive(:version_type).and_return(:minor)
+          allow(section_2).to receive(:version_type).and_return(:major)
+          allow(section_3).to receive(:version_type).and_return(:major)
 
           expect(manual.all_sections_are_minor?).to be_falsey
         end

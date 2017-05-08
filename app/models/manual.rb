@@ -226,7 +226,7 @@ class Manual
       sections.
       select(&:needs_exporting?).
       all? { |s|
-        s.minor_update? && s.has_ever_been_published?
+        s.version_type == :minor
       }
   end
 
