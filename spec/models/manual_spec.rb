@@ -934,7 +934,7 @@ describe Manual do
       end
 
       it "returns 'major'" do
-        expect(manual.update_type).to eql "major"
+        expect(manual.update_type).to eq("major")
       end
     end
 
@@ -949,7 +949,7 @@ describe Manual do
         end
 
         it "returns 'minor'" do
-          expect(manual.update_type).to eql "minor"
+          expect(manual.update_type).to eq("minor")
         end
       end
 
@@ -959,7 +959,7 @@ describe Manual do
         end
 
         it "returns 'major'" do
-          expect(manual.update_type).to eql "major"
+          expect(manual.update_type).to eq("major")
         end
       end
     end
