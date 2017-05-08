@@ -192,6 +192,14 @@ class Section
     !(never_published? || minor_update?)
   end
 
+  def update_type
+    # The first edition to be sent to the publishing-api must always be sent as
+    # a major update
+    return "major" unless self.has_ever_been_published?
+
+    self.minor_update? ? "minor" : "major"
+  end
+
 protected
 
   attr_reader :slug_generator
