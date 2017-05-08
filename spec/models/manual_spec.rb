@@ -859,7 +859,9 @@ describe Manual do
 
   describe "#all_sections_are_minor?" do
     context "when manual has no sections" do
-      before { allow(manual).to receive(:sections).and_return [] }
+      before do
+        allow(manual).to receive(:sections).and_return([])
+      end
 
       it "returns truthy" do
         expect(manual.all_sections_are_minor?).to be_truthy
@@ -870,13 +872,16 @@ describe Manual do
       let(:section_1) { double(:section) }
       let(:section_2) { double(:section) }
       let(:section_3) { double(:section) }
-      before { allow(manual).to receive(:sections).and_return [section_1, section_2, section_3] }
+
+      before do
+        allow(manual).to receive(:sections).and_return([section_1, section_2, section_3])
+      end
 
       context "none of which need exporting" do
         before do
-          allow(section_1).to receive(:needs_exporting?).and_return false
-          allow(section_2).to receive(:needs_exporting?).and_return false
-          allow(section_3).to receive(:needs_exporting?).and_return false
+          allow(section_1).to receive(:needs_exporting?).and_return(false)
+          allow(section_2).to receive(:needs_exporting?).and_return(false)
+          allow(section_3).to receive(:needs_exporting?).and_return(false)
         end
 
         it "returns truthy" do
@@ -886,9 +891,9 @@ describe Manual do
 
       context "some of which need exporting" do
         before do
-          allow(section_1).to receive(:needs_exporting?).and_return true
-          allow(section_2).to receive(:needs_exporting?).and_return true
-          allow(section_3).to receive(:needs_exporting?).and_return true
+          allow(section_1).to receive(:needs_exporting?).and_return(true)
+          allow(section_2).to receive(:needs_exporting?).and_return(true)
+          allow(section_3).to receive(:needs_exporting?).and_return(true)
         end
 
         it "returns truthy when all sections are minor versions" do
