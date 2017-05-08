@@ -48,7 +48,7 @@ RSpec.describe Manual::PublishService do
 
     it "calls the publishing api draft exporter" do
       subject.call
-      expect(publishing_api_draft_exporter).to have_received(:call).with(manual)
+      expect(publishing_api_draft_exporter).to have_received(:call).with(manual, nil)
     end
 
     it "calls the new publishing api publisher" do

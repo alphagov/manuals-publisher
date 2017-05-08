@@ -30,6 +30,6 @@ private
 
   def export_draft_to_publishing_api
     reloaded_manual = Manual.find(manual.id, context.current_user)
-    PublishingApiDraftManualWithSectionsExporter.new.call(reloaded_manual)
+    Adapters.publishing.save(reloaded_manual)
   end
 end

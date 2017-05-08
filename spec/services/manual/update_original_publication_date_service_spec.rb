@@ -59,6 +59,6 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
     subject.call
 
     expect(manual).to have_received(:save).with(user).ordered
-    expect(publishing_api_draft_exporter).to have_received(:call).with(manual).ordered
+    expect(publishing_api_draft_exporter).to have_received(:call).with(manual, nil).ordered
   end
 end

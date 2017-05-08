@@ -50,7 +50,7 @@ private
   end
 
   def export_draft_to_publishing_api
-    PublishingApiDraftManualWithSectionsExporter.new.call(manual)
+    Adapters.publishing.save(manual)
   end
 
   def publish_to_publishing_api
