@@ -110,7 +110,7 @@ module ApplicationHelper
         text += "<p>The updated timestamp on GOV.UK will be set to the first publication date.</p>"
       elsif manual.update_type == "minor"
         text += "<p>The updated timestamp on GOV.UK will not change.</p>"
-      elsif manual.update_type == "major"
+      else
         text += "<p>The updated timestamp on GOV.UK will be set to the time you press the publish button.</p>"
       end
     end
