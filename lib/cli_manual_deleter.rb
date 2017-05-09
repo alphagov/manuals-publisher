@@ -46,7 +46,7 @@ private
   end
 
   def user_must_confirm(manual_record)
-    number_of_sections = section_ids_for(manual_record).count
+    number_of_sections = section_uuids_for(manual_record).count
     log "### PLEASE CONFIRM -------------------------------------"
     log "Manual to be deleted: #{manual_record.slug}"
     log "Organisation: #{manual_record.organisation_slug}"
@@ -59,7 +59,7 @@ private
     end
   end
 
-  def section_ids_for(manual_record)
+  def section_uuids_for(manual_record)
     manual_record.editions.flat_map(&:section_uuids).uniq
   end
 
@@ -75,12 +75,12 @@ private
   # I'm loth to do this at this stage, given how specific the requirement
   # driving writing of this script is.
   def complete_removal(manual_record)
-    section_ids = section_ids_for(manual_record)
+    section_uuids = section_uuids_for(manual_record)
 
-    section_ids.each { |id| discard_draft_from_publishing_api(id) }
+    section_uuids.each { |id| discard_draft_from_publishing_api(id) }
     discard_draft_from_publishing_api(manual_record.manual_id)
 
-    section_ids.each do |id|
+    section_uuids.each do |id|
       SectionEdition.all_for_section(id).map(&:destroy)
     end
 

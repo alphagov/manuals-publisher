@@ -183,16 +183,16 @@ module ManualHelpers
     end
   end
 
-  def check_section_exists(manual_id, section_id)
+  def check_section_exists(manual_id, section_uuid)
     manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
 
-    manual.sections.any? { |section| section.uuid == section_id }
+    manual.sections.any? { |section| section.uuid == section_uuid }
   end
 
-  def check_section_was_removed(manual_id, section_id)
+  def check_section_was_removed(manual_id, section_uuid)
     manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
 
-    manual.removed_sections.any? { |section| section.uuid == section_id }
+    manual.removed_sections.any? { |section| section.uuid == section_uuid }
   end
 
   def go_to_edit_page_for_manual(manual_title)
@@ -249,8 +249,8 @@ module ManualHelpers
     check_section_is_withdrawn_from_rummager(section)
   end
 
-  def check_section_is_archived_in_db(manual, section_id)
-    expect(Section.find(manual, section_id)).to be_withdrawn
+  def check_section_is_archived_in_db(manual, section_uuid)
+    expect(Section.find(manual, section_uuid)).to be_withdrawn
   end
 
   def check_manual_is_published_to_rummager(slug, attrs)
