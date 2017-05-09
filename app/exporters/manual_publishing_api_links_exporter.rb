@@ -5,19 +5,16 @@ class ManualPublishingAPILinksExporter
   end
 
   def call
-    Services.publishing_api.patch_links(manual.id, exportable_attributes)
+    Services.publishing_api.patch_links(
+      manual.id,
+      links: {
+        organisations: [organisation.content_id],
+        sections: manual.sections.map(&:uuid),
+      }
+    )
   end
 
 private
 
   attr_reader :organisation, :manual
-
-  def exportable_attributes
-    {
-      links: {
-        organisations: [organisation.content_id],
-        sections: manual.sections.map(&:uuid),
-      },
-    }
-  end
 end
