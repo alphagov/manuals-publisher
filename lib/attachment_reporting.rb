@@ -23,8 +23,8 @@ class AttachmentReporting
       # we instead get all unique section ids associated with this manual, then walk through
       # the editions of these sections in version order to find unique PDF attachments and their
       # publication times.
-      all_unique_section_ids_for_manual(manual).each do |section_id|
-        section_editions = SectionEdition.all_for_section(section_id).order_by([:version_number, :asc])
+      all_unique_section_uuids_for_manual(manual).each do |section_uuid|
+        section_editions = SectionEdition.all_for_section(section_uuid).order_by([:version_number, :asc])
 
         section_editions.each do |section_edition|
           next if section_edition_never_published?(section_edition)
@@ -79,7 +79,7 @@ private
     !POST_PUBLICATION_STATES.include?(section_edition.state)
   end
 
-  def all_unique_section_ids_for_manual(manual)
+  def all_unique_section_uuids_for_manual(manual)
     manual.editions.map(&:section_uuids).flatten.uniq
   end
 end
