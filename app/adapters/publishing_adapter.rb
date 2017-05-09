@@ -6,9 +6,9 @@ class PublishingAdapter
 
     organisation = Adapters.organisations.find(manual.organisation_slug)
 
-    ManualPublishingAPILinksExporter.new(
+    ManualPublishingAPILinksExporter.new.call(
       organisation, manual
-    ).call
+    )
 
     ManualPublishingAPIExporter.new(
       organisation, manual, update_type: update_type

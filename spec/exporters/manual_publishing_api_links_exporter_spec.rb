@@ -4,13 +4,6 @@ require "support/govuk_content_schema_helpers"
 require "manual_publishing_api_links_exporter"
 
 describe ManualPublishingAPILinksExporter do
-  subject {
-    ManualPublishingAPILinksExporter.new(
-      organisation,
-      manual
-    )
-  }
-
   let(:publishing_api) { double(:publishing_api, patch_links: nil) }
 
   let(:organisation) { FactoryGirl.build(:organisation) }
@@ -39,7 +32,7 @@ describe ManualPublishingAPILinksExporter do
   }
 
   it "exports links for the manual" do
-    subject.call
+    subject.call(organisation, manual)
 
     expect(publishing_api).to have_received(:patch_links).with(
       manual.id,
