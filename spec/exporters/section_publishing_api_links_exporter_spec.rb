@@ -4,14 +4,6 @@ require "support/govuk_content_schema_helpers"
 require "section_publishing_api_links_exporter"
 
 describe SectionPublishingAPILinksExporter do
-  subject {
-    SectionPublishingAPILinksExporter.new(
-      organisation,
-      manual,
-      section
-    )
-  }
-
   let(:publishing_api) { double(:publishing_api, patch_links: nil) }
 
   let(:organisation) { FactoryGirl.build(:organisation) }
@@ -42,7 +34,7 @@ describe SectionPublishingAPILinksExporter do
   }
 
   it "exports links for the section" do
-    subject.call
+    subject.call(organisation, manual, section)
 
     expect(publishing_api).to have_received(:patch_links).with(
       section.uuid,

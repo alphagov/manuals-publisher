@@ -50,9 +50,9 @@ private
   def save_section_links(section, manual)
     organisation = organisation_for(manual)
 
-    SectionPublishingAPILinksExporter.new(
+    SectionPublishingAPILinksExporter.new.call(
       organisation, manual, section
-    ).call
+    )
   end
 
   def save_section_content(section, manual, update_type: nil)

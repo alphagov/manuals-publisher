@@ -1,11 +1,5 @@
 class SectionPublishingAPILinksExporter
-  def initialize(organisation, manual, section)
-    @organisation = organisation
-    @manual = manual
-    @section = section
-  end
-
-  def call
+  def call(organisation, manual, section)
     Services.publishing_api.patch_links(
       section.uuid,
       links: {
@@ -14,8 +8,4 @@ class SectionPublishingAPILinksExporter
       }
     )
   end
-
-private
-
-  attr_reader :organisation, :manual, :section
 end
