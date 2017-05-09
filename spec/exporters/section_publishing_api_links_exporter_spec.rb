@@ -54,8 +54,4 @@ describe SectionPublishingAPILinksExporter do
       )
     )
   end
-
-  it "exports links valid against the schema" do
-    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_links_schema(SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME)
-  end
 end

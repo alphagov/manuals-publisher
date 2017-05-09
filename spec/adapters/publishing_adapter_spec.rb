@@ -182,6 +182,24 @@ describe PublishingAdapter do
       subject.save(manual)
     end
 
+    context "when UUIDs are valid" do
+      before do
+        allow(manual).to receive(:id).and_return("a55242ed-178f-4716-8bb3-5d4f82d38531")
+        allow(organisation).to receive(:content_id).and_return("afa741e9-c68e-4ade-bc8f-ceb1fced23a6")
+      end
+
+      it "saves links for all manual's sections to Publishing API with valid attributes" do
+        expect(publishing_api).to receive(:patch_links).with(
+          "section-uuid",
+          be_valid_against_links_schema(
+            SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
+          )
+        )
+
+        subject.save(manual)
+      end
+    end
+
     it "saves content for all manual's sections to Publishing API" do
       expect(publishing_api).to receive(:put_content).with(
         "section-uuid",
