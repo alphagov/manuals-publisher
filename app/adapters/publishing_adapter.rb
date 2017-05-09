@@ -4,7 +4,7 @@ class PublishingAdapter
   def save(manual, republish: false, include_sections: true)
     update_type = (republish ? "republish" : nil)
 
-    organisation = Adapters.organisations.find(manual.organisation_slug)
+    organisation = organisation_for(manual)
 
     Services.publishing_api.patch_links(
       manual.id,
@@ -28,7 +28,7 @@ class PublishingAdapter
   end
 
   def save_section(section, manual, update_type: nil)
-    organisation = Adapters.organisations.find(manual.organisation_slug)
+    organisation = organisation_for(manual)
 
     SectionPublishingAPILinksExporter.new(
       organisation, manual, section
@@ -37,5 +37,11 @@ class PublishingAdapter
     SectionPublishingAPIExporter.new(
       organisation, manual, section, update_type: update_type
     ).call
+  end
+
+private
+
+  def organisation_for(manual)
+    Adapters.organisations.find(manual.organisation_slug)
   end
 end
