@@ -1,23 +1,23 @@
 require "adapters"
 
 class PublishingAdapter
-  def save(manual, republish: false, include_sections: true)
+  def save(manual, republish: false, include_sections: true, include_links: true)
     update_type = (republish ? "republish" : nil)
 
-    save_manual_links(manual)
+    save_manual_links(manual) if include_links
     save_manual_content(manual, update_type: update_type)
 
     if include_sections
       manual.sections.each do |section|
         if section.needs_exporting? || republish
-          save_section(section, manual, update_type: update_type)
+          save_section(section, manual, update_type: update_type, include_links: include_links)
         end
       end
     end
   end
 
-  def save_section(section, manual, update_type: nil)
-    save_section_links(section, manual)
+  def save_section(section, manual, update_type: nil, include_links: true)
+    save_section_links(section, manual) if include_links
     save_section_content(section, manual, update_type: update_type)
   end
 
