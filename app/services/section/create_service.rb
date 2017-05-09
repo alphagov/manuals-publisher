@@ -33,7 +33,7 @@ private
   end
 
   def export_draft_section_to_publishing_api
-    PublishingApiDraftSectionExporter.new.call(new_section, manual)
+    Adapters.publishing.save_section(new_section, manual)
   end
 
   def section_params

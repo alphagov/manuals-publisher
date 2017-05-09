@@ -47,6 +47,6 @@ private
   end
 
   def export_draft_section_to_publishing_api
-    PublishingApiDraftSectionExporter.new.call(section, manual)
+    Adapters.publishing.save_section(section, manual)
   end
 end

@@ -32,4 +32,11 @@ class PublishingAdapter
       end
     end
   end
+
+  def save_section(section, manual)
+    organisation = Adapters.organisations.find(manual.organisation_slug)
+
+    SectionPublishingAPILinksExporter.new(organisation, manual, section).call
+    SectionPublishingAPIExporter.new(organisation, manual, section).call
+  end
 end
