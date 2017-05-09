@@ -6,13 +6,7 @@ class PublishingAdapter
 
     organisation = organisation_for(manual)
 
-    Services.publishing_api.patch_links(
-      manual.id,
-      links: {
-        organisations: [organisation.content_id],
-        sections: manual.sections.map(&:uuid),
-      }
-    )
+    save_manual_links(manual)
 
     ManualPublishingAPIExporter.new(
       organisation, manual, update_type: update_type
@@ -43,5 +37,17 @@ private
 
   def organisation_for(manual)
     Adapters.organisations.find(manual.organisation_slug)
+  end
+
+  def save_manual_links(manual)
+    organisation = organisation_for(manual)
+
+    Services.publishing_api.patch_links(
+      manual.id,
+      links: {
+        organisations: [organisation.content_id],
+        sections: manual.sections.map(&:uuid),
+      }
+    )
   end
 end
