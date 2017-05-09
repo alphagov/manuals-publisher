@@ -1,3 +1,5 @@
+require "adapters"
+
 class Section::ReorderService
   def initialize(context:)
     @context = context
@@ -41,6 +43,6 @@ private
   end
 
   def export_draft_manual_to_publishing_api
-    PublishingApiDraftManualExporter.new.call(manual)
+    Adapters.publishing.save(manual, include_sections: false)
   end
 end

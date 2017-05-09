@@ -1,3 +1,5 @@
+require "adapters"
+
 class Section::CreateService
   def initialize(context:)
     @context = context
@@ -27,7 +29,7 @@ private
   end
 
   def export_draft_manual_to_publishing_api
-    PublishingApiDraftManualExporter.new.call(manual)
+    Adapters.publishing.save(manual, include_sections: false)
   end
 
   def export_draft_section_to_publishing_api
