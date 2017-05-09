@@ -33,7 +33,7 @@ private
   end
 
   def export_published_manual_via_publishing_api
-    Adapters.publishing.save(published_manual_version, :republish)
+    Adapters.publishing.save(published_manual_version, republish: true)
   end
 
   def republish_published_manual_to_publishing_api
@@ -45,7 +45,7 @@ private
   end
 
   def export_draft_manual_via_publishing_api
-    Adapters.publishing.save(draft_manual_version, :republish)
+    Adapters.publishing.save(draft_manual_version, republish: true)
   end
 
   def manual_versions

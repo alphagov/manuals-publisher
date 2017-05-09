@@ -39,7 +39,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the publishing api draft exporter" do
       subject.call
-      expect(publishing_adapter).to have_received(:save).with(published_manual_version, :republish)
+      expect(publishing_adapter).to have_received(:save).with(published_manual_version, republish: true)
     end
 
     it "calls the new publishing api publisher" do
@@ -54,7 +54,7 @@ RSpec.describe Manual::RepublishService do
 
     it "tells the draft listeners nothing" do
       subject.call
-      expect(publishing_adapter).not_to have_received(:save).with(draft_manual_version, :republish)
+      expect(publishing_adapter).not_to have_received(:save).with(draft_manual_version, republish: true)
     end
   end
 
@@ -70,13 +70,13 @@ RSpec.describe Manual::RepublishService do
     it "tells the published listeners nothing" do
       subject.call
       expect(publishing_api_publisher).not_to have_received(:call)
-      expect(publishing_adapter).not_to have_received(:save).with(published_manual_version, :republish)
+      expect(publishing_adapter).not_to have_received(:save).with(published_manual_version, republish: true)
       expect(search_index_adapter).not_to have_received(:add)
     end
 
     it "tells the draft listeners to republish the draft version of the manual" do
       subject.call
-      expect(publishing_adapter).to have_received(:save).with(draft_manual_version, :republish)
+      expect(publishing_adapter).to have_received(:save).with(draft_manual_version, republish: true)
     end
   end
 
@@ -91,7 +91,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the publishing api draft exporter" do
       subject.call
-      expect(publishing_adapter).to have_received(:save).with(published_manual_version, :republish)
+      expect(publishing_adapter).to have_received(:save).with(published_manual_version, republish: true)
     end
 
     it "calls the new publishing api publisher" do
@@ -106,7 +106,7 @@ RSpec.describe Manual::RepublishService do
 
     it "tells the draft listeners to republish the draft version of the manual" do
       subject.call
-      expect(publishing_adapter).to have_received(:save).with(draft_manual_version, :republish)
+      expect(publishing_adapter).to have_received(:save).with(draft_manual_version, republish: true)
     end
   end
 

@@ -257,7 +257,7 @@ describe PublishingAdapter do
             anything
           )
 
-          subject.save(manual, :republish)
+          subject.save(manual, republish: true)
         end
 
         it "saves content for section to Publishing API" do
@@ -266,7 +266,7 @@ describe PublishingAdapter do
             anything
           )
 
-          subject.save(manual, :republish)
+          subject.save(manual, republish: true)
         end
       end
     end
@@ -337,7 +337,7 @@ describe PublishingAdapter do
             including(update_type: "republish")
           )
 
-          subject.save(manual, :republish)
+          subject.save(manual, republish: true)
         end
 
         it "saves content for section to Publishing API with republish update_type" do
@@ -346,7 +346,7 @@ describe PublishingAdapter do
             including(update_type: "republish")
           )
 
-          subject.save(manual, :republish)
+          subject.save(manual, republish: true)
         end
       end
     end

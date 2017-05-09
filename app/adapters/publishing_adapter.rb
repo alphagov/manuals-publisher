@@ -1,8 +1,8 @@
 require "adapters"
 
 class PublishingAdapter
-  def save(manual, action = nil)
-    update_type = (action == :republish ? "republish" : nil)
+  def save(manual, republish: false)
+    update_type = (republish ? "republish" : nil)
 
     organisation = Adapters.organisations.find(manual.organisation_slug)
 
@@ -15,7 +15,7 @@ class PublishingAdapter
     ).call
 
     manual.sections.each do |section|
-      next if !section.needs_exporting? && action != :republish
+      next if !section.needs_exporting? && !republish
 
       SectionPublishingAPILinksExporter.new(
         organisation, manual, section
