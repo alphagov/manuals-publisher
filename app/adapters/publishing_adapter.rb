@@ -6,8 +6,12 @@ class PublishingAdapter
 
     organisation = Adapters.organisations.find(manual.organisation_slug)
 
-    ManualPublishingAPILinksExporter.new.call(
-      organisation, manual
+    Services.publishing_api.patch_links(
+      manual.id,
+      links: {
+        organisations: [organisation.content_id],
+        sections: manual.sections.map(&:uuid),
+      }
     )
 
     ManualPublishingAPIExporter.new(
