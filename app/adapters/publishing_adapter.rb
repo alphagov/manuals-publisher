@@ -9,9 +9,9 @@ class PublishingAdapter
 
     if include_sections
       manual.sections.each do |section|
-        next if !section.needs_exporting? && !republish
-
-        save_section(section, manual, update_type: update_type)
+        if section.needs_exporting? || republish
+          save_section(section, manual, update_type: update_type)
+        end
       end
     end
   end
