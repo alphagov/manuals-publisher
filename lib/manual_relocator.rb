@@ -201,16 +201,16 @@ private
     end
   end
 
-  def send_gone(section_id, slug)
+  def send_gone(section_uuid, slug)
     # We should be able to use
-    #   publishing_api.unpublish(section_id, type: 'gone')
+    #   publishing_api.unpublish(section_uuid, type: 'gone')
     # here, but that doesn't leave the base_path in a state where
     # publishing_api will let us re-use it.  Sending a draft gone object
     # and then publishing it does though.  Might want to check if we can
     # go back to the unpublish version at some point though.
     gone_item = {
       base_path: "/#{slug}",
-      content_id: section_id,
+      content_id: section_uuid,
       document_type: "gone",
       publishing_app: "manuals-publisher",
       schema_name: "gone",
@@ -221,8 +221,8 @@ private
         }
       ]
     }
-    publishing_api.put_content(section_id, gone_item)
-    publishing_api.publish(section_id, "major")
+    publishing_api.put_content(section_uuid, gone_item)
+    publishing_api.publish(section_uuid, "major")
   end
 
   def publishing_api
