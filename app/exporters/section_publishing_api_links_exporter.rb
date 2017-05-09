@@ -6,16 +6,12 @@ class SectionPublishingAPILinksExporter
   end
 
   def call
-    Services.publishing_api.patch_links(content_id, exportable_attributes)
+    Services.publishing_api.patch_links(section.uuid, exportable_attributes)
   end
 
 private
 
   attr_reader :organisation, :manual, :section
-
-  def content_id
-    section.uuid
-  end
 
   def exportable_attributes
     {
