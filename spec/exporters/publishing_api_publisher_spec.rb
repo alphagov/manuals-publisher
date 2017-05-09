@@ -4,8 +4,8 @@ require "publishing_api_publisher"
 
 describe PublishingAPIPublisher do
   let(:publishing_api) { double(:publishing_api, publish: nil) }
-  let(:section_id) { "12345678-9abc-def0-1234-56789abcdef0" }
-  let(:section) { double(:section, id: section_id) }
+  let(:section_uuid) { "12345678-9abc-def0-1234-56789abcdef0" }
+  let(:section) { double(:section, id: section_uuid) }
 
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
@@ -51,7 +51,7 @@ describe PublishingAPIPublisher do
       it "asks the publishing api to publish the section" do
         subject.call
 
-        expect(publishing_api).to have_received(:publish).with(section_id, nil)
+        expect(publishing_api).to have_received(:publish).with(section_uuid, nil)
       end
     end
 
@@ -66,7 +66,7 @@ describe PublishingAPIPublisher do
       it "asks the publishing api to publish the section with the specific update_type" do
         subject.call
 
-        expect(publishing_api).to have_received(:publish).with(section_id, "republish")
+        expect(publishing_api).to have_received(:publish).with(section_uuid, "republish")
       end
     end
   end
