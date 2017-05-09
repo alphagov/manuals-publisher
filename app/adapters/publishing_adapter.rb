@@ -19,9 +19,7 @@ class PublishingAdapter
   def save_section(section, manual, update_type: nil)
     organisation = organisation_for(manual)
 
-    SectionPublishingAPILinksExporter.new(
-      organisation, manual, section
-    ).call
+    save_section_links(section, manual)
 
     SectionPublishingAPIExporter.new(
       organisation, manual, section, update_type: update_type
@@ -51,6 +49,14 @@ private
 
     ManualPublishingAPIExporter.new(
       organisation, manual, update_type: update_type
+    ).call
+  end
+
+  def save_section_links(section, manual)
+    organisation = organisation_for(manual)
+
+    SectionPublishingAPILinksExporter.new(
+      organisation, manual, section
     ).call
   end
 end
