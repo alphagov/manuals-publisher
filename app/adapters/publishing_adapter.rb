@@ -4,13 +4,8 @@ class PublishingAdapter
   def save(manual, republish: false, include_sections: true)
     update_type = (republish ? "republish" : nil)
 
-    organisation = organisation_for(manual)
-
     save_manual_links(manual)
-
-    ManualPublishingAPIExporter.new(
-      organisation, manual, update_type: update_type
-    ).call
+    save_manual_content(manual, update_type: update_type)
 
     if include_sections
       manual.sections.each do |section|
@@ -49,5 +44,13 @@ private
         sections: manual.sections.map(&:uuid),
       }
     )
+  end
+
+  def save_manual_content(manual, update_type: nil)
+    organisation = organisation_for(manual)
+
+    ManualPublishingAPIExporter.new(
+      organisation, manual, update_type: update_type
+    ).call
   end
 end
