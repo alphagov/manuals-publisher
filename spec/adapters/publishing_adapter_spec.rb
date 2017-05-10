@@ -103,7 +103,7 @@ describe PublishingAdapter do
       expect(publishing_api).to receive(:patch_links).with(
         manual_id,
         be_valid_against_links_schema(
-          ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
+          publishing_api_schema_name_for_manual
         )
       )
 
@@ -185,7 +185,7 @@ describe PublishingAdapter do
       expect(publishing_api).to receive(:patch_links).with(
         section_uuid,
         be_valid_against_links_schema(
-          SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
+          publishing_api_schema_name_for_section
         )
       )
 
