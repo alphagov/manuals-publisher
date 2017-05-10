@@ -312,7 +312,7 @@ describe ManualPublishingAPIExporter do
 
   context "when Manual#version_type is major" do
     before do
-      allow(manual).to receive(:update_type).and_return("major")
+      allow(manual).to receive(:version_type).and_return(:major)
     end
 
     it "exports with the update_type set to major" do
