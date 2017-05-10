@@ -1,4 +1,5 @@
 require "adapters"
+require "securerandom"
 
 class PublishingAdapter
   def save(manual, republish: false, include_sections: true, include_links: true)
@@ -22,9 +23,19 @@ class PublishingAdapter
   end
 
   def redirect_section(section, to:)
-    PublishingAPIRedirecter.new.call(
-      entity: section,
-      redirect_to_location: to
+    Services.publishing_api.put_content(
+      SecureRandom.uuid,
+      document_type: 'redirect',
+      schema_name: 'redirect',
+      publishing_app: "manuals-publisher",
+      base_path: "/#{section.slug}",
+      redirects: [
+        {
+          path: "/#{section.slug}",
+          type: "exact",
+          destination: to
+        }
+      ],
     )
   end
 
