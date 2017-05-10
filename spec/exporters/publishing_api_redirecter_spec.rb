@@ -19,7 +19,7 @@ describe PublishingAPIRedirecter do
   end
 
   it "exports the attributes required for the redirect" do
-    allow(subject).to receive(:content_id).and_return('content-id')
+    allow(SecureRandom).to receive(:uuid).and_return('content-id')
 
     subject.call
 

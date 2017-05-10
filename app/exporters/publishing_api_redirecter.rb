@@ -8,7 +8,7 @@ class PublishingAPIRedirecter
   end
 
   def call
-    publishing_api.put_content(content_id, exportable_attributes)
+    publishing_api.put_content(SecureRandom.uuid, exportable_attributes)
   end
 
 private
@@ -37,9 +37,5 @@ private
         }
       ],
     }
-  end
-
-  def content_id
-    @_content_id ||= SecureRandom.uuid
   end
 end
