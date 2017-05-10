@@ -23,7 +23,6 @@ class PublishingAdapter
 
   def redirect_section(section, to:)
     PublishingAPIRedirecter.new(
-      publishing_api: Services.publishing_api,
       entity: section,
       redirect_to_location: to
     ).call

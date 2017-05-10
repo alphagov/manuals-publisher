@@ -1,20 +1,18 @@
 require "securerandom"
 
 class PublishingAPIRedirecter
-  def initialize(publishing_api:, entity:, redirect_to_location:)
-    @publishing_api = publishing_api
+  def initialize(entity:, redirect_to_location:)
     @entity = entity
     @redirect_to_location = redirect_to_location
   end
 
   def call
-    publishing_api.put_content(SecureRandom.uuid, exportable_attributes)
+    Services.publishing_api.put_content(SecureRandom.uuid, exportable_attributes)
   end
 
 private
 
   attr_reader(
-    :publishing_api,
     :entity,
     :redirect_to_location
   )

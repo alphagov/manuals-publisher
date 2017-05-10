@@ -5,7 +5,6 @@ require "support/govuk_content_schema_helpers"
 describe PublishingAPIRedirecter do
   subject {
     described_class.new(
-      publishing_api: publishing_api,
       entity: entity,
       redirect_to_location: '/new/slug/for/entity'
     )
@@ -13,6 +12,10 @@ describe PublishingAPIRedirecter do
 
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
   let(:entity) { double(:entity, slug: 'original/slug/for/entity') }
+
+  before do
+    allow(Services).to receive(:publishing_api).and_return(publishing_api)
+  end
 
   it "exports a redirect valid against the schema" do
     expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema("redirect")
