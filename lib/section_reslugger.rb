@@ -18,7 +18,7 @@ class SectionReslugger
 
     update_slug
     publish_manual
-    redirect_section
+    redirect_section(old_section)
     remove_from_search_index(old_section)
   end
 
@@ -64,10 +64,10 @@ private
   rescue GdsApi::ContentStore::ItemNotFound # rubocop:disable Lint/HandleExceptions
   end
 
-  def redirect_section
+  def redirect_section(section)
     PublishingAPIRedirecter.new(
       publishing_api: Services.publishing_api,
-      entity: old_section_edition,
+      entity: section,
       redirect_to_location: "/#{full_new_section_slug}"
     ).call
   end
