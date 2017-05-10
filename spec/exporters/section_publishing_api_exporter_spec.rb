@@ -127,7 +127,7 @@ describe SectionPublishingAPIExporter do
           title: "Document title",
           description: "This is the first section",
           update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE,
-          publishing_app: "manuals-publisher",
+          publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
           rendering_app: "manuals-frontend",
           routes: [
             {

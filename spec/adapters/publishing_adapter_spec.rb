@@ -120,7 +120,7 @@ describe PublishingAdapter do
         title: "manual-title",
         description: "manual-summary",
         update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
-        publishing_app: "manuals-publisher",
+        publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
         rendering_app: "manuals-frontend",
         routes: [
           {
@@ -202,7 +202,7 @@ describe PublishingAdapter do
         title: "section-title",
         description: "section-summary",
         update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
-        publishing_app: "manuals-publisher",
+        publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
         rendering_app: "manuals-frontend",
         routes: [
           {
@@ -526,7 +526,7 @@ describe PublishingAdapter do
         base_path: "/manual-slug/section-slug",
         schema_name: "redirect",
         document_type: "redirect",
-        publishing_app: "manuals-publisher",
+        publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
         redirects: [
           {
             path: "/manual-slug/section-slug",

@@ -206,7 +206,7 @@ private
       base_path: "/#{slug}",
       content_id: section_uuid,
       document_type: "gone",
-      publishing_app: "manuals-publisher",
+      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
       schema_name: "gone",
       routes: [
         {

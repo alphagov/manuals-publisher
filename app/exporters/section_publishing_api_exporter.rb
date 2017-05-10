@@ -35,7 +35,7 @@ private
       title: section_presenter.title,
       description: section_presenter.summary,
       update_type: update_type,
-      publishing_app: "manuals-publisher",
+      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
       rendering_app: "manuals-frontend",
       routes: [
         {

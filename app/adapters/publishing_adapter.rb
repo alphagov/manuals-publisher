@@ -28,7 +28,7 @@ class PublishingAdapter
       SecureRandom.uuid,
       document_type: 'redirect',
       schema_name: 'redirect',
-      publishing_app: "manuals-publisher",
+      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
       base_path: "/#{section.slug}",
       redirects: [
         {

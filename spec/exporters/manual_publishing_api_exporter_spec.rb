@@ -144,7 +144,7 @@ describe ManualPublishingAPIExporter do
           title: "My first manual",
           description: "This is my first manual",
           update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
-          publishing_app: "manuals-publisher",
+          publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
           rendering_app: "manuals-frontend",
           routes: [
             {
