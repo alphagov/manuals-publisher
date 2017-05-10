@@ -121,7 +121,7 @@ describe PublishingAdapter do
         description: "manual-summary",
         update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
         publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
-        rendering_app: "manuals-frontend",
+        rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
         routes: [
           {
             path: "/manual-slug",
@@ -203,7 +203,7 @@ describe PublishingAdapter do
         description: "section-summary",
         update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
         publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
-        rendering_app: "manuals-frontend",
+        rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
         routes: [
           {
             path: "/manual-slug/section-slug",

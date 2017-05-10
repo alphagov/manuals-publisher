@@ -42,7 +42,7 @@ private
       description: presented_manual.summary,
       update_type: update_type,
       publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
-      rendering_app: "manuals-frontend",
+      rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
       routes: [
         {
           path: base_path,
