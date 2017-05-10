@@ -19,19 +19,15 @@ private
     :redirect_to_location
   )
 
-  def base_path
-    "/#{entity.slug}"
-  end
-
   def exportable_attributes
     {
       document_type: 'redirect',
       schema_name: 'redirect',
       publishing_app: "manuals-publisher",
-      base_path: base_path,
+      base_path: "/#{entity.slug}",
       redirects: [
         {
-          path: base_path,
+          path: "/#{entity.slug}",
           type: "exact",
           destination: redirect_to_location
         }
