@@ -46,11 +46,11 @@ private
       routes: [
         {
           path: base_path,
-          type: "exact",
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         },
         {
           path: updates_path,
-          type: "exact",
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         }
       ],
       details: details_data,

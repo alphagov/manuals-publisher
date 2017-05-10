@@ -125,11 +125,11 @@ describe PublishingAdapter do
         routes: [
           {
             path: "/manual-slug",
-            type: "exact",
+            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
           },
           {
             path: "/manual-slug/updates",
-            type: "exact",
+            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
           }
         ],
         details: {
@@ -207,7 +207,7 @@ describe PublishingAdapter do
         routes: [
           {
             path: "/manual-slug/section-slug",
-            type: "exact"
+            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
           },
         ],
         details: {
@@ -530,7 +530,7 @@ describe PublishingAdapter do
         redirects: [
           {
             path: "/manual-slug/section-slug",
-            type: "exact",
+            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             destination: "/new-location"
           }
         ],

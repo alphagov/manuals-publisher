@@ -149,11 +149,11 @@ describe ManualPublishingAPIExporter do
           routes: [
             {
               path: "/guidance/my-first-manual",
-              type: "exact",
+              type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             },
             {
               path: "/guidance/my-first-manual/updates",
-              type: "exact",
+              type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             }
           ],
           locale: "en",

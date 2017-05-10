@@ -17,5 +17,7 @@ module GdsApiConstants
     MINOR_UPDATE_TYPE = "minor".freeze
     MAJOR_UPDATE_TYPE = "major".freeze
     REPUBLISH_UPDATE_TYPE = "republish".freeze
+
+    EXACT_ROUTE_TYPE = "exact".freeze
   end
 end

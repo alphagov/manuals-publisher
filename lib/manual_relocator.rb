@@ -211,7 +211,7 @@ private
       routes: [
         {
           path: "/#{slug}",
-          type: "exact"
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
         }
       ]
     }

@@ -205,7 +205,7 @@ describe ManualRelocator do
             routes: [
               {
                 path: "/#{existing_slug}",
-                type: "exact"
+                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
               }
             ]
           }
@@ -236,7 +236,7 @@ describe ManualRelocator do
             routes: [
               {
                 path: "/#{existing_section_3.slug}",
-                type: "exact"
+                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
               }
             ]
           }

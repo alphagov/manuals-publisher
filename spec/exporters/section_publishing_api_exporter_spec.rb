@@ -132,7 +132,7 @@ describe SectionPublishingAPIExporter do
           routes: [
             {
               path: section_base_path,
-              type: "exact",
+              type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             }
           ],
         ),

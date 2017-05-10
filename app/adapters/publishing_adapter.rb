@@ -33,7 +33,7 @@ class PublishingAdapter
       redirects: [
         {
           path: "/#{section.slug}",
-          type: "exact",
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
           destination: to
         }
       ],
