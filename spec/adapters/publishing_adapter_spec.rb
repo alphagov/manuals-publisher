@@ -537,5 +537,14 @@ describe PublishingAdapter do
 
       subject.redirect_section(section, to: "/new-location")
     end
+
+    it "redirects section via Publishing API with valid attributes" do
+      expect(publishing_api).to receive(:put_content).with(
+        redirect_content_id,
+        be_valid_against_schema("redirect")
+      )
+
+      subject.redirect_section(manual, to: "/new-location")
+    end
   end
 end

@@ -17,10 +17,6 @@ describe PublishingAPIRedirecter do
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
   end
 
-  it "exports a redirect valid against the schema" do
-    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema("redirect")
-  end
-
   it "exports the attributes required for the redirect" do
     allow(SecureRandom).to receive(:uuid).and_return('content-id')
 
