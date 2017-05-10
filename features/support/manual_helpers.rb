@@ -1,5 +1,6 @@
 require "manuals_republisher"
 require "manual_withdrawer"
+require "gds_api_constants"
 
 module ManualHelpers
   def entity_id_for(entity)
@@ -256,7 +257,7 @@ module ManualHelpers
   def check_manual_is_published_to_rummager(slug, attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
+        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
         "/#{slug}",
         hash_including(
           title: attrs.fetch(:title),
@@ -269,7 +270,7 @@ module ManualHelpers
   def check_manual_is_not_published_to_rummager(slug)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
+        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
         "/#{slug}",
         anything
       )
@@ -278,7 +279,7 @@ module ManualHelpers
   def check_manual_is_not_published_to_rummager_with_attrs(slug, attrs)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
+        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
         "/#{slug}",
         hash_including(
           title: attrs.fetch(:title),
@@ -345,7 +346,7 @@ module ManualHelpers
   def check_section_is_published_to_rummager(slug, attrs, manual_attrs)
     expect(fake_rummager).to have_received(:add_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
         "/#{slug}",
         hash_including(
           title: "#{manual_attrs.fetch(:title)}: #{attrs.fetch(:section_title)}",
@@ -358,7 +359,7 @@ module ManualHelpers
   def check_section_is_not_published_to_rummager(slug)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
         "/#{slug}",
         anything
       )
@@ -367,7 +368,7 @@ module ManualHelpers
   def check_section_is_not_published_to_rummager_with_attrs(slug, attrs, manual_attrs)
     expect(fake_rummager).not_to have_received(:add_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
         "/#{slug}",
         hash_including(
           title: "#{manual_attrs.fetch(:title)}: #{attrs.fetch(:section_title)}",
@@ -468,14 +469,14 @@ module ManualHelpers
   def check_manual_is_withdrawn_from_rummager(manual, sections)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL,
+        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
         "/#{manual.slug}",
       )
 
     sections.each do |section|
       expect(fake_rummager).to have_received(:delete_document)
         .with(
-          SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+          GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
           "/#{section.slug}",
         )
     end
@@ -484,7 +485,7 @@ module ManualHelpers
   def check_section_is_withdrawn_from_rummager(section)
     expect(fake_rummager).to have_received(:delete_document)
       .with(
-        SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_SECTION,
+        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
         "/#{section.slug}",
       )
   end
