@@ -519,4 +519,29 @@ describe PublishingAdapter do
       end
     end
   end
+
+  describe "#redirect_section" do
+    before do
+      allow(SecureRandom).to receive(:uuid).and_return("redirect-content-id")
+    end
+
+    it "redirects section via Publishing API" do
+      expect(publishing_api).to receive(:put_content).with(
+        "redirect-content-id",
+        base_path: "/manual-slug/section-slug",
+        schema_name: "redirect",
+        document_type: "redirect",
+        publishing_app: "manuals-publisher",
+        redirects: [
+          {
+            path: "/manual-slug/section-slug",
+            type: "exact",
+            destination: "/new-location"
+          }
+        ],
+      )
+
+      subject.redirect_section(section, to: "/new-location")
+    end
+  end
 end

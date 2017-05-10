@@ -21,6 +21,14 @@ class PublishingAdapter
     save_section_content(section, manual, update_type: update_type)
   end
 
+  def redirect_section(section, to:)
+    PublishingAPIRedirecter.new(
+      publishing_api: Services.publishing_api,
+      entity: section,
+      redirect_to_location: to
+    ).call
+  end
+
 private
 
   def organisation_for(manual)
