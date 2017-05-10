@@ -22,10 +22,10 @@ class PublishingAdapter
   end
 
   def redirect_section(section, to:)
-    PublishingAPIRedirecter.new(
+    PublishingAPIRedirecter.new.call(
       entity: section,
       redirect_to_location: to
-    ).call
+    )
   end
 
 private

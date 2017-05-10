@@ -3,13 +3,6 @@ require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
 describe PublishingAPIRedirecter do
-  subject {
-    described_class.new(
-      entity: entity,
-      redirect_to_location: '/new/slug/for/entity'
-    )
-  }
-
   let(:publishing_api) { double(:publishing_api, put_content: nil) }
   let(:entity) { double(:entity, slug: 'original/slug/for/entity') }
 
@@ -20,7 +13,10 @@ describe PublishingAPIRedirecter do
   it "exports the attributes required for the redirect" do
     allow(SecureRandom).to receive(:uuid).and_return('content-id')
 
-    subject.call
+    subject.call(
+      entity: entity,
+      redirect_to_location: '/new/slug/for/entity'
+    )
 
     expect(publishing_api).to have_received(:put_content).with(
       'content-id',
