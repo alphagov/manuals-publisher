@@ -1,8 +1,7 @@
+require "gds_api_constants"
+
 class SectionPublishingAPIExporter
   include PublishingAPIUpdateTypes
-
-  PUBLISHING_API_SCHEMA_NAME = "manual_section".freeze
-  PUBLISHING_API_DOCUMENT_TYPE = "manual_section".freeze
 
   def initialize(organisation, manual, section, update_type: nil)
     @organisation = organisation
@@ -31,8 +30,8 @@ private
   def exportable_attributes
     {
       base_path: base_path,
-      schema_name: PUBLISHING_API_SCHEMA_NAME,
-      document_type: PUBLISHING_API_DOCUMENT_TYPE,
+      schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
+      document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
       title: section_presenter.title,
       description: section_presenter.summary,
       update_type: update_type,

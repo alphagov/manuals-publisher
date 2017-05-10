@@ -3,6 +3,7 @@ require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
 require "section_publishing_api_exporter"
+require "gds_api_constants"
 
 describe SectionPublishingAPIExporter do
   subject {
@@ -121,8 +122,8 @@ describe SectionPublishingAPIExporter do
       all_of(
         hash_including(
           base_path: section_base_path,
-          schema_name: SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
-          document_type: SectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
+          schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
+          document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
           title: "Document title",
           description: "This is the first section",
           update_type: "minor",

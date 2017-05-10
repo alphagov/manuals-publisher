@@ -294,8 +294,8 @@ module ManualHelpers
 
     if with_matcher.nil?
       attributes = {
-        "schema_name" => ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
-        "document_type" => ManualPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
+        "schema_name" => GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
+        "document_type" => GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
         "rendering_app" => "manuals-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)
@@ -321,8 +321,8 @@ module ManualHelpers
 
     if with_matcher.nil?
       attributes = {
-        "schema_name" => SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
-        "document_type" => SectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
+        "schema_name" => GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
+        "document_type" => GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
         "rendering_app" => "manuals-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)

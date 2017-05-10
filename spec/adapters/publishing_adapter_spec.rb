@@ -1,20 +1,21 @@
 require "spec_helper"
+require "gds_api_constants"
 
 describe PublishingAdapter do
   let(:publishing_api_schema_name_for_manual) {
-    ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
+    GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME
   }
 
   let(:publishing_api_document_type_for_manual) {
-    ManualPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE
+    GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE
   }
 
   let(:publishing_api_schema_name_for_section) {
-    SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
+    GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME
   }
 
   let(:publishing_api_document_type_for_section) {
-    SectionPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE
+    GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE
   }
 
   let(:timestamp) { Time.zone.parse("2017-01-01 00:00:00") }

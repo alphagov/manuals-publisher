@@ -3,6 +3,7 @@ require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
 require "manual_publishing_api_exporter"
+require "gds_api_constants"
 
 describe ManualPublishingAPIExporter do
   subject {
@@ -127,7 +128,7 @@ describe ManualPublishingAPIExporter do
   end
 
   it "exports a manual valid against the schema" do
-    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema(ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME)
+    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema(GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME)
   end
 
   it "exports the serialized section attributes" do
@@ -138,8 +139,8 @@ describe ManualPublishingAPIExporter do
       all_of(
         hash_including(
           base_path: "/guidance/my-first-manual",
-          schema_name: ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
-          document_type: ManualPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
+          schema_name: GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
+          document_type: GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
           title: "My first manual",
           description: "This is my first manual",
           update_type: "major",
