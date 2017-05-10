@@ -105,9 +105,9 @@ private
     return @update_type if @update_type.present?
     case section.version_type
     when :new, :major
-      "major"
+      GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
     when :minor
-      "minor"
+      GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
     else
       raise "Unknown version type: #{section.version_type}"
     end

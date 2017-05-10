@@ -10,5 +10,9 @@ module GdsApiConstants
 
     SECTION_SCHEMA_NAME = "manual_section".freeze
     SECTION_DOCUMENT_TYPE = "manual_section".freeze
+
+    MINOR_UPDATE_TYPE = "minor".freeze
+    MAJOR_UPDATE_TYPE = "major".freeze
+    REPUBLISH_UPDATE_TYPE = "republish".freeze
   end
 end

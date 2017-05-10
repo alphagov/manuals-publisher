@@ -1,9 +1,10 @@
 require "adapters"
 require "securerandom"
+require "gds_api_constants"
 
 class PublishingAdapter
   def save(manual, republish: false, include_sections: true, include_links: true)
-    update_type = (republish ? "republish" : nil)
+    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
 
     save_manual_links(manual) if include_links
     save_manual_content(manual, update_type: update_type)

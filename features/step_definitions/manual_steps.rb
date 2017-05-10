@@ -1,3 +1,5 @@
+require "gds_api_constants"
+
 When(/^I create a manual$/) do
   @manual_fields = {
     title: "Example Manual Title",
@@ -489,37 +491,37 @@ end
 Then(/^the manual is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^the manual is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^the manual is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: "major" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: "major" }, number_of_drafts: 1)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: "minor" }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do

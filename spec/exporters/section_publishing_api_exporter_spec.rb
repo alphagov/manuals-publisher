@@ -87,7 +87,7 @@ describe SectionPublishingAPIExporter do
   end
 
   it "accepts major, minor, and republish as options for update_type" do
-    %w(major minor republish).each do |update_type|
+    PublishingAPIUpdateTypes::UPDATE_TYPES.each do |update_type|
       expect {
         described_class.new(
           organisation,
@@ -126,7 +126,7 @@ describe SectionPublishingAPIExporter do
           document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
           title: "Document title",
           description: "This is the first section",
-          update_type: "minor",
+          update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE,
           publishing_app: "manuals-publisher",
           rendering_app: "manuals-frontend",
           routes: [
@@ -203,23 +203,23 @@ describe SectionPublishingAPIExporter do
       }
 
       context "when update_type is provided as 'republish'" do
-        let(:explicit_update_type) { "republish" }
+        let(:explicit_update_type) { GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE }
         it "exports with the update_type set to republish" do
           subject.call
           expect(publishing_api).to have_received(:put_content).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
-            hash_including(update_type: "republish")
+            hash_including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
           )
         end
       end
 
       context "when update_type is provided as 'minor'" do
-        let(:explicit_update_type) { "minor" }
+        let(:explicit_update_type) { GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE }
         it "exports with the update_type set to minor" do
           subject.call
           expect(publishing_api).to have_received(:put_content).with(
             "c19ffb7d-448c-4cc8-bece-022662ef9611",
-            hash_including(update_type: "minor")
+            hash_including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE)
           )
         end
       end
@@ -233,7 +233,7 @@ describe SectionPublishingAPIExporter do
 
         expect(publishing_api).to have_received(:put_content).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
-          hash_including(update_type: "major")
+          hash_including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
         )
       end
 
@@ -248,7 +248,7 @@ describe SectionPublishingAPIExporter do
 
         expect(publishing_api).to have_received(:put_content).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
-          hash_including(update_type: "minor")
+          hash_including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE)
         )
       end
 
@@ -263,7 +263,7 @@ describe SectionPublishingAPIExporter do
 
         expect(publishing_api).to have_received(:put_content).with(
           "c19ffb7d-448c-4cc8-bece-022662ef9611",
-          hash_including(update_type: "major")
+          hash_including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
         )
       end
 

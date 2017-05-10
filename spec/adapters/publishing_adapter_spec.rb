@@ -119,7 +119,7 @@ describe PublishingAdapter do
         document_type: publishing_api_document_type_for_manual,
         title: "manual-title",
         description: "manual-summary",
-        update_type: "major",
+        update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
         publishing_app: "manuals-publisher",
         rendering_app: "manuals-frontend",
         routes: [
@@ -201,7 +201,7 @@ describe PublishingAdapter do
         document_type: publishing_api_document_type_for_section,
         title: "section-title",
         description: "section-summary",
-        update_type: "major",
+        update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
         publishing_app: "manuals-publisher",
         rendering_app: "manuals-frontend",
         routes: [
@@ -345,7 +345,7 @@ describe PublishingAdapter do
         it "saves content for manual to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             manual_id,
-            including(update_type: "republish")
+            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
           )
 
           subject.save(manual, republish: true)
@@ -354,7 +354,7 @@ describe PublishingAdapter do
         it "saves content for section to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             section_uuid,
-            including(update_type: "republish")
+            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
           )
 
           subject.save(manual, republish: true)
@@ -371,7 +371,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: "major")
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
         )
 
         subject.save(manual)
@@ -380,7 +380,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: "major")
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
         )
 
         subject.save(manual)
@@ -398,7 +398,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: "minor")
+          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE)
         )
 
         subject.save(manual)
@@ -407,7 +407,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: "minor")
+          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE)
         )
 
         subject.save(manual)
@@ -425,7 +425,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: "major")
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
         )
 
         subject.save(manual)
@@ -434,7 +434,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: "major")
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
         )
 
         subject.save(manual)

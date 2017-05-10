@@ -1,5 +1,6 @@
 require "services"
 require "adapters"
+require "gds_api_constants"
 
 class ManualRelocator
   attr_reader :from_slug, :to_slug
@@ -176,10 +177,10 @@ private
       send_draft(manual_to_publish)
 
       puts "Publishing published edition of manual: #{manual_to_publish.id}"
-      publishing_api.publish(manual_to_publish.id, "republish")
+      publishing_api.publish(manual_to_publish.id, GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
       manual_to_publish.sections.each do |section|
         puts "Publishing published edition of manual section: #{section.uuid}"
-        publishing_api.publish(section.uuid, "republish")
+        publishing_api.publish(section.uuid, GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
       end
     end
 
@@ -215,7 +216,7 @@ private
       ]
     }
     publishing_api.put_content(section_uuid, gone_item)
-    publishing_api.publish(section_uuid, "major")
+    publishing_api.publish(section_uuid, GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
   end
 
   def publishing_api
