@@ -111,7 +111,7 @@ describe SectionPublishingAPIExporter do
   end
 
   it "exports a manual_section valid against the schema" do
-    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema("manual_section")
+    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema(GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME)
   end
 
   it "exports the serialized section attributes" do
