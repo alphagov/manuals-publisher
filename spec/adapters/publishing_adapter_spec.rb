@@ -101,10 +101,10 @@ describe PublishingAdapter do
       subject.save(manual)
     end
 
-    it "saves links for manual to Publishing API with valid attributes" do
+    it "saves links for manual to Publishing API with attributes which validate against links schema for manual" do
       expect(publishing_api).to receive(:patch_links).with(
         manual_id,
-        be_valid_against_links_schema(
+        attributes_valid_according_to_links_schema(
           publishing_api_schema_name_for_manual
         )
       )
@@ -183,10 +183,10 @@ describe PublishingAdapter do
       subject.save(manual)
     end
 
-    it "saves links for all manual's sections to Publishing API with valid attributes" do
+    it "saves links for all manual's sections to Publishing API with attributes which validate against links schema for section" do
       expect(publishing_api).to receive(:patch_links).with(
         section_uuid,
-        be_valid_against_links_schema(
+        attributes_valid_according_to_links_schema(
           publishing_api_schema_name_for_section
         )
       )
@@ -540,13 +540,23 @@ describe PublishingAdapter do
       subject.redirect_section(section, to: "/new-location")
     end
 
-    it "redirects section via Publishing API with valid attributes" do
+    it "redirects section via Publishing API with attributes which are valid according to redirect schema" do
       expect(publishing_api).to receive(:put_content).with(
         redirect_content_id,
-        be_valid_against_schema("redirect")
+        attributes_valid_according_to_schema("redirect")
       )
 
       subject.redirect_section(manual, to: "/new-location")
     end
+  end
+
+private
+
+  def attributes_valid_according_to_schema(schema_name)
+    be_valid_against_schema(schema_name)
+  end
+
+  def attributes_valid_according_to_links_schema(schema_name)
+    be_valid_against_links_schema(schema_name)
   end
 end
