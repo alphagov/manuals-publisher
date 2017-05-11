@@ -9,9 +9,14 @@ describe PublishingAPIPublisher do
   let(:section_uuid) { "12345678-9abc-def0-1234-56789abcdef0" }
   let(:section) { double(:section, id: section_uuid) }
 
+  before do
+    allow(Services).to receive(:publishing_api).and_return(publishing_api)
+    allow(publishing_api).to receive(:publish)
+  end
+
   it "raises an argument error if update_type is supplied, but not a valid choice" do
     expect {
-      described_class.new(
+      subject.call(
         entity: section,
         update_type: "reticulate-splines"
       )
@@ -21,7 +26,7 @@ describe PublishingAPIPublisher do
   it "accepts major, minor, and republish as options for update_type" do
     PublishingAPIUpdateTypes::UPDATE_TYPES.each do |update_type|
       expect {
-        described_class.new(
+        subject.call(
           entity: section,
           update_type: update_type
         )
@@ -31,7 +36,7 @@ describe PublishingAPIPublisher do
 
   it "accepts explicitly setting nil as the option for update_type" do
     expect {
-      described_class.new(
+      subject.call(
         entity: section,
         update_type: nil
       )
@@ -39,34 +44,22 @@ describe PublishingAPIPublisher do
   end
 
   describe "#call" do
-    before {
-      allow(Services).to receive(:publishing_api).and_return(publishing_api)
-    }
-
     context "when no explicit update_type is given" do
-      subject do
-        described_class.new(
+      it "asks the publishing api to publish the section" do
+        subject.call(
           entity: section
         )
-      end
-
-      it "asks the publishing api to publish the section" do
-        subject.call
 
         expect(publishing_api).to have_received(:publish).with(section_uuid, nil)
       end
     end
 
     context "when an explicit update_type is given" do
-      subject do
-        described_class.new(
+      it "asks the publishing api to publish the section with the specific update_type" do
+        subject.call(
           entity: section,
           update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
         )
-      end
-
-      it "asks the publishing api to publish the section with the specific update_type" do
-        subject.call
 
         expect(publishing_api).to have_received(:publish).with(section_uuid, GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
       end
