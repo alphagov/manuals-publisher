@@ -1,4 +1,5 @@
 require "adapters"
+require "securerandom"
 
 class PublishingAdapter
   def save(manual, republish: false, include_sections: true, include_links: true)
@@ -19,6 +20,23 @@ class PublishingAdapter
   def save_section(section, manual, update_type: nil, include_links: true)
     save_section_links(section, manual) if include_links
     save_section_content(section, manual, update_type: update_type)
+  end
+
+  def redirect_section(section, to:)
+    Services.publishing_api.put_content(
+      SecureRandom.uuid,
+      document_type: 'redirect',
+      schema_name: 'redirect',
+      publishing_app: "manuals-publisher",
+      base_path: "/#{section.slug}",
+      redirects: [
+        {
+          path: "/#{section.slug}",
+          type: "exact",
+          destination: to
+        }
+      ],
+    )
   end
 
 private

@@ -22,9 +22,11 @@ describe PublishingAdapter do
   let(:publishing_api) { double(:publishing_api) }
   let(:organisations) { double(:organisations_adapter) }
 
+  let(:manual_id) { "a55242ed-178f-4716-8bb3-5d4f82d38531" }
+
   let(:manual) {
     Manual.build(
-      id: "manual-id",
+      id: manual_id,
       slug: "manual-slug",
       organisation_slug: "organisation-slug",
       title: "manual-title",
@@ -33,10 +35,12 @@ describe PublishingAdapter do
     )
   }
 
+  let(:section_uuid) { "64dbf396-b637-40b7-ada4-f19ce460e5e9" }
+
   let(:section) {
     Section.new(
       manual: manual,
-      uuid: "section-uuid",
+      uuid: section_uuid,
       editions: [section_edition],
     )
   }
@@ -50,11 +54,13 @@ describe PublishingAdapter do
     )
   }
 
+  let(:organisation_content_id) { "afa741e9-c68e-4ade-bc8f-ceb1fced23a6" }
+
   let(:organisation) {
     Organisation.new(
       title: "organisation-title",
       abbreviation: "organisation-abbreviation",
-      content_id: "organisation-content-id",
+      content_id: organisation_content_id,
       web_url: "organisation-web-url",
     )
   }
@@ -83,37 +89,30 @@ describe PublishingAdapter do
 
     it "saves links for manual to Publishing API" do
       expect(publishing_api).to receive(:patch_links).with(
-        "manual-id",
+        manual_id,
         links: {
-          organisations: ["organisation-content-id"],
-          sections: ["section-uuid"]
+          organisations: [organisation_content_id],
+          sections: [section_uuid]
         }
       )
 
       subject.save(manual)
     end
 
-    context "when UUIDs are valid" do
-      before do
-        allow(section).to receive(:uuid).and_return("a55242ed-178f-4716-8bb3-5d4f82d38531")
-        allow(organisation).to receive(:content_id).and_return("afa741e9-c68e-4ade-bc8f-ceb1fced23a6")
-      end
-
-      it "saves links for manual to Publishing API with valid attributes" do
-        expect(publishing_api).to receive(:patch_links).with(
-          "manual-id",
-          be_valid_against_links_schema(
-            ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
-          )
+    it "saves links for manual to Publishing API with valid attributes" do
+      expect(publishing_api).to receive(:patch_links).with(
+        manual_id,
+        be_valid_against_links_schema(
+          ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
         )
+      )
 
-        subject.save(manual)
-      end
+      subject.save(manual)
     end
 
     it "saves content for manual to Publishing API" do
       expect(publishing_api).to receive(:put_content).with(
-        "manual-id",
+        manual_id,
         base_path: "/manual-slug",
         schema_name: publishing_api_schema_name_for_manual,
         document_type: publishing_api_document_type_for_manual,
@@ -172,37 +171,30 @@ describe PublishingAdapter do
 
     it "saves links for all manual's sections to Publishing API" do
       expect(publishing_api).to receive(:patch_links).with(
-        "section-uuid",
+        section_uuid,
         links: {
-          organisations: ["organisation-content-id"],
-          manual: ["manual-id"]
+          organisations: [organisation_content_id],
+          manual: [manual_id]
         }
       )
 
       subject.save(manual)
     end
 
-    context "when UUIDs are valid" do
-      before do
-        allow(manual).to receive(:id).and_return("a55242ed-178f-4716-8bb3-5d4f82d38531")
-        allow(organisation).to receive(:content_id).and_return("afa741e9-c68e-4ade-bc8f-ceb1fced23a6")
-      end
-
-      it "saves links for all manual's sections to Publishing API with valid attributes" do
-        expect(publishing_api).to receive(:patch_links).with(
-          "section-uuid",
-          be_valid_against_links_schema(
-            SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
-          )
+    it "saves links for all manual's sections to Publishing API with valid attributes" do
+      expect(publishing_api).to receive(:patch_links).with(
+        section_uuid,
+        be_valid_against_links_schema(
+          SectionPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME
         )
+      )
 
-        subject.save(manual)
-      end
+      subject.save(manual)
     end
 
     it "saves content for all manual's sections to Publishing API" do
       expect(publishing_api).to receive(:put_content).with(
-        "section-uuid",
+        section_uuid,
         base_path: "/manual-slug/section-slug",
         schema_name: publishing_api_schema_name_for_section,
         document_type: publishing_api_document_type_for_section,
@@ -252,7 +244,7 @@ describe PublishingAdapter do
 
       it "does not save links for section to Publishing API" do
         expect(publishing_api).not_to receive(:patch_links).with(
-          "section-uuid",
+          section_uuid,
           anything
         )
 
@@ -261,7 +253,7 @@ describe PublishingAdapter do
 
       it "does not save content for section to Publishing API" do
         expect(publishing_api).not_to receive(:put_content).with(
-          "section-uuid",
+          section_uuid,
           anything
         )
 
@@ -271,7 +263,7 @@ describe PublishingAdapter do
       context "and action is republish" do
         it "saves links for section to Publishing API" do
           expect(publishing_api).to receive(:patch_links).with(
-            "section-uuid",
+            section_uuid,
             anything
           )
 
@@ -280,7 +272,7 @@ describe PublishingAdapter do
 
         it "saves content for section to Publishing API" do
           expect(publishing_api).to receive(:put_content).with(
-            "section-uuid",
+            section_uuid,
             anything
           )
 
@@ -296,7 +288,7 @@ describe PublishingAdapter do
 
       it "saves content for manual to Publishing API with timestamps" do
         expect(publishing_api).to receive(:put_content).with(
-          "manual-id",
+          manual_id,
           including(
             first_published_at: timestamp.iso8601,
             public_updated_at: timestamp.iso8601
@@ -308,7 +300,7 @@ describe PublishingAdapter do
 
       it "saves content for section to Publishing API with timestamps" do
         expect(publishing_api).to receive(:put_content).with(
-          "section-uuid",
+          section_uuid,
           including(
             first_published_at: timestamp.iso8601,
             public_updated_at: timestamp.iso8601
@@ -325,7 +317,7 @@ describe PublishingAdapter do
 
         it "saves content for manual to Publishing API without public timestamp" do
           expect(publishing_api).to receive(:put_content).with(
-            "manual-id",
+            manual_id,
             excluding(
               public_updated_at: timestamp.iso8601
             ),
@@ -336,7 +328,7 @@ describe PublishingAdapter do
 
         it "saves content for section to Publishing API without public timestamp" do
           expect(publishing_api).to receive(:put_content).with(
-            "section-uuid",
+            section_uuid,
             excluding(
               public_updated_at: timestamp.iso8601
             ),
@@ -351,7 +343,7 @@ describe PublishingAdapter do
       context "when action is republish" do
         it "saves content for manual to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
-            "manual-id",
+            manual_id,
             including(update_type: "republish")
           )
 
@@ -360,7 +352,7 @@ describe PublishingAdapter do
 
         it "saves content for section to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
-            "section-uuid",
+            section_uuid,
             including(update_type: "republish")
           )
 
@@ -377,7 +369,7 @@ describe PublishingAdapter do
 
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
-          "manual-id",
+          manual_id,
           including(update_type: "major")
         )
 
@@ -386,7 +378,7 @@ describe PublishingAdapter do
 
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
-          "section-uuid",
+          section_uuid,
           including(update_type: "major")
         )
 
@@ -404,7 +396,7 @@ describe PublishingAdapter do
 
       it "saves content for manual to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
-          "manual-id",
+          manual_id,
           including(update_type: "minor")
         )
 
@@ -413,7 +405,7 @@ describe PublishingAdapter do
 
       it "saves content for section to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
-          "section-uuid",
+          section_uuid,
           including(update_type: "minor")
         )
 
@@ -431,7 +423,7 @@ describe PublishingAdapter do
 
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
-          "manual-id",
+          manual_id,
           including(update_type: "major")
         )
 
@@ -440,7 +432,7 @@ describe PublishingAdapter do
 
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
-          "section-uuid",
+          section_uuid,
           including(update_type: "major")
         )
 
@@ -464,7 +456,7 @@ describe PublishingAdapter do
 
       it "saves content for manual to Publishing API including change notes" do
         expect(publishing_api).to receive(:put_content).with(
-          "manual-id",
+          manual_id,
           including(details: including(
             change_notes: [{
               title: "section-title",
@@ -500,7 +492,7 @@ describe PublishingAdapter do
 
       it "saves content for section to Publishing API including attachments" do
         expect(publishing_api).to receive(:put_content).with(
-          "section-uuid",
+          section_uuid,
           including(details: including(
             attachments: [
               including(
@@ -517,6 +509,42 @@ describe PublishingAdapter do
 
         subject.save(manual)
       end
+    end
+  end
+
+  describe "#redirect_section" do
+    let(:redirect_content_id) { "179cd671-766b-47af-ae4a-5054e9b99b89" }
+
+    before do
+      allow(SecureRandom).to receive(:uuid).and_return(redirect_content_id)
+    end
+
+    it "redirects section via Publishing API" do
+      expect(publishing_api).to receive(:put_content).with(
+        redirect_content_id,
+        base_path: "/manual-slug/section-slug",
+        schema_name: "redirect",
+        document_type: "redirect",
+        publishing_app: "manuals-publisher",
+        redirects: [
+          {
+            path: "/manual-slug/section-slug",
+            type: "exact",
+            destination: "/new-location"
+          }
+        ],
+      )
+
+      subject.redirect_section(section, to: "/new-location")
+    end
+
+    it "redirects section via Publishing API with valid attributes" do
+      expect(publishing_api).to receive(:put_content).with(
+        redirect_content_id,
+        be_valid_against_schema("redirect")
+      )
+
+      subject.redirect_section(manual, to: "/new-location")
     end
   end
 end
