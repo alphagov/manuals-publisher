@@ -44,7 +44,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the new publishing api publisher" do
       subject.call
-      expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, :republish)
+      expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, republish: true)
     end
 
     it "adds the manual to the search index" do
@@ -96,7 +96,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the new publishing api publisher" do
       subject.call
-      expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, :republish)
+      expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, republish: true)
     end
 
     it "adds the manual to the search index" do
