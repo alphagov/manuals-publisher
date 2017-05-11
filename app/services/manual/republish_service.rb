@@ -37,7 +37,7 @@ private
   end
 
   def republish_published_manual_to_publishing_api
-    PublishingApiManualWithSectionsPublisher.new.call(published_manual_version, republish: true)
+    Adapters.publishing.publish(published_manual_version, republish: true)
   end
 
   def add_published_manual_to_search_index

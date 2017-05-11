@@ -5,7 +5,6 @@ RSpec.describe Manual::RepublishService do
   let(:published_manual_version) { double(:manual) }
   let(:draft_manual_version) { double(:manual) }
   let(:publishing_adapter) { double(:publishing_adapter) }
-  let(:publishing_api_publisher) { double(:publishing_api_publisher) }
   let(:search_index_adapter) { double(:search_index_adapter) }
   let(:manual) { double(:manual) }
   let(:user) { double(:user) }
@@ -20,10 +19,9 @@ RSpec.describe Manual::RepublishService do
 
   before do
     allow(Adapters).to receive(:publishing) { publishing_adapter }
-    allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { publishing_api_publisher }
     allow(Adapters).to receive(:search_index) { search_index_adapter }
     allow(publishing_adapter).to receive(:save)
-    allow(publishing_api_publisher).to receive(:call)
+    allow(publishing_adapter).to receive(:publish)
     allow(search_index_adapter).to receive(:add)
     allow(Manual).to receive(:find).with(manual_id, user) { manual }
   end
@@ -44,7 +42,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the new publishing api publisher" do
       subject.call
-      expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, republish: true)
+      expect(publishing_adapter).to have_received(:publish).with(published_manual_version, republish: true)
     end
 
     it "adds the manual to the search index" do
@@ -69,7 +67,7 @@ RSpec.describe Manual::RepublishService do
 
     it "tells the published listeners nothing" do
       subject.call
-      expect(publishing_api_publisher).not_to have_received(:call)
+      expect(publishing_adapter).not_to have_received(:publish)
       expect(publishing_adapter).not_to have_received(:save).with(published_manual_version, republish: true)
       expect(search_index_adapter).not_to have_received(:add)
     end
@@ -96,7 +94,7 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the new publishing api publisher" do
       subject.call
-      expect(publishing_api_publisher).to have_received(:call).with(published_manual_version, republish: true)
+      expect(publishing_adapter).to have_received(:publish).with(published_manual_version, republish: true)
     end
 
     it "adds the manual to the search index" do
@@ -121,7 +119,7 @@ RSpec.describe Manual::RepublishService do
     it "tells none of the listeners to do anything" do
       begin; subject.call; rescue(arbitrary_exception); end
       expect(publishing_adapter).not_to have_received(:save)
-      expect(publishing_api_publisher).not_to have_received(:call)
+      expect(publishing_adapter).not_to have_received(:publish)
       expect(search_index_adapter).not_to have_received(:add)
     end
   end
@@ -138,7 +136,7 @@ RSpec.describe Manual::RepublishService do
     it "tells none of the listeners to do anything" do
       subject.call
       expect(publishing_adapter).not_to have_received(:save)
-      expect(publishing_api_publisher).not_to have_received(:call)
+      expect(publishing_adapter).not_to have_received(:publish)
       expect(search_index_adapter).not_to have_received(:add)
     end
   end

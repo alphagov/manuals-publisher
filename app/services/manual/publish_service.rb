@@ -54,7 +54,7 @@ private
   end
 
   def publish_to_publishing_api
-    PublishingApiManualWithSectionsPublisher.new.call(manual)
+    Adapters.publishing.publish(manual)
   end
 
   def add_to_search_index
