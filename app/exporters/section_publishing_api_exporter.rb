@@ -1,8 +1,7 @@
+require "gds_api_constants"
+
 class SectionPublishingAPIExporter
   include PublishingAPIUpdateTypes
-
-  PUBLISHING_API_SCHEMA_NAME = "manual_section".freeze
-  PUBLISHING_API_DOCUMENT_TYPE = "manual_section".freeze
 
   def initialize(organisation, manual, section, update_type: nil)
     @organisation = organisation
@@ -31,21 +30,21 @@ private
   def exportable_attributes
     {
       base_path: base_path,
-      schema_name: PUBLISHING_API_SCHEMA_NAME,
-      document_type: PUBLISHING_API_DOCUMENT_TYPE,
+      schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
+      document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
       title: section_presenter.title,
       description: section_presenter.summary,
       update_type: update_type,
-      publishing_app: "manuals-publisher",
-      rendering_app: "manuals-frontend",
+      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+      rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
       routes: [
         {
           path: base_path,
-          type: "exact",
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         }
       ],
       details: details,
-      locale: "en",
+      locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }.merge(optional_exportable_attributes)
   end
 
@@ -106,9 +105,9 @@ private
     return @update_type if @update_type.present?
     case section.version_type
     when :new, :major
-      "major"
+      GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
     when :minor
-      "minor"
+      GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
     else
       raise "Unknown version type: #{section.version_type}"
     end

@@ -1,5 +1,6 @@
 require "spec_helper"
 require "manual_relocator"
+require "gds_api_constants"
 
 describe ManualRelocator do
   include GdsApi::TestHelpers::PublishingApiV2
@@ -199,12 +200,12 @@ describe ManualRelocator do
             base_path: "/#{existing_slug}",
             content_id: existing_manual_id,
             document_type: "gone",
-            publishing_app: "manuals-publisher",
+            publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
             schema_name: "gone",
             routes: [
               {
                 path: "/#{existing_slug}",
-                type: "exact"
+                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
               }
             ]
           }
@@ -230,12 +231,12 @@ describe ManualRelocator do
             base_path: "/#{existing_section_3.slug}",
             content_id: existing_section_3.section_uuid,
             document_type: "gone",
-            publishing_app: "manuals-publisher",
+            publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
             schema_name: "gone",
             routes: [
               {
                 path: "/#{existing_section_3.slug}",
-                type: "exact"
+                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
               }
             ]
           }

@@ -1,6 +1,7 @@
 require "spec_helper"
 
 require "publishing_api_publisher"
+require "gds_api_constants"
 
 describe PublishingAPIPublisher do
   let(:publishing_api) { double(:publishing_api, publish: nil) }
@@ -17,7 +18,7 @@ describe PublishingAPIPublisher do
   end
 
   it "accepts major, minor, and republish as options for update_type" do
-    %w(major minor republish).each do |update_type|
+    PublishingAPIUpdateTypes::UPDATE_TYPES.each do |update_type|
       expect {
         described_class.new(
           entity: section,
@@ -59,14 +60,14 @@ describe PublishingAPIPublisher do
       subject do
         described_class.new(
           entity: section,
-          update_type: "republish"
+          update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
         )
       end
 
       it "asks the publishing api to publish the section with the specific update_type" do
         subject.call
 
-        expect(publishing_api).to have_received(:publish).with(section_uuid, "republish")
+        expect(publishing_api).to have_received(:publish).with(section_uuid, GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
       end
     end
   end

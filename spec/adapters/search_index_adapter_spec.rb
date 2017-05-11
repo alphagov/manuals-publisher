@@ -1,10 +1,11 @@
 require "spec_helper"
+require "gds_api_constants"
 
 describe SearchIndexAdapter do
   let(:rummager) { double(:rummager) }
 
-  let(:rummager_document_type_for_manual) { SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_MANUAL }
-  let(:rummager_document_type_for_section) { SearchIndexAdapter::RUMMAGER_DOCUMENT_TYPE_FOR_SECTION }
+  let(:rummager_document_type_for_manual) { GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE }
+  let(:rummager_document_type_for_section) { GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE }
 
   let(:manual) {
     Manual.build(

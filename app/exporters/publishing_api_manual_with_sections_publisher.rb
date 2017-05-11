@@ -1,6 +1,8 @@
+require "gds_api_constants"
+
 class PublishingApiManualWithSectionsPublisher
   def call(manual, action = nil)
-    update_type = (action == :republish ? "republish" : nil)
+    update_type = (action == :republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
     PublishingAPIPublisher.new(
       entity: manual,
       update_type: update_type,

@@ -3,6 +3,7 @@ require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
 require "manual_publishing_api_exporter"
+require "gds_api_constants"
 
 describe ManualPublishingAPIExporter do
   subject {
@@ -105,7 +106,7 @@ describe ManualPublishingAPIExporter do
   end
 
   it "accepts major, minor, and republish as options for update_type" do
-    %w(major minor republish).each do |update_type|
+    PublishingAPIUpdateTypes::UPDATE_TYPES.each do |update_type|
       expect {
         described_class.new(
           organisation,
@@ -127,7 +128,7 @@ describe ManualPublishingAPIExporter do
   end
 
   it "exports a manual valid against the schema" do
-    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema(ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME)
+    expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema(GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME)
   end
 
   it "exports the serialized section attributes" do
@@ -138,24 +139,24 @@ describe ManualPublishingAPIExporter do
       all_of(
         hash_including(
           base_path: "/guidance/my-first-manual",
-          schema_name: ManualPublishingAPIExporter::PUBLISHING_API_SCHEMA_NAME,
-          document_type: ManualPublishingAPIExporter::PUBLISHING_API_DOCUMENT_TYPE,
+          schema_name: GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
+          document_type: GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
           title: "My first manual",
           description: "This is my first manual",
-          update_type: "major",
-          publishing_app: "manuals-publisher",
-          rendering_app: "manuals-frontend",
+          update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
+          publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+          rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
           routes: [
             {
               path: "/guidance/my-first-manual",
-              type: "exact",
+              type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             },
             {
-              path: "/guidance/my-first-manual/updates",
-              type: "exact",
+              path: "/guidance/my-first-manual/#{GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX}",
+              type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             }
           ],
-          locale: "en",
+          locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
         ),
         hash_excluding(:first_published_at, :public_updated_at)
       )
@@ -221,7 +222,7 @@ describe ManualPublishingAPIExporter do
           ],
           child_section_groups: [
             {
-              title: "Contents",
+              title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
               child_sections: [
                 base_path: "/guidance/my-first-manual/first-section",
                 title: "Document title",
@@ -265,12 +266,12 @@ describe ManualPublishingAPIExporter do
     }
 
     context "when update_type is provided as 'republish'" do
-      let(:explicit_update_type) { "republish" }
+      let(:explicit_update_type) { GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE }
       it "exports with the update_type set to republish" do
         subject.call
         expect(publishing_api).to have_received(:put_content).with(
           "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-          hash_including(update_type: "republish")
+          hash_including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
         )
       end
     end
@@ -286,7 +287,7 @@ describe ManualPublishingAPIExporter do
 
       expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "minor")
+        hash_including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE)
       )
     end
 
@@ -303,7 +304,7 @@ describe ManualPublishingAPIExporter do
 
       expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "major")
+        hash_including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
       )
     end
 
@@ -320,7 +321,7 @@ describe ManualPublishingAPIExporter do
 
       expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
-        hash_including(update_type: "major")
+        hash_including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
       )
     end
 

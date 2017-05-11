@@ -1,8 +1,7 @@
+require "gds_api_constants"
+
 class ManualPublishingAPIExporter
   include PublishingAPIUpdateTypes
-
-  PUBLISHING_API_SCHEMA_NAME = "manual".freeze
-  PUBLISHING_API_DOCUMENT_TYPE = "manual".freeze
 
   def initialize(organisation, manual, update_type: nil)
     @organisation = organisation
@@ -31,31 +30,31 @@ private
   end
 
   def updates_path
-    [base_path, "updates"].join("/")
+    [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
   end
 
   def exportable_attributes
     {
       base_path: base_path,
-      schema_name: PUBLISHING_API_SCHEMA_NAME,
-      document_type: PUBLISHING_API_DOCUMENT_TYPE,
+      schema_name: GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
+      document_type: GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
       title: presented_manual.title,
       description: presented_manual.summary,
       update_type: update_type,
-      publishing_app: "manuals-publisher",
-      rendering_app: "manuals-frontend",
+      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+      rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
       routes: [
         {
           path: base_path,
-          type: "exact",
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         },
         {
           path: updates_path,
-          type: "exact",
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         }
       ],
       details: details_data,
-      locale: "en",
+      locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }.merge(optional_exportable_attributes)
   end
 
@@ -72,9 +71,9 @@ private
     return @update_type if @update_type.present?
     case manual.version_type
     when :new, :major
-      "major"
+      GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
     when :minor
-      "minor"
+      GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
     else
       raise "Uknown version type: #{manual.version_type}"
     end
@@ -98,7 +97,7 @@ private
       ],
       child_section_groups: [
         {
-          title: "Contents",
+          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
           child_sections: sections,
         }
       ],
