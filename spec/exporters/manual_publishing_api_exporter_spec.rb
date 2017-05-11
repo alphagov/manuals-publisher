@@ -152,7 +152,7 @@ describe ManualPublishingAPIExporter do
               type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             },
             {
-              path: "/guidance/my-first-manual/updates",
+              path: "/guidance/my-first-manual/#{GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX}",
               type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             }
           ],

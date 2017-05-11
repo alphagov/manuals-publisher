@@ -128,7 +128,7 @@ describe PublishingAdapter do
             type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
           },
           {
-            path: "/manual-slug/updates",
+            path: "/manual-slug/#{GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX}",
             type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
           }
         ],

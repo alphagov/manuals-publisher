@@ -18,6 +18,7 @@ module GdsApiConstants
     MAJOR_UPDATE_TYPE = "major".freeze
     REPUBLISH_UPDATE_TYPE = "republish".freeze
 
+    UPDATES_PATH_SUFFIX = "updates".freeze
     EXACT_ROUTE_TYPE = "exact".freeze
 
     CHILD_SECTION_GROUP_TITLE = "Contents".freeze

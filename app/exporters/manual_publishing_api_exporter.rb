@@ -30,7 +30,7 @@ private
   end
 
   def updates_path
-    [base_path, "updates"].join("/")
+    [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
   end
 
   def exportable_attributes
