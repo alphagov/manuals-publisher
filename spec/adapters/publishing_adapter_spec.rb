@@ -514,6 +514,26 @@ describe PublishingAdapter do
     end
   end
 
+  describe "#unpublish" do
+    before do
+      manual.sections = [section]
+
+      allow(publishing_api).to receive(:unpublish).with(anything, anything)
+    end
+
+    it "unpublishes manual via Publishing API" do
+      expect(publishing_api).to receive(:unpublish).with(manual_id, type: "gone")
+
+      subject.unpublish(manual)
+    end
+
+    it "unpublishes all manual's sections via Publishing API" do
+      expect(publishing_api).to receive(:unpublish).with(section_uuid, type: "gone")
+
+      subject.unpublish(manual)
+    end
+  end
+
   describe "#redirect_section" do
     let(:redirect_content_id) { "179cd671-766b-47af-ae4a-5054e9b99b89" }
 

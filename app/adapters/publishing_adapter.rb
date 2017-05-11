@@ -19,6 +19,10 @@ class PublishingAdapter
     end
   end
 
+  def unpublish(manual)
+    PublishingApiManualWithSectionsWithdrawer.new.call(manual)
+  end
+
   def save_section(section, manual, update_type: nil, include_links: true)
     save_section_links(section, manual) if include_links
     save_section_content(section, manual, update_type: update_type)
