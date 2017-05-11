@@ -156,7 +156,7 @@ describe ManualPublishingAPIExporter do
               type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
             }
           ],
-          locale: "en",
+          locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
         ),
         hash_excluding(:first_published_at, :public_updated_at)
       )

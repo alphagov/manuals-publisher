@@ -44,7 +44,7 @@ private
         }
       ],
       details: details,
-      locale: "en",
+      locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }.merge(optional_exportable_attributes)
   end
 

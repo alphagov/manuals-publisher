@@ -164,7 +164,7 @@ describe PublishingAdapter do
             }
           ]
         },
-        locale: "en",
+        locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
       )
 
       subject.save(manual)
@@ -232,7 +232,7 @@ describe PublishingAdapter do
             }
           ]
         },
-        locale: "en",
+        locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
       )
 
       subject.save(manual)

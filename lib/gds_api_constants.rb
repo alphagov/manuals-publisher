@@ -21,5 +21,7 @@ module GdsApiConstants
     EXACT_ROUTE_TYPE = "exact".freeze
 
     CHILD_SECTION_GROUP_TITLE = "Contents".freeze
+
+    EDITION_LOCALE = "en".freeze
   end
 end
