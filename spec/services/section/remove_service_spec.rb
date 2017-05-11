@@ -177,7 +177,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "discards a section" do
-        expect(discarder).to have_received(:call).with(section, manual)
+        expect(discarder).to have_received(:call).with(section)
       end
     end
 
@@ -217,7 +217,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "discards a section" do
-        expect(discarder).to have_received(:call).with(section, manual)
+        expect(discarder).to have_received(:call).with(section)
       end
     end
 
