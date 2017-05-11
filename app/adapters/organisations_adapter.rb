@@ -2,13 +2,12 @@ require "services"
 
 class OrganisationsAdapter
   def initialize
-    @api = Services.organisations
     @cache = {}
   end
 
   def find(slug)
     @cache.fetch(slug) do
-      response = @api.organisation(slug)
+      response = Services.organisations.organisation(slug)
       organisation = Organisation.new(
         title: response["title"],
         web_url: response["web_url"],

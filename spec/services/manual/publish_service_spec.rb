@@ -5,7 +5,7 @@ RSpec.describe Manual::PublishService do
   let(:manual_id) { double(:manual_id) }
   let(:manual) { double(:manual, id: manual_id, version_number: 3) }
   let(:publication_logger) { double(:publication_logger) }
-  let(:publishing_api_draft_exporter) { double(:publishing_api_draft_exporter) }
+  let(:publishing_adapter) { double(:publishing_adapter) }
   let(:new_publishing_api_publisher) { double(:new_publishing_api_publisher) }
   let(:search_index_adapter) { double(:search_index_adapter) }
   let(:user) { double(:user) }
@@ -24,11 +24,11 @@ RSpec.describe Manual::PublishService do
     allow(manual).to receive(:save)
     allow(manual).to receive(:publish)
     allow(PublicationLogger).to receive(:new) { publication_logger }
-    allow(PublishingApiDraftManualWithSectionsExporter).to receive(:new) { publishing_api_draft_exporter }
+    allow(Adapters).to receive(:publishing) { publishing_adapter }
     allow(PublishingApiManualWithSectionsPublisher).to receive(:new) { new_publishing_api_publisher }
-    allow(SearchIndexAdapter).to receive(:new) { search_index_adapter }
+    allow(Adapters).to receive(:search_index) { search_index_adapter }
     allow(publication_logger).to receive(:call)
-    allow(publishing_api_draft_exporter).to receive(:call)
+    allow(publishing_adapter).to receive(:save)
     allow(new_publishing_api_publisher).to receive(:call)
     allow(search_index_adapter).to receive(:add)
   end
@@ -48,7 +48,7 @@ RSpec.describe Manual::PublishService do
 
     it "calls the publishing api draft exporter" do
       subject.call
-      expect(publishing_api_draft_exporter).to have_received(:call).with(manual)
+      expect(publishing_adapter).to have_received(:save).with(manual)
     end
 
     it "calls the new publishing api publisher" do
@@ -65,7 +65,7 @@ RSpec.describe Manual::PublishService do
       subject.call
 
       expect(publication_logger).to have_received(:call).ordered
-      expect(publishing_api_draft_exporter).to have_received(:call).ordered
+      expect(publishing_adapter).to have_received(:save).ordered
       expect(new_publishing_api_publisher).to have_received(:call).ordered
       expect(search_index_adapter).to have_received(:add).ordered
     end

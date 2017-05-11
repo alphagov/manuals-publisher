@@ -1,4 +1,5 @@
 require "services"
+require "adapters"
 
 class ManualRelocator
   attr_reader :from_slug, :to_slug
@@ -186,19 +187,11 @@ private
   end
 
   def send_draft(manual)
-    organisation = OrganisationsAdapter.new.find(manual.organisation_slug)
-
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
-    ManualPublishingAPIExporter.new(
-      organisation, manual
-    ).call
-
     manual.sections.each do |section|
       puts "Sending a draft of manual section #{section.uuid} (version: #{section.version_number})"
-      SectionPublishingAPIExporter.new(
-        organisation, manual, section
-      ).call
     end
+    Adapters.publishing.save(manual, include_links: false)
   end
 
   def send_gone(section_uuid, slug)

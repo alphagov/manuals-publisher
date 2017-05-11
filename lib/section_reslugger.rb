@@ -1,5 +1,6 @@
 require "gds_api/content_store"
 require "services"
+require "adapters"
 
 class SectionReslugger
   class Error < RuntimeError; end
@@ -165,6 +166,6 @@ private
   end
 
   def remove_from_search_index(section)
-    SearchIndexAdapter.new.remove_section(section)
+    Adapters.search_index.remove_section(section)
   end
 end

@@ -1,3 +1,5 @@
+require "adapters"
+
 class Manual::PublishService
   def initialize(manual_id:, version_number:, context:)
     @manual_id = manual_id
@@ -48,7 +50,7 @@ private
   end
 
   def export_draft_to_publishing_api
-    PublishingApiDraftManualWithSectionsExporter.new.call(manual)
+    Adapters.publishing.save(manual)
   end
 
   def publish_to_publishing_api
@@ -56,7 +58,7 @@ private
   end
 
   def add_to_search_index
-    SearchIndexAdapter.new.add(manual)
+    Adapters.search_index.add(manual)
   end
 
   def manual
