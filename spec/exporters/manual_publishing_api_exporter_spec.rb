@@ -222,7 +222,7 @@ describe ManualPublishingAPIExporter do
           ],
           child_section_groups: [
             {
-              title: "Contents",
+              title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
               child_sections: [
                 base_path: "/guidance/my-first-manual/first-section",
                 title: "Document title",

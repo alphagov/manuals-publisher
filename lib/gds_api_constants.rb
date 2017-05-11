@@ -19,5 +19,7 @@ module GdsApiConstants
     REPUBLISH_UPDATE_TYPE = "republish".freeze
 
     EXACT_ROUTE_TYPE = "exact".freeze
+
+    CHILD_SECTION_GROUP_TITLE = "Contents".freeze
   end
 end

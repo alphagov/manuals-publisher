@@ -145,7 +145,7 @@ describe PublishingAdapter do
           ],
           child_section_groups:  [
             {
-              title: "Contents",
+              title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
               child_sections: [
                 {
                   title: "section-title",

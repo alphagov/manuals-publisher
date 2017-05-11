@@ -151,7 +151,7 @@ Then(/^the section and table of contents will have been sent to the draft publis
     details: {
       child_section_groups: [
         {
-          title: "Contents",
+          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
           child_sections: [
             {
               title: @section_title,
@@ -175,7 +175,7 @@ Then(/^the updated section at the new slug and updated table of contents will ha
     details: {
       child_section_groups: [
         {
-          title: "Contents",
+          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
           child_sections: [
             {
               title: @new_title,
@@ -291,7 +291,7 @@ Then(/^the updated section is available to preview$/) do
     details: {
       child_section_groups: [
         {
-          title: "Contents",
+          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
           child_sections: sections,
         }
       ]
@@ -703,7 +703,7 @@ Then(/^the new order should be visible in the preview environment$/) do
     details: {
       child_section_groups: [
         {
-          title: "Contents",
+          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
           child_sections: @reordered_section_attributes.map do |sec|
             {
               title: sec[:fields][:section_title],

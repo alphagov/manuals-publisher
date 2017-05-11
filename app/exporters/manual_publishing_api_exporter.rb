@@ -97,7 +97,7 @@ private
       ],
       child_section_groups: [
         {
-          title: "Contents",
+          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
           child_sections: sections,
         }
       ],
