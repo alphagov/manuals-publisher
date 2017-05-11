@@ -62,7 +62,7 @@ private
   end
 
   def discard_section_via_publishing_api
-    PublishingApiDraftSectionDiscarder.new.call(section)
+    Adapters.publishing.discard_section(section)
   end
 
   def export_draft_manual_to_publishing_api

@@ -41,6 +41,10 @@ class PublishingAdapter
     )
   end
 
+  def discard_section(section)
+    PublishingApiDraftSectionDiscarder.new.call(section)
+  end
+
 private
 
   def organisation_for(manual)
