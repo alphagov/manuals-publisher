@@ -1,13 +1,9 @@
 class PublishingApiManualWithSectionsWithdrawer
   def call(manual, _ = nil)
-    PublishingAPIWithdrawer.new(
-      entity: manual,
-    ).call
+    PublishingAPIWithdrawer.new.call(entity: manual)
 
     manual.sections.each do |section|
-      PublishingAPIWithdrawer.new(
-        entity: section,
-      ).call
+      PublishingAPIWithdrawer.new.call(entity: section)
     end
   end
 end
