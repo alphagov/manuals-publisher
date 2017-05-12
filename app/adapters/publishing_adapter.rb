@@ -35,10 +35,7 @@ class PublishingAdapter
     end
 
     manual.removed_sections.each do |section|
-      if !section.withdrawn? || republish
-        Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
-        section.withdraw_and_mark_as_exported! if !republish
-      end
+      unpublish_section(section, manual, republish: republish)
     end
   end
 
@@ -122,6 +119,13 @@ private
     if section.needs_exporting? || republish
       Services.publishing_api.publish(section.uuid, update_type(republish))
       section.mark_as_exported! if !republish
+    end
+  end
+
+  def unpublish_section(section, manual, republish:)
+    if !section.withdrawn? || republish
+      Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+      section.withdraw_and_mark_as_exported! if !republish
     end
   end
 
