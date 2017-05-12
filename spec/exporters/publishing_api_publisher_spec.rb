@@ -14,34 +14,7 @@ describe PublishingAPIPublisher do
     allow(publishing_api).to receive(:publish)
   end
 
-  it "raises an argument error if update_type is supplied, but not a valid choice" do
-    expect {
-      subject.call(
-        entity: section,
-        update_type: "reticulate-splines"
-      )
-    }.to raise_error(ArgumentError, "update_type 'reticulate-splines' not recognised")
-  end
-
-  it "accepts major, minor, and republish as options for update_type" do
-    PublishingAPIUpdateTypes::UPDATE_TYPES.each do |update_type|
-      expect {
-        subject.call(
-          entity: section,
-          update_type: update_type
-        )
-      }.not_to raise_error
-    end
-  end
-
-  it "accepts explicitly setting nil as the option for update_type" do
-    expect {
-      subject.call(
-        entity: section,
-        update_type: nil
-      )
-    }.not_to raise_error
-  end
+  it { is_expected.to be_a(PublishingAPIUpdateTypes) }
 
   describe "#call" do
     context "when no explicit update_type is given" do
