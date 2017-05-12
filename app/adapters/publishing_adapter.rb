@@ -28,8 +28,7 @@ class PublishingAdapter
   end
 
   def publish(manual, republish: false)
-    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
-    Services.publishing_api.publish(manual.id, update_type)
+    publish_manual(manual, republish: republish)
 
     manual.sections.each do |section|
       if section.needs_exporting? || republish
@@ -96,6 +95,12 @@ private
     ManualPublishingAPIExporter.new(
       organisation, manual, update_type: update_type
     ).call
+  end
+
+  def publish_manual(manual, republish:)
+    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
+
+    Services.publishing_api.publish(manual.id, update_type)
   end
 
   def save_section_links(section, manual)
