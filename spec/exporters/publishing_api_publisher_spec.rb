@@ -14,8 +14,6 @@ describe PublishingAPIPublisher do
     allow(publishing_api).to receive(:publish)
   end
 
-  it { is_expected.to be_a(PublishingAPIUpdateTypes) }
-
   describe "#call" do
     context "when no explicit update_type is given" do
       it "asks the publishing api to publish the section" do
