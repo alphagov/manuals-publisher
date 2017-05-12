@@ -28,7 +28,25 @@ class PublishingAdapter
   end
 
   def publish(manual, republish: false)
-    PublishingApiManualWithSectionsPublisher.new.call(manual, republish: republish)
+    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
+    Services.publishing_api.publish(manual.id, update_type)
+
+    manual.sections.each do |section|
+      next if !section.needs_exporting? && !republish
+
+      Services.publishing_api.publish(section.uuid, update_type)
+
+      section.mark_as_exported! if !republish
+    end
+
+    manual.removed_sections.each do |section|
+      next if section.withdrawn? && !republish
+      begin
+        Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+      rescue GdsApi::HTTPNotFound # rubocop:disable Lint/HandleExceptions
+      end
+      section.withdraw_and_mark_as_exported! if !republish
+    end
   end
 
   def save_section(section, manual, update_type: nil, include_links: true)
