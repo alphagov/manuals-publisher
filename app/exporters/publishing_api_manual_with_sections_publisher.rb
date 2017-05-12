@@ -4,18 +4,12 @@ require "gds_api_constants"
 class PublishingApiManualWithSectionsPublisher
   def call(manual, republish: false)
     update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
-    PublishingAPIPublisher.new.call(
-      entity: manual,
-      update_type: update_type,
-    )
+    Services.publishing_api.publish(manual.id, update_type)
 
     manual.sections.each do |section|
       next if !section.needs_exporting? && !republish
 
-      PublishingAPIPublisher.new.call(
-        entity: section,
-        update_type: update_type,
-      )
+      Services.publishing_api.publish(section.uuid, update_type)
 
       section.mark_as_exported! if !republish
     end
