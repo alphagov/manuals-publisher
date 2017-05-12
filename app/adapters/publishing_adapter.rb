@@ -95,9 +95,7 @@ private
   end
 
   def publish_manual(manual, republish:)
-    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
-
-    Services.publishing_api.publish(manual.id, update_type)
+    Services.publishing_api.publish(manual.id, update_type(republish))
   end
 
   def save_section_links(section, manual)
@@ -121,11 +119,13 @@ private
   end
 
   def publish_section(section, republish:)
-    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
-
     if section.needs_exporting? || republish
-      Services.publishing_api.publish(section.uuid, update_type)
+      Services.publishing_api.publish(section.uuid, update_type(republish))
       section.mark_as_exported! if !republish
     end
+  end
+
+  def update_type(republish)
+    republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil
   end
 end
