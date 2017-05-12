@@ -31,10 +31,7 @@ class PublishingAdapter
     publish_manual(manual, republish: republish)
 
     manual.sections.each do |section|
-      if section.needs_exporting? || republish
-        Services.publishing_api.publish(section.uuid, update_type)
-        section.mark_as_exported! if !republish
-      end
+      publish_section(section, republish: republish)
     end
 
     manual.removed_sections.each do |section|
@@ -121,5 +118,14 @@ private
     SectionPublishingAPIExporter.new(
       organisation, manual, section, update_type: update_type
     ).call
+  end
+
+  def publish_section(section, republish:)
+    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
+
+    if section.needs_exporting? || republish
+      Services.publishing_api.publish(section.uuid, update_type)
+      section.mark_as_exported! if !republish
+    end
   end
 end
