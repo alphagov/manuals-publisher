@@ -5,15 +5,11 @@ require "gds_api_constants"
 
 class PublishingAdapter
   def save(manual, republish: false, include_sections: true, include_links: true)
-    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
-
     save_manual(manual, republish: republish, include_links: include_links)
 
     if include_sections
       manual.sections.each do |section|
-        if section.needs_exporting? || republish
-          save_section(section, manual, update_type: update_type, include_links: include_links)
-        end
+        save_section(section, manual, republish: republish, include_links: include_links)
       end
     end
   end
@@ -38,9 +34,11 @@ class PublishingAdapter
     end
   end
 
-  def save_section(section, manual, update_type: nil, include_links: true)
-    save_section_links(section, manual) if include_links
-    save_section_content(section, manual, update_type: update_type)
+  def save_section(section, manual, republish: false, include_links: true)
+    if section.needs_exporting? || republish
+      save_section_links(section, manual) if include_links
+      save_section_content(section, manual, update_type: update_type(republish))
+    end
   end
 
   def redirect_section(section, to:)
