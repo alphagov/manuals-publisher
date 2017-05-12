@@ -1,4 +1,5 @@
 require "spec_helper"
+require "services"
 
 describe OrganisationsAdapter do
   let(:api) { double(:organisations_api) }

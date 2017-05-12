@@ -2,6 +2,7 @@ require "spec_helper"
 require 'section_reslugger'
 require "gds_api/test_helpers/content_store"
 require "gds_api/test_helpers/rummager"
+require "services"
 require "gds_api_constants"
 
 describe SectionReslugger do

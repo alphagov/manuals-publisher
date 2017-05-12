@@ -1,3 +1,5 @@
+require "services"
+
 class PublishingAPIWithdrawer
   def initialize(entity:)
     @entity = entity

@@ -1,4 +1,5 @@
 require "singleton"
+require "services"
 
 module RummagerHelpers
   class FakeRummager

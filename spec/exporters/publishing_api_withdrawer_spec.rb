@@ -1,4 +1,5 @@
 require "spec_helper"
+require "services"
 
 describe PublishingAPIWithdrawer do
   it 'unpublishes the entity' do
