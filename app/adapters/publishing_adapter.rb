@@ -7,8 +7,7 @@ class PublishingAdapter
   def save(manual, republish: false, include_sections: true, include_links: true)
     update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
 
-    save_manual_links(manual) if include_links
-    save_manual_content(manual, update_type: update_type)
+    save_manual(manual, republish: republish, include_links: include_links)
 
     if include_sections
       manual.sections.each do |section|
@@ -69,6 +68,11 @@ private
 
   def organisation_for(manual)
     Adapters.organisations.find(manual.organisation_slug)
+  end
+
+  def save_manual(manual, republish:, include_links:)
+    save_manual_links(manual) if include_links
+    save_manual_content(manual, update_type: update_type(republish))
   end
 
   def save_manual_links(manual)
