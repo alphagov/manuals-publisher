@@ -32,11 +32,10 @@ class PublishingAdapter
     Services.publishing_api.publish(manual.id, update_type)
 
     manual.sections.each do |section|
-      next if !section.needs_exporting? && !republish
-
-      Services.publishing_api.publish(section.uuid, update_type)
-
-      section.mark_as_exported! if !republish
+      if section.needs_exporting? || republish
+        Services.publishing_api.publish(section.uuid, update_type)
+        section.mark_as_exported! if !republish
+      end
     end
 
     manual.removed_sections.each do |section|
