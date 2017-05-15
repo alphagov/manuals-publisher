@@ -1,4 +1,5 @@
 require "spec_helper"
+require "services"
 require "gds_api_constants"
 
 describe SearchIndexAdapter do

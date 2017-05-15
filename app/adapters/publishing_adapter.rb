@@ -1,3 +1,4 @@
+require "services"
 require "adapters"
 require "securerandom"
 require "gds_api_constants"

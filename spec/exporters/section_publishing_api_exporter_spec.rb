@@ -3,6 +3,7 @@ require "support/all_of_matcher"
 require "support/govuk_content_schema_helpers"
 
 require "section_publishing_api_exporter"
+require "services"
 require "gds_api_constants"
 
 describe SectionPublishingAPIExporter do

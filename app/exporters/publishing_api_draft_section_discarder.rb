@@ -1,3 +1,5 @@
+require "services"
+
 class PublishingApiDraftSectionDiscarder
   def call(section, _manual)
     Services.publishing_api.discard_draft(section.uuid)

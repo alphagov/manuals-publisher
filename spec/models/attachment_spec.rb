@@ -1,5 +1,6 @@
 require "spec_helper"
 require "attachment"
+require "services"
 
 describe Attachment do
   subject(:attachment) do

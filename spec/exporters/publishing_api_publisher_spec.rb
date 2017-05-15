@@ -1,6 +1,7 @@
 require "spec_helper"
 
 require "publishing_api_publisher"
+require "services"
 require "gds_api_constants"
 
 describe PublishingAPIPublisher do

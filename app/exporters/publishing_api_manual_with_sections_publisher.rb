@@ -1,3 +1,4 @@
+require "services"
 require "gds_api_constants"
 
 class PublishingApiManualWithSectionsPublisher

@@ -1,5 +1,6 @@
 require "spec_helper"
 require "marked_section_deleter"
+require "services"
 
 describe MarkedSectionDeleter do
   subject {
