@@ -62,8 +62,8 @@ private
   def optional_exportable_attributes
     attrs = {}
     if manual.originally_published_at.present?
-      attrs[:first_published_at] = manual.originally_published_at.iso8601
-      attrs[:public_updated_at] = manual.originally_published_at.iso8601 if manual.use_originally_published_at_for_public_timestamp?
+      attrs[:first_published_at] = manual.originally_published_at
+      attrs[:public_updated_at] = manual.originally_published_at if manual.use_originally_published_at_for_public_timestamp?
     end
     attrs
   end
@@ -125,7 +125,7 @@ private
         base_path: "/#{publication.slug}",
         title: publication.title,
         change_note: publication.change_note,
-        published_at: publication.published_at.iso8601,
+        published_at: publication.published_at,
       }
     }
   end
