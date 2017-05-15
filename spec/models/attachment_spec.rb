@@ -72,4 +72,26 @@ describe Attachment do
       end
     end
   end
+
+  describe "#content_type" do
+    before do
+      attachment.file_url = file_url
+    end
+
+    context "when file_url is set" do
+      let(:file_url) { "http://attachment-url.pdf" }
+
+      it "returns PDF content type" do
+        expect(attachment.content_type).to eq("application/pdf")
+      end
+    end
+
+    context "when file_url is not set" do
+      let(:file_url) { nil }
+
+      it "returns nil" do
+        expect(attachment.content_type).to be_nil
+      end
+    end
+  end
 end

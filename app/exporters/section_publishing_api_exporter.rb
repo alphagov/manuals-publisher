@@ -81,12 +81,6 @@ private
     section.attachments.map { |attachment| build_json_for_attachment(attachment) }
   end
 
-  def build_content_type(file_url)
-    return unless file_url
-    extname = File.extname(file_url).delete(".")
-    "application/#{extname}"
-  end
-
   def build_json_for_attachment(attachment)
     {
       content_id: SecureRandom.uuid,
@@ -94,7 +88,7 @@ private
       url: attachment.file_url,
       updated_at: attachment.updated_at,
       created_at: attachment.created_at,
-      content_type: build_content_type(attachment.file_url)
+      content_type: attachment.content_type
     }
   end
 
