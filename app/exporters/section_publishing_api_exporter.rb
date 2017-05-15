@@ -2,11 +2,11 @@ require "services"
 require "gds_api_constants"
 
 class SectionPublishingAPIExporter
-  def initialize(organisation, manual, section, update_type: nil)
+  def initialize(organisation, manual, section, version_type: nil)
     @organisation = organisation
     @manual = manual
     @section = section
-    @update_type = update_type
+    @version_type = version_type
   end
 
   def call
@@ -75,12 +75,13 @@ private
   attr_reader :organisation, :manual, :section
 
   def update_type
-    return @update_type if @update_type.present?
-    case section.version_type
+    case @version_type || section.version_type
     when :new, :major
       GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
     when :minor
       GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
+    when :republish
+      GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
     else
       raise "Unknown version type: #{section.version_type}"
     end

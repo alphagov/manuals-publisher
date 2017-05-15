@@ -37,7 +37,7 @@ class PublishingAdapter
   def save_section(section, manual, republish: false, include_links: true)
     if section.needs_exporting? || republish
       save_section_links(section, manual) if include_links
-      save_section_content(section, manual, update_type: update_type(republish))
+      save_section_content(section, manual, republish: republish)
     end
   end
 
@@ -109,11 +109,11 @@ private
     )
   end
 
-  def save_section_content(section, manual, update_type: nil)
+  def save_section_content(section, manual, republish: false)
     organisation = organisation_for(manual)
 
     SectionPublishingAPIExporter.new(
-      organisation, manual, section, update_type: update_type
+      organisation, manual, section, version_type: version_type(republish)
     ).call
   end
 
@@ -133,5 +133,9 @@ private
 
   def update_type(republish)
     republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil
+  end
+
+  def version_type(republish)
+    republish ? :republish : nil
   end
 end
