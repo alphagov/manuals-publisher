@@ -2,14 +2,11 @@ require "services"
 require "gds_api_constants"
 
 class SectionPublishingAPIExporter
-  include PublishingAPIUpdateTypes
-
   def initialize(organisation, manual, section, update_type: nil)
     @organisation = organisation
     @manual = manual
     @section = section
     @update_type = update_type
-    check_update_type!(@update_type)
   end
 
   def call
