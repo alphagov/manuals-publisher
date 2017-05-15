@@ -550,6 +550,14 @@ describe PublishingAdapter do
     end
   end
 
+  describe "#discard_draft_section" do
+    it "discard draft section via Publishing API" do
+      expect(publishing_api).to receive(:discard_draft).with(section_uuid)
+
+      subject.discard_section(section)
+    end
+  end
+
 private
 
   def attributes_valid_according_to_schema(schema_name)

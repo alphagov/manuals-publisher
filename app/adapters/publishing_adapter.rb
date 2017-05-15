@@ -41,6 +41,10 @@ class PublishingAdapter
     )
   end
 
+  def discard_section(section)
+    Services.publishing_api.discard_draft(section.uuid)
+  end
+
 private
 
   def organisation_for(manual)

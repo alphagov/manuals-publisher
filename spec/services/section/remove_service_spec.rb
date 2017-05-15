@@ -31,14 +31,12 @@ RSpec.describe Section::RemoveService do
       context: service_context,
     )
   }
-  let(:discarder) { spy(PublishingApiDraftSectionDiscarder) }
   let(:publishing_adapter) { spy(PublishingAdapter) }
 
   before do
     allow(Manual).to receive(:find).and_return(manual)
     allow(manual).to receive(:save)
     allow(Adapters).to receive(:publishing).and_return(publishing_adapter)
-    allow(PublishingApiDraftSectionDiscarder).to receive(:new).and_return(discarder)
   end
 
   context "with a section id that doesn't belong to the manual" do
@@ -79,7 +77,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "does not discard a section" do
-        expect(discarder).not_to have_received(:call)
+        expect(publishing_adapter).not_to have_received(:discard_section)
       end
 
       def ignoring(exception_class)
@@ -130,7 +128,7 @@ RSpec.describe Section::RemoveService do
     end
 
     it "does not discard a section" do
-      expect(discarder).not_to have_received(:call)
+      expect(publishing_adapter).not_to have_received(:discard_section)
     end
   end
 
@@ -177,7 +175,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "discards a section" do
-        expect(discarder).to have_received(:call).with(section, manual)
+        expect(publishing_adapter).to have_received(:discard_section).with(section)
       end
     end
 
@@ -217,7 +215,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "discards a section" do
-        expect(discarder).to have_received(:call).with(section, manual)
+        expect(publishing_adapter).to have_received(:discard_section).with(section)
       end
     end
 
