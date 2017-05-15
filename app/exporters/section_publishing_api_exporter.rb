@@ -78,7 +78,7 @@ private
   end
 
   def attachments
-    section.attachments.map { |attachment| attachment_json_builder(attachment) }
+    section.attachments.map { |attachment| build_json_for_attachment(attachment) }
   end
 
   def build_content_type(file_url)
@@ -87,7 +87,7 @@ private
     "application/#{extname}"
   end
 
-  def attachment_json_builder(attachment)
+  def build_json_for_attachment(attachment)
     {
       content_id: attachment.attributes.fetch("content_id", SecureRandom.uuid),
       title: attachment.attributes.fetch("title", nil),
