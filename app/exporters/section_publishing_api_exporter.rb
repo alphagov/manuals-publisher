@@ -70,7 +70,11 @@ private
         base_path: "/#{manual.slug}",
       },
       organisations: [
-        organisation_info
+        {
+          title: organisation.title,
+          abbreviation: organisation.abbreviation,
+          web_url: organisation.web_url,
+        }
       ],
     }.tap do |details_hash|
       details_hash[:attachments] = attachments if section.attachments.present?
@@ -106,13 +110,5 @@ private
 
   def section_presenter
     @section_presenter ||= SectionPresenter.new(section)
-  end
-
-  def organisation_info
-    {
-      title: organisation.title,
-      abbreviation: organisation.abbreviation,
-      web_url: organisation.web_url,
-    }
   end
 end
