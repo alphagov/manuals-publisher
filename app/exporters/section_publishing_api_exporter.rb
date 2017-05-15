@@ -14,17 +14,17 @@ class SectionPublishingAPIExporter
 
   def call
     attributes = {
-      base_path: "/#{section_presenter.slug}",
+      base_path: "/#{section.slug}",
       schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
       document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
-      title: section_presenter.title,
-      description: section_presenter.summary,
+      title: section.title,
+      description: section.summary,
       update_type: update_type,
       publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
       rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
       routes: [
         {
-          path: "/#{section_presenter.slug}",
+          path: "/#{section.slug}",
           type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         }
       ],
