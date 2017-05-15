@@ -24,7 +24,7 @@ private
   end
 
   def attachment_params
-    context.params.fetch("attachment")
+    context.params.require("attachment").permit(:title, :file)
   end
 
   def manual_id
