@@ -13,15 +13,7 @@ class SectionPublishingAPIExporter
   end
 
   def call
-    Services.publishing_api.put_content(section.uuid, exportable_attributes)
-  end
-
-private
-
-  attr_reader :organisation, :manual, :section
-
-  def exportable_attributes
-    {
+    exportable_attributes = {
       base_path: "/#{section_presenter.slug}",
       schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
       document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
@@ -38,8 +30,15 @@ private
       ],
       details: details,
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
-    }.merge(optional_exportable_attributes)
+    }
+    exportable_attributes.merge!(optional_exportable_attributes)
+
+    Services.publishing_api.put_content(section.uuid, exportable_attributes)
   end
+
+private
+
+  attr_reader :organisation, :manual, :section
 
   def optional_exportable_attributes
     attrs = {}
