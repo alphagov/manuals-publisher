@@ -39,7 +39,16 @@ class SectionPublishingAPIExporter
             content: section_presenter.body
           }
         ],
-        attachments: attachments,
+        attachments: section.attachments.map do |attachment|
+          {
+            content_id: SecureRandom.uuid,
+            title: attachment.title,
+            url: attachment.file_url,
+            updated_at: attachment.updated_at,
+            created_at: attachment.created_at,
+            content_type: attachment.content_type
+          }
+        end,
         manual: {
           base_path: "/#{manual.slug}",
         },
@@ -67,19 +76,6 @@ class SectionPublishingAPIExporter
 private
 
   attr_reader :organisation, :manual, :section
-
-  def attachments
-    section.attachments.map do |attachment|
-      {
-        content_id: SecureRandom.uuid,
-        title: attachment.title,
-        url: attachment.file_url,
-        updated_at: attachment.updated_at,
-        created_at: attachment.created_at,
-        content_type: attachment.content_type
-      }
-    end
-  end
 
   def update_type
     return @update_type if @update_type.present?
