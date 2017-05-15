@@ -28,7 +28,28 @@ class SectionPublishingAPIExporter
           type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         }
       ],
-      details: details,
+      details: {
+        body: [
+          {
+            content_type: "text/govspeak",
+            content: section.body
+          },
+          {
+            content_type: "text/html",
+            content: section_presenter.body
+          }
+        ],
+        manual: {
+          base_path: "/#{manual.slug}",
+        },
+        organisations: [
+          {
+            title: organisation.title,
+            abbreviation: organisation.abbreviation,
+            web_url: organisation.web_url,
+          }
+        ],
+      },
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }
 
@@ -49,31 +70,6 @@ class SectionPublishingAPIExporter
 private
 
   attr_reader :organisation, :manual, :section
-
-  def details
-    {
-      body: [
-        {
-          content_type: "text/govspeak",
-          content: section.body
-        },
-        {
-          content_type: "text/html",
-          content: section_presenter.body
-        }
-      ],
-      manual: {
-        base_path: "/#{manual.slug}",
-      },
-      organisations: [
-        {
-          title: organisation.title,
-          abbreviation: organisation.abbreviation,
-          web_url: organisation.web_url,
-        }
-      ],
-    }
-  end
 
   def attachments
     section.attachments.map do |attachment|
