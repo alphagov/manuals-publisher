@@ -31,7 +31,7 @@ private
   end
 
   def withdraw_via_publishing_api
-    PublishingApiManualWithSectionsWithdrawer.new.call(manual)
+    Adapters.publishing.unpublish(manual)
   end
 
   def remove_from_search_index

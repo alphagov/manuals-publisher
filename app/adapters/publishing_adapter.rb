@@ -19,6 +19,14 @@ class PublishingAdapter
     end
   end
 
+  def unpublish(manual)
+    Services.publishing_api.unpublish(manual.id, type: "gone")
+
+    manual.sections.each do |section|
+      Services.publishing_api.unpublish(section.uuid, type: "gone")
+    end
+  end
+
   def save_section(section, manual, update_type: nil, include_links: true)
     save_section_links(section, manual) if include_links
     save_section_content(section, manual, update_type: update_type)
