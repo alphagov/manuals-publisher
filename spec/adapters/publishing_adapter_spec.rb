@@ -222,6 +222,7 @@ describe PublishingAdapter do
               content: "<p>section-body</p>\n"
             }
           ],
+          attachments: [],
           manual: {
             base_path: "/manual-slug",
           },

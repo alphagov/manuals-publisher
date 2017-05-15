@@ -39,6 +39,7 @@ class SectionPublishingAPIExporter
             content: section_presenter.body
           }
         ],
+        attachments: attachments,
         manual: {
           base_path: "/#{manual.slug}",
         },
@@ -58,10 +59,6 @@ class SectionPublishingAPIExporter
       if manual.use_originally_published_at_for_public_timestamp?
         exportable_attributes[:public_updated_at] = manual.originally_published_at
       end
-    end
-
-    if section.attachments.present?
-      exportable_attributes[:details][:attachments] = attachments
     end
 
     Services.publishing_api.put_content(section.uuid, exportable_attributes)
