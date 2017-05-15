@@ -13,16 +13,12 @@ class SectionPublishingAPIExporter
   end
 
   def call
-    Services.publishing_api.put_content(content_id, exportable_attributes)
+    Services.publishing_api.put_content(section.uuid, exportable_attributes)
   end
 
 private
 
   attr_reader :organisation, :manual, :section
-
-  def content_id
-    section.uuid
-  end
 
   def base_path
     "/#{section_presenter.slug}"
