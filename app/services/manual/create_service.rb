@@ -1,3 +1,5 @@
+require "adapters"
+
 class Manual::CreateService
   def initialize(attributes:, context:)
     @attributes = attributes

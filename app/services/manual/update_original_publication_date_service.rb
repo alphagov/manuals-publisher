@@ -1,3 +1,5 @@
+require "adapters"
+
 class Manual::UpdateOriginalPublicationDateService
   def initialize(manual_id:, attributes:, context:)
     @manual_id = manual_id
