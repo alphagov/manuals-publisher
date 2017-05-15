@@ -82,18 +82,16 @@ private
   end
 
   def attachments
-    section.attachments.map { |attachment| build_json_for_attachment(attachment) }
-  end
-
-  def build_json_for_attachment(attachment)
-    {
-      content_id: SecureRandom.uuid,
-      title: attachment.title,
-      url: attachment.file_url,
-      updated_at: attachment.updated_at,
-      created_at: attachment.created_at,
-      content_type: attachment.content_type
-    }
+    section.attachments.map do |attachment|
+      {
+        content_id: SecureRandom.uuid,
+        title: attachment.title,
+        url: attachment.file_url,
+        updated_at: attachment.updated_at,
+        created_at: attachment.created_at,
+        content_type: attachment.content_type
+      }
+    end
   end
 
   def update_type
