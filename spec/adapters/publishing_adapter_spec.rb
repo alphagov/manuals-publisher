@@ -534,6 +534,137 @@ describe PublishingAdapter do
     end
   end
 
+  describe "#publish" do
+    let(:removed_section_uuid) { "c146f39b-6512-4e3c-8991-fedda0b02a28" }
+
+    let(:removed_section) {
+      Section.new(
+        manual: manual,
+        uuid: removed_section_uuid,
+        editions: [removed_section_edition],
+      )
+    }
+
+    let(:removed_section_edition) {
+      SectionEdition.new(
+        slug: "manual-slug/removed-section-slug",
+        title: "removed-section-title",
+        summary: "removed-section-summary",
+        body: "removed-section-body"
+      )
+    }
+
+    before do
+      manual.sections = [section]
+      manual.removed_sections = [removed_section]
+
+      allow(removed_section).to receive(:withdrawn?).and_return(false)
+
+      allow(publishing_api).to receive(:publish).with(anything, anything)
+      allow(publishing_api).to receive(:unpublish).with(anything, anything)
+    end
+
+    it "publishes manual to Publishing API" do
+      expect(publishing_api).to receive(:publish).with(manual_id, nil)
+
+      subject.publish(manual)
+    end
+
+    it "publishes all manual's sections to Publishing API" do
+      expect(publishing_api).to receive(:publish).with(section_uuid, nil)
+
+      subject.publish(manual)
+    end
+
+    it "marks all manual's sections as exported" do
+      expect(section).to receive(:mark_as_exported!)
+
+      subject.publish(manual)
+    end
+
+    it "unpublishes all manual's removed sections via Publishing API" do
+      expect(publishing_api).to receive(:unpublish).with(
+        removed_section_uuid,
+        type: "redirect",
+        alternative_path: "/manual-slug",
+        discard_drafts: true
+      )
+
+      subject.publish(manual)
+    end
+
+    it "withdraws & marks all manual's removed sections as exported" do
+      expect(removed_section).to receive(:withdraw_and_mark_as_exported!)
+
+      subject.publish(manual)
+    end
+
+    context "when removed section is withdrawn" do
+      before do
+        allow(removed_section).to receive(:withdrawn?).and_return(true)
+      end
+
+      it "does not unpublish all manual's removed sections via Publishing API" do
+        expect(publishing_api).not_to receive(:unpublish).with(
+          removed_section_uuid,
+          anything
+        )
+
+        subject.publish(manual)
+      end
+    end
+
+    context "when action is republish" do
+      it "publishes manual to Publishing API with update type set to republish" do
+        expect(publishing_api).to receive(:publish).with(manual_id, "republish")
+
+        subject.publish(manual, republish: true)
+      end
+
+      it "publishes all manual's sections to Publishing API with update type set to republish" do
+        expect(publishing_api).to receive(:publish).with(section_uuid, "republish")
+
+        subject.publish(manual, republish: true)
+      end
+
+      it "does not mark all manual's sections as exported" do
+        expect(section).not_to receive(:mark_as_exported!)
+
+        subject.publish(manual, republish: true)
+      end
+
+      it "unpublishes all manual's removed sections via Publishing API" do
+        expect(publishing_api).to receive(:unpublish).with(
+          removed_section_uuid,
+          anything
+        )
+
+        subject.publish(manual, republish: true)
+      end
+
+      it "does not mark all manual's removed sections as exported" do
+        expect(removed_section).not_to receive(:withdraw_and_mark_as_exported!)
+
+        subject.publish(manual, republish: true)
+      end
+
+      context "and removed section is withdrawn" do
+        before do
+          allow(removed_section).to receive(:withdrawn?).and_return(true)
+        end
+
+        it "unpublishes all manual's removed sections via Publishing API" do
+          expect(publishing_api).to receive(:unpublish).with(
+            removed_section_uuid,
+            anything
+          )
+
+          subject.publish(manual, republish: true)
+        end
+      end
+    end
+  end
+
   describe "#redirect_section" do
     let(:redirect_content_id) { "179cd671-766b-47af-ae4a-5054e9b99b89" }
 

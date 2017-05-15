@@ -76,40 +76,7 @@ describe SectionPublishingAPIExporter do
     allow(SectionPresenter).to receive(:new).with(section).and_return(section_presenter)
   }
 
-  it "raises an argument error if update_type is supplied, but not a valid choice" do
-    expect {
-      described_class.new(
-        organisation,
-        manual,
-        section,
-        update_type: "reticulate-splines"
-      )
-    }.to raise_error(ArgumentError, "update_type 'reticulate-splines' not recognised")
-  end
-
-  it "accepts major, minor, and republish as options for update_type" do
-    PublishingAPIUpdateTypes::UPDATE_TYPES.each do |update_type|
-      expect {
-        described_class.new(
-          organisation,
-          manual,
-          section,
-          update_type: update_type
-        )
-      }.not_to raise_error
-    end
-  end
-
-  it "accepts explicitly setting nil as the option for update_type" do
-    expect {
-      described_class.new(
-        organisation,
-        manual,
-        section,
-        update_type: nil
-      )
-    }.not_to raise_error
-  end
+  it { is_expected.to be_a(PublishingAPIUpdateTypes) }
 
   it "exports a manual_section valid against the schema" do
     expect(subject.send(:exportable_attributes).to_json).to be_valid_against_schema(GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME)

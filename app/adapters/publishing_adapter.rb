@@ -5,16 +5,11 @@ require "gds_api_constants"
 
 class PublishingAdapter
   def save(manual, republish: false, include_sections: true, include_links: true)
-    update_type = (republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil)
-
-    save_manual_links(manual) if include_links
-    save_manual_content(manual, update_type: update_type)
+    save_manual(manual, republish: republish, include_links: include_links)
 
     if include_sections
       manual.sections.each do |section|
-        if section.needs_exporting? || republish
-          save_section(section, manual, update_type: update_type, include_links: include_links)
-        end
+        save_section(section, manual, republish: republish, include_links: include_links)
       end
     end
   end
@@ -27,9 +22,23 @@ class PublishingAdapter
     end
   end
 
-  def save_section(section, manual, update_type: nil, include_links: true)
-    save_section_links(section, manual) if include_links
-    save_section_content(section, manual, update_type: update_type)
+  def publish(manual, republish: false)
+    publish_manual(manual, republish: republish)
+
+    manual.sections.each do |section|
+      publish_section(section, republish: republish)
+    end
+
+    manual.removed_sections.each do |section|
+      unpublish_section(section, manual, republish: republish)
+    end
+  end
+
+  def save_section(section, manual, republish: false, include_links: true)
+    if section.needs_exporting? || republish
+      save_section_links(section, manual) if include_links
+      save_section_content(section, manual, update_type: update_type(republish))
+    end
   end
 
   def redirect_section(section, to:)
@@ -59,6 +68,11 @@ private
     Adapters.organisations.find(manual.organisation_slug)
   end
 
+  def save_manual(manual, republish:, include_links:)
+    save_manual_links(manual) if include_links
+    save_manual_content(manual, update_type: update_type(republish))
+  end
+
   def save_manual_links(manual)
     organisation = organisation_for(manual)
 
@@ -79,6 +93,10 @@ private
     ).call
   end
 
+  def publish_manual(manual, republish:)
+    Services.publishing_api.publish(manual.id, update_type(republish))
+  end
+
   def save_section_links(section, manual)
     organisation = organisation_for(manual)
 
@@ -97,5 +115,23 @@ private
     SectionPublishingAPIExporter.new(
       organisation, manual, section, update_type: update_type
     ).call
+  end
+
+  def publish_section(section, republish:)
+    if section.needs_exporting? || republish
+      Services.publishing_api.publish(section.uuid, update_type(republish))
+      section.mark_as_exported! if !republish
+    end
+  end
+
+  def unpublish_section(section, manual, republish:)
+    if !section.withdrawn? || republish
+      Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+      section.withdraw_and_mark_as_exported! if !republish
+    end
+  end
+
+  def update_type(republish)
+    republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil
   end
 end
