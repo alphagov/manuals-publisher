@@ -78,7 +78,7 @@ private
   end
 
   def attachments
-    section.attachments.map { |attachment| attachment_json_builder(attachment.attributes) }
+    section.attachments.map { |attachment| attachment_json_builder(attachment) }
   end
 
   def build_content_type(file_url)
@@ -87,14 +87,14 @@ private
     "application/#{extname}"
   end
 
-  def attachment_json_builder(attributes)
+  def attachment_json_builder(attachment)
     {
-      content_id: attributes.fetch("content_id", SecureRandom.uuid),
-      title: attributes.fetch("title", nil),
-      url: attributes.fetch("file_url", nil),
-      updated_at: attributes.fetch("updated_at", nil),
-      created_at: attributes.fetch("created_at", nil),
-      content_type: build_content_type(attributes.fetch("file_url", nil))
+      content_id: attachment.attributes.fetch("content_id", SecureRandom.uuid),
+      title: attachment.attributes.fetch("title", nil),
+      url: attachment.attributes.fetch("file_url", nil),
+      updated_at: attachment.attributes.fetch("updated_at", nil),
+      created_at: attachment.attributes.fetch("created_at", nil),
+      content_type: build_content_type(attachment.attributes.fetch("file_url", nil))
     }
   end
 
