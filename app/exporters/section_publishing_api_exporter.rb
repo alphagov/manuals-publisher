@@ -59,7 +59,7 @@ private
       body: [
         {
           content_type: "text/govspeak",
-          content: section.attributes.fetch(:body)
+          content: section.body
         },
         {
           content_type: "text/html",
@@ -67,7 +67,7 @@ private
         }
       ],
       manual: {
-        base_path: "/#{manual.attributes.fetch(:slug)}",
+        base_path: "/#{manual.slug}",
       },
       organisations: [
         organisation_info
@@ -89,12 +89,12 @@ private
 
   def build_json_for_attachment(attachment)
     {
-      content_id: attachment.attributes.fetch("content_id", SecureRandom.uuid),
-      title: attachment.attributes.fetch("title", nil),
-      url: attachment.attributes.fetch("file_url", nil),
-      updated_at: attachment.attributes.fetch("updated_at", nil),
-      created_at: attachment.attributes.fetch("created_at", nil),
-      content_type: build_content_type(attachment.attributes.fetch("file_url", nil))
+      content_id: SecureRandom.uuid,
+      title: attachment.title,
+      url: attachment.file_url,
+      updated_at: attachment.updated_at,
+      created_at: attachment.created_at,
+      content_type: build_content_type(attachment.file_url)
     }
   end
 
