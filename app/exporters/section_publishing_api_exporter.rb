@@ -36,7 +36,7 @@ class SectionPublishingAPIExporter
           },
           {
             content_type: "text/html",
-            content: section_presenter.body
+            content: SectionPresenter.new(section).body
           }
         ],
         attachments: section.attachments.map do |attachment|
@@ -87,9 +87,5 @@ private
     else
       raise "Unknown version type: #{section.version_type}"
     end
-  end
-
-  def section_presenter
-    @section_presenter ||= SectionPresenter.new(section)
   end
 end
