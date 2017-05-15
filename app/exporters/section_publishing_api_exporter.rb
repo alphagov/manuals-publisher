@@ -20,13 +20,9 @@ private
 
   attr_reader :organisation, :manual, :section
 
-  def base_path
-    "/#{section_presenter.slug}"
-  end
-
   def exportable_attributes
     {
-      base_path: base_path,
+      base_path: "/#{section_presenter.slug}",
       schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
       document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
       title: section_presenter.title,
@@ -36,7 +32,7 @@ private
       rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
       routes: [
         {
-          path: base_path,
+          path: "/#{section_presenter.slug}",
           type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         }
       ],
