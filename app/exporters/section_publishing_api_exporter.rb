@@ -39,6 +39,10 @@ class SectionPublishingAPIExporter
       end
     end
 
+    if section.attachments.present?
+      exportable_attributes[:details][:attachments] = attachments
+    end
+
     Services.publishing_api.put_content(section.uuid, exportable_attributes)
   end
 
@@ -68,9 +72,7 @@ private
           web_url: organisation.web_url,
         }
       ],
-    }.tap do |details_hash|
-      details_hash[:attachments] = attachments if section.attachments.present?
-    end
+    }
   end
 
   def attachments
