@@ -12,21 +12,10 @@ class ManualPublishingAPIExporter
   end
 
   def call
-    Services.publishing_api.put_content(manual.id, exportable_attributes)
-  end
-
-private
-
-  attr_reader(
-    :organisation,
-    :manual,
-  )
-
-  def exportable_attributes
     base_path = "/#{manual.slug}"
     updates_path = [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
 
-    {
+    exportable_attributes = {
       base_path: base_path,
       schema_name: GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
       document_type: GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
@@ -47,8 +36,18 @@ private
       ],
       details: details_data,
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
-    }.merge(optional_exportable_attributes)
+    }
+    exportable_attributes.merge!(optional_exportable_attributes)
+
+    Services.publishing_api.put_content(manual.id, exportable_attributes)
   end
+
+private
+
+  attr_reader(
+    :organisation,
+    :manual,
+  )
 
   def optional_exportable_attributes
     attrs = {}
