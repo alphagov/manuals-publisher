@@ -4,9 +4,9 @@
       <%= render partial: "shared/form_errors", locals: { object: section } %>
 
       <%= f.text_field :title, label: 'Section title', class: 'form-control' %>
-      <%= f.text_area :summary, label: 'Section summary', class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
+      <%= f.text_area :summary, rows: 20, cols: 40, label: 'Section summary', class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
       <div class="summary-length-info warning" aria-live="polite">Summary text should be 280 characters or fewer. <span class="count"></span></div>
-      <%= f.text_area :body, label: 'Section body', class: 'form-control' %>
+      <%= f.text_area :body, rows: 20, cols: 40, label: 'Section body', class: 'form-control' %>
 
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
@@ -20,14 +20,14 @@
           <%= f.radio_button :minor_update, 0, class: 'js-update-type-major', tag_type: :p, label: 'Major update', checked: !section.minor_update %>
         </div>
         <div class="<%= section.minor_update ? 'js-hidden' : nil %>">
-          <%= f.text_area :change_note, class: 'form-control short-textarea' %>
+          <%= f.text_area :change_note, rows: 20, cols: 40, class: 'form-control short-textarea' %>
           <p class="help-block">This will be publically viewable on GOV.UK.</p>
         </div>
       <% else %>
         <div>
           <p>Major update</p>
           <p class="help-block">Adding a new section is always a major update</p>
-          <%= f.text_area :change_note, class: 'form-control short-textarea' %>
+          <%= f.text_area :change_note, rows: 20, cols: 40, class: 'form-control short-textarea' %>
           <p class="help-block">This will be publically viewable on GOV.UK.</p>
         </div>
       <% end %>

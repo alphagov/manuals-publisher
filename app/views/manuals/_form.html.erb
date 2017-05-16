@@ -4,11 +4,11 @@
       <%= render partial: "shared/form_errors", locals: { object: manual } %>
 
       <%= f.text_field :title, class: 'form-control' %>
-      <%= f.text_area :summary, class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
+      <%= f.text_area :summary, rows: 20, cols: 40, class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
       <div class="summary-length-info" aria-live="polite">
         Summary text should be 280 characters or fewer. <span class="count"></span>
       </div>
-      <%= f.text_area :body, class: 'form-control' %>
+      <%= f.text_area :body, rows: 20, cols: 40, class: 'form-control' %>
 
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>

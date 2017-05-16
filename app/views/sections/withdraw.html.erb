@@ -25,7 +25,7 @@
           <%= f.radio_button :minor_update, 0, tag_type: :p, label: 'Major update', checked: !section.minor_update %>
         </div>
         <div class="<%= section.minor_update ? 'js-hidden' : nil %>">
-          <%= f.text_area :change_note, class: 'form-control short-textarea' %>
+          <%= f.text_area :change_note, rows: 20, cols: 40, class: 'form-control short-textarea' %>
           <p class="help-block">This will be publically viewable on GOV.UK.</p>
         </div>
 
