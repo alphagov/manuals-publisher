@@ -336,5 +336,9 @@ class Manual
     end
   end
 
+  def publication_logs
+    PublicationLog.change_notes_for(slug)
+  end
+
   class RemovedSectionIdNotFoundError < StandardError; end
 end

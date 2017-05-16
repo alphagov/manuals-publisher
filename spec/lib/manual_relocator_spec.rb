@@ -11,10 +11,10 @@ describe ManualRelocator do
   let(:temp_slug) { "guidance/temporary-slug" }
   subject { described_class.new(temp_slug, existing_slug) }
 
-  describe "#old_manual" do
+  describe "#old_manual_record" do
     it "raises an error if the existing slug doesn't result in a manual" do
       expect {
-        subject.old_manual
+        subject.old_manual_record
       }.to raise_error(RuntimeError, "No manual found for slug '#{existing_slug}'")
     end
 
@@ -22,15 +22,15 @@ describe ManualRelocator do
       ManualRecord.create(manual_id: existing_manual_id, slug: existing_slug)
       ManualRecord.create(slug: existing_slug)
       expect {
-        subject.old_manual
+        subject.old_manual_record
       }.to raise_error(RuntimeError, "More than one manual found for slug '#{existing_slug}'")
     end
   end
 
-  describe "#new_manual" do
+  describe "#new_manual_record" do
     it "raises an error if the existing slug doesn't result in a manual" do
       expect {
-        subject.new_manual
+        subject.new_manual_record
       }.to raise_error(RuntimeError, "No manual found for slug '#{temp_slug}'")
     end
 
@@ -38,7 +38,7 @@ describe ManualRelocator do
       ManualRecord.create(manual_id: temp_manual_id, slug: temp_slug)
       ManualRecord.create(slug: temp_slug)
       expect {
-        subject.new_manual
+        subject.new_manual_record
       }.to raise_error(RuntimeError, "More than one manual found for slug '#{temp_slug}'")
     end
   end

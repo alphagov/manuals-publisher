@@ -120,7 +120,7 @@ private
   end
 
   def serialised_change_notes
-    PublicationLog.change_notes_for(manual.attributes.fetch(:slug)).map { |publication|
+    manual.publication_logs.map { |publication|
       {
         base_path: "/#{publication.slug}",
         title: publication.title,
