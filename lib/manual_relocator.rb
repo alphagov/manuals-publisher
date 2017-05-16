@@ -160,8 +160,8 @@ private
 
     # Clean up manual sections belonging to the temporary manual path
     new_section_uuids.each do |section_uuid|
-      puts "Redirecting #{section_uuid} to '/#{to_slug}'"
       most_recent_edition = most_recent_edition_of_section(section_uuid)
+      puts "Redirecting #{section_uuid} to '#{most_recent_edition.slug}'"
       publishing_api.unpublish(section_uuid,
                                type: "redirect",
                                alternative_path: "/#{most_recent_edition.slug}",
