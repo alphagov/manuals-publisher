@@ -10,6 +10,17 @@ class SectionPublishingAPIExporter
   end
 
   def call
+    update_type = case @version_type || section.version_type
+                  when :new, :major
+                    GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
+                  when :minor
+                    GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
+                  when :republish
+                    GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
+                  else
+                    raise "Unknown version type: #{section.version_type}"
+                  end
+
     attributes = {
       base_path: "/#{section.slug}",
       schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
@@ -73,17 +84,4 @@ class SectionPublishingAPIExporter
 private
 
   attr_reader :organisation, :manual, :section
-
-  def update_type
-    case @version_type || section.version_type
-    when :new, :major
-      GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
-    when :minor
-      GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
-    when :republish
-      GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
-    else
-      raise "Unknown version type: #{section.version_type}"
-    end
-  end
 end
