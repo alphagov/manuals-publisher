@@ -1,4 +1,4 @@
-require File.expand_path("../boot", __FILE__)
+require File.expand_path('../boot', __FILE__)
 
 require "action_controller/railtie"
 require "action_mailer/railtie"
@@ -6,8 +6,7 @@ require "sprockets/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
-Bundler.require(:default, Rails.env)
-Bundler.require(*Rails.groups(assets: %w(development test)))
+Bundler.require(*Rails.groups)
 
 module ManualsPublisher
   class Application < Rails::Application
@@ -22,10 +21,6 @@ module ManualsPublisher
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-
-    # Enable the asset pipeline
-    config.assets.enabled = true
-    config.assets.initialize_on_precompile = true
 
     # These paths are non-standard (they are subdirectories of
     # app/models) so they need to be added to the autoload_paths
