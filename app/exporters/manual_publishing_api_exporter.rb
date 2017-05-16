@@ -9,6 +9,17 @@ class ManualPublishingAPIExporter
   end
 
   def call
+    update_type = case @version_type || manual.version_type
+                  when :new, :major
+                    GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
+                  when :minor
+                    GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
+                  when :republish
+                    GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
+                  else
+                    raise "Uknown version type: #{manual.version_type}"
+                  end
+
     base_path = "/#{manual.slug}"
     updates_path = [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
 
@@ -89,17 +100,4 @@ private
     :organisation,
     :manual,
   )
-
-  def update_type
-    case @version_type || manual.version_type
-    when :new, :major
-      GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
-    when :minor
-      GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
-    when :republish
-      GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
-    else
-      raise "Uknown version type: #{manual.version_type}"
-    end
-  end
 end
