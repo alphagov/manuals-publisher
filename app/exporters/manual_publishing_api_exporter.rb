@@ -12,7 +12,7 @@ class ManualPublishingAPIExporter
   end
 
   def call
-    Services.publishing_api.put_content(content_id, exportable_attributes)
+    Services.publishing_api.put_content(manual.id, exportable_attributes)
   end
 
 private
@@ -24,10 +24,6 @@ private
 
   def base_path
     "/#{manual.attributes[:slug]}"
-  end
-
-  def content_id
-    manual.id
   end
 
   def updates_path
