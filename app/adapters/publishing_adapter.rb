@@ -112,9 +112,9 @@ private
   def save_section_content(section, manual, republish: false)
     organisation = organisation_for(manual)
 
-    SectionPublishingAPIExporter.new(
+    SectionPublishingAPIExporter.new.call(
       organisation, manual, section, version_type: version_type(republish)
-    ).call
+    )
   end
 
   def publish_section(section, republish:)

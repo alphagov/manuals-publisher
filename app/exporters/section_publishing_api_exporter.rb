@@ -2,15 +2,8 @@ require "services"
 require "gds_api_constants"
 
 class SectionPublishingAPIExporter
-  def initialize(organisation, manual, section, version_type: nil)
-    @organisation = organisation
-    @manual = manual
-    @section = section
-    @version_type = version_type
-  end
-
-  def call
-    update_type = case @version_type || section.version_type
+  def call(organisation, manual, section, version_type: nil)
+    update_type = case version_type || section.version_type
                   when :new, :major
                     GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
                   when :minor
@@ -80,8 +73,4 @@ class SectionPublishingAPIExporter
 
     Services.publishing_api.put_content(section.uuid, attributes)
   end
-
-private
-
-  attr_reader :organisation, :manual, :section
 end
