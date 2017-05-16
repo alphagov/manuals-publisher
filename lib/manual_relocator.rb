@@ -29,6 +29,10 @@ class ManualRelocator
     @new_manual_record ||= fetch_manual(from_slug)
   end
 
+  def new_manual
+    Manual.find(new_manual_record.manual_id, User.gds_editor)
+  end
+
 private
 
   def fetch_manual(slug)
@@ -169,8 +173,7 @@ private
   end
 
   def redraft_and_republish
-    manual = Manual.find(new_manual_record.manual_id, User.gds_editor)
-    manual_versions = manual.current_versions
+    manual_versions = new_manual.current_versions
 
     if manual_versions[:published].present?
       manual_to_publish = manual_versions[:published]
