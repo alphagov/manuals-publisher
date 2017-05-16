@@ -42,7 +42,7 @@ class ManualPublishingAPIExporter
           },
           {
             content_type: "text/html",
-            content: presented_manual.body
+            content: ManualPresenter.new(manual).body
           }
         ],
         child_section_groups: [
@@ -103,9 +103,5 @@ private
     else
       raise "Uknown version type: #{manual.version_type}"
     end
-  end
-
-  def presented_manual
-    @presented_manual ||= ManualPresenter.new(manual)
   end
 end
