@@ -195,11 +195,8 @@ private
   end
 
   def send_draft(manual)
-    puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
-    manual.sections.each do |section|
-      puts "Sending a draft of manual section #{section.uuid} (version: #{section.version_number})"
-    end
-    Adapters.publishing.save(manual, include_links: false)
+    puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
+    Adapters.publishing.save(manual, include_links: false, republish: true)
   end
 
   def send_gone(section_uuid, slug)
