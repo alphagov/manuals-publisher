@@ -23,7 +23,7 @@ private
   )
 
   def base_path
-    "/#{manual.attributes[:slug]}"
+    "/#{manual.slug}"
   end
 
   def updates_path
@@ -85,7 +85,7 @@ private
       body: [
         {
           content_type: "text/govspeak",
-          content: manual.attributes.fetch(:body)
+          content: manual.body
         },
         {
           content_type: "text/html",
@@ -108,9 +108,9 @@ private
   def sections
     manual.sections.map { |d|
       {
-        title: d.attributes.fetch(:title),
-        description: d.attributes.fetch(:summary),
-        base_path: "/#{d.attributes.fetch(:slug)}",
+        title: d.title,
+        description: d.summary,
+        base_path: "/#{d.slug}",
       }
     }
   end
