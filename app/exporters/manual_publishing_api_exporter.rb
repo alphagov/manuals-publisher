@@ -100,7 +100,11 @@ private
       ],
       change_notes: serialised_change_notes,
       organisations: [
-        organisation_info
+        {
+          title: organisation.title,
+          abbreviation: organisation.abbreviation,
+          web_url: organisation.web_url,
+        }
       ]
     }
   end
@@ -123,14 +127,6 @@ private
         change_note: publication.change_note,
         published_at: publication.published_at,
       }
-    }
-  end
-
-  def organisation_info
-    {
-      title: organisation.title,
-      abbreviation: organisation.abbreviation,
-      web_url: organisation.web_url,
     }
   end
 end
