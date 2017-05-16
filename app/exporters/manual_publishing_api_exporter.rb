@@ -99,7 +99,14 @@ private
           end,
         }
       ],
-      change_notes: serialised_change_notes,
+      change_notes: manual.publication_logs.map do |publication|
+        {
+          base_path: "/#{publication.slug}",
+          title: publication.title,
+          change_note: publication.change_note,
+          published_at: publication.published_at,
+        }
+      end,
       organisations: [
         {
           title: organisation.title,
@@ -108,16 +115,5 @@ private
         }
       ]
     }
-  end
-
-  def serialised_change_notes
-    manual.publication_logs.map do |publication|
-      {
-        base_path: "/#{publication.slug}",
-        title: publication.title,
-        change_note: publication.change_note,
-        published_at: publication.published_at,
-      }
-    end
   end
 end
