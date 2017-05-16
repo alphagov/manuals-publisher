@@ -146,7 +146,7 @@ describe ManualPublishingAPIExporter do
       expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(
-          first_published_at: previously_published_date.iso8601,
+          first_published_at: previously_published_date,
         )
       )
     end
@@ -158,7 +158,7 @@ describe ManualPublishingAPIExporter do
       expect(publishing_api).to have_received(:put_content).with(
         "52ab9439-95c8-4d39-9b83-0a2050a0978b",
         hash_including(
-          public_updated_at: previously_published_date.iso8601,
+          public_updated_at: previously_published_date,
         )
       )
     end
@@ -206,13 +206,13 @@ describe ManualPublishingAPIExporter do
               base_path: "/guidance/my-first-manual/first-section",
               title: "Document title",
               change_note: "Added more text",
-              published_at: Time.new(2013, 12, 31, 12, 0, 0).iso8601,
+              published_at: Time.new(2013, 12, 31, 12, 0, 0),
             },
             {
               base_path: "/guidance/my-first-manual",
               title: "My manual",
               change_note: "Changed manual title",
-              published_at: Time.new(2013, 12, 31, 12, 30, 0).iso8601,
+              published_at: Time.new(2013, 12, 31, 12, 30, 0),
             },
           ],
           organisations: [

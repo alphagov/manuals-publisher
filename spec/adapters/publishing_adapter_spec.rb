@@ -292,8 +292,8 @@ describe PublishingAdapter do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
           including(
-            first_published_at: timestamp.iso8601,
-            public_updated_at: timestamp.iso8601
+            first_published_at: timestamp,
+            public_updated_at: timestamp
           ),
         )
 
@@ -304,8 +304,8 @@ describe PublishingAdapter do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
           including(
-            first_published_at: timestamp.iso8601,
-            public_updated_at: timestamp.iso8601
+            first_published_at: timestamp,
+            public_updated_at: timestamp
           ),
         )
 
@@ -321,7 +321,7 @@ describe PublishingAdapter do
           expect(publishing_api).to receive(:put_content).with(
             manual_id,
             excluding(
-              public_updated_at: timestamp.iso8601
+              public_updated_at: timestamp
             ),
           )
 
@@ -332,7 +332,7 @@ describe PublishingAdapter do
           expect(publishing_api).to receive(:put_content).with(
             section_uuid,
             excluding(
-              public_updated_at: timestamp.iso8601
+              public_updated_at: timestamp
             ),
           )
 
@@ -464,7 +464,7 @@ describe PublishingAdapter do
               title: "section-title",
               base_path: "/manual-slug/section-slug",
               change_note: "section-change-note",
-              published_at: timestamp.iso8601
+              published_at: timestamp
             }]
           ))
         )

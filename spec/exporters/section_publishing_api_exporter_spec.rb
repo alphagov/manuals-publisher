@@ -121,7 +121,7 @@ describe SectionPublishingAPIExporter do
       expect(publishing_api).to have_received(:put_content).with(
         section.uuid,
         hash_including(
-          first_published_at: previously_published_date.iso8601,
+          first_published_at: previously_published_date,
         )
       )
     end
@@ -133,7 +133,7 @@ describe SectionPublishingAPIExporter do
       expect(publishing_api).to have_received(:put_content).with(
         section.uuid,
         hash_including(
-          public_updated_at: previously_published_date.iso8601,
+          public_updated_at: previously_published_date,
         )
       )
     end
