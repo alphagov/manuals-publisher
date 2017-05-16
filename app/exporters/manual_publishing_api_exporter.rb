@@ -105,11 +105,11 @@ private
   end
 
   def sections
-    manual.sections.map { |d|
+    manual.sections.map { |section|
       {
-        title: d.title,
-        description: d.summary,
-        base_path: "/#{d.slug}",
+        title: section.title,
+        description: section.summary,
+        base_path: "/#{section.slug}",
       }
     }
   end
