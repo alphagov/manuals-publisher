@@ -2,14 +2,8 @@ require "services"
 require "gds_api_constants"
 
 class ManualPublishingAPIExporter
-  def initialize(organisation, manual, version_type: nil)
-    @organisation = organisation
-    @manual = manual
-    @version_type = version_type
-  end
-
-  def call
-    update_type = case @version_type || manual.version_type
+  def call(organisation, manual, version_type: nil)
+    update_type = case version_type || manual.version_type
                   when :new, :major
                     GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
                   when :minor
@@ -93,11 +87,4 @@ class ManualPublishingAPIExporter
 
     Services.publishing_api.put_content(manual.id, attributes)
   end
-
-private
-
-  attr_reader(
-    :organisation,
-    :manual,
-  )
 end

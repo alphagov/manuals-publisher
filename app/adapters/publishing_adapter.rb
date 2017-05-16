@@ -88,9 +88,9 @@ private
   def save_manual_content(manual, republish: false)
     organisation = organisation_for(manual)
 
-    ManualPublishingAPIExporter.new(
+    ManualPublishingAPIExporter.new.call(
       organisation, manual, version_type: version_type(republish)
-    ).call
+    )
   end
 
   def publish_manual(manual, republish:)
