@@ -34,7 +34,45 @@ class ManualPublishingAPIExporter
           type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
         }
       ],
-      details: details_data,
+      details: {
+        body: [
+          {
+            content_type: "text/govspeak",
+            content: manual.body
+          },
+          {
+            content_type: "text/html",
+            content: presented_manual.body
+          }
+        ],
+        child_section_groups: [
+          {
+            title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
+            child_sections: manual.sections.map do |section|
+              {
+                title: section.title,
+                description: section.summary,
+                base_path: "/#{section.slug}",
+              }
+            end,
+          }
+        ],
+        change_notes: manual.publication_logs.map do |publication|
+          {
+            base_path: "/#{publication.slug}",
+            title: publication.title,
+            change_note: publication.change_note,
+            published_at: publication.published_at,
+          }
+        end,
+        organisations: [
+          {
+            title: organisation.title,
+            abbreviation: organisation.abbreviation,
+            web_url: organisation.web_url,
+          }
+        ]
+      },
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }
 
@@ -69,47 +107,5 @@ private
 
   def presented_manual
     @presented_manual ||= ManualPresenter.new(manual)
-  end
-
-  def details_data
-    {
-      body: [
-        {
-          content_type: "text/govspeak",
-          content: manual.body
-        },
-        {
-          content_type: "text/html",
-          content: presented_manual.body
-        }
-      ],
-      child_section_groups: [
-        {
-          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
-          child_sections: manual.sections.map do |section|
-            {
-              title: section.title,
-              description: section.summary,
-              base_path: "/#{section.slug}",
-            }
-          end,
-        }
-      ],
-      change_notes: manual.publication_logs.map do |publication|
-        {
-          base_path: "/#{publication.slug}",
-          title: publication.title,
-          change_note: publication.change_note,
-          published_at: publication.published_at,
-        }
-      end,
-      organisations: [
-        {
-          title: organisation.title,
-          abbreviation: organisation.abbreviation,
-          web_url: organisation.web_url,
-        }
-      ]
-    }
   end
 end
