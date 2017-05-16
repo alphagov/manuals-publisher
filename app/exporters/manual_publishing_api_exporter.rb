@@ -37,7 +37,11 @@ class ManualPublishingAPIExporter
       details: details_data,
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }
-    exportable_attributes.merge!(optional_exportable_attributes)
+
+    if manual.originally_published_at.present?
+      exportable_attributes[:first_published_at] = manual.originally_published_at
+      exportable_attributes[:public_updated_at] = manual.originally_published_at if manual.use_originally_published_at_for_public_timestamp?
+    end
 
     Services.publishing_api.put_content(manual.id, exportable_attributes)
   end
@@ -48,15 +52,6 @@ private
     :organisation,
     :manual,
   )
-
-  def optional_exportable_attributes
-    attrs = {}
-    if manual.originally_published_at.present?
-      attrs[:first_published_at] = manual.originally_published_at
-      attrs[:public_updated_at] = manual.originally_published_at if manual.use_originally_published_at_for_public_timestamp?
-    end
-    attrs
-  end
 
   def update_type
     return @update_type if @update_type.present?
