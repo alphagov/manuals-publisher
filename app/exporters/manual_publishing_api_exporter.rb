@@ -90,7 +90,13 @@ private
       child_section_groups: [
         {
           title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
-          child_sections: sections,
+          child_sections: manual.sections.map do |section|
+            {
+              title: section.title,
+              description: section.summary,
+              base_path: "/#{section.slug}",
+            }
+          end,
         }
       ],
       change_notes: serialised_change_notes,
@@ -102,16 +108,6 @@ private
         }
       ]
     }
-  end
-
-  def sections
-    manual.sections.map do |section|
-      {
-        title: section.title,
-        description: section.summary,
-        base_path: "/#{section.slug}",
-      }
-    end
   end
 
   def serialised_change_notes
