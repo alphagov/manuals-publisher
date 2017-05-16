@@ -70,7 +70,7 @@ private
 
   def save_manual(manual, republish:, include_links:)
     save_manual_links(manual) if include_links
-    save_manual_content(manual, update_type: update_type(republish))
+    save_manual_content(manual, republish: republish)
   end
 
   def save_manual_links(manual)
@@ -85,11 +85,11 @@ private
     )
   end
 
-  def save_manual_content(manual, update_type: nil)
+  def save_manual_content(manual, republish: false)
     organisation = organisation_for(manual)
 
     ManualPublishingAPIExporter.new(
-      organisation, manual, update_type: update_type
+      organisation, manual, version_type: version_type(republish)
     ).call
   end
 
