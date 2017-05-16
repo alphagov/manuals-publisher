@@ -105,23 +105,23 @@ private
   end
 
   def sections
-    manual.sections.map { |section|
+    manual.sections.map do |section|
       {
         title: section.title,
         description: section.summary,
         base_path: "/#{section.slug}",
       }
-    }
+    end
   end
 
   def serialised_change_notes
-    manual.publication_logs.map { |publication|
+    manual.publication_logs.map do |publication|
       {
         base_path: "/#{publication.slug}",
         title: publication.title,
         change_note: publication.change_note,
         published_at: publication.published_at,
       }
-    }
+    end
   end
 end
