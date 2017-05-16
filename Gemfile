@@ -39,11 +39,9 @@ else
   gem "govspeak", "~> 3.1" # can't go higher because govuk_content_models needs this
 end
 
-group :assets do
-  gem "govuk_frontend_toolkit", "1.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
-  gem "sass-rails"
-  gem "uglifier", ">= 1.3.0"
-end
+gem "govuk_frontend_toolkit", "1.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
+gem "sass-rails"
+gem "uglifier", ">= 1.3.0"
 
 group :development do
   gem "better_errors"
