@@ -32,6 +32,7 @@ describe ManualPublishingAPIExporter do
       version_type: :major,
       originally_published_at: nil,
       use_originally_published_at_for_public_timestamp?: false,
+      publication_logs: publication_logs
     )
   }
 
@@ -93,7 +94,6 @@ describe ManualPublishingAPIExporter do
   before {
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
     allow(ManualPresenter).to receive(:new).with(manual).and_return(presented_manual)
-    allow(PublicationLog).to receive(:change_notes_for).and_return(publication_logs)
   }
 
   it { is_expected.to be_a(PublishingAPIUpdateTypes) }

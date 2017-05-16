@@ -29,6 +29,10 @@ class ManualRelocator
     @new_manual_record ||= fetch_manual(from_slug)
   end
 
+  def old_manual
+    Manual.build_manual_for(old_manual_record, load_associations: false)
+  end
+
   def new_manual
     Manual.build_manual_for(new_manual_record, load_associations: false)
   end
@@ -92,8 +96,8 @@ private
       end
     end
 
-    puts "Destroying old PublicationLogs for #{old_manual_record.slug}"
-    PublicationLog.change_notes_for(old_manual_record.slug).each(&:destroy)
+    puts "Destroying old PublicationLogs for #{old_manual.slug}"
+    old_manual.publication_logs.each(&:destroy)
 
     # Destroy the manual record
     puts "Destroying manual #{old_manual_record.manual_id}"
@@ -150,7 +154,7 @@ private
 
     # Reslug the existing publication logs
     puts "Reslugging publication logs for #{from_slug} to #{to_slug}"
-    PublicationLog.change_notes_for(from_slug).each do |publication_log|
+    new_manual.publication_logs.each do |publication_log|
       publication_log.set(:slug, publication_log.slug.gsub(from_slug, to_slug))
     end
 

@@ -960,4 +960,16 @@ describe Manual do
       end
     end
   end
+
+  describe "#publication_logs" do
+    let(:publication_log) { PublicationLog.new }
+
+    before do
+      allow(PublicationLog).to receive(:change_notes_for).with(slug).and_return([publication_log])
+    end
+
+    it "returns change notes for manual" do
+      expect(manual.publication_logs).to eq([publication_log])
+    end
+  end
 end
