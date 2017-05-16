@@ -30,7 +30,7 @@ class ManualRelocator
   end
 
   def new_manual
-    Manual.find(new_manual_record.manual_id, User.gds_editor)
+    Manual.build_manual_for(new_manual_record, load_associations: false)
   end
 
 private
