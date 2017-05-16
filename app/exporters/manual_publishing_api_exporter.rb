@@ -22,15 +22,10 @@ private
     :manual,
   )
 
-  def base_path
-    "/#{manual.slug}"
-  end
-
-  def updates_path
-    [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
-  end
-
   def exportable_attributes
+    base_path = "/#{manual.slug}"
+    updates_path = [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
+
     {
       base_path: base_path,
       schema_name: GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
