@@ -160,8 +160,8 @@ private
 
     # Clean up manual sections belonging to the temporary manual path
     new_section_uuids.each do |section_uuid|
-      puts "Redirecting #{section_uuid} to '/#{to_slug}'"
       most_recent_edition = most_recent_edition_of_section(section_uuid)
+      puts "Redirecting #{section_uuid} to '#{most_recent_edition.slug}'"
       publishing_api.unpublish(section_uuid,
                                type: "redirect",
                                alternative_path: "/#{most_recent_edition.slug}",
@@ -195,11 +195,8 @@ private
   end
 
   def send_draft(manual)
-    puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number})"
-    manual.sections.each do |section|
-      puts "Sending a draft of manual section #{section.uuid} (version: #{section.version_number})"
-    end
-    Adapters.publishing.save(manual, include_links: false)
+    puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
+    Adapters.publishing.save(manual, include_links: false, republish: true)
   end
 
   def send_gone(section_uuid, slug)
