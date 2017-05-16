@@ -15,7 +15,7 @@ class ManualPublishingAPIExporter
     base_path = "/#{manual.slug}"
     updates_path = [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
 
-    exportable_attributes = {
+    attributes = {
       base_path: base_path,
       schema_name: GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
       document_type: GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
@@ -77,13 +77,13 @@ class ManualPublishingAPIExporter
     }
 
     if manual.originally_published_at.present?
-      exportable_attributes[:first_published_at] = manual.originally_published_at
+      attributes[:first_published_at] = manual.originally_published_at
       if manual.use_originally_published_at_for_public_timestamp?
-        exportable_attributes[:public_updated_at] = manual.originally_published_at
+        attributes[:public_updated_at] = manual.originally_published_at
       end
     end
 
-    Services.publishing_api.put_content(manual.id, exportable_attributes)
+    Services.publishing_api.put_content(manual.id, attributes)
   end
 
 private
