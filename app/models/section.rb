@@ -92,7 +92,7 @@ class Section
         .merge(new_edition_defaults)
         .merge(params)
         .merge(
-          version_number: current_version_number + 1,
+          version_number: latest_edition.version_number + 1,
           slug: slug,
           attachments: attachments,
         )
@@ -201,10 +201,6 @@ private
       version_number: 1,
       section_uuid: uuid,
     }
-  end
-
-  def current_version_number
-    latest_edition.version_number
   end
 
   def most_recent_non_draft
