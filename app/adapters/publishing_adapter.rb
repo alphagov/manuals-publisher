@@ -144,12 +144,12 @@ private
             end,
           }
         ],
-        change_notes: manual.publication_logs.map do |publication|
+        change_notes: manual.publication_logs.map do |publication_log|
           {
-            base_path: "/#{publication.slug}",
-            title: publication.title,
-            change_note: publication.change_note,
-            published_at: publication.published_at,
+            base_path: "/#{publication_log.slug}",
+            title: publication_log.title,
+            change_note: publication_log.change_note,
+            published_at: publication_log.published_at,
           }
         end,
         organisations: [
