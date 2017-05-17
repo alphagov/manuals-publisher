@@ -98,7 +98,7 @@ class ManualsController < ApplicationController
     service = Manual::UpdateOriginalPublicationDateService.new(
       manual_id: manual_id,
       attributes: publication_date_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     manual = manual_form(manual)

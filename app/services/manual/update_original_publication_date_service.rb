@@ -1,10 +1,10 @@
 require "adapters"
 
 class Manual::UpdateOriginalPublicationDateService
-  def initialize(manual_id:, attributes:, context:)
+  def initialize(manual_id:, attributes:, user:)
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
-    @context = context
+    @user = user
   end
 
   def call
@@ -23,7 +23,7 @@ private
   attr_reader(
     :manual_id,
     :attributes,
-    :context,
+    :user,
   )
 
   def update
@@ -31,7 +31,7 @@ private
   end
 
   def persist
-    manual.save(context.current_user)
+    manual.save(user)
     @manual = fetch_manual
   end
 
@@ -51,6 +51,6 @@ private
   end
 
   def fetch_manual
-    Manual.find(manual_id, context.current_user)
+    Manual.find(manual_id, user)
   end
 end
