@@ -152,10 +152,6 @@ class Section
     uuid.eql?(other.uuid)
   end
 
-  def never_published?
-    !published?
-  end
-
   def change_note_required?
     !(never_published? || minor_update?)
   end
@@ -175,6 +171,10 @@ class Section
 private
 
   attr_reader :slug_generator
+
+  def never_published?
+    !published?
+  end
 
   def published_edition
     if most_recent_non_draft && most_recent_non_draft.published?
