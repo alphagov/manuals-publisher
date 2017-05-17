@@ -71,6 +71,10 @@ class Section
   end
 
   def update(params)
+    allowed_update_params = self.class.edition_attributes
+      .-(unupdatable_attributes)
+      .map(&:to_s)
+
     params = params
       .select { |k, _| allowed_update_params.include?(k.to_s) }
       .symbolize_keys
@@ -205,12 +209,6 @@ private
 
   def most_recent_non_draft
     editions.reject(&:draft?).last
-  end
-
-  def allowed_update_params
-    self.class.edition_attributes
-      .-(unupdatable_attributes)
-      .map(&:to_s)
   end
 
   def unupdatable_attributes
