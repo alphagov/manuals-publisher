@@ -108,9 +108,7 @@ production:
     default:
       uri: <%= ENV['MONGODB_URI'] %>
       options:
-        logger: false
         read: :primary
+        refresh_interval: 120
   options:
     use_activesupport_time_zone: true
-    refresh_interval: 120
-    refresh_mode: :sync
