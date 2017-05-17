@@ -115,7 +115,7 @@ class ManualsController < ApplicationController
   def publish
     service = Manual::QueuePublishService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 
