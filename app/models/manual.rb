@@ -341,6 +341,10 @@ class Manual
   end
 
   def destroy
+    sections.each do |section|
+      section.editions.each(&:destroy)
+    end
+
     manual_record = ManualRecord.find_by(manual_id: id)
     manual_record.destroy
   end

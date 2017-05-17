@@ -981,5 +981,39 @@ describe Manual do
 
       expect(ManualRecord.find_by(id: manual_record.id)).not_to be_present
     end
+
+    context "when manual has some sections with editions" do
+      let(:section_1_edition_1) { FactoryGirl.create(:section_edition, section_uuid: "section-1") }
+      let(:section_1_edition_2) { FactoryGirl.create(:section_edition, section_uuid: "section-1") }
+      let(:section_2_edition_1) { FactoryGirl.create(:section_edition, section_uuid: "section-2") }
+      let(:section_2_edition_2) { FactoryGirl.create(:section_edition, section_uuid: "section-2") }
+
+      let(:section_1) do
+        Section.new(manual: manual, uuid: "section-1", editions: [
+          section_1_edition_1,
+          section_1_edition_2
+        ])
+      end
+
+      let(:section_2) do
+        Section.new(manual: manual, uuid: "section-2", editions: [
+          section_2_edition_1,
+          section_2_edition_2
+        ])
+      end
+
+      before do
+        manual.sections = [section_1, section_2]
+      end
+
+      it "destroys all associated section editions" do
+        manual.destroy
+
+        expect(SectionEdition.where(id: section_1_edition_1.id)).to be_empty
+        expect(SectionEdition.where(id: section_1_edition_2.id)).to be_empty
+        expect(SectionEdition.where(id: section_2_edition_1.id)).to be_empty
+        expect(SectionEdition.where(id: section_2_edition_2.id)).to be_empty
+      end
+    end
   end
 end

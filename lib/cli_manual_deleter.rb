@@ -82,10 +82,6 @@ private
     manual.sections.each { |section| discard_draft_from_publishing_api(section.uuid) }
     discard_draft_from_publishing_api(manual.id)
 
-    manual.sections.each do |section|
-      section.editions.each(&:destroy)
-    end
-
     manual.destroy
 
     log "Manual destroyed."
