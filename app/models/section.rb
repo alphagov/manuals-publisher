@@ -135,16 +135,6 @@ class Section
     attachments.find { |a| a.id.to_s == attachment_id }
   end
 
-  def publication_state
-    if withdrawn?
-      "withdrawn"
-    elsif published?
-      "published"
-    elsif draft?
-      "draft"
-    end
-  end
-
   def published_edition
     if most_recent_non_draft && most_recent_non_draft.published?
       most_recent_non_draft

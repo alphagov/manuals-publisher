@@ -611,40 +611,6 @@ describe Section do
     end
   end
 
-  describe "#publication_state" do
-    context "when the first edition is in draft" do
-      let(:editions) { [draft_edition_v1] }
-
-      it "returns 'draft'" do
-        expect(section.publication_state).to eq("draft")
-      end
-    end
-
-    context "with a single published edition" do
-      let(:editions) { [published_edition_v1] }
-
-      it "returns 'published'" do
-        expect(section.publication_state).to eq("published")
-      end
-    end
-
-    context "with a single published edition" do
-      let(:editions) { [published_edition_v1, draft_edition_v2] }
-
-      it "returns 'published'" do
-        expect(section.publication_state).to eq("published")
-      end
-    end
-
-    context "with a published edition, and withdrawn edition" do
-      let(:editions) { [published_edition_v1, withdrawn_edition_v2] }
-
-      it "returns 'withdrawn'" do
-        expect(section.publication_state).to eq("withdrawn")
-      end
-    end
-  end
-
   describe "#withdrawn?" do
     context "one draft" do
       let(:editions) { [draft_edition_v1] }
