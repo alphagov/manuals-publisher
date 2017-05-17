@@ -84,7 +84,16 @@ class Section
     if draft?
       latest_edition.assign_attributes(params)
     else
-      @latest_edition = new_draft(params)
+      attributes = previous_edition_attributes
+        .merge(new_edition_defaults)
+        .merge(params)
+        .merge(
+          version_number: current_version_number + 1,
+          slug: slug,
+          attachments: attachments,
+        )
+      @latest_edition = SectionEdition.new(attributes)
+
       editions.push(@latest_edition)
     end
 
@@ -188,19 +197,6 @@ private
       version_number: 1,
       section_uuid: uuid,
     }
-  end
-
-  def new_draft(params = {})
-    new_edition_attributes = previous_edition_attributes
-      .merge(new_edition_defaults)
-      .merge(params)
-      .merge(
-        version_number: current_version_number + 1,
-        slug: slug,
-        attachments: attachments,
-      )
-
-    SectionEdition.new(new_edition_attributes)
   end
 
   def current_version_number
