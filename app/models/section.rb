@@ -178,7 +178,7 @@ class Section
     end
   end
 
-protected
+private
 
   attr_reader :slug_generator
 
