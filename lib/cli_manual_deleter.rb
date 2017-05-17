@@ -35,8 +35,20 @@ private
   end
 
   def validate_manual_records(records)
-    raise "No manual found for slug: #{manual_slug}" unless records.any?
-    raise "Ambiguous slug: #{manual_slug}" if records.size > 1
+    unless records.any?
+      if manual_id
+        raise "No manual found for ID: #{manual_id}"
+      else
+        raise "No manual found for slug: #{manual_slug}"
+      end
+    end
+    if records.size > 1
+      if manual_id
+        raise "Ambiguous ID: #{manual_id}"
+      else
+        raise "Ambiguous slug: #{manual_slug}"
+      end
+    end
   end
 
   def validate_never_published(manual_record)
