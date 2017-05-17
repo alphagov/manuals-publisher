@@ -1,4 +1,4 @@
-ManualsPublisher::Application.configure do
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # The test environment is used exclusively to run your application's
@@ -12,9 +12,9 @@ ManualsPublisher::Application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
-  # Configure static asset server for tests with Cache-Control for performance.
-  config.serve_static_assets  = true
-  config.static_cache_control = "public, max-age=3600"
+  # Configure static file server for tests with Cache-Control for performance.
+  config.serve_static_files   = true
+  config.static_cache_control = 'public, max-age=3600'
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -31,10 +31,12 @@ ManualsPublisher::Application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
-  # Your secret key is used for verifying the integrity of signed cookies.
-  # If you change this key, all old signed cookies will become invalid!
-  config.secret_token = "b94e88701d98db420c85bfd915bdf73b06b1d2faf515024754f741a773229fb2f4644b66b16a164a501ffb658d9a64a26cecaabde7496cbbad821f65af07430a"
+  # Randomize the order test cases are executed.
+  config.active_support.test_order = :random
 
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
+
+  # Raises error for missing translations
+  # config.action_view.raise_on_missing_translations = true
 end

@@ -17,10 +17,6 @@ class User
   field :organisation_content_id, type: String
   field :disabled, type: Boolean, default: false
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :name, :uid
-  attr_accessible :email, :name, :uid, :permissions, as: :oauth
-
   def self.gds_editor
     User.new.tap do |user|
       user.permissions = [PermissionChecker::GDS_EDITOR_PERMISSION]

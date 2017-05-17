@@ -13,10 +13,6 @@ class Attachment
 
   before_save :upload_file, if: :file_has_changed?
 
-  def to_param
-    id
-  end
-
   def snippet
     "[InlineAttachment:#{filename}]"
   end

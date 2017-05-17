@@ -144,13 +144,13 @@ private
       sections.each do |section|
         new_section_slug = section.slug.gsub(from_slug, to_slug)
         puts "Reslugging section '#{section.slug}' as '#{new_section_slug}'"
-        section.set(:slug, new_section_slug)
+        section.set(slug: new_section_slug)
       end
     end
 
     # Reslug the manual
     puts "Reslugging manual '#{new_manual_record.slug}' as '#{to_slug}'"
-    new_manual_record.set(:slug, to_slug)
+    new_manual_record.set(slug: to_slug)
 
     # Reslug the existing publication logs
     puts "Reslugging publication logs for #{from_slug} to #{to_slug}"

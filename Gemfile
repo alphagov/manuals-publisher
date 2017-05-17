@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "3.2.22.3"
+gem "rails", "~> 4"
 
 # Alphabetical order please :)
 gem "airbrake", "~> 4.3"
@@ -10,7 +10,7 @@ gem "generic_form_builder", "0.11.0"
 gem "govuk_admin_template", "~> 4.0" # higher versions require rails 4
 gem "kaminari", "0.16.1"
 gem "logstasher", "0.4.8"
-gem "mongoid", "~> 3.0"
+gem "mongoid", "~> 4.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code"
 gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"
@@ -39,11 +39,9 @@ else
   gem "govspeak", "~> 3.1" # can't go higher because govuk_content_models needs this
 end
 
-group :assets do
-  gem "govuk_frontend_toolkit", "1.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
-  gem "sass-rails", "3.2.6"
-  gem "uglifier", ">= 1.3.0"
-end
+gem "govuk_frontend_toolkit", "1.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
+gem "sass-rails"
+gem "uglifier", ">= 1.3.0"
 
 group :development do
   gem "better_errors"

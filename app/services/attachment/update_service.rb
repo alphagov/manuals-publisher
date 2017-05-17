@@ -29,14 +29,15 @@ private
 
   def attachment_params
     context.params
-      .fetch("attachment")
+      .require("attachment")
+      .permit(:title, :file)
       .merge("filename" => uploaded_filename)
   end
 
   def uploaded_filename
     context.params
-      .fetch("attachment")
-      .fetch("file")
+      .require("attachment")
+      .fetch(:file)
       .original_filename
   end
 

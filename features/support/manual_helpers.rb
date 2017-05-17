@@ -573,7 +573,7 @@ module ManualHelpers
       manual.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
-        (data["first_published_at"] == expected_date.iso8601) &&
+        (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
       end,
       number_of_drafts: how_many_times
@@ -588,7 +588,7 @@ module ManualHelpers
       section.uuid,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
-        (data["first_published_at"] == expected_date.iso8601) &&
+        (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
       end,
       number_of_drafts: how_many_times
@@ -604,8 +604,8 @@ module ManualHelpers
       manual.id,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
-        (data["first_published_at"] == expected_date.iso8601) &&
-        (data["public_updated_at"] == expected_date.iso8601)
+        (data["first_published_at"] == expected_date.as_json) &&
+        (data["public_updated_at"] == expected_date.as_json)
       end,
       number_of_drafts: how_many_times
     )
@@ -619,8 +619,8 @@ module ManualHelpers
       section.uuid,
       with_matcher: ->(request) do
         data = JSON.parse(request.body)
-        (data["first_published_at"] == expected_date.iso8601) &&
-        (data["public_updated_at"] == expected_date.iso8601)
+        (data["first_published_at"] == expected_date.as_json) &&
+        (data["public_updated_at"] == expected_date.as_json)
       end,
       number_of_drafts: how_many_times
     )
