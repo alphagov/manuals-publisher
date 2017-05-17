@@ -340,5 +340,14 @@ class Manual
     PublicationLog.change_notes_for(slug)
   end
 
+  def destroy
+    sections.each do |section|
+      section.editions.each(&:destroy)
+    end
+
+    manual_record = ManualRecord.find_by(manual_id: id)
+    manual_record.destroy
+  end
+
   class RemovedSectionIdNotFoundError < StandardError; end
 end

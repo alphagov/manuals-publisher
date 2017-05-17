@@ -34,6 +34,13 @@ class PublishingAdapter
     end
   end
 
+  def discard(manual)
+    manual.sections.each do |section|
+      discard_section(section)
+    end
+    Services.publishing_api.discard_draft(manual.id)
+  end
+
   def save_section(section, manual, republish: false, include_links: true)
     if section.needs_exporting? || republish
       save_section_links(section, manual) if include_links

@@ -666,6 +666,26 @@ describe PublishingAdapter do
     end
   end
 
+  describe "#discard" do
+    before do
+      manual.sections = [section]
+
+      allow(publishing_api).to receive(:discard_draft).with(anything)
+    end
+
+    it "discards draft manual via Publishing API" do
+      expect(publishing_api).to receive(:discard_draft).with(manual_id)
+
+      subject.discard(manual)
+    end
+
+    it "discards all manual's draft sections via Publishing API" do
+      expect(publishing_api).to receive(:discard_draft).with(section_uuid)
+
+      subject.discard(manual)
+    end
+  end
+
   describe "#redirect_section" do
     let(:redirect_content_id) { "179cd671-766b-47af-ae4a-5054e9b99b89" }
 
@@ -703,7 +723,7 @@ describe PublishingAdapter do
   end
 
   describe "#discard_draft_section" do
-    it "discard draft section via Publishing API" do
+    it "discards draft section via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(section_uuid)
 
       subject.discard_section(section)
