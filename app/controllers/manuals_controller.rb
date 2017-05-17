@@ -129,7 +129,7 @@ class ManualsController < ApplicationController
     service = Manual::PreviewService.new(
       manual_id: params[:id],
       attributes: update_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 

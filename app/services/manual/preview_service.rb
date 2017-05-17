@@ -1,8 +1,8 @@
 class Manual::PreviewService
-  def initialize(manual_id:, attributes:, context:)
+  def initialize(manual_id:, attributes:, user:)
     @manual_id = manual_id
     @attributes = attributes
-    @context = context
+    @user = user
   end
 
   def call
@@ -16,7 +16,7 @@ private
   attr_reader(
     :manual_id,
     :attributes,
-    :context,
+    :user,
   )
 
   def manual
@@ -32,6 +32,6 @@ private
   end
 
   def existing_manual
-    @existing_manual ||= Manual.find(manual_id, context.current_user)
+    @existing_manual ||= Manual.find(manual_id, user)
   end
 end
