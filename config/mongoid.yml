@@ -108,7 +108,6 @@ production:
     default:
       uri: <%= ENV['MONGODB_URI'] %>
       options:
-        logger: false
         read: :primary
         refresh_interval: 120
   options:
