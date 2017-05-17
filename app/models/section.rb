@@ -72,7 +72,7 @@ class Section
 
   def update(params)
     allowed_update_params = self.class.edition_attributes
-      .-(unupdatable_attributes)
+      .-([:updated_at, :slug, :version_number])
       .map(&:to_s)
 
     params = params
@@ -209,14 +209,6 @@ private
 
   def most_recent_non_draft
     editions.reject(&:draft?).last
-  end
-
-  def unupdatable_attributes
-    [
-      :updated_at,
-      :slug,
-      :version_number,
-    ]
   end
 
   def change_note_ok
