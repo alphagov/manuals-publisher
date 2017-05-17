@@ -51,5 +51,11 @@ class Attachment
     end
   end
 
+  def content_type
+    return unless file_url
+    extname = File.extname(file_url).delete(".")
+    "application/#{extname}"
+  end
+
   class ::ApiClientNotPresent < StandardError; end
 end
