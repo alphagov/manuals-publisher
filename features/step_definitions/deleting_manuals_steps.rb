@@ -4,7 +4,7 @@ When(/^I run the deletion script$/) do
   @stdin = double(:stdin)
   # If we cared about checking string output we'd make this a StringIO
   null_stdout = double(:null_output_io, puts: nil)
-  @deleter = CliManualDeleter.new(@manual_slug, stdin: @stdin, stdout: null_stdout)
+  @deleter = CliManualDeleter.new(manual_slug: @manual_slug, stdin: @stdin, stdout: null_stdout)
 end
 
 When(/^I confirm deletion/) do

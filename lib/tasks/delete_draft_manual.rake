@@ -1,8 +1,6 @@
 require "cli_manual_deleter"
 
-desc "Delete draft manual"
+desc "Delete draft manual (supply EITHER manual_slug OR manual_id)"
 task :delete_draft_manual, [:manual_slug, :manual_id] => :environment do |_, args|
-  manual_slug = args.fetch(:manual_slug)
-  manual_id = args.fetch(:manual_id)
-  CliManualDeleter.new(manual_slug, manual_id: manual_id).call
+  CliManualDeleter.new(manual_slug: args[:manual_slug], manual_id: args[:manual_id]).call
 end

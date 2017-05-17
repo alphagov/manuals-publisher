@@ -1,7 +1,13 @@
 require "services"
 
 class CliManualDeleter
-  def initialize(manual_slug, manual_id: nil, stdin: STDIN, stdout: STDOUT)
+  def initialize(manual_slug: nil, manual_id: nil, stdin: STDIN, stdout: STDOUT)
+    unless manual_slug || manual_id
+      raise ArgumentError.new("manual_slug or manual_id must be supplied")
+    end
+    if manual_slug && manual_id
+      raise ArgumentError.new("manual_slug and manual_id must not both be supplied")
+    end
     @manual_slug = manual_slug
     @manual_id = manual_id
     @stdin = stdin
@@ -35,8 +41,20 @@ private
   end
 
   def validate_manual_records(records)
-    raise "No manual found for slug: #{manual_slug}" unless records.any?
-    raise "Ambiguous slug: #{manual_slug}" if records.size > 1
+    unless records.any?
+      if manual_id
+        raise "No manual found for ID: #{manual_id}"
+      else
+        raise "No manual found for slug: #{manual_slug}"
+      end
+    end
+    if records.size > 1
+      if manual_id
+        raise "Ambiguous ID: #{manual_id}"
+      else
+        raise "Ambiguous slug: #{manual_slug}"
+      end
+    end
   end
 
   def validate_never_published(manual_record)
