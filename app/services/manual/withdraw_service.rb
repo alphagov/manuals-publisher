@@ -1,9 +1,9 @@
 require "adapters"
 
 class Manual::WithdrawService
-  def initialize(manual_id:, context:)
+  def initialize(manual_id:, user:)
     @manual_id = manual_id
-    @context = context
+    @user = user
   end
 
   def call
@@ -20,14 +20,14 @@ class Manual::WithdrawService
 
 private
 
-  attr_reader :manual_id, :context
+  attr_reader :manual_id, :user
 
   def withdraw
     manual.withdraw
   end
 
   def persist
-    manual.save(context.current_user)
+    manual.save(user)
   end
 
   def withdraw_via_publishing_api
@@ -39,7 +39,7 @@ private
   end
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
+    @manual ||= Manual.find(manual_id, user)
   rescue KeyError => error
     raise ManualNotFoundError.new(error)
   end
