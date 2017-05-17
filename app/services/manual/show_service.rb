@@ -1,7 +1,7 @@
 class Manual::ShowService
-  def initialize(manual_id:, context:)
+  def initialize(manual_id:, user:)
     @manual_id = manual_id
-    @context = context
+    @user = user
   end
 
   def call
@@ -12,10 +12,10 @@ private
 
   attr_reader(
     :manual_id,
-    :context,
+    :user,
   )
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
+    @manual ||= Manual.find(manual_id, user)
   end
 end

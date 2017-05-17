@@ -15,7 +15,7 @@ class ManualsController < ApplicationController
   def show
     service = Manual::ShowService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     slug_unique = manual.slug_unique?(current_user)
@@ -59,7 +59,7 @@ class ManualsController < ApplicationController
   def edit
     service = Manual::ShowService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 
@@ -87,7 +87,7 @@ class ManualsController < ApplicationController
   def edit_original_publication_date
     service = Manual::ShowService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 
