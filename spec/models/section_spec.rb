@@ -580,50 +580,6 @@ describe Section do
     end
   end
 
-  describe "#attributes" do
-    let(:relevant_section_attrs) {
-      {
-        "title" => "section_title",
-      }
-    }
-
-    let(:undesirable_edtion_attrs) {
-      {
-        "junk_key" => "junk_value",
-      }
-    }
-
-    let(:edition) {
-      draft_edition_v2.tap do |e|
-        allow(e).to receive(:attributes).and_return(relevant_section_attrs.merge(undesirable_edtion_attrs))
-      end
-    }
-
-    let(:editions) { [published_edition_v1, edition] }
-
-    it "symbolizes the keys" do
-      expect(key_classes_for(section.attributes)).to eq([Symbol])
-    end
-
-    it "returns attributes with junk removed" do
-      expect(section.attributes).not_to include(
-        undesirable_edtion_attrs.symbolize_keys
-      )
-    end
-
-    it "returns the latest edition's attributes" do
-      expect(section.attributes).to include(
-        relevant_section_attrs.symbolize_keys
-      )
-    end
-
-    it "returns a has including the section's uuid" do
-      expect(section.attributes).to include(
-        uuid: section_uuid,
-      )
-    end
-  end
-
   describe "#find_attachment_by_id" do
     let(:editions) { [published_edition_v1] }
 

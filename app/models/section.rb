@@ -71,18 +71,6 @@ class Section
     uuid
   end
 
-  def attributes
-    latest_edition
-      .attributes
-      .symbolize_keys
-      .select { |k, _|
-        self.class.edition_attributes.include?(k)
-      }
-      .merge(
-        uuid: uuid,
-      )
-  end
-
   def update(params)
     params = params
       .select { |k, _| allowed_update_params.include?(k.to_s) }
