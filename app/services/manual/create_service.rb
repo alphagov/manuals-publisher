@@ -1,9 +1,9 @@
 require "adapters"
 
 class Manual::CreateService
-  def initialize(attributes:, context:)
+  def initialize(attributes:, user:)
     @attributes = attributes
-    @context = context
+    @user = user
   end
 
   def call
@@ -19,7 +19,7 @@ private
 
   attr_reader(
     :attributes,
-    :context,
+    :user,
   )
 
   def manual
@@ -27,11 +27,11 @@ private
   end
 
   def persist
-    manual.save(context.current_user)
+    manual.save(user)
   end
 
   def export_draft_to_publishing_api
-    reloaded_manual = Manual.find(manual.id, context.current_user)
+    reloaded_manual = Manual.find(manual.id, user)
     Adapters.publishing.save(reloaded_manual)
   end
 end

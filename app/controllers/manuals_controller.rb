@@ -42,7 +42,7 @@ class ManualsController < ApplicationController
   def create
     service = Manual::CreateService.new(
       attributes: create_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     manual = manual_form(manual)
