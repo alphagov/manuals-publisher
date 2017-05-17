@@ -22,7 +22,6 @@ class Section
       :updated_at,
       :version_number,
       :change_note,
-      :change_history,
       :minor_update,
       :public_updated_at
     ]
