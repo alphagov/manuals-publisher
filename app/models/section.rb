@@ -84,6 +84,10 @@ class Section
     if draft?
       latest_edition.assign_attributes(params)
     else
+      previous_edition_attributes = latest_edition.attributes
+        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
+        .symbolize_keys
+
       attributes = previous_edition_attributes
         .merge(new_edition_defaults)
         .merge(params)
@@ -205,12 +209,6 @@ private
 
   def most_recent_non_draft
     editions.reject(&:draft?).last
-  end
-
-  def previous_edition_attributes
-    latest_edition.attributes
-      .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
-      .symbolize_keys
   end
 
   def allowed_update_params
