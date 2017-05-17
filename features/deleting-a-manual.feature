@@ -1,5 +1,5 @@
-Feature: Script to delete a manual
-  the `bin/delete_draft_manual` script should delete a given manual and all its
+Feature: Rake task to delete a manual
+  the `delete_draft_manual` Rake task should delete a given manual and all its
   sections and its slug is no longer reserved
 
   Background:
