@@ -2,11 +2,10 @@ require "spec_helper"
 
 RSpec.describe Manual::ListService do
   let(:user) { double(:user) }
-  let(:context) { double(:context, current_user: user) }
 
   subject {
     Manual::ListService.new(
-      context: context,
+      user: user,
     )
   }
 

@@ -5,7 +5,7 @@ class ManualsController < ApplicationController
 
   def index
     service = Manual::ListService.new(
-      context: self,
+      user: current_user,
     )
     all_manuals = service.call
 

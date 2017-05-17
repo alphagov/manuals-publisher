@@ -1,13 +1,13 @@
 class Manual::ListService
-  def initialize(context:)
-    @context = context
+  def initialize(user:)
+    @user = user
   end
 
   def call
-    Manual.all(context.current_user, load_associations: false)
+    Manual.all(user, load_associations: false)
   end
 
 private
 
-  attr_reader :context
+  attr_reader :user
 end
