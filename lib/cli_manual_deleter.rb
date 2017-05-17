@@ -1,4 +1,4 @@
-require "services"
+require "adapters"
 
 class CliManualDeleter
   def initialize(manual_slug: nil, manual_id: nil, stdin: STDIN, stdout: STDOUT)
@@ -79,24 +79,17 @@ private
   end
 
   def complete_removal(manual)
-    manual.sections.each { |section| discard_draft_from_publishing_api(section.uuid) }
-    discard_draft_from_publishing_api(manual.id)
+    Adapters.publishing.discard(manual)
 
     manual.destroy
 
     log "Manual destroyed."
     log "--------------------------------------------------------"
+  rescue GdsApi::HTTPNotFound
+    log "Draft for #{manual.id} or its sections already discarded."
   end
 
   def log(message)
     stdout.puts(message)
-  end
-
-  def discard_draft_from_publishing_api(content_id)
-    begin
-      Services.publishing_api.discard_draft(content_id)
-    rescue GdsApi::HTTPNotFound
-      log "Draft for #{content_id} already discarded."
-    end
   end
 end
