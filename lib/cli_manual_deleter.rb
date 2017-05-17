@@ -16,8 +16,9 @@ class CliManualDeleter
 
   def call
     manual_record = find_manual_record
+    manual = Manual.build_manual_for(manual_record)
 
-    user_must_confirm(manual_record)
+    user_must_confirm(manual)
 
     complete_removal(manual_record)
   end
@@ -63,12 +64,12 @@ private
     end
   end
 
-  def user_must_confirm(manual_record)
-    number_of_sections = section_uuids_for(manual_record).count
+  def user_must_confirm(manual)
+    number_of_sections = manual.sections.count
     log "### PLEASE CONFIRM -------------------------------------"
-    log "Manual to be deleted: #{manual_record.slug}"
-    log "Organisation: #{manual_record.organisation_slug}"
-    log "This manual has #{number_of_sections} sections, and was last edited at #{manual_record.updated_at}"
+    log "Manual to be deleted: #{manual.slug}"
+    log "Organisation: #{manual.organisation_slug}"
+    log "This manual has #{number_of_sections} sections, and was last edited at #{manual.updated_at}"
     log "Type 'y' to proceed and delete this manual or anything else to exit:"
 
     response = stdin.gets
