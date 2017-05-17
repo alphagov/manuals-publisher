@@ -194,6 +194,8 @@ private
   end
 
   def published_edition
+    most_recent_non_draft = editions.reject(&:draft?).last
+
     if most_recent_non_draft && most_recent_non_draft.published?
       most_recent_non_draft
     end
@@ -205,10 +207,6 @@ private
       version_number: 1,
       section_uuid: uuid,
     }
-  end
-
-  def most_recent_non_draft
-    editions.reject(&:draft?).last
   end
 
   def change_note_ok
