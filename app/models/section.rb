@@ -134,12 +134,6 @@ class Section
     attachments.find { |a| a.id.to_s == attachment_id }
   end
 
-  def published_edition
-    if most_recent_non_draft && most_recent_non_draft.published?
-      most_recent_non_draft
-    end
-  end
-
   def needs_exporting?
     latest_edition.exported_at.nil?
   end
@@ -181,6 +175,12 @@ class Section
 private
 
   attr_reader :slug_generator
+
+  def published_edition
+    if most_recent_non_draft && most_recent_non_draft.published?
+      most_recent_non_draft
+    end
+  end
 
   def new_edition_defaults
     {
