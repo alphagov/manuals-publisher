@@ -972,4 +972,14 @@ describe Manual do
       expect(manual.publication_logs).to eq([publication_log])
     end
   end
+
+  describe "#destroy" do
+    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+
+    it "destroys underlying manual record" do
+      manual.destroy
+
+      expect(ManualRecord.find_by(id: manual_record.id)).not_to be_present
+    end
+  end
 end

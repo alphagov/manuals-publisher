@@ -340,5 +340,10 @@ class Manual
     PublicationLog.change_notes_for(slug)
   end
 
+  def destroy
+    manual_record = ManualRecord.find_by(manual_id: id)
+    manual_record.destroy
+  end
+
   class RemovedSectionIdNotFoundError < StandardError; end
 end

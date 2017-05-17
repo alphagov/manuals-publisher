@@ -20,7 +20,7 @@ class CliManualDeleter
 
     user_must_confirm(manual)
 
-    complete_removal(manual_record)
+    complete_removal(manual)
   end
 
 private
@@ -78,32 +78,15 @@ private
     end
   end
 
-  def section_uuids_for(manual_record)
-    manual_record.editions.flat_map(&:section_uuids).uniq
-  end
+  def complete_removal(manual)
+    manual.sections.each { |section| discard_draft_from_publishing_api(section.uuid) }
+    discard_draft_from_publishing_api(manual.id)
 
-  # Some of this method violates SRP -- we could move it out to a service if we
-  # ever decide to implement a DestroyManualService.  However, to be consistent
-  # with other services, it would accept a manual_id, rather than a slug or
-  # manual_record. Which we can only obtain here by grabbing a manual record by
-  # slug.
-  #
-  # It would then need to translate the manual_id back into a..manual_record,
-  # in order to destroy it. Which we already have available here.
-  #
-  # I'm loth to do this at this stage, given how specific the requirement
-  # driving writing of this script is.
-  def complete_removal(manual_record)
-    section_uuids = section_uuids_for(manual_record)
-
-    section_uuids.each { |id| discard_draft_from_publishing_api(id) }
-    discard_draft_from_publishing_api(manual_record.manual_id)
-
-    section_uuids.each do |id|
-      SectionEdition.all_for_section(id).map(&:destroy)
+    manual.sections.each do |section|
+      section.editions.each(&:destroy)
     end
 
-    manual_record.destroy
+    manual.destroy
 
     log "Manual destroyed."
     log "--------------------------------------------------------"
