@@ -108,13 +108,13 @@ private
     service = Manual::PublishService.new(
       manual_id: manual_record.manual_id,
       version_number: manual_version_number,
-      context: context,
+      user: user
     )
     service.call
   end
 
-  def context
-    OpenStruct.new(current_user: User.gds_editor)
+  def user
+    User.gds_editor
   end
 
   def manual_record
@@ -122,7 +122,7 @@ private
   end
 
   def manual
-    Manual.find(manual_record.manual_id, context.current_user)
+    Manual.find(manual_record.manual_id, user)
   end
 
   def manual_version_number

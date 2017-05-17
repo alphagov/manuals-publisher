@@ -8,13 +8,12 @@ RSpec.describe Manual::PublishService do
   let(:publishing_adapter) { double(:publishing_adapter) }
   let(:search_index_adapter) { double(:search_index_adapter) }
   let(:user) { double(:user) }
-  let(:context) { double(:context, current_user: user) }
 
   subject {
     Manual::PublishService.new(
       manual_id: manual_id,
       version_number: version_number,
-      context: context,
+      user: user,
     )
   }
 

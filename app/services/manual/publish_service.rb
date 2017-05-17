@@ -1,10 +1,10 @@
 require "adapters"
 
 class Manual::PublishService
-  def initialize(manual_id:, version_number:, context:)
+  def initialize(manual_id:, version_number:, user:)
     @manual_id = manual_id
     @version_number = version_number
-    @context = context
+    @user = user
   end
 
   def call
@@ -30,7 +30,7 @@ private
   attr_reader(
     :manual_id,
     :version_number,
-    :context,
+    :user,
   )
 
   def versions_match?
@@ -42,7 +42,7 @@ private
   end
 
   def persist
-    manual.save(context.current_user)
+    manual.save(user)
   end
 
   def log_publication
@@ -62,7 +62,7 @@ private
   end
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
+    @manual ||= Manual.find(manual_id, user)
   end
 
   class VersionMismatchError < StandardError

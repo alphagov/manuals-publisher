@@ -17,7 +17,7 @@ class PublishManualWorker
     service = Manual::PublishService.new(
       manual_id: task.manual_id,
       version_number: task.version_number,
-      context: context,
+      user: User.gds_editor
     )
     service.call
 
@@ -32,10 +32,6 @@ class PublishManualWorker
   end
 
 private
-
-  def context
-    OpenStruct.new(current_user: User.gds_editor)
-  end
 
   def requeue_task(manual_id, error)
     # Raise a FailedToPublishError in order for Sidekiq to catch and requeue it
