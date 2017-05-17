@@ -70,7 +70,7 @@ class ManualsController < ApplicationController
     service = Manual::UpdateService.new(
       manual_id: manual_id,
       attributes: update_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     manual = manual_form(manual)

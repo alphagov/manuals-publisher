@@ -77,7 +77,7 @@ module ManualHelpers
     service = Manual::UpdateService.new(
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
-      context: OpenStruct.new(current_user: user)
+      user: user
     )
     manual = service.call
 
