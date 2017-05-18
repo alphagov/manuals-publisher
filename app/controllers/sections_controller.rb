@@ -15,7 +15,8 @@ class SectionsController < ApplicationController
 
   def new
     service = Section::NewService.new(
-      context: self,
+      user: current_user,
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
