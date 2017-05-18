@@ -37,7 +37,7 @@ class Section
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
     @uuid = uuid
     @editions = editions
-    @editions.push(SectionEdition.new(new_edition_defaults)) if @editions.empty?
+    @editions.push(SectionEdition.new(state: "draft", version_number: 1, section_uuid: uuid)) if @editions.empty?
     @latest_edition = @editions.last
   end
 
@@ -76,7 +76,7 @@ class Section
         .symbolize_keys
 
       attributes = previous_edition_attributes
-        .merge(new_edition_defaults)
+        .merge(state: "draft", version_number: 1, section_uuid: uuid)
         .merge(params)
         .merge(
           version_number: latest_edition.version_number + 1,
@@ -182,14 +182,6 @@ private
     if most_recent_non_draft && most_recent_non_draft.published?
       most_recent_non_draft
     end
-  end
-
-  def new_edition_defaults
-    {
-      state: "draft",
-      version_number: 1,
-      section_uuid: uuid,
-    }
   end
 
   def change_note_ok
