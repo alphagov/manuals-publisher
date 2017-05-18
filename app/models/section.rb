@@ -58,11 +58,11 @@ class Section
   end
 
   def update(params)
-    allowed_update_params = [:title, :summary, :body, :change_note, :minor_update].map(&:to_s)
+    allowed_update_params = [:title, :summary, :body, :change_note, :minor_update]
 
     params = params
-      .select { |k, _| allowed_update_params.include?(k.to_s) }
       .symbolize_keys
+      .select { |k, _| allowed_update_params.include?(k) }
 
     if never_published? && params.fetch(:title, false)
       params = params.merge(
