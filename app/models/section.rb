@@ -21,7 +21,6 @@ class Section
       :body,
       :updated_at,
       :version_number,
-      # TODO: These fields expose the edition a little too directly, rethink?
       :change_note,
       :change_history,
       :minor_update,
@@ -86,7 +85,6 @@ class Section
   end
 
   def update(params)
-    # TODO: this is very defensive, we need enforce consistency of params at the boudary
     params = params
       .select { |k, _| allowed_update_params.include?(k.to_s) }
       .symbolize_keys
@@ -212,7 +210,6 @@ protected
     {
       state: "draft",
       version_number: 1,
-      # TODO: Remove persistence conern
       section_uuid: uuid,
     }
   end
