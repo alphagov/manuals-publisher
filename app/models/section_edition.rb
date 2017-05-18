@@ -15,7 +15,6 @@ class SectionEdition
   field :state, type: String
   field :change_note, type: String
   field :minor_update, type: Boolean
-  field :public_updated_at, type: DateTime
   field :exported_at, type: DateTime
 
   validates :section_uuid, presence: true

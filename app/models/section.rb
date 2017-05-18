@@ -22,8 +22,7 @@ class Section
       :updated_at,
       :version_number,
       :change_note,
-      :minor_update,
-      :public_updated_at
+      :minor_update
     ]
   end
 
@@ -218,7 +217,7 @@ protected
 
   def previous_edition_attributes
     latest_edition.attributes
-      .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update, :public_updated_at)
+      .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
       .symbolize_keys
   end
 
