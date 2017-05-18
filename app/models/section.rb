@@ -60,9 +60,7 @@ class Section
   def update(params)
     allowed_update_params = [:title, :summary, :body, :change_note, :minor_update]
 
-    params = params
-      .symbolize_keys
-      .select { |k, _| allowed_update_params.include?(k) }
+    params = params.symbolize_keys.slice(*allowed_update_params)
 
     if never_published? && params.fetch(:title, false)
       params = params.merge(
