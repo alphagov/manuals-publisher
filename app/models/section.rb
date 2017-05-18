@@ -76,7 +76,7 @@ class Section
         .symbolize_keys
 
       attributes = previous_edition_attributes
-        .merge(state: "draft", version_number: 1, section_uuid: uuid)
+        .merge(state: "draft")
         .merge(params)
         .merge(
           version_number: latest_edition.version_number + 1,
