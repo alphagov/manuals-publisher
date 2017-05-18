@@ -71,9 +71,7 @@ class Section
   end
 
   def update(params)
-    allowed_update_params = self.class.edition_attributes
-      .-([:updated_at, :slug, :version_number])
-      .map(&:to_s)
+    allowed_update_params = [:title, :summary, :body, :change_note, :minor_update].map(&:to_s)
 
     params = params
       .select { |k, _| allowed_update_params.include?(k.to_s) }
