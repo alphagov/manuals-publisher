@@ -13,22 +13,6 @@ class Section
   validates :body, presence: true, safe_html: true
   validate :change_note_ok
 
-  def self.edition_attributes
-    [
-      :title,
-      :slug,
-      :summary,
-      :body,
-      :updated_at,
-      :version_number,
-      # TODO: These fields expose the edition a little too directly, rethink?
-      :change_note,
-      :change_history,
-      :minor_update,
-      :public_updated_at
-    ]
-  end
-
   def self.find(manual, section_uuid, published: false)
     editions = SectionEdition
       .all_for_section(section_uuid)
@@ -45,7 +29,7 @@ class Section
     end
   end
 
-  def_delegators :latest_edition, *edition_attributes
+  def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update
 
   attr_reader :uuid, :editions, :latest_edition
 
@@ -53,7 +37,10 @@ class Section
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
     @uuid = uuid
     @editions = editions
-    @editions.push(create_first_edition) if @editions.empty?
+    if @editions.empty?
+      edition = SectionEdition.new(state: "draft", version_number: 1, section_uuid: uuid)
+      @editions.push(edition)
+    end
     @latest_edition = @editions.last
   end
 
@@ -73,25 +60,12 @@ class Section
     uuid
   end
 
-  def attributes
-    latest_edition
-      .attributes
-      .symbolize_keys
-      .select { |k, _|
-        self.class.edition_attributes.include?(k)
-      }
-      .merge(
-        uuid: uuid,
-      )
-  end
-
   def update(params)
-    # TODO: this is very defensive, we need enforce consistency of params at the boudary
-    params = params
-      .select { |k, _| allowed_update_params.include?(k.to_s) }
-      .symbolize_keys
+    allowed_update_params = [:title, :summary, :body, :change_note, :minor_update]
 
-    if never_published? && params.fetch(:title, false)
+    params = params.symbolize_keys.slice(*allowed_update_params)
+
+    if !published? && params.fetch(:title, false)
       params = params.merge(
         slug: slug_generator.call(params.fetch(:title))
       )
@@ -100,7 +74,20 @@ class Section
     if draft?
       latest_edition.assign_attributes(params)
     else
-      @latest_edition = new_draft(params)
+      previous_edition_attributes = latest_edition.attributes
+        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
+        .symbolize_keys
+
+      attributes = previous_edition_attributes
+        .merge(params)
+        .merge(
+          state: 'draft',
+          version_number: latest_edition.version_number + 1,
+          slug: slug,
+          attachments: attachments,
+        )
+      @latest_edition = SectionEdition.new(attributes)
+
       editions.push(@latest_edition)
     end
 
@@ -150,22 +137,6 @@ class Section
     attachments.find { |a| a.id.to_s == attachment_id }
   end
 
-  def publication_state
-    if withdrawn?
-      "withdrawn"
-    elsif published?
-      "published"
-    elsif draft?
-      "draft"
-    end
-  end
-
-  def published_edition
-    if most_recent_non_draft && most_recent_non_draft.published?
-      most_recent_non_draft
-    end
-  end
-
   def needs_exporting?
     latest_edition.exported_at.nil?
   end
@@ -184,12 +155,8 @@ class Section
     uuid.eql?(other.uuid)
   end
 
-  def never_published?
-    !published?
-  end
-
   def change_note_required?
-    !(never_published? || minor_update?)
+    published? && !minor_update?
   end
 
   def version_type
@@ -204,62 +171,16 @@ class Section
     end
   end
 
-protected
+private
 
   attr_reader :slug_generator
 
-  def new_edition_defaults
-    {
-      state: "draft",
-      version_number: 1,
-      # TODO: Remove persistence conern
-      section_uuid: uuid,
-    }
-  end
+  def published_edition
+    most_recent_non_draft = editions.reject(&:draft?).last
 
-  def create_first_edition
-    SectionEdition.new(new_edition_defaults)
-  end
-
-  def new_draft(params = {})
-    new_edition_attributes = previous_edition_attributes
-      .merge(new_edition_defaults)
-      .merge(params)
-      .merge(
-        version_number: current_version_number + 1,
-        slug: slug,
-        attachments: attachments,
-      )
-
-    SectionEdition.new(new_edition_attributes)
-  end
-
-  def current_version_number
-    latest_edition.version_number
-  end
-
-  def most_recent_non_draft
-    editions.reject(&:draft?).last
-  end
-
-  def previous_edition_attributes
-    latest_edition.attributes
-      .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update, :public_updated_at)
-      .symbolize_keys
-  end
-
-  def allowed_update_params
-    self.class.edition_attributes
-      .-(unupdatable_attributes)
-      .map(&:to_s)
-  end
-
-  def unupdatable_attributes
-    [
-      :updated_at,
-      :slug,
-      :version_number,
-    ]
+    if most_recent_non_draft && most_recent_non_draft.published?
+      most_recent_non_draft
+    end
   end
 
   def change_note_ok

@@ -68,8 +68,8 @@ RSpec.describe "Republishing manuals", type: :feature do
       check_manual_is_published_to_rummager(@manual.slug, manual_fields)
       @sections.each do |section|
         check_section_is_drafted_to_publishing_api(section.uuid, extra_attributes: {
-          title: section.attributes[:title],
-          description: section.attributes[:summary],
+          title: section.title,
+          description: section.summary,
         })
         check_section_is_published_to_publishing_api(section.uuid)
         check_section_is_published_to_rummager(section.slug, section_fields(section), manual_fields)
@@ -97,8 +97,8 @@ RSpec.describe "Republishing manuals", type: :feature do
       check_manual_is_not_published_to_rummager(@manual.slug)
       @sections.each do |section|
         check_section_is_drafted_to_publishing_api(section.uuid, extra_attributes: {
-          title: section.attributes[:title],
-          description: section.attributes[:summary],
+          title: section.title,
+          description: section.summary,
         })
         check_section_is_not_published_to_publishing_api(section.uuid)
         check_section_is_not_published_to_rummager(section.slug)

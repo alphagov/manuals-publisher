@@ -580,50 +580,6 @@ describe Section do
     end
   end
 
-  describe "#attributes" do
-    let(:relevant_section_attrs) {
-      {
-        "title" => "section_title",
-      }
-    }
-
-    let(:undesirable_edtion_attrs) {
-      {
-        "junk_key" => "junk_value",
-      }
-    }
-
-    let(:edition) {
-      draft_edition_v2.tap do |e|
-        allow(e).to receive(:attributes).and_return(relevant_section_attrs.merge(undesirable_edtion_attrs))
-      end
-    }
-
-    let(:editions) { [published_edition_v1, edition] }
-
-    it "symbolizes the keys" do
-      expect(key_classes_for(section.attributes)).to eq([Symbol])
-    end
-
-    it "returns attributes with junk removed" do
-      expect(section.attributes).not_to include(
-        undesirable_edtion_attrs.symbolize_keys
-      )
-    end
-
-    it "returns the latest edition's attributes" do
-      expect(section.attributes).to include(
-        relevant_section_attrs.symbolize_keys
-      )
-    end
-
-    it "returns a has including the section's uuid" do
-      expect(section.attributes).to include(
-        uuid: section_uuid,
-      )
-    end
-  end
-
   describe "#find_attachment_by_id" do
     let(:editions) { [published_edition_v1] }
 
@@ -652,40 +608,6 @@ describe Section do
       expect(
         section.find_attachment_by_id("does-not-exist")
       ).to be_nil
-    end
-  end
-
-  describe "#publication_state" do
-    context "when the first edition is in draft" do
-      let(:editions) { [draft_edition_v1] }
-
-      it "returns 'draft'" do
-        expect(section.publication_state).to eq("draft")
-      end
-    end
-
-    context "with a single published edition" do
-      let(:editions) { [published_edition_v1] }
-
-      it "returns 'published'" do
-        expect(section.publication_state).to eq("published")
-      end
-    end
-
-    context "with a single published edition" do
-      let(:editions) { [published_edition_v1, draft_edition_v2] }
-
-      it "returns 'published'" do
-        expect(section.publication_state).to eq("published")
-      end
-    end
-
-    context "with a published edition, and withdrawn edition" do
-      let(:editions) { [published_edition_v1, withdrawn_edition_v2] }
-
-      it "returns 'withdrawn'" do
-        expect(section.publication_state).to eq("withdrawn")
-      end
     end
   end
 
@@ -820,12 +742,12 @@ describe Section do
 
   describe "#change_note_required?" do
     before do
-      allow(section).to receive(:never_published?).and_return(never_published)
+      allow(section).to receive(:published?).and_return(published)
       allow(section).to receive(:minor_update?).and_return(minor_update)
     end
 
-    context "when never published" do
-      let(:never_published) { true }
+    context "when not published" do
+      let(:published) { false }
 
       context "and update is minor" do
         let(:minor_update) { true }
@@ -845,7 +767,7 @@ describe Section do
     end
 
     context "when has been published" do
-      let(:never_published) { false }
+      let(:published) { true }
 
       context "and update is minor" do
         let(:minor_update) { true }
