@@ -1,11 +1,12 @@
 class Attachment::UpdateService
-  def initialize(context:, attachment_params:)
+  def initialize(context:, file:, title:)
     @context = context
-    @attachment_params = attachment_params
+    @file = file
+    @title = title
   end
 
   def call
-    attachment.update_attributes(attachment_params.merge("filename" => uploaded_filename))
+    attachment.update_attributes(file: file, title: title, filename: file.original_filename)
 
     manual.save(context.current_user)
 
@@ -14,7 +15,7 @@ class Attachment::UpdateService
 
 private
 
-  attr_reader :context, :attachment_params
+  attr_reader :context, :file, :title
 
   def attachment
     @attachment ||= section.find_attachment_by_id(attachment_id)
@@ -26,10 +27,6 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, context.current_user)
-  end
-
-  def uploaded_filename
-    attachment_params.fetch(:file).original_filename
   end
 
   def manual_id
