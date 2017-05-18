@@ -92,17 +92,11 @@ module ManualHelpers
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
-    service_context = OpenStruct.new(
-      params: {
-        "manual_id" => manual.id,
-        "id" => section.uuid,
-        "section" => fields,
-      },
-      current_user: user
-    )
-
     service = Section::UpdateService.new(
-      context: service_context,
+      user: user,
+      section_uuid: section.uuid,
+      manual_id: manual.id,
+      section_params: fields
     )
     _, section = service.call
 

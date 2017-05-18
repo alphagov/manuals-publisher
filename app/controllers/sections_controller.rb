@@ -62,7 +62,10 @@ class SectionsController < ApplicationController
 
   def update
     service = Section::UpdateService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id),
+      section_params: params.fetch(:section)
     )
     manual, section = service.call
 

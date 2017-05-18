@@ -77,16 +77,17 @@ private
     user = OpenStruct.new(manual_records: manual_records)
 
     service = Section::UpdateService.new(
-      context: context_for_section_edition_update(user),
+      user: user,
+      section_uuid: context_for_section_edition_update['id'],
+      manual_id: context_for_section_edition_update['manual_id'],
+      section_params: context_for_section_edition_update['section']
     )
     _manual, section = service.call
     section.latest_edition
   end
 
-  FakeController = Struct.new(:params, :current_user)
-
-  def context_for_section_edition_update(user)
-    params_hash = {
+  def context_for_section_edition_update
+    {
       "id" => old_section_edition.section_uuid,
       "section" => {
         title: old_section_edition.title,
@@ -97,7 +98,6 @@ private
       },
       "manual_id" => manual_record.manual_id,
     }
-    FakeController.new(params_hash, user)
   end
 
   def change_note
