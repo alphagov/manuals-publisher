@@ -13,19 +13,6 @@ class Section
   validates :body, presence: true, safe_html: true
   validate :change_note_ok
 
-  def self.edition_attributes
-    [
-      :title,
-      :slug,
-      :summary,
-      :body,
-      :updated_at,
-      :version_number,
-      :change_note,
-      :minor_update
-    ]
-  end
-
   def self.find(manual, section_uuid, published: false)
     editions = SectionEdition
       .all_for_section(section_uuid)
@@ -42,7 +29,7 @@ class Section
     end
   end
 
-  def_delegators :latest_edition, *edition_attributes
+  def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update
 
   attr_reader :uuid, :editions, :latest_edition
 
