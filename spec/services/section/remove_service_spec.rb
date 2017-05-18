@@ -15,20 +15,12 @@ RSpec.describe Section::RemoveService do
 
   let(:user) { double(:user) }
 
-  let(:service_context) {
-    double(
-      params: {
-        "id" => section_uuid,
-        "manual_id" => "ABC",
-        "section" => change_note_params
-      },
-      current_user: user
-    )
-  }
-
   let(:service) {
     described_class.new(
-      context: service_context,
+      user: user,
+      section_uuid: section_uuid,
+      manual_id: "ABC",
+      section_params: change_note_params
     )
   }
   let(:publishing_adapter) { spy(PublishingAdapter) }
