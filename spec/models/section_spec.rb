@@ -742,12 +742,12 @@ describe Section do
 
   describe "#change_note_required?" do
     before do
-      allow(section).to receive(:never_published?).and_return(never_published)
+      allow(section).to receive(:published?).and_return(published)
       allow(section).to receive(:minor_update?).and_return(minor_update)
     end
 
-    context "when never published" do
-      let(:never_published) { true }
+    context "when not published" do
+      let(:published) { false }
 
       context "and update is minor" do
         let(:minor_update) { true }
@@ -767,7 +767,7 @@ describe Section do
     end
 
     context "when has been published" do
-      let(:never_published) { false }
+      let(:published) { true }
 
       context "and update is minor" do
         let(:minor_update) { true }

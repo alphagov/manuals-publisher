@@ -62,7 +62,7 @@ class Section
 
     params = params.symbolize_keys.slice(*allowed_update_params)
 
-    if never_published? && params.fetch(:title, false)
+    if !published? && params.fetch(:title, false)
       params = params.merge(
         slug: slug_generator.call(params.fetch(:title))
       )
@@ -153,7 +153,7 @@ class Section
   end
 
   def change_note_required?
-    !(never_published? || minor_update?)
+    !(!published? || minor_update?)
   end
 
   def version_type
@@ -171,10 +171,6 @@ class Section
 private
 
   attr_reader :slug_generator
-
-  def never_published?
-    !published?
-  end
 
   def published_edition
     most_recent_non_draft = editions.reject(&:draft?).last
