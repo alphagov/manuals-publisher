@@ -29,7 +29,10 @@ class SectionAttachmentsController < ApplicationController
 
   def edit
     service = Attachment::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:section_id),
+      manual_id: params.fetch(:manual_id),
+      attachment_id: params.fetch(:id)
     )
     manual, section, attachment = service.call
 
