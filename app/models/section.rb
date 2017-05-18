@@ -244,6 +244,7 @@ protected
 
   def previous_edition_attributes
     latest_edition.attributes
+      .slice(:_id, :section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update, :public_updated_at, :exported_at, :created_at, :updated_at)
       .except(*no_copy_attributes)
       .symbolize_keys
   end

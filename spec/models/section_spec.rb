@@ -360,7 +360,8 @@ describe Section do
           "_id" => "superfluous id",
           "updated_at" => "superfluous timestamp",
           "body" => edition_body,
-        }
+          "arbitrary_attribute" => "arbitrary-attribute"
+        }.with_indifferent_access
       }
 
       before do
@@ -380,6 +381,13 @@ describe Section do
 
         expect(SectionEdition).to have_received(:new)
           .with(hash_including(body: edition_body))
+      end
+
+      it "excludes attributes not defined as fields on the section edition" do
+        section.update(params)
+
+        expect(SectionEdition).to_not have_received(:new)
+          .with(hash_including(arbitrary_attribute: anything))
       end
 
       it "filters the previous edition's attributes" do
