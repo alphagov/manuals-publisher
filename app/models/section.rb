@@ -37,7 +37,10 @@ class Section
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
     @uuid = uuid
     @editions = editions
-    @editions.push(SectionEdition.new(state: "draft", version_number: 1, section_uuid: uuid)) if @editions.empty?
+    if @editions.empty?
+      edition = SectionEdition.new(state: "draft", version_number: 1, section_uuid: uuid)
+      @editions.push(edition)
+    end
     @latest_edition = @editions.last
   end
 
