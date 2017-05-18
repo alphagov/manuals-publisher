@@ -1,11 +1,12 @@
 class Attachment::CreateService
-  def initialize(context:, attachment_params:)
+  def initialize(context:, file:, title:)
     @context = context
-    @attachment_params = attachment_params
+    @file = file
+    @title = title
   end
 
   def call
-    attachment = section.add_attachment(file: @attachment_params.fetch(:file), title: @attachment_params.fetch(:title))
+    attachment = section.add_attachment(file: file, title: title)
 
     manual.save(context.current_user)
 
@@ -14,7 +15,7 @@ class Attachment::CreateService
 
 private
 
-  attr_reader :context
+  attr_reader :context, :file, :title
 
   def section
     @section ||= manual.sections.find { |s| s.uuid == section_uuid }
