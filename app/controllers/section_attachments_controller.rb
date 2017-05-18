@@ -46,6 +46,7 @@ class SectionAttachmentsController < ApplicationController
   def update
     service = Attachment::UpdateService.new(
       context: self,
+      attachment_params: attachment_params
     )
     manual, section, attachment = service.call
 
