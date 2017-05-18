@@ -1,6 +1,7 @@
 class Section::ListService
-  def initialize(context:)
-    @context = context
+  def initialize(user:, manual_id:)
+    @user = user
+    @manual_id = manual_id
   end
 
   def call
@@ -9,17 +10,13 @@ class Section::ListService
 
 private
 
-  attr_reader :context
+  attr_reader :user, :manual_id
 
   def sections
     manual.sections
   end
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
-  end
-
-  def manual_id
-    context.params.fetch("manual_id")
+    @manual ||= Manual.find(manual_id, user)
   end
 end

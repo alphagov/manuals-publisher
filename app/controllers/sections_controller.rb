@@ -96,7 +96,8 @@ class SectionsController < ApplicationController
 
   def reorder
     service = Section::ListService.new(
-      context: self,
+      user: current_user,
+      manual_id: params.fetch(:manual_id)
     )
     manual, sections = service.call
 
