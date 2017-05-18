@@ -1,10 +1,11 @@
 class Attachment::CreateService
-  def initialize(context:)
+  def initialize(context:, attachment_params:)
     @context = context
+    @attachment_params = attachment_params
   end
 
   def call
-    attachment = section.add_attachment(attachment_params)
+    attachment = section.add_attachment(@attachment_params)
 
     manual.save(context.current_user)
 
@@ -21,10 +22,6 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, context.current_user)
-  end
-
-  def attachment_params
-    context.params.require("attachment").permit(:title, :file)
   end
 
   def manual_id

@@ -15,6 +15,7 @@ class SectionAttachmentsController < ApplicationController
   def create
     service = Attachment::CreateService.new(
       context: self,
+      attachment_params: attachment_params
     )
     manual, section, _attachment = service.call
 
@@ -49,5 +50,11 @@ class SectionAttachmentsController < ApplicationController
         attachment: attachment,
       })
     end
+  end
+
+private
+
+  def attachment_params
+    params.require("attachment").permit(:title, :file)
   end
 end
