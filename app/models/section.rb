@@ -153,7 +153,7 @@ class Section
   end
 
   def change_note_required?
-    !(!published? || minor_update?)
+    published? && !minor_update?
   end
 
   def version_type
