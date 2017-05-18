@@ -20,15 +20,15 @@ describe Manual do
   }
 
   let(:id) { "0123-4567-89ab-cdef" }
-  let(:updated_at) { double(:updated_at) }
-  let(:originally_published_at) { double(:originally_published_at) }
-  let(:use_originally_published_at_for_public_timestamp) { double(:use_originally_published_at_for_public_timestamp) }
-  let(:title) { double(:title) }
-  let(:summary) { double(:summary) }
-  let(:body) { double(:body) }
-  let(:organisation_slug) { double(:organisation_slug) }
-  let(:state) { double(:state) }
-  let(:slug) { double(:slug) }
+  let(:updated_at) { Time.parse("2001-01-01") }
+  let(:originally_published_at) { DateTime.parse("2002-02-02") }
+  let(:use_originally_published_at_for_public_timestamp) { false }
+  let(:title) { "manual-title" }
+  let(:summary) { "manual-summary" }
+  let(:body) { "manual-body" }
+  let(:organisation_slug) { "organisation-slug" }
+  let(:state) { "manual-state" }
+  let(:slug) { "manual-slug" }
 
   it "rasies an error without an ID" do
     expect {
@@ -172,10 +172,10 @@ describe Manual do
     end
 
     context "with allowed attirbutes" do
-      let(:new_title) { double(:new_title) }
-      let(:new_summary) { double(:new_summary) }
-      let(:new_organisation_slug) { double(:new_organisation_slug) }
-      let(:new_state) { double(:new_state) }
+      let(:new_title) { "new-manual-title" }
+      let(:new_summary) { "new-manual-summary" }
+      let(:new_organisation_slug) { "new-organisation-slug" }
+      let(:new_state) { "new-manual-state" }
 
       it "updates with the given attributes" do
         manual.update(
@@ -202,8 +202,8 @@ describe Manual do
     end
 
     context "with disallowed attributes" do
-      let(:new_id) { double(:new_id) }
-      let(:new_updated_at) { double(:new_updated_at) }
+      let(:new_id) { "new-manual-id" }
+      let(:new_updated_at) { Time.parse("2003-03-03") }
 
       it "does not update the attributes" do
         manual.update(
