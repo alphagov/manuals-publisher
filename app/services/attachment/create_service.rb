@@ -5,7 +5,7 @@ class Attachment::CreateService
   end
 
   def call
-    attachment = section.add_attachment(@attachment_params)
+    attachment = section.add_attachment(file: @attachment_params.fetch(:file), title: @attachment_params.fetch(:title))
 
     manual.save(context.current_user)
 
