@@ -3,7 +3,9 @@ class SectionsController < ApplicationController
 
   def show
     service = Section::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
@@ -46,7 +48,9 @@ class SectionsController < ApplicationController
 
   def edit
     service = Section::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
@@ -129,7 +133,9 @@ class SectionsController < ApplicationController
 
   def withdraw
     service = Section::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
