@@ -74,7 +74,10 @@ class SectionsController < ApplicationController
 
   def preview
     service = Section::PreviewService.new(
-      context: self,
+      user: current_user,
+      section_params: params.fetch(:section),
+      section_uuid: params.fetch(:id, nil),
+      manual_id: params.fetch(:manual_id, nil)
     )
     section = service.call
 
