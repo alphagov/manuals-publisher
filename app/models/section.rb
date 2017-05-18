@@ -244,7 +244,7 @@ protected
 
   def previous_edition_attributes
     latest_edition.attributes
-      .except(*no_copy_attributes)
+      .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update, :public_updated_at)
       .symbolize_keys
   end
 
@@ -259,15 +259,6 @@ protected
       :updated_at,
       :slug,
       :version_number,
-    ]
-  end
-
-  def no_copy_attributes
-    %w[
-      _id
-      created_at
-      updated_at
-      exported_at
     ]
   end
 
