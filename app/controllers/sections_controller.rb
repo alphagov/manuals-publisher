@@ -113,7 +113,9 @@ class SectionsController < ApplicationController
 
   def update_order
     service = Section::ReorderService.new(
-      context: self,
+      user: current_user,
+      manual_id: params.fetch(:manual_id),
+      section_order: params.fetch(:section_order)
     )
     manual, _sections = service.call
 
