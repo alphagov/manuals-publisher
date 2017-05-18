@@ -1,7 +1,9 @@
 class SectionAttachmentsController < ApplicationController
   def new
     service = Attachment::NewService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:section_id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section, attachment = service.call
 
