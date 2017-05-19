@@ -111,25 +111,37 @@ describe ManualRelocator do
         }.not_to raise_error
       end
 
-      it "does not raises an error if the existing manual is currently published, regardless of the previous edition state" do
-        previous_edition = ManualRecord::Edition.new(section_uuids: %w(12345 23456 34567), version_number: 1, state: "withdrawn")
-        existing_manual.editions << previous_edition
-        existing_manual.editions << ManualRecord::Edition.new(section_uuids: %w(12345 23456 34567), version_number: 2, state: "published")
-        temp_manual.editions << ManualRecord::Edition.new(section_uuids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "published")
+      context "if the existing manual is currently published" do
+        let(:previous_edition) do
+          ManualRecord::Edition.new(section_uuids: %w(12345 23456 34567), version_number: 1)
+        end
 
-        expect {
-          subject.move!
-        }.not_to raise_error
+        before do
+          existing_manual.editions << previous_edition
+          existing_manual.editions << ManualRecord::Edition.new(section_uuids: %w(12345 23456 34567), version_number: 2, state: "published")
+          temp_manual.editions << ManualRecord::Edition.new(section_uuids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "published")
+        end
 
-        previous_edition.set(state: "published")
-        expect {
-          subject.move!
-        }.not_to raise_error
+        it "does not raises an error even if previous edition is withdrawn" do
+          previous_edition.set(state: "withdrawn")
+          expect {
+            subject.move!
+          }.not_to raise_error
+        end
 
-        previous_edition.set(state: "draft")
-        expect {
-          subject.move!
-        }.not_to raise_error
+        it "does not raises an error even if previous edition is published" do
+          previous_edition.set(state: "published")
+          expect {
+            subject.move!
+          }.not_to raise_error
+        end
+
+        it "does not raises an error even if previous edition is draft" do
+          previous_edition.set(state: "draft")
+          expect {
+            subject.move!
+          }.not_to raise_error
+        end
       end
 
       it "does not raises an error if the existing manual has previously been published, but is currently draft" do
@@ -151,25 +163,37 @@ describe ManualRelocator do
         }.not_to raise_error
       end
 
-      it "does not raises an error if the temp manual is currently published, regardless of the previous edition state" do
-        existing_manual.editions << ManualRecord::Edition.new(section_uuids: %w(12345 23456 34567), version_number: 1, state: "published")
-        previous_edition = ManualRecord::Edition.new(section_uuids: %w(abcdef bcdefg cdefgh), version_number: 1, state: "withdrawn")
-        temp_manual.editions << previous_edition
-        temp_manual.editions << ManualRecord::Edition.new(section_uuids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "published")
+      context "if the temp manual is currently published" do
+        let(:previous_edition) do
+          ManualRecord::Edition.new(section_uuids: %w(abcdef bcdefg cdefgh), version_number: 1)
+        end
 
-        expect {
-          subject.move!
-        }.not_to raise_error
+        before do
+          existing_manual.editions << ManualRecord::Edition.new(section_uuids: %w(12345 23456 34567), version_number: 1, state: "published")
+          temp_manual.editions << previous_edition
+          temp_manual.editions << ManualRecord::Edition.new(section_uuids: %w(abcdef bcdefg cdefgh), version_number: 2, state: "published")
+        end
 
-        previous_edition.set(state: "published")
-        expect {
-          subject.move!
-        }.not_to raise_error
+        it "does not raises an error even if previous edition is withdrawn" do
+          previous_edition.set(state: "withdrawn")
+          expect {
+            subject.move!
+          }.not_to raise_error
+        end
 
-        previous_edition.set(state: "draft")
-        expect {
-          subject.move!
-        }.not_to raise_error
+        it "does not raises an error even if previous edition is published" do
+          previous_edition.set(state: "published")
+          expect {
+            subject.move!
+          }.not_to raise_error
+        end
+
+        it "does not raises an error even if previous edition is draft" do
+          previous_edition.set(state: "draft")
+          expect {
+            subject.move!
+          }.not_to raise_error
+        end
       end
 
       it "does not raises an error if the temp manual has previously been published, but is currently draft" do

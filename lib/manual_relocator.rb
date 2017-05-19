@@ -155,7 +155,7 @@ private
     # Reslug the existing publication logs
     puts "Reslugging publication logs for #{from_slug} to #{to_slug}"
     new_manual.publication_logs.each do |publication_log|
-      publication_log.set(:slug, publication_log.slug.gsub(from_slug, to_slug))
+      publication_log.set(slug: publication_log.slug.gsub(from_slug, to_slug))
     end
 
     # Clean up manual sections belonging to the temporary manual path
