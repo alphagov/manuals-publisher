@@ -78,26 +78,18 @@ private
 
     service = Section::UpdateService.new(
       user: user,
-      section_uuid: context_for_section_edition_update['id'],
-      manual_id: context_for_section_edition_update['manual_id'],
-      section_params: context_for_section_edition_update['section']
-    )
-    _manual, section = service.call
-    section.latest_edition
-  end
-
-  def context_for_section_edition_update
-    {
-      "id" => old_section_edition.section_uuid,
-      "section" => {
+      section_uuid: old_section_edition.section_uuid,
+      manual_id: manual_record.manual_id,
+      section_params: {
         title: old_section_edition.title,
         summary: old_section_edition.summary,
         body: old_section_edition.body,
         minor_update: false,
         change_note: change_note
-      },
-      "manual_id" => manual_record.manual_id,
-    }
+      }
+    )
+    _manual, section = service.call
+    section.latest_edition
   end
 
   def change_note
