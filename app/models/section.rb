@@ -171,6 +171,10 @@ class Section
     end
   end
 
+  def all_editions
+    SectionEdition.all_for_section(uuid)
+  end
+
 private
 
   attr_reader :slug_generator
