@@ -5,7 +5,7 @@ class ManualsController < ApplicationController
 
   def index
     service = Manual::ListService.new(
-      context: self,
+      user: current_user,
     )
     all_manuals = service.call
 
@@ -15,7 +15,7 @@ class ManualsController < ApplicationController
   def show
     service = Manual::ShowService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     slug_unique = manual.slug_unique?(current_user)
@@ -42,7 +42,7 @@ class ManualsController < ApplicationController
   def create
     service = Manual::CreateService.new(
       attributes: create_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -59,7 +59,7 @@ class ManualsController < ApplicationController
   def edit
     service = Manual::ShowService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 
@@ -70,7 +70,7 @@ class ManualsController < ApplicationController
     service = Manual::UpdateService.new(
       manual_id: manual_id,
       attributes: update_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -87,7 +87,7 @@ class ManualsController < ApplicationController
   def edit_original_publication_date
     service = Manual::ShowService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 
@@ -98,7 +98,7 @@ class ManualsController < ApplicationController
     service = Manual::UpdateOriginalPublicationDateService.new(
       manual_id: manual_id,
       attributes: publication_date_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -115,7 +115,7 @@ class ManualsController < ApplicationController
   def publish
     service = Manual::QueuePublishService.new(
       manual_id: manual_id,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 
@@ -129,7 +129,7 @@ class ManualsController < ApplicationController
     service = Manual::PreviewService.new(
       manual_id: params[:id],
       attributes: update_manual_params,
-      context: self,
+      user: current_user,
     )
     manual = service.call
 

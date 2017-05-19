@@ -23,7 +23,7 @@ module ManualHelpers
 
     service = Manual::CreateService.new(
       attributes: fields.merge(organisation_slug: organisation_slug),
-      context: OpenStruct.new(current_user: user)
+      user: user
     )
     manual = service.call
 
@@ -44,16 +44,10 @@ module ManualHelpers
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
-    create_service_context = OpenStruct.new(
-      params: {
-        "manual_id" => manual.id,
-        "section" => fields,
-      },
-      current_user: user
-    )
-
     service = Section::CreateService.new(
-      context: create_service_context,
+      user: user,
+      manual_id: manual.id,
+      section_params: fields,
     )
     _, section = service.call
 
@@ -77,7 +71,7 @@ module ManualHelpers
     service = Manual::UpdateService.new(
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
-      context: OpenStruct.new(current_user: user)
+      user: user
     )
     manual = service.call
 
@@ -98,17 +92,11 @@ module ManualHelpers
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
-    service_context = OpenStruct.new(
-      params: {
-        "manual_id" => manual.id,
-        "id" => section.uuid,
-        "section" => fields,
-      },
-      current_user: user
-    )
-
     service = Section::UpdateService.new(
-      context: service_context,
+      user: user,
+      section_uuid: section.uuid,
+      manual_id: manual.id,
+      section_params: fields
     )
     _, section = service.call
 
@@ -155,12 +143,10 @@ module ManualHelpers
   def publish_manual_without_ui(manual, organisation_slug: "ministry-of-tea")
     stub_manual_publication_observers(organisation_slug)
 
-    user = FactoryGirl.build(:gds_editor)
-
     service = Manual::PublishService.new(
       manual_id: manual.id,
       version_number: manual.version_number,
-      context: OpenStruct.new(current_user: user)
+      user: FactoryGirl.build(:gds_editor)
     )
     service.call
   end

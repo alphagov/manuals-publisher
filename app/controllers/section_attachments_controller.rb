@@ -1,7 +1,9 @@
 class SectionAttachmentsController < ApplicationController
   def new
     service = Attachment::NewService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:section_id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section, attachment = service.call
 
@@ -14,7 +16,11 @@ class SectionAttachmentsController < ApplicationController
 
   def create
     service = Attachment::CreateService.new(
-      context: self,
+      file: attachment_params.fetch(:file),
+      title: attachment_params.fetch(:title),
+      section_uuid: params.fetch(:section_id),
+      user: current_user,
+      manual_id: params.fetch(:manual_id)
     )
     manual, section, _attachment = service.call
 
@@ -23,7 +29,10 @@ class SectionAttachmentsController < ApplicationController
 
   def edit
     service = Attachment::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:section_id),
+      manual_id: params.fetch(:manual_id),
+      attachment_id: params.fetch(:id)
     )
     manual, section, attachment = service.call
 
@@ -36,7 +45,12 @@ class SectionAttachmentsController < ApplicationController
 
   def update
     service = Attachment::UpdateService.new(
-      context: self,
+      file: attachment_params.fetch(:file),
+      title: attachment_params.fetch(:title),
+      user: current_user,
+      attachment_id: params.fetch(:id),
+      manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:section_id)
     )
     manual, section, attachment = service.call
 
@@ -49,5 +63,11 @@ class SectionAttachmentsController < ApplicationController
         attachment: attachment,
       })
     end
+  end
+
+private
+
+  def attachment_params
+    params.require("attachment").permit(:title, :file)
   end
 end

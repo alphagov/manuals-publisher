@@ -1,6 +1,9 @@
 class Attachment::ShowService
-  def initialize(context:)
-    @context = context
+  def initialize(user:, section_uuid:, manual_id:, attachment_id:)
+    @user = user
+    @section_uuid = section_uuid
+    @manual_id = manual_id
+    @attachment_id = attachment_id
   end
 
   def call
@@ -9,7 +12,7 @@ class Attachment::ShowService
 
 private
 
-  attr_reader :context
+  attr_reader :user, :section_uuid, :manual_id, :attachment_id
 
   def attachment
     @attachment ||= section.find_attachment_by_id(attachment_id)
@@ -20,18 +23,6 @@ private
   end
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
-  end
-
-  def manual_id
-    context.params.fetch("manual_id")
-  end
-
-  def section_uuid
-    context.params.fetch("section_id")
-  end
-
-  def attachment_id
-    context.params.fetch("id")
+    @manual ||= Manual.find(manual_id, user)
   end
 end

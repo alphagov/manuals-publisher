@@ -1,8 +1,11 @@
 require "adapters"
 
 class Section::RemoveService
-  def initialize(context:)
-    @context = context
+  def initialize(user:, section_uuid:, manual_id:, section_params:)
+    @user = user
+    @section_uuid = section_uuid
+    @manual_id = manual_id
+    @section_params = section_params
   end
 
   def call
@@ -25,14 +28,14 @@ class Section::RemoveService
 
 private
 
-  attr_reader :context
+  attr_reader :user, :section_uuid, :manual_id, :section_params
 
   def remove
     manual.remove_section(section_uuid)
   end
 
   def persist
-    manual.save(context.current_user)
+    manual.save(user)
   end
 
   def section
@@ -40,21 +43,12 @@ private
   end
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
+    @manual ||= Manual.find(manual_id, user)
   rescue KeyError
     raise ManualNotFoundError.new(manual_id)
   end
 
-  def section_uuid
-    context.params.fetch("id")
-  end
-
-  def manual_id
-    context.params.fetch("manual_id")
-  end
-
   def change_note_params
-    section_params = context.params.fetch("section")
     {
       "minor_update" => section_params.fetch("minor_update", "0"),
       "change_note" => section_params.fetch("change_note", ""),

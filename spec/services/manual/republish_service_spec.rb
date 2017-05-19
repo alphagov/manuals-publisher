@@ -8,12 +8,11 @@ RSpec.describe Manual::RepublishService do
   let(:search_index_adapter) { double(:search_index_adapter) }
   let(:manual) { double(:manual) }
   let(:user) { double(:user) }
-  let(:context) { double(:context, current_user: user) }
 
   subject {
     described_class.new(
       manual_id: manual_id,
-      context: context,
+      user: user,
     )
   }
 

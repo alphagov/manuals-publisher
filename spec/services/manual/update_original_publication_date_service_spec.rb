@@ -8,7 +8,6 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
   let(:sections) { [section_1, section_2] }
   let(:originally_published_at) { 10.years.ago }
   let(:publishing_adapter) { double(:publishing_adapter) }
-  let(:context) { double(:context, current_user: user) }
   let(:user) { double(:user) }
 
   subject {
@@ -19,7 +18,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
         use_originally_published_at_for_public_timestamp: "1",
         title: "hats",
       },
-      context: context
+      user: user
     )
   }
 

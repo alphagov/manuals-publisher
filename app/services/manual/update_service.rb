@@ -1,10 +1,10 @@
 require "adapters"
 
 class Manual::UpdateService
-  def initialize(manual_id:, attributes:, context:)
+  def initialize(manual_id:, attributes:, user:)
     @manual_id = manual_id
     @attributes = attributes
-    @context = context
+    @user = user
   end
 
   def call
@@ -21,7 +21,7 @@ private
   attr_reader(
     :manual_id,
     :attributes,
-    :context,
+    :user,
   )
 
   def update
@@ -29,15 +29,15 @@ private
   end
 
   def persist
-    manual.save(context.current_user)
+    manual.save(user)
   end
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
+    @manual ||= Manual.find(manual_id, user)
   end
 
   def export_draft_to_publishing_api
-    reloaded_manual = Manual.find(manual.id, context.current_user)
+    reloaded_manual = Manual.find(manual.id, user)
     Adapters.publishing.save(reloaded_manual)
   end
 end

@@ -1,6 +1,8 @@
 class Attachment::NewService
-  def initialize(context:)
-    @context = context
+  def initialize(manual_id:, section_uuid:, user:)
+    @manual_id = manual_id
+    @section_uuid = section_uuid
+    @user = user
   end
 
   def call
@@ -9,7 +11,7 @@ class Attachment::NewService
 
 private
 
-  attr_reader :context
+  attr_reader :manual_id, :section_uuid, :user
 
   def attachment
     Attachment.new(initial_params)
@@ -20,18 +22,10 @@ private
   end
 
   def manual
-    @manual ||= Manual.find(manual_id, context.current_user)
+    @manual ||= Manual.find(manual_id, user)
   end
 
   def initial_params
     {}
-  end
-
-  def manual_id
-    context.params.fetch("manual_id")
-  end
-
-  def section_uuid
-    context.params.fetch("section_id")
   end
 end

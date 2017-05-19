@@ -3,7 +3,9 @@ class SectionsController < ApplicationController
 
   def show
     service = Section::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
@@ -15,7 +17,8 @@ class SectionsController < ApplicationController
 
   def new
     service = Section::NewService.new(
-      context: self,
+      user: current_user,
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
@@ -27,7 +30,9 @@ class SectionsController < ApplicationController
 
   def create
     service = Section::CreateService.new(
-      context: self,
+      user: current_user,
+      manual_id: params.fetch(:manual_id),
+      section_params: params.fetch(:section)
     )
     manual, section = service.call
 
@@ -43,7 +48,9 @@ class SectionsController < ApplicationController
 
   def edit
     service = Section::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
@@ -55,7 +62,10 @@ class SectionsController < ApplicationController
 
   def update
     service = Section::UpdateService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id),
+      section_params: params.fetch(:section)
     )
     manual, section = service.call
 
@@ -71,7 +81,10 @@ class SectionsController < ApplicationController
 
   def preview
     service = Section::PreviewService.new(
-      context: self,
+      user: current_user,
+      section_params: params.fetch(:section),
+      section_uuid: params.fetch(:id, nil),
+      manual_id: params.fetch(:manual_id, nil)
     )
     section = service.call
 
@@ -94,7 +107,8 @@ class SectionsController < ApplicationController
 
   def reorder
     service = Section::ListService.new(
-      context: self,
+      user: current_user,
+      manual_id: params.fetch(:manual_id)
     )
     manual, sections = service.call
 
@@ -106,7 +120,9 @@ class SectionsController < ApplicationController
 
   def update_order
     service = Section::ReorderService.new(
-      context: self,
+      user: current_user,
+      manual_id: params.fetch(:manual_id),
+      section_order: params.fetch(:section_order)
     )
     manual, _sections = service.call
 
@@ -120,7 +136,9 @@ class SectionsController < ApplicationController
 
   def withdraw
     service = Section::ShowService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id)
     )
     manual, section = service.call
 
@@ -132,7 +150,10 @@ class SectionsController < ApplicationController
 
   def destroy
     service = Section::RemoveService.new(
-      context: self,
+      user: current_user,
+      section_uuid: params.fetch(:id),
+      manual_id: params.fetch(:manual_id),
+      section_params: params.fetch(:section)
     )
     manual, section = service.call
 

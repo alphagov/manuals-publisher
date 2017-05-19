@@ -1,6 +1,9 @@
 class Section::PreviewService
-  def initialize(context:)
-    @context = context
+  def initialize(user:, section_params:, section_uuid:, manual_id:)
+    @user = user
+    @section_params = section_params
+    @section_uuid = section_uuid
+    @manual_id = manual_id
   end
 
   def call
@@ -11,16 +14,14 @@ class Section::PreviewService
 
 private
 
-  attr_reader(
-    :context,
-  )
+  attr_reader :user, :section_params, :section_uuid, :manual_id
 
   def section
     section_uuid ? existing_section : ephemeral_section
   end
 
   def manual
-    Manual.find(manual_id, context.current_user)
+    Manual.find(manual_id, user)
   end
 
   def ephemeral_section
@@ -31,17 +32,5 @@ private
     @existing_section ||= manual.sections.find { |section|
       section.uuid == section_uuid
     }
-  end
-
-  def section_params
-    context.params.fetch("section")
-  end
-
-  def section_uuid
-    context.params.fetch("id", nil)
-  end
-
-  def manual_id
-    context.params.fetch("manual_id", nil)
   end
 end
