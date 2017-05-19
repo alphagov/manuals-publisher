@@ -1066,4 +1066,12 @@ describe Manual do
       end
     end
   end
+
+  describe "#editions" do
+    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+
+    it "returns editions from underlying manual record" do
+      expect(manual.editions).to eq(manual_record.editions)
+    end
+  end
 end

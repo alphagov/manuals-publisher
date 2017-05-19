@@ -363,5 +363,10 @@ class Manual
     manual_record.destroy
   end
 
+  def editions
+    manual_record = ManualRecord.find_by(manual_id: id)
+    manual_record.editions
+  end
+
   class RemovedSectionIdNotFoundError < StandardError; end
 end
