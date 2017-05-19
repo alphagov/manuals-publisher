@@ -8,25 +8,19 @@ class AttachmentReporting
   end
 
   def create_organisation_attachment_count_hash
-    manual_records = ManualRecord.all
-    unique_owning_organisation_slugs = manual_records.map(&:organisation_slug).uniq
+    manuals = Manual.all(User.gds_editor).to_a
+    unique_owning_organisation_slugs = manuals.map(&:organisation_slug).uniq
 
     # Hash of organisation names mapped to three-element arrays of counts of PDFs, one count for each time period
     organisation_published_pdfs_counts_hash = Hash[unique_owning_organisation_slugs.map { |o| [o, [0, 0, 0]] }]
 
-    manual_records.to_a.each do |manual|
+    manuals.each do |manual|
       next unless manual.has_ever_been_published?
 
       unique_pdf_attachment_file_ids_for_manual = Set.new
 
-      # Rather than examine each manual edition and its set of section editions and attachments in turn,
-      # we instead get all unique section ids associated with this manual, then walk through
-      # the editions of these sections in version order to find unique PDF attachments and their
-      # publication times.
-      all_unique_section_uuids_for_manual(manual).each do |section_uuid|
-        section_editions = SectionEdition.all_for_section(section_uuid).order_by([:version_number, :asc])
-
-        section_editions.each do |section_edition|
+      manual.sections.each do |section|
+        section.all_editions.sort_by(&:version_number).each do |section_edition|
           next if section_edition_never_published?(section_edition)
 
           section_edition.attachments.each do |attachment|
@@ -77,9 +71,5 @@ private
 
   def section_edition_never_published?(section_edition)
     !POST_PUBLICATION_STATES.include?(section_edition.state)
-  end
-
-  def all_unique_section_uuids_for_manual(manual)
-    manual.editions.map(&:section_uuids).flatten.uniq
   end
 end

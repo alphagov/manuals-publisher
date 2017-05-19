@@ -874,4 +874,16 @@ describe Section do
       end
     end
   end
+
+  describe "#all_editions" do
+    let(:editions) { [FactoryGirl.build(:section_edition)] }
+
+    before do
+      allow(SectionEdition).to receive(:all_for_section).with(section_uuid).and_return(editions)
+    end
+
+    it "returns all editions for section" do
+      expect(section.all_editions).to eq(editions)
+    end
+  end
 end
