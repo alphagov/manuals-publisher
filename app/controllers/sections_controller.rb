@@ -32,7 +32,7 @@ class SectionsController < ApplicationController
     service = Section::CreateService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      section_params: params.fetch(:section)
+      attributes: params.fetch(:section)
     )
     manual, section = service.call
 
@@ -65,7 +65,7 @@ class SectionsController < ApplicationController
       user: current_user,
       section_uuid: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
-      section_params: params.fetch(:section)
+      attributes: params.fetch(:section)
     )
     manual, section = service.call
 
@@ -82,7 +82,7 @@ class SectionsController < ApplicationController
   def preview
     service = Section::PreviewService.new(
       user: current_user,
-      section_params: params.fetch(:section),
+      attributes: params.fetch(:section),
       section_uuid: params.fetch(:id, nil),
       manual_id: params.fetch(:manual_id, nil)
     )
@@ -153,7 +153,7 @@ class SectionsController < ApplicationController
       user: current_user,
       section_uuid: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
-      section_params: params.fetch(:section)
+      attributes: params.fetch(:section)
     )
     manual, section = service.call
 

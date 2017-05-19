@@ -72,9 +72,9 @@ private
 
     service = Section::UpdateService.new(
       user: user,
-      section_uuid: old_section_edition.section_uuid,
       manual_id: manual.id,
-      section_params: {
+      section_uuid: old_section_edition.section_uuid,
+      attributes: {
         title: old_section_edition.title,
         summary: old_section_edition.summary,
         body: old_section_edition.body,
