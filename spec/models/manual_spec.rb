@@ -1074,4 +1074,13 @@ describe Manual do
       expect(manual.editions).to eq(manual_record.editions)
     end
   end
+
+  describe "#set" do
+    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+
+    it "sets attributes on underlying manual record" do
+      manual.set(slug: "new-slug")
+      expect(manual_record.reload.slug).to eq("new-slug")
+    end
+  end
 end
