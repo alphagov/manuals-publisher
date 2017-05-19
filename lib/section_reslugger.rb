@@ -79,7 +79,7 @@ private
     service = Section::UpdateService.new(
       user: user,
       section_uuid: old_section_edition.section_uuid,
-      manual_id: manual_record.manual_id,
+      manual_id: manual.id,
       section_params: {
         title: old_section_edition.title,
         summary: old_section_edition.summary,
@@ -98,7 +98,7 @@ private
 
   def publish_manual
     service = Manual::PublishService.new(
-      manual_id: manual_record.manual_id,
+      manual_id: manual.id,
       version_number: manual_version_number,
       user: user
     )
@@ -150,7 +150,7 @@ private
   end
 
   def full_section_slug(slug)
-    "#{manual_record.slug}/#{slug}"
+    "#{manual.slug}/#{slug}"
   end
 
   def remove_from_search_index(section)
