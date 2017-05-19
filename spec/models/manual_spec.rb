@@ -1016,4 +1016,54 @@ describe Manual do
       end
     end
   end
+
+  describe ".find_by_slug!" do
+    let(:user) { FactoryGirl.create(:gds_editor) }
+
+    context "when a manual record with the given slug exists" do
+      let!(:manual_record) do
+        FactoryGirl.create(:manual_record, slug: "manual-slug")
+      end
+
+      it "builds and returns a manual from the manual record and its edition" do
+        manual = Manual.find_by_slug!("manual-slug", user)
+        expect(manual).to be_an_instance_of(Manual)
+        expect(manual.id).to eq(manual_record.manual_id)
+      end
+
+      context "but user does not have access to manual record" do
+        let(:user) { FactoryGirl.create(:generic_editor_of_another_organisation) }
+
+        it "raises Manual::NotFoundError" do
+          expect {
+            Manual.find_by_slug!("manual-slug", user)
+          }.to raise_error(Manual::NotFoundError)
+        end
+      end
+    end
+
+    context "when a manual record with the given slug does not exist" do
+      it "raises Manual::NotFoundError" do
+        expect {
+          Manual.find_by_slug!("manual-slug", user)
+        }.to raise_error(Manual::NotFoundError)
+      end
+    end
+
+    context "when multiple manual records with the given slug exist" do
+      let!(:manual_record) do
+        FactoryGirl.create(:manual_record, slug: "manual-slug")
+      end
+
+      let!(:another_manual_record) do
+        FactoryGirl.create(:manual_record, slug: manual_record.slug)
+      end
+
+      it "raises Manual::AmbiguousSlugError" do
+        expect {
+          Manual.find_by_slug!("manual-slug", user)
+        }.to raise_error(Manual::AmbiguousSlugError)
+      end
+    end
+  end
 end
