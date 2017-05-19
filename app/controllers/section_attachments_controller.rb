@@ -16,8 +16,7 @@ class SectionAttachmentsController < ApplicationController
 
   def create
     service = Attachment::CreateService.new(
-      file: attachment_params.fetch(:file),
-      title: attachment_params.fetch(:title),
+      attributes: attachment_params,
       section_uuid: params.fetch(:section_id),
       user: current_user,
       manual_id: params.fetch(:manual_id)
