@@ -20,7 +20,7 @@ RSpec.describe Section::RemoveService do
       user: user,
       section_uuid: section_uuid,
       manual_id: "ABC",
-      section_params: change_note_params
+      attributes: change_note_params
     )
   }
   let(:publishing_adapter) { spy(PublishingAdapter) }

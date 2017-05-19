@@ -1,11 +1,11 @@
 require "adapters"
 
 class Section::RemoveService
-  def initialize(user:, section_uuid:, manual_id:, section_params:)
+  def initialize(user:, section_uuid:, manual_id:, attributes:)
     @user = user
     @section_uuid = section_uuid
     @manual_id = manual_id
-    @section_params = section_params
+    @attributes = attributes
   end
 
   def call
@@ -28,7 +28,7 @@ class Section::RemoveService
 
 private
 
-  attr_reader :user, :section_uuid, :manual_id, :section_params
+  attr_reader :user, :section_uuid, :manual_id, :attributes
 
   def remove
     manual.remove_section(section_uuid)
@@ -50,8 +50,8 @@ private
 
   def change_note_params
     {
-      "minor_update" => section_params.fetch("minor_update", "0"),
-      "change_note" => section_params.fetch("change_note", ""),
+      "minor_update" => attributes.fetch("minor_update", "0"),
+      "change_note" => attributes.fetch("change_note", ""),
     }
   end
 

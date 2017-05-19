@@ -1,20 +1,20 @@
 class Section::PreviewService
-  def initialize(user:, section_params:, section_uuid:, manual_id:)
+  def initialize(user:, attributes:, section_uuid:, manual_id:)
     @user = user
-    @section_params = section_params
+    @attributes = attributes
     @section_uuid = section_uuid
     @manual_id = manual_id
   end
 
   def call
-    section.update(section_params)
+    section.update(attributes)
 
     SectionPresenter.new(section)
   end
 
 private
 
-  attr_reader :user, :section_params, :section_uuid, :manual_id
+  attr_reader :user, :attributes, :section_uuid, :manual_id
 
   def section
     section_uuid ? existing_section : ephemeral_section
@@ -25,7 +25,7 @@ private
   end
 
   def ephemeral_section
-    manual.build_section(section_params)
+    manual.build_section(attributes)
   end
 
   def existing_section

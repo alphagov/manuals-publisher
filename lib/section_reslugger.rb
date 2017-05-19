@@ -80,7 +80,7 @@ private
       user: user,
       section_uuid: context_for_section_edition_update['id'],
       manual_id: context_for_section_edition_update['manual_id'],
-      section_params: context_for_section_edition_update['section']
+      attributes: context_for_section_edition_update['section']
     )
     _manual, section = service.call
     section.latest_edition

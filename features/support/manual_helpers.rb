@@ -47,7 +47,7 @@ module ManualHelpers
     service = Section::CreateService.new(
       user: user,
       manual_id: manual.id,
-      section_params: fields,
+      attributes: fields,
     )
     _, section = service.call
 
@@ -96,7 +96,7 @@ module ManualHelpers
       user: user,
       section_uuid: section.uuid,
       manual_id: manual.id,
-      section_params: fields
+      attributes: fields
     )
     _, section = service.call
 
