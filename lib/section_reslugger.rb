@@ -25,13 +25,8 @@ class SectionReslugger
 private
 
   def validate
-    validate_manual
     validate_old_section
     validate_new_section
-  end
-
-  def validate_manual
-    raise Error.new("Manual not found for manual_slug `#{@manual_slug}`") if manual_record.nil?
   end
 
   def validate_old_section
@@ -109,12 +104,10 @@ private
     User.gds_editor
   end
 
-  def manual_record
-    @manual_record ||= ManualRecord.where(slug: @manual_slug).last
-  end
-
   def manual
-    Manual.find(manual_record.manual_id, user)
+    Manual.find_by_slug!(@manual_slug, user)
+  rescue Manual::NotFoundError, Manual::AmbiguousSlugError => e
+    raise Error.new(e.message)
   end
 
   def manual_version_number
