@@ -1,8 +1,8 @@
 class Section::ShowService
-  def initialize(user:, section_uuid:, manual_id:)
+  def initialize(user:, manual_id:, section_uuid:)
     @user = user
-    @section_uuid = section_uuid
     @manual_id = manual_id
+    @section_uuid = section_uuid
   end
 
   def call
@@ -11,7 +11,7 @@ class Section::ShowService
 
 private
 
-  attr_reader :user, :section_uuid, :manual_id
+  attr_reader :user, :manual_id, :section_uuid
 
   def section
     @section ||= manual.sections.find { |s| s.uuid == section_uuid }

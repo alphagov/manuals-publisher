@@ -11,8 +11,8 @@ RSpec.describe Manual::RepublishService do
 
   subject {
     described_class.new(
-      manual_id: manual_id,
       user: user,
+      manual_id: manual_id
     )
   }
 

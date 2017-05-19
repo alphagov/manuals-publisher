@@ -1,10 +1,10 @@
 require "adapters"
 
 class Manual::PublishService
-  def initialize(manual_id:, version_number:, user:)
+  def initialize(user:, manual_id:, version_number:)
+    @user = user
     @manual_id = manual_id
     @version_number = version_number
-    @user = user
   end
 
   def call
@@ -27,11 +27,7 @@ class Manual::PublishService
 
 private
 
-  attr_reader(
-    :manual_id,
-    :version_number,
-    :user,
-  )
+  attr_reader :user, :manual_id, :version_number
 
   def versions_match?
     version_number == manual.version_number

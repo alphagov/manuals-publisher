@@ -92,9 +92,9 @@ private
 
   def publish_manual
     service = Manual::PublishService.new(
+      user: user,
       manual_id: manual.id,
-      version_number: manual_version_number,
-      user: user
+      version_number: manual_version_number
     )
     service.call
   end

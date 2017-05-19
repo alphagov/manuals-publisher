@@ -1,10 +1,10 @@
 require "adapters"
 
 class Section::UpdateService
-  def initialize(user:, section_uuid:, manual_id:, attributes:)
+  def initialize(user:, manual_id:, section_uuid:, attributes:)
     @user = user
-    @section_uuid = section_uuid
     @manual_id = manual_id
+    @section_uuid = section_uuid
     @attributes = attributes
   end
 
@@ -23,7 +23,7 @@ class Section::UpdateService
 
 private
 
-  attr_reader :user, :section_uuid, :manual_id, :attributes, :listeners
+  attr_reader :user, :manual_id, :section_uuid, :attributes, :listeners
 
   def section
     @section ||= manual.sections.find { |s| s.uuid == section_uuid }

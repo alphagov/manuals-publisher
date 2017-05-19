@@ -18,8 +18,8 @@ RSpec.describe Section::RemoveService do
   let(:service) {
     described_class.new(
       user: user,
-      section_uuid: section_uuid,
       manual_id: "ABC",
+      section_uuid: section_uuid,
       attributes: change_note_params
     )
   }

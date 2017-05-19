@@ -1,10 +1,10 @@
 class Attachment::UpdateService
-  def initialize(attributes:, user:, manual_id:, section_uuid:, attachment_id:)
+  def initialize(user:, attachment_id:, manual_id:, section_uuid:, attributes:)
     @user = user
-    @attributes = attributes
+    @attachment_id = attachment_id
     @manual_id = manual_id
     @section_uuid = section_uuid
-    @attachment_id = attachment_id
+    @attributes = attributes
   end
 
   def call
@@ -17,7 +17,7 @@ class Attachment::UpdateService
 
 private
 
-  attr_reader :user, :attributes, :manual_id, :section_uuid, :attachment_id
+  attr_reader :user, :attachment_id, :manual_id, :section_uuid, :attributes
 
   def attachment
     @attachment ||= section.find_attachment_by_id(attachment_id)

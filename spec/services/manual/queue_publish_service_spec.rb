@@ -7,7 +7,7 @@ RSpec.describe Manual::QueuePublishService do
   let(:draft) { true }
   let(:user) { double(:user) }
 
-  subject { Manual::QueuePublishService.new(manual_id: manual_id, user: user) }
+  subject { Manual::QueuePublishService.new(user: user, manual_id: manual_id) }
 
   before do
     allow(Manual).to receive(:find) { manual }

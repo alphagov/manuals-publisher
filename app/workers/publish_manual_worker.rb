@@ -15,9 +15,9 @@ class PublishManualWorker
     task.start!
 
     service = Manual::PublishService.new(
+      user: User.gds_editor,
       manual_id: task.manual_id,
-      version_number: task.version_number,
-      user: User.gds_editor
+      version_number: task.version_number
     )
     service.call
 

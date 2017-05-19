@@ -14,8 +14,8 @@ class ManualsRepublisher
       begin
         logger.info("[ #{i} / #{count} ] id=#{manual.id} slug=#{manual.slug}]")
         service = Manual::RepublishService.new(
-          manual_id: manual.id,
           user: User.gds_editor,
+          manual_id: manual.id
         )
         service.call
       rescue Manual::RemovedSectionIdNotFoundError => e

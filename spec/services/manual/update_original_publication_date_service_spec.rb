@@ -12,13 +12,13 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
 
   subject {
     described_class.new(
+      user: user,
       manual_id: manual_id,
       attributes: {
         originally_published_at: originally_published_at,
         use_originally_published_at_for_public_timestamp: "1",
         title: "hats",
-      },
-      user: user
+      }
     )
   }
 
