@@ -15,61 +15,46 @@ class ManualRelocator
   end
 
   def move!
-    validate_manual_records
+    validate_manuals
     redirect_and_remove
     reslug
     redraft_and_republish
   end
 
-  def old_manual_record
-    @old_manual_record ||= fetch_manual_record(to_slug)
-  end
-
-  def new_manual_record
-    @new_manual_record ||= fetch_manual_record(from_slug)
-  end
-
   def old_manual
-    Manual.build_manual_for(old_manual_record, load_associations: false)
+    @old_manual ||= Manual.find_by_slug!(to_slug, User.gds_editor)
   end
 
   def new_manual
-    Manual.build_manual_for(new_manual_record, load_associations: false)
+    @new_manual ||= Manual.find_by_slug!(from_slug, User.gds_editor)
   end
 
 private
 
-  def fetch_manual_record(slug)
-    manual_records = ManualRecord.where(slug: slug)
-    raise "No manual found for slug '#{slug}'" if manual_records.count == 0
-    raise "More than one manual found for slug '#{slug}'" if manual_records.count > 1
-    manual_records.first
-  end
-
   def old_section_uuids
-    @old_section_uuids ||= old_manual_record.editions.flat_map(&:section_uuids).uniq
+    @old_section_uuids ||= old_manual.editions.flat_map(&:section_uuids).uniq
   end
 
   def new_section_uuids
-    @new_section_uuids ||= new_manual_record.editions.flat_map(&:section_uuids).uniq
+    @new_section_uuids ||= new_manual.editions.flat_map(&:section_uuids).uniq
   end
 
-  def validate_manual_records
-    raise "Manual to remove (#{to_slug}) should be published" unless manual_is_currently_published?(old_manual_record)
-    raise "Manual to reslug (#{from_slug}) should be published" unless manual_is_currently_published?(new_manual_record)
+  def validate_manuals
+    raise "Manual to remove (#{to_slug}) should be published" unless manual_is_currently_published?(old_manual)
+    raise "Manual to reslug (#{from_slug}) should be published" unless manual_is_currently_published?(new_manual)
   end
 
-  def manual_is_currently_published?(manual_record)
+  def manual_is_currently_published?(manual)
     # to be currently published either...
     # 1. the latest edition is published
-    (manual_record.latest_edition.state == "published") ||
+    manual.published? ||
     # or
     # 2. the last two editions are published and draft
-      (manual_record.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
+      (manual.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
   end
 
   def redirect_and_remove
-    if old_manual_record.editions.any?
+    if old_manual.editions.any?
       # Redirect all sections of the manual we're going to remove
       # to prevent dead bookmarked URLs.
       old_section_uuids.each do |section_uuid|
@@ -77,14 +62,14 @@ private
         section_slug = editions.first.slug
 
         begin
-          if old_sections_reused_in_new_manual_record.include? section_uuid
-            puts "Issuing gone for content item '/#{section_slug}' as it will be reused by a section in '#{new_manual_record.slug}'"
+          if old_sections_reused_in_new_manual.include? section_uuid
+            puts "Issuing gone for content item '/#{section_slug}' as it will be reused by a section in '#{new_manual.slug}'"
             send_gone(section_uuid, section_slug)
           else
-            puts "Redirecting content item '/#{section_slug}' to '/#{old_manual_record.slug}'"
+            puts "Redirecting content item '/#{section_slug}' to '/#{old_manual.slug}'"
             publishing_api.unpublish(section_uuid,
                                      type: "redirect",
-                                     alternative_path: "/#{old_manual_record.slug}",
+                                     alternative_path: "/#{old_manual.slug}",
                                      discard_drafts: true)
           end
         rescue GdsApi::HTTPNotFound
@@ -100,18 +85,18 @@ private
     old_manual.publication_logs.each(&:destroy)
 
     # Destroy the manual record
-    puts "Destroying manual #{old_manual_record.manual_id}"
-    old_manual_record.destroy
+    puts "Destroying manual #{old_manual.id}"
+    old_manual.destroy
 
-    puts "Issuing gone for #{old_manual_record.manual_id}"
-    send_gone(old_manual_record.manual_id, old_manual_record.slug)
+    puts "Issuing gone for #{old_manual.id}"
+    send_gone(old_manual.id, old_manual.slug)
   end
 
-  def old_sections_reused_in_new_manual_record
-    @old_sections_reused_in_new_manual_record ||= _calculate_old_sections_reused_in_new_manual_record
+  def old_sections_reused_in_new_manual
+    @old_sections_reused_in_new_manual ||= _calculate_old_sections_reused_in_new_manual
   end
 
-  def _calculate_old_sections_reused_in_new_manual_record
+  def _calculate_old_sections_reused_in_new_manual
     old_section_uuids_and_section_slugs = old_section_uuids.map do |section_uuid|
       [section_uuid, most_recent_edition_of_section(section_uuid).slug.gsub(to_slug, "")]
     end
@@ -149,8 +134,8 @@ private
     end
 
     # Reslug the manual
-    puts "Reslugging manual '#{new_manual_record.slug}' as '#{to_slug}'"
-    new_manual_record.set(slug: to_slug)
+    puts "Reslugging manual '#{new_manual.slug}' as '#{to_slug}'"
+    new_manual.set(slug: to_slug)
 
     # Reslug the existing publication logs
     puts "Reslugging publication logs for #{from_slug} to #{to_slug}"
@@ -169,8 +154,8 @@ private
     end
 
     # Clean up the drafted manual in the Publishing API
-    puts "Redirecting #{new_manual_record.manual_id} to '/#{to_slug}'"
-    publishing_api.unpublish(new_manual_record.manual_id,
+    puts "Redirecting #{new_manual.id} to '/#{to_slug}'"
+    publishing_api.unpublish(new_manual.id,
                              type: "redirect",
                              alternative_path: "/#{to_slug}",
                              discard_drafts: true)
