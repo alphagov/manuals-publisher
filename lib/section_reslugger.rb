@@ -68,8 +68,7 @@ private
   end
 
   def new_edition_for_slug_change
-    manual_records = ManualRecord.all
-    user = OpenStruct.new(manual_records: manual_records)
+    user = User.gds_editor
 
     service = Section::UpdateService.new(
       user: user,
