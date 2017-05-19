@@ -15,8 +15,7 @@ class CliManualDeleter
   end
 
   def call
-    manual_record = find_manual_record
-    manual = Manual.build_manual_for(manual_record)
+    manual = find_manual
 
     user_must_confirm(manual)
 
@@ -27,39 +26,20 @@ private
 
   attr_reader :manual_slug, :manual_id, :stdin, :stdout
 
-  def find_manual_record
-    manual_records = if manual_id
-                       ManualRecord.where(manual_id: manual_id)
-                     else
-                       ManualRecord.where(slug: manual_slug)
-                     end
+  def find_manual
+    user = User.gds_editor
+    manual = if manual_id
+               Manual.find(manual_id, user)
+             else
+               Manual.find_by_slug!(manual_slug, user)
+             end
 
-    validate_manual_records(manual_records)
-
-    manual_records.first.tap do |manual_record|
-      validate_never_published(manual_record)
-    end
+    validate_never_published(manual)
+    manual
   end
 
-  def validate_manual_records(records)
-    unless records.any?
-      if manual_id
-        raise "No manual found for ID: #{manual_id}"
-      else
-        raise "No manual found for slug: #{manual_slug}"
-      end
-    end
-    if records.size > 1
-      if manual_id
-        raise "Ambiguous ID: #{manual_id}"
-      else
-        raise "Ambiguous slug: #{manual_slug}"
-      end
-    end
-  end
-
-  def validate_never_published(manual_record)
-    unless manual_record.editions.all? { |e| e.state == "draft" }
+  def validate_never_published(manual)
+    unless manual.editions.all? { |e| e.state == "draft" }
       raise "Cannot delete; is published or has been previously published."
     end
   end
