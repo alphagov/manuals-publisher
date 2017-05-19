@@ -15,18 +15,18 @@ class ManualRelocator
   end
 
   def move!
-    validate_manuals
+    validate_manual_records
     redirect_and_remove
     reslug
     redraft_and_republish
   end
 
   def old_manual_record
-    @old_manual_record ||= fetch_manual(to_slug)
+    @old_manual_record ||= fetch_manual_record(to_slug)
   end
 
   def new_manual_record
-    @new_manual_record ||= fetch_manual(from_slug)
+    @new_manual_record ||= fetch_manual_record(from_slug)
   end
 
   def old_manual
@@ -39,11 +39,11 @@ class ManualRelocator
 
 private
 
-  def fetch_manual(slug)
-    manuals = ManualRecord.where(slug: slug)
-    raise "No manual found for slug '#{slug}'" if manuals.count == 0
-    raise "More than one manual found for slug '#{slug}'" if manuals.count > 1
-    manuals.first
+  def fetch_manual_record(slug)
+    manual_records = ManualRecord.where(slug: slug)
+    raise "No manual found for slug '#{slug}'" if manual_records.count == 0
+    raise "More than one manual found for slug '#{slug}'" if manual_records.count > 1
+    manual_records.first
   end
 
   def old_section_uuids
@@ -54,18 +54,18 @@ private
     @new_section_uuids ||= new_manual_record.editions.flat_map(&:section_uuids).uniq
   end
 
-  def validate_manuals
+  def validate_manual_records
     raise "Manual to remove (#{to_slug}) should be published" unless manual_is_currently_published?(old_manual_record)
     raise "Manual to reslug (#{from_slug}) should be published" unless manual_is_currently_published?(new_manual_record)
   end
 
-  def manual_is_currently_published?(manual)
+  def manual_is_currently_published?(manual_record)
     # to be currently published either...
     # 1. the latest edition is published
-    (manual.latest_edition.state == "published") ||
+    (manual_record.latest_edition.state == "published") ||
     # or
     # 2. the last two editions are published and draft
-      (manual.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
+      (manual_record.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
   end
 
   def redirect_and_remove
