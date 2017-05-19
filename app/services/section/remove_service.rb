@@ -1,10 +1,10 @@
 require "adapters"
 
 class Section::RemoveService
-  def initialize(user:, section_uuid:, manual_id:, attributes:)
+  def initialize(user:, manual_id:, section_uuid:, attributes:)
     @user = user
-    @section_uuid = section_uuid
     @manual_id = manual_id
+    @section_uuid = section_uuid
     @attributes = attributes
   end
 
@@ -28,7 +28,7 @@ class Section::RemoveService
 
 private
 
-  attr_reader :user, :section_uuid, :manual_id, :attributes
+  attr_reader :user, :manual_id, :section_uuid, :attributes
 
   def remove
     manual.remove_section(section_uuid)

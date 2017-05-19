@@ -1,8 +1,8 @@
 class Attachment::NewService
-  def initialize(manual_id:, section_uuid:, user:)
+  def initialize(user:, manual_id:, section_uuid:)
+    @user = user
     @manual_id = manual_id
     @section_uuid = section_uuid
-    @user = user
   end
 
   def call
@@ -11,7 +11,7 @@ class Attachment::NewService
 
 private
 
-  attr_reader :manual_id, :section_uuid, :user
+  attr_reader :user, :manual_id, :section_uuid
 
   def attachment
     Attachment.new(initial_params)

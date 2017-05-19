@@ -22,8 +22,8 @@ module ManualHelpers
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = Manual::CreateService.new(
-      attributes: fields.merge(organisation_slug: organisation_slug),
-      user: user
+      user: user,
+      attributes: fields.merge(organisation_slug: organisation_slug)
     )
     manual = service.call
 
@@ -69,9 +69,9 @@ module ManualHelpers
     user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = Manual::UpdateService.new(
+      user: user,
       manual_id: manual.id,
-      attributes: fields.merge(organisation_slug: organisation_slug),
-      user: user
+      attributes: fields.merge(organisation_slug: organisation_slug)
     )
     manual = service.call
 
@@ -94,8 +94,8 @@ module ManualHelpers
 
     service = Section::UpdateService.new(
       user: user,
-      section_uuid: section.uuid,
       manual_id: manual.id,
+      section_uuid: section.uuid,
       attributes: fields
     )
     _, section = service.call
@@ -144,9 +144,9 @@ module ManualHelpers
     stub_manual_publication_observers(organisation_slug)
 
     service = Manual::PublishService.new(
+      user: FactoryGirl.build(:gds_editor),
       manual_id: manual.id,
-      version_number: manual.version_number,
-      user: FactoryGirl.build(:gds_editor)
+      version_number: manual.version_number
     )
     service.call
   end

@@ -1,9 +1,9 @@
 require "adapters"
 
 class Manual::CreateService
-  def initialize(attributes:, user:)
-    @attributes = attributes
+  def initialize(user:, attributes:)
     @user = user
+    @attributes = attributes
   end
 
   def call
@@ -17,10 +17,7 @@ class Manual::CreateService
 
 private
 
-  attr_reader(
-    :attributes,
-    :user,
-  )
+  attr_reader :user, :attributes
 
   def manual
     @manual ||= Manual.build(attributes)

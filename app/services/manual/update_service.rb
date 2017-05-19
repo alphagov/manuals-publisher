@@ -1,10 +1,10 @@
 require "adapters"
 
 class Manual::UpdateService
-  def initialize(manual_id:, attributes:, user:)
+  def initialize(user:, manual_id:, attributes:)
+    @user = user
     @manual_id = manual_id
     @attributes = attributes
-    @user = user
   end
 
   def call
@@ -18,11 +18,7 @@ class Manual::UpdateService
 
 private
 
-  attr_reader(
-    :manual_id,
-    :attributes,
-    :user,
-  )
+  attr_reader :user, :manual_id, :attributes
 
   def update
     manual.update(attributes)

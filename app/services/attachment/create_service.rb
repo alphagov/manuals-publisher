@@ -1,9 +1,9 @@
 class Attachment::CreateService
-  def initialize(attributes:, section_uuid:, user:, manual_id:)
-    @attributes = attributes
-    @section_uuid = section_uuid
+  def initialize(user:, manual_id:, section_uuid:, attributes:)
     @user = user
     @manual_id = manual_id
+    @section_uuid = section_uuid
+    @attributes = attributes
   end
 
   def call
@@ -16,7 +16,7 @@ class Attachment::CreateService
 
 private
 
-  attr_reader :attributes, :section_uuid, :user, :manual_id
+  attr_reader :user, :manual_id, :section_uuid, :attributes
 
   def section
     @section ||= manual.sections.find { |s| s.uuid == section_uuid }

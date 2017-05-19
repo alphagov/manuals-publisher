@@ -4,8 +4,8 @@ class SectionsController < ApplicationController
   def show
     service = Section::ShowService.new(
       user: current_user,
-      section_uuid: params.fetch(:id),
-      manual_id: params.fetch(:manual_id)
+      manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:id)
     )
     manual, section = service.call
 
@@ -49,8 +49,8 @@ class SectionsController < ApplicationController
   def edit
     service = Section::ShowService.new(
       user: current_user,
-      section_uuid: params.fetch(:id),
-      manual_id: params.fetch(:manual_id)
+      manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:id)
     )
     manual, section = service.call
 
@@ -63,8 +63,8 @@ class SectionsController < ApplicationController
   def update
     service = Section::UpdateService.new(
       user: current_user,
-      section_uuid: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:id),
       attributes: params.fetch(:section)
     )
     manual, section = service.call
@@ -82,9 +82,9 @@ class SectionsController < ApplicationController
   def preview
     service = Section::PreviewService.new(
       user: current_user,
-      attributes: params.fetch(:section),
+      manual_id: params.fetch(:manual_id, nil),
       section_uuid: params.fetch(:id, nil),
-      manual_id: params.fetch(:manual_id, nil)
+      attributes: params.fetch(:section)
     )
     section = service.call
 
@@ -137,8 +137,8 @@ class SectionsController < ApplicationController
   def withdraw
     service = Section::ShowService.new(
       user: current_user,
-      section_uuid: params.fetch(:id),
-      manual_id: params.fetch(:manual_id)
+      manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:id)
     )
     manual, section = service.call
 
@@ -151,8 +151,8 @@ class SectionsController < ApplicationController
   def destroy
     service = Section::RemoveService.new(
       user: current_user,
-      section_uuid: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:id),
       attributes: params.fetch(:section)
     )
     manual, section = service.call
