@@ -4,7 +4,8 @@ require "manual"
 
 describe Manual do
   subject(:manual) {
-    Manual.new(
+    FactoryGirl.build(
+      :manual,
       id: id,
       slug: slug,
       title: title,
@@ -39,26 +40,26 @@ describe Manual do
   describe "#eql?" do
     it "is considered the same as another manual instance if they have the same id" do
       expect(manual).to eql(manual)
-      expect(manual).to eql(Manual.new(id: manual.id))
-      expect(manual).not_to eql(Manual.new(id: manual.id.reverse))
+      expect(manual).to eql(FactoryGirl.build(:manual, id: manual.id))
+      expect(manual).not_to eql(FactoryGirl.build(:manual, id: manual.id.reverse))
     end
 
     it "is considered the same as another manual instance with the same id even if the version number is different" do
-      expect(manual).to eql(Manual.new(id: manual.id, version_number: manual.version_number + 1))
+      expect(manual).to eql(FactoryGirl.build(:manual, id: manual.id, version_number: manual.version_number + 1))
     end
   end
 
   describe "#has_ever_been_published?" do
     it "is false if not told at initialize time" do
-      expect(Manual.new(id: "1234-5678-9012-3456")).not_to have_ever_been_published
+      expect(FactoryGirl.build(:manual, id: "1234-5678-9012-3456")).not_to have_ever_been_published
     end
 
     it "is false if told so at initialize time" do
-      expect(Manual.new(id: "1234-5678-9012-3456", ever_been_published: false)).not_to have_ever_been_published
+      expect(FactoryGirl.build(:manual, id: "1234-5678-9012-3456", ever_been_published: false)).not_to have_ever_been_published
     end
 
     it "is true if told so at initialize time" do
-      expect(Manual.new(id: "1234-5678-9012-3456", ever_been_published: true)).to have_ever_been_published
+      expect(FactoryGirl.build(:manual, id: "1234-5678-9012-3456", ever_been_published: true)).to have_ever_been_published
     end
   end
 
@@ -100,7 +101,7 @@ describe Manual do
     end
 
     it "defaults to 0 if not supplied in the initalizer attributes" do
-      expect(Manual.new(id: "1234-5678").version_number).to eq 0
+      expect(FactoryGirl.build(:manual, id: "1234-5678").version_number).to eq 0
     end
   end
 
@@ -400,7 +401,8 @@ describe Manual do
     let(:user) { FactoryGirl.create(:gds_editor) }
 
     subject(:manual) {
-      Manual.new(
+      FactoryGirl.build(
+        :manual,
         id: 'id',
         slug: 'manual-slug',
         title: 'title',

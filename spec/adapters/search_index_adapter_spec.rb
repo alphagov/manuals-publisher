@@ -9,7 +9,8 @@ describe SearchIndexAdapter do
   let(:rummager_document_type_for_section) { GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE }
 
   let(:manual) {
-    Manual.build(
+    FactoryGirl.build(
+      :manual,
       id: "manual-id",
       slug: "manual-slug",
       title: "manual-title",
