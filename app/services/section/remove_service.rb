@@ -50,8 +50,8 @@ private
 
   def change_note_params
     {
-      "minor_update" => attributes.fetch("minor_update", "0"),
-      "change_note" => attributes.fetch("change_note", ""),
+      minor_update: attributes.fetch(:minor_update, "0"),
+      change_note: attributes.fetch(:change_note, ""),
     }
   end
 
