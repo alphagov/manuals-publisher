@@ -5,21 +5,21 @@ class ManualsRepublisher
     @logger = logger
   end
 
-  def execute(manual_records = ManualRecord.all)
-    count = manual_records.count
+  def execute(manuals)
+    count = manuals.count
 
     logger.info "Republishing #{count} manuals..."
 
-    manual_records.to_a.each.with_index do |manual_record, i|
+    manuals.to_a.each.with_index do |manual, i|
       begin
-        logger.info("[ #{i} / #{count} ] id=#{manual_record.manual_id} slug=#{manual_record.slug}]")
+        logger.info("[ #{i} / #{count} ] id=#{manual.id} slug=#{manual.slug}]")
         service = Manual::RepublishService.new(
-          manual_id: manual_record.manual_id,
+          manual_id: manual.id,
           user: User.gds_editor,
         )
         service.call
       rescue Manual::RemovedSectionIdNotFoundError => e
-        logger.error("Did not publish manual with id=#{manual_record.manual_id} slug=#{manual_record.slug}. It has at least one removed document which was not found: #{e.message}")
+        logger.error("Did not publish manual with id=#{manual.id} slug=#{manual.slug}. It has at least one removed document which was not found: #{e.message}")
         next
       end
     end

@@ -20,15 +20,15 @@ describe Manual do
   }
 
   let(:id) { "0123-4567-89ab-cdef" }
-  let(:updated_at) { double(:updated_at) }
-  let(:originally_published_at) { double(:originally_published_at) }
-  let(:use_originally_published_at_for_public_timestamp) { double(:use_originally_published_at_for_public_timestamp) }
-  let(:title) { double(:title) }
-  let(:summary) { double(:summary) }
-  let(:body) { double(:body) }
-  let(:organisation_slug) { double(:organisation_slug) }
-  let(:state) { double(:state) }
-  let(:slug) { double(:slug) }
+  let(:updated_at) { Time.parse("2001-01-01") }
+  let(:originally_published_at) { DateTime.parse("2002-02-02") }
+  let(:use_originally_published_at_for_public_timestamp) { false }
+  let(:title) { "manual-title" }
+  let(:summary) { "manual-summary" }
+  let(:body) { "manual-body" }
+  let(:organisation_slug) { "organisation-slug" }
+  let(:state) { "manual-state" }
+  let(:slug) { "manual-slug" }
 
   it "rasies an error without an ID" do
     expect {
@@ -172,10 +172,10 @@ describe Manual do
     end
 
     context "with allowed attirbutes" do
-      let(:new_title) { double(:new_title) }
-      let(:new_summary) { double(:new_summary) }
-      let(:new_organisation_slug) { double(:new_organisation_slug) }
-      let(:new_state) { double(:new_state) }
+      let(:new_title) { "new-manual-title" }
+      let(:new_summary) { "new-manual-summary" }
+      let(:new_organisation_slug) { "new-organisation-slug" }
+      let(:new_state) { "new-manual-state" }
 
       it "updates with the given attributes" do
         manual.update(
@@ -202,8 +202,8 @@ describe Manual do
     end
 
     context "with disallowed attributes" do
-      let(:new_id) { double(:new_id) }
-      let(:new_updated_at) { double(:new_updated_at) }
+      let(:new_id) { "new-manual-id" }
+      let(:new_updated_at) { Time.parse("2003-03-03") }
 
       it "does not update the attributes" do
         manual.update(
@@ -1014,6 +1014,73 @@ describe Manual do
         expect(SectionEdition.where(id: section_2_edition_1.id)).to be_empty
         expect(SectionEdition.where(id: section_2_edition_2.id)).to be_empty
       end
+    end
+  end
+
+  describe ".find_by_slug!" do
+    let(:user) { FactoryGirl.create(:gds_editor) }
+
+    context "when a manual record with the given slug exists" do
+      let!(:manual_record) do
+        FactoryGirl.create(:manual_record, slug: "manual-slug")
+      end
+
+      it "builds and returns a manual from the manual record and its edition" do
+        manual = Manual.find_by_slug!("manual-slug", user)
+        expect(manual).to be_an_instance_of(Manual)
+        expect(manual.id).to eq(manual_record.manual_id)
+      end
+
+      context "but user does not have access to manual record" do
+        let(:user) { FactoryGirl.create(:generic_editor_of_another_organisation) }
+
+        it "raises Manual::NotFoundError" do
+          expect {
+            Manual.find_by_slug!("manual-slug", user)
+          }.to raise_error(Manual::NotFoundError)
+        end
+      end
+    end
+
+    context "when a manual record with the given slug does not exist" do
+      it "raises Manual::NotFoundError" do
+        expect {
+          Manual.find_by_slug!("manual-slug", user)
+        }.to raise_error(Manual::NotFoundError)
+      end
+    end
+
+    context "when multiple manual records with the given slug exist" do
+      let!(:manual_record) do
+        FactoryGirl.create(:manual_record, slug: "manual-slug")
+      end
+
+      let!(:another_manual_record) do
+        FactoryGirl.create(:manual_record, slug: manual_record.slug)
+      end
+
+      it "raises Manual::AmbiguousSlugError" do
+        expect {
+          Manual.find_by_slug!("manual-slug", user)
+        }.to raise_error(Manual::AmbiguousSlugError)
+      end
+    end
+  end
+
+  describe "#editions" do
+    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+
+    it "returns editions from underlying manual record" do
+      expect(manual.editions).to eq(manual_record.editions)
+    end
+  end
+
+  describe "#set" do
+    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+
+    it "sets attributes on underlying manual record" do
+      manual.set(slug: "new-slug")
+      expect(manual_record.reload.slug).to eq("new-slug")
     end
   end
 end

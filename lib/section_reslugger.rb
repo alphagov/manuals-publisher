@@ -25,13 +25,8 @@ class SectionReslugger
 private
 
   def validate
-    validate_manual
     validate_old_section
     validate_new_section
-  end
-
-  def validate_manual
-    raise Error.new("Manual not found for manual_slug `#{@manual_slug}`") if manual_record.nil?
   end
 
   def validate_old_section
@@ -73,31 +68,22 @@ private
   end
 
   def new_edition_for_slug_change
-    manual_records = ManualRecord.all
-    user = OpenStruct.new(manual_records: manual_records)
+    user = User.gds_editor
 
     service = Section::UpdateService.new(
       user: user,
-      section_uuid: context_for_section_edition_update['id'],
-      manual_id: context_for_section_edition_update['manual_id'],
-      section_params: context_for_section_edition_update['section']
-    )
-    _manual, section = service.call
-    section.latest_edition
-  end
-
-  def context_for_section_edition_update
-    {
-      "id" => old_section_edition.section_uuid,
-      "section" => {
+      section_uuid: old_section_edition.section_uuid,
+      manual_id: manual.id,
+      section_params: {
         title: old_section_edition.title,
         summary: old_section_edition.summary,
         body: old_section_edition.body,
         minor_update: false,
         change_note: change_note
-      },
-      "manual_id" => manual_record.manual_id,
-    }
+      }
+    )
+    _manual, section = service.call
+    section.latest_edition
   end
 
   def change_note
@@ -106,7 +92,7 @@ private
 
   def publish_manual
     service = Manual::PublishService.new(
-      manual_id: manual_record.manual_id,
+      manual_id: manual.id,
       version_number: manual_version_number,
       user: user
     )
@@ -117,12 +103,10 @@ private
     User.gds_editor
   end
 
-  def manual_record
-    @manual_record ||= ManualRecord.where(slug: @manual_slug).last
-  end
-
   def manual
-    Manual.find(manual_record.manual_id, user)
+    Manual.find_by_slug!(@manual_slug, user)
+  rescue Manual::NotFoundError, Manual::AmbiguousSlugError => e
+    raise Error.new(e.message)
   end
 
   def manual_version_number
@@ -158,7 +142,7 @@ private
   end
 
   def full_section_slug(slug)
-    "#{manual_record.slug}/#{slug}"
+    "#{manual.slug}/#{slug}"
   end
 
   def remove_from_search_index(section)

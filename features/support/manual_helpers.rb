@@ -632,7 +632,9 @@ module ManualHelpers
   def republish_manuals_without_ui
     logger = Logger.new(nil)
     republisher = ManualsRepublisher.new(logger)
-    republisher.execute
+    user = FactoryGirl.build(:gds_editor)
+    manuals = Manual.all(user)
+    republisher.execute(manuals)
   end
 
   def check_for_slug_clash_warning

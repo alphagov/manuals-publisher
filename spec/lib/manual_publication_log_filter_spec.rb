@@ -123,8 +123,10 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     )
   }
 
+  let(:manual) { Manual.find(manual_record.manual_id, User.gds_editor) }
+
   before do
-    described_class.new(manual_record).delete_logs_and_rebuild_for_major_updates_only!
+    described_class.new(manual).delete_logs_and_rebuild_for_major_updates_only!
   end
 
   it "deletes all existing publication logs for the supplied manual slug only" do

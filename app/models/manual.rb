@@ -23,6 +23,7 @@ class Manual
   attr_accessor :publish_tasks
 
   class NotFoundError < StandardError; end
+  class AmbiguousSlugError < StandardError; end
 
   def self.find(id, user)
     collection = user.manual_records
@@ -32,6 +33,19 @@ class Manual
     end
 
     build_manual_for(manual_record)
+  end
+
+  def self.find_by_slug!(slug, user)
+    collection = user.manual_records
+    manual_records = collection.where(slug: slug)
+    case manual_records.length
+    when 0
+      raise NotFoundError.new("Manual slug not found: #{slug}")
+    when 1
+      build_manual_for(manual_records.first)
+    else
+      raise AmbiguousSlugError.new("Multiple manuals found for slug: #{slug}")
+    end
   end
 
   def self.all(user, load_associations: true)
@@ -347,6 +361,16 @@ class Manual
 
     manual_record = ManualRecord.find_by(manual_id: id)
     manual_record.destroy
+  end
+
+  def editions
+    manual_record = ManualRecord.find_by(manual_id: id)
+    manual_record.editions
+  end
+
+  def set(attributes = {})
+    manual_record = ManualRecord.find_by(manual_id: id)
+    manual_record.set(attributes)
   end
 
   class RemovedSectionIdNotFoundError < StandardError; end

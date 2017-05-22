@@ -3,8 +3,7 @@ class SectionSlugSynchroniser
 
   def initialize(manual_slug, logger = STDOUT)
     @logger = logger
-    manual_record = ManualRecord.where(slug: manual_slug).last
-    @manual = Manual.find(manual_record.manual_id, User.gds_editor)
+    @manual = Manual.find_by_slug!(manual_slug, User.gds_editor)
     @sections = manual.sections
   end
 
