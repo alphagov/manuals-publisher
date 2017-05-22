@@ -61,7 +61,6 @@ class Manual
 
     default_attrs = {
       id: SecureRandom.uuid,
-      slug: slug_generator.call(attributes.fetch(:title)),
       summary: "",
       body: "",
       state: "draft",
@@ -72,6 +71,8 @@ class Manual
     }
 
     manual_attrs = default_attrs.merge(attributes)
+    manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title))
+
     manual = Manual.new(manual_attrs)
     manual.sections = manual_attrs.fetch(:sections, [])
     manual.removed_sections = manual_attrs.fetch(:removed_sections, [])
