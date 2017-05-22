@@ -167,10 +167,6 @@ describe Manual do
   end
 
   describe "#update" do
-    it "returns self" do
-      expect(manual.update({})).to be(manual)
-    end
-
     context "with allowed attirbutes" do
       let(:new_title) { "new-manual-title" }
       let(:new_summary) { "new-manual-summary" }
