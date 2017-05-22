@@ -1,7 +1,7 @@
 class ManualPublicationLogFilter
-  def initialize(manual_record)
-    @manual_record = manual_record
-    @manual_slug = manual_record.slug
+  def initialize(manual)
+    @manual = manual
+    @manual_slug = manual.slug
   end
 
   def delete_logs_and_rebuild_for_major_updates_only!
@@ -54,7 +54,7 @@ private
   end
 
   def build_logs_for_all_other_suitable_section_editions
-    edition_ordering = EditionOrdering.new(section_editions_for_rebuild, @manual_record.latest_edition.section_uuids)
+    edition_ordering = EditionOrdering.new(section_editions_for_rebuild, @manual.sections.map(&:uuid))
 
     edition_ordering.sort_by_section_uuids_and_created_at.each do |edition|
       PublicationLog.create!(
@@ -73,7 +73,7 @@ private
   end
 
   def first_manual_edition
-    @first_manual_edition ||= @manual_record.editions.where(version_number: 1).first
+    @first_manual_edition ||= @manual.editions.where(version_number: 1).first
   end
 
   def section_editions_for_rebuild
