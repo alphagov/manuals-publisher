@@ -66,6 +66,6 @@ class SectionAttachmentsController < ApplicationController
 private
 
   def attachment_params
-    params.require("attachment").permit(:title, :file)
+    params.require(:attachment).permit(:title, :file)
   end
 end
