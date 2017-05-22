@@ -10,7 +10,7 @@ gem "generic_form_builder", "0.11.0"
 gem "govuk_admin_template", "~> 4.0" # higher versions require rails 4
 gem "kaminari", "0.16.1"
 gem "logstasher", "0.4.8"
-gem "mongoid", "~> 4.0"
+gem "mongoid", "~> 5.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code"
 gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"
