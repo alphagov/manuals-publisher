@@ -31,10 +31,9 @@ describe Manual do
   let(:state) { "manual-state" }
   let(:slug) { "manual-slug" }
 
-  it "rasies an error without an ID" do
-    expect {
-      Manual.new({})
-    }.to raise_error(KeyError)
+  it "generates an ID if none is provided" do
+    manual = Manual.new(title: "manual-title")
+    expect(manual.id).to be_present
   end
 
   describe "#eql?" do

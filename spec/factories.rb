@@ -54,7 +54,7 @@ FactoryGirl.define do
     slug "manual-slug"
 
     initialize_with do
-      Manual.build(attributes)
+      Manual.new(attributes)
     end
   end
 

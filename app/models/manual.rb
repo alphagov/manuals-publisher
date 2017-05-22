@@ -56,29 +56,6 @@ class Manual
     }
   end
 
-  def self.build(attributes)
-    slug_generator = SlugGenerator.new(prefix: "guidance")
-
-    default_attrs = {
-      id: SecureRandom.uuid,
-      summary: "",
-      body: "",
-      state: "draft",
-      organisation_slug: "",
-      updated_at: "",
-      originally_published_at: nil,
-      use_originally_published_at_for_public_timestamp: true,
-    }
-
-    manual_attrs = default_attrs.merge(attributes)
-    manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title))
-
-    manual = Manual.new(manual_attrs)
-    manual.sections = manual_attrs.fetch(:sections, [])
-    manual.removed_sections = manual_attrs.fetch(:removed_sections, [])
-    manual
-  end
-
   def slug_unique?(user)
     user.manual_records.where(
       :slug => slug,
@@ -127,15 +104,31 @@ class Manual
   end
 
   def initialize(attributes)
-    @id = attributes.fetch(:id)
-    @updated_at = attributes.fetch(:updated_at, nil)
-    @version_number = attributes.fetch(:version_number, 0)
-    @ever_been_published = !!attributes.fetch(:ever_been_published, false)
+    slug_generator = SlugGenerator.new(prefix: "guidance")
 
-    update(attributes)
+    default_attrs = {
+      id: SecureRandom.uuid,
+      summary: "",
+      body: "",
+      state: "draft",
+      organisation_slug: "",
+      updated_at: "",
+      originally_published_at: nil,
+      use_originally_published_at_for_public_timestamp: true,
+    }
 
-    @sections = []
-    @removed_sections = []
+    manual_attrs = default_attrs.merge(attributes)
+    manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title))
+
+    @id = manual_attrs.fetch(:id)
+    @updated_at = manual_attrs.fetch(:updated_at, nil)
+    @version_number = manual_attrs.fetch(:version_number, 0)
+    @ever_been_published = !!manual_attrs.fetch(:ever_been_published, false)
+
+    update(manual_attrs)
+
+    @sections = manual_attrs.fetch(:sections, [])
+    @removed_sections = manual_attrs.fetch(:removed_sections, [])
   end
 
   def to_param
