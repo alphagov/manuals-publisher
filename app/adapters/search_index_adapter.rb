@@ -1,5 +1,6 @@
 require "services"
 require "gds_api_constants"
+require "markdown_attachment_processor"
 
 class SearchIndexAdapter
   def add(manual)
