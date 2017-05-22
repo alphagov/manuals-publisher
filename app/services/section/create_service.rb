@@ -1,14 +1,14 @@
 require "adapters"
 
 class Section::CreateService
-  def initialize(user:, manual_id:, section_params:)
+  def initialize(user:, manual_id:, attributes:)
     @user = user
     @manual_id = manual_id
-    @section_params = section_params
+    @attributes = attributes
   end
 
   def call
-    @new_section = manual.build_section(section_params)
+    @new_section = manual.build_section(attributes)
 
     if new_section.valid?
       manual.draft
@@ -22,7 +22,7 @@ class Section::CreateService
 
 private
 
-  attr_reader :user, :manual_id, :section_params
+  attr_reader :user, :manual_id, :attributes
 
   attr_reader :new_section
 

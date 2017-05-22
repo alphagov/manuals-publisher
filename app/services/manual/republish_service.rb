@@ -1,9 +1,9 @@
 require "adapters"
 
 class Manual::RepublishService
-  def initialize(manual_id:, user:)
-    @manual_id = manual_id
+  def initialize(user:, manual_id:)
     @user = user
+    @manual_id = manual_id
   end
 
   def call
@@ -22,7 +22,7 @@ class Manual::RepublishService
 
 private
 
-  attr_reader :manual_id, :user
+  attr_reader :user, :manual_id
 
   def published_manual_version
     manual_versions[:published]

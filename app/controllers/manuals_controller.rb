@@ -41,8 +41,8 @@ class ManualsController < ApplicationController
 
   def create
     service = Manual::CreateService.new(
-      attributes: create_manual_params,
       user: current_user,
+      attributes: create_manual_params
     )
     manual = service.call
     manual = manual_form(manual)
@@ -68,9 +68,9 @@ class ManualsController < ApplicationController
 
   def update
     service = Manual::UpdateService.new(
-      manual_id: manual_id,
-      attributes: update_manual_params,
       user: current_user,
+      manual_id: manual_id,
+      attributes: update_manual_params
     )
     manual = service.call
     manual = manual_form(manual)
@@ -96,9 +96,9 @@ class ManualsController < ApplicationController
 
   def update_original_publication_date
     service = Manual::UpdateOriginalPublicationDateService.new(
-      manual_id: manual_id,
-      attributes: publication_date_manual_params,
       user: current_user,
+      manual_id: manual_id,
+      attributes: publication_date_manual_params
     )
     manual = service.call
     manual = manual_form(manual)
@@ -114,8 +114,8 @@ class ManualsController < ApplicationController
 
   def publish
     service = Manual::QueuePublishService.new(
-      manual_id: manual_id,
       user: current_user,
+      manual_id: manual_id
     )
     manual = service.call
 
@@ -127,9 +127,9 @@ class ManualsController < ApplicationController
 
   def preview
     service = Manual::PreviewService.new(
-      manual_id: params[:id],
-      attributes: update_manual_params,
       user: current_user,
+      manual_id: params[:id],
+      attributes: update_manual_params
     )
     manual = service.call
 

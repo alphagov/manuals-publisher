@@ -78,9 +78,9 @@ private
 
     service = Section::UpdateService.new(
       user: user,
-      section_uuid: context_for_section_edition_update['id'],
       manual_id: context_for_section_edition_update['manual_id'],
-      section_params: context_for_section_edition_update['section']
+      section_uuid: context_for_section_edition_update['id'],
+      attributes: context_for_section_edition_update['section']
     )
     _manual, section = service.call
     section.latest_edition
@@ -106,9 +106,9 @@ private
 
   def publish_manual
     service = Manual::PublishService.new(
+      user: user,
       manual_id: manual_record.manual_id,
-      version_number: manual_version_number,
-      user: user
+      version_number: manual_version_number
     )
     service.call
   end
