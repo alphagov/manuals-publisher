@@ -107,7 +107,6 @@ class Manual
     slug_generator = SlugGenerator.new(prefix: "guidance")
 
     default_attrs = {
-      id: SecureRandom.uuid,
       summary: "",
       body: "",
       state: "draft",
@@ -120,7 +119,7 @@ class Manual
     manual_attrs = default_attrs.merge(attributes)
     manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title))
 
-    @id = manual_attrs.fetch(:id)
+    @id = manual_attrs.fetch(:id, SecureRandom.uuid)
     @updated_at = manual_attrs.fetch(:updated_at, nil)
     @version_number = manual_attrs.fetch(:version_number, 0)
     @ever_been_published = !!manual_attrs.fetch(:ever_been_published, false)
