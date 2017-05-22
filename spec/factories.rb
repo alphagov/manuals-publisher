@@ -50,6 +50,14 @@ FactoryGirl.define do
     sequence(:change_note) { |n| "Change note #{n}" }
   end
 
+  factory :manual do
+    slug "manual-slug"
+
+    initialize_with do
+      Manual.new(attributes)
+    end
+  end
+
   factory :manual_record do
     slug 'slug'
     manual_id 'abc-123'

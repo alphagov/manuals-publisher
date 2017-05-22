@@ -24,7 +24,7 @@ private
   end
 
   def ephemeral_manual
-    Manual.build(
+    Manual.new(
       attributes.reverse_merge(
         title: ""
       )
