@@ -7,6 +7,11 @@ class Section::PreviewService
   end
 
   def call
+    section = if section_uuid
+                existing_section
+              else
+                ephemeral_section
+              end
     section.update(attributes)
 
     SectionPresenter.new(section)
@@ -15,10 +20,6 @@ class Section::PreviewService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  def section
-    section_uuid ? existing_section : ephemeral_section
-  end
 
   def manual
     Manual.find(manual_id, user)
