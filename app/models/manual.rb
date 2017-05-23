@@ -107,12 +107,6 @@ class Manual
     slug_generator = SlugGenerator.new(prefix: "guidance")
 
     default_attrs = {
-      summary: "",
-      body: "",
-      state: "draft",
-      organisation_slug: "",
-      originally_published_at: nil,
-      use_originally_published_at_for_public_timestamp: true,
     }
 
     manual_attrs = default_attrs.merge(attributes)
@@ -124,6 +118,15 @@ class Manual
     @ever_been_published = !!manual_attrs.fetch(:ever_been_published, false)
 
     update(manual_attrs)
+
+    @summary ||= ""
+    @body ||= ""
+    @state ||= "draft"
+    @organisation_slug ||= ""
+
+    if @use_originally_published_at_for_public_timestamp.nil?
+      @use_originally_published_at_for_public_timestamp = true
+    end
 
     @sections = manual_attrs.fetch(:sections, [])
     @removed_sections = manual_attrs.fetch(:removed_sections, [])
