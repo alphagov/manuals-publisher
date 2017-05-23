@@ -9,7 +9,7 @@ class Section::CreateService
 
   def call
     manual = Manual.find(manual_id, user)
-    @new_section = manual.build_section(attributes)
+    new_section = manual.build_section(attributes)
 
     if new_section.valid?
       manual.draft
@@ -24,6 +24,4 @@ class Section::CreateService
 private
 
   attr_reader :user, :manual_id, :attributes
-
-  attr_reader :new_section
 end
