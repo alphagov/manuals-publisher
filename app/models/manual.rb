@@ -103,7 +103,7 @@ class Manual
     }
   end
 
-  def initialize(attributes)
+  def initialize(attributes = {})
     slug_generator = SlugGenerator.new(prefix: "guidance")
 
     default_attrs = {

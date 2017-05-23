@@ -32,7 +32,7 @@ describe Manual do
   let(:slug) { "manual-slug" }
 
   it "generates an ID if none is provided" do
-    manual = Manual.new({})
+    manual = Manual.new
     expect(manual.id).to be_present
   end
 
