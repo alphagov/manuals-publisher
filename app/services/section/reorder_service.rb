@@ -8,6 +8,7 @@ class Section::ReorderService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
     manual.draft
     manual.reorder_sections(section_order)
     manual.save(user)
@@ -19,8 +20,4 @@ class Section::ReorderService
 private
 
   attr_reader :user, :manual_id, :section_order
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
 end
