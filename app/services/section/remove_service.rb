@@ -12,6 +12,10 @@ class Section::RemoveService
     section = manual.sections.find { |s| s.uuid == section_uuid }
     raise SectionNotFoundError.new(section_uuid) unless section.present?
 
+    change_note_params = {
+      minor_update: attributes.fetch(:minor_update, "0"),
+      change_note: attributes.fetch(:change_note, ""),
+    }
     section.update(change_note_params)
 
     if section.valid?
@@ -35,13 +39,6 @@ private
     @manual ||= Manual.find(manual_id, user)
   rescue KeyError
     raise ManualNotFoundError.new(manual_id)
-  end
-
-  def change_note_params
-    {
-      minor_update: attributes.fetch(:minor_update, "0"),
-      change_note: attributes.fetch(:change_note, ""),
-    }
   end
 
   def discard_section_via_publishing_api
