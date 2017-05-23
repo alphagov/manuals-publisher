@@ -278,7 +278,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rainbow (2.2.1)
     raindrops (0.18.0)
-    rake (11.3.0)
+    rake (12.0.0)
     redis (3.1.0)
     redis-namespace (1.5.0)
       redis (~> 3.0, >= 3.0.4)
@@ -424,7 +424,7 @@ DEPENDENCIES
   pry-byebug
   rails (~> 4)
   raindrops (>= 0.13.0)
-  rake (< 12.0.0)
+  rake
   rspec
   rspec-rails
   sass-rails

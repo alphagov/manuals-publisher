@@ -15,7 +15,7 @@ gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_
 gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
-gem "rake", "< 12.0.0" # versions newer than this break in rails 3.2
+gem "rake"
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
