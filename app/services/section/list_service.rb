@@ -6,14 +6,10 @@ class Section::ListService
 
   def call
     manual = Manual.find(manual_id, user)
-    [manual, sections]
+    [manual, manual.sections]
   end
 
 private
 
   attr_reader :user, :manual_id
-
-  def sections
-    manual.sections
-  end
 end
