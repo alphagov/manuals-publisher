@@ -270,7 +270,7 @@ class Manual
     def build_manual_for(manual_record, edition: nil, load_associations: true, published: false)
       edition ||= manual_record.latest_edition
 
-      base_manual = Manual.new(
+      base_manual = self.new(
         id: manual_record.manual_id,
         slug: manual_record.slug,
         title: edition.title,
@@ -317,16 +317,16 @@ class Manual
   def current_draft_version(manual_record)
     return nil unless manual_record.latest_edition.state == "draft"
 
-    Manual.build_manual_for(manual_record)
+    self.class.build_manual_for(manual_record)
   end
 
   def current_published_version(manual_record)
     if manual_record.latest_edition.state == "published"
-      Manual.build_manual_for(manual_record)
+      self.class.build_manual_for(manual_record)
     elsif manual_record.latest_edition.state == "draft"
       previous_edition = manual_record.previous_edition
       if previous_edition.state == "published"
-        Manual.build_manual_for(manual_record, edition: previous_edition, published: true)
+        self.class.build_manual_for(manual_record, edition: previous_edition, published: true)
       else
         # This means the previous edition is withdrawn so we shouldn't
         # expose it as it's not actually published (we've got a new
