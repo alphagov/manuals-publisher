@@ -10,7 +10,7 @@ class Section::ReorderService
   def call
     manual.draft
     manual.reorder_sections(section_order)
-    persist
+    manual.save(user)
     export_draft_manual_to_publishing_api
 
     [manual, sections]
@@ -19,10 +19,6 @@ class Section::ReorderService
 private
 
   attr_reader :user, :manual_id, :section_order
-
-  def persist
-    manual.save(user)
-  end
 
   def sections
     manual.sections
