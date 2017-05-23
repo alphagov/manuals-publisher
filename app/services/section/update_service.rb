@@ -14,7 +14,7 @@ class Section::UpdateService
     if section.valid?
       manual.draft
       manual.save(user)
-      export_draft_manual_to_publishing_api
+      Adapters.publishing.save(manual, include_sections: false)
       Adapters.publishing.save_section(section, manual)
     end
 
@@ -31,9 +31,5 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, user)
-  end
-
-  def export_draft_manual_to_publishing_api
-    Adapters.publishing.save(manual, include_sections: false)
   end
 end
