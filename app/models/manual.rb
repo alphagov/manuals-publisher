@@ -219,7 +219,7 @@ class Manual
       minor_update: false,
       change_note: "New section added.",
     }
-    section.update(attributes.reverse_merge(defaults))
+    section.update(defaults.merge(attributes))
 
     sections << section
 
