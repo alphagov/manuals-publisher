@@ -6,16 +6,13 @@ class Section::ShowService
   end
 
   def call
+    section = manual.sections.find { |s| s.uuid == section_uuid }
     [manual, section]
   end
 
 private
 
   attr_reader :user, :manual_id, :section_uuid
-
-  def section
-    @section ||= manual.sections.find { |s| s.uuid == section_uuid }
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
