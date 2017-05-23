@@ -25,5 +25,5 @@ class Section::UpdateService
 
 private
 
-  attr_reader :user, :manual_id, :section_uuid, :attributes, :listeners
+  attr_reader :user, :manual_id, :section_uuid, :attributes
 end
