@@ -18,7 +18,7 @@ class Section::RemoveService
       manual.draft
 
       manual.remove_section(section_uuid)
-      persist
+      manual.save(user)
       export_draft_manual_to_publishing_api
       discard_section_via_publishing_api
     end
@@ -29,10 +29,6 @@ class Section::RemoveService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  def persist
-    manual.save(user)
-  end
 
   def section
     @section ||= manual.sections.find { |s| s.uuid == section_uuid }
