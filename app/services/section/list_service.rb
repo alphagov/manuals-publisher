@@ -5,6 +5,7 @@ class Section::ListService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
     [manual, sections]
   end
 
@@ -14,9 +15,5 @@ private
 
   def sections
     manual.sections
-  end
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
   end
 end
