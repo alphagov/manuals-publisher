@@ -106,18 +106,14 @@ class Manual
   def initialize(attributes = {})
     slug_generator = SlugGenerator.new(prefix: "guidance")
 
-    default_attrs = {
-    }
+    attributes[:slug] ||= slug_generator.call(attributes.fetch(:title, ""))
 
-    manual_attrs = default_attrs.merge(attributes)
-    manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title, ""))
+    @id = attributes.fetch(:id, SecureRandom.uuid)
+    @updated_at = attributes.fetch(:updated_at, nil)
+    @version_number = attributes.fetch(:version_number, 0)
+    @ever_been_published = !!attributes.fetch(:ever_been_published, false)
 
-    @id = manual_attrs.fetch(:id, SecureRandom.uuid)
-    @updated_at = manual_attrs.fetch(:updated_at, nil)
-    @version_number = manual_attrs.fetch(:version_number, 0)
-    @ever_been_published = !!manual_attrs.fetch(:ever_been_published, false)
-
-    update(manual_attrs)
+    update(attributes)
 
     @summary ||= ""
     @body ||= ""
@@ -128,8 +124,8 @@ class Manual
       @use_originally_published_at_for_public_timestamp = true
     end
 
-    @sections = manual_attrs.fetch(:sections, [])
-    @removed_sections = manual_attrs.fetch(:removed_sections, [])
+    @sections = attributes.fetch(:sections, [])
+    @removed_sections = attributes.fetch(:removed_sections, [])
   end
 
   def to_param
