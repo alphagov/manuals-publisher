@@ -62,6 +62,72 @@ RSpec.describe Section::UpdateService do
     end
   end
 
+  context 'when the new section is valid but saving the manual to the publishing api fails' do
+    let(:gds_api_exception) { GdsApi::HTTPErrorResponse.new(422) }
+
+    before do
+      allow(section).to receive(:valid?).and_return(true)
+      allow(publishing_api_adapter)
+        .to receive(:save).and_raise(gds_api_exception)
+    end
+
+    it 'raises the exception from the gds api' do
+      expect { subject.call }.to raise_error(gds_api_exception)
+    end
+
+    it 'marks the manual as draft' do
+      expect(manual).to receive(:draft)
+
+      subject.call rescue gds_api_exception
+    end
+
+    it 'does not save the draft' do
+      expect(manual).to_not receive(:save).with(user)
+
+      subject.call rescue gds_api_exception
+    end
+
+    it 'does not save the section to the publishing api' do
+      expect(publishing_api_adapter)
+        .to_not receive(:save_section).with(section, manual)
+
+      subject.call rescue gds_api_exception
+    end
+  end
+
+  context 'when the new section is valid but saving the section to the publishing api fails' do
+    let(:gds_api_exception) { GdsApi::HTTPErrorResponse.new(422) }
+
+    before do
+      allow(section).to receive(:valid?).and_return(true)
+      allow(publishing_api_adapter)
+        .to receive(:save_section).and_raise(gds_api_exception)
+    end
+
+    it 'raises the exception from the gds api' do
+      expect { subject.call }.to raise_error(gds_api_exception)
+    end
+
+    it 'does marks the manual as draft' do
+      expect(manual).to receive(:draft)
+
+      subject.call rescue gds_api_exception
+    end
+
+    it 'does not save the draft' do
+      expect(manual).to_not receive(:save).with(user)
+
+      subject.call rescue gds_api_exception
+    end
+
+    it 'saves the draft manual to the publishing api' do
+      expect(publishing_api_adapter)
+        .to receive(:save).with(manual, include_sections: false)
+
+      subject.call rescue gds_api_exception
+    end
+  end
+
   context 'when the new section is invalid' do
     before do
       allow(section).to receive(:valid?).and_return(false)
