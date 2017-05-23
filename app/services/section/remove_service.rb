@@ -24,7 +24,7 @@ class Section::RemoveService
 
       manual.remove_section(section_uuid)
       manual.save(user)
-      export_draft_manual_to_publishing_api
+      Adapters.publishing.save(manual, include_sections: false)
       Adapters.publishing.discard_section(section)
     end
 
@@ -39,10 +39,6 @@ private
     @manual ||= Manual.find(manual_id, user)
   rescue KeyError
     raise ManualNotFoundError.new(manual_id)
-  end
-
-  def export_draft_manual_to_publishing_api
-    Adapters.publishing.save(manual, include_sections: false)
   end
 
   class ManualNotFoundError < StandardError; end
