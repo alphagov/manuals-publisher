@@ -9,6 +9,7 @@ class Section::UpdateService
   end
 
   def call
+    section = manual.sections.find { |s| s.uuid == section_uuid }
     section.update(attributes)
 
     if section.valid?
@@ -24,10 +25,6 @@ class Section::UpdateService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes, :listeners
-
-  def section
-    @section ||= manual.sections.find { |s| s.uuid == section_uuid }
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
