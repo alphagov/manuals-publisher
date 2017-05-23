@@ -10,7 +10,7 @@ class Section::PreviewService
     section = if section_uuid
                 existing_section
               else
-                ephemeral_section
+                manual.build_section(attributes)
               end
     section.update(attributes)
 
@@ -23,10 +23,6 @@ private
 
   def manual
     Manual.find(manual_id, user)
-  end
-
-  def ephemeral_section
-    manual.build_section(attributes)
   end
 
   def existing_section
