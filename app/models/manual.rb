@@ -137,22 +137,6 @@ class Manual
     id.eql? other.id
   end
 
-  def attributes
-    {
-      id: id,
-      slug: slug,
-      title: title,
-      summary: summary,
-      body: body,
-      organisation_slug: organisation_slug,
-      state: state,
-      version_number: version_number,
-      updated_at: updated_at,
-      originally_published_at: originally_published_at,
-      use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
-    }
-  end
-
   def update(attributes)
     @slug = attributes.fetch(:slug, slug)
     @title = attributes.fetch(:title, title)
