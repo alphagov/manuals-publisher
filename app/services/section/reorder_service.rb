@@ -11,7 +11,7 @@ class Section::ReorderService
     manual.draft
     manual.reorder_sections(section_order)
     manual.save(user)
-    export_draft_manual_to_publishing_api
+    Adapters.publishing.save(manual, include_sections: false)
 
     [manual, manual.sections]
   end
@@ -22,9 +22,5 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, user)
-  end
-
-  def export_draft_manual_to_publishing_api
-    Adapters.publishing.save(manual, include_sections: false)
   end
 end
