@@ -116,7 +116,7 @@ class Manual
     }
 
     manual_attrs = default_attrs.merge(attributes)
-    manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title))
+    manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title, ""))
 
     @id = manual_attrs.fetch(:id, SecureRandom.uuid)
     @updated_at = manual_attrs.fetch(:updated_at, nil)
