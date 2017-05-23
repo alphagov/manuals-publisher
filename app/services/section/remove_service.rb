@@ -17,7 +17,7 @@ class Section::RemoveService
       # Removing a section always makes the manual a draft
       manual.draft
 
-      remove
+      manual.remove_section(section_uuid)
       persist
       export_draft_manual_to_publishing_api
       discard_section_via_publishing_api
@@ -29,10 +29,6 @@ class Section::RemoveService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  def remove
-    manual.remove_section(section_uuid)
-  end
 
   def persist
     manual.save(user)
