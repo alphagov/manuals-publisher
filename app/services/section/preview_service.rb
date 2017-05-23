@@ -8,7 +8,9 @@ class Section::PreviewService
 
   def call
     section = if section_uuid
-                existing_section
+                manual.sections.find { |sec|
+                  sec.uuid == section_uuid
+                }
               else
                 manual.build_section(attributes)
               end
@@ -23,11 +25,5 @@ private
 
   def manual
     Manual.find(manual_id, user)
-  end
-
-  def existing_section
-    @existing_section ||= manual.sections.find { |section|
-      section.uuid == section_uuid
-    }
   end
 end
