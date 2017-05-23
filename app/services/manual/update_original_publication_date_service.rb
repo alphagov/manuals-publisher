@@ -1,10 +1,10 @@
 require "adapters"
 
 class Manual::UpdateOriginalPublicationDateService
-  def initialize(manual_id:, attributes:, user:)
+  def initialize(user:, manual_id:, attributes:)
+    @user = user
     @manual_id = manual_id
     @attributes = attributes.slice(:originally_published_at, :use_originally_published_at_for_public_timestamp)
-    @user = user
   end
 
   def call
@@ -20,11 +20,7 @@ class Manual::UpdateOriginalPublicationDateService
 
 private
 
-  attr_reader(
-    :manual_id,
-    :attributes,
-    :user,
-  )
+  attr_reader :user, :manual_id, :attributes
 
   def update
     manual.update(attributes)

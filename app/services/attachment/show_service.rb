@@ -1,9 +1,9 @@
 class Attachment::ShowService
-  def initialize(user:, section_uuid:, manual_id:, attachment_id:)
+  def initialize(user:, attachment_id:, manual_id:, section_uuid:)
     @user = user
-    @section_uuid = section_uuid
-    @manual_id = manual_id
     @attachment_id = attachment_id
+    @manual_id = manual_id
+    @section_uuid = section_uuid
   end
 
   def call
@@ -12,7 +12,7 @@ class Attachment::ShowService
 
 private
 
-  attr_reader :user, :section_uuid, :manual_id, :attachment_id
+  attr_reader :user, :attachment_id, :manual_id, :section_uuid
 
   def attachment
     @attachment ||= section.find_attachment_by_id(attachment_id)

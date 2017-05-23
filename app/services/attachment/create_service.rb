@@ -1,14 +1,13 @@
 class Attachment::CreateService
-  def initialize(file:, title:, section_uuid:, user:, manual_id:)
-    @file = file
-    @title = title
-    @section_uuid = section_uuid
+  def initialize(user:, manual_id:, section_uuid:, attributes:)
     @user = user
     @manual_id = manual_id
+    @section_uuid = section_uuid
+    @attributes = attributes
   end
 
   def call
-    attachment = section.add_attachment(file: file, title: title)
+    attachment = section.add_attachment(attributes)
 
     manual.save(user)
 
@@ -17,7 +16,7 @@ class Attachment::CreateService
 
 private
 
-  attr_reader :file, :title, :section_uuid, :user, :manual_id
+  attr_reader :user, :manual_id, :section_uuid, :attributes
 
   def section
     @section ||= manual.sections.find { |s| s.uuid == section_uuid }

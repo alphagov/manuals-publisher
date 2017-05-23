@@ -18,9 +18,9 @@ RSpec.describe Section::RemoveService do
   let(:service) {
     described_class.new(
       user: user,
-      section_uuid: section_uuid,
       manual_id: "ABC",
-      section_params: change_note_params
+      section_uuid: section_uuid,
+      attributes: change_note_params
     )
   }
   let(:publishing_adapter) { spy(PublishingAdapter) }
@@ -44,8 +44,8 @@ RSpec.describe Section::RemoveService do
     }
     let(:change_note_params) do
       {
-        "minor_update" => "0",
-        "change_note" => "Make a change"
+        minor_update: "0",
+        change_note: "Make a change"
       }
     end
 
@@ -90,8 +90,8 @@ RSpec.describe Section::RemoveService do
     }
     let(:change_note_params) do
       {
-        "minor_update" => "1",
-        "change_note" => "",
+        minor_update: "1",
+        change_note: "",
       }
     end
 
@@ -127,8 +127,8 @@ RSpec.describe Section::RemoveService do
   context "with valid change_note params" do
     let(:change_note_params) do
       {
-        "minor_update" => "0",
-        "change_note" => "Make a change"
+        minor_update: "0",
+        change_note: "Make a change"
       }
     end
 
@@ -186,7 +186,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "saves the change note to the section" do
-        expect(section).to have_received(:update).with("minor_update" => "0", "change_note" => "Make a change")
+        expect(section).to have_received(:update).with(minor_update: "0", change_note: "Make a change")
       end
 
       it "removes the section" do
@@ -222,9 +222,9 @@ RSpec.describe Section::RemoveService do
       }
       let(:change_note_params) do
         {
-          "minor_update" => "0",
-          "change_note" => "Make a change",
-          "title" => "Sneakily try to change this"
+          minor_update: "0",
+          change_note: "Make a change",
+          title: "Sneakily try to change this"
         }
       end
 
@@ -233,7 +233,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "only saves the change note params to the section ignoring others" do
-        expect(section).to have_received(:update).with(change_note_params.slice("change_note", "minor_update"))
+        expect(section).to have_received(:update).with(change_note_params.slice(:change_note, :minor_update))
       end
     end
   end

@@ -1,15 +1,14 @@
 class Attachment::UpdateService
-  def initialize(file:, title:, user:, manual_id:, section_uuid:, attachment_id:)
+  def initialize(user:, attachment_id:, manual_id:, section_uuid:, attributes:)
     @user = user
-    @file = file
-    @title = title
+    @attachment_id = attachment_id
     @manual_id = manual_id
     @section_uuid = section_uuid
-    @attachment_id = attachment_id
+    @attributes = attributes
   end
 
   def call
-    attachment.update_attributes(file: file, title: title, filename: file.original_filename)
+    attachment.update_attributes(attributes.merge(filename: attributes[:file].original_filename))
 
     manual.save(user)
 
@@ -18,7 +17,7 @@ class Attachment::UpdateService
 
 private
 
-  attr_reader :user, :file, :title, :manual_id, :section_uuid, :attachment_id
+  attr_reader :user, :attachment_id, :manual_id, :section_uuid, :attributes
 
   def attachment
     @attachment ||= section.find_attachment_by_id(attachment_id)

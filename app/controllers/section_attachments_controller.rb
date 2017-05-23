@@ -2,8 +2,8 @@ class SectionAttachmentsController < ApplicationController
   def new
     service = Attachment::NewService.new(
       user: current_user,
-      section_uuid: params.fetch(:section_id),
-      manual_id: params.fetch(:manual_id)
+      manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:section_id)
     )
     manual, section, attachment = service.call
 
@@ -16,11 +16,10 @@ class SectionAttachmentsController < ApplicationController
 
   def create
     service = Attachment::CreateService.new(
-      file: attachment_params.fetch(:file),
-      title: attachment_params.fetch(:title),
-      section_uuid: params.fetch(:section_id),
       user: current_user,
-      manual_id: params.fetch(:manual_id)
+      manual_id: params.fetch(:manual_id),
+      section_uuid: params.fetch(:section_id),
+      attributes: attachment_params
     )
     manual, section, _attachment = service.call
 
@@ -30,9 +29,9 @@ class SectionAttachmentsController < ApplicationController
   def edit
     service = Attachment::ShowService.new(
       user: current_user,
-      section_uuid: params.fetch(:section_id),
+      attachment_id: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
-      attachment_id: params.fetch(:id)
+      section_uuid: params.fetch(:section_id)
     )
     manual, section, attachment = service.call
 
@@ -45,12 +44,11 @@ class SectionAttachmentsController < ApplicationController
 
   def update
     service = Attachment::UpdateService.new(
-      file: attachment_params.fetch(:file),
-      title: attachment_params.fetch(:title),
       user: current_user,
       attachment_id: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
-      section_uuid: params.fetch(:section_id)
+      section_uuid: params.fetch(:section_id),
+      attributes: attachment_params
     )
     manual, section, attachment = service.call
 
@@ -68,6 +66,6 @@ class SectionAttachmentsController < ApplicationController
 private
 
   def attachment_params
-    params.require("attachment").permit(:title, :file)
+    params.require(:attachment).permit(:title, :file)
   end
 end
