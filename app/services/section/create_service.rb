@@ -8,6 +8,7 @@ class Section::CreateService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
     @new_section = manual.build_section(attributes)
 
     if new_section.valid?
@@ -25,10 +26,6 @@ private
   attr_reader :user, :manual_id, :attributes
 
   attr_reader :new_section
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
 
   def export_draft_manual_to_publishing_api
     Adapters.publishing.save(manual, include_sections: false)
