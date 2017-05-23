@@ -154,14 +154,14 @@ class Manual
   end
 
   def update(attributes)
-    @slug = attributes.fetch(:slug) { slug }
-    @title = attributes.fetch(:title) { title }
-    @summary = attributes.fetch(:summary) { summary }
-    @body = attributes.fetch(:body) { body }
-    @organisation_slug = attributes.fetch(:organisation_slug) { organisation_slug }
-    @state = attributes.fetch(:state) { state }
-    @originally_published_at = attributes.fetch(:originally_published_at) { originally_published_at }
-    @use_originally_published_at_for_public_timestamp = attributes.fetch(:use_originally_published_at_for_public_timestamp) { use_originally_published_at_for_public_timestamp }
+    @slug = attributes.fetch(:slug, slug)
+    @title = attributes.fetch(:title, title)
+    @summary = attributes.fetch(:summary, summary)
+    @body = attributes.fetch(:body, body)
+    @organisation_slug = attributes.fetch(:organisation_slug, organisation_slug)
+    @state = attributes.fetch(:state, state)
+    @originally_published_at = attributes.fetch(:originally_published_at, originally_published_at)
+    @use_originally_published_at_for_public_timestamp = attributes.fetch(:use_originally_published_at_for_public_timestamp, use_originally_published_at_for_public_timestamp)
   end
 
   def draft
