@@ -9,6 +9,7 @@ class Section::RemoveService
   end
 
   def call
+    section = manual.sections.find { |s| s.uuid == section_uuid }
     raise SectionNotFoundError.new(section_uuid) unless section.present?
 
     section.update(change_note_params)
@@ -29,10 +30,6 @@ class Section::RemoveService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  def section
-    @section ||= manual.sections.find { |s| s.uuid == section_uuid }
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
