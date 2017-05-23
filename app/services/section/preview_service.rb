@@ -7,6 +7,7 @@ class Section::PreviewService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
     section = if section_uuid
                 manual.sections.find { |sec|
                   sec.uuid == section_uuid
@@ -22,8 +23,4 @@ class Section::PreviewService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  def manual
-    Manual.find(manual_id, user)
-  end
 end
