@@ -7,7 +7,7 @@ gem "airbrake", "~> 4.3"
 gem "faraday", "0.9.0"
 gem "gds-sso", "~> 11.0" # can't go higher because govuk_content_models needs this version (also > 12 need rails 4+)
 gem "generic_form_builder", "0.11.0"
-gem "govuk_admin_template", "~> 4.0" # higher versions require rails 4
+gem "govuk_admin_template"
 gem "kaminari", "0.16.1"
 gem "logstasher", "0.4.8"
 gem "mongoid", "~> 5.0"
