@@ -13,16 +13,12 @@ class Section::ReorderService
     manual.save(user)
     export_draft_manual_to_publishing_api
 
-    [manual, sections]
+    [manual, manual.sections]
   end
 
 private
 
   attr_reader :user, :manual_id, :section_order
-
-  def sections
-    manual.sections
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
