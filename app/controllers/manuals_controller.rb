@@ -176,8 +176,9 @@ private
 
   def base_manual_params(only: valid_params)
     params
-      .fetch(:manual, {})
-      .slice(*only)
+      .require(:manual)
+      .permit(*only)
+      .to_h
       .symbolize_keys
   end
 
@@ -191,7 +192,7 @@ private
 
   def manual_date_params
     date_param_names = [:originally_published_at]
-    manual_params = params.fetch(:manual, {})
+    manual_params = params.require(:manual).permit(*date_param_names)
     date_params = date_param_names.map do |date_param_name|
       [
         date_param_name,

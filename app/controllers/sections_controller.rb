@@ -32,7 +32,7 @@ class SectionsController < ApplicationController
     service = Section::CreateService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      attributes: params.fetch(:section)
+      attributes: section_params
     )
     manual, section = service.call
 
@@ -65,7 +65,7 @@ class SectionsController < ApplicationController
       user: current_user,
       manual_id: params.fetch(:manual_id),
       section_uuid: params.fetch(:id),
-      attributes: params.fetch(:section)
+      attributes: section_params
     )
     manual, section = service.call
 
@@ -84,7 +84,7 @@ class SectionsController < ApplicationController
       user: current_user,
       manual_id: params.fetch(:manual_id, nil),
       section_uuid: params.fetch(:id, nil),
-      attributes: params.fetch(:section)
+      attributes: section_params
     )
     section = service.call
 
@@ -153,7 +153,7 @@ class SectionsController < ApplicationController
       user: current_user,
       manual_id: params.fetch(:manual_id),
       section_uuid: params.fetch(:id),
-      attributes: params.fetch(:section)
+      attributes: section_params
     )
     manual, section = service.call
 
@@ -173,6 +173,14 @@ class SectionsController < ApplicationController
   end
 
 private
+
+  def section_params
+    params
+      .require(:section)
+      .permit(:title, :summary, :body, :change_note, :minor_update)
+      .to_h
+      .symbolize_keys
+  end
 
   def authorize_user_for_withdrawing
     unless current_user_can_withdraw?

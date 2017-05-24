@@ -269,38 +269,6 @@ describe Section do
   end
 
   describe "#update" do
-    context "with string keyed attributes hashes" do
-      let(:editions) { [draft_edition_v1] }
-      let(:string_keyed_attrs) {
-        {
-          "body" => "o hai",
-        }
-      }
-
-      it "symbolizes the keys" do
-        section.update(string_keyed_attrs)
-
-        expect(draft_edition_v1).to have_received(:assign_attributes).with(
-          hash_including(body: "o hai")
-        )
-      end
-    end
-
-    context "with bad attributes hashes" do
-      let(:editions) { [draft_edition_v1] }
-      let(:bad_attrs) {
-        {
-          key_that_is_not_allowed: "o hai",
-        }
-      }
-
-      it "cleans the hash" do
-        section.update(bad_attrs)
-
-        expect(draft_edition_v1).to have_received(:assign_attributes).with({})
-      end
-    end
-
     context "section is new, with no previous editions" do
       let(:editions) { [] }
       let(:attrs)    { { title: "Test title" } }
@@ -352,7 +320,7 @@ describe Section do
     context "when the current section is published" do
       let(:editions) { [published_edition_v1] }
 
-      let(:params) { { title: "It is a new title" } }
+      let(:attributes) { { title: "It is a new title" } }
 
       let(:edition_body) { double(:edition_body) }
       let(:edition_attributes) {
@@ -370,28 +338,28 @@ describe Section do
         allow(SectionEdition).to receive(:new).and_return(new_edition)
       end
 
-      it "builds a new edition with the new params" do
-        section.update(params)
+      it "builds a new edition with the new attributes" do
+        section.update(attributes)
 
-        expect(SectionEdition).to have_received(:new).with(hash_including(params))
+        expect(SectionEdition).to have_received(:new).with(hash_including(attributes))
       end
 
       it "builds the new edition with attributes carried over from the previous edition" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).to have_received(:new)
           .with(hash_including(body: edition_body))
       end
 
-      it "excludes attributes not defined as fields on the section edition" do
-        section.update(params)
+      it "s attributes not defined as fields on the section edition" do
+        section.update(attributes)
 
         expect(SectionEdition).to_not have_received(:new)
           .with(hash_including(arbitrary_attribute: anything))
       end
 
       it "filters the previous edition's attributes" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).not_to have_received(:new)
           .with(
@@ -411,32 +379,32 @@ describe Section do
       end
 
       it "builds a new edition with an incremented version number" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(version_number: 2))
       end
 
       it "builds a new edition in the 'draft' state" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(state: "draft"))
       end
 
       it "builds a new edition copying over the previous edition's attachments" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).to have_received(:new)
           .with(hash_including(attachments: attachments))
       end
 
       it "presents the new edition" do
-        section.update(params)
+        section.update(attributes)
 
         expect(section.version_number).to eq(new_edition.version_number)
       end
 
       it "returns nil" do
-        expect(section.update(params)).to eq(nil)
+        expect(section.update(attributes)).to eq(nil)
       end
 
       context "when providing a title" do
@@ -462,45 +430,45 @@ describe Section do
     context "when the current section is withdrawn" do
       let(:editions) { [withdrawn_edition_v2] }
 
-      let(:params) { { title: "It is a new title" } }
+      let(:attributes) { { title: "It is a new title" } }
 
       before do
         allow(SectionEdition).to receive(:new).and_return(new_edition)
       end
 
-      it "builds a new edition with the new params" do
-        section.update(params)
+      it "builds a new edition with the new attributes" do
+        section.update(attributes)
 
-        expect(SectionEdition).to have_received(:new).with(hash_including(params))
+        expect(SectionEdition).to have_received(:new).with(hash_including(attributes))
       end
 
       it "builds a new edition with an incremented version number" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(version_number: 3))
       end
 
       it "builds a new edition in the 'draft' state" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(state: "draft"))
       end
 
       it "builds a new edition copying over the previous edition's attachments" do
-        section.update(params)
+        section.update(attributes)
 
         expect(SectionEdition).to have_received(:new)
           .with(hash_including(attachments: attachments))
       end
 
       it "presents the new edition" do
-        section.update(params)
+        section.update(attributes)
 
         expect(section.version_number).to eq(new_edition.version_number)
       end
 
       it "returns nil" do
-        expect(section.update(params)).to eq(nil)
+        expect(section.update(attributes)).to eq(nil)
       end
 
       context "when providing a title" do
@@ -557,12 +525,12 @@ describe Section do
 
   describe "#add_attachment" do
     let(:editions) { [published_edition_v1, draft_edition_v2] }
-    let(:params) { double(:params) }
+    let(:attributes) { double(:attributes) }
 
     it "tells the latest edition to create an attachment using the supplied parameters" do
-      section.add_attachment(params)
+      section.add_attachment(attributes)
 
-      expect(draft_edition_v2).to have_received(:build_attachment).with(params)
+      expect(draft_edition_v2).to have_received(:build_attachment).with(attributes)
     end
   end
 
