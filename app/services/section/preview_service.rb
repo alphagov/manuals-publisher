@@ -7,6 +7,14 @@ class Section::PreviewService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
+    section = if section_uuid
+                manual.sections.find { |sec|
+                  sec.uuid == section_uuid
+                }
+              else
+                manual.build_section(attributes)
+              end
     section.update(attributes)
 
     SectionPresenter.new(section)
@@ -15,22 +23,4 @@ class Section::PreviewService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  def section
-    section_uuid ? existing_section : ephemeral_section
-  end
-
-  def manual
-    Manual.find(manual_id, user)
-  end
-
-  def ephemeral_section
-    manual.build_section(attributes)
-  end
-
-  def existing_section
-    @existing_section ||= manual.sections.find { |section|
-      section.uuid == section_uuid
-    }
-  end
 end
