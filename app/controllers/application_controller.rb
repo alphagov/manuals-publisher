@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  before_filter :require_signin_permission!
-  before_filter :set_authenticated_user_header
+  before_action :require_signin_permission!
+  before_action :set_authenticated_user_header
 
   rescue_from("Manual::NotFoundError") do
     redirect_to(manuals_path, flash: { error: "Manual not found" })

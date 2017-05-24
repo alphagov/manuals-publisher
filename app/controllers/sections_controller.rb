@@ -1,5 +1,5 @@
 class SectionsController < ApplicationController
-  before_filter :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
+  before_action :authorize_user_for_withdrawing, only: [:withdraw, :destroy]
 
   def show
     service = Section::ShowService.new(

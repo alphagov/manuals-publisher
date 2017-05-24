@@ -1,7 +1,7 @@
 require "publish_manual_worker"
 
 class ManualsController < ApplicationController
-  before_filter :authorize_user_for_publishing, only: [:publish]
+  before_action :authorize_user_for_publishing, only: [:publish]
 
   def index
     service = Manual::ListService.new(
