@@ -9,7 +9,8 @@ class Manual::CreateService
   def call
     if manual.valid?
       manual.save(user)
-      export_draft_to_publishing_api
+      reloaded_manual = Manual.find(manual.id, user)
+      Adapters.publishing.save(reloaded_manual)
     end
 
     manual
@@ -21,10 +22,5 @@ private
 
   def manual
     @manual ||= Manual.new(attributes)
-  end
-
-  def export_draft_to_publishing_api
-    reloaded_manual = Manual.find(manual.id, user)
-    Adapters.publishing.save(reloaded_manual)
   end
 end
