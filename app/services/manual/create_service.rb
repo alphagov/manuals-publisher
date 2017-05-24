@@ -8,7 +8,7 @@ class Manual::CreateService
 
   def call
     if manual.valid?
-      persist
+      manual.save(user)
       export_draft_to_publishing_api
     end
 
@@ -21,10 +21,6 @@ private
 
   def manual
     @manual ||= Manual.new(attributes)
-  end
-
-  def persist
-    manual.save(user)
   end
 
   def export_draft_to_publishing_api
