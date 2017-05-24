@@ -15,7 +15,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      post :create, manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' }
+      post :create, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
     end
 
     it "removes attributes that are not permitted" do
@@ -23,7 +23,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      post :create, manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' }
+      post :create, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
     end
   end
 
@@ -41,7 +41,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      put :update, manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' }
+      put :update, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
     end
 
     it "removes attributes that are not permitted" do
@@ -49,7 +49,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      post :update, manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' }
+      post :update, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
     end
   end
 
@@ -67,7 +67,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      post :preview, manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' }
+      post :preview, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
     end
 
     it "removes attributes that are not permitted" do
@@ -75,7 +75,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      post :preview, manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' }
+      post :preview, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
     end
   end
 
@@ -86,7 +86,7 @@ describe SectionsController, type: :controller do
       before do
         login_as_stub_user
         allow_any_instance_of(PermissionChecker).to receive(:can_withdraw?).and_return(false)
-        post :withdraw, manual_id: manual_id, id: section_uuid
+        post :withdraw, params: { manual_id: manual_id, id: section_uuid }
       end
 
       after do
@@ -117,7 +117,7 @@ describe SectionsController, type: :controller do
         login_as_stub_user
         allow_any_instance_of(PermissionChecker).to receive(:can_withdraw?).and_return(false)
         allow(Section::RemoveService).to receive(:new).and_return(service)
-        delete :destroy, manual_id: manual_id, id: section_uuid
+        delete :destroy, params: { manual_id: manual_id, id: section_uuid }
       end
 
       after do
@@ -157,7 +157,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      delete :destroy, manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' }
+      delete :destroy, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
     end
 
     it "removes attributes that are not permitted" do
@@ -165,7 +165,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      delete :destroy, manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' }
+      delete :destroy, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
     end
   end
 end
