@@ -9,9 +9,7 @@ class Section::PreviewService
   def call
     manual = Manual.find(manual_id, user)
     section = if section_uuid
-                manual.sections.find { |sec|
-                  sec.uuid == section_uuid
-                }
+                manual.find_section(section_uuid)
               else
                 manual.build_section(attributes)
               end

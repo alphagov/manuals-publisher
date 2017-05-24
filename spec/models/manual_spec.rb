@@ -36,6 +36,23 @@ describe Manual do
     expect(manual.id).to be_present
   end
 
+  describe '#find_section' do
+    it 'returns the section if found' do
+      manual = Manual.new
+      section = manual.build_section({})
+
+      found_manual = manual.find_section(section.uuid)
+      expect(found_manual).to eql(section)
+    end
+
+    it "returns nil if the section can't be found" do
+      manual = Manual.new
+
+      found_manual = manual.find_section('made-up-uuid')
+      expect(found_manual).to eql(nil)
+    end
+  end
+
   describe "#eql?" do
     it "is considered the same as another manual instance if they have the same id" do
       expect(manual).to eql(manual)

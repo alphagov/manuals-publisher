@@ -19,7 +19,7 @@ private
   attr_reader :user, :manual_id, :section_uuid, :attributes
 
   def section
-    @section ||= manual.sections.find { |s| s.uuid == section_uuid }
+    @section ||= manual.find_section(section_uuid)
   end
 
   def manual
