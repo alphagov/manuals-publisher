@@ -32,7 +32,7 @@ describe Manual do
   let(:slug) { "manual-slug" }
 
   it "generates an ID if none is provided" do
-    manual = Manual.new(title: "manual-title")
+    manual = Manual.new
     expect(manual.id).to be_present
   end
 
@@ -104,24 +104,6 @@ describe Manual do
     end
   end
 
-  describe "#attributes" do
-    it "returns a hash of attributes" do
-      expect(manual.attributes).to eq(
-        id: id,
-        title: title,
-        slug: slug,
-        summary: summary,
-        body: body,
-        organisation_slug: organisation_slug,
-        state: state,
-        updated_at: updated_at,
-        version_number: 10,
-        originally_published_at: originally_published_at,
-        use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
-      )
-    end
-  end
-
   describe "#publication_state" do
     context "for a manual in the draft state" do
       let(:state) { "draft" }
@@ -167,10 +149,6 @@ describe Manual do
   end
 
   describe "#update" do
-    it "returns self" do
-      expect(manual.update({})).to be(manual)
-    end
-
     context "with allowed attirbutes" do
       let(:new_title) { "new-manual-title" }
       let(:new_summary) { "new-manual-summary" }

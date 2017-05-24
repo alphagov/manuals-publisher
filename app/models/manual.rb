@@ -103,30 +103,29 @@ class Manual
     }
   end
 
-  def initialize(attributes)
+  def initialize(attributes = {})
     slug_generator = SlugGenerator.new(prefix: "guidance")
 
-    default_attrs = {
-      summary: "",
-      body: "",
-      state: "draft",
-      organisation_slug: "",
-      originally_published_at: nil,
-      use_originally_published_at_for_public_timestamp: true,
-    }
+    attributes[:slug] ||= slug_generator.call(attributes.fetch(:title, ""))
 
-    manual_attrs = default_attrs.merge(attributes)
-    manual_attrs[:slug] ||= slug_generator.call(attributes.fetch(:title))
+    @id = attributes.fetch(:id, SecureRandom.uuid)
+    @updated_at = attributes.fetch(:updated_at, nil)
+    @version_number = attributes.fetch(:version_number, 0)
+    @ever_been_published = !!attributes.fetch(:ever_been_published, false)
 
-    @id = manual_attrs.fetch(:id, SecureRandom.uuid)
-    @updated_at = manual_attrs.fetch(:updated_at, nil)
-    @version_number = manual_attrs.fetch(:version_number, 0)
-    @ever_been_published = !!manual_attrs.fetch(:ever_been_published, false)
+    update(attributes)
 
-    update(manual_attrs)
+    @summary ||= ""
+    @body ||= ""
+    @state ||= "draft"
+    @organisation_slug ||= ""
 
-    @sections = manual_attrs.fetch(:sections, [])
-    @removed_sections = manual_attrs.fetch(:removed_sections, [])
+    if @use_originally_published_at_for_public_timestamp.nil?
+      @use_originally_published_at_for_public_timestamp = true
+    end
+
+    @sections = attributes.fetch(:sections, [])
+    @removed_sections = attributes.fetch(:removed_sections, [])
   end
 
   def to_param
@@ -137,33 +136,15 @@ class Manual
     id.eql? other.id
   end
 
-  def attributes
-    {
-      id: id,
-      slug: slug,
-      title: title,
-      summary: summary,
-      body: body,
-      organisation_slug: organisation_slug,
-      state: state,
-      version_number: version_number,
-      updated_at: updated_at,
-      originally_published_at: originally_published_at,
-      use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
-    }
-  end
-
   def update(attributes)
-    @slug = attributes.fetch(:slug) { slug }
-    @title = attributes.fetch(:title) { title }
-    @summary = attributes.fetch(:summary) { summary }
-    @body = attributes.fetch(:body) { body }
-    @organisation_slug = attributes.fetch(:organisation_slug) { organisation_slug }
-    @state = attributes.fetch(:state) { state }
-    @originally_published_at = attributes.fetch(:originally_published_at) { originally_published_at }
-    @use_originally_published_at_for_public_timestamp = attributes.fetch(:use_originally_published_at_for_public_timestamp) { use_originally_published_at_for_public_timestamp }
-
-    self
+    @slug = attributes.fetch(:slug, slug)
+    @title = attributes.fetch(:title, title)
+    @summary = attributes.fetch(:summary, summary)
+    @body = attributes.fetch(:body, body)
+    @organisation_slug = attributes.fetch(:organisation_slug, organisation_slug)
+    @state = attributes.fetch(:state, state)
+    @originally_published_at = attributes.fetch(:originally_published_at, originally_published_at)
+    @use_originally_published_at_for_public_timestamp = attributes.fetch(:use_originally_published_at_for_public_timestamp, use_originally_published_at_for_public_timestamp)
   end
 
   def draft
@@ -272,7 +253,7 @@ class Manual
     def build_manual_for(manual_record, edition: nil, load_associations: true, published: false)
       edition ||= manual_record.latest_edition
 
-      base_manual = Manual.new(
+      base_manual = self.new(
         id: manual_record.manual_id,
         slug: manual_record.slug,
         title: edition.title,
@@ -319,16 +300,16 @@ class Manual
   def current_draft_version(manual_record)
     return nil unless manual_record.latest_edition.state == "draft"
 
-    Manual.build_manual_for(manual_record)
+    self.class.build_manual_for(manual_record)
   end
 
   def current_published_version(manual_record)
     if manual_record.latest_edition.state == "published"
-      Manual.build_manual_for(manual_record)
+      self.class.build_manual_for(manual_record)
     elsif manual_record.latest_edition.state == "draft"
       previous_edition = manual_record.previous_edition
       if previous_edition.state == "published"
-        Manual.build_manual_for(manual_record, edition: previous_edition, published: true)
+        self.class.build_manual_for(manual_record, edition: previous_edition, published: true)
       else
         # This means the previous edition is withdrawn so we shouldn't
         # expose it as it's not actually published (we've got a new

@@ -33,7 +33,7 @@ class ManualsController < ApplicationController
   end
 
   def new
-    service = ->() { Manual.new(title: "") }
+    service = ->() { Manual.new }
     manual = service.call
 
     render(:new, locals: { manual: manual_form(manual) })
