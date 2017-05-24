@@ -7,6 +7,8 @@ class Manual::CreateService
   end
 
   def call
+    manual = Manual.new(attributes)
+
     if manual.valid?
       manual.save(user)
       reloaded_manual = Manual.find(manual.id, user)
@@ -19,8 +21,4 @@ class Manual::CreateService
 private
 
   attr_reader :user, :attributes
-
-  def manual
-    @manual ||= Manual.new(attributes)
-  end
 end
