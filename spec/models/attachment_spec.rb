@@ -94,4 +94,37 @@ describe Attachment do
       end
     end
   end
+
+  describe "#to_param" do
+    context "when attachment is not persisted" do
+      it "returns a string ID" do
+        expect(attachment.to_param).to be_an_instance_of(String)
+      end
+    end
+
+    context "when attachment is persisted" do
+      let(:section_edition) { SectionEdition.new }
+
+      before do
+        section_edition.attachments << attachment
+        attachment.save!
+      end
+
+      it "returns a string ID" do
+        expect(attachment.to_param).to be_an_instance_of(String)
+      end
+
+      context "but has been added to a new section edition" do
+        let(:another_section_edition) { SectionEdition.new }
+
+        before do
+          another_section_edition.attachments << attachment
+        end
+
+        it "returns a string ID" do
+          expect(attachment.to_param).to be_an_instance_of(String)
+        end
+      end
+    end
+  end
 end
