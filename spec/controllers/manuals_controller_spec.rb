@@ -9,7 +9,7 @@ describe ManualsController, type: :controller do
         login_as_stub_user
         allow_any_instance_of(PermissionChecker).to receive(:can_publish?).and_return(false)
         allow(Manual::PublishService).to receive(:new).and_return(service)
-        post :publish, id: manual_id
+        post :publish, params: { id: manual_id }
       end
 
       after do

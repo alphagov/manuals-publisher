@@ -60,26 +60,22 @@ class Section
     uuid
   end
 
-  def update(params)
-    allowed_update_params = [:title, :summary, :body, :change_note, :minor_update]
-
-    params = params.symbolize_keys.slice(*allowed_update_params)
-
-    if !published? && params.fetch(:title, false)
-      params = params.merge(
-        slug: slug_generator.call(params.fetch(:title))
+  def update(attributes)
+    if !published? && attributes.fetch(:title, false)
+      attributes = attributes.merge(
+        slug: slug_generator.call(attributes.fetch(:title))
       )
     end
 
     if draft?
-      latest_edition.assign_attributes(params)
+      latest_edition.assign_attributes(attributes)
     else
       previous_edition_attributes = latest_edition.attributes
         .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
         .symbolize_keys
 
       attributes = previous_edition_attributes
-        .merge(params)
+        .merge(attributes)
         .merge(
           state: 'draft',
           version_number: latest_edition.version_number + 1,

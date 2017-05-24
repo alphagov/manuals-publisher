@@ -1,22 +1,21 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 4"
+gem "rails", "~> 5.0.0"
 
 # Alphabetical order please :)
-gem "airbrake", "~> 4.3"
+gem 'airbrake', github: 'alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
 gem "faraday", "0.9.0"
-gem "gds-sso", "~> 11.0" # can't go higher because govuk_content_models needs this version (also > 12 need rails 4+)
+gem "gds-sso"
 gem "generic_form_builder", "0.11.0"
-gem "govuk_admin_template", "~> 4.0" # higher versions require rails 4
+gem "govuk_admin_template"
 gem "kaminari", "0.16.1"
 gem "logstasher", "0.4.8"
-gem "mongoid", "~> 5.0"
+gem "mongoid", "~> 6.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code"
 gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"
-gem "quiet_assets", "1.0.3"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
-gem "rake", "< 12.0.0" # versions newer than this break in rails 3.2
+gem "rake"
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
@@ -53,7 +52,7 @@ group :development, :test do
   gem "foreman"
   gem "jasmine-rails"
   gem "pry-byebug"
-  gem "sinatra"
+  gem "sinatra", "~> 2.0"
 end
 
 group :test do
@@ -66,8 +65,8 @@ group :test do
   gem "launchy"
   gem "poltergeist", "~> 1.13.0"
   gem "phantomjs", ">= 1.9.7.1"
-  gem "rspec", "~> 3.4.0"
-  gem "rspec-rails", "~> 3.4.0"
+  gem "rspec"
+  gem "rspec-rails"
   gem "simplecov"
   gem "timecop"
   gem "webmock"

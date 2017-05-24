@@ -5,10 +5,10 @@ class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
   extend Forwardable
 
-  before_filter :require_signin_permission!
-  before_filter :set_authenticated_user_header
-
   protect_from_forgery with: :exception
+
+  before_action :require_signin_permission!
+  before_action :set_authenticated_user_header
 
   rescue_from("Manual::NotFoundError") do
     redirect_to(manuals_path, flash: { error: "Manual not found" })
