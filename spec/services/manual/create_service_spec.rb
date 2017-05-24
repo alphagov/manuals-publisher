@@ -34,6 +34,25 @@ RSpec.describe Manual::CreateService do
     end
   end
 
+  context 'when the manual is valid but saving it to the Publishing API fails' do
+    let(:gds_api_exception) { GdsApi::HTTPErrorResponse.new(422) }
+
+    before do
+      allow(manual).to receive(:valid?).and_return(true)
+      allow(publishing_api_adapter)
+        .to receive(:save).and_raise(gds_api_exception)
+    end
+
+    it 'raises the exception' do
+      expect { subject.call }.to raise_error(gds_api_exception)
+    end
+
+    it 'does not save the manual' do
+      expect(manual).to_not receive(:save)
+      subject.call rescue gds_api_exception
+    end
+  end
+
   context 'when the manual is not valid' do
     before do
       allow(manual).to receive(:valid?).and_return(false)

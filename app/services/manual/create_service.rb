@@ -10,8 +10,8 @@ class Manual::CreateService
     manual = Manual.new(attributes)
 
     if manual.valid?
-      manual.save(user)
       Adapters.publishing.save(manual)
+      manual.save(user)
     end
 
     manual
