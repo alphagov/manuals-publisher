@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", "~> 5.0.0"
 
 # Alphabetical order please :)
-gem 'airbrake', github: 'alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
+gem 'airbrake', git: 'https://github.com/alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
 gem "faraday", "0.9.0"
 gem "gds-sso"
 gem "generic_form_builder", "0.11.0"
