@@ -123,18 +123,9 @@ class Section
 
   def publish!
     unless latest_edition.published?
-      published_edition = nil
-      most_recent_non_draft = if !latest_edition.draft?
-                                latest_edition
-                              elsif previous_edition && !previous_edition.draft?
-                                previous_edition
-                              end
-
-      if most_recent_non_draft && most_recent_non_draft.published?
-        published_edition = most_recent_non_draft
+      if previous_edition && previous_edition.published?
+        previous_edition.archive
       end
-
-      published_edition.archive if published_edition
 
       latest_edition.publish
     end
