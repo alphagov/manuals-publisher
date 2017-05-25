@@ -17,11 +17,6 @@ gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
 gem "unicorn", "4.8.2"
 
-# We only need this for tests and rails 3.2 and ruby 2.2
-# however, it can't be in a gem group that isn't installed
-# on production environments or the console won't load
-gem 'test-unit', require: false
-
 if ENV["API_DEV"]
   gem "gds-api-adapters", path: "../gds-api-adapters"
 else
