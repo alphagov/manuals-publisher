@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 5.0.0"
+gem "rails", "~> 5.1"
 
 # Alphabetical order please :)
 gem 'airbrake', git: 'https://github.com/alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
@@ -48,7 +48,7 @@ end
 
 group :test do
   gem "cucumber", "~> 2.2.0"
-  gem "cucumber-rails", "~> 1.4.0", require: false
+  gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_girl_rails"
   gem "govuk-lint"
