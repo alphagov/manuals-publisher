@@ -237,7 +237,7 @@ GEM
     parser (2.4.0.0)
       ast (~> 2.2)
     phantomjs (2.1.1.0)
-    plek (1.12.0)
+    plek (2.0.0)
     poltergeist (1.13.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -419,7 +419,7 @@ DEPENDENCIES
   mongoid (~> 6.0)
   mongoid_rails_migrations!
   phantomjs (>= 1.9.7.1)
-  plek (= 1.12.0)
+  plek
   poltergeist (~> 1.13.0)
   pry-byebug
   rails (~> 5.0.0)
