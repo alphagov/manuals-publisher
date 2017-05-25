@@ -11,7 +11,6 @@ gem "govuk_admin_template"
 gem "logstasher", "0.4.8"
 gem "mongoid", "~> 6.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code"
-gem "multi_json", "1.10.0"
 gem "plek", "1.12.0"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
 gem "rake"
