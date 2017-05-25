@@ -64,7 +64,7 @@ private
   end
 
   def update_slug
-    new_edition_for_slug_change.update_attribute(:slug, full_new_section_slug)
+    new_edition_for_slug_change.update_slug!(full_new_section_slug)
   end
 
   def new_edition_for_slug_change
@@ -83,7 +83,7 @@ private
       }
     )
     _manual, section = service.call
-    section.latest_edition
+    section
   end
 
   def change_note

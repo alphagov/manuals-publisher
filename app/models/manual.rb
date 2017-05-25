@@ -333,7 +333,7 @@ class Manual
 
   def destroy
     sections.each do |section|
-      section.editions.each(&:destroy)
+      section.all_editions.each(&:destroy)
     end
 
     manual_record = ManualRecord.find_by(manual_id: id)

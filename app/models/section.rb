@@ -29,9 +29,9 @@ class Section
     end
   end
 
-  def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update
+  def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update, :exported_at
 
-  attr_reader :uuid, :editions, :latest_edition
+  attr_reader :uuid
 
   def initialize(manual:, uuid:, editions:)
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
@@ -42,6 +42,10 @@ class Section
       @editions.push(edition)
     end
     @latest_edition = @editions.last
+  end
+
+  def update_slug!(full_new_section_slug)
+    latest_edition.update_attribute(:slug, full_new_section_slug)
   end
 
   def save
@@ -137,6 +141,10 @@ class Section
     latest_edition.exported_at.nil?
   end
 
+  def reload
+    latest_edition.reload
+  end
+
   def mark_as_exported!(exported_at = Time.zone.now)
     edition = latest_edition
     edition.exported_at = exported_at
@@ -173,7 +181,7 @@ class Section
 
 private
 
-  attr_reader :slug_generator
+  attr_reader :slug_generator, :editions, :latest_edition
 
   def published_edition
     most_recent_non_draft = editions.reject(&:draft?).last
