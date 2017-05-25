@@ -77,7 +77,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "does not change the exported timestamp" do
-      expect(@sections.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
+      expect(@sections.first.reload.exported_at).to be_within(1.second).of original_publish_time
     end
   end
 
@@ -106,7 +106,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "does not change the exported timestamp" do
-      expect(@sections.first.latest_edition.reload.exported_at).to be_nil
+      expect(@sections.first.reload.exported_at).to be_nil
     end
   end
 
@@ -159,11 +159,11 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "does not set the exported timestamp of the draft version of the section" do
-      expect(@edited_sections.first.latest_edition.reload.exported_at).to be_nil
+      expect(@edited_sections.first.reload.exported_at).to be_nil
     end
 
     it "does not set the exported timestamp of the previously published version of the section" do
-      expect(@sections.first.latest_edition.reload.exported_at).to be_within(1.second).of original_publish_time
+      expect(@sections.first.reload.exported_at).to be_within(1.second).of original_publish_time
     end
   end
 end
