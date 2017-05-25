@@ -3,27 +3,19 @@ source "https://rubygems.org"
 gem "rails", "~> 5.0.0"
 
 # Alphabetical order please :)
-gem 'airbrake', github: 'alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
-gem "faraday", "0.9.0"
+gem 'airbrake', git: 'https://github.com/alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
 gem "gds-sso"
-gem "generic_form_builder", "0.11.0"
+gem "generic_form_builder"
 gem "govuk_admin_template"
 gem "logstasher", "0.4.8"
 gem "mongoid", "~> 6.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code"
-gem "multi_json", "1.10.0"
-gem "plek", "1.12.0"
+gem "plek"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
-gem "rake"
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
 gem "unicorn", "4.8.2"
-
-# We only need this for tests and rails 3.2 and ruby 2.2
-# however, it can't be in a gem group that isn't installed
-# on production environments or the console won't load
-gem 'test-unit', require: false
 
 if ENV["API_DEV"]
   gem "gds-api-adapters", path: "../gds-api-adapters"
