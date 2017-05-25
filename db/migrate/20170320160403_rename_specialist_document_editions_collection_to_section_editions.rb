@@ -8,7 +8,7 @@ class RenameSpecialistDocumentEditionsCollectionToSectionEditions < Mongoid::Mig
   end
 
   def self.rename_collection(source, target)
-    db = Mongoid.database
+    db = connection.database
     if db.collection_names.include?(target)
       if db.collection(target).count == 0
         db.drop_collection(target)
