@@ -407,7 +407,6 @@ DEPENDENCIES
   cucumber-rails (~> 1.4.0)
   database_cleaner
   factory_girl_rails
-  faraday (= 0.9.0)
   foreman
   gds-api-adapters (~> 45.0)
   gds-sso
