@@ -15,7 +15,7 @@ class Section::RemoveService
       raise ManualNotFoundError.new(manual_id)
     end
 
-    section = manual.sections.find { |s| s.uuid == section_uuid }
+    section = manual.find_section(section_uuid)
     raise SectionNotFoundError.new(section_uuid) unless section.present?
 
     change_note_params = {

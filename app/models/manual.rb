@@ -212,6 +212,10 @@ class Manual
     sections.select(&:needs_exporting?).all? { |s| s.version_type == :minor }
   end
 
+  def find_section(section_uuid)
+    sections.find { |section| section.uuid == section_uuid }
+  end
+
   def build_section(attributes)
     section = Section.new(manual: self, uuid: SecureRandom.uuid, editions: [])
 
@@ -238,7 +242,7 @@ class Manual
   end
 
   def remove_section(section_uuid)
-    found_section = sections.find { |d| d.uuid == section_uuid }
+    found_section = find_section(section_uuid)
 
     return if found_section.nil?
 

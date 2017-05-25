@@ -7,7 +7,7 @@ class Section::ShowService
 
   def call
     manual = Manual.find(manual_id, user)
-    section = manual.sections.find { |s| s.uuid == section_uuid }
+    section = manual.find_section(section_uuid)
     [manual, section]
   end
 

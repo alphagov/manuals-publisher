@@ -6,10 +6,8 @@ RSpec.describe Section::RemoveService do
   let(:manual) {
     double(
       draft: nil,
-      sections: [
-        section,
-      ],
       remove_section: nil,
+      find_section: section
     )
   }
 
@@ -40,6 +38,7 @@ RSpec.describe Section::RemoveService do
         draft: nil,
         sections: [],
         remove_section: nil,
+        find_section: nil
       )
     }
     let(:change_note_params) do
