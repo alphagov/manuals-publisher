@@ -110,6 +110,21 @@ describe Section do
     allow(SlugGenerator).to receive(:new).with(prefix: manual_slug).and_return(slug_generator)
   end
 
+  describe '#update_slug!' do
+    it 'updates the slug of the section' do
+      allow(SlugGenerator).to receive(:new).and_call_original
+
+      manual = Manual.new(title: 'manual-title')
+      section = manual.build_section(title: 'section-title')
+      manual.save(User.gds_editor)
+
+      updated_slug = 'guidance/manual-title/new-section-slug'
+      section.update_slug!(updated_slug)
+
+      expect(section.reload.slug).to eq(updated_slug)
+    end
+  end
+
   describe '#exported_at' do
     it 'returns the date and time that the section was marked as exported' do
       exported_at = Time.zone.now

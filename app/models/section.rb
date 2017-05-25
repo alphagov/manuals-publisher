@@ -44,6 +44,10 @@ class Section
     @latest_edition = @editions.last
   end
 
+  def update_slug!(full_new_section_slug)
+    latest_edition.update_attribute(:slug, full_new_section_slug)
+  end
+
   def save
     # It is actually only necessary to save the latest edition, however, I
     # think it's safer to save latest two as both are exposed to the and have
