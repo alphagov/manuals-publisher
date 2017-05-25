@@ -11,7 +11,7 @@ GIT
 GIT
   remote: https://github.com/alphagov/mongoid_rails_migrations
   revision: 4db234408a335d336a45f840e0f72c585031859b
-  branch: avoid-calling-bundler-require-in-library-code
+  branch: avoid-calling-bundler-require-in-library-code-v1.0.0
   specs:
     mongoid_rails_migrations (1.0.0)
       activesupport (>= 3.2.0)
