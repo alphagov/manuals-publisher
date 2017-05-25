@@ -5,7 +5,7 @@ gem "rails", "~> 5.0.0"
 # Alphabetical order please :)
 gem 'airbrake', git: 'https://github.com/alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
 gem "gds-sso"
-gem "generic_form_builder", "0.11.0"
+gem "generic_form_builder"
 gem "govuk_admin_template"
 gem "logstasher", "0.4.8"
 gem "mongoid", "~> 6.0"
