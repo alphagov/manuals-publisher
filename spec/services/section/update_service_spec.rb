@@ -6,7 +6,7 @@ RSpec.describe Section::UpdateService do
   let(:section_uuid) { 'section-uuid' }
   let(:publishing_api_adapter) { double(:publishing_api) }
   let(:section) {
-    Section.new(manual: manual, uuid: section_uuid, editions: [])
+    Section.new(manual: manual, uuid: section_uuid)
   }
 
   subject do

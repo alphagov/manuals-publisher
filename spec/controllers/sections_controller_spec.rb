@@ -3,7 +3,7 @@ require "spec_helper"
 describe SectionsController, type: :controller do
   describe "#create" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid', editions: []) }
+    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do
@@ -29,7 +29,7 @@ describe SectionsController, type: :controller do
 
   describe "#update" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid', editions: []) }
+    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do
@@ -55,7 +55,7 @@ describe SectionsController, type: :controller do
 
   describe "#preview" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid', editions: []) }
+    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
     let(:service) { double(:service, call: section) }
 
     before do
@@ -144,7 +144,7 @@ describe SectionsController, type: :controller do
 
   context 'for a user that can withdraw' do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid', editions: []) }
+    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do

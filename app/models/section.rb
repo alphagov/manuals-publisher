@@ -25,7 +25,7 @@ class Section
     if editions.empty?
       raise KeyError.new("key not found #{section_uuid}")
     else
-      Section.new(manual: manual, uuid: section_uuid, editions: editions)
+      Section.new(manual: manual, uuid: section_uuid, previous_edition: editions.first, latest_edition: editions.last)
     end
   end
 
@@ -33,10 +33,10 @@ class Section
 
   attr_reader :uuid
 
-  def initialize(manual:, uuid:, editions:)
+  def initialize(manual:, uuid:, previous_edition: nil, latest_edition: nil)
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
     @uuid = uuid
-    @editions = editions
+    @editions = [previous_edition, latest_edition].compact.uniq
     if @editions.empty?
       edition = SectionEdition.new(state: "draft", version_number: 1, section_uuid: uuid)
       @editions.push(edition)

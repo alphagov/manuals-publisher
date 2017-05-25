@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Section do
   subject(:section) {
-    Section.new(manual: manual, uuid: section_uuid, editions: editions)
+    Section.new(manual: manual, uuid: section_uuid, previous_edition: previous_edition, latest_edition: latest_edition)
   }
 
   def key_classes_for(hash)
@@ -15,7 +15,8 @@ describe Section do
   let(:slug) { double(:slug) }
   let(:published_slug) { double(:published_slug) }
   let(:slug_generator) { double(:slug_generator, call: slug) }
-  let(:editions) { [] }
+  let(:previous_edition) { nil }
+  let(:latest_edition) { nil }
   let(:new_edition) { double(:new_edition, published?: false, draft?: true, assign_attributes: nil, version_number: 2) }
   let(:attachments) { double(:attachments) }
 
@@ -134,7 +135,7 @@ describe Section do
   end
 
   describe '#reload' do
-    let(:editions) { [draft_edition_v1] }
+    let(:latest_edition) { draft_edition_v1 }
 
     it 'reloads the latest edition of this section' do
       expect(draft_edition_v1).to receive(:reload)
@@ -144,8 +145,9 @@ describe Section do
 
   describe '.find' do
     context 'when there are associated section editions' do
-      let(:section_edition) { FactoryGirl.build(:section_edition) }
-      let(:editions_proxy) { double(:editions_proxy, to_a: [section_edition]).as_null_object }
+      let(:previous_edition) { FactoryGirl.build(:section_edition) }
+      let(:latest_edition) { FactoryGirl.build(:section_edition) }
+      let(:editions_proxy) { double(:editions_proxy, to_a: [latest_edition, previous_edition]).as_null_object }
 
       before do
         allow(SectionEdition).to receive(:all_for_section).with('section-id').and_return(editions_proxy)
@@ -161,8 +163,13 @@ describe Section do
         Section.find(manual, 'section-id')
       end
 
-      it 'builds a section using the editions' do
-        expect(Section).to receive(:new).with(including(editions: [section_edition]))
+      it 'builds a section using the previous edition' do
+        expect(Section).to receive(:new).with(including(previous_edition: previous_edition))
+        Section.find(manual, 'section-id')
+      end
+
+      it 'builds a section using the latest edition' do
+        expect(Section).to receive(:new).with(including(latest_edition: latest_edition))
         Section.find(manual, 'section-id')
       end
     end
@@ -181,38 +188,34 @@ describe Section do
   end
 
   describe '#save' do
-    it 'saves the last two editions' do
-      editions = [
-        edition_1 = double(:edition_1),
-        edition_2 = double(:edition_2),
-        edition_3 = double(:edition_3)
-      ]
-      section = Section.new(manual: manual, uuid: 'section-id', editions: editions)
+    it 'saves the previous and latest editions' do
+      previous_edition = double(:previous_edition)
+      latest_edition = double(:latest_edition)
+      section = Section.new(manual: manual, uuid: 'section-id', previous_edition: previous_edition, latest_edition: latest_edition)
 
-      expect(edition_1).to_not receive(:save!)
-      expect(edition_2).to receive(:save!)
-      expect(edition_3).to receive(:save!)
+      expect(previous_edition).to receive(:save!)
+      expect(latest_edition).to receive(:save!)
 
       section.save
     end
   end
 
   describe "#eql?" do
-    let(:editions) { [draft_edition_v1] }
+    let(:latest_edition) { draft_edition_v1 }
 
     it "is considered the same as another section instance if they have the same uuid" do
       expect(section).to eql(section)
-      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, editions: [draft_edition_v1]))
-      expect(section).not_to eql(Section.new(manual: manual, uuid: section.uuid.reverse, editions: [draft_edition_v1]))
+      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, latest_edition: draft_edition_v1))
+      expect(section).not_to eql(Section.new(manual: manual, uuid: section.uuid.reverse, latest_edition: draft_edition_v1))
     end
 
     it "is considered the same as another section instance with the same uuid even if they have different version numbers" do
-      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, editions: [draft_edition_v2]))
+      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, latest_edition: draft_edition_v2))
     end
   end
 
   context "with one draft edition" do
-    let(:editions) { [draft_edition_v1] }
+    let(:latest_edition) { draft_edition_v1 }
 
     it "is in draft" do
       expect(section).to be_draft
@@ -228,7 +231,7 @@ describe Section do
   end
 
   context "with one published edition" do
-    let(:editions) { [published_edition_v1] }
+    let(:latest_edition) { published_edition_v1 }
 
     it "is published" do
       expect(section).to be_published
@@ -256,7 +259,8 @@ describe Section do
   end
 
   context "with one published edition and one draft edition" do
-    let(:editions) { [published_edition_v1, draft_edition_v2] }
+    let(:previous_edition) { published_edition_v1 }
+    let(:latest_edition) { draft_edition_v2 }
 
     it "is published and in draft" do
       expect(section).to be_draft
@@ -269,7 +273,8 @@ describe Section do
   end
 
   context "with two draft editions" do
-    let(:editions) { [draft_edition_v1, draft_edition_v2] }
+    let(:previous_edition) { draft_edition_v1 }
+    let(:latest_edition) { draft_edition_v2 }
 
     it "is in draft" do
       expect(section).to be_draft
@@ -285,7 +290,8 @@ describe Section do
   end
 
   context "with one draft edition and a withdrawn edition" do
-    let(:editions) { [draft_edition_v1, withdrawn_edition_v2] }
+    let(:previous_edition) { draft_edition_v1 }
+    let(:latest_edition) { withdrawn_edition_v2 }
 
     it "is not in draft" do
       expect(section).not_to be_draft
@@ -302,7 +308,6 @@ describe Section do
 
   describe "#update" do
     context "section is new, with no previous editions" do
-      let(:editions) { [] }
       let(:attrs)    { { title: "Test title" } }
 
       before do
@@ -322,7 +327,7 @@ describe Section do
 
     context "before the section is published" do
       context "with an existing draft edition" do
-        let(:editions) { [draft_edition_v1] }
+        let(:latest_edition) { draft_edition_v1 }
 
         context "when providing a title" do
           let(:new_title) { double(:new_title) }
@@ -350,7 +355,7 @@ describe Section do
     end
 
     context "when the current section is published" do
-      let(:editions) { [published_edition_v1] }
+      let(:latest_edition) { published_edition_v1 }
 
       let(:attributes) { { title: "It is a new title" } }
 
@@ -460,7 +465,7 @@ describe Section do
     end
 
     context "when the current section is withdrawn" do
-      let(:editions) { [withdrawn_edition_v2] }
+      let(:latest_edition) { withdrawn_edition_v2 }
 
       let(:attributes) { { title: "It is a new title" } }
 
@@ -522,7 +527,7 @@ describe Section do
 
   describe "#publish!" do
     context "one draft" do
-      let(:editions) { [draft_edition_v1] }
+      let(:latest_edition) { draft_edition_v1 }
 
       it "should set its state to published" do
         section.publish!
@@ -531,7 +536,8 @@ describe Section do
     end
 
     context "one published and one draft edition" do
-      let(:editions) { [published_edition_v1, draft_edition_v2] }
+      let(:previous_edition) { published_edition_v1 }
+      let(:latest_edition) { draft_edition_v2 }
 
       it "should set the draft edition's state to published" do
         section.publish!
@@ -546,7 +552,7 @@ describe Section do
     end
 
     context "one published edition" do
-      let(:editions) { [published_edition_v1] }
+      let(:latest_edition) { published_edition_v1 }
 
       it "do nothing" do
         section.publish!
@@ -556,7 +562,8 @@ describe Section do
   end
 
   describe "#add_attachment" do
-    let(:editions) { [published_edition_v1, draft_edition_v2] }
+    let(:previous_edition) { published_edition_v1 }
+    let(:latest_edition) { draft_edition_v2 }
     let(:attributes) { double(:attributes) }
 
     it "tells the latest edition to create an attachment using the supplied parameters" do
@@ -567,7 +574,8 @@ describe Section do
   end
 
   describe "#attachments" do
-    let(:editions) { [published_edition_v1, draft_edition_v2] }
+    let(:previous_edition) { published_edition_v1 }
+    let(:latest_edition) { draft_edition_v2 }
 
     it "delegates to the latest edition" do
       section.attachments
@@ -581,7 +589,7 @@ describe Section do
   end
 
   describe "#find_attachment_by_id" do
-    let(:editions) { [published_edition_v1] }
+    let(:latest_edition) { published_edition_v1 }
 
     let(:attachment_one) { double("attachment_one", id: id_object("one")) }
     let(:attachment_two) { double("attachment_two", id: id_object("two")) }
@@ -613,7 +621,7 @@ describe Section do
 
   describe "#withdrawn?" do
     context "one draft" do
-      let(:editions) { [draft_edition_v1] }
+      let(:latest_edition) { draft_edition_v1 }
 
       it "returns false" do
         expect(section).not_to be_withdrawn
@@ -621,7 +629,7 @@ describe Section do
     end
 
     context "one published" do
-      let(:editions) { [published_edition_v1] }
+      let(:latest_edition) { published_edition_v1 }
 
       it "returns false" do
         expect(section).not_to be_withdrawn
@@ -629,15 +637,17 @@ describe Section do
     end
 
     context "one published and one withdrawn" do
-      let(:editions) { [published_edition_v1, withdrawn_edition_v2] }
+      let(:previous_edition) { published_edition_v1 }
+      let(:latest_edition) { withdrawn_edition_v2 }
 
       it "returns true" do
         expect(section).to be_withdrawn
       end
     end
 
-    context "one published and one withdrawn and one draft" do
-      let(:editions) { [published_edition_v1, withdrawn_edition_v2, draft_edition_v3] }
+    context "one withdrawn and one draft" do
+      let(:previous_edition) { withdrawn_edition_v2 }
+      let(:latest_edition) { draft_edition_v3 }
 
       it "returns false" do
         expect(section).not_to be_withdrawn
@@ -647,7 +657,7 @@ describe Section do
 
   describe "#withdraw_and_mark_as_exported!" do
     context "one draft" do
-      let(:editions) { [draft_edition_v1] }
+      let(:latest_edition) { draft_edition_v1 }
 
       it "archives the draft" do
         section.withdraw_and_mark_as_exported!
@@ -665,7 +675,8 @@ describe Section do
     end
 
     context "one published and one withdrawn" do
-      let(:editions) { [published_edition_v1, withdrawn_edition_v2] }
+      let(:previous_edition) { published_edition_v1 }
+      let(:latest_edition) { withdrawn_edition_v2 }
 
       it "does nothing to the states of the editions" do
         section.withdraw_and_mark_as_exported!
@@ -686,7 +697,8 @@ describe Section do
     end
 
     context "one published and one draft edition" do
-      let(:editions) { [published_edition_v1, draft_edition_v2] }
+      let(:previous_edition) { published_edition_v1 }
+      let(:latest_edition) { draft_edition_v2 }
 
       it "sets the draft edition's state to withdrawn" do
         section.withdraw_and_mark_as_exported!
@@ -706,7 +718,7 @@ describe Section do
     end
 
     context "one published edition" do
-      let(:editions) { [published_edition_v1] }
+      let(:latest_edition) { published_edition_v1 }
 
       it "sets the published edition's state to withdrawn" do
         section.withdraw_and_mark_as_exported!
@@ -725,7 +737,8 @@ describe Section do
   end
 
   describe "#mark_as_exported!" do
-    let(:editions) { [published_edition_v1, draft_edition_v2] }
+    let(:previous_edition) { published_edition_v1 }
+    let(:latest_edition) { draft_edition_v2 }
 
     it "sets the exported_at date on the latest edition" do
       time = Time.zone.now
@@ -788,7 +801,7 @@ describe Section do
   end
 
   describe "#valid?" do
-    let(:editions) { [FactoryGirl.build(:section_edition)] }
+    let(:latest_edition) { FactoryGirl.build(:section_edition) }
 
     before do
       allow(section).to receive(:change_note_required?).and_return(change_note_required)
@@ -876,14 +889,14 @@ describe Section do
   end
 
   describe "#all_editions" do
-    let(:editions) { [FactoryGirl.build(:section_edition)] }
+    let(:latest_edition) { FactoryGirl.build(:section_edition) }
 
     before do
-      allow(SectionEdition).to receive(:all_for_section).with(section_uuid).and_return(editions)
+      allow(SectionEdition).to receive(:all_for_section).with(section_uuid).and_return([latest_edition])
     end
 
     it "returns all editions for section" do
-      expect(section.all_editions).to eq(editions)
+      expect(section.all_editions).to eq([latest_edition])
     end
   end
 end

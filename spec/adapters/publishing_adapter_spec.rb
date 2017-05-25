@@ -44,7 +44,7 @@ describe PublishingAdapter do
     Section.new(
       manual: manual,
       uuid: section_uuid,
-      editions: [section_edition],
+      latest_edition: section_edition,
     )
   }
 
@@ -543,7 +543,7 @@ describe PublishingAdapter do
       Section.new(
         manual: manual,
         uuid: removed_section_uuid,
-        editions: [removed_section_edition],
+        latest_edition: removed_section_edition,
       )
     }
 

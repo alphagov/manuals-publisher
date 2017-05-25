@@ -985,17 +985,17 @@ describe Manual do
       let(:section_2_edition_2) { FactoryGirl.create(:section_edition, section_uuid: "section-2") }
 
       let(:section_1) do
-        Section.new(manual: manual, uuid: "section-1", editions: [
-          section_1_edition_1,
-          section_1_edition_2
-        ])
+        Section.new(manual: manual, uuid: "section-1",
+          previous_edition: section_1_edition_1,
+          latest_edition: section_1_edition_2
+        )
       end
 
       let(:section_2) do
-        Section.new(manual: manual, uuid: "section-2", editions: [
-          section_2_edition_1,
-          section_2_edition_2
-        ])
+        Section.new(manual: manual, uuid: "section-2",
+          previous_edition: section_2_edition_1,
+          latest_edition: section_2_edition_2
+        )
       end
 
       before do
