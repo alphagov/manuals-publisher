@@ -31,7 +31,7 @@ class Section
 
   def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update, :exported_at
 
-  attr_reader :uuid, :latest_edition
+  attr_reader :uuid
 
   def initialize(manual:, uuid:, editions:)
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
@@ -181,7 +181,7 @@ class Section
 
 private
 
-  attr_reader :slug_generator, :editions
+  attr_reader :slug_generator, :editions, :latest_edition
 
   def published_edition
     most_recent_non_draft = editions.reject(&:draft?).last
