@@ -29,7 +29,7 @@ class Section
     end
   end
 
-  def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update
+  def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update, :exported_at
 
   attr_reader :uuid, :latest_edition
 
@@ -135,6 +135,10 @@ class Section
 
   def needs_exporting?
     latest_edition.exported_at.nil?
+  end
+
+  def reload
+    latest_edition.reload
   end
 
   def mark_as_exported!(exported_at = Time.zone.now)

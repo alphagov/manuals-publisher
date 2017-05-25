@@ -44,7 +44,7 @@ RSpec.describe "Publishing manuals", type: :feature do
     end
 
     it "sets the exported_at timestamp on the section" do
-      expect(@sections.first.latest_edition.reload.exported_at).to be_within(1.second).of publish_time
+      expect(@sections.first.reload.exported_at).to be_within(1.second).of publish_time
     end
   end
 end
