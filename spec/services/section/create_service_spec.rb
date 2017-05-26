@@ -6,7 +6,7 @@ RSpec.describe Section::CreateService do
   let(:section_attributes) { double(:section_attributes) }
   let(:publishing_api_adapter) { double(:publishing_api) }
   let(:new_section) {
-    Section.new(manual: manual, uuid: 'uuid', editions: [])
+    Section.new(manual: manual, uuid: 'uuid')
   }
 
   subject do

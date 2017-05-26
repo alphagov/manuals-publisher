@@ -25,7 +25,7 @@ class Section
     if editions.empty?
       raise KeyError.new("key not found #{section_uuid}")
     else
-      Section.new(manual: manual, uuid: section_uuid, editions: editions)
+      Section.new(manual: manual, uuid: section_uuid, previous_edition: editions.first, latest_edition: editions.last)
     end
   end
 
@@ -33,15 +33,20 @@ class Section
 
   attr_reader :uuid
 
-  def initialize(manual:, uuid:, editions:)
+  def initialize(manual:, uuid:, previous_edition: nil, latest_edition: nil)
     @slug_generator = SlugGenerator.new(prefix: manual.slug)
     @uuid = uuid
-    @editions = editions
-    if @editions.empty?
-      edition = SectionEdition.new(state: "draft", version_number: 1, section_uuid: uuid)
-      @editions.push(edition)
+
+    @previous_edition = previous_edition
+    @latest_edition = latest_edition
+
+    if @previous_edition == @latest_edition
+      @previous_edition = nil
     end
-    @latest_edition = @editions.last
+
+    if @latest_edition.nil?
+      @latest_edition = SectionEdition.new(state: "draft", version_number: 1, section_uuid: uuid)
+    end
   end
 
   def update_slug!(full_new_section_slug)
@@ -53,7 +58,8 @@ class Section
     # think it's safer to save latest two as both are exposed to the and have
     # potential to change. This extra write may save a potential future
     # headache.
-    editions.last(2).each(&:save!)
+    previous_edition && previous_edition.save!
+    latest_edition.save!
   end
 
   def minor_update?
@@ -86,20 +92,20 @@ class Section
           slug: slug,
           attachments: attachments,
         )
+      @previous_edition = latest_edition
       @latest_edition = SectionEdition.new(attributes)
-
-      editions.push(@latest_edition)
     end
 
     nil
   end
 
   def published?
-    editions.any?(&:published?)
+    latest_edition.published? ||
+      (previous_edition && previous_edition.published?)
   end
 
   def has_ever_been_published?
-    return false if @editions.size == 1 && needs_exporting?
+    return false if previous_edition.nil? && needs_exporting?
     published?
   end
 
@@ -152,7 +158,8 @@ class Section
   end
 
   def persisted?
-    editions.any?(&:persisted?)
+    latest_edition.persisted? ||
+      (previous_edition && previous_edition.persisted?)
   end
 
   def eql?(other)
@@ -181,10 +188,14 @@ class Section
 
 private
 
-  attr_reader :slug_generator, :editions, :latest_edition
+  attr_reader :slug_generator, :latest_edition, :previous_edition
 
   def published_edition
-    most_recent_non_draft = editions.reject(&:draft?).last
+    most_recent_non_draft = if !latest_edition.draft?
+                              latest_edition
+                            elsif previous_edition && !previous_edition.draft?
+                              previous_edition
+                            end
 
     if most_recent_non_draft && most_recent_non_draft.published?
       most_recent_non_draft

@@ -23,7 +23,7 @@ describe SearchIndexAdapter do
     Section.new(
       manual: manual,
       uuid: "section-id",
-      editions: [section_edition],
+      latest_edition: section_edition,
     )
   }
 
@@ -40,7 +40,7 @@ describe SearchIndexAdapter do
     Section.new(
       manual: manual,
       uuid: "removed-section-id",
-      editions: [removed_section_edition],
+      latest_edition: removed_section_edition,
     )
   }
 
