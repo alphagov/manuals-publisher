@@ -6,16 +6,14 @@ class Attachment::NewService
   end
 
   def call
+    attachment = Attachment.new({})
+    
     [manual, section, attachment]
   end
 
 private
 
   attr_reader :user, :manual_id, :section_uuid
-
-  def attachment
-    Attachment.new({})
-  end
 
   def section
     @section ||= manual.find_section(section_uuid)
