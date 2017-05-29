@@ -224,10 +224,6 @@ describe Section do
     it "is not published" do
       expect(section).not_to be_published
     end
-
-    it "has never been published" do
-      expect(section).not_to have_ever_been_published
-    end
   end
 
   context "with one published edition" do
@@ -240,22 +236,6 @@ describe Section do
     it "is not in draft" do
       expect(section).not_to be_draft
     end
-
-    context "that has been exported" do
-      before { allow(published_edition_v1).to receive(:exported_at).and_return(4.days.ago) }
-
-      it "has ever been published" do
-        expect(section).to have_ever_been_published
-      end
-    end
-
-    context "that has not been exported" do
-      before { allow(published_edition_v1).to receive(:exported_at).and_return(nil) }
-
-      it "has never been published" do
-        expect(section).not_to have_ever_been_published
-      end
-    end
   end
 
   context "with one published edition and one draft edition" do
@@ -265,10 +245,6 @@ describe Section do
     it "is published and in draft" do
       expect(section).to be_draft
       expect(section).to be_published
-    end
-
-    it "has ever been published" do
-      expect(section).to have_ever_been_published
     end
   end
 
@@ -283,10 +259,6 @@ describe Section do
     it "is not published" do
       expect(section).not_to be_published
     end
-
-    it "has never been published" do
-      expect(section).not_to have_ever_been_published
-    end
   end
 
   context "with one draft edition and a withdrawn edition" do
@@ -299,10 +271,6 @@ describe Section do
 
     it "is not published" do
       expect(section).not_to be_published
-    end
-
-    it "has never been published" do
-      expect(section).not_to have_ever_been_published
     end
   end
 

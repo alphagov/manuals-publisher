@@ -104,11 +104,6 @@ class Section
       (previous_edition && previous_edition.published?)
   end
 
-  def has_ever_been_published?
-    return false if previous_edition.nil? && needs_exporting?
-    published?
-  end
-
   def draft?
     latest_edition.draft?
   end
