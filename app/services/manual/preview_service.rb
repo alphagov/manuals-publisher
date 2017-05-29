@@ -6,6 +6,11 @@ class Manual::PreviewService
   end
 
   def call
+    manual = if manual_id
+               Manual.find(manual_id, user)
+             else
+               Manual.new(attributes)
+             end
     manual.update(attributes)
 
     ManualPresenter.new(manual)
@@ -14,8 +19,4 @@ class Manual::PreviewService
 private
 
   attr_reader :user, :manual_id, :attributes
-
-  def manual
-    manual_id ? Manual.find(manual_id, user) : Manual.new(attributes)
-  end
 end
