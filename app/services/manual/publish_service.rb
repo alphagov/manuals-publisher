@@ -13,7 +13,7 @@ class Manual::PublishService
       PublicationLogger.new.call(manual)
       Adapters.publishing.save(manual)
       Adapters.publishing.publish(manual)
-      add_to_search_index
+      Adapters.search_index.add(manual)
       manual.save(user)
     else
       raise VersionMismatchError.new(
@@ -28,10 +28,6 @@ class Manual::PublishService
 private
 
   attr_reader :user, :manual_id, :version_number
-
-  def add_to_search_index
-    Adapters.search_index.add(manual)
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
