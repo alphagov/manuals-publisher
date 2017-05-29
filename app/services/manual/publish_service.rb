@@ -12,7 +12,7 @@ class Manual::PublishService
       manual.publish
       PublicationLogger.new.call(manual)
       Adapters.publishing.save(manual)
-      publish_to_publishing_api
+      Adapters.publishing.publish(manual)
       add_to_search_index
       manual.save(user)
     else
@@ -28,10 +28,6 @@ class Manual::PublishService
 private
 
   attr_reader :user, :manual_id, :version_number
-
-  def publish_to_publishing_api
-    Adapters.publishing.publish(manual)
-  end
 
   def add_to_search_index
     Adapters.search_index.add(manual)
