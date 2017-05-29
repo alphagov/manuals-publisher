@@ -7,6 +7,12 @@ class Manual::WithdrawService
   end
 
   def call
+    begin
+      manual = Manual.find(manual_id, user)
+    rescue KeyError => error
+      raise ManualNotFoundError.new(error)
+    end
+
     manual.withdraw
 
     if manual.withdrawn?
@@ -21,12 +27,6 @@ class Manual::WithdrawService
 private
 
   attr_reader :user, :manual_id
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  rescue KeyError => error
-    raise ManualNotFoundError.new(error)
-  end
 
   class ManualNotFoundError < StandardError; end
 end
