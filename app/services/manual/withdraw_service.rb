@@ -12,7 +12,7 @@ class Manual::WithdrawService
     if manual.withdrawn?
       manual.save(user)
       Adapters.publishing.unpublish(manual)
-      remove_from_search_index
+      Adapters.search_index.remove(manual)
     end
 
     manual
@@ -21,10 +21,6 @@ class Manual::WithdrawService
 private
 
   attr_reader :user, :manual_id
-
-  def remove_from_search_index
-    Adapters.search_index.remove(manual)
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
