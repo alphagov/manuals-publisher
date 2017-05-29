@@ -850,10 +850,33 @@ describe Section do
     end
   end
 
+  describe '#first_edition?' do
+    let(:manual) { Manual.new(title: 'manual-title') }
+    let(:section) { manual.build_section(title: 'section-title') }
+
+    before do
+      allow(SlugGenerator).to receive(:new).and_call_original
+    end
+
+    it 'returns true when the version_number is 1' do
+      expect(section.version_number).to eq(1)
+      expect(section).to be_first_edition
+    end
+
+    it 'returns false when the version_number is greater than 1' do
+      section.publish!
+      section.save
+      section.update(title: 'new-section-title')
+
+      expect(section.version_number).to eq(2)
+      expect(section).to_not be_first_edition
+    end
+  end
+
   describe "#version_type" do
-    context "when section has never been published" do
+    context "when section is the first edition" do
       before do
-        allow(section).to receive(:has_ever_been_published?).and_return(false)
+        allow(section).to receive(:first_edition?).and_return(true)
       end
 
       it "returns :new" do
@@ -861,9 +884,9 @@ describe Section do
       end
     end
 
-    context "when section has been published" do
+    context "when section is not the first edition" do
       before do
-        allow(section).to receive(:has_ever_been_published?).and_return(true)
+        allow(section).to receive(:first_edition?).and_return(false)
       end
 
       context "and update is minor" do

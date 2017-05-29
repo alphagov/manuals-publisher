@@ -172,15 +172,19 @@ class Section
     published? && !minor_update?
   end
 
+  def first_edition?
+    version_number == 1
+  end
+
   def version_type
-    if has_ever_been_published?
+    if first_edition?
+      :new
+    else
       if minor_update?
         :minor
       else
         :major
       end
-    else
-      :new
     end
   end
 
