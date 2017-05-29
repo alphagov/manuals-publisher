@@ -11,7 +11,7 @@ class Manual::PublishService
     if version_number == manual.version_number
       manual.publish
       PublicationLogger.new.call(manual)
-      export_draft_to_publishing_api
+      Adapters.publishing.save(manual)
       publish_to_publishing_api
       add_to_search_index
       manual.save(user)
@@ -28,10 +28,6 @@ class Manual::PublishService
 private
 
   attr_reader :user, :manual_id, :version_number
-
-  def export_draft_to_publishing_api
-    Adapters.publishing.save(manual)
-  end
 
   def publish_to_publishing_api
     Adapters.publishing.publish(manual)
