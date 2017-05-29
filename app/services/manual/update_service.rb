@@ -9,7 +9,7 @@ class Manual::UpdateService
 
   def call
     manual.draft
-    update
+    manual.update(attributes)
     persist
     export_draft_to_publishing_api
 
@@ -19,10 +19,6 @@ class Manual::UpdateService
 private
 
   attr_reader :user, :manual_id, :attributes
-
-  def update
-    manual.update(attributes)
-  end
 
   def persist
     manual.save(user)
