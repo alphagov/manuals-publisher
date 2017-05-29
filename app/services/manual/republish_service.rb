@@ -14,7 +14,7 @@ class Manual::RepublishService
     end
 
     if draft_manual_version.present?
-      export_draft_manual_via_publishing_api
+      Adapters.publishing.save(draft_manual_version, republish: true)
     end
 
     manual_versions
@@ -30,10 +30,6 @@ private
 
   def draft_manual_version
     manual_versions[:draft]
-  end
-
-  def export_draft_manual_via_publishing_api
-    Adapters.publishing.save(draft_manual_version, republish: true)
   end
 
   def manual_versions
