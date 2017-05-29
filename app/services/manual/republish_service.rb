@@ -7,6 +7,8 @@ class Manual::RepublishService
   end
 
   def call
+    manual_versions = Manual.find(manual_id, user).current_versions
+
     published_manual_version = manual_versions[:published]
     draft_manual_version = manual_versions[:draft]
 
@@ -26,8 +28,4 @@ class Manual::RepublishService
 private
 
   attr_reader :user, :manual_id
-
-  def manual_versions
-    @manual_versions ||= Manual.find(manual_id, user).current_versions
-  end
 end
