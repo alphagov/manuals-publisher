@@ -27,14 +27,10 @@ private
 
   def persist
     manual.save(user)
-    @manual = fetch_manual
+    @manual = Manual.find(manual_id, user)
   end
 
   def manual
-    @manual ||= fetch_manual
-  end
-
-  def fetch_manual
-    Manual.find(manual_id, user)
+    @manual ||= Manual.find(manual_id, user)
   end
 end
