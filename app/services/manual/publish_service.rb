@@ -9,7 +9,7 @@ class Manual::PublishService
 
   def call
     if version_number == manual.version_number
-      publish
+      manual.publish
       log_publication
       export_draft_to_publishing_api
       publish_to_publishing_api
@@ -28,10 +28,6 @@ class Manual::PublishService
 private
 
   attr_reader :user, :manual_id, :version_number
-
-  def publish
-    manual.publish
-  end
 
   def persist
     manual.save(user)
