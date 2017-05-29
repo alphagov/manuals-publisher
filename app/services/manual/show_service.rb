@@ -5,14 +5,10 @@ class Manual::ShowService
   end
 
   def call
-    manual
+    Manual.find(manual_id, user)
   end
 
 private
 
   attr_reader :user, :manual_id
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
 end
