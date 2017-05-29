@@ -8,7 +8,7 @@ class Manual::PublishService
   end
 
   def call
-    if versions_match?
+    if version_number == manual.version_number
       publish
       log_publication
       export_draft_to_publishing_api
@@ -28,10 +28,6 @@ class Manual::PublishService
 private
 
   attr_reader :user, :manual_id, :version_number
-
-  def versions_match?
-    version_number == manual.version_number
-  end
 
   def publish
     manual.publish
