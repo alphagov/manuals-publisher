@@ -8,6 +8,8 @@ class Manual::UpdateOriginalPublicationDateService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
+
     manual.draft
     manual.update(attributes)
     manual.sections.each do |section|
@@ -15,7 +17,7 @@ class Manual::UpdateOriginalPublicationDateService
       section.update(change_note: nil)
     end
     manual.save(user)
-    @manual = Manual.find(manual_id, user)
+    manual = Manual.find(manual_id, user)
 
     Adapters.publishing.save(manual)
 
@@ -25,8 +27,4 @@ class Manual::UpdateOriginalPublicationDateService
 private
 
   attr_reader :user, :manual_id, :attributes
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
 end
