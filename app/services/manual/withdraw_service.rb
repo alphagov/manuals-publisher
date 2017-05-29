@@ -7,7 +7,7 @@ class Manual::WithdrawService
   end
 
   def call
-    withdraw
+    manual.withdraw
 
     if manual.withdrawn?
       persist
@@ -21,10 +21,6 @@ class Manual::WithdrawService
 private
 
   attr_reader :user, :manual_id
-
-  def withdraw
-    manual.withdraw
-  end
 
   def persist
     manual.save(user)
