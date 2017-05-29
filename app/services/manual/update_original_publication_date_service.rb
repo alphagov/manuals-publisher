@@ -10,7 +10,10 @@ class Manual::UpdateOriginalPublicationDateService
   def call
     manual.draft
     manual.update(attributes)
-    update_sections
+    manual.sections.each do |section|
+      # a nil change note will omit this update from publication logs
+      section.update(change_note: nil)
+    end
     persist
 
     export_draft_to_publishing_api
@@ -29,13 +32,6 @@ private
 
   def manual
     @manual ||= fetch_manual
-  end
-
-  def update_sections
-    manual.sections.each do |section|
-      # a nil change note will omit this update from publication logs
-      section.update(change_note: nil)
-    end
   end
 
   def export_draft_to_publishing_api
