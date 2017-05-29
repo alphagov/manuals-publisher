@@ -16,7 +16,7 @@ class Manual::UpdateOriginalPublicationDateService
     end
     persist
 
-    export_draft_to_publishing_api
+    Adapters.publishing.save(manual)
 
     manual
   end
@@ -32,10 +32,6 @@ private
 
   def manual
     @manual ||= fetch_manual
-  end
-
-  def export_draft_to_publishing_api
-    Adapters.publishing.save(manual)
   end
 
   def fetch_manual
