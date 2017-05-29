@@ -14,7 +14,7 @@ private
   attr_reader :user, :manual_id, :section_uuid
 
   def attachment
-    Attachment.new(initial_params)
+    Attachment.new({})
   end
 
   def section
@@ -23,9 +23,5 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, user)
-  end
-
-  def initial_params
-    {}
   end
 end
