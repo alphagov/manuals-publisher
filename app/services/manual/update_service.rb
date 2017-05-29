@@ -11,7 +11,8 @@ class Manual::UpdateService
     manual.draft
     manual.update(attributes)
     manual.save(user)
-    export_draft_to_publishing_api
+    reloaded_manual = Manual.find(manual.id, user)
+    Adapters.publishing.save(reloaded_manual)
 
     manual
   end
@@ -22,10 +23,5 @@ private
 
   def manual
     @manual ||= Manual.find(manual_id, user)
-  end
-
-  def export_draft_to_publishing_api
-    reloaded_manual = Manual.find(manual.id, user)
-    Adapters.publishing.save(reloaded_manual)
   end
 end
