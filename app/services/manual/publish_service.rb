@@ -8,6 +8,8 @@ class Manual::PublishService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
+
     if version_number == manual.version_number
       manual.publish
       PublicationLogger.new.call(manual)
@@ -28,10 +30,6 @@ class Manual::PublishService
 private
 
   attr_reader :user, :manual_id, :version_number
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
 
   class VersionMismatchError < StandardError
   end
