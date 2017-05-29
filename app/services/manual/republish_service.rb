@@ -9,7 +9,7 @@ class Manual::RepublishService
   def call
     if published_manual_version.present?
       Adapters.publishing.save(published_manual_version, republish: true)
-      republish_published_manual_to_publishing_api
+      Adapters.publishing.publish(published_manual_version, republish: true)
       add_published_manual_to_search_index
     end
 
@@ -30,10 +30,6 @@ private
 
   def draft_manual_version
     manual_versions[:draft]
-  end
-
-  def republish_published_manual_to_publishing_api
-    Adapters.publishing.publish(published_manual_version, republish: true)
   end
 
   def add_published_manual_to_search_index
