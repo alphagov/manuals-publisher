@@ -8,6 +8,8 @@ class Manual::UpdateService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
+
     manual.draft
     manual.update(attributes)
     manual.save(user)
@@ -20,8 +22,4 @@ class Manual::UpdateService
 private
 
   attr_reader :user, :manual_id, :attributes
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
 end
