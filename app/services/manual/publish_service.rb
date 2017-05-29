@@ -14,7 +14,7 @@ class Manual::PublishService
       export_draft_to_publishing_api
       publish_to_publishing_api
       add_to_search_index
-      persist
+      manual.save(user)
     else
       raise VersionMismatchError.new(
         %(The manual with id '#{manual.id}' could not be published due to a version mismatch.
@@ -28,10 +28,6 @@ class Manual::PublishService
 private
 
   attr_reader :user, :manual_id, :version_number
-
-  def persist
-    manual.save(user)
-  end
 
   def log_publication
     PublicationLogger.new.call(manual)
