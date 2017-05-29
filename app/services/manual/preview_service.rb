@@ -16,11 +16,7 @@ private
   attr_reader :user, :manual_id, :attributes
 
   def manual
-    manual_id ? existing_manual : ephemeral_manual
-  end
-
-  def ephemeral_manual
-    Manual.new(attributes)
+    manual_id ? existing_manual : Manual.new(attributes)
   end
 
   def existing_manual
