@@ -7,6 +7,8 @@ class Manual::RepublishService
   end
 
   def call
+    published_manual_version = manual_versions[:published]
+    
     if published_manual_version.present?
       Adapters.publishing.save(published_manual_version, republish: true)
       Adapters.publishing.publish(published_manual_version, republish: true)
@@ -23,10 +25,6 @@ class Manual::RepublishService
 private
 
   attr_reader :user, :manual_id
-
-  def published_manual_version
-    manual_versions[:published]
-  end
 
   def draft_manual_version
     manual_versions[:draft]
