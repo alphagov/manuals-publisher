@@ -14,7 +14,8 @@ class Manual::UpdateOriginalPublicationDateService
       # a nil change note will omit this update from publication logs
       section.update(change_note: nil)
     end
-    persist
+    manual.save(user)
+    @manual = Manual.find(manual_id, user)
 
     Adapters.publishing.save(manual)
 
@@ -24,11 +25,6 @@ class Manual::UpdateOriginalPublicationDateService
 private
 
   attr_reader :user, :manual_id, :attributes
-
-  def persist
-    manual.save(user)
-    @manual = Manual.find(manual_id, user)
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
