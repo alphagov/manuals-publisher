@@ -81,8 +81,8 @@ class Section
       latest_edition.assign_attributes(attributes)
     else
       previous_edition_attributes = latest_edition.attributes
-        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
         .symbolize_keys
+        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
 
       attributes = previous_edition_attributes
         .merge(attributes)

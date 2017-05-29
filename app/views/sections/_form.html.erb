@@ -11,7 +11,7 @@
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
-      <% if manual.has_ever_been_published? && section.has_ever_been_published? %>
+      <% if manual.has_ever_been_published? && section.accepts_minor_updates? %>
         <div class="checkbox add-vertical-margins">
           <%= f.radio_button :minor_update, 1, class: 'js-update-type-minor', tag_type: :p, label: 'Minor update', checked: section.minor_update %>
           <p class="help-block">Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.</p>
