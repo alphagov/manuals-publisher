@@ -7,6 +7,7 @@ class Attachment::CreateService
   end
 
   def call
+    section = manual.find_section(section_uuid)
     attachment = section.add_attachment(attributes)
 
     manual.save(user)
@@ -17,10 +18,6 @@ class Attachment::CreateService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  def section
-    @section ||= manual.find_section(section_uuid)
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
