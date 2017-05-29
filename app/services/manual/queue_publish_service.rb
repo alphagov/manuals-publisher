@@ -7,6 +7,8 @@ class Manual::QueuePublishService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
+
     if manual.draft?
       task = ManualPublishTask.create!(
         manual_id: manual.id,
@@ -30,10 +32,6 @@ class Manual::QueuePublishService
 private
 
   attr_reader :user, :manual_id
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
 
   class InvalidStateError < StandardError
   end
