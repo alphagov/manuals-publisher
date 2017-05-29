@@ -9,7 +9,7 @@ class Manual::UpdateOriginalPublicationDateService
 
   def call
     manual.draft
-    update
+    manual.update(attributes)
     update_sections
     persist
 
@@ -21,10 +21,6 @@ class Manual::UpdateOriginalPublicationDateService
 private
 
   attr_reader :user, :manual_id, :attributes
-
-  def update
-    manual.update(attributes)
-  end
 
   def persist
     manual.save(user)
