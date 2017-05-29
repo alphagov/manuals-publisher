@@ -8,7 +8,10 @@ class Manual::QueuePublishService
 
   def call
     if manual.draft?
-      task = create_publish_task(manual)
+      task = ManualPublishTask.create!(
+        manual_id: manual.id,
+        version_number: manual.version_number,
+      )
       PublishManualWorker.perform_async(task.to_param, govuk_header_params)
       manual
     else
@@ -21,13 +24,6 @@ class Manual::QueuePublishService
 private
 
   attr_reader :user, :manual_id
-
-  def create_publish_task(manual)
-    ManualPublishTask.create!(
-      manual_id: manual.id,
-      version_number: manual.version_number,
-    )
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
