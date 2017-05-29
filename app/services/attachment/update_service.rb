@@ -8,6 +8,7 @@ class Attachment::UpdateService
   end
 
   def call
+    section = manual.find_section(section_uuid)
     attachment = section.find_attachment_by_id(attachment_id)
     attachment.update_attributes(attributes.merge(filename: attributes[:file].original_filename))
 
@@ -19,10 +20,6 @@ class Attachment::UpdateService
 private
 
   attr_reader :user, :attachment_id, :manual_id, :section_uuid, :attributes
-
-  def section
-    @section ||= manual.find_section(section_uuid)
-  end
 
   def manual
     @manual ||= Manual.find(manual_id, user)
