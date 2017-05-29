@@ -16,10 +16,6 @@ private
   attr_reader :user, :manual_id, :attributes
 
   def manual
-    manual_id ? existing_manual : Manual.new(attributes)
-  end
-
-  def existing_manual
-    @existing_manual ||= Manual.find(manual_id, user)
+    manual_id ? Manual.find(manual_id, user) : Manual.new(attributes)
   end
 end
