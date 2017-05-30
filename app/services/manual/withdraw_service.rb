@@ -7,12 +7,18 @@ class Manual::WithdrawService
   end
 
   def call
-    withdraw
+    begin
+      manual = Manual.find(manual_id, user)
+    rescue KeyError => error
+      raise ManualNotFoundError.new(error)
+    end
+
+    manual.withdraw
 
     if manual.withdrawn?
-      persist
-      withdraw_via_publishing_api
-      remove_from_search_index
+      manual.save(user)
+      Adapters.publishing.unpublish(manual)
+      Adapters.search_index.remove(manual)
     end
 
     manual
@@ -21,28 +27,6 @@ class Manual::WithdrawService
 private
 
   attr_reader :user, :manual_id
-
-  def withdraw
-    manual.withdraw
-  end
-
-  def persist
-    manual.save(user)
-  end
-
-  def withdraw_via_publishing_api
-    Adapters.publishing.unpublish(manual)
-  end
-
-  def remove_from_search_index
-    Adapters.search_index.remove(manual)
-  end
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  rescue KeyError => error
-    raise ManualNotFoundError.new(error)
-  end
 
   class ManualNotFoundError < StandardError; end
 end

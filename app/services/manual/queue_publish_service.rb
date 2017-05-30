@@ -7,8 +7,19 @@ class Manual::QueuePublishService
   end
 
   def call
+    manual = Manual.find(manual_id, user)
+
     if manual.draft?
-      task = create_publish_task(manual)
+      task = ManualPublishTask.create!(
+        manual_id: manual.id,
+        version_number: manual.version_number,
+      )
+
+      govuk_header_params = {
+        request_id: GdsApi::GovukHeaders.headers[:govuk_request_id],
+        authenticated_user: GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user],
+      }
+
       PublishManualWorker.perform_async(task.to_param, govuk_header_params)
       manual
     else
@@ -21,24 +32,6 @@ class Manual::QueuePublishService
 private
 
   attr_reader :user, :manual_id
-
-  def create_publish_task(manual)
-    ManualPublishTask.create!(
-      manual_id: manual.id,
-      version_number: manual.version_number,
-    )
-  end
-
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
-
-  def govuk_header_params
-    {
-      request_id: GdsApi::GovukHeaders.headers[:govuk_request_id],
-      authenticated_user: GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user],
-    }
-  end
 
   class InvalidStateError < StandardError
   end
