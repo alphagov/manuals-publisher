@@ -131,7 +131,7 @@ class ManualsController < ApplicationController
       manual_id: params[:id],
       attributes: update_manual_params
     )
-    manual = service.call
+    manual = ManualPresenter.new(service.call)
 
     manual.valid? # Force validation check or errors will be empty
 

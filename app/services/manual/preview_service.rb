@@ -12,8 +12,7 @@ class Manual::PreviewService
                Manual.new(attributes)
              end
     manual.update(attributes)
-
-    ManualPresenter.new(manual)
+    manual
   end
 
 private
