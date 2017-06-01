@@ -14,8 +14,7 @@ class Section::PreviewService
                 manual.build_section(attributes)
               end
     section.update(attributes)
-
-    SectionPresenter.new(section)
+    section
   end
 
 private

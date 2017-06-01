@@ -86,7 +86,7 @@ class SectionsController < ApplicationController
       section_uuid: params.fetch(:id, nil),
       attributes: section_params
     )
-    section = service.call
+    section = SectionPresenter.new(service.call)
 
     section.valid? # Force validation check or errors will be empty
 
