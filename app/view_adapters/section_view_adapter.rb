@@ -14,6 +14,10 @@ class SectionViewAdapter < SimpleDelegator
     section.uuid
   end
 
+  def accepts_minor_updates?
+    !(first_edition? && draft?)
+  end
+
   def persisted?
     section.updated_at || section.published?
   end

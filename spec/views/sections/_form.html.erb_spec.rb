@@ -6,10 +6,12 @@ describe 'sections/_form.html.erb', type: :view do
     section = Section.new(manual: manual, uuid: 'section-uuid')
 
     allow(manual).to receive(:has_ever_been_published?).and_return(true)
-    allow(section).to receive(:has_ever_been_published?).and_return(true)
+
+    section_view_adapter = SectionViewAdapter.new(manual, section)
+    allow(section_view_adapter).to receive(:accepts_minor_updates?).and_return(true)
 
     allow(view).to receive(:manual).and_return(ManualViewAdapter.new(manual))
-    allow(view).to receive(:section).and_return(SectionViewAdapter.new(manual, section))
+    allow(view).to receive(:section).and_return(section_view_adapter)
 
     render
 

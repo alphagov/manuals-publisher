@@ -81,8 +81,8 @@ class Section
       latest_edition.assign_attributes(attributes)
     else
       previous_edition_attributes = latest_edition.attributes
-        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
         .symbolize_keys
+        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
 
       attributes = previous_edition_attributes
         .merge(attributes)
@@ -102,11 +102,6 @@ class Section
   def published?
     latest_edition.published? ||
       (previous_edition && previous_edition.published?)
-  end
-
-  def has_ever_been_published?
-    return false if previous_edition.nil? && needs_exporting?
-    published?
   end
 
   def draft?
