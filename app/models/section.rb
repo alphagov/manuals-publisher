@@ -127,9 +127,8 @@ class Section
   end
 
   def withdraw_and_mark_as_exported!(exported_at = Time.zone.now)
-    edition = latest_edition
-    edition.exported_at = exported_at
-    edition.archive unless withdrawn?
+    latest_edition.exported_at = exported_at
+    latest_edition.archive unless withdrawn?
   end
 
   def withdrawn?
@@ -149,9 +148,8 @@ class Section
   end
 
   def mark_as_exported!(exported_at = Time.zone.now)
-    edition = latest_edition
-    edition.exported_at = exported_at
-    edition.save
+    latest_edition.exported_at = exported_at
+    latest_edition.save
   end
 
   def persisted?
