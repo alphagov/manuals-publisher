@@ -1,0 +1,93 @@
+@startuml
+class Attachment << (M,#FF7700) Mongoid::Document >> {
+  title
+  filename
+  file_id
+  file_url
+}
+
+class Manual << (R, #FF7700) >> {
+  id
+}
+
+class Organisation << (R, #FF7700) >> {
+  slug
+  content_id
+}
+
+class ManualRecord << (M,#FF7700) Mongoid::Document >> {
+  manual_id
+  organisation_slug
+  slug
+
+  _id
+}
+
+class ManualRecord::Edition << (M,#FF7700) Mongoid::Document >> {
+  title
+  summary
+  body
+  state
+  version_number
+  section_uuids
+  removed_section_uuids
+  originally_published_at
+  use_originally_published_at_for_public_timestamp
+
+  _id
+  manual_record_id
+}
+
+class Section << (R, #FF7700) >> {
+  uuid
+}
+
+class SectionEdition << (M,#FF7700) Mongoid::Document >> {
+  section_uuid
+  version_number
+  title
+  slug
+  summary
+  body
+  state
+  change_note
+  minor_update
+  exported_at
+}
+
+class User << (M,#FF7700) Mongoid::Document >> {
+  uid
+  email
+  version
+  name
+  permissions
+  remotely_signed_out
+  organisation_slug
+  organisation_content_id
+  disabled
+}
+
+class ManualPublishTask << (M,#FF7700) Mongoid::Document >> {
+  manual_id
+  version_number
+  state
+  error
+}
+
+class PublicationLog << (M,#FF7700) Mongoid::Document >> {
+  slug
+  title
+  change_note
+  version_number
+}
+
+Organisation "1" *-- "many" User : via organisation_content_id
+Organisation "1" *-- "many" Manual : via organisation_slug
+ManualRecord "1" *-- "many" ManualRecord::Edition : has_many
+SectionEdition "1" o-- "many" Attachment : embeds_many
+Section "1" *.. "many" SectionEdition : via section_uuid
+Manual "1" .. "1" ManualRecord : via manual_id
+ManualRecord::Edition "1" *-- "many" SectionEdition : via section_uuids
+ManualRecord "1" *-- "many" ManualPublishTask : via manual_id
+ManualRecord "1" *-- "many" PublicationLog : via slug
+@enduml
