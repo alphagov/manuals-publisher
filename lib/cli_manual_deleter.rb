@@ -17,8 +17,6 @@ class CliManualDeleter
   def call
     manual = find_manual
 
-    user_must_confirm(manual)
-
     complete_removal(manual)
   end
 
@@ -44,29 +42,17 @@ private
     end
   end
 
-  def user_must_confirm(manual)
-    number_of_sections = manual.sections.count
-    log "### PLEASE CONFIRM -------------------------------------"
-    log "Manual to be deleted: #{manual.slug}"
-    log "Organisation: #{manual.organisation_slug}"
-    log "This manual has #{number_of_sections} sections, and was last edited at #{manual.updated_at}"
-    log "Type 'y' to proceed and delete this manual or anything else to exit:"
-
-    response = stdin.gets
-    unless response.strip.casecmp("y").zero?
-      raise "Quitting"
-    end
-  end
-
   def complete_removal(manual)
-    Adapters.publishing.discard(manual)
+    begin
+      Adapters.publishing.discard(manual)
+    rescue GdsApi::HTTPNotFound
+      log "Draft for #{manual.id} or its sections already discarded."
+    end
 
     manual.destroy
 
     log "Manual destroyed."
     log "--------------------------------------------------------"
-  rescue GdsApi::HTTPNotFound
-    log "Draft for #{manual.id} or its sections already discarded."
   end
 
   def log(message)
