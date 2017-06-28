@@ -59,14 +59,16 @@ private
   end
 
   def complete_removal(manual)
-    Adapters.publishing.discard(manual)
+    begin
+      Adapters.publishing.discard(manual)
+    rescue GdsApi::HTTPNotFound
+      log "Draft for #{manual.id} or its sections already discarded."
+    end
 
     manual.destroy
 
     log "Manual destroyed."
     log "--------------------------------------------------------"
-  rescue GdsApi::HTTPNotFound
-    log "Draft for #{manual.id} or its sections already discarded."
   end
 
   def log(message)
