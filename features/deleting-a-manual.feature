@@ -12,13 +12,6 @@ Feature: Rake task to delete a manual
     And I confirm deletion
     Then the manual and its sections are deleted
 
-  Scenario: Not confirming manual deletion
-    Given a draft manual exists without any sections
-    And a draft section exists for the manual
-    When I run the deletion script
-    And I refuse deletion
-    Then the manual and its sections still exist
-
   Scenario: Deleting a published manual
     Given a published manual exists
     When I run the deletion script

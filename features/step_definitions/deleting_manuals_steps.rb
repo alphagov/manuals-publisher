@@ -12,11 +12,6 @@ When(/^I confirm deletion/) do
   @deleter.call
 end
 
-When(/^I refuse deletion/) do
-  allow(@stdin).to receive(:gets).and_return("No")
-  expect { @deleter.call }.to raise_error(RuntimeError, /Quitting/)
-end
-
 Then(/^the script raises an error/) do
   expect { @deleter.call }.to raise_error(RuntimeError, /Cannot delete/)
 end
