@@ -1,14 +1,12 @@
 # Manuals publisher
 
-Manuals Publisher is a Ruby on Rails content management application for the 'manuals' format.
-The manuals format is currently in a rendered phase of migration, so content is stored in a local
-datastore but also drafted and published through the publishing-pipeline via the [Publishing API](https://github.com/alphagov/publishing-api).
+Manuals Publisher is a Ruby on Rails content management application for the 'manuals' format. The manuals format is currently in a rendered phase of migration, so content is stored in a local datastore but also drafted and published through the publishing-pipeline via the [Publishing API](https://github.com/alphagov/publishing-api).
 
 This is the renamed repository of the original Specialist
 Publisher. Specialist Publisher has been divided into two publishing
 applications to accommodate Specialist Documents and Manuals
 separately.  _Specialist Document_ or _Finders_ publishing now lives
-at https://github.com/alphagov/specialist-publisher
+at https://github.com/alphagov/specialist-publisher. See [history](docs/history.md) for more details.
 
 ## Purpose
 
@@ -33,8 +31,7 @@ Publishing app for manuals.
 
 ## Running the application
 
-To run the application in development you will need at least one user in the application database.
-In a rails console do:
+To run the application in development you will need at least one user in the application database. In a rails console do:
 
 ```
 User.create!(name: "My Name", email: "my.email@somedomain.com", permissions: ["gds_editor"], organisation_slug: "government-digital-service", organisation_content_id: "af07d5a5-df63-4ddc-9383-6a666845ebe9")
@@ -62,14 +59,12 @@ Note: The `cucumber` rake task which is run as part of the `default` rake task d
 
 Non standard Rails directories and what they're used for:
 
-* `app/exporters`
-  These export information to various GOV.UK APIs
-  * `app/exporters/formatters`
-    These are used by exporters to format information for transferring as JSON
 * `app/models`
   Combination of Mongoid documents and Ruby objects for handling Documents and various behaviours
   * `app/models/validators`
     Not validators. Decorators for providing validation logic.
+* app/presenters
+  Decorators mainly used for previewing documents
 * `app/services`
   Reusable classes for completing actions on documents
 * `app/view_adapters`
@@ -77,12 +72,10 @@ Non standard Rails directories and what they're used for:
 * `app/workers`
   Classes for sidekiq workers. Currently the only worker in the App is for publishing Manuals as Manual publishing was timing out due to the large number of document objects inside a Manual
 
+## Documentation
 
-### Services
-
- Services do things such as previewing a document, creation, updating, showing, withdrawing, queueing. This replaces the normal Rails behaviour of completing these actions directly from a controller, instead we call a service registry.
-
-
-### Supporting Rake tasks
-
-See [rake task documentation](docs/rake-tasks.md) for common manual and section management tasks.
+* [History of the development of the application](docs/history.md)
+* [Current state of the application](docs/current-state.md)
+* [Information about Rake tasks](docs/rake-tasks.md)
+* [Possible next steps for development](docs/next-steps.md)
+* [Notes on investigation into fully migrating app with respect to Publishing API](docs/fully-migrated-spike.md)
