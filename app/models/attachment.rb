@@ -31,19 +31,17 @@ class Attachment
   end
 
   def upload_file
-    begin
-      if file_id.nil?
-        response = Services.attachment_api.create_asset(file: @uploaded_file)
-        self.file_id = response["id"].split("/").last
-      else
-        response = Services.attachment_api.update_asset(file_id, file: @uploaded_file)
-      end
-      self.file_url = response["file_url"]
-    rescue GdsApi::HTTPNotFound => e
-      raise "Error uploading file. Is the Asset Manager service available?\n#{e.message}"
-    rescue StandardError
-      errors.add(:file_id, "could not be uploaded")
+    if file_id.nil?
+      response = Services.attachment_api.create_asset(file: @uploaded_file)
+      self.file_id = response["id"].split("/").last
+    else
+      response = Services.attachment_api.update_asset(file_id, file: @uploaded_file)
     end
+    self.file_url = response["file_url"]
+  rescue GdsApi::HTTPNotFound => e
+    raise "Error uploading file. Is the Asset Manager service available?\n#{e.message}"
+  rescue StandardError
+    errors.add(:file_id, "could not be uploaded")
   end
 
   def content_type
