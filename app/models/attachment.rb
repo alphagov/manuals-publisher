@@ -21,14 +21,6 @@ class Attachment
     "[InlineAttachment:#{filename}]"
   end
 
-  def file
-    raise ApiClientNotPresent unless Services.attachment_api
-    unless file_id.nil?
-      @attachments ||= {}
-      @attachments[field] ||= Services.attachment_api.asset(file_id)
-    end
-  end
-
   def file=(file)
     @file_has_changed = true
     @uploaded_file = file
