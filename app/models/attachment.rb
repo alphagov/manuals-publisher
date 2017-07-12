@@ -31,7 +31,6 @@ class Attachment
   end
 
   def upload_file
-    raise ApiClientNotPresent unless Services.attachment_api
     begin
       if file_id.nil?
         response = Services.attachment_api.create_asset(file: @uploaded_file)
@@ -52,6 +51,4 @@ class Attachment
     extname = File.extname(file_url).delete(".")
     "application/#{extname}"
   end
-
-  class ::ApiClientNotPresent < StandardError; end
 end
