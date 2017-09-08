@@ -49,8 +49,8 @@ RSpec.describe PublishManualWorker do
           .to raise_error(PublishManualWorker::FailedToPublishError)
       end
 
-      it 'notifies Airbrake of the error' do
-        expect(Airbrake).to receive(:notify).with(http_error)
+      it 'notifies GovukError of the error' do
+        expect(GovukError).to receive(:notify).with(http_error)
 
         worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
       end
@@ -82,8 +82,8 @@ RSpec.describe PublishManualWorker do
         expect(task).to be_aborted
       end
 
-      it 'notifies Airbrake of the error' do
-        expect(Airbrake).to receive(:notify).with(http_error)
+      it 'notifies GovukError of the error' do
+        expect(GovukError).to receive(:notify).with(http_error)
 
         worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
       end
@@ -115,8 +115,8 @@ RSpec.describe PublishManualWorker do
         expect(task).to be_aborted
       end
 
-      it 'notifies Airbrake of the error' do
-        expect(Airbrake).to receive(:notify).with(version_error)
+      it 'notifies GovukError of the error' do
+        expect(GovukError).to receive(:notify).with(version_error)
 
         worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
       end
