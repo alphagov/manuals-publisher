@@ -1,14 +1,4 @@
 GIT
-  remote: https://github.com/alphagov/airbrake
-  revision: ad9c926a56535c48f95c33824a76e10bc8f91179
-  branch: silence-dep-warnings-for-rails-5
-  specs:
-    airbrake (4.3.8)
-      builder
-      multi_json
-      rails (>= 5.0)
-
-GIT
   remote: https://github.com/alphagov/mongoid_rails_migrations
   revision: 7dc2c19549698f5666d2a91e89a9845480e852c4
   branch: avoid-calling-bundler-require-in-library-code-v1.1.0-plus-mongoid-v5-fix
@@ -398,7 +388,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  airbrake!
   awesome_print
   better_errors
   binding_of_caller
@@ -440,4 +429,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.14.5
+   1.15.1
