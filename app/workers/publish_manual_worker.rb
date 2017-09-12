@@ -47,7 +47,7 @@ private
 
   def log_error(error)
     Rails.logger.error "#{self.class} error: #{error}"
-    Airbrake.notify(error)
+    GovukError.notify(error)
   end
 
   class FailedToPublishError < StandardError

@@ -3,7 +3,6 @@ source "https://rubygems.org"
 gem "rails", "~> 5.1"
 
 # Alphabetical order please :)
-gem 'airbrake', git: 'https://github.com/alphagov/airbrake', branch: 'silence-dep-warnings-for-rails-5'
 gem "gds-sso"
 gem "generic_form_builder"
 gem "govuk_admin_template"
@@ -17,10 +16,12 @@ gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
 gem "unicorn", "4.8.2"
 
+gem "govuk_app_config", "~> 0.2"
+
 if ENV["API_DEV"]
   gem "gds-api-adapters", path: "../gds-api-adapters"
 else
-  gem "gds-api-adapters", "~> 45.0"
+  gem "gds-api-adapters", "~> 47.9.1"
 end
 
 if ENV["GOVSPEAK_DEV"]
