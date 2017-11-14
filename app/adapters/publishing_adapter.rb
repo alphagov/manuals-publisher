@@ -279,7 +279,12 @@ private
 
   def unpublish_section(section, manual, republish:)
     if !section.withdrawn? || republish
-      Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+      if section.published?
+        Services.publishing_api.unpublish(section.uuid,
+                                          type: "redirect",
+                                          alternative_path: "/#{manual.slug}",
+                                          discard_drafts: true)
+      end
       section.withdraw_and_mark_as_exported! if !republish
     end
   end

@@ -561,6 +561,7 @@ describe PublishingAdapter do
       manual.removed_sections = [removed_section]
 
       allow(removed_section).to receive(:withdrawn?).and_return(false)
+      allow(removed_section).to receive(:published?).and_return(true)
 
       allow(publishing_api).to receive(:publish).with(anything, anything)
       allow(publishing_api).to receive(:unpublish).with(anything, anything)
