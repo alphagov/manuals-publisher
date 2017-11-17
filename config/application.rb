@@ -24,7 +24,5 @@ module ManualsPublisher
     config.autoload_paths << "#{Rails.root}/app/services/manual"
     config.autoload_paths << "#{Rails.root}/app/services/section"
     config.autoload_paths << "#{Rails.root}/app/services/attachment"
-
-    config.eager_load_paths << "#{Rails.root}/lib"
   end
 end
