@@ -15,7 +15,6 @@ class Manual::RepublishService
     if published_manual_version.present?
       Adapters.publishing.save(published_manual_version, republish: true)
       Adapters.publishing.publish(published_manual_version, republish: true)
-      Adapters.search_index.add(published_manual_version)
     end
 
     if draft_manual_version.present?

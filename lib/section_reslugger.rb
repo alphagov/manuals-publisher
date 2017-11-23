@@ -19,7 +19,6 @@ class SectionReslugger
     update_slug
     publish_manual
     redirect_section(old_section)
-    remove_from_search_index(old_section)
   end
 
 private
@@ -143,9 +142,5 @@ private
 
   def full_section_slug(slug)
     "#{manual.slug}/#{slug}"
-  end
-
-  def remove_from_search_index(section)
-    Adapters.search_index.remove_section(section)
   end
 end

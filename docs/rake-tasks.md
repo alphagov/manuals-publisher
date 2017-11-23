@@ -54,7 +54,7 @@ rake reslug_section[manual_slug,old_section_slug,new_section_slug]
 ```
 
 This task will update a single section slug, this performs an update within
-the Manual Publisher application database, Rummager and the Publishing API.
+the Manual Publisher application database and the Publishing API.
 
 ## Relocating Manuals
 

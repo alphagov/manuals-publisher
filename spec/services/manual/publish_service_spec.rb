@@ -6,7 +6,6 @@ RSpec.describe Manual::PublishService do
   let(:manual) { double(:manual, id: manual_id, version_number: 3) }
   let(:publication_logger) { double(:publication_logger) }
   let(:publishing_adapter) { double(:publishing_adapter) }
-  let(:search_index_adapter) { double(:search_index_adapter) }
   let(:user) { double(:user) }
 
   subject {
@@ -23,11 +22,9 @@ RSpec.describe Manual::PublishService do
     allow(manual).to receive(:publish)
     allow(PublicationLogger).to receive(:new) { publication_logger }
     allow(Adapters).to receive(:publishing) { publishing_adapter }
-    allow(Adapters).to receive(:search_index) { search_index_adapter }
     allow(publication_logger).to receive(:call)
     allow(publishing_adapter).to receive(:save)
     allow(publishing_adapter).to receive(:publish)
-    allow(search_index_adapter).to receive(:add)
   end
 
   context "when the version number is up to date" do
@@ -53,18 +50,12 @@ RSpec.describe Manual::PublishService do
       expect(publishing_adapter).to have_received(:publish).with(manual)
     end
 
-    it "adds the manual to the search index" do
-      subject.call
-      expect(search_index_adapter).to have_received(:add).with(manual)
-    end
-
     it "makes the calls to the collaborators in the correct order" do
       subject.call
 
       expect(publication_logger).to have_received(:call).ordered
       expect(publishing_adapter).to have_received(:save).ordered
       expect(publishing_adapter).to have_received(:publish).ordered
-      expect(search_index_adapter).to have_received(:add).ordered
     end
   end
 

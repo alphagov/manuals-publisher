@@ -599,11 +599,11 @@ Then(/^the manual and its sections are queued for publishing$/) do
 end
 
 Given(/^a recoverable error occurs$/) do
-  mock_rummager_http_server_error
+  stub_http_server_error
 end
 
 Given(/^an unrecoverable error occurs$/) do
-  mock_rummager_http_client_error
+  stub_http_error_response
 end
 
 Given(/^a version mismatch occurs$/) do

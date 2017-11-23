@@ -1,7 +1,6 @@
 require "spec_helper"
 require 'section_reslugger'
 require "gds_api/test_helpers/content_store"
-require "gds_api/test_helpers/rummager"
 require "services"
 require "gds_api_constants"
 
@@ -9,7 +8,6 @@ describe SectionReslugger do
   include GdsApi::TestHelpers::ContentStore
   include GdsApi::TestHelpers::Organisations
   include GdsApi::TestHelpers::PublishingApiV2
-  include GdsApi::TestHelpers::Rummager
 
   subject {
     described_class.new(
@@ -46,19 +44,9 @@ describe SectionReslugger do
     stub_any_publishing_api_patch_links
     stub_any_publishing_api_put_content
     stub_any_publishing_api_publish
-
-    stub_any_rummager_post
-
-    allow(Services.rummager).to receive(:delete_document)
   }
 
   it "doesn't raise any exceptions" do
     subject.call
-  end
-
-  it "removes content stored against the old section slug from the search index" do
-    subject.call
-
-    expect(Services.rummager).to have_received(:delete_document).with(GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE, "/manual-slug/old-section-slug")
   end
 end

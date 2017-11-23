@@ -26,7 +26,6 @@ Publishing app for manuals.
 
 * [alphagov/static](http://github.com/alphagov/static): provides static assets (JS/CSS)
 * [alphagov/asset-manager](http://github.com/alphagov/asset-manager): provides uploading for static files
-* [alphagov/rummager](http://github.com/alphagov/rummager): allows documents to be indexed for searching in both Finders and site search
 * [alphagov/publishing-api](http://github.com/alphagov/publishing-api): allows documents to be published to the Publishing queue
 
 ## Running the application

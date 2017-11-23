@@ -18,7 +18,6 @@ class Manual::WithdrawService
     if manual.withdrawn?
       manual.save(user)
       Adapters.publishing.unpublish(manual)
-      Adapters.search_index.remove(manual)
     end
 
     manual

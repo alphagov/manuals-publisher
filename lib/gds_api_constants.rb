@@ -1,9 +1,4 @@
 module GdsApiConstants
-  module Rummager
-    MANUAL_DOCUMENT_TYPE = "manual".freeze
-    SECTION_DOCUMENT_TYPE = "manual_section".freeze
-  end
-
   module PublishingApiV2
     PUBLISHING_APP = "manuals-publisher".freeze
     RENDERING_APP = "manuals-frontend".freeze

@@ -33,7 +33,6 @@ RSpec.configure do |config|
   end
 
   config.before(:each, type: :feature) do
-    stub_rummager
     stub_publishing_api
   end
 

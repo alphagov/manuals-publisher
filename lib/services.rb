@@ -2,7 +2,6 @@ require "gds_api/asset_manager"
 require "gds_api/content_store"
 require "gds_api/organisations"
 require "gds_api/publishing_api_v2"
-require "gds_api/rummager"
 
 module Services
   def self.attachment_api
@@ -25,9 +24,5 @@ module Services
       Plek.find("publishing-api"),
       bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
     )
-  end
-
-  def self.rummager
-    @rummager_api ||= GdsApi::Rummager.new(Plek.find("rummager"))
   end
 end
