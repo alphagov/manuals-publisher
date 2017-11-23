@@ -10,7 +10,7 @@ development:
       # of host:port pairs. (required)
       # hosts:
       #   - localhost:27017
-      uri: 'mongodb://localhost/govuk_content_development'
+      uri: <%= ENV['MONGODB_URI'] || 'mongodb://localhost/govuk_content_development' %>
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:
@@ -142,7 +142,7 @@ test:
       # database: manuals_publisher_test
       # hosts:
       #   - localhost:27017
-      uri: 'mongodb://localhost/govuk_content_manuals_publisher_test'
+      uri: <%= ENV['TEST_MONGODB_URI'] || 'mongodb://localhost/govuk_content_test' %>
       options:
         read:
           mode: :primary
