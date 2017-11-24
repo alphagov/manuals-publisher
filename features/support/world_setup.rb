@@ -7,14 +7,11 @@ After do
 end
 
 Before do
-  # WARNING: These must be stubbed before the first request takes place
-  stub_rummager
   stub_publishing_api
 end
 
 Test::Unit::AutoRunner.need_auto_run = false if defined?(Test::Unit::AutoRunner)
 
-World(RummagerHelpers)
 World(PublishingAPIHelpers)
 World(OrganisationsAPIHelpers)
 World(FormHelpers)

@@ -135,7 +135,6 @@ module ManualHelpers
   end
 
   def stub_manual_publication_observers(organisation_slug)
-    stub_rummager
     stub_publishing_api
     stub_organisation_details(organisation_slug)
   end
@@ -209,9 +208,6 @@ module ManualHelpers
   def check_manual_and_sections_were_published(manual, section, manual_attrs, section_attrs)
     check_manual_is_published_to_publishing_api(manual.id)
     check_section_is_published_to_publishing_api(section.uuid)
-
-    check_manual_is_published_to_rummager(manual.slug, manual_attrs)
-    check_section_is_published_to_rummager(section.slug, section_attrs, manual_attrs)
   end
 
   def check_manual_was_published(manual)
@@ -233,46 +229,10 @@ module ManualHelpers
 
   def check_section_was_withdrawn_with_redirect(section, redirect_path)
     check_section_is_unpublished_from_publishing_api(section.uuid, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
-    check_section_is_withdrawn_from_rummager(section)
   end
 
   def check_section_is_archived_in_db(manual, section_uuid)
     expect(Section.find(manual, section_uuid)).to be_withdrawn
-  end
-
-  def check_manual_is_published_to_rummager(slug, attrs)
-    expect(fake_rummager).to have_received(:add_document)
-      .with(
-        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
-        "/#{slug}",
-        hash_including(
-          title: attrs.fetch(:title),
-          link: "/#{slug}",
-          indexable_content: attrs.fetch(:summary),
-        )
-      ).at_least(:once)
-  end
-
-  def check_manual_is_not_published_to_rummager(slug)
-    expect(fake_rummager).not_to have_received(:add_document)
-      .with(
-        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
-        "/#{slug}",
-        anything
-      )
-  end
-
-  def check_manual_is_not_published_to_rummager_with_attrs(slug, attrs)
-    expect(fake_rummager).not_to have_received(:add_document)
-      .with(
-        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
-        "/#{slug}",
-        hash_including(
-          title: attrs.fetch(:title),
-          link: "/#{slug}",
-          indexable_content: attrs.fetch(:summary),
-        )
-      )
   end
 
   def check_manual_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)
@@ -327,41 +287,6 @@ module ManualHelpers
 
   def check_section_is_unpublished_from_publishing_api(content_id, unpublishing_attributes)
     assert_publishing_api_unpublish(content_id, unpublishing_attributes)
-  end
-
-  def check_section_is_published_to_rummager(slug, attrs, manual_attrs)
-    expect(fake_rummager).to have_received(:add_document)
-      .with(
-        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
-        "/#{slug}",
-        hash_including(
-          title: "#{manual_attrs.fetch(:title)}: #{attrs.fetch(:section_title)}",
-          link: "/#{slug}",
-          indexable_content: attrs.fetch(:section_body),
-        )
-      ).at_least(:once)
-  end
-
-  def check_section_is_not_published_to_rummager(slug)
-    expect(fake_rummager).not_to have_received(:add_document)
-      .with(
-        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
-        "/#{slug}",
-        anything
-      )
-  end
-
-  def check_section_is_not_published_to_rummager_with_attrs(slug, attrs, manual_attrs)
-    expect(fake_rummager).not_to have_received(:add_document)
-      .with(
-        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
-        "/#{slug}",
-        hash_including(
-          title: "#{manual_attrs.fetch(:title)}: #{attrs.fetch(:section_title)}",
-          link: "/#{slug}",
-          indexable_content: attrs.fetch(:section_body),
-        )
-      )
   end
 
   def check_for_document_body_preview(text)
@@ -449,31 +374,6 @@ module ManualHelpers
   def check_manual_is_withdrawn(manual, sections)
     assert_publishing_api_unpublish(manual.id, type: "gone")
     sections.each { |s| assert_publishing_api_unpublish(s.uuid, type: "gone") }
-    check_manual_is_withdrawn_from_rummager(manual, sections)
-  end
-
-  def check_manual_is_withdrawn_from_rummager(manual, sections)
-    expect(fake_rummager).to have_received(:delete_document)
-      .with(
-        GdsApiConstants::Rummager::MANUAL_DOCUMENT_TYPE,
-        "/#{manual.slug}",
-      )
-
-    sections.each do |section|
-      expect(fake_rummager).to have_received(:delete_document)
-        .with(
-          GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
-          "/#{section.slug}",
-        )
-    end
-  end
-
-  def check_section_is_withdrawn_from_rummager(section)
-    expect(fake_rummager).to have_received(:delete_document)
-      .with(
-        GdsApiConstants::Rummager::SECTION_DOCUMENT_TYPE,
-        "/#{section.slug}",
-      )
   end
 
   def check_manual_has_organisation_slug(attributes, organisation_slug)
@@ -643,6 +543,14 @@ module ManualHelpers
 
   def check_for_javascript_usage_error(field)
     expect(page).to have_content("#{field} cannot include invalid Govspeak, invalid HTML, any JavaScript or images hosted on sites except for")
+  end
+
+  def stub_http_server_error
+    allow_any_instance_of(Manual::PublishService).to receive(:call).and_raise(GdsApi::HTTPServerError.new(500))
+  end
+
+  def stub_http_error_response
+    allow_any_instance_of(Manual::PublishService).to receive(:call).and_raise(GdsApi::HTTPErrorResponse.new(400))
   end
 end
 RSpec.configuration.include ManualHelpers, type: :feature

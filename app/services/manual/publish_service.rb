@@ -15,7 +15,6 @@ class Manual::PublishService
       PublicationLogger.new.call(manual)
       Adapters.publishing.save(manual)
       Adapters.publishing.publish(manual)
-      Adapters.search_index.add(manual)
       manual.save(user)
     else
       raise VersionMismatchError.new(
