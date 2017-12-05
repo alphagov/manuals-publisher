@@ -14,7 +14,7 @@ gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
 gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
-gem "unicorn", "4.8.2"
+gem "unicorn", "5.3.1"
 
 gem "govuk_app_config", "~> 0.2"
 
