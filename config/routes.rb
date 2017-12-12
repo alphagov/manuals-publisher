@@ -29,6 +29,8 @@ Rails.application.routes.draw do
     put :original_publication_date, on: :member, action: :update_original_publication_date
   end
 
+  resources :link_check_reports
+
   # This is for new manualss
   post "manuals/preview" => "manuals#preview", as: "preview_new_manual"
   # This is for new sections
