@@ -24,7 +24,6 @@ Publishing app for manuals.
 
 ## Dependencies
 
-* [alphagov/static](http://github.com/alphagov/static): provides static assets (JS/CSS)
 * [alphagov/asset-manager](http://github.com/alphagov/asset-manager): provides uploading for static files
 * [alphagov/publishing-api](http://github.com/alphagov/publishing-api): allows documents to be published to the Publishing queue
 
