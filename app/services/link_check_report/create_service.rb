@@ -8,9 +8,10 @@ class LinkCheckReport::CreateService
     end
   end
 
-  def initialize(user:, manual_id:)
+  def initialize(user:, manual_id:, section_id: nil)
     @user = user
     @manual_id = manual_id
+    @section_id = section_id
   end
 
   def call
@@ -21,6 +22,7 @@ class LinkCheckReport::CreateService
       completed_at: link_report.fetch(:completed_at),
       status: link_report.fetch(:status),
       manual_id: manual_id,
+      section_id: section_id,
       links: link_report.fetch(:links).map { |link| map_link_attrs(link) }
     )
 
@@ -31,14 +33,27 @@ class LinkCheckReport::CreateService
 
 private
 
-  attr_reader :user, :manual_id
+  attr_reader :user, :manual_id, :section_id
 
   def manual
     @manual ||= Manual.find(manual_id, user)
   end
 
+  def section
+    raise "Not a section" unless is_for_section?
+    @section ||= Section.find(manual, section_id)
+  end
+
+  def is_for_section?
+    section_id.present?
+  end
+
   def link_reportable
-    manual
+    if is_for_section?
+      section
+    else
+      manual
+    end
   end
 
   def uris

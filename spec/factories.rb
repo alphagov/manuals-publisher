@@ -102,4 +102,28 @@ FactoryGirl.define do
     abbreviation "CO"
     content_id "d94d63a5-ce8e-40a1-ab4c-4956eab27259"
   end
+
+  factory :link_check_report do
+    batch_id 1
+    status "in_progress"
+    completed_at Time.now
+    links { [FactoryGirl.build(:link)] }
+
+    trait :completed do
+      status "completed"
+    end
+
+    trait :with_broken_links do
+      links { [FactoryGirl.build(:link, :broken)] }
+    end
+  end
+
+  factory :link do
+    uri "http://www.example.com"
+    status "ok"
+
+    trait :broken do
+      status "broken"
+    end
+  end
 end
