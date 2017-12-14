@@ -1,6 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.2
-
+Metrics/BlockLength:
+  Enabled: false
 Lint/HandleExceptions:
   Exclude:
     - 'spec/**/*'
