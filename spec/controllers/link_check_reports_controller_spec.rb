@@ -43,4 +43,11 @@ describe LinkCheckReportsController, type: :controller do
       expect(response).to have_http_status(:created)
     end
   end
+
+  describe "#show" do
+    it "shows the report" do
+      get :show, params: {} 
+      expect(response).to have_http_status(:success)
+    end
+  end
 end
