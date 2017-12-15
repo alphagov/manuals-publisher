@@ -43,6 +43,12 @@ RSpec.describe LinkCheckReport::CreateService do
       allow(Manual).to receive(:find).with(manual.id, user).and_return(manual)
     end
 
+    it 'should call the link checker api with a callback url and secret token' do
+      expect(Services.link_checker_api).to receive(:create_batch)
+
+      subject.call
+    end
+
     context "when the link checker api is called" do
       it "sets link check api attributes on report" do
         expect(LinkCheckReport).to receive(:new).with(
