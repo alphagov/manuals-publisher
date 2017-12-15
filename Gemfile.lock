@@ -181,8 +181,8 @@ GEM
     govuk_app_config (0.3.0)
       sentry-raven (~> 2.6.3)
       statsd-ruby (~> 1.4.0)
-    govuk_frontend_toolkit (1.2.0)
-      rails (>= 3.1.0)
+    govuk_frontend_toolkit (7.2.0)
+      railties (>= 3.1.0)
       sass (>= 3.2.0)
     hashdiff (0.3.7)
     hashie (3.5.6)
@@ -454,7 +454,7 @@ DEPENDENCIES
   govuk-lint
   govuk_admin_template
   govuk_app_config (~> 0.2)
-  govuk_frontend_toolkit (= 1.2.0)
+  govuk_frontend_toolkit (= 7.2.0)
   jasmine-rails
   launchy
   logstasher (= 1.2.2)
