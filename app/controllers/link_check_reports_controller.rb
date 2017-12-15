@@ -3,7 +3,8 @@ class LinkCheckReportsController < ApplicationController
     service = LinkCheckReport::CreateService.new(
       user: current_user,
       link_reportable_type: link_reportable_params[:type],
-      link_reportable_id: link_reportable_params[:id]
+      manual_id: link_reportable_params[:manual_id],
+      section_id: link_reportable_params[:section_id]
     )
 
     service.call
@@ -14,6 +15,6 @@ class LinkCheckReportsController < ApplicationController
 private
 
   def link_reportable_params
-    params.require(:link_reportable).permit(:type, :id)
+    params.require(:link_reportable).permit(:type, :manual_id, :section_id)
   end
 end
