@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
   resources :link_check_reports
 
+  post "/link-checker-api-callback" => "link_checker_api_callback#callback", as: "link_checker_api_callback"
+
   # This is for new manualss
   post "manuals/preview" => "manuals#preview", as: "preview_new_manual"
   # This is for new sections
