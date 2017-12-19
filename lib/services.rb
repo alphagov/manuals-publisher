@@ -2,6 +2,7 @@ require "gds_api/asset_manager"
 require "gds_api/content_store"
 require "gds_api/organisations"
 require "gds_api/publishing_api_v2"
+require "gds_api/link_checker_api"
 
 module Services
   def self.attachment_api
@@ -23,6 +24,12 @@ module Services
     @publishing_api ||= GdsApi::PublishingApiV2.new(
       Plek.find("publishing-api"),
       bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
+    )
+  end
+
+  def self.link_checker_api
+    @link_checker_api ||= GdsApi::LinkCheckerApi.new(
+      Plek.find("link-checker-api"),
     )
   end
 end
