@@ -56,6 +56,7 @@ group :test do
   gem "poltergeist", "~> 1.17.0"
   gem "phantomjs", ">= 1.9.7.1"
   gem "rspec"
+  gem "rails-controller-testing"
   gem "rspec-rails"
   gem "simplecov"
   gem "timecop"
