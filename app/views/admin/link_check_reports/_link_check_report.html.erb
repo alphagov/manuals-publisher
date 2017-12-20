@@ -14,10 +14,10 @@
     </section>
   <% elsif report.broken_links.any? || report.caution_links.any? %>
     <section class="alert alert-warning">
-      <h3 class="remove-top-margin">Links</h3>
+      <h3 class="remove-top-margin"><%= t "broken_links.title" %></h3>
       <% report.links.sort_by(&:status).group_by(&:status).each do |status, links| %>
         <% next unless %w(broken caution).include? status %>
-        <p class="issue-status-description"><%= status.capitalize %></p>
+        <p class="issue-status-description"><%= t "broken_links.#{status}.subheading" %></p>
         <ul class="issue-list">
           <% links.each do |link| %>
             <li>

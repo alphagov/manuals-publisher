@@ -111,6 +111,6 @@
   </div>
 
   <div class="col-md-4">
-    <%= render 'admin/link_check_reports/link_check_report', reportable: manual, report: manual.link_check_report %>
+    <%= render "admin/link_check_reports/link_check_report", reportable: { manual_id: manual.to_param }, report: manual.link_check_report %>
   </div>
 </div>
