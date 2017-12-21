@@ -6,9 +6,14 @@ class LinkCheckReportsController < ApplicationController
       section_id: link_reportable_params[:section_id]
     )
 
-    service.call
+    @report = service.call
 
-    head :created
+    @reportable = find_reportable(link_reportable_params)
+
+    respond_to do |format|
+      format.js { render 'admin/link_check_reports/create' }
+      format.html { redirect_to_reportable }
+    end
   end
 
   def show
