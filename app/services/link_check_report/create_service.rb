@@ -15,10 +15,10 @@ class LinkCheckReport::CreateService
   end
 
   def call
-    link_report = call_link_checker_api
+    link_report = call_link_checker_api.deep_symbolize_keys
 
     report = LinkCheckReport.new(
-      batch_id: link_report.fetch(:batch_id),
+      batch_id: link_report.fetch(:id),
       completed_at: link_report.fetch(:completed_at),
       status: link_report.fetch(:status),
       manual_id: manual_id,
@@ -27,6 +27,8 @@ class LinkCheckReport::CreateService
     )
 
     report.save!
+
+    report
   rescue Mongoid::Errors::Validations => e
     raise InvalidReport.new(e)
   end
