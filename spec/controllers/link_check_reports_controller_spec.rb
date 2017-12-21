@@ -9,7 +9,7 @@ describe LinkCheckReportsController, type: :controller do
 
     let(:link_checker_api_response) do
       {
-        batch_id: 1,
+        id: 1,
         completed_at: nil,
         status: "in_progress",
         links: [
