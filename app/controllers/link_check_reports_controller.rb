@@ -40,12 +40,11 @@ private
   end
 
   def find_reportable(reportable_params)
-    if reportable_params[:section_id] && reportable_params[:manual_id]
-      manual = Manual.find(reportable_params[:manual_id], current_user)
-      Section.find(manual, reportable_params[:manual_id])
-    elsif reportable_params[:manual_id]
-      Manual.find(reportable_params[:manual_id], current_user)
-    end
+    LinkCheckReport::FindReportableService.new(
+      user: current_user,
+      manual_id: reportable_params[:manual_id],
+      section_id: reportable_params[:section_id]
+    ).call
   end
 
   def redirect_to_reportable
