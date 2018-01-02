@@ -2,6 +2,10 @@ require "services"
 require "govspeak/link_extractor"
 
 class LinkCheckReport::CreateService
+  include Rails.application.routes.url_helpers
+
+  CALLBACK_HOST = Plek.find('manuals-publisher')
+
   class InvalidReport < RuntimeError
     def initialize(original_error)
       @message = original_error.message
@@ -63,7 +67,13 @@ private
   end
 
   def call_link_checker_api
-    Services.link_checker_api.create_batch(uris)
+    callback = link_checker_api_callback_url(host: CALLBACK_HOST)
+
+    Services.link_checker_api.create_batch(
+      uris,
+      webhook_uri: callback,
+      webhook_secret_token: Rails.application.secrets.link_checker_api_secret_token
+    )
   end
 
   def map_link_attrs(link)

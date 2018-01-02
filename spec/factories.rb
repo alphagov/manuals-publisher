@@ -116,6 +116,16 @@ FactoryGirl.define do
     trait :with_broken_links do
       links { [FactoryGirl.build(:link, :broken)] }
     end
+
+    trait :with_pending_links do
+      transient do
+        link_uris []
+      end
+
+      links do
+        link_uris.map { |uri| FactoryGirl.build(:link, :pending, uri: uri) }
+      end
+    end
   end
 
   factory :link do
@@ -123,6 +133,10 @@ FactoryGirl.define do
     status "ok"
 
     trait :broken do
+      status "broken"
+    end
+
+    trait :pending do
       status "broken"
     end
   end
