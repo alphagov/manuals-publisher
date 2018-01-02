@@ -1,4 +1,4 @@
 #!/bin/bash
 
 bundle install
-bundle exec rails s -p 3205
+PORT=3205 bundle exec foreman start
