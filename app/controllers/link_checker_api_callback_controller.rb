@@ -4,20 +4,28 @@ class LinkCheckerApiCallbackController < ApplicationController
   skip_before_action :set_authenticated_user_header
   before_action :verify_signature
 
-  def callback
-    report = LinkCheckReport.find_by(batch_id: params.require(:id))
+  rescue_from Mongoid::Errors::DocumentNotFound, with: :render_no_content
 
-    if report
+  def callback
+    if link_check_report
       LinkCheckReport::UpdateService.new(
-        report: report,
-        params: params
+        report: link_check_report,
+        payload: params
       ).call
     end
 
-    head :no_content
+    render_no_content
   end
 
 private
+
+  def render_no_content
+    head :no_content
+  end
+
+  def link_check_report
+    @link_check_report ||= LinkCheckReport.find_by(batch_id: params.require(:id))
+  end
 
   def verify_signature
     return unless webhook_secret_token
