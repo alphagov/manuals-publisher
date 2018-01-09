@@ -112,6 +112,12 @@ module ManualHelpers
     save_as_draft
   end
 
+  def discard_draft_manual(manual_title)
+    go_to_manual_page(manual_title)
+
+    click_on "Discard draft"
+  end
+
   def withdraw_section(manual_title, section_title, change_note: nil, minor_update: true)
     go_to_manual_page(manual_title)
     click_on section_title

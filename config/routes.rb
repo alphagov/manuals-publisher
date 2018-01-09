@@ -25,6 +25,9 @@ Rails.application.routes.draw do
     # This is for persisted manuals
     post :preview, on: :member
 
+    # This is for drafts that have never been published
+    delete :discard_draft, on: :member
+
     get :original_publication_date, on: :member, action: :edit_original_publication_date
     put :original_publication_date, on: :member, action: :update_original_publication_date
   end

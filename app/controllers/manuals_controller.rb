@@ -125,6 +125,26 @@ class ManualsController < ApplicationController
     )
   end
 
+  def discard_draft
+    service = Manual::DiscardDraftService.new(
+      user: current_user,
+      manual_id: manual_id
+    )
+    result = service.call
+
+    if result.successful?
+      redirect_to(
+        manuals_path,
+        flash: { notice: "Discarded draft of #{result.manual_title}" }
+      )
+    else
+      redirect_to(
+        manual_path(manual_id),
+        flash: { notice: "Unable to discard draft of #{result.manual_title}" }
+      )
+    end
+  end
+
   def preview
     service = Manual::PreviewService.new(
       user: current_user,
