@@ -33,4 +33,40 @@ describe ManualsController, type: :controller do
       end
     end
   end
+
+  describe '#discard_draft' do
+    let(:manual_id) { 'manual-1' }
+    let(:service) { double(Manual::DiscardDraftService, call: result) }
+    let(:result) { double(:result, successful?: discard_success, manual_title: 'My manual') }
+
+    before do
+      login_as_stub_user
+      allow(Manual::DiscardDraftService).to receive(:new).and_return(service)
+      delete :discard_draft, params: { id: manual_id }
+    end
+
+    context 'when the manual is discarded successfully' do
+      let(:discard_success) { true }
+
+      it 'sets a flash message indicating success' do
+        expect(flash[:notice]).to include("Discarded draft of My manual")
+      end
+
+      it 'redirects to the manuals index' do
+        expect(response).to redirect_to manuals_path
+      end
+    end
+
+    context 'when the manual cannot be discarded' do
+      let(:discard_success) { false }
+
+      it 'sets a flash message indicating failure' do
+        expect(flash[:notice]).to include("Unable to discard draft of My manual")
+      end
+
+      it 'redirects to the show page for the manual' do
+        expect(response).to redirect_to manual_path(manual_id)
+      end
+    end
+  end
 end

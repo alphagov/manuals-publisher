@@ -12,6 +12,12 @@ Feature: Rake task to delete a manual
     And I confirm deletion
     Then the manual and its sections are deleted
 
+  Scenario: Deleting a manual from the UI
+    Given a draft manual exists without any sections
+    And a draft section exists for the manual
+    When I discard the draft manual
+    Then the manual and its sections are deleted
+
   Scenario: Deleting a published manual
     Given a published manual exists
     When I run the deletion script

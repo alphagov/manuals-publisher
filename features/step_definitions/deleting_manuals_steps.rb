@@ -25,3 +25,7 @@ end
 Then(/^the manual and its sections still exist$/) do
   check_manual_exists_with(@manual_fields)
 end
+
+When(/^I discard the draft manual$/) do
+  discard_draft_manual(@manual.title)
+end

@@ -99,5 +99,16 @@
         <% end %>
       </div>
     </div>
+
+    <% unless manual.has_ever_been_published? %>
+      <div class="panel panel-default">
+        <div class="panel-heading"><h3>Discard draft manual</h3></div>
+        <div class="panel-body">
+          <%= form_tag(discard_draft_manual_path(manual), method: :delete) do %>
+            <button name="submit" class="btn btn-danger" data-module="confirm" data-message="Are you sure you want to discard this draft manual?">Discard draft manual</button>
+          <% end -%>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

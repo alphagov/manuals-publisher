@@ -24,35 +24,29 @@ private
 
   attr_reader :manual_slug, :manual_id, :stdin, :stdout
 
+  def user
+    @user ||= User.gds_editor
+  end
+
   def find_manual
-    user = User.gds_editor
     manual = if manual_id
                Manual.find(manual_id, user)
              else
                Manual.find_by_slug!(manual_slug, user)
              end
-
-    validate_never_published(manual)
     manual
   end
 
-  def validate_never_published(manual)
-    unless manual.editions.all? { |e| e.state == "draft" }
+  def complete_removal(manual)
+    service = Manual::DiscardDraftService.new(user: user, manual_id: manual.id)
+
+    result = service.call
+    if result.successful?
+      log "Manual destroyed."
+      log "--------------------------------------------------------"
+    else
       raise "Cannot delete; is published or has been previously published."
     end
-  end
-
-  def complete_removal(manual)
-    begin
-      Adapters.publishing.discard(manual)
-    rescue GdsApi::HTTPNotFound
-      log "Draft for #{manual.id} or its sections already discarded."
-    end
-
-    manual.destroy
-
-    log "Manual destroyed."
-    log "--------------------------------------------------------"
   end
 
   def log(message)
