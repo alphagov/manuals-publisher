@@ -10,7 +10,7 @@ class LinkCheckReport
   field :status, type: String
   field :manual_id, type: String
   field :section_id, type: String
-  field :completed_at, type: DateTime
+  field :completed_at, type: Time
 
   validates :batch_id, presence: true
   validates :status, presence: true

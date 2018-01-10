@@ -11,7 +11,7 @@ RSpec.describe "Publishing manuals", type: :feature do
   let(:manual_fields) { { title: "Example manual title", summary: "A summary" } }
 
   describe "publishing a manual with major and minor updates" do
-    let(:publish_time) { DateTime.now }
+    let(:publish_time) { Time.zone.now }
 
     before do
       manual = create_manual_without_ui(manual_fields)

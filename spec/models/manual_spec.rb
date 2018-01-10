@@ -21,8 +21,8 @@ describe Manual do
   }
 
   let(:id) { "0123-4567-89ab-cdef" }
-  let(:updated_at) { Time.parse("2001-01-01") }
-  let(:originally_published_at) { DateTime.parse("2002-02-02") }
+  let(:updated_at) { Time.zone.parse("2001-01-01") }
+  let(:originally_published_at) { Time.zone.parse("2002-02-02") }
   let(:use_originally_published_at_for_public_timestamp) { false }
   let(:title) { "manual-title" }
   let(:summary) { "manual-summary" }
