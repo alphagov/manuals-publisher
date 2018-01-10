@@ -27,7 +27,7 @@ describe PublishingAdapter do
   let(:manual_id) { "a55242ed-178f-4716-8bb3-5d4f82d38531" }
 
   let(:manual) {
-    FactoryGirl.build(
+    FactoryBot.build(
       :manual,
       id: manual_id,
       slug: "manual-slug",

@@ -19,7 +19,7 @@ module ManualHelpers
   def create_manual_without_ui(fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
 
-    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
+    user = FactoryBot.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = Manual::CreateService.new(
       user: user,
@@ -27,7 +27,7 @@ module ManualHelpers
     )
     manual = service.call
 
-    Manual.find(manual.id, FactoryGirl.build(:gds_editor))
+    Manual.find(manual.id, FactoryBot.build(:gds_editor))
   end
 
   def create_section(manual_title, fields)
@@ -42,7 +42,7 @@ module ManualHelpers
   end
 
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
-    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
+    user = FactoryBot.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = Section::CreateService.new(
       user: user,
@@ -66,7 +66,7 @@ module ManualHelpers
   def edit_manual_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     stub_organisation_details(organisation_slug)
 
-    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
+    user = FactoryBot.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = Manual::UpdateService.new(
       user: user,
@@ -90,7 +90,7 @@ module ManualHelpers
   end
 
   def edit_section_without_ui(manual, section, fields, organisation_slug: "ministry-of-tea")
-    user = FactoryGirl.build(:generic_editor, organisation_slug: organisation_slug)
+    user = FactoryBot.build(:generic_editor, organisation_slug: organisation_slug)
 
     service = Section::UpdateService.new(
       user: user,
@@ -149,7 +149,7 @@ module ManualHelpers
     stub_manual_publication_observers(organisation_slug)
 
     service = Manual::PublishService.new(
-      user: FactoryGirl.build(:gds_editor),
+      user: FactoryBot.build(:gds_editor),
       manual_id: manual.id,
       version_number: manual.version_number
     )
@@ -176,13 +176,13 @@ module ManualHelpers
   end
 
   def check_section_exists(manual_id, section_uuid)
-    manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
+    manual = Manual.find(manual_id, FactoryBot.build(:gds_editor))
 
     manual.sections.any? { |section| section.uuid == section_uuid }
   end
 
   def check_section_was_removed(manual_id, section_uuid)
-    manual = Manual.find(manual_id, FactoryGirl.build(:gds_editor))
+    manual = Manual.find(manual_id, FactoryBot.build(:gds_editor))
 
     manual.removed_sections.any? { |section| section.uuid == section_uuid }
   end
@@ -423,7 +423,7 @@ module ManualHelpers
   end
 
   def most_recently_created_manual
-    Manual.all(FactoryGirl.build(:gds_editor)).first
+    Manual.all(FactoryBot.build(:gds_editor)).first
   end
 
   def section_fields(section)
@@ -538,7 +538,7 @@ module ManualHelpers
   def republish_manuals_without_ui
     logger = Logger.new(nil)
     republisher = ManualsRepublisher.new(logger)
-    user = FactoryGirl.build(:gds_editor)
+    user = FactoryBot.build(:gds_editor)
     manuals = Manual.all(user)
     republisher.execute(manuals)
   end

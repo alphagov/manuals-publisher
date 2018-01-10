@@ -14,16 +14,16 @@ describe ManualRelocator do
   describe "#move!" do
     let!(:existing_manual) { ManualRecord.create(manual_id: existing_manual_id, slug: existing_slug, organisation_slug: "cabinet-office") }
     let!(:temp_manual) { ManualRecord.create(manual_id: temp_manual_id, slug: temp_slug, organisation_slug: "cabinet-office") }
-    let!(:existing_section_1) { FactoryGirl.create(:section_edition, slug: "#{existing_slug}/existing_section_1", section_uuid: "12345", version_number: 1, state: "published", exported_at: DateTime.now) }
-    let!(:existing_section_2) { FactoryGirl.create(:section_edition, slug: "#{existing_slug}/existing_section_2", section_uuid: "23456", version_number: 1, state: "published", exported_at: DateTime.now) }
-    let!(:temporary_section_1) { FactoryGirl.create(:section_edition, slug: "#{temp_slug}/temp_section_1", section_uuid: "abcdef", version_number: 1, state: "published", exported_at: DateTime.now) }
-    let!(:temporary_section_2) { FactoryGirl.create(:section_edition, slug: "#{temp_slug}/temp_section_2", section_uuid: "bcdefg", version_number: 1, state: "published", exported_at: DateTime.now) }
+    let!(:existing_section_1) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/existing_section_1", section_uuid: "12345", version_number: 1, state: "published", exported_at: DateTime.now) }
+    let!(:existing_section_2) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/existing_section_2", section_uuid: "23456", version_number: 1, state: "published", exported_at: DateTime.now) }
+    let!(:temporary_section_1) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_1", section_uuid: "abcdef", version_number: 1, state: "published", exported_at: DateTime.now) }
+    let!(:temporary_section_2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_2", section_uuid: "bcdefg", version_number: 1, state: "published", exported_at: DateTime.now) }
 
-    let!(:existing_section_3) { FactoryGirl.create(:section_edition, slug: "#{existing_slug}/section_3", section_uuid: "34567", version_number: 1, state: "published", exported_at: DateTime.now) }
-    let!(:temporary_section_3) { FactoryGirl.create(:section_edition, slug: "#{temp_slug}/section_3", section_uuid: "cdefgh", version_number: 1, state: "published", exported_at: DateTime.now) }
+    let!(:existing_section_3) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/section_3", section_uuid: "34567", version_number: 1, state: "published", exported_at: DateTime.now) }
+    let!(:temporary_section_3) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/section_3", section_uuid: "cdefgh", version_number: 1, state: "published", exported_at: DateTime.now) }
 
-    let!(:existing_publication_log) { FactoryGirl.create(:publication_log, slug: "#{existing_slug}/slug-for-existing-section", change_note: "Hello from #{existing_manual_id}") }
-    let!(:temporary_publication_log) { FactoryGirl.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
+    let!(:existing_publication_log) { FactoryBot.create(:publication_log, slug: "#{existing_slug}/slug-for-existing-section", change_note: "Hello from #{existing_manual_id}") }
+    let!(:temporary_publication_log) { FactoryBot.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
 
     before do
       allow(STDOUT).to receive(:puts)
@@ -322,8 +322,8 @@ describe ManualRelocator do
       end
 
       context "when the temp manual has a draft" do
-        let!(:temporary_section_1_v2) { FactoryGirl.create(:section_edition, slug: "#{temp_slug}/temp_section_1", section_uuid: "abcdef", version_number: 2, state: "draft", body: temporary_section_1.body.reverse) }
-        let!(:temporary_section_2_v2) { FactoryGirl.create(:section_edition, slug: "#{temp_slug}/temp_section_2", section_uuid: "bcdefg", version_number: 2, state: "draft", body: temporary_section_2.body.reverse) }
+        let!(:temporary_section_1_v2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_1", section_uuid: "abcdef", version_number: 2, state: "draft", body: temporary_section_1.body.reverse) }
+        let!(:temporary_section_2_v2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_2", section_uuid: "bcdefg", version_number: 2, state: "draft", body: temporary_section_2.body.reverse) }
 
         before do
           temp_manual.editions << ManualRecord::Edition.new(section_uuids: %w(abcdef bcdefg), state: "published", version_number: 1, body: "This has been published")
