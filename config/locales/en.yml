@@ -31,3 +31,9 @@
 
 en:
   hello: "Hello world"
+  broken_links:
+    title: Broken links
+    broken:
+      subheading: We’ve found links in this document that may be broken
+    caution:
+      subheading: We’ve found some issues with links that may indicate problems, you should apply caution in linking to them

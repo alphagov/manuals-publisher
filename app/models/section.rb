@@ -185,6 +185,10 @@ class Section
     SectionEdition.all_for_section(uuid)
   end
 
+  def link_check_report
+    @link_check_report ||= LinkCheckReport.where(section_id: uuid).last
+  end
+
 private
 
   attr_reader :slug_generator, :latest_edition, :previous_edition
