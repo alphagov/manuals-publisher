@@ -1,6 +1,6 @@
 class LinkCheckerApiCallbackController < ApplicationController
   skip_before_action :verify_authenticity_token
-  skip_before_action :require_signin_permission!
+  skip_before_action :authenticate_user!
   skip_before_action :set_authenticated_user_header
   before_action :verify_signature
 
