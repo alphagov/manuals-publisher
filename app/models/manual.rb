@@ -350,5 +350,9 @@ class Manual
     manual_record.set(attributes)
   end
 
+  def link_check_report
+    @link_check_report ||= LinkCheckReport.where(manual_id: id).last
+  end
+
   class RemovedSectionIdNotFoundError < StandardError; end
 end
