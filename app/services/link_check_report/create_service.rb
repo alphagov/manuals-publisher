@@ -49,8 +49,12 @@ private
     ).call
   end
 
+  def govspeak_document
+    Govspeak::Document.new(reportable.body)
+  end
+
   def uris
-    Govspeak::LinkExtractor.new(reportable.body).links
+    govspeak_document.extracted_links
   end
 
   def call_link_checker_api
