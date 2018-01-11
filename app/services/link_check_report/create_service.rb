@@ -41,29 +41,16 @@ private
 
   attr_reader :user, :manual_id, :section_id
 
-  def manual
-    @manual ||= Manual.find(manual_id, user)
-  end
-
-  def section
-    raise "Not a section" unless is_for_section?
-    @section ||= Section.find(manual, section_id)
-  end
-
-  def is_for_section?
-    section_id.present?
-  end
-
-  def link_reportable
-    if is_for_section?
-      section
-    else
-      manual
-    end
+  def reportable
+    @reportable ||= LinkCheckReport::FindReportableService.new(
+      user: user,
+      manual_id: manual_id,
+      section_id: section_id
+    ).call
   end
 
   def uris
-    Govspeak::LinkExtractor.new(link_reportable.body).links
+    Govspeak::LinkExtractor.new(reportable.body).links
   end
 
   def call_link_checker_api

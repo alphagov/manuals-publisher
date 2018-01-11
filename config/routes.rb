@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     put :original_publication_date, on: :member, action: :update_original_publication_date
   end
 
-  resources :link_check_reports
+  resources :link_check_reports, only: [:create, :show]
 
   post "/link-checker-api-callback" => "link_checker_api_callback#callback", as: "link_checker_api_callback"
 
