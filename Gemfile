@@ -25,7 +25,7 @@ end
 if ENV["GOVSPEAK_DEV"]
   gem "govspeak", path: "../govspeak"
 else
-  gem "govspeak", "~> 5.3"
+  gem "govspeak", "~> 5.4.0"
 end
 
 gem "govuk_frontend_toolkit", "7.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
