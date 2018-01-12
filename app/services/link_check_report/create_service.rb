@@ -1,5 +1,4 @@
 require "services"
-require "govspeak/link_extractor"
 
 class LinkCheckReport::CreateService
   include Rails.application.routes.url_helpers
@@ -19,6 +18,8 @@ class LinkCheckReport::CreateService
   end
 
   def call
+    return if uris.empty?
+
     link_report = call_link_checker_api.deep_symbolize_keys
 
     report = LinkCheckReport.new(
@@ -49,12 +50,8 @@ private
     ).call
   end
 
-  def govspeak_document
-    Govspeak::Document.new(reportable.body)
-  end
-
   def uris
-    govspeak_document.extracted_links
+    @uris ||= LinkCheckReport::LinkExtractorService.new(body: reportable.body).call
   end
 
   def call_link_checker_api
