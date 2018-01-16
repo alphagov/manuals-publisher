@@ -26,6 +26,7 @@ Publishing app for manuals.
 
 * [alphagov/asset-manager](http://github.com/alphagov/asset-manager): provides uploading for static files
 * [alphagov/publishing-api](http://github.com/alphagov/publishing-api): allows documents to be published to the Publishing queue
+* [link-checker-api](https://github.com/alphagov/link-checker-api): checks all the links in an edition on request from the edition show page.
 
 ## Running the application
 
