@@ -8,7 +8,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   let(:section_edition_exported_time) { Time.current }
 
   let(:section_a_edition_published_version_1_major_update) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       slug: "#{manual_slug}/first-further-info",
@@ -18,7 +18,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   end
 
   let(:section_a_edition_published_version_2_major_update) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       slug: section_a_edition_published_version_1_major_update.slug,
@@ -29,7 +29,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   end
 
   let(:section_b_edition_published_version_1_major_update) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       slug: "#{manual_slug}/second-further-info",
@@ -39,7 +39,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   end
 
   let(:section_b_edition_published_version_2_minor_update) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       slug: section_b_edition_published_version_1_major_update.slug,
@@ -51,7 +51,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   end
 
   let(:section_c_edition_archived_version_1_major_update) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "archived",
       slug: "#{manual_slug}/additional-data",
@@ -61,7 +61,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   end
 
   let(:section_d_edition_draft_version_1_major_update) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "draft",
       slug: "#{manual_slug}/draft-info",
@@ -71,7 +71,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   end
 
   let(:section_e_edition_published_version_1_major_update) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       slug: "#{manual_slug}/third-further-info",
@@ -82,12 +82,12 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
   let!(:previous_publication_logs) {
     [
-      FactoryGirl.create(:publication_log, slug: manual_slug, created_at: 10.seconds.ago, version_number: 1),
-      FactoryGirl.create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2)
+      FactoryBot.create(:publication_log, slug: manual_slug, created_at: 10.seconds.ago, version_number: 1),
+      FactoryBot.create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2)
     ]
   }
   let!(:previous_other_publication_log) {
-    FactoryGirl.create :publication_log, slug: other_slug, created_at: 6.seconds.ago, version_number: 1
+    FactoryBot.create :publication_log, slug: other_slug, created_at: 6.seconds.ago, version_number: 1
   }
 
   let(:first_manual_edition_creation_time) { Time.current - 1.week }
@@ -190,12 +190,12 @@ end
 
 describe ManualPublicationLogFilter::EditionOrdering do
   describe ".sort_by_section_uuids_and_created_at" do
-    let!(:edition_in_third_position) { FactoryGirl.create :section_edition }
-    let!(:edition_in_first_position) { FactoryGirl.create :section_edition }
-    let!(:edition_in_second_position) { FactoryGirl.create :section_edition }
+    let!(:edition_in_third_position) { FactoryBot.create :section_edition }
+    let!(:edition_in_first_position) { FactoryBot.create :section_edition }
+    let!(:edition_in_second_position) { FactoryBot.create :section_edition }
 
-    let!(:other_edition_newer) { FactoryGirl.create :section_edition, created_at: Time.now - 1.day }
-    let!(:other_edition_older) { FactoryGirl.create :section_edition, created_at: Time.now - 1.week }
+    let!(:other_edition_newer) { FactoryBot.create :section_edition, created_at: Time.now - 1.day }
+    let!(:other_edition_older) { FactoryBot.create :section_edition, created_at: Time.now - 1.week }
 
     let!(:section_uuids) {
       [

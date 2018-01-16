@@ -12,7 +12,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
 
   # one published before the start date with a PDF
   let!(:early_section_edition_with_pdf) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       exported_at: start_date - 1.day,
@@ -26,7 +26,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
 
   # one published before the start date with a non-PDF attachment
   let!(:early_section_edition_with_non_pdf) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       exported_at: start_date - 1.day,
@@ -40,7 +40,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
 
   # one only drafted before the start date with a PDF attachment
   let!(:early_section_edition_draft_with_pdf) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "draft",
       exported_at: start_date - 1.day,
@@ -54,7 +54,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
 
   # one created between the start date and the last time period
   let!(:more_recent_section_edition) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       exported_at: (Date.today - last_time_period_days) - 1.day,
@@ -68,7 +68,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
 
   # one created after the last time period
   let!(:very_recent_section_edition) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "published",
       exported_at: (Date.today - last_time_period_days) + 1.day,
@@ -99,7 +99,7 @@ describe AttachmentReporting, '#create_organisation_attachment_count_hash' do
   let!(:patent_manual_record) { ManualRecord.create(slug: patent_manual_slug, organisation_slug: patent_manual_organisation_slug) }
 
   let!(:very_recent_draft_patent_section_edition) do
-    FactoryGirl.create(
+    FactoryBot.create(
       :section_edition,
       state: "draft",
       exported_at: Date.today,

@@ -15,7 +15,7 @@ describe MarkedSectionDeleter do
 
   context "when edition is marked for deletion but isn't in publishing api" do
     let!(:edition) {
-      FactoryGirl.create(:section_edition, title: 'xx-to-be-deleted')
+      FactoryBot.create(:section_edition, title: 'xx-to-be-deleted')
     }
 
     before {
@@ -34,7 +34,7 @@ describe MarkedSectionDeleter do
 
   context "when edition is marked for deletion and is in publishing api" do
     let!(:edition) {
-      FactoryGirl.create(:section_edition, title: 'xx-to-be-deleted')
+      FactoryBot.create(:section_edition, title: 'xx-to-be-deleted')
     }
 
     before {
@@ -64,7 +64,7 @@ describe MarkedSectionDeleter do
 
   context "when edition isn't marked for deletion" do
     let!(:edition) {
-      FactoryGirl.create(:section_edition, title: 'not-to-be-deleted')
+      FactoryBot.create(:section_edition, title: 'not-to-be-deleted')
     }
 
     it "doesn't delete any editions" do
@@ -76,7 +76,7 @@ describe MarkedSectionDeleter do
 
   context "when executed in dry run mode" do
     let!(:edition) {
-      FactoryGirl.create(:section_edition, title: 'xx-to-be-deleted')
+      FactoryBot.create(:section_edition, title: 'xx-to-be-deleted')
     }
 
     before {

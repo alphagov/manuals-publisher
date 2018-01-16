@@ -4,7 +4,7 @@ require "manual"
 
 describe Manual do
   subject(:manual) {
-    FactoryGirl.build(
+    FactoryBot.build(
       :manual,
       id: id,
       slug: slug,
@@ -21,8 +21,8 @@ describe Manual do
   }
 
   let(:id) { "0123-4567-89ab-cdef" }
-  let(:updated_at) { Time.parse("2001-01-01") }
-  let(:originally_published_at) { DateTime.parse("2002-02-02") }
+  let(:updated_at) { Time.zone.parse("2001-01-01") }
+  let(:originally_published_at) { Time.zone.parse("2002-02-02") }
   let(:use_originally_published_at_for_public_timestamp) { false }
   let(:title) { "manual-title" }
   let(:summary) { "manual-summary" }
@@ -56,26 +56,26 @@ describe Manual do
   describe "#eql?" do
     it "is considered the same as another manual instance if they have the same id" do
       expect(manual).to eql(manual)
-      expect(manual).to eql(FactoryGirl.build(:manual, id: manual.id))
-      expect(manual).not_to eql(FactoryGirl.build(:manual, id: manual.id.reverse))
+      expect(manual).to eql(FactoryBot.build(:manual, id: manual.id))
+      expect(manual).not_to eql(FactoryBot.build(:manual, id: manual.id.reverse))
     end
 
     it "is considered the same as another manual instance with the same id even if the version number is different" do
-      expect(manual).to eql(FactoryGirl.build(:manual, id: manual.id, version_number: manual.version_number + 1))
+      expect(manual).to eql(FactoryBot.build(:manual, id: manual.id, version_number: manual.version_number + 1))
     end
   end
 
   describe "#has_ever_been_published?" do
     it "is false if not told at initialize time" do
-      expect(FactoryGirl.build(:manual, id: "1234-5678-9012-3456")).not_to have_ever_been_published
+      expect(FactoryBot.build(:manual, id: "1234-5678-9012-3456")).not_to have_ever_been_published
     end
 
     it "is false if told so at initialize time" do
-      expect(FactoryGirl.build(:manual, id: "1234-5678-9012-3456", ever_been_published: false)).not_to have_ever_been_published
+      expect(FactoryBot.build(:manual, id: "1234-5678-9012-3456", ever_been_published: false)).not_to have_ever_been_published
     end
 
     it "is true if told so at initialize time" do
-      expect(FactoryGirl.build(:manual, id: "1234-5678-9012-3456", ever_been_published: true)).to have_ever_been_published
+      expect(FactoryBot.build(:manual, id: "1234-5678-9012-3456", ever_been_published: true)).to have_ever_been_published
     end
   end
 
@@ -117,7 +117,7 @@ describe Manual do
     end
 
     it "defaults to 0 if not supplied in the initalizer attributes" do
-      expect(FactoryGirl.build(:manual, id: "1234-5678").version_number).to eq 0
+      expect(FactoryBot.build(:manual, id: "1234-5678").version_number).to eq 0
     end
   end
 
@@ -314,9 +314,9 @@ describe Manual do
   end
 
   describe '.all' do
-    let(:user) { FactoryGirl.create(:gds_editor) }
+    let(:user) { FactoryBot.create(:gds_editor) }
     let!(:manual_records) {
-      FactoryGirl.create_list(:manual_record, 2, :with_sections, :with_removed_sections)
+      FactoryBot.create_list(:manual_record, 2, :with_sections, :with_removed_sections)
     }
     let(:all_manuals) { Manual.all(user) }
 
@@ -361,10 +361,10 @@ describe Manual do
   end
 
   describe '.find' do
-    let(:user) { FactoryGirl.create(:gds_editor) }
+    let(:user) { FactoryBot.create(:gds_editor) }
 
     context 'when a manual record with the given id exists in the users collection' do
-      let(:manual_record) { FactoryGirl.create(:manual_record) }
+      let(:manual_record) { FactoryBot.create(:manual_record) }
       let(:edition) { manual_record.editions.first }
 
       it 'builds and returns a manual from the manual record and its edition' do
@@ -392,10 +392,10 @@ describe Manual do
   end
 
   describe "#save" do
-    let(:user) { FactoryGirl.create(:gds_editor) }
+    let(:user) { FactoryBot.create(:gds_editor) }
 
     subject(:manual) {
-      FactoryGirl.build(
+      FactoryBot.build(
         :manual,
         id: 'id',
         slug: 'manual-slug',
@@ -502,8 +502,8 @@ describe Manual do
       let(:manual_id) { SecureRandom.uuid }
       let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w(12345 67890), version_number: 1, state: "draft") }
-      let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "draft") }
-      let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "draft") }
+      let!(:section_1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "draft") }
+      let!(:section_2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "draft") }
 
       before do
         manual_record.editions << manual_edition
@@ -553,8 +553,8 @@ describe Manual do
       let(:manual_id) { SecureRandom.uuid }
       let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w(12345 67890), version_number: 1, state: "published") }
-      let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-      let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+      let!(:section_1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+      let!(:section_2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
 
       before do
         manual_record.editions << manual_edition
@@ -604,8 +604,8 @@ describe Manual do
       let(:manual_id) { SecureRandom.uuid }
       let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w(12345 67890), version_number: 1, state: "withdrawn") }
-      let!(:section_1) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "archived") }
-      let!(:section_2) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "archived") }
+      let!(:section_1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "archived") }
+      let!(:section_2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "archived") }
 
       before do
         manual_record.editions << manual_edition
@@ -636,10 +636,10 @@ describe Manual do
       end
 
       context "including new drafts of all sections" do
-        let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-        let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
-        let!(:section_1_draft) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 2, state: "draft") }
-        let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
+        let!(:section_1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+        let!(:section_2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+        let!(:section_1_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 2, state: "draft") }
+        let!(:section_2_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
 
         context "the published version returned" do
           it "is the published version as a Manual instance" do
@@ -709,8 +709,8 @@ describe Manual do
       end
 
       context "without new drafts of any sections" do
-        let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-        let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+        let!(:section_1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+        let!(:section_2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
 
         context "the published version returned" do
           it "is the published version as a Manual instance" do
@@ -780,9 +780,9 @@ describe Manual do
       end
 
       context "including new drafts of some sections" do
-        let!(:section_1_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-        let!(:section_2_published) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
-        let!(:section_2_draft) { FactoryGirl.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
+        let!(:section_1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+        let!(:section_2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+        let!(:section_2_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
 
         context "the published version returned" do
           it "is the published version as a Manual instance" do
@@ -970,7 +970,7 @@ describe Manual do
   end
 
   describe "#destroy" do
-    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+    let!(:manual_record) { FactoryBot.create(:manual_record, manual_id: manual.id) }
 
     it "destroys underlying manual record" do
       manual.destroy
@@ -979,10 +979,10 @@ describe Manual do
     end
 
     context "when manual has some sections with editions" do
-      let(:section_1_edition_1) { FactoryGirl.create(:section_edition, section_uuid: "section-1") }
-      let(:section_1_edition_2) { FactoryGirl.create(:section_edition, section_uuid: "section-1") }
-      let(:section_2_edition_1) { FactoryGirl.create(:section_edition, section_uuid: "section-2") }
-      let(:section_2_edition_2) { FactoryGirl.create(:section_edition, section_uuid: "section-2") }
+      let(:section_1_edition_1) { FactoryBot.create(:section_edition, section_uuid: "section-1") }
+      let(:section_1_edition_2) { FactoryBot.create(:section_edition, section_uuid: "section-1") }
+      let(:section_2_edition_1) { FactoryBot.create(:section_edition, section_uuid: "section-2") }
+      let(:section_2_edition_2) { FactoryBot.create(:section_edition, section_uuid: "section-2") }
 
       let(:section_1) do
         Section.new(manual: manual, uuid: "section-1",
@@ -1014,11 +1014,11 @@ describe Manual do
   end
 
   describe ".find_by_slug!" do
-    let(:user) { FactoryGirl.create(:gds_editor) }
+    let(:user) { FactoryBot.create(:gds_editor) }
 
     context "when a manual record with the given slug exists" do
       let!(:manual_record) do
-        FactoryGirl.create(:manual_record, slug: "manual-slug")
+        FactoryBot.create(:manual_record, slug: "manual-slug")
       end
 
       it "builds and returns a manual from the manual record and its edition" do
@@ -1028,7 +1028,7 @@ describe Manual do
       end
 
       context "but user does not have access to manual record" do
-        let(:user) { FactoryGirl.create(:generic_editor_of_another_organisation) }
+        let(:user) { FactoryBot.create(:generic_editor_of_another_organisation) }
 
         it "raises Manual::NotFoundError" do
           expect {
@@ -1048,11 +1048,11 @@ describe Manual do
 
     context "when multiple manual records with the given slug exist" do
       let!(:manual_record) do
-        FactoryGirl.create(:manual_record, slug: "manual-slug")
+        FactoryBot.create(:manual_record, slug: "manual-slug")
       end
 
       let!(:another_manual_record) do
-        FactoryGirl.create(:manual_record, slug: manual_record.slug)
+        FactoryBot.create(:manual_record, slug: manual_record.slug)
       end
 
       it "raises Manual::AmbiguousSlugError" do
@@ -1064,7 +1064,7 @@ describe Manual do
   end
 
   describe "#editions" do
-    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+    let!(:manual_record) { FactoryBot.create(:manual_record, manual_id: manual.id) }
 
     it "returns editions from underlying manual record" do
       expect(manual.editions).to eq(manual_record.editions)
@@ -1072,7 +1072,7 @@ describe Manual do
   end
 
   describe "#set" do
-    let!(:manual_record) { FactoryGirl.create(:manual_record, manual_id: manual.id) }
+    let!(:manual_record) { FactoryBot.create(:manual_record, manual_id: manual.id) }
 
     it "sets attributes on underlying manual record" do
       manual.set(slug: "new-slug")

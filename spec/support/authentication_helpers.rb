@@ -8,7 +8,7 @@ module AuthenticationControllerHelpers
   end
 
   def stub_user
-    FactoryGirl.build(:generic_writer)
+    FactoryBot.build(:generic_writer)
   end
 
   def login_as_stub_user

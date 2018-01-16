@@ -6,7 +6,7 @@ class Link
 
   field :uri, type: String
   field :status, type: String
-  field :checked, type: DateTime
+  field :checked, type: Time
   field :check_warnings, type: Array
   field :check_errors, type: Array
   field :problem_summary, type: String

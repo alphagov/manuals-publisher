@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe PermissionChecker do
-  let(:generic_writer) { FactoryGirl.build(:generic_writer) }
-  let(:generic_editor) { FactoryGirl.build(:generic_editor) }
-  let(:gds_editor)     { FactoryGirl.build(:gds_editor) }
+  let(:generic_writer) { FactoryBot.build(:generic_writer) }
+  let(:generic_editor) { FactoryBot.build(:generic_editor) }
+  let(:gds_editor)     { FactoryBot.build(:gds_editor) }
 
   describe "#can_publish?" do
     context "a user who is not an editor" do

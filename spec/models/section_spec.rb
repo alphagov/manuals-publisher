@@ -145,8 +145,8 @@ describe Section do
 
   describe '.find' do
     context 'when there are associated section editions' do
-      let(:previous_edition) { FactoryGirl.build(:section_edition) }
-      let(:latest_edition) { FactoryGirl.build(:section_edition) }
+      let(:previous_edition) { FactoryBot.build(:section_edition) }
+      let(:latest_edition) { FactoryBot.build(:section_edition) }
       let(:editions_proxy) { double(:editions_proxy, to_a: [latest_edition, previous_edition]).as_null_object }
 
       before do
@@ -769,7 +769,7 @@ describe Section do
   end
 
   describe "#valid?" do
-    let(:latest_edition) { FactoryGirl.build(:section_edition) }
+    let(:latest_edition) { FactoryBot.build(:section_edition) }
 
     before do
       allow(section).to receive(:change_note_required?).and_return(change_note_required)
@@ -880,7 +880,7 @@ describe Section do
   end
 
   describe "#all_editions" do
-    let(:latest_edition) { FactoryGirl.build(:section_edition) }
+    let(:latest_edition) { FactoryBot.build(:section_edition) }
 
     before do
       allow(SectionEdition).to receive(:all_for_section).with(section_uuid).and_return([latest_edition])

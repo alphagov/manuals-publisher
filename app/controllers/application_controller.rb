@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  before_action :require_signin_permission!
+  before_action :authenticate_user!
   before_action :set_authenticated_user_header
 
   rescue_from("Manual::NotFoundError") do

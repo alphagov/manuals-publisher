@@ -26,7 +26,7 @@ describe Attachment do
 
   context "#save" do
     let(:edition) do
-      FactoryGirl.create(:section_edition)
+      FactoryBot.create(:section_edition)
     end
 
     let(:upload_file) do

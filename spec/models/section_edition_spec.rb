@@ -29,29 +29,29 @@ describe SectionEdition do
 
   describe '.all_for_section' do
     it 'returns all editions for a section' do
-      section_1_edition_1 = FactoryGirl.create(:section_edition, section_uuid: 'section-1')
-      section_1_edition_2 = FactoryGirl.create(:section_edition, section_uuid: 'section-1')
-      section_2_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-2')
+      section_a_edition_one = FactoryBot.create(:section_edition, section_uuid: 'section-a')
+      section_a_edition_two = FactoryBot.create(:section_edition, section_uuid: 'section-a')
+      section_b_edition = FactoryBot.create(:section_edition, section_uuid: 'section-b')
 
-      editions = SectionEdition.all_for_section('section-1')
+      editions = SectionEdition.all_for_section('section-a')
 
-      expect(editions).to include(section_1_edition_1)
-      expect(editions).to include(section_1_edition_2)
-      expect(editions).not_to include(section_2_edition)
+      expect(editions).to include(section_a_edition_one)
+      expect(editions).to include(section_a_edition_two)
+      expect(editions).not_to include(section_b_edition)
     end
   end
 
   describe '.all_for_sections' do
     it 'returns all editions for sections' do
-      section_1_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-1')
-      section_2_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-2')
-      section_3_edition = FactoryGirl.create(:section_edition, section_uuid: 'section-3')
+      section_a_edition = FactoryBot.create(:section_edition, section_uuid: 'section-a')
+      section_b_edition = FactoryBot.create(:section_edition, section_uuid: 'section-b')
+      section_c_edition = FactoryBot.create(:section_edition, section_uuid: 'section-c')
 
-      editions = SectionEdition.all_for_sections('section-1', 'section-2')
+      editions = SectionEdition.all_for_sections('section-a', 'section-b')
 
-      expect(editions).to include(section_1_edition)
-      expect(editions).to include(section_2_edition)
-      expect(editions).not_to include(section_3_edition)
+      expect(editions).to include(section_a_edition)
+      expect(editions).to include(section_b_edition)
+      expect(editions).not_to include(section_c_edition)
     end
   end
 end

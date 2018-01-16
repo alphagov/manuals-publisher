@@ -1,9 +1,9 @@
 require "spec_helper"
 
 RSpec.describe LinkCheckReport::CreateService do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryBot.create(:user) }
 
-  let(:link_check_report) { FactoryGirl.create(:link_check_report, manual_id: manual.id) }
+  let(:link_check_report) { FactoryBot.create(:link_check_report, manual_id: manual.id) }
 
   let(:link_checker_api_response) do
     {

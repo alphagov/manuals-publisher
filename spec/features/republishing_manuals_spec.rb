@@ -8,7 +8,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     stub_organisation_details(GDS::SSO.test_user.organisation_slug)
   end
 
-  let(:original_publish_time) { DateTime.now - 1.day }
+  let(:original_publish_time) { Time.zone.now - 1.day }
   let(:manual_fields) { { title: "Example manual title", summary: "A summary" } }
   let(:edited_manual_fields) { { title: "Editted manual title", summary: "A changed summary" } }
 

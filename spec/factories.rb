@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do
     sequence(:uid) { |n| "uid-#{n}" }
     sequence(:name) { |n| "Joe Bloggs #{n}" }
@@ -64,13 +64,13 @@ FactoryGirl.define do
     organisation_slug 'organisation_slug'
 
     after(:build) do |manual_record|
-      manual_record.editions << FactoryGirl.build(:manual_record_edition)
+      manual_record.editions << FactoryBot.build(:manual_record_edition)
     end
 
     trait :with_sections do
       after(:build) do |manual_record|
         manual_record.editions.each do |edition|
-          section = FactoryGirl.create(:section_edition)
+          section = FactoryBot.create(:section_edition)
           edition.section_uuids = [section.section_uuid]
         end
       end
@@ -79,7 +79,7 @@ FactoryGirl.define do
     trait :with_removed_sections do
       after(:build) do |manual_record|
         manual_record.editions.each do |edition|
-          section = FactoryGirl.create(:section_edition)
+          section = FactoryBot.create(:section_edition)
           edition.removed_section_uuids = [section.section_uuid]
         end
       end
@@ -107,14 +107,14 @@ FactoryGirl.define do
     batch_id 1
     status "in_progress"
     completed_at Time.now
-    links { [FactoryGirl.build(:link)] }
+    links { [FactoryBot.build(:link)] }
 
     trait :completed do
       status "completed"
     end
 
     trait :with_broken_links do
-      links { [FactoryGirl.build(:link, :broken)] }
+      links { [FactoryBot.build(:link, :broken)] }
     end
 
     trait :with_pending_links do
@@ -123,7 +123,7 @@ FactoryGirl.define do
       end
 
       links do
-        link_uris.map { |uri| FactoryGirl.build(:link, :pending, uri: uri) }
+        link_uris.map { |uri| FactoryBot.build(:link, :pending, uri: uri) }
       end
     end
   end

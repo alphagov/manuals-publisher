@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'sections/_form.html.erb', type: :view do
   it 'contains the elements required by the JavaScript that toggles the visibility of the change note field' do
-    manual = FactoryGirl.build(:manual, id: 'manual-id')
+    manual = FactoryBot.build(:manual, id: 'manual-id')
     section = Section.new(manual: manual, uuid: 'section-uuid')
 
     allow(manual).to receive(:has_ever_been_published?).and_return(true)

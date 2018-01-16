@@ -14,8 +14,8 @@ describe DuplicateDocumentFinder do
 
   context 'when there are multiple editions with different slugs' do
     before {
-      FactoryGirl.create(:section_edition, slug: 'slug-1')
-      FactoryGirl.create(:section_edition, slug: 'slug-2')
+      FactoryBot.create(:section_edition, slug: 'slug-1')
+      FactoryBot.create(:section_edition, slug: 'slug-2')
     }
 
     it "doesn't report them as duplicates" do
@@ -27,8 +27,8 @@ describe DuplicateDocumentFinder do
 
   context 'when there are multiple editions with the same slug and same section id' do
     before {
-      FactoryGirl.create(:section_edition, slug: 'slug', section_uuid: 1)
-      FactoryGirl.create(:section_edition, slug: 'slug', section_uuid: 1)
+      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 1)
+      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 1)
     }
 
     it "doesn't report them as duplicates" do
@@ -40,10 +40,10 @@ describe DuplicateDocumentFinder do
 
   context 'when there are multiple editions with the same slug and different section ids' do
     let!(:edition_1) {
-      FactoryGirl.create(:section_edition, slug: 'slug', section_uuid: 1)
+      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 1)
     }
     let!(:edition_2) {
-      FactoryGirl.create(:section_edition, slug: 'slug', section_uuid: 2)
+      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 2)
     }
 
     it "reports them as duplicates" do
