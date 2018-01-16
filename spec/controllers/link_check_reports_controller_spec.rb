@@ -77,7 +77,7 @@ describe LinkCheckReportsController, type: :controller do
 
         expect(response).to render_template("admin/link_check_reports/show")
         expect(assigns(:report)).to eq(link_check_report)
-        expect(assigns(:reportable)).to eq(manual)
+        expect(assigns(:reportable)).to eq(manual_id: manual.id.to_s)
       end
     end
 
@@ -101,7 +101,7 @@ describe LinkCheckReportsController, type: :controller do
 
         expect(response).to render_template("admin/link_check_reports/show")
         expect(assigns(:report)).to eq(link_check_report)
-        expect(assigns(:reportable)).to eq(section)
+        expect(assigns(:reportable)).to eq(manual_id: manual.id.to_s, section_id: section.id.to_s)
       end
     end
   end
