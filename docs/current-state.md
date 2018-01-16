@@ -39,6 +39,10 @@ The Adapter classes encapsulate the API calls to 2 external APIs: The (version 2
 
 The classes serve as application-specific wrappers around the [GDS API adapters](https://github.com/alphagov/gds-api-adapters). The idea is that methods on adapters should accept and return instances of domain models and not Hashes/JSON. The translation between domain model objects and Hashes/JSON (and vice versa) should only happen inside the adapters.
 
+## LinkCheckerAPI
+
+The `link-checker-api` has been integrated on the show page for both Manuals and Sections. It extracts all links from within any GovSpeak fields and sends them to the `/batch` endpoint of the API. In this request it also sends across a `webhook_callback` which then populates any information about broken/warning links. More reading about the endpoints can be found [here](https://docs.publishing.service.gov.uk/apis/link-checker-api.html)
+
 ## Rake tasks
 
 A small number of Rake tasks exist. These perform actions that are not exposed via the user interface, or are required to be infrequently run (for example report generation). Some commonly used Rake tasks are [documented separately](rake-tasks.md).
