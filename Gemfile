@@ -19,7 +19,7 @@ gem "govuk_app_config", "~> 1.2"
 if ENV["API_DEV"]
   gem "gds-api-adapters", path: "../gds-api-adapters"
 else
-  gem "gds-api-adapters", "~> 50.9.1"
+  gem "gds-api-adapters", "~> 51.0.0"
 end
 
 if ENV["GOVSPEAK_DEV"]
