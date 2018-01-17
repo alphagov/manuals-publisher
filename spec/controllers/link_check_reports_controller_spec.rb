@@ -22,6 +22,21 @@ describe LinkCheckReportsController, type: :controller do
       stub_link_checker_api
     end
 
+    context "when there are no links" do
+      let(:manual) { FactoryBot.build(:manual, id: 538, body: "hello") }
+
+      it "returns 422 for AJAX requests" do
+        post :create, xhr: true, params: { link_reportable: { manual_id: manual.id } }
+        expect(response.status).to eq(422)
+      end
+
+      it "redirects POST page" do
+        post :create, params: { link_reportable: { manual_id: manual.id } }
+
+        expect(response).to redirect_to(root_path)
+      end
+    end
+
     context "manual" do
       it "POST returns a redirects to the manual show page" do
         post :create, params: { link_reportable: { manual_id: manual.id } }

@@ -8,6 +8,8 @@ class LinkCheckReportsController < ApplicationController
 
     @report = service.call
 
+    return handle_nil_report unless @report
+
     @reportable = reportable_hash
 
     respond_to do |format|
@@ -30,6 +32,13 @@ class LinkCheckReportsController < ApplicationController
   end
 
 private
+
+  def handle_nil_report
+    respond_to do |format|
+      format.js { head :unprocessable_entity }
+      format.html { redirect_back(fallback_location: root_path) }
+    end
+  end
 
   def reportable_object
     @reportable_object ||= find_reportable(section_id: @report.section_id, manual_id: @report.manual_id)
