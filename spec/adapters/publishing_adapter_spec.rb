@@ -463,14 +463,17 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API including change notes" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(details: including(
-            change_notes: [{
-              title: "section-title",
-              base_path: "/manual-slug/section-slug",
-              change_note: "section-change-note",
-              published_at: timestamp
-            }]
-          ))
+          including(
+            change_note: "section-title - section-change-note",
+            details: including(
+              change_notes: [{
+                title: "section-title",
+                base_path: "/manual-slug/section-slug",
+                change_note: "section-change-note",
+                published_at: timestamp
+              }]
+            )
+          )
         )
 
         subject.save(manual)

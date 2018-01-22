@@ -170,6 +170,11 @@ private
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }
 
+    latest_publication = manual.publication_logs.first
+    if latest_publication
+      attributes[:change_note] = "#{latest_publication.title} - #{latest_publication.change_note}"
+    end
+
     if manual.originally_published_at.present?
       attributes[:first_published_at] = manual.originally_published_at
       if manual.use_originally_published_at_for_public_timestamp?
