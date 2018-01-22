@@ -53,7 +53,8 @@ describe PublishingAdapter do
       slug: "manual-slug/section-slug",
       title: "section-title",
       summary: "section-summary",
-      body: "section-body"
+      body: "section-body",
+      change_note: "change-note",
     )
   }
 
@@ -206,6 +207,7 @@ describe PublishingAdapter do
         update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
         publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
         rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
+        change_note: "change-note",
         routes: [
           {
             path: "/manual-slug/section-slug",

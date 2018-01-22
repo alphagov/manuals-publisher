@@ -219,6 +219,7 @@ private
       update_type: update_type,
       publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
       rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
+      change_note: section.change_note,
       routes: [
         {
           path: "/#{section.slug}",
