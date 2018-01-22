@@ -449,7 +449,7 @@ describe PublishingAdapter do
     end
 
     context "when publication logs exist for section" do
-      let(:publication_log) {
+      let(:publication_log_1) {
         PublicationLog.new(
           title: "section-title",
           slug: "manual-slug/section-slug",
@@ -458,20 +458,37 @@ describe PublishingAdapter do
         )
       }
 
-      let(:publication_logs) { [publication_log] }
+      let(:publication_log_2) {
+        PublicationLog.new(
+          title: "section-title-2",
+          slug: "manual-slug/section-slug",
+          change_note: "section-change-note",
+          published_at: timestamp
+        )
+      }
+
+      let(:publication_logs) { [publication_log_1, publication_log_2] }
 
       it "saves content for manual to Publishing API including change notes" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
           including(
-            change_note: "section-title - section-change-note",
+            change_note: "section-title-2 - section-change-note",
             details: including(
-              change_notes: [{
-                title: "section-title",
-                base_path: "/manual-slug/section-slug",
-                change_note: "section-change-note",
-                published_at: timestamp
-              }]
+              change_notes: [
+                {
+                  title: "section-title",
+                  base_path: "/manual-slug/section-slug",
+                  change_note: "section-change-note",
+                  published_at: timestamp
+                },
+                {
+                  title: "section-title-2",
+                  base_path: "/manual-slug/section-slug",
+                  change_note: "section-change-note",
+                  published_at: timestamp
+                },
+              ]
             )
           )
         )

@@ -170,7 +170,7 @@ private
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }
 
-    latest_publication = manual.publication_logs.first
+    latest_publication = manual.publication_logs.last
     if latest_publication
       attributes[:change_note] = "#{latest_publication.title} - #{latest_publication.change_note}"
     end
