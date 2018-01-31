@@ -14,7 +14,7 @@ gem "sidekiq", "3.2.1"
 gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
 
-gem "govuk_app_config", "~> 1.2"
+gem "govuk_app_config", "~> 1.3"
 
 if ENV["API_DEV"]
   gem "gds-api-adapters", path: "../gds-api-adapters"
