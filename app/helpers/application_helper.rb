@@ -87,7 +87,7 @@ module ApplicationHelper
   end
 
   def content_preview_url(manual)
-    "#{Plek.current.find('draft-origin')}/#{manual.slug}"
+    "#{Plek.new.external_url_for('draft-origin')}/#{manual.slug}"
   end
 
   def publish_text(manual, slug_unique)
