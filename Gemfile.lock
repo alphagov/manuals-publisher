@@ -142,8 +142,6 @@ GEM
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.21)
-    foreman (0.84.0)
-      thor (~> 0.19.1)
     gds-api-adapters (51.2.0)
       addressable
       link_header
@@ -459,7 +457,6 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   factory_bot_rails
-  foreman
   gds-api-adapters (~> 51.2.0)
   gds-sso
   generic_form_builder
@@ -493,4 +490,4 @@ DEPENDENCIES
   webmock
 
 BUNDLED WITH
-   1.15.1
+   1.16.1
