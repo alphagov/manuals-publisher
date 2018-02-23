@@ -39,7 +39,6 @@ end
 
 group :development, :test do
   gem "awesome_print"
-  gem "foreman"
   gem "jasmine-rails"
   gem "pry-byebug"
   gem "sinatra", "~> 2.0"
