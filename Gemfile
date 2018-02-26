@@ -28,7 +28,7 @@ else
   gem "govspeak", "~> 5.5.0"
 end
 
-gem "govuk_frontend_toolkit", "7.4.1" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
+gem "govuk_frontend_toolkit", "7.4.2" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
 gem "sass-rails"
 gem "uglifier", ">= 1.3.0"
 
