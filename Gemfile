@@ -6,7 +6,7 @@ gem "rails", "~> 5.1"
 gem "gds-sso"
 gem "generic_form_builder"
 gem "govuk_admin_template"
-gem "mongoid", "~> 6.0"
+gem "mongoid", "~> 7.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code-v1.1.0-plus-mongoid-v5-fix"
 gem "plek"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
