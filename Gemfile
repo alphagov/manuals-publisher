@@ -10,7 +10,7 @@ gem "mongoid", "~> 6.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code-v1.1.0-plus-mongoid-v5-fix"
 gem "plek"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
-gem "sidekiq", "3.2.1"
+gem "sidekiq", "5.1.1"
 gem "sidekiq-statsd", "0.1.5"
 gem "state_machine", "1.2.0"
 
