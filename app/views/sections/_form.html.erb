@@ -19,7 +19,7 @@
         <div class="checkbox add-vertical-margins">
           <%= f.radio_button :minor_update, 0, class: 'js-update-type-major', tag_type: :p, label: 'Major update', checked: !section.minor_update %>
         </div>
-        <div class="<%= section.minor_update ? 'js-hidden' : nil %>">
+        <div class="change_note_container <%= section.minor_update ? 'js-hidden' : nil %>">
           <%= f.text_area :change_note, rows: 20, cols: 40, class: 'form-control short-textarea' %>
           <p class="help-block">This will be publically viewable on GOV.UK.</p>
         </div>
@@ -86,12 +86,12 @@
 
   window.toggleDisplayWithCheckedInput({
     $input: $("#section_minor_update_1"),
-    $element: $("#section_change_note").parent(),
+    $element: $("#change_note_container"),
     mode: 'hide'
   });
   window.toggleDisplayWithCheckedInput({
     $input: $("#section_minor_update_0"),
-    $element: $("#section_change_note").parent(),
+    $element: $("#change_note_container"),
     mode: 'show'
   });
   $('.js-hidden').hide();
