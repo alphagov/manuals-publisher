@@ -1,4 +1,4 @@
-require "sidekiq/testing"
+require "govuk_sidekiq/testing"
 Sidekiq::Testing.inline!
 
 Before("@disable_background_processing") do

@@ -1,5 +1,5 @@
 require "spec_helper"
-require "sidekiq/testing"
+require "govuk_sidekiq/testing"
 
 RSpec.describe "Republishing manuals", type: :feature do
   before do
