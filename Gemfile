@@ -51,7 +51,7 @@ group :test do
   gem "govuk-lint"
   gem "govuk-content-schema-test-helpers", "1.6.1"
   gem "launchy"
-  gem "poltergeist", "~> 1.17.0"
+  gem "poltergeist", "~> 1.18.1"
   gem "phantomjs", ">= 1.9.7.1"
   gem "rspec"
   gem "rails-controller-testing"
