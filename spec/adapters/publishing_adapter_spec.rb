@@ -96,6 +96,7 @@ describe PublishingAdapter do
         manual_id,
         links: {
           organisations: [organisation_content_id],
+          primary_publishing_organisation: [organisation_content_id],
           sections: [section_uuid]
         }
       )
@@ -178,6 +179,7 @@ describe PublishingAdapter do
         section_uuid,
         links: {
           organisations: [organisation_content_id],
+          primary_publishing_organisation: [organisation_content_id],
           manual: [manual_id]
         }
       )
