@@ -87,6 +87,7 @@ private
       manual.id,
       links: {
         organisations: [organisation.content_id],
+        primary_publishing_organisation: [organisation.content_id],
         sections: manual.sections.map(&:uuid),
       }
     )
@@ -196,6 +197,7 @@ private
       section.uuid,
       links: {
         organisations: [organisation.content_id],
+        primary_publishing_organisation: [organisation.content_id],
         manual: [manual.id],
       }
     )
