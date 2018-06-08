@@ -40,7 +40,6 @@ group :development, :test do
   gem "awesome_print"
   gem "jasmine-rails"
   gem "pry-byebug"
-  gem "sinatra", "~> 2.0"
 end
 
 group :test do
