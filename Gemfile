@@ -13,7 +13,7 @@ gem "plek"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
 gem "state_machine", "1.2.0"
 
-gem "govuk_app_config", "~> 1.5"
+gem "govuk_app_config", "~> 1.6"
 
 if ENV["API_DEV"]
   gem "gds-api-adapters", path: "../gds-api-adapters"
