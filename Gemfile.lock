@@ -128,7 +128,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.23)
+    ffi (1.9.25)
     gds-api-adapters (52.6.0)
       addressable
       link_header
@@ -175,7 +175,7 @@ GEM
       sentry-raven (~> 2.7.1)
       statsd-ruby (~> 1.4.0)
       unicorn (~> 5.4.0)
-    govuk_frontend_toolkit (7.5.0)
+    govuk_frontend_toolkit (7.6.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
     govuk_sidekiq (3.0.0)
@@ -370,7 +370,7 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4)
-    sass (3.5.6)
+    sass (3.5.7)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -459,7 +459,7 @@ DEPENDENCIES
   govuk-lint
   govuk_admin_template
   govuk_app_config (~> 1.7)
-  govuk_frontend_toolkit (= 7.5.0)
+  govuk_frontend_toolkit (= 7.6.0)
   govuk_sidekiq (~> 3)
   jasmine-rails
   launchy
