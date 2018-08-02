@@ -11,6 +11,7 @@ node("mongodb-2.4") {
     beforeTest: {
       govuk.setEnvar("TEST_COVERAGE", "true")
     },
-    publishingE2ETests: true
+    publishingE2ETests: true,
+    brakeman: true,
   )
 }
