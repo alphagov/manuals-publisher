@@ -51,7 +51,7 @@ class AttachmentReporting
 private
 
   def titleize_keys(hash)
-    hash.keys.each do |key|
+    hash.keys.each do |key| # rubocop:disable Performance/HashEachMethods
       hash[key.titleize] = hash[key]
       hash.delete(key)
     end
