@@ -4,3 +4,15 @@ AllCops:
 Lint/HandleExceptions:
   Exclude:
     - 'spec/**/*'
+
+Naming/VariableNumber:
+  Exclude:
+    - 'spec/models/manual_spec.rb'
+
+Style/FormatStringToken:
+  Exclude:
+    - 'lib/tasks/rebuild_major_publication_logs_for_manuals.rake'
+
+Style/RedundantReturn:
+  Exclude:
+    - 'app/models/manual.rb'
