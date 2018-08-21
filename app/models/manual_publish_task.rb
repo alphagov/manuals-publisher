@@ -12,7 +12,7 @@ class ManualPublishTask
   scope :for_manual, ->(manual) {
     all
       .where(manual_id: manual.id)
-      .order_by([:version_number, :desc], [:updated_at, :desc])
+      .order_by(%i[version_number desc], %i[updated_at desc])
   }
 
   state_machine initial: :queued do

@@ -21,7 +21,7 @@ class ManualPublicationLogFilter
       editions_not_matching_supplied_sections = @section_editions.where(:section_uuid.nin => @section_uuids)
       editions_matching_supplied_sections = @section_editions.all_for_sections(*@section_uuids)
 
-      order_by_section_uuids(editions_matching_supplied_sections).concat(editions_not_matching_supplied_sections.order_by([:created_at, :asc]).to_a)
+      order_by_section_uuids(editions_matching_supplied_sections).concat(editions_not_matching_supplied_sections.order_by(%i[created_at asc]).to_a)
     end
 
   private

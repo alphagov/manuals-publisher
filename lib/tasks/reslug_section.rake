@@ -2,7 +2,7 @@ require "section_reslugger"
 require "logger"
 
 desc "Reslug section"
-task :reslug_section, [:manual_slug, :old_section_slug, :new_section_slug] => :environment do |_, args|
+task :reslug_section, %i[manual_slug old_section_slug new_section_slug] => :environment do |_, args|
   def usage
     $stderr.puts %{
 USAGE: rake reslug_section[manual_slug, old_section_slug, new_section_slug]

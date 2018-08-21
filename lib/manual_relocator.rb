@@ -50,7 +50,7 @@ private
     manual.published? ||
     # or
     # 2. the last two editions are published and draft
-      (manual.editions.order_by([:version_number, :desc]).limit(2).map(&:state) == %w(draft published))
+      (manual.editions.order_by(%i[version_number desc]).limit(2).map(&:state) == %w(draft published))
   end
 
   def redirect_and_remove
@@ -119,7 +119,7 @@ private
   end
 
   def all_editions_of_section(section_uuid)
-    SectionEdition.all_for_section(section_uuid).order_by([:version_number, :desc])
+    SectionEdition.all_for_section(section_uuid).order_by(%i[version_number desc])
   end
 
   def reslug
