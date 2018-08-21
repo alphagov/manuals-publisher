@@ -7,23 +7,26 @@ describe DuplicateDraftDeleter do
 
   it "deletes duplicate editions that aren't present in Publishing API" do
     original_content_id = SecureRandom.uuid
-    FactoryBot.create(:section_edition,
+    FactoryBot.create(
+      :section_edition,
       slug: "guidance/manual-slug/section-slug",
       section_uuid: original_content_id,
-      state: "draft",
+      state: "draft"
     )
     publishing_api_has_item(content_id: original_content_id)
 
     duplicate_content_id = SecureRandom.uuid
-    FactoryBot.create(:section_edition,
+    FactoryBot.create(
+      :section_edition,
       slug: "guidance/manual-slug/section-slug",
       section_uuid: duplicate_content_id,
-      state: "draft",
+      state: "draft"
     )
-    FactoryBot.create(:section_edition,
+    FactoryBot.create(
+      :section_edition,
       slug: "guidance/manual-slug/section-slug",
       section_uuid: duplicate_content_id,
-      state: "archived",
+      state: "archived"
     )
     publishing_api_does_not_have_item(duplicate_content_id)
 
@@ -36,13 +39,15 @@ describe DuplicateDraftDeleter do
 
   it "leaves non-duplicated editions alone" do
     content_id = SecureRandom.uuid
-    FactoryBot.create(:section_edition,
-     section_uuid: content_id,
+    FactoryBot.create(
+      :section_edition,
+      section_uuid: content_id
     )
 
     another_content_id = SecureRandom.uuid
-    FactoryBot.create(:section_edition,
-      section_uuid: another_content_id,
+    FactoryBot.create(
+      :section_edition,
+      section_uuid: another_content_id
     )
 
     expect { DuplicateDraftDeleter.new.call }.to output.to_stdout
