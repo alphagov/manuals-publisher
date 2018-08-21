@@ -172,12 +172,10 @@ class Section
   def version_type
     if first_edition?
       :new
+    elsif minor_update?
+      :minor
     else
-      if minor_update?
-        :minor
-      else
-        :major
-      end
+      :major
     end
   end
 
