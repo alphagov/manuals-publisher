@@ -216,14 +216,14 @@ private
     date_params = date_param_names.map do |date_param_name|
       [
         date_param_name,
-        build_datetime_from(*[
+        build_datetime_from(
           manual_params.fetch("#{date_param_name}(1i)", ""),
           manual_params.fetch("#{date_param_name}(2i)", ""),
           manual_params.fetch("#{date_param_name}(3i)", ""),
           manual_params.fetch("#{date_param_name}(4i)", ""),
           manual_params.fetch("#{date_param_name}(5i)", ""),
-          manual_params.fetch("#{date_param_name}(6i)", ""),
-        ])
+          manual_params.fetch("#{date_param_name}(6i)", "")
+        )
       ]
     end
     Hash[date_params]
