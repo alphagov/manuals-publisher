@@ -47,11 +47,10 @@ group :test do
   gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_bot_rails"
+  gem "govuk_test"
   gem "govuk-lint"
   gem "govuk-content-schema-test-helpers", "1.6.1"
   gem "launchy"
-  gem "poltergeist", "~> 1.17.0"
-  gem "phantomjs", ">= 1.9.7.1"
   gem "rspec"
   gem "rails-controller-testing"
   gem "rspec-rails"

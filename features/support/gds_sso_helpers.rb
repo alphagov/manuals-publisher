@@ -11,6 +11,7 @@ module GdsSsoHelpers
   end
 
   def log_out
+    Capybara.reset_session!
     GDS::SSO.test_user = nil
     logout # warden
   end
