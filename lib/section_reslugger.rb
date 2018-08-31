@@ -117,7 +117,7 @@ private
   end
 
   def old_section_in_content_store
-    @old_section_in_cs ||= section_in_content_store(full_old_section_slug)
+    @old_section_in_content_store ||= section_in_content_store(full_old_section_slug)
   end
 
   def section_edition_in_database(slug)
