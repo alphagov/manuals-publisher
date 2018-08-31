@@ -7,7 +7,7 @@ namespace :dev do
       u = User.new
       u.name = "Test User"
       u.email = "test.user@example.com"
-      u.permissions = ["signin"]
+      u.permissions = %w[signin]
       u.save!
       logger.info "User created. Yay!"
     else
