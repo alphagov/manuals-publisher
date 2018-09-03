@@ -62,7 +62,7 @@ private
   end
 
   def last_time_period_start_date
-    @_last_time_period_start_date ||= @last_time_period_days.days.ago
+    @last_time_period_start_date ||= @last_time_period_days.days.ago
   end
 
   def section_published_after_date?(section_edition, date)

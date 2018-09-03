@@ -16,7 +16,7 @@ class ManualRecord
   end
 
   def self.all_by_updated_at
-    order_by([:updated_at, :desc])
+    order_by(%i[updated_at desc])
   end
 
   def new_or_existing_draft_edition
@@ -32,11 +32,11 @@ class ManualRecord
     # the server each time, also because it's a server command it doesn't look
     # at unsaved instances in the array (such as those created in
     # build_draft_edition below)
-    @latest_edition ||= editions.order_by([:version_number, :desc]).first
+    @latest_edition ||= editions.order_by(%i[version_number desc]).first
   end
 
   def previous_edition
-    editions.order_by([:version_number, :desc]).limit(2).last
+    editions.order_by(%i[version_number desc]).limit(2).last
   end
 
   def has_ever_been_published?

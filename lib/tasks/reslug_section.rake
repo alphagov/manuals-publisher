@@ -1,33 +1,33 @@
 require "section_reslugger"
 require "logger"
 
+def usage
+  warn <<~USAGE
+    USAGE: rake reslug_section[manual_slug, old_section_slug, new_section_slug]
+
+    manual_slug:
+      slug of manual (eg 'guidance/countryside-stewardship-manual')
+
+    old_section_slug:
+      current slug of section to be renamed (eg '8-terms-and-conditions')
+
+    new_section_slug:
+      new slug for section (eg '8-scheme-requirements-and-procedures')
+  USAGE
+
+  exit(1)
+end
+
+def logger
+  @logger ||= begin
+    logger = Logger.new(STDOUT)
+    logger.formatter = Logger::Formatter.new
+    logger
+  end
+end
+
 desc "Reslug section"
-task :reslug_section, [:manual_slug, :old_section_slug, :new_section_slug] => :environment do |_, args|
-  def usage
-    $stderr.puts %{
-USAGE: rake reslug_section[manual_slug, old_section_slug, new_section_slug]
-
-manual_slug:
-  slug of manual (eg 'guidance/countryside-stewardship-manual')
-
-old_section_slug:
-  current slug of section to be renamed (eg '8-terms-and-conditions')
-
-new_section_slug:
-  new slug for section (eg '8-scheme-requirements-and-procedures')
-
-}
-    exit(1)
-  end
-
-  def logger
-    @logger ||= begin
-                  logger = Logger.new(STDOUT)
-                  logger.formatter = Logger::Formatter.new
-                  logger
-                end
-  end
-
+task :reslug_section, %i[manual_slug old_section_slug new_section_slug] => :environment do |_, args|
   usage unless args.has_key?(:manual_slug) && args.has_key?(:old_section_slug) && args.has_key?(:new_section_slug)
 
   logger.info "Renaming section slug"

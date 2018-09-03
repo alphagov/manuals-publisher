@@ -29,20 +29,22 @@ this is my attachment [#{title}](#{file_url}) 28 Feb 2014
   let(:file_url) { "http://example.com/rofl.gif" }
 
   let(:rofl) {
-    double(:attachment,
+    double(
+      :attachment,
       title: title,
       filename: "rofl.gif",
       file_url: file_url,
-      snippet: "[InlineAttachment:rofl.gif]",
+      snippet: "[InlineAttachment:rofl.gif]"
     )
   }
 
   let(:lol) {
-    double(:attachment,
+    double(
+      :attachment,
       title: "My attachment LOL",
       filename: "lol.gif",
       file_url: "http://example.com/LOL",
-      snippet: "[InlineAttachment:lol.gif]",
+      snippet: "[InlineAttachment:lol.gif]"
     )
   }
 

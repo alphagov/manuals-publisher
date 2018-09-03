@@ -38,7 +38,8 @@ describe Section do
   let(:attachments_proxy) { double(:attachments_proxy, to_a: attachments) }
 
   let(:draft_edition_v1) {
-    double(:draft_edition_v1,
+    double(
+      :draft_edition_v1,
       edition_messages.merge(
         title: "Draft edition v1",
         state: "draft",
@@ -52,7 +53,8 @@ describe Section do
   }
 
   let(:draft_edition_v2) {
-    double(:draft_edition_v2,
+    double(
+      :draft_edition_v2,
       edition_messages.merge(
         title: "Draft edition v2",
         state: "draft",
@@ -66,7 +68,8 @@ describe Section do
   }
 
   let(:draft_edition_v3) {
-    double(:draft_edition_v3,
+    double(
+      :draft_edition_v3,
       edition_messages.merge(
         title: "Draft edition v3",
         state: "draft",
@@ -80,7 +83,8 @@ describe Section do
   }
 
   let(:published_edition_v1) {
-    double(:published_edition_v1,
+    double(
+      :published_edition_v1,
       edition_messages.merge(
         title: "Published edition",
         state: "published",
@@ -94,7 +98,8 @@ describe Section do
   }
 
   let(:withdrawn_edition_v2) {
-    double(:withdrawn_edition_v2,
+    double(
+      :withdrawn_edition_v2,
       edition_messages.merge(
         title: "Withdrawn edition",
         state: "withdrawn",

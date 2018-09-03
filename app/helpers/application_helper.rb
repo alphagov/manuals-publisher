@@ -106,13 +106,13 @@ module ApplicationHelper
       elsif manual.version_type == :major
         text += "<p><strong>You are about to publish a major edit with public change notes.</strong></p>"
       end
-      if manual.use_originally_published_at_for_public_timestamp? && manual.originally_published_at.present?
-        text += "<p>The updated timestamp on GOV.UK will be set to the first publication date.</p>"
-      elsif manual.version_type == :minor
-        text += "<p>The updated timestamp on GOV.UK will not change.</p>"
-      else
-        text += "<p>The updated timestamp on GOV.UK will be set to the time you press the publish button.</p>"
-      end
+      text += if manual.use_originally_published_at_for_public_timestamp? && manual.originally_published_at.present?
+                "<p>The updated timestamp on GOV.UK will be set to the first publication date.</p>"
+              elsif manual.version_type == :minor
+                "<p>The updated timestamp on GOV.UK will not change.</p>"
+              else
+                "<p>The updated timestamp on GOV.UK will be set to the time you press the publish button.</p>"
+              end
     end
 
     (text || "").html_safe

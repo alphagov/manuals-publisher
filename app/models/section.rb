@@ -16,7 +16,7 @@ class Section
   def self.find(manual, section_uuid, published: false)
     editions = SectionEdition
       .all_for_section(section_uuid)
-      .order_by([:version_number, :desc])
+      .order_by(%i[version_number desc])
       .to_a
       .drop_while { |e| published && !e.published? }
       .take(2)
@@ -172,12 +172,10 @@ class Section
   def version_type
     if first_edition?
       :new
+    elsif minor_update?
+      :minor
     else
-      if minor_update?
-        :minor
-      else
-        :major
-      end
+      :major
     end
   end
 

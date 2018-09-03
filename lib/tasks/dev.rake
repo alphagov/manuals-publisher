@@ -2,12 +2,12 @@ namespace :dev do
   desc "Ensure that a dev environment is setup correctly (create default user etc)"
   task setup: :environment do
     logger = Logger.new(STDOUT)
-    if User.count == 0
+    if User.count.zero?
       logger.info "No users exist, creating test user..."
       u = User.new
       u.name = "Test User"
       u.email = "test.user@example.com"
-      u.permissions = ["signin"]
+      u.permissions = %w[signin]
       u.save!
       logger.info "User created. Yay!"
     else
