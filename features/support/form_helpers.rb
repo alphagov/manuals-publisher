@@ -8,7 +8,7 @@ module FormHelpers
   def fill_in_field(field_name, value)
     label_text = field_name.to_s.humanize
 
-    if page.first(:select, label_text)
+    if page.has_css?("select[text='#{label_text}']")
       select value, from: label_text
     else
       fill_in label_text, with: value
