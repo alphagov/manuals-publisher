@@ -10,37 +10,37 @@ FactoryBot.define do
   end
 
   factory :disabled_user, parent: :user do
-    disabled true
+    disabled { true }
   end
 
   factory :editor, parent: :user do
-    permissions %w(signin editor)
+    permissions { %w(signin editor) }
   end
 
   factory :generic_writer, parent: :user do
-    organisation_slug "ministry-of-tea"
+    organisation_slug { "ministry-of-tea" }
   end
 
   factory :generic_editor, parent: :editor do
-    organisation_slug "ministry-of-tea"
+    organisation_slug { "ministry-of-tea" }
   end
 
   factory :generic_editor_of_another_organisation, parent: :editor do
-    organisation_slug "another-organisation"
+    organisation_slug { "another-organisation" }
   end
 
   factory :gds_editor, parent: :user do
-    permissions %w(signin gds_editor)
-    organisation_slug "government-digital-service"
+    permissions { %w(signin gds_editor) }
+    organisation_slug { "government-digital-service" }
   end
 
   factory :section_edition do
     section_uuid { SecureRandom.uuid }
     sequence(:slug) { |n| "test-section-edition-#{n}" }
     sequence(:title) { |n| "Test Section Edition #{n}" }
-    summary "My summary"
-    body "My body"
-    change_note "New section added"
+    summary { "My summary" }
+    body { "My body" }
+    change_note { "New section added" }
   end
 
   factory :publication_log do
@@ -51,7 +51,7 @@ FactoryBot.define do
   end
 
   factory :manual do
-    slug "manual-slug"
+    slug { "manual-slug" }
 
     initialize_with do
       Manual.new(attributes)
@@ -59,9 +59,9 @@ FactoryBot.define do
   end
 
   factory :manual_record do
-    slug 'slug'
-    manual_id 'abc-123'
-    organisation_slug 'organisation_slug'
+    slug { "slug" }
+    manual_id { "abc-123" }
+    organisation_slug { "organisation_slug" }
 
     after(:build) do |manual_record|
       manual_record.editions << FactoryBot.build(:manual_record_edition)
@@ -87,30 +87,30 @@ FactoryBot.define do
   end
 
   factory :manual_record_edition, class: 'ManualRecord::Edition' do
-    title 'title'
-    summary 'summary'
-    body 'body'
-    state 'state'
-    version_number 1
-    originally_published_at Time.now
-    use_originally_published_at_for_public_timestamp true
+    title { "title" }
+    summary { "summary" }
+    body { "body" }
+    state { "state" }
+    version_number { 1 }
+    originally_published_at { Time.now }
+    use_originally_published_at_for_public_timestamp { true }
   end
 
   factory :organisation do
-    title "Cabinet Office"
-    web_url "https://www.gov.uk/government/organisations/cabinet-office"
-    abbreviation "CO"
-    content_id "d94d63a5-ce8e-40a1-ab4c-4956eab27259"
+    title { "Cabinet Office" }
+    web_url { "https://www.gov.uk/government/organisations/cabinet-office" }
+    abbreviation { "CO" }
+    content_id { "d94d63a5-ce8e-40a1-ab4c-4956eab27259" }
   end
 
   factory :link_check_report do
-    batch_id 1
-    status "in_progress"
-    completed_at Time.now
+    batch_id { 1 }
+    status { "in_progress" }
+    completed_at { Time.now }
     links { [FactoryBot.build(:link)] }
 
     trait :completed do
-      status "completed"
+      status { "completed" }
     end
 
     trait :with_broken_links do
@@ -119,7 +119,7 @@ FactoryBot.define do
 
     trait :with_pending_links do
       transient do
-        link_uris []
+        link_uris { [] }
       end
 
       links do
@@ -129,15 +129,15 @@ FactoryBot.define do
   end
 
   factory :link do
-    uri "http://www.example.com"
-    status "ok"
+    uri { "http://www.example.com" }
+    status { "ok" }
 
     trait :broken do
-      status "broken"
+      status { "broken" }
     end
 
     trait :pending do
-      status "broken"
+      status { "pending" }
     end
   end
 end
