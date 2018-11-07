@@ -78,13 +78,14 @@ GEM
     bson (4.2.2)
     builder (3.2.3)
     byebug (9.1.0)
-    capybara (3.7.2)
+    capybara (3.10.1)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
       rack (>= 1.6.0)
       rack-test (>= 0.6.3)
-      xpath (~> 3.1)
+      regexp_parser (~> 1.2)
+      xpath (~> 3.2)
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chromedriver-helper (2.1.0)
@@ -192,9 +193,10 @@ GEM
       sidekiq (>= 5, < 6)
       sidekiq-logging-json (~> 0.0)
       sidekiq-statsd (~> 0.1)
-    govuk_test (0.2.1)
+    govuk_test (0.3.0)
       capybara
       chromedriver-helper
+      ptools
       puma
       selenium-webdriver
     hashdiff (0.3.7)
@@ -292,6 +294,7 @@ GEM
     pry-byebug (3.5.1)
       byebug (~> 9.1)
       pry (~> 0.10)
+    ptools (1.3.5)
     public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.6)
@@ -338,6 +341,7 @@ GEM
     redis (4.0.1)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
+    regexp_parser (1.2.0)
     request_store (1.4.1)
       rack (>= 1.4)
     rest-client (2.0.2)
@@ -396,9 +400,9 @@ GEM
     scss_lint (0.57.0)
       rake (>= 0.9, < 13)
       sass (~> 3.5.5)
-    selenium-webdriver (3.14.0)
+    selenium-webdriver (3.141.0)
       childprocess (~> 0.5)
-      rubyzip (~> 1.2)
+      rubyzip (~> 1.2, >= 1.2.2)
     sentry-raven (2.7.4)
       faraday (>= 0.7.6, < 1.0)
     sidekiq (5.1.3)
@@ -452,7 +456,7 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
-    xpath (3.1.0)
+    xpath (3.2.0)
       nokogiri (~> 1.8)
 
 PLATFORMS
