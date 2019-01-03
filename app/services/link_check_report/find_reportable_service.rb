@@ -23,6 +23,7 @@ private
 
   def section
     raise "Not a section" unless is_for_section?
+
     @section ||= Section.find(manual, section_id)
   end
 

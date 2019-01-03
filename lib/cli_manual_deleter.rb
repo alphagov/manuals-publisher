@@ -8,6 +8,7 @@ class CliManualDeleter
     if manual_slug && manual_id
       raise ArgumentError.new("manual_slug and manual_id must not both be supplied")
     end
+
     @manual_slug = manual_slug
     @manual_id = manual_id
     @stdin = stdin
