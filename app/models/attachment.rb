@@ -46,6 +46,7 @@ class Attachment
 
   def content_type
     return unless file_url
+
     extname = File.extname(file_url).delete(".")
     "application/#{extname}"
   end
