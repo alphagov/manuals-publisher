@@ -34,7 +34,7 @@ private
     return head :bad_request unless given_signature
 
     body = request.raw_post
-    signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha1"), webhook_secret_token, body)
+    signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA1.new, webhook_secret_token, body)
     head :bad_request unless Rack::Utils.secure_compare(signature, given_signature)
   end
 
