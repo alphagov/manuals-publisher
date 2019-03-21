@@ -137,7 +137,7 @@ GEM
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.10.0)
-    gds-api-adapters (57.4.1)
+    gds-api-adapters (57.5.0)
       addressable
       link_header
       null_logger
@@ -297,7 +297,7 @@ GEM
     public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.6)
-    rack-cache (1.8.0)
+    rack-cache (1.9.0)
       rack (>= 0.4)
     rack-protection (2.0.1)
       rack
@@ -470,7 +470,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   factory_bot_rails
-  gds-api-adapters (~> 57.4)
+  gds-api-adapters (~> 57.5)
   gds-sso
   generic_form_builder
   govspeak (~> 5.9.0)
