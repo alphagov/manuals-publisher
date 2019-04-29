@@ -287,8 +287,12 @@ private
 
   def unpublish_section(section, manual, republish:)
     if !section.withdrawn? || republish
-      Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
-      section.withdraw_and_mark_as_exported! if !republish
+      begin
+        Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
+        section.withdraw_and_mark_as_exported! if !republish
+      rescue GdsApi::HTTPNotFound
+        puts "Content item with section_uuid #{section_uuid} not present in the publishing API"
+      end
     end
   end
 
