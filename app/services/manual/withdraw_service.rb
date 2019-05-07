@@ -9,8 +9,8 @@ class Manual::WithdrawService
   def call
     begin
       manual = Manual.find(manual_id, user)
-    rescue KeyError => error
-      raise ManualNotFoundError.new(error)
+    rescue KeyError => e
+      raise ManualNotFoundError.new(e)
     end
 
     manual.withdraw

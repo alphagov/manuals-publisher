@@ -75,9 +75,8 @@ describe LinkCheckReportsController, type: :controller do
   describe "#show" do
     context "manual" do
       let(:link_check_report) do
-        FactoryBot.create(:link_check_report, :with_broken_links,
-                                              manual_id: manual.id,
-                                              batch_id: 1)
+        create(:link_check_report, :with_broken_links,
+               manual_id: manual.id, batch_id: 1)
       end
 
       it "GET redirects back to the manual page" do
@@ -98,10 +97,8 @@ describe LinkCheckReportsController, type: :controller do
 
     context "section" do
       let(:link_check_report) do
-        FactoryBot.create(:link_check_report, :with_broken_links,
-                                              manual_id: manual.id,
-                                              section_id: section.id,
-                                              batch_id: 1)
+        create(:link_check_report, :with_broken_links,
+               manual_id: manual.id, section_id: section.id, batch_id: 1)
       end
 
       it "GET redirects back to the section page" do

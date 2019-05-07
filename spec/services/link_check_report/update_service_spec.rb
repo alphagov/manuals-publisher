@@ -2,10 +2,8 @@ require "spec_helper"
 
 RSpec.describe LinkCheckReport::UpdateService do
   let(:link_check_report) do
-    FactoryBot.create(:link_check_report, :with_pending_links,
-                                           batch_id: 1,
-                                           manual_id: 1,
-                                           link_uris: ['http://www.example.com', 'http://www.gov.com'])
+    create(:link_check_report, :with_pending_links, batch_id: 1,
+           manual_id: 1, link_uris: ['http://www.example.com', 'http://www.gov.com'])
   end
 
   let(:completed_at) { Time.now }

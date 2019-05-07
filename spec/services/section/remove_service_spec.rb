@@ -73,7 +73,7 @@ RSpec.describe Section::RemoveService do
 
       def ignoring(exception_class)
         yield
-      rescue exception_class
+      rescue exception_class # rubocop:disable Naming/RescuedExceptionsVariableName
       end
     end
   end

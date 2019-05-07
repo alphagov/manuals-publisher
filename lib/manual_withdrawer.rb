@@ -21,7 +21,7 @@ class ManualWithdrawer
     end
   rescue Manual::WithdrawService::ManualNotFoundError
     message = "Manual not found for manual_id `#{manual_id}`"
-    STDERR.puts "ERROR: #{message}"
+    warn "ERROR: #{message}"
     raise message
   end
 end

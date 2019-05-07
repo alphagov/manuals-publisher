@@ -102,7 +102,7 @@ RSpec.describe Manual::RepublishService do
     end
 
     it "tells none of the listeners to do anything" do
-      begin; subject.call; rescue(arbitrary_exception); end
+      begin; subject.call; rescue(arbitrary_exception); end # rubocop:disable Naming/RescuedExceptionsVariableName
       expect(publishing_adapter).not_to have_received(:save)
       expect(publishing_adapter).not_to have_received(:publish)
     end
