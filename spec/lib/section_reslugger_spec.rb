@@ -12,8 +12,8 @@ describe SectionReslugger do
   subject {
     described_class.new(
       'manual-slug',
-      'old-section-slug',
-      'new-section-slug'
+      'manual-slug/old-section-slug',
+      'manual-slug/new-section-slug'
     )
   }
 
