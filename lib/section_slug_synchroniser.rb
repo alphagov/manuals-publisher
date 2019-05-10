@@ -15,13 +15,13 @@ class SectionSlugSynchroniser
     else
       if amendments.any?
         log "The following sections can be reslugged:"
-        amendments.each { |k, v| log "'#{section_slug(k)}' to '#{section_slug(v)}'" }
+        amendments.each { |k, v| log "'#{k}' to '#{v}'" }
       end
 
       if conflicts.any?
         log "The following sections cannot be reslugged:"
         conflicts.each do |k, v|
-          log "'#{section_slug(k)}' would change to '#{section_slug(v)}' but this is already in use."
+          log "'#{k}' would change to '#{v}' but this is already in use."
         end
       end
     end
@@ -29,10 +29,8 @@ class SectionSlugSynchroniser
 
   def synchronise
     amendments = analyse_sections.first
-    amendments.each do |full_old_section_slug, full_new_section_slug|
-      old_section_slug = section_slug(full_old_section_slug)
-      new_section_slug = section_slug(full_new_section_slug)
-      log "Reslugging #{full_old_section_slug} to #{full_new_section_slug}"
+    amendments.each do |old_section_slug, new_section_slug|
+      log "Reslugging #{old_section_slug} to #{new_section_slug}"
       SectionReslugger.new(manual.slug, old_section_slug, new_section_slug).call
     end
   end
@@ -58,10 +56,6 @@ private
     end
 
     [amendments, conflicts]
-  end
-
-  def section_slug(slug)
-    slug.split("/").last
   end
 
   def log(str)

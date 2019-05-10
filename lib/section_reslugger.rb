@@ -23,6 +23,8 @@ class SectionReslugger
 
 private
 
+  attr_reader :old_section_slug, :new_section_slug
+
   def validate
     validate_old_section
     validate_new_section
@@ -48,22 +50,22 @@ private
   end
 
   def validate_new_section_in_database
-    section_edition = section_edition_in_database(full_new_section_slug)
+    section_edition = section_edition_in_database(new_section_slug)
     raise Error.new("Manual Section already exists in database") if section_edition
   end
 
   def validate_new_section_in_content_store
-    section = section_in_content_store(full_new_section_slug)
+    section = section_in_content_store(new_section_slug)
     raise Error.new("Manual Section already exists in content store") if section
   rescue GdsApi::ContentStore::ItemNotFound # rubocop:disable Lint/HandleExceptions
   end
 
   def redirect_section(section)
-    Adapters.publishing.redirect_section(section, to: "/#{full_new_section_slug}")
+    Adapters.publishing.redirect_section(section, to: "/#{new_section_slug}")
   end
 
   def update_slug
-    new_edition_for_slug_change.update_slug!(full_new_section_slug)
+    new_edition_for_slug_change.update_slug!(new_section_slug)
   end
 
   def new_edition_for_slug_change
@@ -113,11 +115,11 @@ private
   end
 
   def old_section_edition
-    @old_section_edition ||= section_edition_in_database(full_old_section_slug)
+    @old_section_edition ||= section_edition_in_database(old_section_slug)
   end
 
   def old_section_in_content_store
-    @old_section_in_content_store ||= section_in_content_store(full_old_section_slug)
+    @old_section_in_content_store ||= section_in_content_store(old_section_slug)
   end
 
   def section_edition_in_database(slug)
@@ -130,17 +132,5 @@ private
 
   def content_store
     Services.content_store
-  end
-
-  def full_old_section_slug
-    full_section_slug(@old_section_slug)
-  end
-
-  def full_new_section_slug
-    full_section_slug(@new_section_slug)
-  end
-
-  def full_section_slug(slug)
-    "#{manual.slug}/#{slug}"
   end
 end

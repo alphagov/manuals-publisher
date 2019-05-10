@@ -9,10 +9,10 @@ def usage
       slug of manual (eg 'guidance/countryside-stewardship-manual')
 
     old_section_slug:
-      current slug of section to be renamed (eg '8-terms-and-conditions')
+      current slug of section to be renamed (eg 'guidance/countryside-stewardship-manual/8-terms-and-conditions')
 
     new_section_slug:
-      new slug for section (eg '8-scheme-requirements-and-procedures')
+      new slug for section (eg 'guidance/countryside-stewardship-manual/8-scheme-requirements-and-procedures')
   USAGE
 
   exit(1)
