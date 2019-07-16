@@ -7,9 +7,9 @@ class ManualRecord
   field :slug, type: String
 
   has_many :editions,
-    class_name: "ManualRecord::Edition",
-    dependent: :delete,
-    autosave: true
+           class_name: "ManualRecord::Edition",
+           dependent: :delete,
+           autosave: true
 
   def self.find_by(attributes)
     where(attributes).first

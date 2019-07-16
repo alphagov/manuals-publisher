@@ -3,8 +3,7 @@ require "spec_helper"
 RSpec.describe Section::ListService do
   it 'returns the manual and its sections' do
     user = FactoryBot.build(:user, organisation_slug: 'org-slug')
-    manual = FactoryBot.build(:manual,
-      organisation_slug: user.organisation_slug)
+    manual = FactoryBot.build(:manual, organisation_slug: user.organisation_slug)
     section = manual.build_section(title: 'section-title')
     manual.save(user)
 
