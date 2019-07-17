@@ -22,13 +22,13 @@ class PublishManualWorker
     service.call
 
     task.finish!
-  rescue GdsApi::HTTPServerError => error
-    log_error(error)
-    requeue_task(task_id, error)
+  rescue GdsApi::HTTPServerError => e
+    log_error(e)
+    requeue_task(task_id, e)
   rescue Manual::PublishService::VersionMismatchError,
-         GdsApi::HTTPErrorResponse => error
-    log_error(error)
-    abort_task(task, error)
+         GdsApi::HTTPErrorResponse => e
+    log_error(e)
+    abort_task(task, e)
   end
 
 private

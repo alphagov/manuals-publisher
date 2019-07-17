@@ -19,10 +19,11 @@ RSpec.describe LinkCheckerApiCallbackController, type: :controller do
 
   let(:link_check_report_batch_id) { 5 }
   let(:link_check_report) do
-    FactoryBot.create(:link_check_report, :with_pending_links,
-                                           batch_id: 5,
-                                           manual_id: 1,
-                                           link_uris: ['https://gov.uk'])
+    FactoryBot.create(:link_check_report,
+                      :with_pending_links,
+                      batch_id: 5,
+                      manual_id: 1,
+                      link_uris: ['https://gov.uk'])
   end
 
   let(:post_body) do
