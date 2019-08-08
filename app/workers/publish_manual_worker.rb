@@ -7,7 +7,7 @@ class PublishManualWorker
     backtrace: true,
   )
 
-  def perform(task_id, params = {})
+  def perform(task_id, _params = {})
     task = ManualPublishTask.find(task_id)
     task.start!
 

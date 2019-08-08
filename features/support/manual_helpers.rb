@@ -211,7 +211,7 @@ module ManualHelpers
     click_link manual_title
   end
 
-  def check_manual_and_sections_were_published(manual, section, manual_attrs, section_attrs)
+  def check_manual_and_sections_were_published(manual, section, _manual_attrs, _section_attrs)
     check_manual_is_published_to_publishing_api(manual.id)
     check_section_is_published_to_publishing_api(section.uuid)
   end

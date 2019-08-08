@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
   mount GovukAdminTemplate::Engine, at: "/style-guide"
   if Rails.env.development?
@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resources :manuals, except: :destroy do
     resources :sections do
-      resources :attachments, controller: :section_attachments, only: [:new, :create, :edit, :update]
+      resources :attachments, controller: :section_attachments, only: %i[new create edit update]
 
       # This is for persisted sections
       post :preview, on: :member
@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     put :original_publication_date, on: :member, action: :update_original_publication_date
   end
 
-  resources :link_check_reports, only: [:create, :show]
+  resources :link_check_reports, only: %i[create show]
 
   post "/link-checker-api-callback" => "link_checker_api_callback#callback", as: "link_checker_api_callback"
 
@@ -43,5 +43,5 @@ Rails.application.routes.draw do
 
   root to: redirect("/manuals")
 
-  get "/healthcheck", to: proc { [200, {}, ["OK"]] }
+  get "/healthcheck", to: proc { [200, {}, %w[OK]] }
 end

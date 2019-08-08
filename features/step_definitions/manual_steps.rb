@@ -350,32 +350,26 @@ Given(/^a published manual with some sections was created without the UI$/) do
   @manual_title = "Example Manual Title"
   @manual_slug = "guidance/example-manual-title"
 
-  @manual_fields = {
-    title: @manual_title,
-    summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
-  }
+  @manual_fields = { title: @manual_title,
+                    summary: "Nullam quis risus eget urna mollis ornare vel eu leo." }
 
   @manual = create_manual_without_ui(@manual_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
-  sec_1 = create_section_without_ui(
-    @manual,
-    {
-      title: "1st example section",
-      summary: "1st example section summary",
-      body: "1st example section body"
-    },
-    organisation_slug: GDS::SSO.test_user.organisation_slug
-  )
-  sec_2 = create_section_without_ui(
-    @manual,
-    {
-      title: "2nd example section",
-      summary: "2nd example section summary",
-      body: "2nd example section body"
-    },
-    organisation_slug: GDS::SSO.test_user.organisation_slug
-  )
-  @sections = [sec_1, sec_2]
+  sec1 = create_section_without_ui(@manual,
+                                   {
+                                     title: "1st example section",
+                                     summary: "1st example section summary",
+                                     body: "1st example section body"
+                                   },
+                                   organisation_slug: GDS::SSO.test_user.organisation_slug)
+  sec2 = create_section_without_ui(@manual,
+                                   {
+                                     title: "2nd example section",
+                                     summary: "2nd example section summary",
+                                     body: "2nd example section body"
+                                   },
+                                   organisation_slug: GDS::SSO.test_user.organisation_slug)
+  @sections = [sec1, sec2]
 
   publish_manual_without_ui(@manual)
 
