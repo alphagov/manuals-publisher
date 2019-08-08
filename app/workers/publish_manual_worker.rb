@@ -7,10 +7,7 @@ class PublishManualWorker
     backtrace: true,
   )
 
-  def perform(task_id, params = {})
-    GdsApi::GovukHeaders.set_header(:govuk_request_id, params["request_id"])
-    GdsApi::GovukHeaders.set_header(:x_govuk_authenticated_user, params["authenticated_user"])
-
+  def perform(task_id, _params = {})
     task = ManualPublishTask.find(task_id)
     task.start!
 

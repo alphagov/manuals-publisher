@@ -3,7 +3,7 @@ class RemoveDocumentTypeFieldFromSectionEditions < Mongoid::Migration
     SectionEdition.collection.update(
       {},
       { '$unset' => { 'document_type' => true } },
-      { multi: true }
+      multi: true
     )
   end
 

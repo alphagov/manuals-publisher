@@ -10,7 +10,7 @@ class RenameSpecialistDocumentEditionsCollectionToSectionEditions < Mongoid::Mig
   def self.rename_collection(source, target)
     db = connection.database
     if db.collection_names.include?(target)
-      if db.collection(target).count == 0
+      if db.collection(target).count.zero?
         db.drop_collection(target)
       else
         raise "Unexpected non-empty collection: #{target}"

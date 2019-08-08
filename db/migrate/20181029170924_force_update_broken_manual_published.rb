@@ -4,11 +4,10 @@ class ForceUpdateBrokenManualPublished < Mongoid::Migration
     if user
       manual = Manual.find("b59056ac-f7e9-4415-96b5-79cc5cfb0a76", user)
       if manual
-        manual.editions.sort_by{|ed| ed.created_at}.last.update(state: "published")
+        manual.editions.max_by(&:created_at).update(state: "published")
       end
     end
   end
 
-  def self.down
-  end
+  def self.down; end
 end

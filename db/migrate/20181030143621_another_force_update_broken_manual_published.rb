@@ -17,6 +17,5 @@ class AnotherForceUpdateBrokenManualPublished < Mongoid::Migration
     end
   end
 
-  def self.down
-  end
+  def self.down; end
 end

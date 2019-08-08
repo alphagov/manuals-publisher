@@ -15,12 +15,7 @@ class Manual::QueuePublishService
         version_number: manual.version_number,
       )
 
-      govuk_header_params = {
-        request_id: GdsApi::GovukHeaders.headers[:govuk_request_id],
-        authenticated_user: GdsApi::GovukHeaders.headers[:x_govuk_authenticated_user],
-      }
-
-      PublishManualWorker.perform_async(task.to_param, govuk_header_params)
+      PublishManualWorker.perform_async(task.to_param)
       manual
     else
       raise InvalidStateError.new(

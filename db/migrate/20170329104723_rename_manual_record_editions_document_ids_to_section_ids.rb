@@ -3,7 +3,7 @@ class RenameManualRecordEditionsDocumentIdsToSectionIds < Mongoid::Migration
     ManualRecord::Edition.collection.update(
       {},
       { '$rename' => { 'document_ids' => 'section_ids' } },
-      { multi: true }
+      multi: true
     )
   end
 
@@ -11,7 +11,7 @@ class RenameManualRecordEditionsDocumentIdsToSectionIds < Mongoid::Migration
     ManualRecord::Edition.collection.update(
       {},
       { '$rename' => { 'section_ids' => 'document_ids' } },
-      { multi: true }
+      multi: true
     )
   end
 end

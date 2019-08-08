@@ -3,7 +3,7 @@ class RenameManualRecordEditionsRemovedDocumentIdsToRemovedSectionIds < Mongoid:
     ManualRecord::Edition.collection.update(
       {},
       { '$rename' => { 'removed_document_ids' => 'removed_section_ids' } },
-      { multi: true }
+      multi: true
     )
   end
 
@@ -11,7 +11,7 @@ class RenameManualRecordEditionsRemovedDocumentIdsToRemovedSectionIds < Mongoid:
     ManualRecord::Edition.collection.update(
       {},
       { '$rename' => { 'removed_section_ids' => 'removed_document_ids' } },
-      { multi: true }
+      multi: true
     )
   end
 end
