@@ -98,17 +98,23 @@ $EndLegislativeList
 
 <h3><a data-toggle="collapse" data-target="#govspeak-tables">Tables</a></h3>
 <div class="collapse" id="govspeak-tables">
-  <p>Tables can be inserted by splitting your content into cells:</p>
-  <pre>| name | colour |
-|--------|-------|
-| apple | green |
-| banana | yellow |</pre>
+  <p>Insert tables by splitting your content into cells using the pipe (|) character. Put the hashtag (#) character next to the pipe to insert column headings.</p>
+  <pre>
+|# name   |# colour |
+|---------|---------|
+| apple   | green   |
+| banana  | yellow  |
+</pre>
 
-<p>You can also use a shorthand version of the markdown, which will produce exactly the same output:</p>
-  <pre>name | colour
--|-
-apple | green
-banana | yellow</pre>
+<p>Add row headings by putting a hashtag (#) character directly next to the pipe (|) at the start of the row:</p>
+  <pre>
+  |               |# Price of fruit |# Price of vegetables |
+  |---------------|-----------------|----------------------|
+  |# 0 to 100g    | 5p per gram     | 8p per gram          |
+  |# 101g to 250g | 7p per gram     | 6p per gram          |
+  </pre>
+
+ 
 </div>
 
 <h3><a data-toggle="collapse" data-target="#govspeak-cta">Call to action</a></h3>
