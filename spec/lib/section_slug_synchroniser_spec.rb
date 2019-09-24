@@ -11,7 +11,7 @@ RSpec.describe SectionSlugSynchroniser do
     ManualRecord.create!(
       manual_id: "manual-id",
       slug: "manual-slug",
-      organisation_slug: "organisation-slug"
+      organisation_slug: "organisation-slug",
     )
   end
 
@@ -32,12 +32,12 @@ RSpec.describe SectionSlugSynchroniser do
           slug: "manual-slug/#{section_slug_number}-section",
           title: "#{count}. Section",
           summary: "Section summary",
-          body: "Section body"
+          body: "Section body",
         )
       end
 
       manual_record.editions.create!(
-        section_uuids: section_uuids
+        section_uuids: section_uuids,
       )
     end
 
@@ -92,12 +92,12 @@ RSpec.describe SectionSlugSynchroniser do
           slug: "manual-slug/#{count}-section",
           title: "#{count}. Section",
           summary: "Section summary",
-          body: "Section body"
+          body: "Section body",
         )
       end
 
       manual_record.editions.create!(
-        section_uuids: section_uuids
+        section_uuids: section_uuids,
       )
     end
 

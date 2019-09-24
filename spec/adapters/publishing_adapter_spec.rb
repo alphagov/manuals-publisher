@@ -97,8 +97,8 @@ describe PublishingAdapter do
         links: {
           organisations: [organisation_content_id],
           primary_publishing_organisation: [organisation_content_id],
-          sections: [section_uuid]
-        }
+          sections: [section_uuid],
+        },
       )
 
       subject.save(manual)
@@ -108,8 +108,8 @@ describe PublishingAdapter do
       expect(publishing_api).to receive(:patch_links).with(
         manual_id,
         attributes_valid_according_to_links_schema(
-          publishing_api_schema_name_for_manual
-        )
+          publishing_api_schema_name_for_manual,
+        ),
       )
 
       subject.save(manual)
@@ -134,18 +134,18 @@ describe PublishingAdapter do
           {
             path: "/manual-slug/#{GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX}",
             type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
-          }
+          },
         ],
         details: {
           body: [
             {
               content_type: "text/govspeak",
-              content: "manual-body"
+              content: "manual-body",
             },
             {
               content_type: "text/html",
-              content: "<p>manual-body</p>\n"
-            }
+              content: "<p>manual-body</p>\n",
+            },
           ],
           child_section_groups:  [
             {
@@ -155,9 +155,9 @@ describe PublishingAdapter do
                   title: "section-title",
                   description: "section-summary",
                   base_path: "/manual-slug/section-slug",
-                }
+                },
               ],
-            }
+            },
           ],
           change_notes: [],
           organisations: [
@@ -165,8 +165,8 @@ describe PublishingAdapter do
               title: "organisation-title",
               abbreviation: "organisation-abbreviation",
               web_url: "organisation-web-url",
-            }
-          ]
+            },
+          ],
         },
         locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
       )
@@ -180,8 +180,8 @@ describe PublishingAdapter do
         links: {
           organisations: [organisation_content_id],
           primary_publishing_organisation: [organisation_content_id],
-          manual: [manual_id]
-        }
+          manual: [manual_id],
+        },
       )
 
       subject.save(manual)
@@ -191,8 +191,8 @@ describe PublishingAdapter do
       expect(publishing_api).to receive(:patch_links).with(
         section_uuid,
         attributes_valid_according_to_links_schema(
-          publishing_api_schema_name_for_section
-        )
+          publishing_api_schema_name_for_section,
+        ),
       )
 
       subject.save(manual)
@@ -213,19 +213,19 @@ describe PublishingAdapter do
         routes: [
           {
             path: "/manual-slug/section-slug",
-            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
+            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
           },
         ],
         details: {
           body: [
             {
               content_type: "text/govspeak",
-              content: "section-body"
+              content: "section-body",
             },
             {
               content_type: "text/html",
-              content: "<p>section-body</p>\n"
-            }
+              content: "<p>section-body</p>\n",
+            },
           ],
           attachments: [],
           manual: {
@@ -235,9 +235,9 @@ describe PublishingAdapter do
             {
               title: "organisation-title",
               abbreviation: "organisation-abbreviation",
-              web_url: "organisation-web-url"
-            }
-          ]
+              web_url: "organisation-web-url",
+            },
+          ],
         },
         locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
       )
@@ -253,7 +253,7 @@ describe PublishingAdapter do
       it "does not save links for section to Publishing API" do
         expect(publishing_api).not_to receive(:patch_links).with(
           section_uuid,
-          anything
+          anything,
         )
 
         subject.save(manual)
@@ -262,7 +262,7 @@ describe PublishingAdapter do
       it "does not save content for section to Publishing API" do
         expect(publishing_api).not_to receive(:put_content).with(
           section_uuid,
-          anything
+          anything,
         )
 
         subject.save(manual)
@@ -272,7 +272,7 @@ describe PublishingAdapter do
         it "saves links for section to Publishing API" do
           expect(publishing_api).to receive(:patch_links).with(
             section_uuid,
-            anything
+            anything,
           )
 
           subject.save(manual, republish: true)
@@ -281,7 +281,7 @@ describe PublishingAdapter do
         it "saves content for section to Publishing API" do
           expect(publishing_api).to receive(:put_content).with(
             section_uuid,
-            anything
+            anything,
           )
 
           subject.save(manual, republish: true)
@@ -299,7 +299,7 @@ describe PublishingAdapter do
           manual_id,
           including(
             first_published_at: timestamp,
-            public_updated_at: timestamp
+            public_updated_at: timestamp,
           ),
         )
 
@@ -311,7 +311,7 @@ describe PublishingAdapter do
           section_uuid,
           including(
             first_published_at: timestamp,
-            public_updated_at: timestamp
+            public_updated_at: timestamp,
           ),
         )
 
@@ -327,7 +327,7 @@ describe PublishingAdapter do
           expect(publishing_api).to receive(:put_content).with(
             manual_id,
             excluding(
-              public_updated_at: timestamp
+              public_updated_at: timestamp,
             ),
           )
 
@@ -338,7 +338,7 @@ describe PublishingAdapter do
           expect(publishing_api).to receive(:put_content).with(
             section_uuid,
             excluding(
-              public_updated_at: timestamp
+              public_updated_at: timestamp,
             ),
           )
 
@@ -352,7 +352,7 @@ describe PublishingAdapter do
         it "saves content for manual to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             manual_id,
-            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
+            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE),
           )
 
           subject.save(manual, republish: true)
@@ -361,7 +361,7 @@ describe PublishingAdapter do
         it "saves content for section to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             section_uuid,
-            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
+            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE),
           )
 
           subject.save(manual, republish: true)
@@ -378,7 +378,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -387,7 +387,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -405,7 +405,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE)
+          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -414,7 +414,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE)
+          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -432,7 +432,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -441,7 +441,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
+          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -456,7 +456,7 @@ describe PublishingAdapter do
           title: "section-title",
           slug: "manual-slug/section-slug",
           change_note: "section-change-note",
-          published_at: timestamp
+          published_at: timestamp,
         )
       }
 
@@ -465,7 +465,7 @@ describe PublishingAdapter do
           title: "section-title-2",
           slug: "manual-slug/section-slug",
           change_note: "section-change-note",
-          published_at: timestamp
+          published_at: timestamp,
         )
       }
 
@@ -482,17 +482,17 @@ describe PublishingAdapter do
                   title: "section-title",
                   base_path: "/manual-slug/section-slug",
                   change_note: "section-change-note",
-                  published_at: timestamp
+                  published_at: timestamp,
                 },
                 {
                   title: "section-title-2",
                   base_path: "/manual-slug/section-slug",
                   change_note: "section-change-note",
-                  published_at: timestamp
+                  published_at: timestamp,
                 },
-              ]
-            )
-          )
+              ],
+            ),
+          ),
         )
 
         subject.save(manual)
@@ -504,10 +504,10 @@ describe PublishingAdapter do
 
       let(:attachment) {
         Attachment.new(
-          title: 'attachment-title',
-          file_url: 'attachment-file-url.jpg',
+          title: "attachment-title",
+          file_url: "attachment-file-url.jpg",
           created_at: timestamp,
-          updated_at: another_timestamp
+          updated_at: another_timestamp,
         )
       }
 
@@ -529,10 +529,10 @@ describe PublishingAdapter do
                 url: "attachment-file-url.jpg",
                 created_at: timestamp,
                 updated_at: another_timestamp,
-                content_type: "application/jpg"
-              )
-            ]
-          ))
+                content_type: "application/jpg",
+              ),
+            ],
+          )),
         )
 
         subject.save(manual)
@@ -576,7 +576,7 @@ describe PublishingAdapter do
         slug: "manual-slug/removed-section-slug",
         title: "removed-section-title",
         summary: "removed-section-summary",
-        body: "removed-section-body"
+        body: "removed-section-body",
       )
     }
 
@@ -613,7 +613,7 @@ describe PublishingAdapter do
         removed_section_uuid,
         type: "redirect",
         alternative_path: "/manual-slug",
-        discard_drafts: true
+        discard_drafts: true,
       )
 
       subject.publish(manual)
@@ -633,7 +633,7 @@ describe PublishingAdapter do
       it "does not unpublish all manual's removed sections via Publishing API" do
         expect(publishing_api).not_to receive(:unpublish).with(
           removed_section_uuid,
-          anything
+          anything,
         )
 
         subject.publish(manual)
@@ -662,7 +662,7 @@ describe PublishingAdapter do
       it "unpublishes all manual's removed sections via Publishing API" do
         expect(publishing_api).to receive(:unpublish).with(
           removed_section_uuid,
-          anything
+          anything,
         )
 
         subject.publish(manual, republish: true)
@@ -682,7 +682,7 @@ describe PublishingAdapter do
         it "unpublishes all manual's removed sections via Publishing API" do
           expect(publishing_api).to receive(:unpublish).with(
             removed_section_uuid,
-            anything
+            anything,
           )
 
           subject.publish(manual, republish: true)
@@ -729,8 +729,8 @@ describe PublishingAdapter do
           {
             path: "/manual-slug/section-slug",
             type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
-            destination: "/new-location"
-          }
+            destination: "/new-location",
+          },
         ],
       )
 
@@ -740,7 +740,7 @@ describe PublishingAdapter do
     it "redirects section via Publishing API with attributes which are valid according to redirect schema" do
       expect(publishing_api).to receive(:put_content).with(
         redirect_content_id,
-        attributes_valid_according_to_schema("redirect")
+        attributes_valid_according_to_schema("redirect"),
       )
 
       subject.redirect_section(manual, to: "/new-location")

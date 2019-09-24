@@ -12,10 +12,10 @@ describe DuplicateDocumentFinder do
     allow(io).to receive(:puts)
   }
 
-  context 'when there are multiple editions with different slugs' do
+  context "when there are multiple editions with different slugs" do
     before {
-      FactoryBot.create(:section_edition, slug: 'slug-1')
-      FactoryBot.create(:section_edition, slug: 'slug-2')
+      FactoryBot.create(:section_edition, slug: "slug-1")
+      FactoryBot.create(:section_edition, slug: "slug-2")
     }
 
     it "doesn't report them as duplicates" do
@@ -25,10 +25,10 @@ describe DuplicateDocumentFinder do
     end
   end
 
-  context 'when there are multiple editions with the same slug and same section id' do
+  context "when there are multiple editions with the same slug and same section id" do
     before {
-      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 1)
-      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 1)
+      FactoryBot.create(:section_edition, slug: "slug", section_uuid: 1)
+      FactoryBot.create(:section_edition, slug: "slug", section_uuid: 1)
     }
 
     it "doesn't report them as duplicates" do
@@ -38,12 +38,12 @@ describe DuplicateDocumentFinder do
     end
   end
 
-  context 'when there are multiple editions with the same slug and different section ids' do
+  context "when there are multiple editions with the same slug and different section ids" do
     let!(:edition_1) {
-      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 1)
+      FactoryBot.create(:section_edition, slug: "slug", section_uuid: 1)
     }
     let!(:edition_2) {
-      FactoryBot.create(:section_edition, slug: 'slug', section_uuid: 2)
+      FactoryBot.create(:section_edition, slug: "slug", section_uuid: 2)
     }
 
     it "reports them as duplicates" do
@@ -54,8 +54,8 @@ describe DuplicateDocumentFinder do
         edition_2.slug, edition_2.section_uuid, edition_2.state, edition_2.created_at, 1
       ]
 
-      expect(io).to receive(:puts).with(edition_1_data.join(','))
-      expect(io).to receive(:puts).with(edition_2_data.join(','))
+      expect(io).to receive(:puts).with(edition_1_data.join(","))
+      expect(io).to receive(:puts).with(edition_2_data.join(","))
 
       subject.execute
     end

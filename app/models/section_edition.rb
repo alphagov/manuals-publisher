@@ -49,8 +49,8 @@ class SectionEdition
   def build_attachment(attributes)
     attachments.build(
       attributes.merge(
-        filename: attributes.fetch(:file).original_filename
-      )
+        filename: attributes.fetch(:file).original_filename,
+      ),
     )
   end
 end

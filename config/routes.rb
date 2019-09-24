@@ -1,5 +1,5 @@
 Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
-  mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
+  mount JasmineRails::Engine => "/specs" if defined?(JasmineRails)
   mount GovukAdminTemplate::Engine, at: "/style-guide"
   if Rails.env.development?
     require "sidekiq/web"

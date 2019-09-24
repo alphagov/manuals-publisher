@@ -12,13 +12,13 @@ RSpec.describe LinkCheckReport::FindReportableService do
     subject do
       described_class.new(
         user: user,
-        manual_id: manual.id
+        manual_id: manual.id,
       ).call
     end
 
     it { is_expected.to be(manual) }
 
-    it 'should look up a manual' do
+    it "should look up a manual" do
       expect(Manual).to receive(:find).with(manual.id, user)
       subject
     end
@@ -32,7 +32,7 @@ RSpec.describe LinkCheckReport::FindReportableService do
       described_class.new(
         user: user,
         manual_id: manual.id,
-        section_id: section.id
+        section_id: section.id,
       ).call
     end
 
@@ -40,7 +40,7 @@ RSpec.describe LinkCheckReport::FindReportableService do
       allow(Section).to receive(:find).with(manual, section.id).and_return(section)
     end
 
-    it 'should look up a manual and a section' do
+    it "should look up a manual and a section" do
       expect(Manual).to receive(:find).with(manual.id, user)
       expect(Section).to receive(:find).with(manual, section.id)
       subject

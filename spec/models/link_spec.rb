@@ -9,7 +9,7 @@ describe Link do
       check_warnings: ["example check warnings"],
       check_errors: ["example check errors"],
       problem_summary: "example problem",
-      suggested_fix: "example fix"
+      suggested_fix: "example fix",
     }
   }
 

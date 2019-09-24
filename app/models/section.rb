@@ -73,7 +73,7 @@ class Section
   def update(attributes)
     if !published? && attributes.fetch(:title, false)
       attributes = attributes.merge(
-        slug: slug_generator.call(attributes.fetch(:title))
+        slug: slug_generator.call(attributes.fetch(:title)),
       )
     end
 
@@ -87,7 +87,7 @@ class Section
       attributes = previous_edition_attributes
         .merge(attributes)
         .merge(
-          state: 'draft',
+          state: "draft",
           version_number: latest_edition.version_number + 1,
           slug: slug,
           attachments: attachments,

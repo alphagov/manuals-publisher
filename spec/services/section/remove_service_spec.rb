@@ -7,7 +7,7 @@ RSpec.describe Section::RemoveService do
     double(
       draft: nil,
       remove_section: nil,
-      find_section: section
+      find_section: section,
     )
   }
 
@@ -18,7 +18,7 @@ RSpec.describe Section::RemoveService do
       user: user,
       manual_id: "ABC",
       section_uuid: section_uuid,
-      attributes: change_note_params
+      attributes: change_note_params,
     )
   }
   let(:publishing_adapter) { spy(PublishingAdapter) }
@@ -38,13 +38,13 @@ RSpec.describe Section::RemoveService do
         draft: nil,
         sections: [],
         remove_section: nil,
-        find_section: nil
+        find_section: nil,
       )
     }
     let(:change_note_params) do
       {
         minor_update: "0",
-        change_note: "Make a change"
+        change_note: "Make a change",
       }
     end
 
@@ -127,7 +127,7 @@ RSpec.describe Section::RemoveService do
     let(:change_note_params) do
       {
         minor_update: "0",
-        change_note: "Make a change"
+        change_note: "Make a change",
       }
     end
 
@@ -223,7 +223,7 @@ RSpec.describe Section::RemoveService do
         {
           minor_update: "0",
           change_note: "Make a change",
-          title: "Sneakily try to change this"
+          title: "Sneakily try to change this",
         }
       end
 

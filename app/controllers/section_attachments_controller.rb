@@ -3,7 +3,7 @@ class SectionAttachmentsController < ApplicationController
     service = Attachment::NewService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      section_uuid: params.fetch(:section_id)
+      section_uuid: params.fetch(:section_id),
     )
     manual, section, attachment = service.call
 
@@ -19,7 +19,7 @@ class SectionAttachmentsController < ApplicationController
       user: current_user,
       manual_id: params.fetch(:manual_id),
       section_uuid: params.fetch(:section_id),
-      attributes: attachment_params
+      attributes: attachment_params,
     )
     manual, section, _attachment = service.call
 
@@ -31,7 +31,7 @@ class SectionAttachmentsController < ApplicationController
       user: current_user,
       attachment_id: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
-      section_uuid: params.fetch(:section_id)
+      section_uuid: params.fetch(:section_id),
     )
     manual, section, attachment = service.call
 
@@ -48,7 +48,7 @@ class SectionAttachmentsController < ApplicationController
       attachment_id: params.fetch(:id),
       manual_id: params.fetch(:manual_id),
       section_uuid: params.fetch(:section_id),
-      attributes: attachment_params
+      attributes: attachment_params,
     )
     manual, section, attachment = service.call
 

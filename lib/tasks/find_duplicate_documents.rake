@@ -1,4 +1,4 @@
-require 'duplicate_document_finder'
+require "duplicate_document_finder"
 
 desc "Find duplicate documents"
 task find_duplicate_documents: :environment do

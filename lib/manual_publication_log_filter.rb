@@ -46,7 +46,7 @@ private
         version_number: section_edition.version_number,
         change_note: section_edition.change_note,
         created_at: first_manual_edition.updated_at,
-        updated_at: first_manual_edition.updated_at
+        updated_at: first_manual_edition.updated_at,
       )
 
       section_edition.section_uuid
@@ -63,7 +63,7 @@ private
         version_number: edition.version_number,
         change_note: edition.change_note,
         created_at: edition.exported_at || edition.updated_at,
-        updated_at: edition.exported_at || edition.updated_at
+        updated_at: edition.exported_at || edition.updated_at,
       )
     end
   end

@@ -8,7 +8,7 @@ module Services
   def self.attachment_api
     @attachment_api ||= GdsApi::AssetManager.new(
       Plek.find("asset-manager"),
-      bearer_token: ENV["ASSET_MANAGER_BEARER_TOKEN"] || '12345678',
+      bearer_token: ENV["ASSET_MANAGER_BEARER_TOKEN"] || "12345678",
     )
   end
 
@@ -23,14 +23,14 @@ module Services
   def self.publishing_api
     @publishing_api ||= GdsApi::PublishingApiV2.new(
       Plek.find("publishing-api"),
-      bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example"
+      bearer_token: ENV["PUBLISHING_API_BEARER_TOKEN"] || "example",
     )
   end
 
   def self.link_checker_api
     @link_checker_api ||= GdsApi::LinkCheckerApi.new(
       Plek.find("link-checker-api"),
-      bearer_token: ENV['LINK_CHECKER_API_BEARER_TOKEN'],
+      bearer_token: ENV["LINK_CHECKER_API_BEARER_TOKEN"],
     )
   end
 end

@@ -86,7 +86,7 @@ FactoryBot.define do
     end
   end
 
-  factory :manual_record_edition, class: 'ManualRecord::Edition' do
+  factory :manual_record_edition, class: "ManualRecord::Edition" do
     title { "title" }
     summary { "summary" }
     body { "body" }

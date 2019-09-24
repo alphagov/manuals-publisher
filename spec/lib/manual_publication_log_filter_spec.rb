@@ -24,7 +24,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       slug: section_a_edition_published_version_1_major_update.slug,
       section_uuid: section_a_edition_published_version_1_major_update.section_uuid,
       exported_at: section_edition_exported_time,
-      version_number: 2
+      version_number: 2,
     )
   end
 
@@ -46,7 +46,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       section_uuid: section_b_edition_published_version_1_major_update.section_uuid,
       exported_at: section_edition_exported_time,
       minor_update: true,
-      version_number: 2
+      version_number: 2,
     )
   end
 
@@ -56,7 +56,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       state: "archived",
       slug: "#{manual_slug}/additional-data",
       exported_at: section_edition_exported_time,
-      version_number: 1
+      version_number: 1,
     )
   end
 
@@ -66,7 +66,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       state: "draft",
       slug: "#{manual_slug}/draft-info",
       exported_at: section_edition_exported_time,
-      version_number: 1
+      version_number: 1,
     )
   end
 
@@ -83,7 +83,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   let!(:previous_publication_logs) {
     [
       FactoryBot.create(:publication_log, slug: manual_slug, created_at: 10.seconds.ago, version_number: 1),
-      FactoryBot.create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2)
+      FactoryBot.create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2),
     ]
   }
   let!(:previous_other_publication_log) {
@@ -103,7 +103,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
         section_c_edition_archived_version_1_major_update.section_uuid,
       ],
       created_at: first_manual_edition_creation_time,
-      updated_at: first_manual_edition_creation_time
+      updated_at: first_manual_edition_creation_time,
     )
   }
 
@@ -116,10 +116,10 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
         section_b_edition_published_version_2_minor_update.section_uuid,
         section_c_edition_archived_version_1_major_update.section_uuid,
         section_d_edition_draft_version_1_major_update.section_uuid,
-        section_e_edition_published_version_1_major_update.section_uuid
+        section_e_edition_published_version_1_major_update.section_uuid,
       ],
       created_at: second_manual_edition_creation_time,
-      updated_at: first_manual_edition_creation_time
+      updated_at: first_manual_edition_creation_time,
     )
   }
 
@@ -183,7 +183,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       version_number: section_edition.version_number,
       change_note: section_edition.change_note,
       created_at: expected_time.to_i,
-      updated_at: expected_time.to_i
+      updated_at: expected_time.to_i,
     }
   end
 end

@@ -9,13 +9,13 @@ RSpec.describe Manual::ListService do
     )
   }
 
-  it 'loads all manuals for the user' do
+  it "loads all manuals for the user" do
     expect(Manual).to receive(:all).with(user, anything)
 
     subject.call
   end
 
-  it 'avoids loading manual associations' do
+  it "avoids loading manual associations" do
     expect(Manual).to receive(:all).with(anything, load_associations: false)
 
     subject.call

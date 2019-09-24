@@ -15,8 +15,8 @@ describe OrganisationsAdapter do
         "web_url" => "organisation-web-url",
         "details" => {
           "abbreviation" => "organisation-abbreviation",
-          "content_id" => "organisation-content-id"
-        }
+          "content_id" => "organisation-content-id",
+        },
       }
     }
 

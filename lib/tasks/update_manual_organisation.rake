@@ -14,7 +14,7 @@ task :update_manual_organisation, %i(manual_base_path organisation_slug) => :env
 
   logger.info "Looking up organisation content_id from organisation slug (#{organisation_slug})"
   organisation_id = Services.publishing_api.lookup_content_id(
-    base_path: "/government/organisations/#{organisation_slug}"
+    base_path: "/government/organisations/#{organisation_slug}",
   )
   logger.info "- found: #{organisation_slug} => #{organisation_id}"
 

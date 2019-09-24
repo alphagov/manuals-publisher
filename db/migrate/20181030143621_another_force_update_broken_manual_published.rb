@@ -7,7 +7,7 @@ class AnotherForceUpdateBrokenManualPublished < Mongoid::Migration
         service = Manual::UpdateService.new(
           user: user,
           manual_id: manual.id,
-          attributes: { state: "published" }
+          attributes: { state: "published" },
         )
         service.call
         # It is incorrectly using the old publish tasks which are all aborted so delete them before republishing

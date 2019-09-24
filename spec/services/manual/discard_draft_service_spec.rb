@@ -9,7 +9,7 @@ RSpec.describe Manual::DiscardDraftService do
   subject {
     described_class.new(
       user: user,
-      manual_id: manual_id
+      manual_id: manual_id,
     )
   }
 

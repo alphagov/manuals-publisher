@@ -11,7 +11,7 @@ RSpec.describe Manual::RepublishService do
   subject {
     described_class.new(
       user: user,
-      manual_id: manual_id
+      manual_id: manual_id,
     )
   }
 
@@ -27,7 +27,7 @@ RSpec.describe Manual::RepublishService do
       allow(manual).to receive(:current_versions)
         .and_return(
           published: published_manual_version,
-          draft: nil
+          draft: nil,
         )
     end
 
@@ -52,7 +52,7 @@ RSpec.describe Manual::RepublishService do
       allow(manual).to receive(:current_versions)
         .and_return(
           published: nil,
-          draft: draft_manual_version
+          draft: draft_manual_version,
         )
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Manual::RepublishService do
       allow(manual).to receive(:current_versions)
         .and_return(
           published: published_manual_version,
-          draft: draft_manual_version
+          draft: draft_manual_version,
         )
     end
 
@@ -113,7 +113,7 @@ RSpec.describe Manual::RepublishService do
       allow(manual).to receive(:current_versions)
         .and_return(
           published: nil,
-          draft: nil
+          draft: nil,
         )
     end
 
