@@ -6,7 +6,7 @@ class SlugGenerator
   def call(title)
     [
       @prefix,
-      slugify_title(title)
+      slugify_title(title),
     ].join("/")
   end
 

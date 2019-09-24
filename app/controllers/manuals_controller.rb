@@ -42,7 +42,7 @@ class ManualsController < ApplicationController
   def create
     service = Manual::CreateService.new(
       user: current_user,
-      attributes: create_manual_params
+      attributes: create_manual_params,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -70,7 +70,7 @@ class ManualsController < ApplicationController
     service = Manual::UpdateService.new(
       user: current_user,
       manual_id: manual_id,
-      attributes: update_manual_params
+      attributes: update_manual_params,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -98,7 +98,7 @@ class ManualsController < ApplicationController
     service = Manual::UpdateOriginalPublicationDateService.new(
       user: current_user,
       manual_id: manual_id,
-      attributes: publication_date_manual_params
+      attributes: publication_date_manual_params,
     )
     manual = service.call
     manual = manual_form(manual)
@@ -115,7 +115,7 @@ class ManualsController < ApplicationController
   def publish
     service = Manual::QueuePublishService.new(
       user: current_user,
-      manual_id: manual_id
+      manual_id: manual_id,
     )
     manual = service.call
 
@@ -128,19 +128,19 @@ class ManualsController < ApplicationController
   def discard_draft
     service = Manual::DiscardDraftService.new(
       user: current_user,
-      manual_id: manual_id
+      manual_id: manual_id,
     )
     result = service.call
 
     if result.successful?
       redirect_to(
         manuals_path,
-        flash: { notice: "Discarded draft of #{result.manual_title}" }
+        flash: { notice: "Discarded draft of #{result.manual_title}" },
       )
     else
       redirect_to(
         manual_path(manual_id),
-        flash: { notice: "Unable to discard draft of #{result.manual_title}" }
+        flash: { notice: "Unable to discard draft of #{result.manual_title}" },
       )
     end
   end
@@ -149,7 +149,7 @@ class ManualsController < ApplicationController
     service = Manual::PreviewService.new(
       user: current_user,
       manual_id: params[:id],
-      attributes: update_manual_params
+      attributes: update_manual_params,
     )
     manual = ManualPresenter.new(service.call)
 
@@ -163,9 +163,9 @@ class ManualsController < ApplicationController
           "shared/_preview_errors",
           layout: false,
           locals: {
-            errors: manual.errors[:body]
-          }
-        )
+            errors: manual.errors[:body],
+          },
+        ),
       }
     end
   end
@@ -222,8 +222,8 @@ private
           manual_params.fetch("#{date_param_name}(3i)", ""),
           manual_params.fetch("#{date_param_name}(4i)", ""),
           manual_params.fetch("#{date_param_name}(5i)", ""),
-          manual_params.fetch("#{date_param_name}(6i)", "")
-        )
+          manual_params.fetch("#{date_param_name}(6i)", ""),
+        ),
       ]
     end
     Hash[date_params]

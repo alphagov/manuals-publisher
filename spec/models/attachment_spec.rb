@@ -16,7 +16,7 @@ describe Attachment do
 
   context "#upload_file" do
     it "raises an informative exception if the asset manager service can't be found" do
-      client = double('client')
+      client = double("client")
       allow(client).to receive(:create_asset).and_raise(GdsApi::HTTPNotFound.new(404))
       allow(Services).to receive(:attachment_api).and_return(client)
       attachment = Attachment.new

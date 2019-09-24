@@ -1,10 +1,10 @@
 class RenameSpecialistDocumentEditionsCollectionToSectionEditions < Mongoid::Migration
   def self.up
-    rename_collection('specialist_document_editions', 'manual_section_editions')
+    rename_collection("specialist_document_editions", "manual_section_editions")
   end
 
   def self.down
-    rename_collection('manual_section_editions', 'specialist_document_editions')
+    rename_collection("manual_section_editions", "specialist_document_editions")
   end
 
   def self.rename_collection(source, target)

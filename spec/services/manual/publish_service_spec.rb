@@ -12,7 +12,7 @@ RSpec.describe Manual::PublishService do
     Manual::PublishService.new(
       user: user,
       manual_id: manual_id,
-      version_number: version_number
+      version_number: version_number,
     )
   }
 

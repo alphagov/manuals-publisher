@@ -3,7 +3,7 @@ require "spec_helper"
 describe SectionsController, type: :controller do
   describe "#create" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
+    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do
@@ -15,7 +15,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      post :create, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
+      post :create, params: { manual_id: "manual-id", id: "section-uuid", section: { "title" => "title" } }
     end
 
     it "removes attributes that are not permitted" do
@@ -23,13 +23,13 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      post :create, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
+      post :create, params: { manual_id: "manual-id", id: "section-uuid", section: { key_that_is_not_allowed: "o hai" } }
     end
   end
 
   describe "#update" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
+    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do
@@ -41,7 +41,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      put :update, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
+      put :update, params: { manual_id: "manual-id", id: "section-uuid", section: { "title" => "title" } }
     end
 
     it "removes attributes that are not permitted" do
@@ -49,13 +49,13 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      post :update, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
+      post :update, params: { manual_id: "manual-id", id: "section-uuid", section: { key_that_is_not_allowed: "o hai" } }
     end
   end
 
   describe "#preview" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
+    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
     let(:service) { double(:service, call: section) }
 
     before do
@@ -67,7 +67,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      post :preview, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
+      post :preview, params: { manual_id: "manual-id", id: "section-uuid", section: { "title" => "title" } }
     end
 
     it "removes attributes that are not permitted" do
@@ -75,7 +75,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      post :preview, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
+      post :preview, params: { manual_id: "manual-id", id: "section-uuid", section: { key_that_is_not_allowed: "o hai" } }
     end
   end
 
@@ -108,7 +108,7 @@ describe SectionsController, type: :controller do
   end
 
   describe "#destroy" do
-    context 'for a user that cannot withdraw' do
+    context "for a user that cannot withdraw" do
       let(:manual_id) { "manual-1" }
       let(:section_uuid) { "section-1" }
       let(:service) { spy(Section::RemoveService) }
@@ -142,9 +142,9 @@ describe SectionsController, type: :controller do
     end
   end
 
-  context 'for a user that can withdraw' do
+  context "for a user that can withdraw" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: 'section-uuid') }
+    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do
@@ -157,7 +157,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].to_hash).to have_key(:title)
       }.and_return(service)
 
-      delete :destroy, params: { manual_id: 'manual-id', id: 'section-uuid', section: { 'title' => 'title' } }
+      delete :destroy, params: { manual_id: "manual-id", id: "section-uuid", section: { "title" => "title" } }
     end
 
     it "removes attributes that are not permitted" do
@@ -165,7 +165,7 @@ describe SectionsController, type: :controller do
         expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
       }.and_return(service)
 
-      delete :destroy, params: { manual_id: 'manual-id', id: 'section-uuid', section: { key_that_is_not_allowed: 'o hai' } }
+      delete :destroy, params: { manual_id: "manual-id", id: "section-uuid", section: { key_that_is_not_allowed: "o hai" } }
     end
   end
 end

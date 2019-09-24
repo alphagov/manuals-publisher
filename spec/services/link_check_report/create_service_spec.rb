@@ -18,9 +18,9 @@ RSpec.describe LinkCheckReport::CreateService do
           warnings: ["example check warnings"],
           errors: ["example check errors"],
           problem_summary: "example problem",
-          suggested_fix: "example fix"
-        }
-      ]
+          suggested_fix: "example fix",
+        },
+      ],
     }
   end
 
@@ -35,7 +35,7 @@ RSpec.describe LinkCheckReport::CreateService do
     subject do
       described_class.new(
         user: user,
-        manual_id: manual.id
+        manual_id: manual.id,
       )
     end
 
@@ -43,7 +43,7 @@ RSpec.describe LinkCheckReport::CreateService do
       allow(Manual).to receive(:find).with(manual.id, user).and_return(manual)
     end
 
-    it 'should call the link checker api with a callback url and secret token' do
+    it "should call the link checker api with a callback url and secret token" do
       expect(Services.link_checker_api).to receive(:create_batch)
 
       subject.call
@@ -56,8 +56,8 @@ RSpec.describe LinkCheckReport::CreateService do
             batch_id: 1,
             completed_at: nil,
             status: "in_progress",
-            manual_id: manual.id
-          )
+            manual_id: manual.id,
+          ),
         )
         subject.call
       end
@@ -73,10 +73,10 @@ RSpec.describe LinkCheckReport::CreateService do
                 check_warnings: ["example check warnings"],
                 check_errors: ["example check errors"],
                 problem_summary: "example problem",
-                suggested_fix: "example fix"
-              )
-            )
-          )
+                suggested_fix: "example fix",
+              ),
+            ),
+          ),
         )
         subject.call
       end
@@ -95,9 +95,9 @@ RSpec.describe LinkCheckReport::CreateService do
         expect(LinkCheckReport).to receive(:new).with(
           hash_including(
             links: array_including(
-              hash_including(check_errors: [])
-            )
-          )
+              hash_including(check_errors: []),
+            ),
+          ),
         )
         subject.call
       end
@@ -109,9 +109,9 @@ RSpec.describe LinkCheckReport::CreateService do
         expect(LinkCheckReport).to receive(:new).with(
           hash_including(
             links: array_including(
-              hash_including(check_warnings: [])
-            )
-          )
+              hash_including(check_warnings: []),
+            ),
+          ),
         )
         subject.call
       end
@@ -134,7 +134,7 @@ RSpec.describe LinkCheckReport::CreateService do
       described_class.new(
         user: user,
         manual_id: manual.id,
-        section_id: section.id
+        section_id: section.id,
       )
     end
 
@@ -151,8 +151,8 @@ RSpec.describe LinkCheckReport::CreateService do
             completed_at: nil,
             status: "in_progress",
             manual_id: manual.id,
-            section_id: section.id
-          )
+            section_id: section.id,
+          ),
         )
         subject.call
       end
@@ -168,10 +168,10 @@ RSpec.describe LinkCheckReport::CreateService do
                 check_warnings: ["example check warnings"],
                 check_errors: ["example check errors"],
                 problem_summary: "example problem",
-                suggested_fix: "example fix"
-              )
-            )
-          )
+                suggested_fix: "example fix",
+              ),
+            ),
+          ),
         )
         subject.call
       end
@@ -190,9 +190,9 @@ RSpec.describe LinkCheckReport::CreateService do
         expect(LinkCheckReport).to receive(:new).with(
           hash_including(
             links: array_including(
-              hash_including(check_errors: [])
-            )
-          )
+              hash_including(check_errors: []),
+            ),
+          ),
         )
         subject.call
       end
@@ -204,9 +204,9 @@ RSpec.describe LinkCheckReport::CreateService do
         expect(LinkCheckReport).to receive(:new).with(
           hash_including(
             links: array_including(
-              hash_including(check_warnings: [])
-            )
-          )
+              hash_including(check_warnings: []),
+            ),
+          ),
         )
         subject.call
       end

@@ -197,9 +197,9 @@ describe ManualRelocator do
             routes: [
               {
                 path: "/#{existing_slug}",
-                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
-              }
-            ]
+                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+              },
+            ],
           }
 
           assert_publishing_api_put_content(existing_manual_id, request_json_matches(gone_object))
@@ -228,9 +228,9 @@ describe ManualRelocator do
             routes: [
               {
                 path: "/#{existing_section_3.slug}",
-                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
-              }
-            ]
+                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+              },
+            ],
           }
 
           assert_publishing_api_put_content(existing_section_3.section_uuid, request_json_matches(gone_object))

@@ -19,7 +19,7 @@ class Manual::QueuePublishService
       manual
     else
       raise InvalidStateError.new(
-        "The manual with id '#{manual.id}' could not be published as it was not in a draft state."
+        "The manual with id '#{manual.id}' could not be published as it was not in a draft state.",
       )
     end
   end

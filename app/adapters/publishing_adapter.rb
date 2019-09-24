@@ -51,16 +51,16 @@ class PublishingAdapter
   def redirect_section(section, to:)
     Services.publishing_api.put_content(
       SecureRandom.uuid,
-      document_type: 'redirect',
-      schema_name: 'redirect',
+      document_type: "redirect",
+      schema_name: "redirect",
       publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
       base_path: "/#{section.slug}",
       redirects: [
         {
           path: "/#{section.slug}",
           type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
-          destination: to
-        }
+          destination: to,
+        },
       ],
     )
   end
@@ -89,7 +89,7 @@ private
         organisations: [organisation.content_id],
         primary_publishing_organisation: [organisation.content_id],
         sections: manual.sections.map(&:uuid),
-      }
+      },
     )
   end
 
@@ -127,18 +127,18 @@ private
         {
           path: updates_path,
           type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
-        }
+        },
       ],
       details: {
         body: [
           {
             content_type: "text/govspeak",
-            content: manual.body
+            content: manual.body,
           },
           {
             content_type: "text/html",
-            content: ManualPresenter.new(manual).body
-          }
+            content: ManualPresenter.new(manual).body,
+          },
         ],
         child_section_groups: [
           {
@@ -150,7 +150,7 @@ private
                 base_path: "/#{section.slug}",
               }
             end,
-          }
+          },
         ],
         change_notes: manual.publication_logs.map do |publication_log|
           {
@@ -165,8 +165,8 @@ private
             title: organisation.title,
             abbreviation: organisation.abbreviation,
             web_url: organisation.web_url,
-          }
-        ]
+          },
+        ],
       },
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
     }
@@ -199,7 +199,7 @@ private
         organisations: [organisation.content_id],
         primary_publishing_organisation: [organisation.content_id],
         manual: [manual.id],
-      }
+      },
     )
   end
 
@@ -231,18 +231,18 @@ private
         {
           path: "/#{section.slug}",
           type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
-        }
+        },
       ],
       details: {
         body: [
           {
             content_type: "text/govspeak",
-            content: section.body
+            content: section.body,
           },
           {
             content_type: "text/html",
-            content: SectionPresenter.new(section).body
-          }
+            content: SectionPresenter.new(section).body,
+          },
         ],
         attachments: section.attachments.map do |attachment|
           {
@@ -251,7 +251,7 @@ private
             url: attachment.file_url,
             updated_at: attachment.updated_at,
             created_at: attachment.created_at,
-            content_type: attachment.content_type
+            content_type: attachment.content_type,
           }
         end,
         manual: {
@@ -262,7 +262,7 @@ private
             title: organisation.title,
             abbreviation: organisation.abbreviation,
             web_url: organisation.web_url,
-          }
+          },
         ],
       },
       locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,

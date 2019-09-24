@@ -3,7 +3,7 @@ class LinkCheckReportsController < ApplicationController
     service = LinkCheckReport::CreateService.new(
       user: current_user,
       manual_id: link_reportable_params[:manual_id],
-      section_id: link_reportable_params[:section_id]
+      section_id: link_reportable_params[:section_id],
     )
 
     @report = service.call
@@ -13,20 +13,20 @@ class LinkCheckReportsController < ApplicationController
     @reportable = reportable_hash
 
     respond_to do |format|
-      format.js { render 'admin/link_check_reports/create' }
+      format.js { render "admin/link_check_reports/create" }
       format.html { redirect_to_reportable_path }
     end
   end
 
   def show
     @report = LinkCheckReport::ShowService.new(
-      id: link_reportable_show_params[:id]
+      id: link_reportable_show_params[:id],
     ).call
 
     @reportable = reportable_hash
 
     respond_to do |format|
-      format.js { render 'admin/link_check_reports/show' }
+      format.js { render "admin/link_check_reports/show" }
       format.html { redirect_to_reportable_path }
     end
   end
@@ -56,7 +56,7 @@ private
     LinkCheckReport::FindReportableService.new(
       user: current_user,
       manual_id: reportable_params[:manual_id],
-      section_id: reportable_params[:section_id]
+      section_id: reportable_params[:section_id],
     ).call
   end
 

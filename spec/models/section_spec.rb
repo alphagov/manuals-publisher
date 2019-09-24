@@ -9,7 +9,7 @@ describe Section do
     hash.keys.map(&:class).uniq
   end
 
-  let(:manual_slug) { '/guidance/manual-slug' }
+  let(:manual_slug) { "/guidance/manual-slug" }
   let(:manual) { double(:manual, slug: manual_slug) }
   let(:section_uuid) { "a-section-uuid" }
   let(:slug) { double(:slug) }
@@ -48,7 +48,7 @@ describe Section do
         archived?: false,
         version_number: 1,
         exported_at: nil,
-      )
+      ),
     )
   }
 
@@ -63,7 +63,7 @@ describe Section do
         archived?: false,
         version_number: 2,
         exported_at: nil,
-      )
+      ),
     )
   }
 
@@ -78,7 +78,7 @@ describe Section do
         archived?: false,
         version_number: 3,
         exported_at: nil,
-      )
+      ),
     )
   }
 
@@ -93,7 +93,7 @@ describe Section do
         archived?: false,
         slug: published_slug,
         version_number: 1,
-      )
+      ),
     )
   }
 
@@ -108,7 +108,7 @@ describe Section do
         archived?: true,
         slug: published_slug,
         version_number: 2,
-      )
+      ),
     )
   }
 
@@ -116,66 +116,66 @@ describe Section do
     allow(SlugGenerator).to receive(:new).with(prefix: manual_slug).and_return(slug_generator)
   end
 
-  describe '#update_slug!' do
-    it 'updates the slug of the section' do
+  describe "#update_slug!" do
+    it "updates the slug of the section" do
       allow(SlugGenerator).to receive(:new).and_call_original
 
-      manual = Manual.new(title: 'manual-title')
-      section = manual.build_section(title: 'section-title')
+      manual = Manual.new(title: "manual-title")
+      section = manual.build_section(title: "section-title")
       manual.save(User.gds_editor)
 
-      updated_slug = 'guidance/manual-title/new-section-slug'
+      updated_slug = "guidance/manual-title/new-section-slug"
       section.update_slug!(updated_slug)
 
       expect(section.reload.slug).to eq(updated_slug)
     end
   end
 
-  describe '#exported_at' do
-    it 'returns the date and time that the section was marked as exported' do
+  describe "#exported_at" do
+    it "returns the date and time that the section was marked as exported" do
       exported_at = Time.zone.now
       subject.mark_as_exported!(exported_at)
       expect(subject.exported_at).to eq(exported_at)
     end
   end
 
-  describe '#reload' do
+  describe "#reload" do
     let(:latest_edition) { draft_edition_v1 }
 
-    it 'reloads the latest edition of this section' do
+    it "reloads the latest edition of this section" do
       expect(draft_edition_v1).to receive(:reload)
       subject.reload
     end
   end
 
-  describe '.find' do
-    context 'when there are associated section editions' do
+  describe ".find" do
+    context "when there are associated section editions" do
       let(:previous_edition) { FactoryBot.build(:section_edition) }
       let(:latest_edition) { FactoryBot.build(:section_edition) }
       let(:editions_proxy) { double(:editions_proxy, to_a: [latest_edition, previous_edition]).as_null_object }
 
       before do
-        allow(SectionEdition).to receive(:all_for_section).with('section-id').and_return(editions_proxy)
+        allow(SectionEdition).to receive(:all_for_section).with("section-id").and_return(editions_proxy)
       end
 
-      it 'builds a section using the manual' do
+      it "builds a section using the manual" do
         expect(Section).to receive(:new).with(including(manual: manual))
-        Section.find(manual, 'section-id')
+        Section.find(manual, "section-id")
       end
 
-      it 'builds a section using the section id' do
-        expect(Section).to receive(:new).with(including(uuid: 'section-id'))
-        Section.find(manual, 'section-id')
+      it "builds a section using the section id" do
+        expect(Section).to receive(:new).with(including(uuid: "section-id"))
+        Section.find(manual, "section-id")
       end
 
-      it 'builds a section using the previous edition' do
+      it "builds a section using the previous edition" do
         expect(Section).to receive(:new).with(including(previous_edition: previous_edition))
-        Section.find(manual, 'section-id')
+        Section.find(manual, "section-id")
       end
 
-      it 'builds a section using the latest edition' do
+      it "builds a section using the latest edition" do
         expect(Section).to receive(:new).with(including(latest_edition: latest_edition))
-        Section.find(manual, 'section-id')
+        Section.find(manual, "section-id")
       end
     end
 
@@ -183,20 +183,20 @@ describe Section do
       let(:editions_proxy) { double(:editions_proxy, to_a: []).as_null_object }
 
       before do
-        allow(SectionEdition).to receive(:all_for_section).with('section-id').and_return(editions_proxy)
+        allow(SectionEdition).to receive(:all_for_section).with("section-id").and_return(editions_proxy)
       end
 
-      it 'raises a key error exception' do
-        expect { Section.find(manual, 'section-id') }.to raise_error(KeyError)
+      it "raises a key error exception" do
+        expect { Section.find(manual, "section-id") }.to raise_error(KeyError)
       end
     end
   end
 
-  describe '#save' do
-    it 'saves the previous and latest editions' do
+  describe "#save" do
+    it "saves the previous and latest editions" do
       previous_edition = double(:previous_edition)
       latest_edition = double(:latest_edition)
-      section = Section.new(manual: manual, uuid: 'section-id', previous_edition: previous_edition, latest_edition: latest_edition)
+      section = Section.new(manual: manual, uuid: "section-id", previous_edition: previous_edition, latest_edition: latest_edition)
 
       expect(previous_edition).to receive(:save!)
       expect(latest_edition).to receive(:save!)
@@ -320,7 +320,7 @@ describe Section do
                 hash_including(
                   title: new_title,
                   slug: slug,
-                )
+                ),
               )
           end
         end
@@ -338,7 +338,7 @@ describe Section do
           "_id" => "superfluous id",
           "updated_at" => "superfluous timestamp",
           "body" => edition_body,
-          "arbitrary_attribute" => "arbitrary-attribute"
+          "arbitrary_attribute" => "arbitrary-attribute",
         }.with_indifferent_access
       }
 
@@ -376,7 +376,7 @@ describe Section do
             hash_including(
               _id: "superfluous id",
               updated_at: "superfluous timestamp",
-            )
+            ),
           )
 
         expect(SectionEdition).not_to have_received(:new)
@@ -384,7 +384,7 @@ describe Section do
             hash_including(
               "_id" => "superfluous id",
               "updated_at" => "superfluous timestamp",
-            )
+            ),
           )
       end
 
@@ -431,7 +431,7 @@ describe Section do
           expect(SectionEdition).to have_received(:new).with(
             hash_including(
               slug: published_slug,
-            )
+            ),
           )
         end
       end
@@ -491,7 +491,7 @@ describe Section do
           expect(SectionEdition).to have_received(:new).with(
             hash_including(
               slug: published_slug,
-            )
+            ),
           )
         end
       end
@@ -581,13 +581,13 @@ describe Section do
 
     it "returns the attachment with the corresponding id" do
       expect(
-        section.find_attachment_by_id("one")
+        section.find_attachment_by_id("one"),
       ).to eq(attachment_one)
     end
 
     it "returns nil if the attachment does not exist" do
       expect(
-        section.find_attachment_by_id("does-not-exist")
+        section.find_attachment_by_id("does-not-exist"),
       ).to be_nil
     end
   end
@@ -823,23 +823,23 @@ describe Section do
     end
   end
 
-  describe '#first_edition?' do
-    let(:manual) { Manual.new(title: 'manual-title') }
-    let(:section) { manual.build_section(title: 'section-title') }
+  describe "#first_edition?" do
+    let(:manual) { Manual.new(title: "manual-title") }
+    let(:section) { manual.build_section(title: "section-title") }
 
     before do
       allow(SlugGenerator).to receive(:new).and_call_original
     end
 
-    it 'returns true when the version_number is 1' do
+    it "returns true when the version_number is 1" do
       expect(section.version_number).to eq(1)
       expect(section).to be_first_edition
     end
 
-    it 'returns false when the version_number is greater than 1' do
+    it "returns false when the version_number is greater than 1" do
       section.publish!
       section.save
-      section.update(title: 'new-section-title')
+      section.update(title: "new-section-title")
 
       expect(section.version_number).to eq(2)
       expect(section).to_not be_first_edition

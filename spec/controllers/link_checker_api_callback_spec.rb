@@ -11,7 +11,7 @@ RSpec.describe LinkCheckerApiCallbackController, type: :controller do
   def set_headers
     headers = {
       "Content-Type": "application/json",
-      "X-LinkCheckerApi-Signature": generate_signature(post_body.to_json, Rails.application.secrets.link_checker_api_secret_token)
+      "X-LinkCheckerApi-Signature": generate_signature(post_body.to_json, Rails.application.secrets.link_checker_api_secret_token),
     }
 
     request.headers.merge! headers
@@ -23,7 +23,7 @@ RSpec.describe LinkCheckerApiCallbackController, type: :controller do
                       :with_pending_links,
                       batch_id: 5,
                       manual_id: 1,
-                      link_uris: ['https://gov.uk'])
+                      link_uris: ["https://gov.uk"])
   end
 
   let(:post_body) do
@@ -31,11 +31,11 @@ RSpec.describe LinkCheckerApiCallbackController, type: :controller do
       id: link_check_report_batch_id,
       links: [
         { uri: @link, status: "ok" },
-      ]
+      ],
     )
   end
 
-  context 'when the report exists' do
+  context "when the report exists" do
     subject do
       post :callback, params: post_body
       link_check_report.reload
@@ -48,14 +48,14 @@ RSpec.describe LinkCheckerApiCallbackController, type: :controller do
     it "POST :update updates LinkCheckReport" do
       set_headers
 
-      expect { subject }.to change { link_check_report.status }.to('completed')
+      expect { subject }.to change { link_check_report.status }.to("completed")
     end
   end
 
-  context 'when the report does not exist' do
+  context "when the report does not exist" do
     let(:link_check_report_batch_id) { 1 }
 
-    it 'should not throw an error' do
+    it "should not throw an error" do
       set_headers
       post :callback, params: post_body
 

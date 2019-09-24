@@ -41,7 +41,7 @@ private
 
   def validate_old_section_in_content_store
     raise Error.new("Manual Section does not exist in content store") if old_section_in_content_store.nil?
-    raise Error.new("Manual Section already withdrawn") if old_section_in_content_store['format'] == "gone"
+    raise Error.new("Manual Section already withdrawn") if old_section_in_content_store["format"] == "gone"
   end
 
   def validate_new_section
@@ -80,8 +80,8 @@ private
         summary: old_section_edition.summary,
         body: old_section_edition.body,
         minor_update: false,
-        change_note: change_note
-      }
+        change_note: change_note,
+      },
     )
     _manual, section = service.call
     section
@@ -95,7 +95,7 @@ private
     service = Manual::PublishService.new(
       user: user,
       manual_id: manual.id,
-      version_number: manual_version_number
+      version_number: manual_version_number,
     )
     service.call
   end

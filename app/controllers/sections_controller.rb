@@ -5,7 +5,7 @@ class SectionsController < ApplicationController
     service = Section::ShowService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      section_uuid: params.fetch(:id)
+      section_uuid: params.fetch(:id),
     )
     manual, section = service.call
 
@@ -18,13 +18,13 @@ class SectionsController < ApplicationController
   def new
     service = Section::NewService.new(
       user: current_user,
-      manual_id: params.fetch(:manual_id)
+      manual_id: params.fetch(:manual_id),
     )
     manual, section = service.call
 
     render(:new, locals: {
       manual: ManualViewAdapter.new(manual),
-      section: SectionViewAdapter.new(manual, section)
+      section: SectionViewAdapter.new(manual, section),
     })
   end
 
@@ -32,7 +32,7 @@ class SectionsController < ApplicationController
     service = Section::CreateService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      attributes: section_params
+      attributes: section_params,
     )
     manual, section = service.call
 
@@ -50,7 +50,7 @@ class SectionsController < ApplicationController
     service = Section::ShowService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      section_uuid: params.fetch(:id)
+      section_uuid: params.fetch(:id),
     )
     manual, section = service.call
 
@@ -65,7 +65,7 @@ class SectionsController < ApplicationController
       user: current_user,
       manual_id: params.fetch(:manual_id),
       section_uuid: params.fetch(:id),
-      attributes: section_params
+      attributes: section_params,
     )
     manual, section = service.call
 
@@ -84,7 +84,7 @@ class SectionsController < ApplicationController
       user: current_user,
       manual_id: params.fetch(:manual_id, nil),
       section_uuid: params.fetch(:id, nil),
-      attributes: section_params
+      attributes: section_params,
     )
     section = SectionPresenter.new(service.call)
 
@@ -98,9 +98,9 @@ class SectionsController < ApplicationController
           "shared/_preview_errors",
           layout: false,
           locals: {
-            errors: section.errors[:body]
-          }
-        )
+            errors: section.errors[:body],
+          },
+        ),
       }
     end
   end
@@ -108,7 +108,7 @@ class SectionsController < ApplicationController
   def reorder
     service = Section::ListService.new(
       user: current_user,
-      manual_id: params.fetch(:manual_id)
+      manual_id: params.fetch(:manual_id),
     )
     manual, sections = service.call
 
@@ -122,7 +122,7 @@ class SectionsController < ApplicationController
     service = Section::ReorderService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      section_order: params.fetch(:section_order)
+      section_order: params.fetch(:section_order),
     )
     manual, _sections = service.call
 
@@ -138,7 +138,7 @@ class SectionsController < ApplicationController
     service = Section::ShowService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      section_uuid: params.fetch(:id)
+      section_uuid: params.fetch(:id),
     )
     manual, section = service.call
 
@@ -153,7 +153,7 @@ class SectionsController < ApplicationController
       user: current_user,
       manual_id: params.fetch(:manual_id),
       section_uuid: params.fetch(:id),
-      attributes: section_params
+      attributes: section_params,
     )
     manual, section = service.call
 
@@ -161,8 +161,8 @@ class SectionsController < ApplicationController
       redirect_to(
         manual_path(manual),
         flash: {
-          notice: "Section #{section.title} removed!"
-        }
+          notice: "Section #{section.title} removed!",
+        },
       )
     else
       render(:withdraw, locals: {

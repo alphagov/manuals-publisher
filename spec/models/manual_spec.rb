@@ -36,8 +36,8 @@ describe Manual do
     expect(manual.id).to be_present
   end
 
-  describe '#find_section' do
-    it 'returns the section if found' do
+  describe "#find_section" do
+    it "returns the section if found" do
       manual = Manual.new
       section = manual.build_section({})
 
@@ -48,7 +48,7 @@ describe Manual do
     it "returns nil if the section can't be found" do
       manual = Manual.new
 
-      found_manual = manual.find_section('made-up-uuid')
+      found_manual = manual.find_section("made-up-uuid")
       expect(found_manual).to eql(nil)
     end
   end
@@ -308,51 +308,51 @@ describe Manual do
         [
           section_c,
           section_a,
-        ]
+        ],
       )
     end
   end
 
-  describe '.all' do
+  describe ".all" do
     let(:user) { FactoryBot.create(:gds_editor) }
     let!(:manual_records) {
       FactoryBot.create_list(:manual_record, 2, :with_sections, :with_removed_sections)
     }
     let(:all_manuals) { Manual.all(user) }
 
-    it 'evaluates lazily' do
+    it "evaluates lazily" do
       expect(all_manuals).to be_a_kind_of(Enumerator::Lazy)
     end
 
-    it 'returns all the manuals' do
+    it "returns all the manuals" do
       manual_ids = all_manuals.to_a.map(&:id)
       record_ids = manual_records.map(&:manual_id)
 
       expect(manual_ids).to match_array(record_ids)
     end
 
-    it 'adds associated sections to each manual' do
+    it "adds associated sections to each manual" do
       all_manuals.each do |manual|
         expect(manual.sections).to_not be_empty
       end
     end
 
-    it 'adds associated removed sections to each manual' do
+    it "adds associated removed sections to each manual" do
       all_manuals.each do |manual|
         expect(manual.removed_sections).to_not be_empty
       end
     end
 
-    context 'when requested not to load associations' do
+    context "when requested not to load associations" do
       let(:all_manuals) { Manual.all(user, load_associations: false) }
 
-      it 'adds associated sections to each manual' do
+      it "adds associated sections to each manual" do
         all_manuals.each do |manual|
           expect(manual.sections).to be_empty
         end
       end
 
-      it 'adds associated removed sections to each manual' do
+      it "adds associated removed sections to each manual" do
         all_manuals.each do |manual|
           expect(manual.removed_sections).to be_empty
         end
@@ -360,14 +360,14 @@ describe Manual do
     end
   end
 
-  describe '.find' do
+  describe ".find" do
     let(:user) { FactoryBot.create(:gds_editor) }
 
-    context 'when a manual record with the given id exists in the users collection' do
+    context "when a manual record with the given id exists in the users collection" do
       let(:manual_record) { FactoryBot.create(:manual_record) }
       let(:edition) { manual_record.editions.first }
 
-      it 'builds and returns a manual from the manual record and its edition' do
+      it "builds and returns a manual from the manual record and its edition" do
         manual = Manual.find(manual_record.manual_id, user)
 
         expect(manual.id).to eq(manual_record.manual_id)
@@ -384,8 +384,8 @@ describe Manual do
       end
     end
 
-    context 'when a manual record with the given id does not exist in the users collection' do
-      it 'raises a NotFoundError' do
+    context "when a manual record with the given id does not exist in the users collection" do
+      it "raises a NotFoundError" do
         expect { Manual.find(1, user) }.to raise_error(Manual::NotFoundError)
       end
     end
@@ -397,21 +397,21 @@ describe Manual do
     subject(:manual) {
       FactoryBot.build(
         :manual,
-        id: 'id',
-        slug: 'manual-slug',
-        title: 'title',
-        summary: 'summary',
-        body: 'body',
-        organisation_slug: 'organisation-slug',
-        state: 'state',
+        id: "id",
+        slug: "manual-slug",
+        title: "title",
+        summary: "summary",
+        body: "body",
+        organisation_slug: "organisation-slug",
+        state: "state",
         updated_at: Time.now,
         version_number: 1,
         originally_published_at: Time.now,
-        use_originally_published_at_for_public_timestamp: true
+        use_originally_published_at_for_public_timestamp: true,
       )
     }
 
-    context 'without sections or removed_sections' do
+    context "without sections or removed_sections" do
       it "sets the associated records slug" do
         manual.save(user)
 
@@ -431,7 +431,7 @@ describe Manual do
 
         record = ManualRecord.where(manual_id: manual.id).first
         edition = ManualRecord::Edition.where(
-          manual_record_id: record.id
+          manual_record_id: record.id,
         ).first
 
         expect(edition.title).to eq(manual.title)
@@ -444,8 +444,8 @@ describe Manual do
       end
     end
 
-    context 'with sections' do
-      let(:section) { double(:section, uuid: 'section-uuid', save: nil) }
+    context "with sections" do
+      let(:section) { double(:section, uuid: "section-uuid", save: nil) }
 
       before do
         manual.sections = [section]
@@ -462,15 +462,15 @@ describe Manual do
 
         record = ManualRecord.where(manual_id: manual.id).first
         edition = ManualRecord::Edition.where(
-          manual_record_id: record.id
+          manual_record_id: record.id,
         ).first
 
         expect(edition.section_uuids).to eq(%w(section-uuid))
       end
     end
 
-    context 'with removed sections' do
-      let(:section) { double(:section, uuid: 'section-uuid', save: nil) }
+    context "with removed sections" do
+      let(:section) { double(:section, uuid: "section-uuid", save: nil) }
 
       before do
         manual.removed_sections = [section]
@@ -487,7 +487,7 @@ describe Manual do
 
         record = ManualRecord.where(manual_id: manual.id).first
         edition = ManualRecord::Edition.where(
-          manual_record_id: record.id
+          manual_record_id: record.id,
         ).first
 
         expect(edition.removed_section_uuids).to eq(%w(section-uuid))
@@ -989,7 +989,7 @@ describe Manual do
           manual: manual,
           uuid: "section-1",
           previous_edition: section_1_edition_1,
-          latest_edition: section_1_edition_2
+          latest_edition: section_1_edition_2,
         )
       end
 
@@ -998,7 +998,7 @@ describe Manual do
           manual: manual,
           uuid: "section-2",
           previous_edition: section_2_edition_1,
-          latest_edition: section_2_edition_2
+          latest_edition: section_2_edition_2,
         )
       end
 

@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe PublicationLogger do
-  let(:manual) { double(:manual, slug: 'manual-slug', removed_sections: []) }
+  let(:manual) { double(:manual, slug: "manual-slug", removed_sections: []) }
   let(:sections) { [section] }
   let(:section) { Section.new(manual: manual, uuid: "section-id-1", latest_edition: section_edition) }
   let(:section_edition) { FactoryBot.create(:section_edition) }

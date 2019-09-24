@@ -1,4 +1,4 @@
-require 'section_slug_synchroniser'
+require "section_slug_synchroniser"
 
 namespace :sections do
   desc "Identifies manual sections which do not match the section title."

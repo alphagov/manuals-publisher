@@ -18,7 +18,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
         originally_published_at: originally_published_at,
         use_originally_published_at_for_public_timestamp: "1",
         title: "hats",
-      }
+      },
     )
   }
 
@@ -36,7 +36,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
     expect(manual).to have_received(:update)
       .with(
         originally_published_at: originally_published_at,
-        use_originally_published_at_for_public_timestamp: "1"
+        use_originally_published_at_for_public_timestamp: "1",
       )
   end
 

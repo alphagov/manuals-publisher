@@ -200,9 +200,9 @@ private
       routes: [
         {
           path: "/#{slug}",
-          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE
-        }
-      ]
+          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+        },
+      ],
     }
     publishing_api.put_content(section_uuid, gone_item)
     publishing_api.publish(section_uuid, GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
