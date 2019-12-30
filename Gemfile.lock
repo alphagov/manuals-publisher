@@ -73,7 +73,7 @@ GEM
       sassc (>= 2.0.0)
     brakeman (4.7.1)
     bson (4.2.2)
-    builder (3.2.3)
+    builder (3.2.4)
     byebug (11.0.0)
     capybara (3.29.0)
       addressable
@@ -125,9 +125,9 @@ GEM
     factory_bot_rails (5.1.1)
       factory_bot (~> 5.1.0)
       railties (>= 4.2.0)
-    faraday (0.17.0)
+    faraday (0.17.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.11.2)
+    ffi (1.11.3)
     gds-api-adapters (63.0.0)
       addressable
       link_header
@@ -147,7 +147,7 @@ GEM
     gherkin (5.1.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    govspeak (6.5.1)
+    govspeak (6.5.2)
       actionview (>= 5.0, < 7)
       addressable (>= 2.3.8, < 3)
       govuk_publishing_components (>= 16.16)
@@ -178,7 +178,7 @@ GEM
     govuk_frontend_toolkit (8.2.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
-    govuk_publishing_components (21.12.0)
+    govuk_publishing_components (21.14.0)
       gds-api-adapters
       govuk_app_config
       kramdown
@@ -260,7 +260,7 @@ GEM
     multipart-post (2.1.1)
     netrc (0.11.0)
     nio4r (2.5.2)
-    nokogiri (1.10.5)
+    nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
     nokogumbo (2.0.2)
       nokogiri (~> 1.8, >= 1.8.4)
@@ -347,7 +347,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rinku (2.0.6)
-    rouge (3.13.0)
+    rouge (3.14.0)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
@@ -439,7 +439,7 @@ GEM
       sprockets (>= 3.0.0)
     state_machine (1.2.0)
     statsd-ruby (1.4.0)
-    thor (0.20.3)
+    thor (1.0.0)
     thread_safe (0.3.6)
     tilt (2.0.10)
     timecop (0.9.1)
@@ -486,7 +486,7 @@ DEPENDENCIES
   gds-api-adapters (~> 63.0)
   gds-sso
   generic_form_builder
-  govspeak (~> 6.5.1)
+  govspeak (~> 6.5.2)
   govuk-content-schema-test-helpers (= 1.6.1)
   govuk-lint
   govuk_admin_template
