@@ -1,4 +1,8 @@
-Lint/HandleExceptions:
+AllCops:
+  Exclude:
+    - 'tmp/**/*'
+
+Lint/SuppressedException:
   Exclude:
     - 'spec/**/*'
 
@@ -13,3 +17,7 @@ Style/FormatStringToken:
 Style/RedundantReturn:
   Exclude:
     - 'app/models/manual.rb'
+
+inherit_gem:
+  rubocop-govuk:
+    - config/default.yml
