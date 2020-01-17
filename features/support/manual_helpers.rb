@@ -23,7 +23,7 @@ module ManualHelpers
 
     service = Manual::CreateService.new(
       user: user,
-      attributes: fields.merge(organisation_slug: organisation_slug)
+      attributes: fields.merge(organisation_slug: organisation_slug),
     )
     manual = service.call
 
@@ -71,7 +71,7 @@ module ManualHelpers
     service = Manual::UpdateService.new(
       user: user,
       manual_id: manual.id,
-      attributes: fields.merge(organisation_slug: organisation_slug)
+      attributes: fields.merge(organisation_slug: organisation_slug),
     )
     manual = service.call
 
@@ -96,7 +96,7 @@ module ManualHelpers
       user: user,
       manual_id: manual.id,
       section_uuid: section.uuid,
-      attributes: fields
+      attributes: fields,
     )
     _, section = service.call
 
@@ -151,7 +151,7 @@ module ManualHelpers
     service = Manual::PublishService.new(
       user: FactoryBot.build(:gds_editor),
       manual_id: manual.id,
-      version_number: manual.version_number
+      version_number: manual.version_number,
     )
     service.call
   end
@@ -468,7 +468,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
     check_manual_was_published(manual)
   end
@@ -483,7 +483,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
 
     check_section_was_published(section)
@@ -499,7 +499,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         (data["public_updated_at"] == expected_date.as_json)
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
     check_manual_was_published(manual)
   end
@@ -514,7 +514,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         (data["public_updated_at"] == expected_date.as_json)
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
 
     check_section_was_published(section)
@@ -530,7 +530,7 @@ module ManualHelpers
         !data.key?("first_published_at") &&
         !data.key?("public_updated_at")
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
     check_manual_was_published(manual)
   end

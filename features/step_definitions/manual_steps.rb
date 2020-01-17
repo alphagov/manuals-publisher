@@ -255,7 +255,7 @@ When(/^I add another section and publish the manual later$/) do
     @manual.title,
     section_title: "Another section so we can publish",
     section_summary: "Another section so we can publish summary",
-    section_body: "Another section so we can publish body"
+    section_body: "Another section so we can publish body",
   )
   go_to_manual_page(@manual.title)
   publish_manual
