@@ -399,7 +399,7 @@ module ManualHelpers
           section_title: title,
           section_summary: "Section #{n} summary",
           section_body: "Section #{n} body",
-        }
+        },
       }
     end
 
@@ -415,7 +415,7 @@ module ManualHelpers
       attributes = {
         title: "Section #{n}",
         summary: "Section #{n} summary",
-        body: "Section #{n} body"
+        body: "Section #{n} body",
       }
 
       create_section_without_ui(manual, attributes)

@@ -131,7 +131,7 @@ When(/^I create a section for the manual with a change note$/) do
     section_title: @section_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
-    change_note: @change_note
+    change_note: @change_note,
   }
 
   create_section(@manual_fields.fetch(:title), @section_fields)
@@ -158,10 +158,10 @@ Then(/^the section and table of contents will have been sent to the draft publis
               description: @section_fields[:section_summary],
               base_path: "/#{@section_slug}",
             }
-          ]
+          ],
         }
-      ]
-    }
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -182,10 +182,10 @@ Then(/^the updated section at the new slug and updated table of contents will ha
               description: @section_fields[:section_summary],
               base_path: "/#{@new_slug}",
             }
-          ]
+          ],
         }
-      ]
-    }
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -294,8 +294,8 @@ Then(/^the updated section is available to preview$/) do
           title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
           child_sections: sections,
         }
-      ]
-    }
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -359,14 +359,14 @@ Given(/^a published manual with some sections was created without the UI$/) do
                                    {
                                      title: "1st example section",
                                      summary: "1st example section summary",
-                                     body: "1st example section body"
+                                     body: "1st example section body",
                                    },
                                    organisation_slug: GDS::SSO.test_user.organisation_slug)
   sec2 = create_section_without_ui(@manual,
                                    {
                                      title: "2nd example section",
                                      summary: "2nd example section summary",
-                                     body: "2nd example section body"
+                                     body: "2nd example section body",
                                    },
                                    organisation_slug: GDS::SSO.test_user.organisation_slug)
   @sections = [sec1, sec2]
@@ -384,7 +384,7 @@ When(/^I create a section for the manual as a minor change without the UI$/) do
     title: @section_title,
     summary: "Section 1 summary",
     body: "Section 1 body",
-    minor_update: true
+    minor_update: true,
   }
 
   @section = create_section_without_ui(@manual, @section_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
@@ -705,10 +705,10 @@ Then(/^the new order should be visible in the preview environment$/) do
               description: sec[:fields][:section_summary],
               base_path: "/#{sec[:slug]}",
             }
-          end
+          end,
         }
-      ]
-    }
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
