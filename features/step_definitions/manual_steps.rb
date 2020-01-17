@@ -157,9 +157,9 @@ Then(/^the section and table of contents will have been sent to the draft publis
               title: @section_title,
               description: @section_fields[:section_summary],
               base_path: "/#{@section_slug}",
-            }
+            },
           ],
-        }
+        },
       ],
     },
   }
@@ -181,9 +181,9 @@ Then(/^the updated section at the new slug and updated table of contents will ha
               title: @new_title,
               description: @section_fields[:section_summary],
               base_path: "/#{@new_slug}",
-            }
+            },
           ],
-        }
+        },
       ],
     },
   }
@@ -293,7 +293,7 @@ Then(/^the updated section is available to preview$/) do
         {
           title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
           child_sections: sections,
-        }
+        },
       ],
     },
   }
@@ -683,7 +683,7 @@ When(/^I reorder the sections$/) do
   click_on("Save section order")
   @reordered_section_attributes = [
     @attributes_for_sections[1],
-    @attributes_for_sections[0]
+    @attributes_for_sections[0],
   ]
 end
 
@@ -706,7 +706,7 @@ Then(/^the new order should be visible in the preview environment$/) do
               base_path: "/#{sec[:slug]}",
             }
           end,
-        }
+        },
       ],
     },
   }
