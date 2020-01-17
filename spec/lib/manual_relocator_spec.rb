@@ -3,7 +3,7 @@ require "manual_relocator"
 require "gds_api_constants"
 
 describe ManualRelocator do
-  include GdsApi::TestHelpers::PublishingApiV2
+  include GdsApi::TestHelpers::PublishingApi
   include GdsApi::TestHelpers::Organisations
   let(:existing_manual_id) { SecureRandom.uuid }
   let(:temp_manual_id) { SecureRandom.uuid }
@@ -27,7 +27,7 @@ describe ManualRelocator do
 
     before do
       allow(STDOUT).to receive(:puts)
-      organisations_api_has_organisation(temp_manual.organisation_slug)
+      stub_organisations_api_has_organisation(temp_manual.organisation_slug)
       stub_any_publishing_api_publish
       stub_any_publishing_api_unpublish
       stub_any_publishing_api_put_content
