@@ -169,10 +169,10 @@ private
       send_draft(manual_to_publish)
 
       puts "Publishing published edition of manual: #{manual_to_publish.id}"
-      publishing_api.publish(manual_to_publish.id, GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
+      publishing_api.publish(manual_to_publish.id, GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE)
       manual_to_publish.sections.each do |section|
         puts "Publishing published edition of manual section: #{section.uuid}"
-        publishing_api.publish(section.uuid, GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE)
+        publishing_api.publish(section.uuid, GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE)
       end
     end
 
@@ -195,17 +195,17 @@ private
       base_path: "/#{slug}",
       content_id: section_uuid,
       document_type: "gone",
-      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+      publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
       schema_name: "gone",
       routes: [
         {
           path: "/#{slug}",
-          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+          type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
         },
       ],
     }
     publishing_api.put_content(section_uuid, gone_item)
-    publishing_api.publish(section_uuid, GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE)
+    publishing_api.publish(section_uuid, GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE)
   end
 
   def publishing_api

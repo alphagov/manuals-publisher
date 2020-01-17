@@ -53,12 +53,12 @@ class PublishingAdapter
       SecureRandom.uuid,
       document_type: "redirect",
       schema_name: "redirect",
-      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+      publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
       base_path: "/#{section.slug}",
       redirects: [
         {
           path: "/#{section.slug}",
-          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+          type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
           destination: to,
         },
       ],
@@ -98,35 +98,35 @@ private
 
     update_type = case version_type(republish) || manual.version_type
                   when :new, :major
-                    GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
+                    GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE
                   when :minor
-                    GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
+                    GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE
                   when :republish
-                    GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
+                    GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE
                   else
                     raise "Uknown version type: #{manual.version_type}"
                   end
 
     base_path = "/#{manual.slug}"
-    updates_path = [base_path, GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX].join("/")
+    updates_path = [base_path, GdsApiConstants::PublishingApi::UPDATES_PATH_SUFFIX].join("/")
 
     attributes = {
       base_path: base_path,
-      schema_name: GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
-      document_type: GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
+      schema_name: GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME,
+      document_type: GdsApiConstants::PublishingApi::MANUAL_DOCUMENT_TYPE,
       title: manual.title,
       description: manual.summary,
       update_type: update_type,
-      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
-      rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
+      publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+      rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
       routes: [
         {
           path: base_path,
-          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+          type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
         },
         {
           path: updates_path,
-          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+          type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
         },
       ],
       details: {
@@ -142,7 +142,7 @@ private
         ],
         child_section_groups: [
           {
-            title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
+            title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
             child_sections: manual.sections.map do |section|
               {
                 title: section.title,
@@ -168,7 +168,7 @@ private
           },
         ],
       },
-      locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
+      locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
     }
 
     latest_publication = manual.publication_logs.last
@@ -208,29 +208,29 @@ private
 
     update_type = case version_type(republish) || section.version_type
                   when :new, :major
-                    GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE
+                    GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE
                   when :minor
-                    GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE
+                    GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE
                   when :republish
-                    GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE
+                    GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE
                   else
                     raise "Unknown version type: #{section.version_type}"
                   end
 
     attributes = {
       base_path: "/#{section.slug}",
-      schema_name: GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
-      document_type: GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
+      schema_name: GdsApiConstants::PublishingApi::SECTION_SCHEMA_NAME,
+      document_type: GdsApiConstants::PublishingApi::SECTION_DOCUMENT_TYPE,
       title: section.title,
       description: section.summary,
       update_type: update_type,
-      publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
-      rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
+      publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+      rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
       change_note: section.change_note,
       routes: [
         {
           path: "/#{section.slug}",
-          type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+          type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
         },
       ],
       details: {
@@ -265,7 +265,7 @@ private
           },
         ],
       },
-      locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
+      locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
     }
 
     if manual.originally_published_at.present?
@@ -297,7 +297,7 @@ private
   end
 
   def update_type(republish)
-    republish ? GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE : nil
+    republish ? GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE : nil
   end
 
   def version_type(republish)
