@@ -23,7 +23,7 @@ module ManualHelpers
 
     service = Manual::CreateService.new(
       user: user,
-      attributes: fields.merge(organisation_slug: organisation_slug)
+      attributes: fields.merge(organisation_slug: organisation_slug),
     )
     manual = service.call
 
@@ -71,7 +71,7 @@ module ManualHelpers
     service = Manual::UpdateService.new(
       user: user,
       manual_id: manual.id,
-      attributes: fields.merge(organisation_slug: organisation_slug)
+      attributes: fields.merge(organisation_slug: organisation_slug),
     )
     manual = service.call
 
@@ -96,7 +96,7 @@ module ManualHelpers
       user: user,
       manual_id: manual.id,
       section_uuid: section.uuid,
-      attributes: fields
+      attributes: fields,
     )
     _, section = service.call
 
@@ -151,7 +151,7 @@ module ManualHelpers
     service = Manual::PublishService.new(
       user: FactoryBot.build(:gds_editor),
       manual_id: manual.id,
-      version_number: manual.version_number
+      version_number: manual.version_number,
     )
     service.call
   end
@@ -246,8 +246,8 @@ module ManualHelpers
 
     if with_matcher.nil?
       attributes = {
-        "schema_name" => GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME,
-        "document_type" => GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE,
+        "schema_name" => GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME,
+        "document_type" => GdsApiConstants::PublishingApi::MANUAL_DOCUMENT_TYPE,
         "rendering_app" => "manuals-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)
@@ -273,8 +273,8 @@ module ManualHelpers
 
     if with_matcher.nil?
       attributes = {
-        "schema_name" => GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME,
-        "document_type" => GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE,
+        "schema_name" => GdsApiConstants::PublishingApi::SECTION_SCHEMA_NAME,
+        "document_type" => GdsApiConstants::PublishingApi::SECTION_DOCUMENT_TYPE,
         "rendering_app" => "manuals-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)
@@ -399,7 +399,7 @@ module ManualHelpers
           section_title: title,
           section_summary: "Section #{n} summary",
           section_body: "Section #{n} body",
-        }
+        },
       }
     end
 
@@ -415,7 +415,7 @@ module ManualHelpers
       attributes = {
         title: "Section #{n}",
         summary: "Section #{n} summary",
-        body: "Section #{n} body"
+        body: "Section #{n} body",
       }
 
       create_section_without_ui(manual, attributes)
@@ -468,7 +468,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
     check_manual_was_published(manual)
   end
@@ -483,7 +483,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
 
     check_section_was_published(section)
@@ -499,7 +499,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         (data["public_updated_at"] == expected_date.as_json)
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
     check_manual_was_published(manual)
   end
@@ -514,7 +514,7 @@ module ManualHelpers
         (data["first_published_at"] == expected_date.as_json) &&
         (data["public_updated_at"] == expected_date.as_json)
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
 
     check_section_was_published(section)
@@ -530,7 +530,7 @@ module ManualHelpers
         !data.key?("first_published_at") &&
         !data.key?("public_updated_at")
       end,
-      number_of_drafts: how_many_times
+      number_of_drafts: how_many_times,
     )
     check_manual_was_published(manual)
   end

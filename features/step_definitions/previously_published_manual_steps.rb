@@ -3,7 +3,7 @@ Given(/^I create a manual that was previously published elsewhere$/) do
   @manual_fields = {
     title: "Example Manual Title",
     summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
-    body: "This was originally published on [another site](http://www.example.com)."
+    body: "This was originally published on [another site](http://www.example.com).",
   }
   @manual_slug = "guidance/example-manual-title"
 

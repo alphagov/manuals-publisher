@@ -40,13 +40,13 @@ module AttachmentHelpers
   def asset_manager_response
     {
       "_response_info" => {
-        "status" => "ok"
+        "status" => "ok",
       },
       "content_type" => "image/jpeg",
       "file_url" => "https://stubbed-asset-manager.alphagov.co.uk/media/#{asset_id}/greenpaper.pdf",
       "id" => "https://stubbed-asset-manager.alphagov.co.uk/assets/#{asset_id}",
       "name" => "greenpaper.pdf",
-      "state" => "clean"
+      "state" => "clean",
     }
   end
 

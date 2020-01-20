@@ -14,7 +14,7 @@ class Manual::DiscardDraftService
     else
       begin
         Adapters.publishing.discard(manual)
-      rescue GdsApi::HTTPNotFound # rubocop:disable Lint/HandleExceptions
+      rescue GdsApi::HTTPNotFound # rubocop:disable Lint/SuppressedException
         # this is fine, the manual has already been discarded from the
         # publishing API and the next line will clean it up in our DB
       end

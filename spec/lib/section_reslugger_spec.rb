@@ -7,7 +7,7 @@ require "gds_api_constants"
 describe SectionReslugger do
   include GdsApi::TestHelpers::ContentStore
   include GdsApi::TestHelpers::Organisations
-  include GdsApi::TestHelpers::PublishingApiV2
+  include GdsApi::TestHelpers::PublishingApi
 
   subject {
     described_class.new(
@@ -34,10 +34,10 @@ describe SectionReslugger do
       section_uuids: %w(section-id),
     )
 
-    content_store_has_item("/manual-slug/old-section-slug")
-    content_store_does_not_have_item("/manual-slug/new-section-slug")
+    stub_content_store_has_item("/manual-slug/old-section-slug")
+    stub_content_store_does_not_have_item("/manual-slug/new-section-slug")
 
-    organisations_api_has_organisation("organisation-slug")
+    stub_organisations_api_has_organisation("organisation-slug")
 
     stub_any_publishing_api_patch_links
     stub_any_publishing_api_put_content

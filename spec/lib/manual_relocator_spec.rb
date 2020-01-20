@@ -3,7 +3,7 @@ require "manual_relocator"
 require "gds_api_constants"
 
 describe ManualRelocator do
-  include GdsApi::TestHelpers::PublishingApiV2
+  include GdsApi::TestHelpers::PublishingApi
   include GdsApi::TestHelpers::Organisations
   let(:existing_manual_id) { SecureRandom.uuid }
   let(:temp_manual_id) { SecureRandom.uuid }
@@ -27,7 +27,7 @@ describe ManualRelocator do
 
     before do
       allow(STDOUT).to receive(:puts)
-      organisations_api_has_organisation(temp_manual.organisation_slug)
+      stub_organisations_api_has_organisation(temp_manual.organisation_slug)
       stub_any_publishing_api_publish
       stub_any_publishing_api_unpublish
       stub_any_publishing_api_put_content
@@ -192,12 +192,12 @@ describe ManualRelocator do
             base_path: "/#{existing_slug}",
             content_id: existing_manual_id,
             document_type: "gone",
-            publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+            publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
             schema_name: "gone",
             routes: [
               {
                 path: "/#{existing_slug}",
-                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+                type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
               },
             ],
           }
@@ -223,12 +223,12 @@ describe ManualRelocator do
             base_path: "/#{existing_section_3.slug}",
             content_id: existing_section_3.section_uuid,
             document_type: "gone",
-            publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+            publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
             schema_name: "gone",
             routes: [
               {
                 path: "/#{existing_section_3.slug}",
-                type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+                type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
               },
             ],
           }

@@ -131,7 +131,7 @@ When(/^I create a section for the manual with a change note$/) do
     section_title: @section_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
-    change_note: @change_note
+    change_note: @change_note,
   }
 
   create_section(@manual_fields.fetch(:title), @section_fields)
@@ -151,17 +151,17 @@ Then(/^the section and table of contents will have been sent to the draft publis
     details: {
       child_section_groups: [
         {
-          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
+          title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
           child_sections: [
             {
               title: @section_title,
               description: @section_fields[:section_summary],
               base_path: "/#{@section_slug}",
-            }
-          ]
-        }
-      ]
-    }
+            },
+          ],
+        },
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -175,17 +175,17 @@ Then(/^the updated section at the new slug and updated table of contents will ha
     details: {
       child_section_groups: [
         {
-          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
+          title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
           child_sections: [
             {
               title: @new_title,
               description: @section_fields[:section_summary],
               base_path: "/#{@new_slug}",
-            }
-          ]
-        }
-      ]
-    }
+            },
+          ],
+        },
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -255,7 +255,7 @@ When(/^I add another section and publish the manual later$/) do
     @manual.title,
     section_title: "Another section so we can publish",
     section_summary: "Another section so we can publish summary",
-    section_body: "Another section so we can publish body"
+    section_body: "Another section so we can publish body",
   )
   go_to_manual_page(@manual.title)
   publish_manual
@@ -291,11 +291,11 @@ Then(/^the updated section is available to preview$/) do
     details: {
       child_section_groups: [
         {
-          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
+          title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
           child_sections: sections,
-        }
-      ]
-    }
+        },
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -359,14 +359,14 @@ Given(/^a published manual with some sections was created without the UI$/) do
                                    {
                                      title: "1st example section",
                                      summary: "1st example section summary",
-                                     body: "1st example section body"
+                                     body: "1st example section body",
                                    },
                                    organisation_slug: GDS::SSO.test_user.organisation_slug)
   sec2 = create_section_without_ui(@manual,
                                    {
                                      title: "2nd example section",
                                      summary: "2nd example section summary",
-                                     body: "2nd example section body"
+                                     body: "2nd example section body",
                                    },
                                    organisation_slug: GDS::SSO.test_user.organisation_slug)
   @sections = [sec1, sec2]
@@ -384,7 +384,7 @@ When(/^I create a section for the manual as a minor change without the UI$/) do
     title: @section_title,
     summary: "Section 1 summary",
     body: "Section 1 body",
-    minor_update: true
+    minor_update: true,
   }
 
   @section = create_section_without_ui(@manual, @section_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
@@ -485,37 +485,37 @@ end
 Then(/^the manual is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 2)
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^the manual is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE }, number_of_drafts: 2)
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^the manual is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 1)
+  check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: { update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a major update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^the section is published as a major update$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE }, number_of_drafts: 1)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE }, number_of_drafts: 1)
 end
 
 Then(/^the section is published as a minor update including a change note draft$/) do
   # We don't use the update_type on the publish API, we fallback to what we set
   # when drafting the content
-  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE }, number_of_drafts: 2)
+  check_section_is_drafted_to_publishing_api((@updated_section || @section).uuid, extra_attributes: { update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE }, number_of_drafts: 2)
 end
 
 Then(/^I can see the change note and update type form when editing existing sections$/) do
@@ -683,7 +683,7 @@ When(/^I reorder the sections$/) do
   click_on("Save section order")
   @reordered_section_attributes = [
     @attributes_for_sections[1],
-    @attributes_for_sections[0]
+    @attributes_for_sections[0],
   ]
 end
 
@@ -698,17 +698,17 @@ Then(/^the new order should be visible in the preview environment$/) do
     details: {
       child_section_groups: [
         {
-          title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
+          title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
           child_sections: @reordered_section_attributes.map do |sec|
             {
               title: sec[:fields][:section_title],
               description: sec[:fields][:section_summary],
               base_path: "/#{sec[:slug]}",
             }
-          end
-        }
-      ]
-    }
+          end,
+        },
+      ],
+    },
   }
   check_manual_is_drafted_to_publishing_api(
     @manual.id,

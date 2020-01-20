@@ -1,5 +1,5 @@
 module GdsApiConstants
-  module PublishingApiV2
+  module PublishingApi
     PUBLISHING_APP = "manuals-publisher".freeze
     RENDERING_APP = "manuals-frontend".freeze
 

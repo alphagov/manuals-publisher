@@ -4,19 +4,19 @@ require "gds_api_constants"
 
 describe PublishingAdapter do
   let(:publishing_api_schema_name_for_manual) {
-    GdsApiConstants::PublishingApiV2::MANUAL_SCHEMA_NAME
+    GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME
   }
 
   let(:publishing_api_document_type_for_manual) {
-    GdsApiConstants::PublishingApiV2::MANUAL_DOCUMENT_TYPE
+    GdsApiConstants::PublishingApi::MANUAL_DOCUMENT_TYPE
   }
 
   let(:publishing_api_schema_name_for_section) {
-    GdsApiConstants::PublishingApiV2::SECTION_SCHEMA_NAME
+    GdsApiConstants::PublishingApi::SECTION_SCHEMA_NAME
   }
 
   let(:publishing_api_document_type_for_section) {
-    GdsApiConstants::PublishingApiV2::SECTION_DOCUMENT_TYPE
+    GdsApiConstants::PublishingApi::SECTION_DOCUMENT_TYPE
   }
 
   let(:timestamp) { Time.zone.parse("2017-01-01 00:00:00") }
@@ -123,17 +123,17 @@ describe PublishingAdapter do
         document_type: publishing_api_document_type_for_manual,
         title: "manual-title",
         description: "manual-summary",
-        update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
-        publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
-        rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
+        update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
+        publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+        rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
         routes: [
           {
             path: "/manual-slug",
-            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
           },
           {
-            path: "/manual-slug/#{GdsApiConstants::PublishingApiV2::UPDATES_PATH_SUFFIX}",
-            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+            path: "/manual-slug/#{GdsApiConstants::PublishingApi::UPDATES_PATH_SUFFIX}",
+            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
           },
         ],
         details: {
@@ -149,7 +149,7 @@ describe PublishingAdapter do
           ],
           child_section_groups:  [
             {
-              title: GdsApiConstants::PublishingApiV2::CHILD_SECTION_GROUP_TITLE,
+              title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
               child_sections: [
                 {
                   title: "section-title",
@@ -168,7 +168,7 @@ describe PublishingAdapter do
             },
           ],
         },
-        locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
+        locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
       subject.save(manual)
@@ -206,14 +206,14 @@ describe PublishingAdapter do
         document_type: publishing_api_document_type_for_section,
         title: "section-title",
         description: "section-summary",
-        update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE,
-        publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
-        rendering_app: GdsApiConstants::PublishingApiV2::RENDERING_APP,
+        update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
+        publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+        rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
         change_note: "change-note",
         routes: [
           {
             path: "/manual-slug/section-slug",
-            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
           },
         ],
         details: {
@@ -239,7 +239,7 @@ describe PublishingAdapter do
             },
           ],
         },
-        locale: GdsApiConstants::PublishingApiV2::EDITION_LOCALE,
+        locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
       subject.save(manual)
@@ -352,7 +352,7 @@ describe PublishingAdapter do
         it "saves content for manual to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             manual_id,
-            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE),
+            including(update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE),
           )
 
           subject.save(manual, republish: true)
@@ -361,7 +361,7 @@ describe PublishingAdapter do
         it "saves content for section to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             section_uuid,
-            including(update_type: GdsApiConstants::PublishingApiV2::REPUBLISH_UPDATE_TYPE),
+            including(update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE),
           )
 
           subject.save(manual, republish: true)
@@ -378,7 +378,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
+          including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -387,7 +387,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
+          including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -405,7 +405,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE),
+          including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -414,7 +414,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with minor update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: GdsApiConstants::PublishingApiV2::MINOR_UPDATE_TYPE),
+          including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -432,7 +432,7 @@ describe PublishingAdapter do
       it "saves content for manual to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           manual_id,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
+          including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -441,7 +441,7 @@ describe PublishingAdapter do
       it "saves content for section to Publishing API with major update_type" do
         expect(publishing_api).to receive(:put_content).with(
           section_uuid,
-          including(update_type: GdsApiConstants::PublishingApiV2::MAJOR_UPDATE_TYPE),
+          including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
         subject.save(manual)
@@ -724,11 +724,11 @@ describe PublishingAdapter do
         base_path: "/manual-slug/section-slug",
         schema_name: "redirect",
         document_type: "redirect",
-        publishing_app: GdsApiConstants::PublishingApiV2::PUBLISHING_APP,
+        publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
         redirects: [
           {
             path: "/manual-slug/section-slug",
-            type: GdsApiConstants::PublishingApiV2::EXACT_ROUTE_TYPE,
+            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
             destination: "/new-location",
           },
         ],
