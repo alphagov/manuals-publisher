@@ -1,3 +1,5 @@
+require "manuals_republisher"
+
 class ChangeChangeNotesForMotInspectionManual < Mongoid::Migration
   def self.up
     changes = [
@@ -41,7 +43,7 @@ class ChangeChangeNotesForMotInspectionManual < Mongoid::Migration
 
     logger = Logger.new(STDOUT)
     logger.formatter = Logger::Formatter.new
-    user = User.find_by_email("oscar.wyatt@digital.cabinet-office.gov.uk")
+    user = User.find_by(email: "oscar.wyatt@digital.cabinet-office.gov.uk")
     manual = Manual.find("82676c67-7334-4d4d-90af-023e6237e4d9", user)
     republisher = ManualsRepublisher.new(logger)
     republisher.execute([manual])
