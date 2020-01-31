@@ -163,7 +163,7 @@ private
         organisations: [
           {
             title: organisation.title,
-            abbreviation: organisation.abbreviation,
+            abbreviation: organisation.abbreviation || "",
             web_url: organisation.web_url,
           },
         ],
@@ -257,7 +257,7 @@ private
         organisations: [
           {
             title: organisation.title,
-            abbreviation: organisation.abbreviation,
+            abbreviation: organisation.abbreviation || "",
             web_url: organisation.web_url,
           },
         ],
