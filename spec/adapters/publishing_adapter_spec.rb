@@ -515,7 +515,6 @@ describe PublishingAdapter do
 
       before do
         allow(section).to receive(:attachments).and_return(attachments)
-        allow(SecureRandom).to receive(:uuid).and_return("attachment-content-id")
       end
 
       it "saves content for section to Publishing API including attachments" do
@@ -524,11 +523,8 @@ describe PublishingAdapter do
           including(details: including(
             attachments: [
               including(
-                content_id: "attachment-content-id",
                 title: "attachment-title",
                 url: "attachment-file-url.jpg",
-                created_at: timestamp,
-                updated_at: another_timestamp,
                 content_type: "application/jpg",
               ),
             ],

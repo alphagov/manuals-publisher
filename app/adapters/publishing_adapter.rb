@@ -246,11 +246,8 @@ private
         ],
         attachments: section.attachments.map do |attachment|
           {
-            content_id: SecureRandom.uuid,
             title: attachment.title,
             url: attachment.file_url,
-            updated_at: attachment.updated_at,
-            created_at: attachment.created_at,
             content_type: attachment.content_type,
           }
         end,
