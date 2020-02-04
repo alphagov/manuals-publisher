@@ -246,6 +246,8 @@ private
         ],
         attachments: section.attachments.map do |attachment|
           {
+            attachment_type: "file",
+            id: SecureRandom.uuid,
             title: attachment.title,
             url: attachment.file_url,
             content_type: attachment.content_type,
