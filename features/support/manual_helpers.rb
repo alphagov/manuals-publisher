@@ -170,7 +170,7 @@ module ManualHelpers
     go_to_manual_page(manual_title)
     click_on(attributes.fetch(:section_title))
 
-    attributes.values.each do |attr_val|
+    attributes.each_value do |attr_val|
       expect(page).to have_content(attr_val)
     end
   end

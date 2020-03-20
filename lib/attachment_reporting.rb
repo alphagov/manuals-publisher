@@ -44,16 +44,13 @@ class AttachmentReporting
     end
 
     titleize_keys(organisation_published_pdfs_counts_hash)
-
-    organisation_published_pdfs_counts_hash
   end
 
 private
 
   def titleize_keys(hash)
-    hash.keys.each do |key|
-      hash[key.titleize] = hash[key]
-      hash.delete(key)
+    hash.each_key.with_object({}) do |key, out|
+      out[key.titleize] = hash[key]
     end
   end
 
