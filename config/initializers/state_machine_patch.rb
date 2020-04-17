@@ -1,7 +1,7 @@
 module StateMachine
   module Integrations
     module ActiveModel
-      public :around_validation # rubocop:disable Style/AccessModifierDeclarations
+      public :around_validation
     end
   end
 end
