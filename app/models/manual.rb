@@ -257,7 +257,7 @@ class Manual
     def build_manual_for(manual_record, edition: nil, load_associations: true, published: false)
       edition ||= manual_record.latest_edition
 
-      base_manual = self.new(
+      base_manual = new(
         id: manual_record.manual_id,
         slug: manual_record.slug,
         title: edition.title,

@@ -31,7 +31,7 @@ describe SectionReslugger do
       body: "section-edition-body",
     )
     manual_record.editions.create!(
-      section_uuids: %w(section-id),
+      section_uuids: %w[section-id],
     )
 
     stub_content_store_has_item("/manual-slug/old-section-slug")

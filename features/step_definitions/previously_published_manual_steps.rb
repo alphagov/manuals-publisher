@@ -16,7 +16,7 @@ Given(/^I create a manual that was previously published elsewhere$/) do
 
   @manual = most_recently_created_manual
 
-  step %{a draft section exists for the manual}
+  step %(a draft section exists for the manual)
 end
 
 When(/^I tell the manual to stop using the previously published date as the public date$/) do
@@ -26,7 +26,7 @@ When(/^I tell the manual to stop using the previously published date as the publ
     choose("Change the first published date.")
   end
 
-  step %{I publish the manual}
+  step %(I publish the manual)
 end
 
 When(/^I update the previously published date to a new one$/) do
@@ -38,7 +38,7 @@ When(/^I update the previously published date to a new one$/) do
     select_datetime @new_originally_published_at.to_s, from: "First publication date:"
   end
 
-  step %{I publish the manual}
+  step %(I publish the manual)
 end
 
 When(/^I update the manual to clear the previously published date$/) do
@@ -48,7 +48,7 @@ When(/^I update the manual to clear the previously published date$/) do
     clear_datetime "First publication date:"
   end
 
-  step %{I publish the manual}
+  step %(I publish the manual)
 end
 
 When(/^I tell the manual to start using the previously published date as the public date$/) do
@@ -58,21 +58,21 @@ When(/^I tell the manual to start using the previously published date as the pub
     choose("Change the first published and last updated date.")
   end
 
-  step %{I publish the manual}
+  step %(I publish the manual)
 end
 
 When(/^I publish a minor change to the manual$/) do
-  steps %{
+  steps %(
     When I edit one of the manual's sections as a minor change
     And I publish the manual
-  }
+  )
 end
 
 When(/^I publish a major change to the manual$/) do
-  steps %{
+  steps %(
     When I edit one of the manual's sections as a major change
     And I publish the manual
-  }
+  )
 end
 
 Then(/^the manual and its sections are (re|)published with all public timestamps set to the previously published date$/) do |republished|

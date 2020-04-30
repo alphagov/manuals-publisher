@@ -4,7 +4,7 @@ module ApplicationHelper
   def state(manual)
     state = manual.publication_state
 
-    if %w(published withdrawn).include?(state) && manual.draft?
+    if %w[published withdrawn].include?(state) && manual.draft?
       state << " with new draft"
     end
 

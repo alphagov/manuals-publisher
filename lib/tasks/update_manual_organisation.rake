@@ -1,7 +1,7 @@
 require "logger"
 
 desc "Update organisation of a Manual"
-task :update_manual_organisation, %i(manual_base_path organisation_slug) => :environment do |_, args|
+task :update_manual_organisation, %i[manual_base_path organisation_slug] => :environment do |_, args|
   logger = Logger.new(STDOUT)
   logger.formatter = Logger::Formatter.new
 

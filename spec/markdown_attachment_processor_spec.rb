@@ -6,11 +6,11 @@ describe MarkdownAttachmentProcessor do
   subject(:renderer) { MarkdownAttachmentProcessor.new(doc) }
 
   let(:unprocessed_body) {
-    %{
+    %(
 # Hi
 
 this is my attachment [InlineAttachment:rofl.gif] 28 Feb 2014
-    }
+    )
   }
 
   let(:processed_body) {
@@ -63,12 +63,12 @@ this is my attachment [#{title}](#{file_url}) 28 Feb 2014
 
     context "when the attachment link appears more than once" do
       let(:unprocessed_body) {
-        %{
+        %(
 # Hi
 
 this is my attachment [InlineAttachment:rofl.gif] 28 Feb 2014
 my attachment again [InlineAttachment:rofl.gif] 28 Feb 2014
-        }
+        )
       }
 
       let(:processed_body) {

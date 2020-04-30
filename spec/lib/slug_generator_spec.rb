@@ -20,7 +20,7 @@ describe SlugGenerator do
     end
 
     context "when title contains non-word characters" do
-      let(:title) { %{Test_ &/Document"1} }
+      let(:title) { %(Test_ &/Document"1) }
 
       it "replaces all non-word characters with a single hyphen" do
         slug = slug_gen.call(title)

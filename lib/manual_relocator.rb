@@ -48,9 +48,9 @@ private
     # to be currently published either...
     # 1. the latest edition is published
     manual.published? ||
-    # or
-    # 2. the last two editions are published and draft
-      (manual.editions.order_by(%i[version_number desc]).limit(2).map(&:state) == %w(draft published))
+      # or
+      # 2. the last two editions are published and draft
+      (manual.editions.order_by(%i[version_number desc]).limit(2).map(&:state) == %w[draft published])
   end
 
   def redirect_and_remove
@@ -105,9 +105,9 @@ private
       most_recent_edition_of_section(section_uuid).slug.gsub(from_slug, "")
     end
 
-    old_section_uuids_and_section_slugs.
-      select { |_section_uuid, slug| new_section_slugs.include? slug }.
-      map { |section_uuid, _slug| section_uuid }
+    old_section_uuids_and_section_slugs
+      .select { |_section_uuid, slug| new_section_slugs.include? slug }
+      .map { |section_uuid, _slug| section_uuid }
   end
 
   def most_recent_published_edition_of_section(section_uuid)

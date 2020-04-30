@@ -20,11 +20,9 @@ private
   end
 
   def in_publishing_api?(content_id)
-    begin
-      publishing_api.get_content(content_id).present?
-    rescue GdsApi::HTTPNotFound
-      false
-    end
+    publishing_api.get_content(content_id).present?
+  rescue GdsApi::HTTPNotFound
+    false
   end
 
   def duplicated_editions

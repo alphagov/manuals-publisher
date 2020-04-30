@@ -1,5 +1,5 @@
 class AttachmentReporting
-  POST_PUBLICATION_STATES = %w(published archived).freeze
+  POST_PUBLICATION_STATES = %w[published archived].freeze
 
   def initialize(first_period_start_date, last_time_period_days, attachment_file_extension)
     @first_period_start_date = first_period_start_date
