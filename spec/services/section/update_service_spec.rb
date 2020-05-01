@@ -78,20 +78,32 @@ RSpec.describe Section::UpdateService do
     it "marks the manual as draft" do
       expect(manual).to receive(:draft)
 
-      subject.call rescue gds_api_exception
+      begin
+        subject.call
+      rescue StandardError
+        gds_api_exception
+      end
     end
 
     it "does not save the draft" do
       expect(manual).to_not receive(:save).with(user)
 
-      subject.call rescue gds_api_exception
+      begin
+        subject.call
+      rescue StandardError
+        gds_api_exception
+      end
     end
 
     it "does not save the section to the publishing api" do
       expect(publishing_api_adapter)
         .to_not receive(:save_section).with(section, manual)
 
-      subject.call rescue gds_api_exception
+      begin
+        subject.call
+      rescue StandardError
+        gds_api_exception
+      end
     end
   end
 
@@ -111,20 +123,32 @@ RSpec.describe Section::UpdateService do
     it "does marks the manual as draft" do
       expect(manual).to receive(:draft)
 
-      subject.call rescue gds_api_exception
+      begin
+        subject.call
+      rescue StandardError
+        gds_api_exception
+      end
     end
 
     it "does not save the draft" do
       expect(manual).to_not receive(:save).with(user)
 
-      subject.call rescue gds_api_exception
+      begin
+        subject.call
+      rescue StandardError
+        gds_api_exception
+      end
     end
 
     it "saves the draft manual to the publishing api" do
       expect(publishing_api_adapter)
         .to receive(:save).with(manual, include_sections: false)
 
-      subject.call rescue gds_api_exception
+      begin
+        subject.call
+      rescue StandardError
+        gds_api_exception
+      end
     end
   end
 

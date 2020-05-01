@@ -40,13 +40,21 @@ RSpec.describe PublishManualWorker do
       it "notifies GovukError of the error" do
         expect(GovukError).to receive(:notify).with(http_error)
 
-        worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+        begin
+          worker.perform(task.id)
+        rescue StandardError
+          PublishManualWorker::FailedToPublishError
+        end
       end
 
       it "logs the error to the Rails log" do
         expect(logger).to receive(:error).with(/#{http_error}/)
 
-        worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+        begin
+          worker.perform(task.id)
+        rescue StandardError
+          PublishManualWorker::FailedToPublishError
+        end
       end
     end
 
@@ -73,13 +81,21 @@ RSpec.describe PublishManualWorker do
       it "notifies GovukError of the error" do
         expect(GovukError).to receive(:notify).with(http_error)
 
-        worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+        begin
+          worker.perform(task.id)
+        rescue StandardError
+          PublishManualWorker::FailedToPublishError
+        end
       end
 
       it "logs the error to the Rails log" do
         expect(logger).to receive(:error).with(/#{http_error}/)
 
-        worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+        begin
+          worker.perform(task.id)
+        rescue StandardError
+          PublishManualWorker::FailedToPublishError
+        end
       end
     end
 
@@ -106,13 +122,21 @@ RSpec.describe PublishManualWorker do
       it "notifies GovukError of the error" do
         expect(GovukError).to receive(:notify).with(version_error)
 
-        worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+        begin
+          worker.perform(task.id)
+        rescue StandardError
+          PublishManualWorker::FailedToPublishError
+        end
       end
 
       it "logs the error to the Rails log" do
         expect(logger).to receive(:error).with(/#{version_error}/)
 
-        worker.perform(task.id) rescue PublishManualWorker::FailedToPublishError
+        begin
+          worker.perform(task.id)
+        rescue StandardError
+          PublishManualWorker::FailedToPublishError
+        end
       end
     end
   end

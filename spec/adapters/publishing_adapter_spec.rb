@@ -147,7 +147,7 @@ describe PublishingAdapter do
               content: "<p>manual-body</p>\n",
             },
           ],
-          child_section_groups:  [
+          child_section_groups: [
             {
               title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
               child_sections: [

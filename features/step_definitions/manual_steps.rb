@@ -239,7 +239,7 @@ When(/^I create a section with empty fields$/) do
 end
 
 Then(/^I see errors for the section fields$/) do
-  %w(Title Summary Body).each do |field|
+  %w[Title Summary Body].each do |field|
     expect(page).to have_content("#{field} can't be blank")
   end
   expect(page).not_to have_content("Add attachment")
@@ -351,7 +351,7 @@ Given(/^a published manual with some sections was created without the UI$/) do
   @manual_slug = "guidance/example-manual-title"
 
   @manual_fields = { title: @manual_title,
-                    summary: "Nullam quis risus eget urna mollis ornare vel eu leo." }
+                     summary: "Nullam quis risus eget urna mollis ornare vel eu leo." }
 
   @manual = create_manual_without_ui(@manual_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
@@ -606,11 +606,9 @@ Given(/^a version mismatch occurs$/) do
 end
 
 When(/^I publish the manual expecting a recoverable error$/) do
-  begin
-    publish_manual
-  rescue PublishManualWorker::FailedToPublishError => e
-    @error = e
-  end
+  publish_manual
+rescue PublishManualWorker::FailedToPublishError => e
+  @error = e
 end
 
 Then(/^the publication reattempted$/) do

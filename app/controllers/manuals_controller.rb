@@ -203,11 +203,11 @@ private
   end
 
   def valid_params
-    %i(
+    %i[
       title
       summary
       body
-    )
+    ]
   end
 
   def manual_date_params

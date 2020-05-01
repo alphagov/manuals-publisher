@@ -19,7 +19,7 @@ describe ManualRecord, hits_db: true do
 
       it "returns the most recent new draft even if it hasn't been saved yet" do
         # make everything published
-        record.editions.each { |e| e.state = "published"; e.save! }
+        record.editions.each { |e| e.update!(state: "published") }
         # build a new draft
         new_draft = record.new_or_existing_draft_edition
         expect(new_draft).not_to be_persisted

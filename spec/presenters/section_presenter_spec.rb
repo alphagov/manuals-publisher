@@ -11,7 +11,7 @@ describe SectionPresenter do
       end
 
       it "adds a title before the existing footnotes" do
-        expect(subject.body).to eq(%{<h2 id="footnotes">Footnotes</h2><div class="footnotes"></div>\n})
+        expect(subject.body).to eq(%(<h2 id="footnotes">Footnotes</h2><div class="footnotes"></div>\n))
       end
     end
 

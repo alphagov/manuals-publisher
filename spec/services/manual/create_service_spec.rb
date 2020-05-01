@@ -49,7 +49,11 @@ RSpec.describe Manual::CreateService do
 
     it "does not save the manual" do
       expect(manual).to_not receive(:save)
-      subject.call rescue gds_api_exception
+      begin
+        subject.call
+      rescue StandardError
+        gds_api_exception
+      end
     end
   end
 

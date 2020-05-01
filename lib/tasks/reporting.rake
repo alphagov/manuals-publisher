@@ -13,9 +13,9 @@ namespace :reporting do
 
     csv = CSV.open("organisation_publishing_by_month-#{options[:start_date]}-#{options[:end_date]}.csv", "w")
     csv << ([""] + months.map { |m| [m, m] }.flatten)
-    csv << (%w[Organisation] + months.size.times.map { |_| %w{Published Updates} }.flatten)
+    csv << (%w[Organisation] + months.size.times.map { |_| %w[Published Updates] }.flatten)
 
-    all_editions = ManualRecord::Edition.where(updated_at: date_range, state: { "$in" => %w{published archived} })
+    all_editions = ManualRecord::Edition.where(updated_at: date_range, state: { "$in" => %w[published archived] })
 
     by_org = all_editions.group_by { |e| e.manual_record.organisation_slug }.sort
 

@@ -14,7 +14,7 @@ FactoryBot.define do
   end
 
   factory :editor, parent: :user do
-    permissions { %w(signin editor) }
+    permissions { %w[signin editor] }
   end
 
   factory :generic_writer, parent: :user do
@@ -30,7 +30,7 @@ FactoryBot.define do
   end
 
   factory :gds_editor, parent: :user do
-    permissions { %w(signin gds_editor) }
+    permissions { %w[signin gds_editor] }
     organisation_slug { "government-digital-service" }
   end
 
