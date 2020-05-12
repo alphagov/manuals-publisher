@@ -9,7 +9,7 @@ class ManualPublishTask
   field :state, type: String
   field :error, type: String
 
-  scope :for_manual, ->(manual) {
+  scope :for_manual, lambda { |manual|
     all
       .where(manual_id: manual.id)
       .order_by(%i[version_number desc], %i[updated_at desc])

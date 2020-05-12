@@ -3,11 +3,11 @@ require "spec_helper"
 RSpec.describe Manual::ListService do
   let(:user) { double(:user) }
 
-  subject {
+  subject do
     Manual::ListService.new(
       user: user,
     )
-  }
+  end
 
   it "loads all manuals for the user" do
     expect(Manual).to receive(:all).with(user, anything)

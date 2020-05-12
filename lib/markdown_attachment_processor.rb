@@ -2,11 +2,11 @@ require "delegate"
 
 class MarkdownAttachmentProcessor < SimpleDelegator
   def body
-    attachments.reduce(doc.body) { |body, attachment|
-      body.gsub(attachment.snippet) {
+    attachments.reduce(doc.body) do |body, attachment|
+      body.gsub(attachment.snippet) do
         attachment_markdown(attachment)
-      }
-    }
+      end
+    end
   end
 
 private

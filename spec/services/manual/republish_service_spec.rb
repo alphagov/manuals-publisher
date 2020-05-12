@@ -8,12 +8,12 @@ RSpec.describe Manual::RepublishService do
   let(:manual) { double(:manual) }
   let(:user) { double(:user) }
 
-  subject {
+  subject do
     described_class.new(
       user: user,
       manual_id: manual_id,
     )
-  }
+  end
 
   before do
     allow(Adapters).to receive(:publishing) { publishing_adapter }

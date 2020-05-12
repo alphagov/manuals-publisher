@@ -2,21 +2,21 @@ require "spec_helper"
 require "duplicate_document_finder"
 
 describe DuplicateDocumentFinder do
-  subject {
+  subject do
     described_class.new(io)
-  }
+  end
 
   let(:io) { double(:io) }
 
-  before {
+  before do
     allow(io).to receive(:puts)
-  }
+  end
 
   context "when there are multiple editions with different slugs" do
-    before {
+    before do
       FactoryBot.create(:section_edition, slug: "slug-1")
       FactoryBot.create(:section_edition, slug: "slug-2")
-    }
+    end
 
     it "doesn't report them as duplicates" do
       subject.execute
@@ -26,10 +26,10 @@ describe DuplicateDocumentFinder do
   end
 
   context "when there are multiple editions with the same slug and same section id" do
-    before {
+    before do
       FactoryBot.create(:section_edition, slug: "slug", section_uuid: 1)
       FactoryBot.create(:section_edition, slug: "slug", section_uuid: 1)
-    }
+    end
 
     it "doesn't report them as duplicates" do
       subject.execute
@@ -39,12 +39,12 @@ describe DuplicateDocumentFinder do
   end
 
   context "when there are multiple editions with the same slug and different section ids" do
-    let!(:edition_1) {
+    let!(:edition_1) do
       FactoryBot.create(:section_edition, slug: "slug", section_uuid: 1)
-    }
-    let!(:edition_2) {
+    end
+    let!(:edition_2) do
       FactoryBot.create(:section_edition, slug: "slug", section_uuid: 2)
-    }
+    end
 
     it "reports them as duplicates" do
       edition_1_data = [

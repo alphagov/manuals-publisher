@@ -10,7 +10,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
   let(:publishing_adapter) { double(:publishing_adapter) }
   let(:user) { double(:user) }
 
-  subject {
+  subject do
     described_class.new(
       user: user,
       manual_id: manual_id,
@@ -20,7 +20,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
         title: "hats",
       },
     )
-  }
+  end
 
   before do
     allow(Manual).to receive(:find).and_return(manual)

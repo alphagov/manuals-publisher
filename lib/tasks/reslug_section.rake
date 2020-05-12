@@ -28,7 +28,7 @@ end
 
 desc "Reslug section"
 task :reslug_section, %i[manual_slug old_section_slug new_section_slug] => :environment do |_, args|
-  usage unless args.has_key?(:manual_slug) && args.has_key?(:old_section_slug) && args.has_key?(:new_section_slug)
+  usage unless args.key?(:manual_slug) && args.key?(:old_section_slug) && args.key?(:new_section_slug)
 
   logger.info "Renaming section slug"
 

@@ -80,7 +80,7 @@ describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
     end
   end
 
-  let!(:highway_code_manual_edition) {
+  let!(:highway_code_manual_edition) do
     highway_code_manual_record.editions.create!(
       state: "published",
       version_number: 1,
@@ -92,7 +92,7 @@ describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
         very_recent_section_edition.section_uuid,
       ],
     )
-  }
+  end
 
   let(:patent_manual_slug) { "guidance/manual-of-patent-practice" }
   let(:patent_manual_organisation_slug) { "intellectual-property-office" }
@@ -111,7 +111,7 @@ describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
     end
   end
 
-  let!(:patent_practice_manual_edition) {
+  let!(:patent_practice_manual_edition) do
     patent_manual_record.editions.create!(
       state: "published",
       version_number: 1,
@@ -119,7 +119,7 @@ describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
         very_recent_draft_patent_section_edition.section_uuid,
       ],
     )
-  }
+  end
 
   let(:subject) { described_class.new(start_date, last_time_period_days, attachment_file_extension) }
 

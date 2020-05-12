@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 module ApplicationHelper
   def state(manual)
     state = manual.publication_state

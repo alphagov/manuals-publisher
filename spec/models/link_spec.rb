@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Link do
-  let(:attributes) {
+  let(:attributes) do
     {
       uri: "http://www.example.com",
       status: "error",
@@ -11,7 +11,7 @@ describe Link do
       problem_summary: "example problem",
       suggested_fix: "example fix",
     }
-  }
+  end
 
   subject(:link) { Link.new(attributes) }
 

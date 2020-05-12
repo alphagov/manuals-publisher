@@ -9,7 +9,7 @@ describe OrganisationsAdapter do
   end
 
   describe "#find" do
-    let(:response) {
+    let(:response) do
       {
         "title" => "organisation-title",
         "web_url" => "organisation-web-url",
@@ -18,7 +18,7 @@ describe OrganisationsAdapter do
           "content_id" => "organisation-content-id",
         },
       }
-    }
+    end
 
     before do
       allow(api).to receive(:organisation).with("slug").and_return(response)

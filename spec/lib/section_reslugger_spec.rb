@@ -9,15 +9,15 @@ describe SectionReslugger do
   include GdsApi::TestHelpers::Organisations
   include GdsApi::TestHelpers::PublishingApi
 
-  subject {
+  subject do
     described_class.new(
       "manual-slug",
       "manual-slug/old-section-slug",
       "manual-slug/new-section-slug",
     )
-  }
+  end
 
-  before {
+  before do
     manual_record = ManualRecord.create!(
       manual_id: "manual-id",
       slug: "manual-slug",
@@ -42,7 +42,7 @@ describe SectionReslugger do
     stub_any_publishing_api_patch_links
     stub_any_publishing_api_put_content
     stub_any_publishing_api_publish
-  }
+  end
 
   it "doesn't raise any exceptions" do
     subject.call

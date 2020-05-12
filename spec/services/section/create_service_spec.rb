@@ -5,9 +5,9 @@ RSpec.describe Section::CreateService do
   let(:manual) { Manual.new(title: "manual-title") }
   let(:section_attributes) { double(:section_attributes) }
   let(:publishing_api_adapter) { double(:publishing_api) }
-  let(:new_section) {
+  let(:new_section) do
     Section.new(manual: manual, uuid: "uuid")
-  }
+  end
 
   subject do
     described_class.new(
