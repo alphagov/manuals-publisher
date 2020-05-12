@@ -111,7 +111,7 @@ class Manual
     @id = attributes.fetch(:id, SecureRandom.uuid)
     @updated_at = attributes.fetch(:updated_at, nil)
     @version_number = attributes.fetch(:version_number, 0)
-    @ever_been_published = !!attributes.fetch(:ever_been_published, false)
+    @ever_been_published = attributes.fetch(:ever_been_published, false).present?
 
     update(attributes)
 
@@ -193,7 +193,7 @@ class Manual
   end
 
   def use_originally_published_at_for_public_timestamp?
-    !!use_originally_published_at_for_public_timestamp
+    use_originally_published_at_for_public_timestamp.present?
   end
 
   def version_type
