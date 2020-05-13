@@ -51,9 +51,9 @@ class Manual
   def self.all(user, load_associations: true)
     collection = user.manual_records
 
-    collection.all_by_updated_at.lazy.map { |manual_record|
+    collection.all_by_updated_at.lazy.map do |manual_record|
       build_manual_for(manual_record, load_associations: load_associations)
-    }
+    end
   end
 
   def slug_unique?(user)
@@ -111,7 +111,7 @@ class Manual
     @id = attributes.fetch(:id, SecureRandom.uuid)
     @updated_at = attributes.fetch(:updated_at, nil)
     @version_number = attributes.fetch(:version_number, 0)
-    @ever_been_published = !!attributes.fetch(:ever_been_published, false)
+    @ever_been_published = attributes.fetch(:ever_been_published, false).present?
 
     update(attributes)
 
@@ -193,7 +193,7 @@ class Manual
   end
 
   def use_originally_published_at_for_public_timestamp?
-    !!use_originally_published_at_for_public_timestamp
+    use_originally_published_at_for_public_timestamp.present?
   end
 
   def version_type
@@ -280,17 +280,15 @@ class Manual
     end
 
     def add_sections_to_manual(manual, edition, published: false)
-      sections = Array(edition.section_uuids).map { |section_uuid|
+      sections = Array(edition.section_uuids).map do |section_uuid|
         Section.find(manual, section_uuid, published: published)
-      }
+      end
 
-      removed_sections = Array(edition.removed_section_uuids).map { |section_uuid|
-        begin
-          Section.find(manual, section_uuid)
-        rescue KeyError
-          raise RemovedSectionIdNotFoundError, "No section found for UUID #{section_uuid}"
-        end
-      }
+      removed_sections = Array(edition.removed_section_uuids).map do |section_uuid|
+        Section.find(manual, section_uuid)
+      rescue KeyError
+        raise RemovedSectionIdNotFoundError, "No section found for UUID #{section_uuid}"
+      end
 
       manual.sections = sections
       manual.removed_sections = removed_sections

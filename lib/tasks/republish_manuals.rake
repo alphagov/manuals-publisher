@@ -8,7 +8,7 @@ task :republish_manuals, %i[user_email slug] => :environment do |_, args|
 
   user = User.find_by(email: args[:user_email])
 
-  manuals = if args.has_key?(:slug)
+  manuals = if args.key?(:slug)
               [Manual.find_by_slug!(args[:slug], user)]
             else
               Manual.all(user)

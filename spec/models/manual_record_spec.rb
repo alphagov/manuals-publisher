@@ -5,13 +5,13 @@ describe ManualRecord, hits_db: true do
 
   describe "#latest_edition" do
     context "when there are several previous editions" do
-      let!(:editions) {
+      let!(:editions) do
         [
           record.editions.create!(state: "published", version_number: 2),
           record.editions.create!(state: "draft", version_number: 3),
           record.editions.create!(state: "published", version_number: 1),
         ]
-      }
+      end
 
       it "returns the edition with the highest version number" do
         expect(record.latest_edition.version_number).to eq(3)
@@ -80,17 +80,17 @@ describe ManualRecord, hits_db: true do
   end
 
   describe "#all_by_updated_at" do
-    let!(:middle_edition) {
+    let!(:middle_edition) do
       ManualRecord.create!(updated_at: 2.days.ago)
-    }
+    end
 
-    let!(:early_edition) {
+    let!(:early_edition) do
       ManualRecord.create!(updated_at: 3.days.ago)
-    }
+    end
 
-    let!(:later_edition) {
+    let!(:later_edition) do
       ManualRecord.create!(updated_at: 1.day.ago)
-    }
+    end
 
     it "returns manuals ordered with most recently updated first" do
       expect(ManualRecord.all_by_updated_at.to_a).to eq([later_edition, middle_edition, early_edition])

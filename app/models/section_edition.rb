@@ -32,13 +32,13 @@ class SectionEdition
     end
   end
 
-  scope :all_for_section, ->(section_uuid) do
+  scope :all_for_section, lambda { |section_uuid|
     where(section_uuid: section_uuid)
-  end
+  }
 
-  scope :all_for_sections, ->(*section_uuids) do
+  scope :all_for_sections, lambda { |*section_uuids|
     where(:section_uuid.in => section_uuids)
-  end
+  }
 
   scope :with_slug_prefix, ->(slug) { where(slug: /^#{slug}.*/) }
 

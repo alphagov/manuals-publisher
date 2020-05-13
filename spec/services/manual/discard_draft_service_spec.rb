@@ -6,12 +6,12 @@ RSpec.describe Manual::DiscardDraftService do
   let(:publishing_adapter) { double(:publishing_adapter) }
   let(:user) { double(:user) }
 
-  subject {
+  subject do
     described_class.new(
       user: user,
       manual_id: manual_id,
     )
-  }
+  end
 
   before do
     allow(Manual).to receive(:find) { manual }

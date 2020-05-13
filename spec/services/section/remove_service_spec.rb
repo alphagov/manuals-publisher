@@ -3,24 +3,24 @@ require "spec_helper"
 RSpec.describe Section::RemoveService do
   let(:section_uuid) { "123" }
 
-  let(:manual) {
+  let(:manual) do
     double(
       draft: nil,
       remove_section: nil,
       find_section: section,
     )
-  }
+  end
 
   let(:user) { double(:user) }
 
-  let(:service) {
+  let(:service) do
     described_class.new(
       user: user,
       manual_id: "ABC",
       section_uuid: section_uuid,
       attributes: change_note_params,
     )
-  }
+  end
   let(:publishing_adapter) { spy(PublishingAdapter) }
 
   before do
@@ -30,17 +30,17 @@ RSpec.describe Section::RemoveService do
   end
 
   context "with a section id that doesn't belong to the manual" do
-    let(:section) {
+    let(:section) do
       double(uuid: section_uuid)
-    }
-    let(:manual) {
+    end
+    let(:manual) do
       double(
         draft: nil,
         sections: [],
         remove_section: nil,
         find_section: nil,
       )
-    }
+    end
     let(:change_note_params) do
       {
         minor_update: "0",
@@ -79,14 +79,14 @@ RSpec.describe Section::RemoveService do
   end
 
   context "with invalid change_note params" do
-    let(:section) {
+    let(:section) do
       double(
         uuid: section_uuid,
         published?: true,
         update: nil,
         valid?: false,
       )
-    }
+    end
     let(:change_note_params) do
       {
         minor_update: "1",
@@ -132,14 +132,14 @@ RSpec.describe Section::RemoveService do
     end
 
     context "with a section that's previously been published" do
-      let(:section) {
+      let(:section) do
         double(
           uuid: section_uuid,
           published?: true,
           update: nil,
           valid?: true,
         )
-      }
+      end
 
       before do
         service.call
@@ -171,14 +171,14 @@ RSpec.describe Section::RemoveService do
     end
 
     context "with a section that's never been published" do
-      let(:section) {
+      let(:section) do
         double(
           uuid: section_uuid,
           published?: false,
           update: nil,
           valid?: true,
         )
-      }
+      end
 
       before do
         service.call
@@ -211,14 +211,14 @@ RSpec.describe Section::RemoveService do
     end
 
     context "with extra section params" do
-      let(:section) {
+      let(:section) do
         double(
           uuid: section_uuid,
           published?: true,
           update: nil,
           valid?: true,
         )
-      }
+      end
       let(:change_note_params) do
         {
           minor_update: "0",

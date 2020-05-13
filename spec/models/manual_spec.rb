@@ -3,7 +3,7 @@ require "spec_helper"
 require "manual"
 
 describe Manual do
-  subject(:manual) {
+  subject(:manual) do
     FactoryBot.build(
       :manual,
       id: id,
@@ -18,7 +18,7 @@ describe Manual do
       originally_published_at: originally_published_at,
       use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
     )
-  }
+  end
 
   let(:id) { "0123-4567-89ab-cdef" }
   let(:updated_at) { Time.zone.parse("2001-01-01") }
@@ -213,13 +213,13 @@ describe Manual do
   end
 
   describe "#reorder_sections" do
-    let(:sections) {
+    let(:sections) do
       [
         alpha_section,
         beta_section,
         gamma_section,
       ]
-    }
+    end
 
     let(:alpha_section) { double(:section, uuid: "alpha") }
     let(:beta_section) { double(:section, uuid: "beta") }
@@ -278,12 +278,12 @@ describe Manual do
   end
 
   describe "#remove_section" do
-    let(:sections) {
+    let(:sections) do
       [
         section_a,
         section_b,
       ]
-    }
+    end
     let(:section_a) { double(:section, uuid: "a") }
     let(:section_b) { double(:section, uuid: "b") }
 
@@ -315,9 +315,9 @@ describe Manual do
 
   describe ".all" do
     let(:user) { FactoryBot.create(:gds_editor) }
-    let!(:manual_records) {
+    let!(:manual_records) do
       FactoryBot.create_list(:manual_record, 2, :with_sections, :with_removed_sections)
-    }
+    end
     let(:all_manuals) { Manual.all(user) }
 
     it "evaluates lazily" do
@@ -394,7 +394,7 @@ describe Manual do
   describe "#save" do
     let(:user) { FactoryBot.create(:gds_editor) }
 
-    subject(:manual) {
+    subject(:manual) do
       FactoryBot.build(
         :manual,
         id: "id",
@@ -409,7 +409,7 @@ describe Manual do
         originally_published_at: Time.now,
         use_originally_published_at_for_public_timestamp: true,
       )
-    }
+    end
 
     context "without sections or removed_sections" do
       it "sets the associated records slug" do

@@ -3,21 +3,21 @@ require "services"
 require "gds_api_constants"
 
 describe PublishingAdapter do
-  let(:publishing_api_schema_name_for_manual) {
+  let(:publishing_api_schema_name_for_manual) do
     GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME
-  }
+  end
 
-  let(:publishing_api_document_type_for_manual) {
+  let(:publishing_api_document_type_for_manual) do
     GdsApiConstants::PublishingApi::MANUAL_DOCUMENT_TYPE
-  }
+  end
 
-  let(:publishing_api_schema_name_for_section) {
+  let(:publishing_api_schema_name_for_section) do
     GdsApiConstants::PublishingApi::SECTION_SCHEMA_NAME
-  }
+  end
 
-  let(:publishing_api_document_type_for_section) {
+  let(:publishing_api_document_type_for_section) do
     GdsApiConstants::PublishingApi::SECTION_DOCUMENT_TYPE
-  }
+  end
 
   let(:timestamp) { Time.zone.parse("2017-01-01 00:00:00") }
 
@@ -26,7 +26,7 @@ describe PublishingAdapter do
 
   let(:manual_id) { "a55242ed-178f-4716-8bb3-5d4f82d38531" }
 
-  let(:manual) {
+  let(:manual) do
     FactoryBot.build(
       :manual,
       id: manual_id,
@@ -36,19 +36,19 @@ describe PublishingAdapter do
       summary: "manual-summary",
       body: "manual-body",
     )
-  }
+  end
 
   let(:section_uuid) { "64dbf396-b637-40b7-ada4-f19ce460e5e9" }
 
-  let(:section) {
+  let(:section) do
     Section.new(
       manual: manual,
       uuid: section_uuid,
       latest_edition: section_edition,
     )
-  }
+  end
 
-  let(:section_edition) {
+  let(:section_edition) do
     SectionEdition.new(
       slug: "manual-slug/section-slug",
       title: "section-title",
@@ -56,18 +56,18 @@ describe PublishingAdapter do
       body: "section-body",
       change_note: "change-note",
     )
-  }
+  end
 
   let(:organisation_content_id) { "afa741e9-c68e-4ade-bc8f-ceb1fced23a6" }
 
-  let(:organisation) {
+  let(:organisation) do
     Organisation.new(
       title: "organisation-title",
       abbreviation: "organisation-abbreviation",
       content_id: organisation_content_id,
       web_url: "organisation-web-url",
     )
-  }
+  end
 
   let(:publication_logs) { [] }
 
@@ -451,23 +451,23 @@ describe PublishingAdapter do
     end
 
     context "when publication logs exist for section" do
-      let(:publication_log_1) {
+      let(:publication_log_1) do
         PublicationLog.new(
           title: "section-title",
           slug: "manual-slug/section-slug",
           change_note: "section-change-note",
           published_at: timestamp,
         )
-      }
+      end
 
-      let(:publication_log_2) {
+      let(:publication_log_2) do
         PublicationLog.new(
           title: "section-title-2",
           slug: "manual-slug/section-slug",
           change_note: "section-change-note",
           published_at: timestamp,
         )
-      }
+      end
 
       let(:publication_logs) { [publication_log_1, publication_log_2] }
 
@@ -502,14 +502,14 @@ describe PublishingAdapter do
     context "when section has attachments" do
       let(:another_timestamp) { timestamp + 1.day }
 
-      let(:attachment) {
+      let(:attachment) do
         Attachment.new(
           title: "attachment-title",
           file_url: "attachment-file-url.jpg",
           created_at: timestamp,
           updated_at: another_timestamp,
         )
-      }
+      end
 
       let(:attachments) { [attachment] }
 
@@ -559,22 +559,22 @@ describe PublishingAdapter do
   describe "#publish" do
     let(:removed_section_uuid) { "c146f39b-6512-4e3c-8991-fedda0b02a28" }
 
-    let(:removed_section) {
+    let(:removed_section) do
       Section.new(
         manual: manual,
         uuid: removed_section_uuid,
         latest_edition: removed_section_edition,
       )
-    }
+    end
 
-    let(:removed_section_edition) {
+    let(:removed_section_edition) do
       SectionEdition.new(
         slug: "manual-slug/removed-section-slug",
         title: "removed-section-title",
         summary: "removed-section-summary",
         body: "removed-section-body",
       )
-    }
+    end
 
     before do
       manual.sections = [section]

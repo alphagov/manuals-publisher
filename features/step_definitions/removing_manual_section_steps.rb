@@ -33,7 +33,7 @@ Then(/^the section is removed from the manual$/) do
   check_draft_has_been_discarded_in_publishing_api(@removed_section.uuid)
 
   # Check that no child section has the removed section's title
-  without_removed_section_matcher = ->(request) do
+  without_removed_section_matcher = lambda do |request|
     data = JSON.parse(request.body)
     contents = data["details"]["child_section_groups"].first
     contents["child_sections"].none? do |child_section|

@@ -80,20 +80,20 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     )
   end
 
-  let!(:previous_publication_logs) {
+  let!(:previous_publication_logs) do
     [
       FactoryBot.create(:publication_log, slug: manual_slug, created_at: 10.seconds.ago, version_number: 1),
       FactoryBot.create(:publication_log, slug: manual_slug, created_at: 8.seconds.ago, version_number: 2),
     ]
-  }
-  let!(:previous_other_publication_log) {
+  end
+  let!(:previous_other_publication_log) do
     FactoryBot.create :publication_log, slug: other_slug, created_at: 6.seconds.ago, version_number: 1
-  }
+  end
 
   let(:first_manual_edition_creation_time) { Time.current - 1.week }
   let(:second_manual_edition_creation_time) { first_manual_edition_creation_time - 1.day }
 
-  let!(:first_manual_edition) {
+  let!(:first_manual_edition) do
     manual_record.editions.create!(
       state: "published",
       version_number: 1,
@@ -105,9 +105,9 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       created_at: first_manual_edition_creation_time,
       updated_at: first_manual_edition_creation_time,
     )
-  }
+  end
 
-  let!(:second_manual_edition) {
+  let!(:second_manual_edition) do
     manual_record.editions.create!(
       state: "published",
       version_number: 2,
@@ -121,7 +121,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       created_at: second_manual_edition_creation_time,
       updated_at: first_manual_edition_creation_time,
     )
-  }
+  end
 
   let(:manual) { Manual.find(manual_record.manual_id, User.gds_editor) }
 
@@ -197,17 +197,17 @@ describe ManualPublicationLogFilter::EditionOrdering do
     let!(:other_edition_newer) { FactoryBot.create :section_edition, created_at: Time.now - 1.day }
     let!(:other_edition_older) { FactoryBot.create :section_edition, created_at: Time.now - 1.week }
 
-    let!(:section_uuids) {
+    let!(:section_uuids) do
       [
         edition_in_first_position.section_uuid,
         edition_in_second_position.section_uuid,
         edition_in_third_position.section_uuid,
       ]
-    }
+    end
 
-    let(:expected_section_order) {
+    let(:expected_section_order) do
       section_uuids.concat([other_edition_older.section_uuid, other_edition_newer.section_uuid])
-    }
+    end
 
     let(:subject) { described_class.new(SectionEdition.all, section_uuids) }
 

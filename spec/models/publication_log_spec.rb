@@ -2,14 +2,14 @@ require "spec_helper"
 
 describe PublicationLog, hits_db: true do
   describe "validation" do
-    let(:attributes) {
+    let(:attributes) do
       {
         slug: "my-slug",
         title: "my title",
         change_note: "First note",
         version_number: 1,
       }
-    }
+    end
 
     subject(:publication_log) { PublicationLog.new(attributes) }
 
@@ -43,7 +43,7 @@ describe PublicationLog, hits_db: true do
       let(:slug) { "guidance/my-slug" }
       let(:other_slug) { "not-guidance/another-one" }
 
-      let!(:change_notes_for_first_doc) {
+      let!(:change_notes_for_first_doc) do
         [
           PublicationLog.create(
             slug: slug,
@@ -60,9 +60,9 @@ describe PublicationLog, hits_db: true do
             created_at: 6.seconds.ago,
           ),
         ]
-      }
+      end
 
-      let!(:change_notes_for_second_doc) {
+      let!(:change_notes_for_second_doc) do
         [
           PublicationLog.create(
             slug: other_slug,
@@ -72,7 +72,7 @@ describe PublicationLog, hits_db: true do
             created_at: 2.seconds.ago,
           ),
         ]
-      }
+      end
 
       it "returns all the change notes for the given slug" do
         expect(PublicationLog.change_notes_for(slug)).to eq(change_notes_for_first_doc)
@@ -81,14 +81,14 @@ describe PublicationLog, hits_db: true do
       context "and some are for sections with similar slugs" do
         let!(:similar_slug) { "guidance/my-slug-belongs-to-me" }
 
-        let!(:change_note_for_similar_slug) {
+        let!(:change_note_for_similar_slug) do
           PublicationLog.create(
             slug: similar_slug,
             title: "",
             change_note: "A similar note",
             version_number: 1,
           )
-        }
+        end
 
         it "does not include the notes for the similar slug" do
           expect(PublicationLog.change_notes_for(slug)).not_to include change_note_for_similar_slug
@@ -98,14 +98,14 @@ describe PublicationLog, hits_db: true do
       context "and some are for child sections of the slug" do
         let!(:child_slug) { "guidance/my-slug/my-lovely-section-slug" }
 
-        let!(:change_note_for_child_slug) {
+        let!(:change_note_for_child_slug) do
           PublicationLog.create(
             slug: child_slug,
             title: "",
             change_note: "A child note",
             version_number: 1,
           )
-        }
+        end
 
         it "includes the notes for the child" do
           expect(PublicationLog.change_notes_for(slug)).to include change_note_for_child_slug

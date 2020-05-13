@@ -63,7 +63,7 @@ class Section
   end
 
   def minor_update?
-    !!minor_update
+    minor_update.present?
   end
 
   def to_param

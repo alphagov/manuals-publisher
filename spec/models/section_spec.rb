@@ -1,9 +1,9 @@
 require "spec_helper"
 
 describe Section do
-  subject(:section) {
+  subject(:section) do
     Section.new(manual: manual, uuid: section_uuid, previous_edition: previous_edition, latest_edition: latest_edition)
-  }
+  end
 
   def key_classes_for(hash)
     hash.keys.map(&:class).uniq
@@ -20,7 +20,7 @@ describe Section do
   let(:new_edition) { double(:new_edition, published?: false, draft?: true, assign_attributes: nil, version_number: 2) }
   let(:attachments) { double(:attachments) }
 
-  let(:edition_messages) {
+  let(:edition_messages) do
     {
       build_attachment: nil,
       assign_attributes: nil,
@@ -33,11 +33,11 @@ describe Section do
       :exported_at= => nil,
       save: nil,
     }
-  }
+  end
 
   let(:attachments_proxy) { double(:attachments_proxy, to_a: attachments) }
 
-  let(:draft_edition_v1) {
+  let(:draft_edition_v1) do
     double(
       :draft_edition_v1,
       edition_messages.merge(
@@ -50,9 +50,9 @@ describe Section do
         exported_at: nil,
       ),
     )
-  }
+  end
 
-  let(:draft_edition_v2) {
+  let(:draft_edition_v2) do
     double(
       :draft_edition_v2,
       edition_messages.merge(
@@ -65,9 +65,9 @@ describe Section do
         exported_at: nil,
       ),
     )
-  }
+  end
 
-  let(:draft_edition_v3) {
+  let(:draft_edition_v3) do
     double(
       :draft_edition_v3,
       edition_messages.merge(
@@ -80,9 +80,9 @@ describe Section do
         exported_at: nil,
       ),
     )
-  }
+  end
 
-  let(:published_edition_v1) {
+  let(:published_edition_v1) do
     double(
       :published_edition_v1,
       edition_messages.merge(
@@ -95,9 +95,9 @@ describe Section do
         version_number: 1,
       ),
     )
-  }
+  end
 
-  let(:withdrawn_edition_v2) {
+  let(:withdrawn_edition_v2) do
     double(
       :withdrawn_edition_v2,
       edition_messages.merge(
@@ -110,7 +110,7 @@ describe Section do
         version_number: 2,
       ),
     )
-  }
+  end
 
   before do
     allow(SlugGenerator).to receive(:new).with(prefix: manual_slug).and_return(slug_generator)
@@ -333,14 +333,14 @@ describe Section do
       let(:attributes) { { title: "It is a new title" } }
 
       let(:edition_body) { double(:edition_body) }
-      let(:edition_attributes) {
+      let(:edition_attributes) do
         {
           "_id" => "superfluous id",
           "updated_at" => "superfluous timestamp",
           "body" => edition_body,
           "arbitrary_attribute" => "arbitrary-attribute",
         }.with_indifferent_access
-      }
+      end
 
       before do
         allow(published_edition_v1).to receive(:attributes)
@@ -567,12 +567,12 @@ describe Section do
     let(:attachment_one) { double("attachment_one", id: id_object("one")) }
     let(:attachment_two) { double("attachment_two", id: id_object("two")) }
 
-    let(:attachments) {
+    let(:attachments) do
       [
         attachment_one,
         attachment_two,
       ]
-    }
+    end
 
     def id_object(id_string)
       # like a Mongoid BSON id

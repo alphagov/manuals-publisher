@@ -8,13 +8,13 @@ RSpec.describe Manual::PublishService do
   let(:publishing_adapter) { double(:publishing_adapter) }
   let(:user) { double(:user) }
 
-  subject {
+  subject do
     Manual::PublishService.new(
       user: user,
       manual_id: manual_id,
       version_number: version_number,
     )
-  }
+  end
 
   before do
     allow(Manual).to receive(:find) { manual }

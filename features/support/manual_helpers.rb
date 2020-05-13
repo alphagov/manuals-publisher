@@ -447,7 +447,7 @@ module ManualHelpers
   end
 
   def change_notes_sent_to_publishing_api_include_section(section)
-    ->(request) do
+    lambda do |request|
       data = JSON.parse(request.body)
       change_notes = data["details"]["change_notes"]
       change_notes.detect { |change_note|
@@ -463,7 +463,7 @@ module ManualHelpers
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
       manual.id,
-      with_matcher: ->(request) do
+      with_matcher: lambda do |request|
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
@@ -478,7 +478,7 @@ module ManualHelpers
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
       section.uuid,
-      with_matcher: ->(request) do
+      with_matcher: lambda do |request|
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.as_json) &&
         !data.key?("public_updated_at")
@@ -494,7 +494,7 @@ module ManualHelpers
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
       manual.id,
-      with_matcher: ->(request) do
+      with_matcher: lambda do |request|
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.as_json) &&
         (data["public_updated_at"] == expected_date.as_json)
@@ -509,7 +509,7 @@ module ManualHelpers
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
       section.uuid,
-      with_matcher: ->(request) do
+      with_matcher: lambda do |request|
         data = JSON.parse(request.body)
         (data["first_published_at"] == expected_date.as_json) &&
         (data["public_updated_at"] == expected_date.as_json)
@@ -525,7 +525,7 @@ module ManualHelpers
     # when drafting the content
     check_section_is_drafted_to_publishing_api(
       entity_id_for(manual),
-      with_matcher: ->(request) do
+      with_matcher: lambda do |request|
         data = JSON.parse(request.body)
         !data.key?("first_published_at") &&
         !data.key?("public_updated_at")

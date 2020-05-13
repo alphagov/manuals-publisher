@@ -18,8 +18,8 @@ class PublicationLog
     with_slug_prefix(slug)
       .order_by(%i[created_at asc])
       .to_a
-      .uniq { |publication|
+      .uniq do |publication|
         [publication.slug, publication.version_number]
-      }
+      end
   end
 end
