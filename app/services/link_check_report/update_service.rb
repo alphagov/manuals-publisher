@@ -15,7 +15,7 @@ class LinkCheckReport::UpdateService
     links = payload.fetch("links", [])
     update_links!(links)
   rescue Mongoid::Errors::Validations => e
-    raise InvalidReport.new(e)
+    raise InvalidReport, e
   end
 
 private

@@ -23,7 +23,7 @@ class Section
       .reverse
 
     if editions.empty?
-      raise KeyError.new("key not found #{section_uuid}")
+      raise KeyError, "key not found #{section_uuid}"
     else
       Section.new(manual: manual, uuid: section_uuid, previous_edition: editions.first, latest_edition: editions.last)
     end

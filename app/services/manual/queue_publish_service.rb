@@ -18,9 +18,7 @@ class Manual::QueuePublishService
       PublishManualWorker.perform_async(task.to_param)
       manual
     else
-      raise InvalidStateError.new(
-        "The manual with id '#{manual.id}' could not be published as it was not in a draft state.",
-      )
+      raise InvalidStateError, "The manual with id '#{manual.id}' could not be published as it was not in a draft state."
     end
   end
 

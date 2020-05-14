@@ -12,11 +12,11 @@ class Section::RemoveService
     begin
       manual = Manual.find(manual_id, user)
     rescue KeyError
-      raise ManualNotFoundError.new(manual_id)
+      raise ManualNotFoundError, manual_id
     end
 
     section = manual.find_section(section_uuid)
-    raise SectionNotFoundError.new(section_uuid) unless section.present?
+    raise SectionNotFoundError, section_uuid unless section.present?
 
     change_note_params = {
       minor_update: attributes.fetch(:minor_update, "0"),

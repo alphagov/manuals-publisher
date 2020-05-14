@@ -3,10 +3,10 @@ require "adapters"
 class CliManualDeleter
   def initialize(manual_slug: nil, manual_id: nil, stdin: STDIN, stdout: STDOUT)
     unless manual_slug || manual_id
-      raise ArgumentError.new("manual_slug or manual_id must be supplied")
+      raise ArgumentError, "manual_slug or manual_id must be supplied"
     end
     if manual_slug && manual_id
-      raise ArgumentError.new("manual_slug and manual_id must not both be supplied")
+      raise ArgumentError, "manual_slug and manual_id must not both be supplied"
     end
 
     @manual_slug = manual_slug

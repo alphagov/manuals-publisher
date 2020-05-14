@@ -9,10 +9,13 @@ class SectionsController < ApplicationController
     )
     manual, section = service.call
 
-    render(:show, locals: {
-      manual: manual,
-      section: section,
-    })
+    render(
+      :show,
+      locals: {
+        manual: manual,
+        section: section,
+      },
+    )
   end
 
   def new
@@ -22,10 +25,13 @@ class SectionsController < ApplicationController
     )
     manual, section = service.call
 
-    render(:new, locals: {
-      manual: ManualViewAdapter.new(manual),
-      section: SectionViewAdapter.new(manual, section),
-    })
+    render(
+      :new,
+      locals: {
+        manual: ManualViewAdapter.new(manual),
+        section: SectionViewAdapter.new(manual, section),
+      },
+    )
   end
 
   def create
@@ -39,10 +45,13 @@ class SectionsController < ApplicationController
     if section.valid?
       redirect_to(manual_path(manual))
     else
-      render(:new, locals: {
-        manual: ManualViewAdapter.new(manual),
-        section: SectionViewAdapter.new(manual, section),
-      })
+      render(
+        :new,
+        locals: {
+          manual: ManualViewAdapter.new(manual),
+          section: SectionViewAdapter.new(manual, section),
+        },
+      )
     end
   end
 
@@ -54,10 +63,13 @@ class SectionsController < ApplicationController
     )
     manual, section = service.call
 
-    render(:edit, locals: {
-      manual: ManualViewAdapter.new(manual),
-      section: SectionViewAdapter.new(manual, section),
-    })
+    render(
+      :edit,
+      locals: {
+        manual: ManualViewAdapter.new(manual),
+        section: SectionViewAdapter.new(manual, section),
+      },
+    )
   end
 
   def update
@@ -72,10 +84,13 @@ class SectionsController < ApplicationController
     if section.valid?
       redirect_to(manual_path(manual))
     else
-      render(:edit, locals: {
-        manual: ManualViewAdapter.new(manual),
-        section: SectionViewAdapter.new(manual, section),
-      })
+      render(
+        :edit,
+        locals: {
+          manual: ManualViewAdapter.new(manual),
+          section: SectionViewAdapter.new(manual, section),
+        },
+      )
     end
   end
 
@@ -112,10 +127,13 @@ class SectionsController < ApplicationController
     )
     manual, sections = service.call
 
-    render(:reorder, locals: {
-      manual: ManualViewAdapter.new(manual),
-      sections: sections,
-    })
+    render(
+      :reorder,
+      locals: {
+        manual: ManualViewAdapter.new(manual),
+        sections: sections,
+      },
+    )
   end
 
   def update_order
@@ -142,10 +160,13 @@ class SectionsController < ApplicationController
     )
     manual, section = service.call
 
-    render(:withdraw, locals: {
-      manual: ManualViewAdapter.new(manual),
-      section: SectionViewAdapter.new(manual, section),
-    })
+    render(
+      :withdraw,
+      locals: {
+        manual: ManualViewAdapter.new(manual),
+        section: SectionViewAdapter.new(manual, section),
+      },
+    )
   end
 
   def destroy
@@ -165,10 +186,13 @@ class SectionsController < ApplicationController
         },
       )
     else
-      render(:withdraw, locals: {
-        manual: ManualViewAdapter.new(manual),
-        section: SectionViewAdapter.new(manual, section),
-      })
+      render(
+        :withdraw,
+        locals: {
+          manual: ManualViewAdapter.new(manual),
+          section: SectionViewAdapter.new(manual, section),
+        },
+      )
     end
   end
 

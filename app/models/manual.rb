@@ -29,7 +29,7 @@ class Manual
     collection = user.manual_records
     manual_record = collection.find_by(manual_id: id)
     unless manual_record
-      raise(NotFoundError.new("Manual ID not found: #{id}"))
+      raise NotFoundError, "Manual ID not found: #{id}"
     end
 
     build_manual_for(manual_record)
@@ -40,11 +40,11 @@ class Manual
     manual_records = collection.where(slug: slug)
     case manual_records.length
     when 0
-      raise NotFoundError.new("Manual slug not found: #{slug}")
+      raise NotFoundError, "Manual slug not found: #{slug}"
     when 1
       build_manual_for(manual_records.first)
     else
-      raise AmbiguousSlugError.new("Multiple manuals found for slug: #{slug}")
+      raise AmbiguousSlugError, "Multiple manuals found for slug: #{slug}"
     end
   end
 

@@ -18,7 +18,7 @@ task :rebuild_major_publication_logs_for_manuals, [:slug] => :environment do |_,
 
   manuals.each.with_index(1) do |manual, i|
     manual_publication_log_filter = ManualPublicationLogFilter.new(manual)
-    logger.info(format("[% 3d/% 3d] id=%s slug=%s", i, count, manual.id, manual.slug))
+    logger.info(sprintf("[% 3d/% 3d] id=%s slug=%s", i, count, manual.id, manual.slug))
     manual_publication_log_filter.delete_logs_and_rebuild_for_major_updates_only!
   end
 
