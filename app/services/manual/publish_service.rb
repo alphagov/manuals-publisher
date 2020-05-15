@@ -17,10 +17,9 @@ class Manual::PublishService
       Adapters.publishing.publish(manual)
       manual.save(user)
     else
-      raise VersionMismatchError.new(
-        %(The manual with id '#{manual.id}' could not be published due to a version mismatch.
-          The version to publish was '#{version_number}' but the current version was '#{manual.version_number}'),
-      )
+      raise VersionMismatchError,
+            %(The manual with id '#{manual.id}' could not be published due to a version mismatch.
+          The version to publish was '#{version_number}' but the current version was '#{manual.version_number}')
     end
 
     manual

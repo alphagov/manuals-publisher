@@ -60,16 +60,22 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "sends the manual and the sections to the Publishing API" do
-      check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: {
-        title: manual_fields[:title],
-        description: manual_fields[:summary],
-      })
+      check_manual_is_drafted_to_publishing_api(
+        @manual.id,
+        extra_attributes: {
+          title: manual_fields[:title],
+          description: manual_fields[:summary],
+        },
+      )
       check_manual_is_published_to_publishing_api(@manual.id)
       @sections.each do |section|
-        check_section_is_drafted_to_publishing_api(section.uuid, extra_attributes: {
-          title: section.title,
-          description: section.summary,
-        })
+        check_section_is_drafted_to_publishing_api(
+          section.uuid,
+          extra_attributes: {
+            title: section.title,
+            description: section.summary,
+          },
+        )
         check_section_is_published_to_publishing_api(section.uuid)
       end
     end
@@ -87,16 +93,22 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "sends the manual and the sections to the Publishing API" do
-      check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: {
-        title: manual_fields[:title],
-        description: manual_fields[:summary],
-      })
+      check_manual_is_drafted_to_publishing_api(
+        @manual.id,
+        extra_attributes: {
+          title: manual_fields[:title],
+          description: manual_fields[:summary],
+        },
+      )
       check_manual_is_not_published_to_publishing_api(@manual.id)
       @sections.each do |section|
-        check_section_is_drafted_to_publishing_api(section.uuid, extra_attributes: {
-          title: section.title,
-          description: section.summary,
-        })
+        check_section_is_drafted_to_publishing_api(
+          section.uuid,
+          extra_attributes: {
+            title: section.title,
+            description: section.summary,
+          },
+        )
         check_section_is_not_published_to_publishing_api(section.uuid)
       end
     end
@@ -116,34 +128,46 @@ RSpec.describe "Republishing manuals", type: :feature do
     end
 
     it "sends the published versions of the manual and its sections to the Publishing API" do
-      check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: {
-        title: manual_fields[:title],
-        description: manual_fields[:summary],
-      })
+      check_manual_is_drafted_to_publishing_api(
+        @manual.id,
+        extra_attributes: {
+          title: manual_fields[:title],
+          description: manual_fields[:summary],
+        },
+      )
       check_manual_is_published_to_publishing_api(@manual.id)
       @sections.each do |section|
         edited_fields = edited_section_fields(section)
-        check_section_is_drafted_to_publishing_api(section.uuid, extra_attributes: {
-          title: edited_fields[:title],
-          description: edited_fields[:summary],
-        })
+        check_section_is_drafted_to_publishing_api(
+          section.uuid,
+          extra_attributes: {
+            title: edited_fields[:title],
+            description: edited_fields[:summary],
+          },
+        )
         check_section_is_published_to_publishing_api(section.uuid)
       end
     end
 
     it "sends the draft versions of the manual and its sections to the Publishing API" do
-      check_manual_is_drafted_to_publishing_api(@manual.id, extra_attributes: {
-        title: edited_manual_fields[:title],
-        description: edited_manual_fields[:summary],
-      })
+      check_manual_is_drafted_to_publishing_api(
+        @manual.id,
+        extra_attributes: {
+          title: edited_manual_fields[:title],
+          description: edited_manual_fields[:summary],
+        },
+      )
       # we can't check that it's not published (because one version will be)
       # all we can check is that it was only published once
       check_manual_is_published_to_publishing_api(@manual.id, times: 1)
       @edited_sections.each do |section|
-        check_section_is_drafted_to_publishing_api(section.uuid, extra_attributes: {
-          title: section.title,
-          description: section.summary,
-        })
+        check_section_is_drafted_to_publishing_api(
+          section.uuid,
+          extra_attributes: {
+            title: section.title,
+            description: section.summary,
+          },
+        )
         # we can't check that it's not published (because one version will be)
         # all we can check is that it was only published once
         check_section_is_published_to_publishing_api(section.uuid, times: 1)

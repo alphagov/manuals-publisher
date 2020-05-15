@@ -67,10 +67,12 @@ private
             send_gone(section_uuid, section_slug)
           else
             puts "Redirecting content item '/#{section_slug}' to '/#{old_manual.slug}'"
-            publishing_api.unpublish(section_uuid,
-                                     type: "redirect",
-                                     alternative_path: "/#{old_manual.slug}",
-                                     discard_drafts: true)
+            publishing_api.unpublish(
+              section_uuid,
+              type: "redirect",
+              alternative_path: "/#{old_manual.slug}",
+              discard_drafts: true,
+            )
           end
         rescue GdsApi::HTTPNotFound
           puts "Content item with section_uuid #{section_uuid} not present in the publishing API"
@@ -147,18 +149,22 @@ private
     new_section_uuids.each do |section_uuid|
       most_recent_edition = most_recent_edition_of_section(section_uuid)
       puts "Redirecting #{section_uuid} to '#{most_recent_edition.slug}'"
-      publishing_api.unpublish(section_uuid,
-                               type: "redirect",
-                               alternative_path: "/#{most_recent_edition.slug}",
-                               discard_drafts: true)
+      publishing_api.unpublish(
+        section_uuid,
+        type: "redirect",
+        alternative_path: "/#{most_recent_edition.slug}",
+        discard_drafts: true,
+      )
     end
 
     # Clean up the drafted manual in the Publishing API
     puts "Redirecting #{new_manual.id} to '/#{to_slug}'"
-    publishing_api.unpublish(new_manual.id,
-                             type: "redirect",
-                             alternative_path: "/#{to_slug}",
-                             discard_drafts: true)
+    publishing_api.unpublish(
+      new_manual.id,
+      type: "redirect",
+      alternative_path: "/#{to_slug}",
+      discard_drafts: true,
+    )
   end
 
   def redraft_and_republish

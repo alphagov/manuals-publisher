@@ -280,7 +280,7 @@ private
   def publish_section(section, republish:)
     if section.needs_exporting? || republish
       Services.publishing_api.publish(section.uuid, update_type(republish))
-      section.mark_as_exported! if !republish
+      section.mark_as_exported! unless republish
     end
   end
 
@@ -288,7 +288,7 @@ private
     if !section.withdrawn? || republish
       begin
         Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
-        section.withdraw_and_mark_as_exported! if !republish
+        section.withdraw_and_mark_as_exported! unless republish
       rescue GdsApi::HTTPNotFound
         puts "Content item with section uuid #{section.uuid} not present in the publishing API"
       end

@@ -36,12 +36,12 @@ private
   end
 
   def validate_old_section_in_database
-    raise Error.new("Manual Section does not exist in database") if old_section_edition.nil?
+    raise Error, "Manual Section does not exist in database" if old_section_edition.nil?
   end
 
   def validate_old_section_in_content_store
-    raise Error.new("Manual Section does not exist in content store") if old_section_in_content_store.nil?
-    raise Error.new("Manual Section already withdrawn") if old_section_in_content_store["format"] == "gone"
+    raise Error, "Manual Section does not exist in content store" if old_section_in_content_store.nil?
+    raise Error, "Manual Section already withdrawn" if old_section_in_content_store["format"] == "gone"
   end
 
   def validate_new_section
@@ -51,12 +51,12 @@ private
 
   def validate_new_section_in_database
     section_edition = section_edition_in_database(new_section_slug)
-    raise Error.new("Manual Section already exists in database") if section_edition
+    raise Error, "Manual Section already exists in database" if section_edition
   end
 
   def validate_new_section_in_content_store
     section = section_in_content_store(new_section_slug)
-    raise Error.new("Manual Section already exists in content store") if section
+    raise Error, "Manual Section already exists in content store" if section
   rescue GdsApi::ContentStore::ItemNotFound # rubocop:disable Lint/SuppressedException
   end
 
@@ -107,7 +107,7 @@ private
   def manual
     Manual.find_by_slug!(@manual_slug, user)
   rescue Manual::NotFoundError, Manual::AmbiguousSlugError => e
-    raise Error.new(e.message)
+    raise Error, e.message
   end
 
   def manual_version_number

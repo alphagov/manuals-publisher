@@ -7,11 +7,14 @@ class SectionAttachmentsController < ApplicationController
     )
     manual, section, attachment = service.call
 
-    render(:new, locals: {
-      manual: ManualViewAdapter.new(manual),
-      section: SectionViewAdapter.new(manual, section),
-      attachment: attachment,
-    })
+    render(
+      :new,
+      locals: {
+        manual: ManualViewAdapter.new(manual),
+        section: SectionViewAdapter.new(manual, section),
+        attachment: attachment,
+      },
+    )
   end
 
   def create
@@ -35,11 +38,14 @@ class SectionAttachmentsController < ApplicationController
     )
     manual, section, attachment = service.call
 
-    render(:edit, locals: {
-      manual: ManualViewAdapter.new(manual),
-      section: SectionViewAdapter.new(manual, section),
-      attachment: attachment,
-    })
+    render(
+      :edit,
+      locals: {
+        manual: ManualViewAdapter.new(manual),
+        section: SectionViewAdapter.new(manual, section),
+        attachment: attachment,
+      },
+    )
   end
 
   def update
@@ -55,11 +61,14 @@ class SectionAttachmentsController < ApplicationController
     if attachment.persisted?
       redirect_to(edit_manual_section_path(manual, section))
     else
-      render(:edit, locals: {
-        manual: ManualViewAdapter.new(manual),
-        section: SectionViewAdapter.new(manual, section),
-        attachment: attachment,
-      })
+      render(
+        :edit,
+        locals: {
+          manual: ManualViewAdapter.new(manual),
+          section: SectionViewAdapter.new(manual, section),
+          attachment: attachment,
+        },
+      )
     end
   end
 

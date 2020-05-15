@@ -25,11 +25,14 @@ class ManualsController < ApplicationController
       flash.now[:error] = "Warning: This manual's URL is already used on GOV.UK. You can't publish it until you change the title."
     end
 
-    render(:show, locals: {
-      manual: manual,
-      slug_unique: slug_unique,
-      clashing_sections: clashing_sections,
-    })
+    render(
+      :show,
+      locals: {
+        manual: manual,
+        slug_unique: slug_unique,
+        clashing_sections: clashing_sections,
+      },
+    )
   end
 
   def new
@@ -50,9 +53,12 @@ class ManualsController < ApplicationController
     if manual.valid?
       redirect_to(manual_path(manual))
     else
-      render(:new, locals: {
-        manual: manual,
-      })
+      render(
+        :new,
+        locals: {
+          manual: manual,
+        },
+      )
     end
   end
 
@@ -78,9 +84,12 @@ class ManualsController < ApplicationController
     if manual.valid?
       redirect_to(manual_path(manual))
     else
-      render(:edit, locals: {
-        manual: manual,
-      })
+      render(
+        :edit,
+        locals: {
+          manual: manual,
+        },
+      )
     end
   end
 
@@ -106,9 +115,12 @@ class ManualsController < ApplicationController
     if manual.valid?
       redirect_to(manual_path(manual))
     else
-      render(:edit_original_publication_date, locals: {
-        manual: manual,
-      })
+      render(
+        :edit_original_publication_date,
+        locals: {
+          manual: manual,
+        },
+      )
     end
   end
 

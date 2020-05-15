@@ -2,10 +2,13 @@ require "spec_helper"
 
 RSpec.describe LinkCheckReport::UpdateService do
   let(:link_check_report) do
-    FactoryBot.create(:link_check_report, :with_pending_links,
-                      batch_id: 1,
-                      manual_id: 1,
-                      link_uris: ["http://www.example.com", "http://www.gov.com"])
+    FactoryBot.create(
+      :link_check_report,
+      :with_pending_links,
+      batch_id: 1,
+      manual_id: 1,
+      link_uris: ["http://www.example.com", "http://www.gov.com"],
+    )
   end
 
   let(:completed_at) { Time.now }
@@ -25,13 +28,14 @@ RSpec.describe LinkCheckReport::UpdateService do
       checked: completed_at.try(:iso8601),
       problem_summary: nil,
       suggested_fix: nil,
-    }, {
-      uri: "http://www.gov.com",
-      status: "broken",
-      checked: completed_at.try(:iso8601),
-      problem_summary: "Page Not Found",
-      suggested_fix: "Contact site administrator",
-    }]
+    },
+     {
+       uri: "http://www.gov.com",
+       status: "broken",
+       checked: completed_at.try(:iso8601),
+       problem_summary: "Page Not Found",
+       suggested_fix: "Contact site administrator",
+     }]
   end
 
   subject do

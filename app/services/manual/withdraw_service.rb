@@ -10,7 +10,7 @@ class Manual::WithdrawService
     begin
       manual = Manual.find(manual_id, user)
     rescue KeyError => e
-      raise ManualNotFoundError.new(e)
+      raise ManualNotFoundError, e
     end
 
     manual.withdraw

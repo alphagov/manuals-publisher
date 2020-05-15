@@ -207,15 +207,19 @@ describe ManualRelocator do
         end
 
         it "unpublishes the existing manual's sections with redirects to the existing slug" do
-          assert_publishing_api_unpublish(existing_section_1.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            existing_section_1.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}",
+            discard_drafts: true,
+          )
 
-          assert_publishing_api_unpublish(existing_section_2.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            existing_section_2.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}",
+            discard_drafts: true,
+          )
         end
 
         it "issues a gone for existing manual's sections that would be reused one of the new manual's sections" do
@@ -270,10 +274,12 @@ describe ManualRelocator do
         end
 
         it "unpublishes the temporary manual with a redirect to the existing slug" do
-          assert_publishing_api_unpublish(temp_manual_id,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temp_manual_id,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}",
+            discard_drafts: true,
+          )
         end
 
         it "moves the temporary manual's sections to the existing slug" do
@@ -284,20 +290,26 @@ describe ManualRelocator do
         end
 
         it "unpublishes the temporary manual's section slugs with redirects to their existing slug version" do
-          assert_publishing_api_unpublish(temporary_section_1.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}/temp_section_1",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temporary_section_1.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}/temp_section_1",
+            discard_drafts: true,
+          )
 
-          assert_publishing_api_unpublish(temporary_section_2.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}/temp_section_2",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temporary_section_2.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}/temp_section_2",
+            discard_drafts: true,
+          )
 
-          assert_publishing_api_unpublish(temporary_section_3.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}/section_3",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temporary_section_3.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}/section_3",
+            discard_drafts: true,
+          )
         end
 
         it "sends a new draft of the temporary manual with the existing slug as a route" do
@@ -339,10 +351,12 @@ describe ManualRelocator do
         end
 
         it "unpublishes the temporary manual with a redirect to the existing slug" do
-          assert_publishing_api_unpublish(temp_manual_id,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temp_manual_id,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}",
+            discard_drafts: true,
+          )
         end
 
         it "moves the temporary manual's sections to the existing slug" do
@@ -353,20 +367,26 @@ describe ManualRelocator do
         end
 
         it "unpublishes the temporary manual's section slugs with redirects to their existing slug version" do
-          assert_publishing_api_unpublish(temporary_section_1.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}/temp_section_1",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temporary_section_1.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}/temp_section_1",
+            discard_drafts: true,
+          )
 
-          assert_publishing_api_unpublish(temporary_section_2.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}/temp_section_2",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temporary_section_2.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}/temp_section_2",
+            discard_drafts: true,
+          )
 
-          assert_publishing_api_unpublish(temporary_section_3.section_uuid,
-                                          type: "redirect",
-                                          alternative_path: "/#{existing_slug}/section_3",
-                                          discard_drafts: true)
+          assert_publishing_api_unpublish(
+            temporary_section_3.section_uuid,
+            type: "redirect",
+            alternative_path: "/#{existing_slug}/section_3",
+            discard_drafts: true,
+          )
         end
 
         it "sends a draft of the published version of the temporary manual with the existing slug as a route" do

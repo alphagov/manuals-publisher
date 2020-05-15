@@ -355,20 +355,24 @@ Given(/^a published manual with some sections was created without the UI$/) do
 
   @manual = create_manual_without_ui(@manual_fields, organisation_slug: GDS::SSO.test_user.organisation_slug)
 
-  sec1 = create_section_without_ui(@manual,
-                                   {
-                                     title: "1st example section",
-                                     summary: "1st example section summary",
-                                     body: "1st example section body",
-                                   },
-                                   organisation_slug: GDS::SSO.test_user.organisation_slug)
-  sec2 = create_section_without_ui(@manual,
-                                   {
-                                     title: "2nd example section",
-                                     summary: "2nd example section summary",
-                                     body: "2nd example section body",
-                                   },
-                                   organisation_slug: GDS::SSO.test_user.organisation_slug)
+  sec1 = create_section_without_ui(
+    @manual,
+    {
+      title: "1st example section",
+      summary: "1st example section summary",
+      body: "1st example section body",
+    },
+    organisation_slug: GDS::SSO.test_user.organisation_slug,
+  )
+  sec2 = create_section_without_ui(
+    @manual,
+    {
+      title: "2nd example section",
+      summary: "2nd example section summary",
+      body: "2nd example section body",
+    },
+    organisation_slug: GDS::SSO.test_user.organisation_slug,
+  )
   @sections = [sec1, sec2]
 
   publish_manual_without_ui(@manual)
