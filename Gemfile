@@ -2,33 +2,20 @@ source "https://rubygems.org"
 
 gem "rails", "~> 5.2"
 
-# Alphabetical order please :)
+gem "gds-api-adapters", "~> 63.6"
 gem "gds-sso"
 gem "generic_form_builder"
+gem "govspeak", "~> 6.5.3"
 gem "govuk_admin_template"
+gem "govuk_app_config", "~> 2.2"
+gem "govuk_frontend_toolkit", "8.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
 gem "govuk_sidekiq", "~> 3"
 gem "mongoid", "~> 6.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code-v1.1.0-plus-mongoid-v5-fix"
 gem "plek"
 gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
-gem "state_machine", "1.2.0"
-
-gem "govuk_app_config", "~> 2.2"
-
-if ENV["API_DEV"]
-  gem "gds-api-adapters", path: "../gds-api-adapters"
-else
-  gem "gds-api-adapters", "~> 63.6"
-end
-
-if ENV["GOVSPEAK_DEV"]
-  gem "govspeak", path: "../govspeak"
-else
-  gem "govspeak", "~> 6.5.3"
-end
-
-gem "govuk_frontend_toolkit", "8.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
 gem "sass-rails"
+gem "state_machine", "1.2.0"
 gem "uglifier", ">= 1.3.0"
 
 group :development do
