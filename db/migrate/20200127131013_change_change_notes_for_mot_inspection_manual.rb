@@ -39,7 +39,6 @@ class ChangeChangeNotesForMotInspectionManual < Mongoid::Migration
       publication_log.updated_at = "2019-10-30T16:42:58Z".to_datetime
       publication_log.save(validate: false)
     end
-    puts "Created #{changes.count} publication logs"
 
     logger = Logger.new(STDOUT)
     logger.formatter = Logger::Formatter.new

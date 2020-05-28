@@ -57,7 +57,7 @@ describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
     FactoryBot.create(
       :section_edition,
       state: "published",
-      exported_at: (Date.today - last_time_period_days) - 1.day,
+      exported_at: (last_time_period_days - 1).days.ago,
     ).tap do |section_edition|
       section_edition.attachments.create!(
         filename: "attachy.pdf",
@@ -71,7 +71,7 @@ describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
     FactoryBot.create(
       :section_edition,
       state: "published",
-      exported_at: (Date.today - last_time_period_days) + 1.day,
+      exported_at: (last_time_period_days + 1).days.ago,
     ).tap do |section_edition|
       section_edition.attachments.create!(
         filename: "attachy.pdf",
@@ -102,7 +102,7 @@ describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
     FactoryBot.create(
       :section_edition,
       state: "draft",
-      exported_at: Date.today,
+      exported_at: Time.zone.now,
     ).tap do |section_edition|
       section_edition.attachments.create!(
         filename: "attachy.pdf",

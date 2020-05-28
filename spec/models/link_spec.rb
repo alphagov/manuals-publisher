@@ -5,7 +5,7 @@ describe Link do
     {
       uri: "http://www.example.com",
       status: "error",
-      checked: Time.parse("2017-12-01"),
+      checked: Time.zone.parse("2017-12-01"),
       check_warnings: ["example check warnings"],
       check_errors: ["example check errors"],
       problem_summary: "example problem",

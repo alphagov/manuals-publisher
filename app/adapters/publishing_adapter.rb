@@ -290,7 +290,7 @@ private
         Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
         section.withdraw_and_mark_as_exported! unless republish
       rescue GdsApi::HTTPNotFound
-        puts "Content item with section uuid #{section.uuid} not present in the publishing API"
+        Rails.logger.warn "Content item with section uuid #{section.uuid} not present in the publishing API"
       end
     end
   end

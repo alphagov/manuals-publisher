@@ -16,7 +16,7 @@ class Section::RemoveService
     end
 
     section = manual.find_section(section_uuid)
-    raise SectionNotFoundError, section_uuid unless section.present?
+    raise SectionNotFoundError, section_uuid if section.blank?
 
     change_note_params = {
       minor_update: attributes.fetch(:minor_update, "0"),

@@ -38,7 +38,7 @@ private
   end
 
   def abort_task(task, error)
-    task.update_attribute(:error, error.message)
+    task.update(error: error.message)
     task.abort!
   end
 

@@ -1,3 +1,17 @@
 inherit_gem:
   rubocop-govuk:
     - config/default.yml
+    - config/rails.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+
+# This is not supported for Mongoid
+Rails/DynamicFindBy:
+  Whitelist:
+    - find_by_slug!
+
+# This is not supported for Mongoid
+Rails/FindBy:
+  Enabled: false

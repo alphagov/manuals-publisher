@@ -194,8 +194,8 @@ describe ManualPublicationLogFilter::EditionOrdering do
     let!(:edition_in_first_position) { FactoryBot.create :section_edition }
     let!(:edition_in_second_position) { FactoryBot.create :section_edition }
 
-    let!(:other_edition_newer) { FactoryBot.create :section_edition, created_at: Time.now - 1.day }
-    let!(:other_edition_older) { FactoryBot.create :section_edition, created_at: Time.now - 1.week }
+    let!(:other_edition_newer) { FactoryBot.create :section_edition, created_at: Time.zone.now - 1.day }
+    let!(:other_edition_older) { FactoryBot.create :section_edition, created_at: Time.zone.now - 1.week }
 
     let!(:section_uuids) do
       [

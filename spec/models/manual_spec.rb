@@ -198,7 +198,7 @@ describe Manual do
 
     context "with disallowed attributes" do
       let(:new_id) { "new-manual-id" }
-      let(:new_updated_at) { Time.parse("2003-03-03") }
+      let(:new_updated_at) { Time.zone.parse("2003-03-03") }
 
       it "does not update the attributes" do
         manual.update(
@@ -404,9 +404,9 @@ describe Manual do
         body: "body",
         organisation_slug: "organisation-slug",
         state: "state",
-        updated_at: Time.now,
+        updated_at: Time.zone.now,
         version_number: 1,
-        originally_published_at: Time.now,
+        originally_published_at: Time.zone.now,
         use_originally_published_at_for_public_timestamp: true,
       )
     end
