@@ -124,7 +124,7 @@ module ManualHelpers
 
     click_on "Withdraw"
 
-    fill_in "Change note", with: change_note unless change_note.blank?
+    fill_in "Change note", with: change_note if change_note.present?
     if minor_update
       choose "Minor update"
     end

@@ -14,13 +14,13 @@ describe ManualRelocator do
   describe "#move!" do
     let!(:existing_manual) { ManualRecord.create(manual_id: existing_manual_id, slug: existing_slug, organisation_slug: "cabinet-office") }
     let!(:temp_manual) { ManualRecord.create(manual_id: temp_manual_id, slug: temp_slug, organisation_slug: "cabinet-office") }
-    let!(:existing_section_1) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/existing_section_1", section_uuid: "12345", version_number: 1, state: "published", exported_at: Time.zone.now) }
-    let!(:existing_section_2) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/existing_section_2", section_uuid: "23456", version_number: 1, state: "published", exported_at: Time.zone.now) }
-    let!(:temporary_section_1) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_1", section_uuid: "abcdef", version_number: 1, state: "published", exported_at: Time.zone.now) }
-    let!(:temporary_section_2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_2", section_uuid: "bcdefg", version_number: 1, state: "published", exported_at: Time.zone.now) }
+    let!(:existing_section1) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/existing_section1", section_uuid: "12345", version_number: 1, state: "published", exported_at: Time.zone.now) }
+    let!(:existing_section2) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/existing_section2", section_uuid: "23456", version_number: 1, state: "published", exported_at: Time.zone.now) }
+    let!(:temporary_section1) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section1", section_uuid: "abcdef", version_number: 1, state: "published", exported_at: Time.zone.now) }
+    let!(:temporary_section2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section2", section_uuid: "bcdefg", version_number: 1, state: "published", exported_at: Time.zone.now) }
 
-    let!(:existing_section_3) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/section_3", section_uuid: "34567", version_number: 1, state: "published", exported_at: Time.zone.now) }
-    let!(:temporary_section_3) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/section_3", section_uuid: "cdefgh", version_number: 1, state: "published", exported_at: Time.zone.now) }
+    let!(:existing_section3) { FactoryBot.create(:section_edition, slug: "#{existing_slug}/section3", section_uuid: "34567", version_number: 1, state: "published", exported_at: Time.zone.now) }
+    let!(:temporary_section3) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/section3", section_uuid: "cdefgh", version_number: 1, state: "published", exported_at: Time.zone.now) }
 
     let!(:existing_publication_log) { FactoryBot.create(:publication_log, slug: "#{existing_slug}/slug-for-existing-section", change_note: "Hello from #{existing_manual_id}") }
     let!(:temporary_publication_log) { FactoryBot.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
@@ -208,14 +208,14 @@ describe ManualRelocator do
 
         it "unpublishes the existing manual's sections with redirects to the existing slug" do
           assert_publishing_api_unpublish(
-            existing_section_1.section_uuid,
+            existing_section1.section_uuid,
             type: "redirect",
             alternative_path: "/#{existing_slug}",
             discard_drafts: true,
           )
 
           assert_publishing_api_unpublish(
-            existing_section_2.section_uuid,
+            existing_section2.section_uuid,
             type: "redirect",
             alternative_path: "/#{existing_slug}",
             discard_drafts: true,
@@ -224,34 +224,34 @@ describe ManualRelocator do
 
         it "issues a gone for existing manual's sections that would be reused one of the new manual's sections" do
           gone_object = {
-            base_path: "/#{existing_section_3.slug}",
-            content_id: existing_section_3.section_uuid,
+            base_path: "/#{existing_section3.slug}",
+            content_id: existing_section3.section_uuid,
             document_type: "gone",
             publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
             schema_name: "gone",
             routes: [
               {
-                path: "/#{existing_section_3.slug}",
+                path: "/#{existing_section3.slug}",
                 type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
               },
             ],
           }
 
-          assert_publishing_api_put_content(existing_section_3.section_uuid, request_json_matches(gone_object))
-          assert_publishing_api_publish(existing_section_3.section_uuid)
+          assert_publishing_api_put_content(existing_section3.section_uuid, request_json_matches(gone_object))
+          assert_publishing_api_publish(existing_section3.section_uuid)
         end
 
         it "destroys the existing manual's sections" do
           expect {
-            existing_section_1.reload
+            existing_section1.reload
           }.to raise_error(Mongoid::Errors::DocumentNotFound)
 
           expect {
-            existing_section_2.reload
+            existing_section2.reload
           }.to raise_error(Mongoid::Errors::DocumentNotFound)
 
           expect {
-            existing_section_3.reload
+            existing_section3.reload
           }.to raise_error(Mongoid::Errors::DocumentNotFound)
         end
 
@@ -283,31 +283,31 @@ describe ManualRelocator do
         end
 
         it "moves the temporary manual's sections to the existing slug" do
-          expect(temporary_section_1.reload.slug).to eq("#{existing_slug}/temp_section_1")
-          expect(temporary_section_2.reload.slug).to eq("#{existing_slug}/temp_section_2")
-          expect(temporary_section_3.reload.slug).to eq("#{existing_slug}/section_3")
+          expect(temporary_section1.reload.slug).to eq("#{existing_slug}/temp_section1")
+          expect(temporary_section2.reload.slug).to eq("#{existing_slug}/temp_section2")
+          expect(temporary_section3.reload.slug).to eq("#{existing_slug}/section3")
           expect(SectionEdition.where(slug: /#{temp_slug}/).count).to be(0)
         end
 
         it "unpublishes the temporary manual's section slugs with redirects to their existing slug version" do
           assert_publishing_api_unpublish(
-            temporary_section_1.section_uuid,
+            temporary_section1.section_uuid,
             type: "redirect",
-            alternative_path: "/#{existing_slug}/temp_section_1",
+            alternative_path: "/#{existing_slug}/temp_section1",
             discard_drafts: true,
           )
 
           assert_publishing_api_unpublish(
-            temporary_section_2.section_uuid,
+            temporary_section2.section_uuid,
             type: "redirect",
-            alternative_path: "/#{existing_slug}/temp_section_2",
+            alternative_path: "/#{existing_slug}/temp_section2",
             discard_drafts: true,
           )
 
           assert_publishing_api_unpublish(
-            temporary_section_3.section_uuid,
+            temporary_section3.section_uuid,
             type: "redirect",
-            alternative_path: "/#{existing_slug}/section_3",
+            alternative_path: "/#{existing_slug}/section3",
             discard_drafts: true,
           )
         end
@@ -321,21 +321,21 @@ describe ManualRelocator do
         end
 
         it "sends a new draft of each of the temporary manual's sections with the existing slug version of their path as a route" do
-          assert_publishing_api_put_content(temporary_section_1.section_uuid, with_route_matcher("/#{existing_slug}/temp_section_1"))
-          assert_publishing_api_put_content(temporary_section_2.section_uuid, with_route_matcher("/#{existing_slug}/temp_section_2"))
-          assert_publishing_api_put_content(temporary_section_3.section_uuid, with_route_matcher("/#{existing_slug}/section_3"))
+          assert_publishing_api_put_content(temporary_section1.section_uuid, with_route_matcher("/#{existing_slug}/temp_section1"))
+          assert_publishing_api_put_content(temporary_section2.section_uuid, with_route_matcher("/#{existing_slug}/temp_section2"))
+          assert_publishing_api_put_content(temporary_section3.section_uuid, with_route_matcher("/#{existing_slug}/section3"))
         end
 
         it "sends a publish request for each of the temporary manual's sections" do
-          assert_publishing_api_publish(temporary_section_1.section_uuid)
-          assert_publishing_api_publish(temporary_section_2.section_uuid)
-          assert_publishing_api_publish(temporary_section_3.section_uuid)
+          assert_publishing_api_publish(temporary_section1.section_uuid)
+          assert_publishing_api_publish(temporary_section2.section_uuid)
+          assert_publishing_api_publish(temporary_section3.section_uuid)
         end
       end
 
       context "when the temp manual has a draft" do
-        let!(:temporary_section_1_v2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_1", section_uuid: "abcdef", version_number: 2, state: "draft", body: temporary_section_1.body.reverse) }
-        let!(:temporary_section_2_v2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section_2", section_uuid: "bcdefg", version_number: 2, state: "draft", body: temporary_section_2.body.reverse) }
+        let!(:temporary_section1_v2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section1", section_uuid: "abcdef", version_number: 2, state: "draft", body: temporary_section1.body.reverse) }
+        let!(:temporary_section2_v2) { FactoryBot.create(:section_edition, slug: "#{temp_slug}/temp_section2", section_uuid: "bcdefg", version_number: 2, state: "draft", body: temporary_section2.body.reverse) }
 
         before do
           temp_manual.editions << ManualRecord::Edition.new(section_uuids: %w[abcdef bcdefg], state: "published", version_number: 1, body: "This has been published")
@@ -360,31 +360,31 @@ describe ManualRelocator do
         end
 
         it "moves the temporary manual's sections to the existing slug" do
-          expect(temporary_section_1.reload.slug).to eq("#{existing_slug}/temp_section_1")
-          expect(temporary_section_2.reload.slug).to eq("#{existing_slug}/temp_section_2")
-          expect(temporary_section_3.reload.slug).to eq("#{existing_slug}/section_3")
+          expect(temporary_section1.reload.slug).to eq("#{existing_slug}/temp_section1")
+          expect(temporary_section2.reload.slug).to eq("#{existing_slug}/temp_section2")
+          expect(temporary_section3.reload.slug).to eq("#{existing_slug}/section3")
           expect(SectionEdition.where(slug: /#{temp_slug}/).count).to be(0)
         end
 
         it "unpublishes the temporary manual's section slugs with redirects to their existing slug version" do
           assert_publishing_api_unpublish(
-            temporary_section_1.section_uuid,
+            temporary_section1.section_uuid,
             type: "redirect",
-            alternative_path: "/#{existing_slug}/temp_section_1",
+            alternative_path: "/#{existing_slug}/temp_section1",
             discard_drafts: true,
           )
 
           assert_publishing_api_unpublish(
-            temporary_section_2.section_uuid,
+            temporary_section2.section_uuid,
             type: "redirect",
-            alternative_path: "/#{existing_slug}/temp_section_2",
+            alternative_path: "/#{existing_slug}/temp_section2",
             discard_drafts: true,
           )
 
           assert_publishing_api_unpublish(
-            temporary_section_3.section_uuid,
+            temporary_section3.section_uuid,
             type: "redirect",
-            alternative_path: "/#{existing_slug}/section_3",
+            alternative_path: "/#{existing_slug}/section3",
             discard_drafts: true,
           )
         end
@@ -402,23 +402,23 @@ describe ManualRelocator do
         end
 
         it "sends a draft of each of the temporary manual's published sections with the existing slug version of their path as a route" do
-          assert_publishing_api_put_content(temporary_section_1.section_uuid, with_body_and_route_matcher(temporary_section_1.body, "/#{existing_slug}/temp_section_1"))
-          assert_publishing_api_put_content(temporary_section_2.section_uuid, with_body_and_route_matcher(temporary_section_2.body, "/#{existing_slug}/temp_section_2"))
+          assert_publishing_api_put_content(temporary_section1.section_uuid, with_body_and_route_matcher(temporary_section1.body, "/#{existing_slug}/temp_section1"))
+          assert_publishing_api_put_content(temporary_section2.section_uuid, with_body_and_route_matcher(temporary_section2.body, "/#{existing_slug}/temp_section2"))
         end
 
         it "sends a publish request for each of the temporary manual's published sections" do
-          assert_publishing_api_publish(temporary_section_1.section_uuid)
-          assert_publishing_api_publish(temporary_section_2.section_uuid)
+          assert_publishing_api_publish(temporary_section1.section_uuid)
+          assert_publishing_api_publish(temporary_section2.section_uuid)
         end
 
         it "does not send a publish request for any section only present in the new draft" do
-          assert_publishing_api_publish(temporary_section_3.section_uuid, nil, 0)
+          assert_publishing_api_publish(temporary_section3.section_uuid, nil, 0)
         end
 
         it "sends a draft of each of the temporary manual's draft sections with the existing slug version of their path as a route" do
-          assert_publishing_api_put_content(temporary_section_1.section_uuid, with_body_and_route_matcher(temporary_section_1_v2.body, "/#{existing_slug}/temp_section_1"))
-          assert_publishing_api_put_content(temporary_section_2.section_uuid, with_body_and_route_matcher(temporary_section_2_v2.body, "/#{existing_slug}/temp_section_2"))
-          assert_publishing_api_put_content(temporary_section_3.section_uuid, with_body_and_route_matcher(temporary_section_3.body, "/#{existing_slug}/section_3"))
+          assert_publishing_api_put_content(temporary_section1.section_uuid, with_body_and_route_matcher(temporary_section1_v2.body, "/#{existing_slug}/temp_section1"))
+          assert_publishing_api_put_content(temporary_section2.section_uuid, with_body_and_route_matcher(temporary_section2_v2.body, "/#{existing_slug}/temp_section2"))
+          assert_publishing_api_put_content(temporary_section3.section_uuid, with_body_and_route_matcher(temporary_section3.body, "/#{existing_slug}/section3"))
         end
       end
     end

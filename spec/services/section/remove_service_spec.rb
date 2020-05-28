@@ -56,7 +56,7 @@ RSpec.describe Section::RemoveService do
 
     context "when SectionNotFoundError is raised" do
       before do
-        ignoring(described_class::SectionNotFoundError) { service.call }
+        expect { service.call }.to raise_error(described_class::SectionNotFoundError)
       end
 
       it "does not mark the manual as a draft" do
@@ -69,11 +69,6 @@ RSpec.describe Section::RemoveService do
 
       it "does not discard a section" do
         expect(publishing_adapter).not_to have_received(:discard_section)
-      end
-
-      def ignoring(exception_class)
-        yield
-      rescue exception_class
       end
     end
   end

@@ -7,7 +7,7 @@ Given(/^I create a manual that was previously published elsewhere$/) do
   }
   @manual_slug = "guidance/example-manual-title"
 
-  @originally_published_at = Time.zone.parse("14-Dec-#{Date.today.year - 10} 09:30")
+  @originally_published_at = Time.zone.parse("14-Dec-#{Time.zone.now.year - 10} 09:30")
 
   create_manual(@manual_fields) do
     choose("has previously been published on another website.")
@@ -32,7 +32,7 @@ end
 When(/^I update the previously published date to a new one$/) do
   WebMock::RequestRegistry.instance.reset!
 
-  @new_originally_published_at = Time.zone.parse("25-Mar-#{Date.today.year - 8} 12:57")
+  @new_originally_published_at = Time.zone.parse("25-Mar-#{Time.zone.now.year - 8} 12:57")
 
   edit_manual_original_publication_date(@manual.title) do
     select_datetime @new_originally_published_at.to_s, from: "First publication date:"

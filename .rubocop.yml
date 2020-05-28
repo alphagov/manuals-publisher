@@ -1,23 +1,17 @@
-AllCops:
-  Exclude:
-    - 'tmp/**/*'
-
-Lint/SuppressedException:
-  Exclude:
-    - 'spec/**/*'
-
-Naming/VariableNumber:
-  Exclude:
-    - 'spec/models/manual_spec.rb'
-
-Style/FormatStringToken:
-  Exclude:
-    - 'lib/tasks/rebuild_major_publication_logs_for_manuals.rake'
-
-Style/RedundantReturn:
-  Exclude:
-    - 'app/models/manual.rb'
-
 inherit_gem:
   rubocop-govuk:
     - config/default.yml
+    - config/rails.yml
+
+inherit_mode:
+  merge:
+    - Exclude
+
+# This is not supported for Mongoid
+Rails/DynamicFindBy:
+  Whitelist:
+    - find_by_slug!
+
+# This is not supported for Mongoid
+Rails/FindBy:
+  Enabled: false

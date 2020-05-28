@@ -92,7 +92,7 @@ FactoryBot.define do
     body { "body" }
     state { "state" }
     version_number { 1 }
-    originally_published_at { Time.now }
+    originally_published_at { Time.zone.now }
     use_originally_published_at_for_public_timestamp { true }
   end
 
@@ -106,7 +106,7 @@ FactoryBot.define do
   factory :link_check_report do
     batch_id { 1 }
     status { "in_progress" }
-    completed_at { Time.now }
+    completed_at { Time.zone.now }
     links { [FactoryBot.build(:link)] }
 
     trait :completed do

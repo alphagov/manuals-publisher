@@ -8,7 +8,7 @@ describe LinkCheckReport, type: :model do
       status: "error",
       manual_id: "1",
       section_id: "1",
-      completed_at: Time.parse("2017-12-01"),
+      completed_at: Time.zone.parse("2017-12-01"),
     }
   end
 

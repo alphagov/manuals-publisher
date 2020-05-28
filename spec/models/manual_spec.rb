@@ -93,20 +93,20 @@ describe Manual do
     end
 
     context "when manual has sections" do
-      let(:section_1) { double(:section) }
-      let(:section_2) { double(:section) }
+      let(:section1) { double(:section) }
+      let(:section2) { double(:section) }
 
       before do
-        allow(section_1).to receive(:publish!)
-        allow(section_2).to receive(:publish!)
-        manual.sections = [section_1, section_2]
+        allow(section1).to receive(:publish!)
+        allow(section2).to receive(:publish!)
+        manual.sections = [section1, section2]
       end
 
       it "calls publish! on each section" do
         manual.publish
 
-        expect(section_1).to have_received(:publish!)
-        expect(section_2).to have_received(:publish!)
+        expect(section1).to have_received(:publish!)
+        expect(section2).to have_received(:publish!)
       end
     end
   end
@@ -198,7 +198,7 @@ describe Manual do
 
     context "with disallowed attributes" do
       let(:new_id) { "new-manual-id" }
-      let(:new_updated_at) { Time.parse("2003-03-03") }
+      let(:new_updated_at) { Time.zone.parse("2003-03-03") }
 
       it "does not update the attributes" do
         manual.update(
@@ -404,9 +404,9 @@ describe Manual do
         body: "body",
         organisation_slug: "organisation-slug",
         state: "state",
-        updated_at: Time.now,
+        updated_at: Time.zone.now,
         version_number: 1,
-        originally_published_at: Time.now,
+        originally_published_at: Time.zone.now,
         use_originally_published_at_for_public_timestamp: true,
       )
     end
@@ -502,8 +502,8 @@ describe Manual do
       let(:manual_id) { SecureRandom.uuid }
       let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 1, state: "draft") }
-      let!(:section_1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "draft") }
-      let!(:section_2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "draft") }
+      let!(:section1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "draft") }
+      let!(:section2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "draft") }
 
       before do
         manual_record.editions << manual_edition
@@ -532,19 +532,19 @@ describe Manual do
           sections = result.sections.to_a
           expect(sections.size).to eq 2
 
-          section_1 = sections[0]
-          expect(section_1).to be_a ::Section
-          expect(section_1.uuid).to eq "12345"
-          expect(section_1).to be_draft
-          expect(section_1.version_number).to eq 1
-          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section1 = sections[0]
+          expect(section1).to be_a ::Section
+          expect(section1.uuid).to eq "12345"
+          expect(section1).to be_draft
+          expect(section1.version_number).to eq 1
+          expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          section_2 = sections[1]
-          expect(section_2).to be_a ::Section
-          expect(section_2.uuid).to eq "67890"
-          expect(section_2).to be_draft
-          expect(section_2.version_number).to eq 1
-          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section2 = sections[1]
+          expect(section2).to be_a ::Section
+          expect(section2.uuid).to eq "67890"
+          expect(section2).to be_draft
+          expect(section2.version_number).to eq 1
+          expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
     end
@@ -553,8 +553,8 @@ describe Manual do
       let(:manual_id) { SecureRandom.uuid }
       let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 1, state: "published") }
-      let!(:section_1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-      let!(:section_2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+      let!(:section1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+      let!(:section2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
 
       before do
         manual_record.editions << manual_edition
@@ -577,19 +577,19 @@ describe Manual do
           sections = result.sections.to_a
           expect(sections.size).to eq 2
 
-          section_1 = sections[0]
-          expect(section_1).to be_a ::Section
-          expect(section_1.uuid).to eq "12345"
-          expect(section_1).to be_published
-          expect(section_1.version_number).to eq 1
-          expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+          section1 = sections[0]
+          expect(section1).to be_a ::Section
+          expect(section1.uuid).to eq "12345"
+          expect(section1).to be_published
+          expect(section1.version_number).to eq 1
+          expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-          section_2 = sections[1]
-          expect(section_2).to be_a ::Section
-          expect(section_2.uuid).to eq "67890"
-          expect(section_2).to be_published
-          expect(section_2.version_number).to eq 1
-          expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+          section2 = sections[1]
+          expect(section2).to be_a ::Section
+          expect(section2.uuid).to eq "67890"
+          expect(section2).to be_published
+          expect(section2.version_number).to eq 1
+          expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
         end
       end
 
@@ -604,8 +604,8 @@ describe Manual do
       let(:manual_id) { SecureRandom.uuid }
       let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 1, state: "withdrawn") }
-      let!(:section_1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "archived") }
-      let!(:section_2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "archived") }
+      let!(:section1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "archived") }
+      let!(:section2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "archived") }
 
       before do
         manual_record.editions << manual_edition
@@ -636,10 +636,10 @@ describe Manual do
       end
 
       context "including new drafts of all sections" do
-        let!(:section_1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-        let!(:section_2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
-        let!(:section_1_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 2, state: "draft") }
-        let!(:section_2_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
+        let!(:section1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+        let!(:section2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+        let!(:section1_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 2, state: "draft") }
+        let!(:section2_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
 
         context "the published version returned" do
           it "is the published version as a Manual instance" do
@@ -658,19 +658,19 @@ describe Manual do
             sections = result.sections.to_a
             expect(sections.size).to eq 2
 
-            section_1 = sections[0]
-            expect(section_1).to be_a ::Section
-            expect(section_1.uuid).to eq "12345"
-            expect(section_1).to be_published
-            expect(section_1.version_number).to eq 1
-            expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+            section1 = sections[0]
+            expect(section1).to be_a ::Section
+            expect(section1.uuid).to eq "12345"
+            expect(section1).to be_published
+            expect(section1.version_number).to eq 1
+            expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-            section_2 = sections[1]
-            expect(section_2).to be_a ::Section
-            expect(section_2.uuid).to eq "67890"
-            expect(section_2).to be_published
-            expect(section_2.version_number).to eq 1
-            expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+            section2 = sections[1]
+            expect(section2).to be_a ::Section
+            expect(section2.uuid).to eq "67890"
+            expect(section2).to be_published
+            expect(section2.version_number).to eq 1
+            expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
           end
         end
 
@@ -691,26 +691,26 @@ describe Manual do
             sections = result.sections.to_a
             expect(sections.size).to eq 2
 
-            section_1 = sections[0]
-            expect(section_1).to be_a ::Section
-            expect(section_1.uuid).to eq "12345"
-            expect(section_1).to be_draft
-            expect(section_1.version_number).to eq 2
-            expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+            section1 = sections[0]
+            expect(section1).to be_a ::Section
+            expect(section1.uuid).to eq "12345"
+            expect(section1).to be_draft
+            expect(section1.version_number).to eq 2
+            expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-            section_2 = sections[1]
-            expect(section_2).to be_a ::Section
-            expect(section_2.uuid).to eq "67890"
-            expect(section_2).to be_draft
-            expect(section_2.version_number).to eq 2
-            expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+            section2 = sections[1]
+            expect(section2).to be_a ::Section
+            expect(section2.uuid).to eq "67890"
+            expect(section2).to be_draft
+            expect(section2.version_number).to eq 2
+            expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
           end
         end
       end
 
       context "without new drafts of any sections" do
-        let!(:section_1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-        let!(:section_2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+        let!(:section1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+        let!(:section2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
 
         context "the published version returned" do
           it "is the published version as a Manual instance" do
@@ -729,19 +729,19 @@ describe Manual do
             sections = result.sections.to_a
             expect(sections.size).to eq 2
 
-            section_1 = sections[0]
-            expect(section_1).to be_a ::Section
-            expect(section_1.uuid).to eq "12345"
-            expect(section_1).to be_published
-            expect(section_1.version_number).to eq 1
-            expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+            section1 = sections[0]
+            expect(section1).to be_a ::Section
+            expect(section1.uuid).to eq "12345"
+            expect(section1).to be_published
+            expect(section1.version_number).to eq 1
+            expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-            section_2 = sections[1]
-            expect(section_2).to be_a ::Section
-            expect(section_2.uuid).to eq "67890"
-            expect(section_2).to be_published
-            expect(section_2.version_number).to eq 1
-            expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+            section2 = sections[1]
+            expect(section2).to be_a ::Section
+            expect(section2.uuid).to eq "67890"
+            expect(section2).to be_published
+            expect(section2.version_number).to eq 1
+            expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
           end
         end
 
@@ -762,27 +762,27 @@ describe Manual do
             sections = result.sections.to_a
             expect(sections.size).to eq 2
 
-            section_1 = sections[0]
-            expect(section_1).to be_a ::Section
-            expect(section_1.uuid).to eq "12345"
-            expect(section_1).to be_published
-            expect(section_1.version_number).to eq 1
-            expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+            section1 = sections[0]
+            expect(section1).to be_a ::Section
+            expect(section1.uuid).to eq "12345"
+            expect(section1).to be_published
+            expect(section1.version_number).to eq 1
+            expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-            section_2 = sections[1]
-            expect(section_2).to be_a ::Section
-            expect(section_2.uuid).to eq "67890"
-            expect(section_2).to be_published
-            expect(section_2.version_number).to eq 1
-            expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+            section2 = sections[1]
+            expect(section2).to be_a ::Section
+            expect(section2.uuid).to eq "67890"
+            expect(section2).to be_published
+            expect(section2.version_number).to eq 1
+            expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
           end
         end
       end
 
       context "including new drafts of some sections" do
-        let!(:section_1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
-        let!(:section_2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
-        let!(:section_2_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
+        let!(:section1_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
+        let!(:section2_published) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
+        let!(:section2_draft) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 2, state: "draft") }
 
         context "the published version returned" do
           it "is the published version as a Manual instance" do
@@ -801,19 +801,19 @@ describe Manual do
             sections = result.sections.to_a
             expect(sections.size).to eq 2
 
-            section_1 = sections[0]
-            expect(section_1).to be_a ::Section
-            expect(section_1.uuid).to eq "12345"
-            expect(section_1).to be_published
-            expect(section_1.version_number).to eq 1
-            expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+            section1 = sections[0]
+            expect(section1).to be_a ::Section
+            expect(section1.uuid).to eq "12345"
+            expect(section1).to be_published
+            expect(section1.version_number).to eq 1
+            expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-            section_2 = sections[1]
-            expect(section_2).to be_a ::Section
-            expect(section_2.uuid).to eq "67890"
-            expect(section_2).to be_published
-            expect(section_2.version_number).to eq 1
-            expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+            section2 = sections[1]
+            expect(section2).to be_a ::Section
+            expect(section2.uuid).to eq "67890"
+            expect(section2).to be_published
+            expect(section2.version_number).to eq 1
+            expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
           end
         end
 
@@ -834,19 +834,19 @@ describe Manual do
             sections = result.sections.to_a
             expect(sections.size).to eq 2
 
-            section_1 = sections[0]
-            expect(section_1).to be_a ::Section
-            expect(section_1.uuid).to eq "12345"
-            expect(section_1).to be_published
-            expect(section_1.version_number).to eq 1
-            expect(section_1.slug).to eq "guidance/my-amazing-manual/section-1"
+            section1 = sections[0]
+            expect(section1).to be_a ::Section
+            expect(section1.uuid).to eq "12345"
+            expect(section1).to be_published
+            expect(section1.version_number).to eq 1
+            expect(section1.slug).to eq "guidance/my-amazing-manual/section-1"
 
-            section_2 = sections[1]
-            expect(section_2).to be_a ::Section
-            expect(section_2.uuid).to eq "67890"
-            expect(section_2).to be_draft
-            expect(section_2.version_number).to eq 2
-            expect(section_2.slug).to eq "guidance/my-amazing-manual/section-2"
+            section2 = sections[1]
+            expect(section2).to be_a ::Section
+            expect(section2.uuid).to eq "67890"
+            expect(section2).to be_draft
+            expect(section2.version_number).to eq 2
+            expect(section2.slug).to eq "guidance/my-amazing-manual/section-2"
           end
         end
       end
@@ -865,19 +865,19 @@ describe Manual do
     end
 
     context "when manual has sections" do
-      let(:section_1) { double(:section) }
-      let(:section_2) { double(:section) }
-      let(:section_3) { double(:section) }
+      let(:section1) { double(:section) }
+      let(:section2) { double(:section) }
+      let(:section3) { double(:section) }
 
       before do
-        allow(manual).to receive(:sections).and_return([section_1, section_2, section_3])
+        allow(manual).to receive(:sections).and_return([section1, section2, section3])
       end
 
       context "none of which need exporting" do
         before do
-          allow(section_1).to receive(:needs_exporting?).and_return(false)
-          allow(section_2).to receive(:needs_exporting?).and_return(false)
-          allow(section_3).to receive(:needs_exporting?).and_return(false)
+          allow(section1).to receive(:needs_exporting?).and_return(false)
+          allow(section2).to receive(:needs_exporting?).and_return(false)
+          allow(section3).to receive(:needs_exporting?).and_return(false)
         end
 
         it "returns truthy" do
@@ -887,31 +887,31 @@ describe Manual do
 
       context "some of which need exporting" do
         before do
-          allow(section_1).to receive(:needs_exporting?).and_return(false)
-          allow(section_2).to receive(:needs_exporting?).and_return(true)
-          allow(section_3).to receive(:needs_exporting?).and_return(true)
+          allow(section1).to receive(:needs_exporting?).and_return(false)
+          allow(section2).to receive(:needs_exporting?).and_return(true)
+          allow(section3).to receive(:needs_exporting?).and_return(true)
         end
 
         it "returns truthy when all those sections are minor versions" do
-          allow(section_1).to receive(:version_type).and_return(:major)
-          allow(section_2).to receive(:version_type).and_return(:minor)
-          allow(section_3).to receive(:version_type).and_return(:minor)
+          allow(section1).to receive(:version_type).and_return(:major)
+          allow(section2).to receive(:version_type).and_return(:minor)
+          allow(section3).to receive(:version_type).and_return(:minor)
 
           expect(manual.all_sections_are_minor?).to be_truthy
         end
 
         it "returns falsey when at least one of those sections is a new version" do
-          allow(section_1).to receive(:version_type).and_return(:minor)
-          allow(section_2).to receive(:version_type).and_return(:minor)
-          allow(section_3).to receive(:version_type).and_return(:new)
+          allow(section1).to receive(:version_type).and_return(:minor)
+          allow(section2).to receive(:version_type).and_return(:minor)
+          allow(section3).to receive(:version_type).and_return(:new)
 
           expect(manual.all_sections_are_minor?).to be_falsey
         end
 
         it "returns falsey when at least one of those sections is a major version" do
-          allow(section_1).to receive(:version_type).and_return(:minor)
-          allow(section_2).to receive(:version_type).and_return(:minor)
-          allow(section_3).to receive(:version_type).and_return(:major)
+          allow(section1).to receive(:version_type).and_return(:minor)
+          allow(section2).to receive(:version_type).and_return(:minor)
+          allow(section3).to receive(:version_type).and_return(:major)
 
           expect(manual.all_sections_are_minor?).to be_falsey
         end
@@ -979,40 +979,40 @@ describe Manual do
     end
 
     context "when manual has some sections with editions" do
-      let(:section_1_edition_1) { FactoryBot.create(:section_edition, section_uuid: "section-1") }
-      let(:section_1_edition_2) { FactoryBot.create(:section_edition, section_uuid: "section-1") }
-      let(:section_2_edition_1) { FactoryBot.create(:section_edition, section_uuid: "section-2") }
-      let(:section_2_edition_2) { FactoryBot.create(:section_edition, section_uuid: "section-2") }
+      let(:section1_edition1) { FactoryBot.create(:section_edition, section_uuid: "section-1") }
+      let(:section1_edition2) { FactoryBot.create(:section_edition, section_uuid: "section-1") }
+      let(:section2_edition1) { FactoryBot.create(:section_edition, section_uuid: "section-2") }
+      let(:section2_edition2) { FactoryBot.create(:section_edition, section_uuid: "section-2") }
 
-      let(:section_1) do
+      let(:section1) do
         Section.new(
           manual: manual,
           uuid: "section-1",
-          previous_edition: section_1_edition_1,
-          latest_edition: section_1_edition_2,
+          previous_edition: section1_edition1,
+          latest_edition: section1_edition2,
         )
       end
 
-      let(:section_2) do
+      let(:section2) do
         Section.new(
           manual: manual,
           uuid: "section-2",
-          previous_edition: section_2_edition_1,
-          latest_edition: section_2_edition_2,
+          previous_edition: section2_edition1,
+          latest_edition: section2_edition2,
         )
       end
 
       before do
-        manual.sections = [section_1, section_2]
+        manual.sections = [section1, section2]
       end
 
       it "destroys all associated section editions" do
         manual.destroy
 
-        expect(SectionEdition.where(id: section_1_edition_1.id)).to be_empty
-        expect(SectionEdition.where(id: section_1_edition_2.id)).to be_empty
-        expect(SectionEdition.where(id: section_2_edition_1.id)).to be_empty
-        expect(SectionEdition.where(id: section_2_edition_2.id)).to be_empty
+        expect(SectionEdition.where(id: section1_edition1.id)).to be_empty
+        expect(SectionEdition.where(id: section1_edition2.id)).to be_empty
+        expect(SectionEdition.where(id: section2_edition1.id)).to be_empty
+        expect(SectionEdition.where(id: section2_edition2.id)).to be_empty
       end
     end
   end

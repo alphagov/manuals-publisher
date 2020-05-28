@@ -14,7 +14,7 @@ RSpec.describe LinkCheckReport::CreateService do
         {
           uri: "http://www.example.com",
           status: "error",
-          checked: Time.parse("2017-12-01"),
+          checked: Time.zone.parse("2017-12-01"),
           warnings: ["example check warnings"],
           errors: ["example check errors"],
           problem_summary: "example problem",
@@ -69,7 +69,7 @@ RSpec.describe LinkCheckReport::CreateService do
               hash_including(
                 uri: "http://www.example.com",
                 status: "error",
-                checked: Time.parse("2017-12-01"),
+                checked: Time.zone.parse("2017-12-01"),
                 check_warnings: ["example check warnings"],
                 check_errors: ["example check errors"],
                 problem_summary: "example problem",
@@ -164,7 +164,7 @@ RSpec.describe LinkCheckReport::CreateService do
               hash_including(
                 uri: "http://www.example.com",
                 status: "error",
-                checked: Time.parse("2017-12-01"),
+                checked: Time.zone.parse("2017-12-01"),
                 check_warnings: ["example check warnings"],
                 check_errors: ["example check errors"],
                 problem_summary: "example problem",

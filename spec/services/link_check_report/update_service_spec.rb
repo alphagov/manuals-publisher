@@ -11,7 +11,7 @@ RSpec.describe LinkCheckReport::UpdateService do
     )
   end
 
-  let(:completed_at) { Time.now }
+  let(:completed_at) { Time.zone.now }
 
   let(:payload) do
     {

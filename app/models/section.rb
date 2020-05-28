@@ -1,12 +1,9 @@
-require "forwardable"
 require "active_model/conversion"
 require "active_model/naming"
 require "slug_generator"
 
 class Section
   include ActiveModel::Validations
-
-  extend Forwardable
 
   validates :summary, presence: true
   validates :title, presence: true
@@ -29,7 +26,16 @@ class Section
     end
   end
 
-  def_delegators :latest_edition, :title, :slug, :summary, :body, :updated_at, :version_number, :change_note, :minor_update, :exported_at
+  delegate :title,
+           :slug,
+           :summary,
+           :body,
+           :updated_at,
+           :version_number,
+           :change_note,
+           :minor_update,
+           :exported_at,
+           to: :latest_edition
 
   attr_reader :uuid
 
@@ -50,7 +56,7 @@ class Section
   end
 
   def update_slug!(full_new_section_slug)
-    latest_edition.update_attribute(:slug, full_new_section_slug)
+    latest_edition.update(slug: full_new_section_slug)
   end
 
   def save
@@ -104,9 +110,7 @@ class Section
       (previous_edition && previous_edition.published?)
   end
 
-  def draft?
-    latest_edition.draft?
-  end
+  delegate :draft?, to: :latest_edition
 
   def add_attachment(attributes)
     latest_edition.build_attachment(attributes)
@@ -143,9 +147,7 @@ class Section
     latest_edition.exported_at.nil?
   end
 
-  def reload
-    latest_edition.reload
-  end
+  delegate :reload, to: :latest_edition
 
   def mark_as_exported!(exported_at = Time.zone.now)
     latest_edition.exported_at = exported_at
@@ -192,7 +194,7 @@ private
   attr_reader :slug_generator, :latest_edition, :previous_edition
 
   def change_note_ok
-    if change_note_required? && !change_note.present?
+    if change_note_required? && change_note.blank?
       errors.add(:change_note, "You must provide a change note or indicate minor update")
     end
   end
