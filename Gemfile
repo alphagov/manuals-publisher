@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 gem "rails", "~> 5.2"
 
-gem "gds-api-adapters", "~> 63.6"
+gem "gds-api-adapters", "~> 67.0"
 gem "gds-sso"
 gem "generic_form_builder"
 gem "govspeak", "~> 6.5.3"
