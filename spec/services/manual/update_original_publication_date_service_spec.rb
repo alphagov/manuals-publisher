@@ -3,9 +3,9 @@ require "spec_helper"
 RSpec.describe Manual::UpdateOriginalPublicationDateService do
   let(:manual_id) { double(:manual_id) }
   let(:manual) { double(:manual, id: manual_id, sections: sections) }
-  let(:section_1) { double(:section, update: nil) }
-  let(:section_2) { double(:section, update: nil) }
-  let(:sections) { [section_1, section_2] }
+  let(:section1) { double(:section, update: nil) }
+  let(:section2) { double(:section, update: nil) }
+  let(:sections) { [section1, section2] }
   let(:originally_published_at) { 10.years.ago }
   let(:publishing_adapter) { double(:publishing_adapter) }
   let(:user) { double(:user) }
@@ -43,8 +43,8 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
   it "forces all the manuals sections to require an export with a nil change note" do
     subject.call
 
-    expect(section_1).to have_received(:update).with(change_note: nil)
-    expect(section_2).to have_received(:update).with(change_note: nil)
+    expect(section1).to have_received(:update).with(change_note: nil)
+    expect(section2).to have_received(:update).with(change_note: nil)
   end
 
   it "persists the manual after it has been updated" do

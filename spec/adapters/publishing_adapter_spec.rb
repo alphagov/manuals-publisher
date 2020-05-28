@@ -451,7 +451,7 @@ describe PublishingAdapter do
     end
 
     context "when publication logs exist for section" do
-      let(:publication_log_1) do
+      let(:publication_log1) do
         PublicationLog.new(
           title: "section-title",
           slug: "manual-slug/section-slug",
@@ -460,7 +460,7 @@ describe PublishingAdapter do
         )
       end
 
-      let(:publication_log_2) do
+      let(:publication_log2) do
         PublicationLog.new(
           title: "section-title-2",
           slug: "manual-slug/section-slug",
@@ -469,7 +469,7 @@ describe PublishingAdapter do
         )
       end
 
-      let(:publication_logs) { [publication_log_1, publication_log_2] }
+      let(:publication_logs) { [publication_log1, publication_log2] }
 
       it "saves content for manual to Publishing API including change notes" do
         expect(publishing_api).to receive(:put_content).with(

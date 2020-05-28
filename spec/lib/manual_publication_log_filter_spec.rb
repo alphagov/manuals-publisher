@@ -7,7 +7,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   let(:other_slug) { "guidance/sellotape" }
   let(:section_edition_exported_time) { Time.current }
 
-  let(:section_a_edition_published_version_1_major_update) do
+  let(:section_a_edition_published_version1_major_update) do
     FactoryBot.create(
       :section_edition,
       state: "published",
@@ -17,18 +17,18 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     )
   end
 
-  let(:section_a_edition_published_version_2_major_update) do
+  let(:section_a_edition_published_version2_major_update) do
     FactoryBot.create(
       :section_edition,
       state: "published",
-      slug: section_a_edition_published_version_1_major_update.slug,
-      section_uuid: section_a_edition_published_version_1_major_update.section_uuid,
+      slug: section_a_edition_published_version1_major_update.slug,
+      section_uuid: section_a_edition_published_version1_major_update.section_uuid,
       exported_at: section_edition_exported_time,
       version_number: 2,
     )
   end
 
-  let(:section_b_edition_published_version_1_major_update) do
+  let(:section_b_edition_published_version1_major_update) do
     FactoryBot.create(
       :section_edition,
       state: "published",
@@ -38,19 +38,19 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     )
   end
 
-  let(:section_b_edition_published_version_2_minor_update) do
+  let(:section_b_edition_published_version2_minor_update) do
     FactoryBot.create(
       :section_edition,
       state: "published",
-      slug: section_b_edition_published_version_1_major_update.slug,
-      section_uuid: section_b_edition_published_version_1_major_update.section_uuid,
+      slug: section_b_edition_published_version1_major_update.slug,
+      section_uuid: section_b_edition_published_version1_major_update.section_uuid,
       exported_at: section_edition_exported_time,
       minor_update: true,
       version_number: 2,
     )
   end
 
-  let(:section_c_edition_archived_version_1_major_update) do
+  let(:section_c_edition_archived_version1_major_update) do
     FactoryBot.create(
       :section_edition,
       state: "archived",
@@ -60,7 +60,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     )
   end
 
-  let(:section_d_edition_draft_version_1_major_update) do
+  let(:section_d_edition_draft_version1_major_update) do
     FactoryBot.create(
       :section_edition,
       state: "draft",
@@ -70,7 +70,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     )
   end
 
-  let(:section_e_edition_published_version_1_major_update) do
+  let(:section_e_edition_published_version1_major_update) do
     FactoryBot.create(
       :section_edition,
       state: "published",
@@ -98,9 +98,9 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       state: "published",
       version_number: 1,
       section_uuids: [
-        section_a_edition_published_version_1_major_update.section_uuid,
-        section_b_edition_published_version_1_major_update.section_uuid,
-        section_c_edition_archived_version_1_major_update.section_uuid,
+        section_a_edition_published_version1_major_update.section_uuid,
+        section_b_edition_published_version1_major_update.section_uuid,
+        section_c_edition_archived_version1_major_update.section_uuid,
       ],
       created_at: first_manual_edition_creation_time,
       updated_at: first_manual_edition_creation_time,
@@ -112,11 +112,11 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
       state: "published",
       version_number: 2,
       section_uuids: [
-        section_a_edition_published_version_2_major_update.section_uuid,
-        section_b_edition_published_version_2_minor_update.section_uuid,
-        section_c_edition_archived_version_1_major_update.section_uuid,
-        section_d_edition_draft_version_1_major_update.section_uuid,
-        section_e_edition_published_version_1_major_update.section_uuid,
+        section_a_edition_published_version2_major_update.section_uuid,
+        section_b_edition_published_version2_minor_update.section_uuid,
+        section_c_edition_archived_version1_major_update.section_uuid,
+        section_d_edition_draft_version1_major_update.section_uuid,
+        section_e_edition_published_version1_major_update.section_uuid,
       ],
       created_at: second_manual_edition_creation_time,
       updated_at: first_manual_edition_creation_time,
@@ -153,15 +153,15 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
 
     publication_logs_for_first_manual_edition = publication_logs_for_supplied_slug[0..2].map { |pl| extract_attributes_from_log(pl) }
     expect(publication_logs_for_first_manual_edition).to match_array([
-      build_attributes_for_expected_log(section_a_edition_published_version_1_major_update, first_manual_edition.updated_at),
-      build_attributes_for_expected_log(section_b_edition_published_version_1_major_update, first_manual_edition.updated_at),
-      build_attributes_for_expected_log(section_c_edition_archived_version_1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(section_a_edition_published_version1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(section_b_edition_published_version1_major_update, first_manual_edition.updated_at),
+      build_attributes_for_expected_log(section_c_edition_archived_version1_major_update, first_manual_edition.updated_at),
     ])
 
     publication_logs_for_next_editions = publication_logs_for_supplied_slug[3..4].map { |pl| extract_attributes_from_log(pl) }
     expect(publication_logs_for_next_editions).to match_array([
-      build_attributes_for_expected_log(section_a_edition_published_version_2_major_update, section_a_edition_published_version_2_major_update.exported_at),
-      build_attributes_for_expected_log(section_e_edition_published_version_1_major_update, section_e_edition_published_version_1_major_update.exported_at),
+      build_attributes_for_expected_log(section_a_edition_published_version2_major_update, section_a_edition_published_version2_major_update.exported_at),
+      build_attributes_for_expected_log(section_e_edition_published_version1_major_update, section_e_edition_published_version1_major_update.exported_at),
     ])
   end
 
