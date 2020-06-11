@@ -12,7 +12,7 @@ module ApplicationHelper
                 "label label-default"
               end
 
-    content_tag(:span, state, class: classes).html_safe
+    tag.span(state, class: classes).html_safe
   end
 
   def show_preview?(item)
