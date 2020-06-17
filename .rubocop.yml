@@ -8,10 +8,5 @@ inherit_mode:
     - Exclude
 
 # This is not supported for Mongoid
-Rails/DynamicFindBy:
-  Whitelist:
-    - find_by_slug!
-
-# This is not supported for Mongoid
 Rails/FindBy:
   Enabled: false
