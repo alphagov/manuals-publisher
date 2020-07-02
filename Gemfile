@@ -5,7 +5,7 @@ gem "rails", "~> 5.2"
 gem "gds-api-adapters", "~> 67.0"
 gem "gds-sso"
 gem "generic_form_builder"
-gem "govspeak", "~> 6.5.3"
+gem "govspeak", "~> 6.5.4"
 gem "govuk_admin_template"
 gem "govuk_app_config", "~> 2.2"
 gem "govuk_frontend_toolkit", "8.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
