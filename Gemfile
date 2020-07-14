@@ -1,21 +1,21 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 5.2"
+gem "rails"
 
-gem "gds-api-adapters", "~> 67.0"
+gem "gds-api-adapters"
 gem "gds-sso"
 gem "generic_form_builder"
-gem "govspeak", "~> 6.5.4"
+gem "govspeak"
 gem "govuk_admin_template"
-gem "govuk_app_config", "~> 2.2"
+gem "govuk_app_config"
 gem "govuk_frontend_toolkit", "9.0.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
-gem "govuk_sidekiq", "~> 4"
-gem "mongoid", "~> 6.0"
+gem "govuk_sidekiq"
+gem "mongoid"
 gem "plek"
-gem "raindrops", ">= 0.13.0" # we need a version > 0.13.0 for ruby 2.2
+gem "raindrops"
 gem "sass-rails"
-gem "state_machine", "1.2.0"
-gem "uglifier", ">= 1.3.0"
+gem "state_machine"
+gem "uglifier"
 
 group :development do
   gem "better_errors"
@@ -24,7 +24,8 @@ end
 
 group :development, :test do
   gem "awesome_print"
-  gem "jasmine-rails"
+  gem "jasmine"
+  gem "jasmine_selenium_runner", require: false
   gem "pry-byebug"
 end
 
@@ -33,7 +34,7 @@ group :test do
   gem "cucumber-rails", require: false
   gem "database_cleaner"
   gem "factory_bot_rails"
-  gem "govuk-content-schema-test-helpers", "1.6.1"
+  gem "govuk-content-schema-test-helpers"
   gem "govuk_test"
   gem "launchy"
   gem "rails-controller-testing"
@@ -42,5 +43,6 @@ group :test do
   gem "rubocop-govuk"
   gem "simplecov"
   gem "timecop"
+  gem "webdrivers"
   gem "webmock"
 end

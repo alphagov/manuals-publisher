@@ -190,12 +190,15 @@ GEM
       domain_name (~> 0.5)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
-    jasmine-core (3.4.0)
-    jasmine-rails (0.15.0)
-      jasmine-core (>= 1.3, < 4.0)
-      phantomjs (>= 1.9)
-      railties (>= 3.2.0)
-      sprockets-rails
+    jasmine (3.5.1)
+      jasmine-core (~> 3.5.0)
+      phantomjs
+      rack (>= 1.2.1)
+      rake
+    jasmine-core (3.5.0)
+    jasmine_selenium_runner (3.0.0)
+      jasmine (~> 3.0)
+      selenium-webdriver (~> 3.8)
     jquery-rails (4.3.5)
       rails-dom-testing (>= 1, < 3)
       railties (>= 4.2.0)
@@ -459,36 +462,38 @@ DEPENDENCIES
   awesome_print
   better_errors
   binding_of_caller
-  cucumber (~> 3.2.0)
+  cucumber
   cucumber-rails
   database_cleaner
   factory_bot_rails
-  gds-api-adapters (~> 67.0)
+  gds-api-adapters
   gds-sso
   generic_form_builder
-  govspeak (~> 6.5.4)
-  govuk-content-schema-test-helpers (= 1.6.1)
+  govspeak
+  govuk-content-schema-test-helpers
   govuk_admin_template
-  govuk_app_config (~> 2.2)
+  govuk_app_config
   govuk_frontend_toolkit (= 9.0.0)
-  govuk_sidekiq (~> 4)
+  govuk_sidekiq
   govuk_test
-  jasmine-rails
+  jasmine
+  jasmine_selenium_runner
   launchy
-  mongoid (~> 6.0)
+  mongoid
   plek
   pry-byebug
-  rails (~> 5.2)
+  rails
   rails-controller-testing
-  raindrops (>= 0.13.0)
+  raindrops
   rspec
   rspec-rails
   rubocop-govuk
   sass-rails
   simplecov
-  state_machine (= 1.2.0)
+  state_machine
   timecop
-  uglifier (>= 1.3.0)
+  uglifier
+  webdrivers
   webmock
 
 BUNDLED WITH
