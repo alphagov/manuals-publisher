@@ -20,14 +20,6 @@ module ManualsPublisher
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
-    # These paths are non-standard (they are subdirectories of
-    # app/models) so they need to be added to the autoload_paths
-    config.autoload_paths << Rails.root.join("app/exporters/formatters")
-    config.autoload_paths << Rails.root.join("app/models/validators")
-    config.autoload_paths << Rails.root.join("app/services/manual")
-    config.autoload_paths << Rails.root.join("app/services/section")
-    config.autoload_paths << Rails.root.join("app/services/attachment")
-
     # Using a sass css compressor causes a scss file to be processed twice
     # (once to build, once to compress) which breaks the usage of "unquote"
     # to use CSS that has same function names as SCSS such as max.
