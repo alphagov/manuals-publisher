@@ -7,7 +7,7 @@ ManualsPublisher::Application.load_tasks
 
 task default: [
   "lint",
-  "spec:javascript",
+  "jasmine:ci",
   "spec",
   "cucumber",
 ]
