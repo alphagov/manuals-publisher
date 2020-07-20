@@ -8,7 +8,7 @@ gem "generic_form_builder"
 gem "govspeak", "~> 6.5.4"
 gem "govuk_admin_template"
 gem "govuk_app_config", "~> 2.2"
-gem "govuk_frontend_toolkit", "8.2.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
+gem "govuk_frontend_toolkit", "9.0.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
 gem "govuk_sidekiq", "~> 3"
 gem "mongoid", "~> 6.0"
 gem "mongoid_rails_migrations", git: "https://github.com/alphagov/mongoid_rails_migrations", branch: "avoid-calling-bundler-require-in-library-code-v1.1.0-plus-mongoid-v5-fix"
