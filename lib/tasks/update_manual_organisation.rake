@@ -21,7 +21,7 @@ task :update_manual_organisation, %i[manual_base_path organisation_slug] => :env
   # Update the record in the local database to allow the members of the
   # given organisation to access the manual in Manuals Publisher
   logger.info "Updating record in local database"
-  ManualRecord.find_by(manual_id: manual_id).update(organisation_slug: organisation_slug)
+  ManualRecord.find_by(manual_id: manual_id).update!(organisation_slug: organisation_slug)
 
   # Use the Publishing API to update the document
   # across GOV.UK and front end applications

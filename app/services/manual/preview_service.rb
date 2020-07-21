@@ -11,7 +11,7 @@ class Manual::PreviewService
              else
                Manual.new(attributes)
              end
-    manual.update(attributes)
+    manual.update!(attributes)
     manual
   end
 

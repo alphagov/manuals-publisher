@@ -11,15 +11,15 @@ class Manual::UpdateOriginalPublicationDateService
     manual = Manual.find(manual_id, user)
 
     manual.draft
-    manual.update(attributes)
+    manual.update!(attributes)
     manual.sections.each do |section|
       # a nil change note will omit this update from publication logs
       section.update(change_note: nil)
     end
-    manual.save(user)
+    manual.save!(user)
     manual = Manual.find(manual_id, user)
 
-    Adapters.publishing.save(manual)
+    Adapters.publishing.save!(manual)
 
     manual
   end

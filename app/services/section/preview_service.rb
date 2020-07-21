@@ -13,7 +13,7 @@ class Section::PreviewService
               else
                 manual.build_section(attributes)
               end
-    section.update(attributes)
+    section.update!(attributes)
     section
   end
 

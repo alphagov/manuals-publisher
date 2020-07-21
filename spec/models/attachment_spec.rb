@@ -46,7 +46,7 @@ describe Attachment do
       attachment.file = upload_file
       expect(attachment.file_has_changed?).to be true
 
-      attachment.save
+      attachment.save!
 
       expect(attachment.file_id).to eq("some_file_id")
       expect(attachment.file_url).to eq("some/file/url")
@@ -65,7 +65,7 @@ describe Attachment do
         attachment.file = upload_file
         expect(attachment.file_has_changed?).to be true
 
-        attachment.save
+        attachment.save!
 
         expect(attachment.file_id).to eq("some_file_id")
         expect(attachment.file_url).to eq("some/file/url")

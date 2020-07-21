@@ -151,7 +151,7 @@ class Section
 
   def mark_as_exported!(exported_at = Time.zone.now)
     latest_edition.exported_at = exported_at
-    latest_edition.save
+    latest_edition.save!
   end
 
   def persisted?

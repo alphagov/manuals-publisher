@@ -88,7 +88,7 @@ private
 
     # Destroy the manual record
     puts "Destroying manual #{old_manual.id}"
-    old_manual.destroy
+    old_manual.destroy!
 
     puts "Issuing gone for #{old_manual.id}"
     send_gone(old_manual.id, old_manual.slug)

@@ -101,7 +101,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save(manual)
+      subject.save!(manual)
     end
 
     it "saves links for manual to Publishing API with attributes which validate against links schema for manual" do
@@ -112,7 +112,7 @@ describe PublishingAdapter do
         ),
       )
 
-      subject.save(manual)
+      subject.save!(manual)
     end
 
     it "saves content for manual to Publishing API" do
@@ -171,7 +171,7 @@ describe PublishingAdapter do
         locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
-      subject.save(manual)
+      subject.save!(manual)
     end
 
     it "saves links for all manual's sections to Publishing API" do
@@ -184,7 +184,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save(manual)
+      subject.save!(manual)
     end
 
     it "saves links for all manual's sections to Publishing API with attributes which validate against links schema for section" do
@@ -195,7 +195,7 @@ describe PublishingAdapter do
         ),
       )
 
-      subject.save(manual)
+      subject.save!(manual)
     end
 
     it "saves content for all manual's sections to Publishing API" do
@@ -242,7 +242,7 @@ describe PublishingAdapter do
         locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
-      subject.save(manual)
+      subject.save!(manual)
     end
 
     context "when section does not need exporting" do
@@ -256,7 +256,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it "does not save content for section to Publishing API" do
@@ -265,7 +265,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       context "and action is republish" do
@@ -303,7 +303,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it "saves content for section to Publishing API with timestamps" do
@@ -315,7 +315,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       context "but Manual#use_originally_published_at_for_public_timestamp? is false" do
@@ -331,7 +331,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save(manual)
+          subject.save!(manual)
         end
 
         it "saves content for section to Publishing API without public timestamp" do
@@ -342,7 +342,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save(manual)
+          subject.save!(manual)
         end
       end
     end
@@ -381,7 +381,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it "saves content for section to Publishing API with major update_type" do
@@ -390,7 +390,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it_behaves_like "republishing overrides update_type"
@@ -408,7 +408,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it "saves content for section to Publishing API with minor update_type" do
@@ -417,7 +417,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it_behaves_like "republishing overrides update_type"
@@ -435,7 +435,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it "saves content for section to Publishing API with major update_type" do
@@ -444,7 +444,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
 
       it_behaves_like "republishing overrides update_type"
@@ -495,7 +495,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
     end
 
@@ -531,7 +531,7 @@ describe PublishingAdapter do
           )),
         )
 
-        subject.save(manual)
+        subject.save!(manual)
       end
     end
   end

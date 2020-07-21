@@ -49,7 +49,7 @@ private
 
   def save_and_clear_latest_edition
     if @latest_edition.present?
-      @latest_edition.save if @latest_edition.changed?
+      @latest_edition.save! if @latest_edition.changed?
       @latest_edition = nil
     end
   end

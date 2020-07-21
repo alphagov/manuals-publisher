@@ -173,7 +173,7 @@ describe Manual do
       let(:new_state) { "new-manual-state" }
 
       it "updates with the given attributes" do
-        manual.update(
+        manual.update!(
           title: new_title,
           summary: new_summary,
           organisation_slug: new_organisation_slug,
@@ -187,7 +187,7 @@ describe Manual do
       end
 
       it "doesn't nil out attributes not in list" do
-        manual.update({})
+        manual.update!({})
 
         expect(manual.title).to eq(title)
         expect(manual.summary).to eq(summary)
@@ -201,7 +201,7 @@ describe Manual do
       let(:new_updated_at) { Time.zone.parse("2003-03-03") }
 
       it "does not update the attributes" do
-        manual.update(
+        manual.update!(
           id: new_id,
           updated_at: new_updated_at,
         )
@@ -413,21 +413,21 @@ describe Manual do
 
     context "without sections or removed_sections" do
       it "sets the associated records slug" do
-        manual.save(user)
+        manual.save!(user)
 
         record = ManualRecord.where(manual_id: manual.id).first
         expect(record.slug).to eq(manual.slug)
       end
 
       it "sets the associated records organisation slug" do
-        manual.save(user)
+        manual.save!(user)
 
         record = ManualRecord.where(manual_id: manual.id).first
         expect(record.organisation_slug).to eq(manual.organisation_slug)
       end
 
       it "sets the properties of the associated edition" do
-        manual.save(user)
+        manual.save!(user)
 
         record = ManualRecord.where(manual_id: manual.id).first
         edition = ManualRecord::Edition.where(
@@ -454,11 +454,11 @@ describe Manual do
       it "tells the sections to save themselves" do
         expect(section).to receive(:save)
 
-        manual.save(user)
+        manual.save!(user)
       end
 
       it "associates the sections with the manual record edition" do
-        manual.save(user)
+        manual.save!(user)
 
         record = ManualRecord.where(manual_id: manual.id).first
         edition = ManualRecord::Edition.where(
@@ -479,11 +479,11 @@ describe Manual do
       it "tells the removed sections to save themselves" do
         expect(section).to receive(:save)
 
-        manual.save(user)
+        manual.save!(user)
       end
 
       it "associates the removed sections with the manual record edition" do
-        manual.save(user)
+        manual.save!(user)
 
         record = ManualRecord.where(manual_id: manual.id).first
         edition = ManualRecord::Edition.where(
@@ -973,7 +973,7 @@ describe Manual do
     let!(:manual_record) { FactoryBot.create(:manual_record, manual_id: manual.id) }
 
     it "destroys underlying manual record" do
-      manual.destroy
+      manual.destroy!
 
       expect(ManualRecord.find_by(id: manual_record.id)).not_to be_present
     end
@@ -1007,7 +1007,7 @@ describe Manual do
       end
 
       it "destroys all associated section editions" do
-        manual.destroy
+        manual.destroy!
 
         expect(SectionEdition.where(id: section1_edition1.id)).to be_empty
         expect(SectionEdition.where(id: section1_edition2.id)).to be_empty

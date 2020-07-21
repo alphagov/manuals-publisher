@@ -5,7 +5,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
   let(:manual_slug) { "guidance/the-highway-code" }
   let!(:manual_record) { ManualRecord.create(slug: manual_slug) }
   let(:other_slug) { "guidance/sellotape" }
-  let(:section_edition_exported_time) { Time.current }
+  let(:section_edition_exported_time) { Time.zone.now }
 
   let(:section_a_edition_published_version1_major_update) do
     FactoryBot.create(
@@ -90,7 +90,7 @@ describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_update
     FactoryBot.create :publication_log, slug: other_slug, created_at: 6.seconds.ago, version_number: 1
   end
 
-  let(:first_manual_edition_creation_time) { Time.current - 1.week }
+  let(:first_manual_edition_creation_time) { Time.zone.now - 1.week }
   let(:second_manual_edition_creation_time) { first_manual_edition_creation_time - 1.day }
 
   let!(:first_manual_edition) do

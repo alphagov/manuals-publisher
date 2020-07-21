@@ -11,7 +11,7 @@ class Section::ReorderService
     manual = Manual.find(manual_id, user)
     manual.draft
     manual.reorder_sections(section_order)
-    manual.save(user)
+    manual.save!(user)
     Adapters.publishing.save(manual, include_sections: false)
 
     [manual, manual.sections]

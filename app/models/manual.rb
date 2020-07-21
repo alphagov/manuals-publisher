@@ -113,7 +113,7 @@ class Manual
     @version_number = attributes.fetch(:version_number, 0)
     @ever_been_published = attributes.fetch(:ever_been_published, false).present?
 
-    update(attributes)
+    update!(attributes)
 
     @summary ||= ""
     @body ||= ""
@@ -223,7 +223,7 @@ class Manual
       minor_update: false,
       change_note: "New section added.",
     }
-    section.update(defaults.merge(attributes))
+    section.update!(defaults.merge(attributes))
 
     sections << section
 
@@ -330,7 +330,7 @@ class Manual
     end
 
     manual_record = ManualRecord.find_by(manual_id: id)
-    manual_record.destroy
+    manual_record.destroy!
   end
 
   def editions

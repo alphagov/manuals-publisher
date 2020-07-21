@@ -5,7 +5,7 @@ module GdsSsoHelpers
   include FactoryBot::Syntax::Methods
 
   def login_as(user_type)
-    user = create(user_type.to_sym)
+    user = create!(user_type.to_sym)
     GDS::SSO.test_user = user
     super(user) # warden
   end
