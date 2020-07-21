@@ -1,5 +1,3 @@
-require "section_slug_synchroniser"
-
 namespace :sections do
   desc "Identifies manual sections which do not match the section title."
   task :report, [:manual_slug] => :environment do |_, args|

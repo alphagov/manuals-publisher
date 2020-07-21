@@ -1,5 +1,4 @@
 require "spec_helper"
-require "duplicate_draft_deleter"
 require "gds_api/test_helpers/publishing_api"
 
 describe DuplicateDraftDeleter do
@@ -30,8 +29,10 @@ describe DuplicateDraftDeleter do
     )
     stub_publishing_api_does_not_have_item(duplicate_content_id)
 
-    expected_output = /The following 2 editions are unknown to Publishing API and will be deleted:.*#{duplicate_content_id}/m
-    expect { DuplicateDraftDeleter.new.call }.to output(expected_output).to_stdout
+    expect(Rails.logger).to receive(:info).with(/The following 2 editions are unknown to Publishing API and will be deleted:/m)
+    expect(Rails.logger).to receive(:info).twice.with(/.*#{duplicate_content_id}/m)
+
+    DuplicateDraftDeleter.new.call
 
     expect(SectionEdition.all_for_section(original_content_id)).to be_present
     expect(SectionEdition.all_for_section(duplicate_content_id)).to be_empty
@@ -50,7 +51,9 @@ describe DuplicateDraftDeleter do
       section_uuid: another_content_id,
     )
 
-    expect { DuplicateDraftDeleter.new.call }.to output.to_stdout
+    expect(Rails.logger).to receive(:info).with(/The following 0 editions are unknown to Publishing API and will be deleted:/m)
+
+    DuplicateDraftDeleter.new.call
 
     expect(SectionEdition.all_for_section(content_id)).to be_present
     expect(SectionEdition.all_for_section(another_content_id)).to be_present

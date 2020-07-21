@@ -1,4 +1,3 @@
-require "manual_publication_log_filter"
 require "logger"
 
 desc "Rebuild major publication logs for manuals"

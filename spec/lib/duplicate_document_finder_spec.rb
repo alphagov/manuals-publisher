@@ -1,5 +1,4 @@
 require "spec_helper"
-require "duplicate_document_finder"
 
 describe DuplicateDocumentFinder do
   subject do

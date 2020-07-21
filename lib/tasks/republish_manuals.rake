@@ -1,4 +1,3 @@
-require "manuals_republisher"
 require "logger"
 
 desc "Republish manuals"

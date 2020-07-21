@@ -6,9 +6,9 @@ class DuplicateDraftDeleter
     content_ids = duplicated_editions_not_in_publishing_api.map { |data| data[:content_id] }
     editions_to_delete = SectionEdition.all_for_sections(*content_ids)
 
-    puts "The following #{editions_to_delete.count} editions are unknown to Publishing API and will be deleted:"
+    logger.info "The following #{editions_to_delete.count} editions are unknown to Publishing API and will be deleted:"
     editions_to_delete.each do |edition|
-      puts [edition.slug, edition.section_uuid, edition.state, edition.created_at].join(",")
+      logger.info [edition.slug, edition.section_uuid, edition.state, edition.created_at].join(",")
       edition.delete
     end
   end

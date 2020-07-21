@@ -1,5 +1,4 @@
 require "spec_helper"
-require "manual_publication_log_filter"
 
 describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_updates_only!" do
   let(:manual_slug) { "guidance/the-highway-code" }

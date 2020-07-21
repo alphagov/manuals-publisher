@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require "slug_generator"
-
 describe SlugGenerator do
   subject(:slug_gen) do
     SlugGenerator.new(

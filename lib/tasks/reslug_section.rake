@@ -1,4 +1,3 @@
-require "section_reslugger"
 require "logger"
 
 def usage

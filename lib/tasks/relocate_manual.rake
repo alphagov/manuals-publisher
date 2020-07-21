@@ -1,4 +1,3 @@
-require "manual_relocator"
 require "logger"
 
 desc <<~DESCRIPTION
