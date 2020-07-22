@@ -9,5 +9,3 @@ end
 Before do
   stub_publishing_api
 end
-
-Test::Unit::AutoRunner.need_auto_run = false if defined?(Test::Unit::AutoRunner)
