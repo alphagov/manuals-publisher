@@ -87,7 +87,7 @@ private
     old_manual.publication_logs.each(&:destroy)
 
     # Destroy the manual record
-    puts "Destroying manual #{old_manual.id}"
+    logger.info "Destroying manual #{old_manual.id}"
     old_manual.destroy!
 
     Rails.logger.debug "Issuing gone for #{old_manual.id}"
@@ -186,13 +186,8 @@ private
   end
 
   def send_draft(manual)
-<<<<<<< HEAD:lib/manual_relocator.rb
-    puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
+    logger.info "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
     Adapters.publishing.save_draft(manual, include_links: false, republish: true)
-=======
-    Rails.logger.debug "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
-    Adapters.publishing.save(manual, include_links: false, republish: true)
->>>>>>> Change structure of files for new autoloading:app/lib/manual_relocator.rb
   end
 
   def send_gone(section_uuid, slug)

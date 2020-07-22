@@ -134,7 +134,7 @@ describe Section do
   describe "#exported_at" do
     it "returns the date and time that the section was marked as exported" do
       exported_at = Time.zone.now
-      subject.update!(title: "foo") # so the SectionEdtion is valid
+      subject.assign_attributes(title: "foo") # so the SectionEdtion is valid
       subject.mark_as_exported!(exported_at)
       expect(subject.exported_at).to eq(exported_at)
     end
@@ -289,7 +289,7 @@ describe Section do
       end
 
       it "creates the first edition" do
-        section.update!(attrs)
+        section.assign_attributes(attrs)
 
         expect(SectionEdition).to have_received(:new).with(
           version_number: 1,
@@ -308,13 +308,13 @@ describe Section do
           let(:slug)      { double(:slug) }
 
           it "generates a slug" do
-            section.update!(title: new_title)
+            section.assign_attributes(title: new_title)
 
             expect(slug_generator).to have_received(:call).with(new_title)
           end
 
           it "assigns the title and slug to the draft edition" do
-            section.update!(title: new_title)
+            section.assign_attributes(title: new_title)
 
             expect(draft_edition_v1).to have_received(:assign_attributes)
               .with(
@@ -350,27 +350,27 @@ describe Section do
       end
 
       it "builds a new edition with the new attributes" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(attributes))
       end
 
       it "builds the new edition with attributes carried over from the previous edition" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new)
           .with(hash_including(body: edition_body))
       end
 
       it "s attributes not defined as fields on the section edition" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to_not have_received(:new)
           .with(hash_including(arbitrary_attribute: anything))
       end
 
       it "filters the previous edition's attributes" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).not_to have_received(:new)
           .with(
@@ -390,32 +390,32 @@ describe Section do
       end
 
       it "builds a new edition with an incremented version number" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(version_number: 2))
       end
 
       it "builds a new edition in the 'draft' state" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(state: "draft"))
       end
 
       it "builds a new edition copying over the previous edition's attachments" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new)
           .with(hash_including(attachments: attachments))
       end
 
       it "presents the new edition" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(section.version_number).to eq(new_edition.version_number)
       end
 
       it "returns nil" do
-        expect(section.update!(attributes)).to eq(nil)
+        expect(section.assign_attributes(attributes)).to eq(nil)
       end
 
       context "when providing a title" do
@@ -427,7 +427,7 @@ describe Section do
         end
 
         it "does not update the slug" do
-          section.update!(title: new_title)
+          section.assign_attributes(title: new_title)
 
           expect(SectionEdition).to have_received(:new).with(
             hash_including(
@@ -448,38 +448,38 @@ describe Section do
       end
 
       it "builds a new edition with the new attributes" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(attributes))
       end
 
       it "builds a new edition with an incremented version number" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(version_number: 3))
       end
 
       it "builds a new edition in the 'draft' state" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new).with(hash_including(state: "draft"))
       end
 
       it "builds a new edition copying over the previous edition's attachments" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new)
           .with(hash_including(attachments: attachments))
       end
 
       it "presents the new edition" do
-        section.update!(attributes)
+        section.assign_attributes(attributes)
 
         expect(section.version_number).to eq(new_edition.version_number)
       end
 
       it "returns nil" do
-        expect(section.update!(attributes)).to eq(nil)
+        expect(section.assign_attributes(attributes)).to eq(nil)
       end
 
       context "when providing a title" do
@@ -487,7 +487,7 @@ describe Section do
         let(:slug)      { double(:slug) }
 
         it "does not update the slug" do
-          section.update!(title: new_title)
+          section.assign_attributes(title: new_title)
 
           expect(SectionEdition).to have_received(:new).with(
             hash_including(
@@ -840,7 +840,7 @@ describe Section do
     it "returns false when the version_number is greater than 1" do
       section.publish!
       section.save!
-      section.update!(title: "new-section-title")
+      section.assign_attributes(title: "new-section-title")
 
       expect(section.version_number).to eq(2)
       expect(section).to_not be_first_edition

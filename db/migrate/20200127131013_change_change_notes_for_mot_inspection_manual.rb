@@ -37,7 +37,7 @@ class ChangeChangeNotesForMotInspectionManual < Mongoid::Migration
 
       publication_log.created_at = "2019-10-30T16:42:58Z".to_date
       publication_log.updated_at = "2019-10-30T16:42:58Z".to_date
-      publication_log.save(validate: false)
+      publication_log.save!(validate: false)
     end
 
     logger = Logger.new(STDOUT)
