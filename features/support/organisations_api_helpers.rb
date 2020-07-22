@@ -6,4 +6,6 @@ module OrganisationsAPIHelpers
     stub_organisations_api_has_organisation(organisation_slug)
   end
 end
+
 RSpec.configuration.include OrganisationsAPIHelpers, type: :feature
+World(OrganisationsAPIHelpers) if respond_to?(:World)

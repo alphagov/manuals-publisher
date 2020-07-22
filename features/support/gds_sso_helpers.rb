@@ -15,4 +15,6 @@ module GdsSsoHelpers
     logout # warden
   end
 end
+
 RSpec.configuration.include GdsSsoHelpers, type: :feature
+World(GdsSsoHelpers) if respond_to?(:World)

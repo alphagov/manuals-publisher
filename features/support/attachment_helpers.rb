@@ -87,4 +87,6 @@ module AttachmentHelpers
     expect(page).to have_css(".attachments li", text: @new_attachment_file_name)
   end
 end
+
 RSpec.configuration.include AttachmentHelpers, type: :feature
+World(AttachmentHelpers) if respond_to?(:World)

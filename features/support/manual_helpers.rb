@@ -559,4 +559,6 @@ module ManualHelpers
     allow_any_instance_of(Manual::PublishService).to receive(:call).and_raise(GdsApi::HTTPErrorResponse.new(400))
   end
 end
+
 RSpec.configuration.include ManualHelpers, type: :feature
+World(ManualHelpers) if respond_to?(:World)
