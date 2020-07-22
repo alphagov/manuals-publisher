@@ -187,7 +187,7 @@ private
 
   def send_draft(manual)
     puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
-    Adapters.publishing.save(manual, include_links: false, republish: true)
+    Adapters.publishing.save_draft(manual, include_links: false, republish: true)
   end
 
   def send_gone(section_uuid, slug)

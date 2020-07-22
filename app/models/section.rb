@@ -59,7 +59,7 @@ class Section
     latest_edition.update(slug: full_new_section_slug)
   end
 
-  def save
+  def save!
     # It is actually only necessary to save the latest edition, however, I
     # think it's safer to save latest two as both are exposed to the and have
     # potential to change. This extra write may save a potential future
@@ -76,7 +76,7 @@ class Section
     uuid
   end
 
-  def update(attributes)
+  def update!(attributes)
     if !published? && attributes.fetch(:title, false)
       attributes = attributes.merge(
         slug: slug_generator.call(attributes.fetch(:title)),

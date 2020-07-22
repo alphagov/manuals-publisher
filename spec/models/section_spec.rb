@@ -31,7 +31,7 @@ describe Section do
       minor_update: false,
       change_note: "Some changes",
       :exported_at= => nil,
-      save: nil,
+      save!: nil,
     }
   end
 
@@ -279,7 +279,7 @@ describe Section do
     end
   end
 
-  describe "#update" do
+  describe "#update!" do
     context "section is new, with no previous editions" do
       let(:attrs)    { { title: "Test title" } }
 
@@ -414,7 +414,7 @@ describe Section do
       end
 
       it "returns nil" do
-        expect(section.update(attributes)).to eq(nil)
+        expect(section.update!(attributes)).to eq(nil)
       end
 
       context "when providing a title" do
@@ -478,7 +478,7 @@ describe Section do
       end
 
       it "returns nil" do
-        expect(section.update(attributes)).to eq(nil)
+        expect(section.update!(attributes)).to eq(nil)
       end
 
       context "when providing a title" do
@@ -718,10 +718,10 @@ describe Section do
       Timecop.freeze(time) do
         section.mark_as_exported!
         expect(draft_edition_v2).to have_received(:exported_at=).with(time).ordered
-        expect(draft_edition_v2).to have_received(:save).ordered
+        expect(draft_edition_v2).to have_received(:save!).ordered
 
         expect(published_edition_v1).not_to have_received(:exported_at=)
-        expect(published_edition_v1).not_to have_received(:save)
+        expect(published_edition_v1).not_to have_received(:save!)
       end
     end
   end

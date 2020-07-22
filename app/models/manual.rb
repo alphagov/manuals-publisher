@@ -69,7 +69,7 @@ class Manual
       .select { |_slug, docs| docs.size > 1 }
   end
 
-  def save(user)
+  def save!(user)
     manual_record = user.manual_records.find_or_initialize_by(manual_id: id)
     # TODO: slug must not change after publication
     manual_record.slug = slug
@@ -84,8 +84,8 @@ class Manual
       use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
     }
 
-    sections.each(&:save)
-    removed_sections.each(&:save)
+    sections.each(&:save!)
+    removed_sections.each(&:save!)
 
     edition.section_uuids = sections.map(&:uuid)
     edition.removed_section_uuids = removed_sections.map(&:uuid)
@@ -136,7 +136,7 @@ class Manual
     id.eql? other.id
   end
 
-  def update(attributes)
+  def update!(attributes)
     @slug = attributes.fetch(:slug, slug)
     @title = attributes.fetch(:title, title)
     @summary = attributes.fetch(:summary, summary)
@@ -324,7 +324,7 @@ class Manual
     PublicationLog.change_notes_for(slug)
   end
 
-  def destroy
+  def destroy!
     sections.each do |section|
       section.all_editions.each(&:destroy)
     end

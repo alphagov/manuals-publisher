@@ -14,7 +14,7 @@ class Manual::UpdateService
     manual.update!(attributes)
     manual.save!(user)
     reloaded_manual = Manual.find(manual.id, user)
-    Adapters.publishing.save!(reloaded_manual)
+    Adapters.publishing.save_draft(reloaded_manual)
 
     manual
   end

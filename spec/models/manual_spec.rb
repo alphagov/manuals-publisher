@@ -391,7 +391,7 @@ describe Manual do
     end
   end
 
-  describe "#save" do
+  describe "#save!" do
     let(:user) { FactoryBot.create(:gds_editor) }
 
     subject(:manual) do
@@ -445,14 +445,14 @@ describe Manual do
     end
 
     context "with sections" do
-      let(:section) { double(:section, uuid: "section-uuid", save: nil) }
+      let(:section) { double(:section, uuid: "section-uuid", save!: nil) }
 
       before do
         manual.sections = [section]
       end
 
       it "tells the sections to save themselves" do
-        expect(section).to receive(:save)
+        expect(section).to receive(:save!)
 
         manual.save!(user)
       end
@@ -470,14 +470,14 @@ describe Manual do
     end
 
     context "with removed sections" do
-      let(:section) { double(:section, uuid: "section-uuid", save: nil) }
+      let(:section) { double(:section, uuid: "section-uuid", save!: nil) }
 
       before do
         manual.removed_sections = [section]
       end
 
       it "tells the removed sections to save themselves" do
-        expect(section).to receive(:save)
+        expect(section).to receive(:save!)
 
         manual.save!(user)
       end

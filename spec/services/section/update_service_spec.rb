@@ -20,13 +20,13 @@ RSpec.describe Section::UpdateService do
 
   before do
     allow(manual).to receive(:sections).and_return([section])
-    allow(manual).to receive(:save)
+    allow(manual).to receive(:save!)
     allow(Manual)
       .to receive(:find).with(manual.id, user)
       .and_return(manual)
     allow(Adapters).to receive(:publishing)
       .and_return(publishing_api_adapter)
-    allow(publishing_api_adapter).to receive(:save)
+    allow(publishing_api_adapter).to receive(:save_draft)
     allow(publishing_api_adapter).to receive(:save_section)
   end
 
@@ -42,14 +42,14 @@ RSpec.describe Section::UpdateService do
     end
 
     it "saves the draft" do
-      expect(manual).to receive(:save).with(user)
+      expect(manual).to receive(:save!).with(user)
 
       subject.call
     end
 
     it "saves the draft manual to the publishing api" do
       expect(publishing_api_adapter)
-        .to receive(:save).with(manual, include_sections: false)
+        .to receive(:save_draft).with(manual, include_sections: false)
 
       subject.call
     end
@@ -68,7 +68,7 @@ RSpec.describe Section::UpdateService do
     before do
       allow(section).to receive(:valid?).and_return(true)
       allow(publishing_api_adapter)
-        .to receive(:save).and_raise(gds_api_exception)
+        .to receive(:save_draft).and_raise(gds_api_exception)
     end
 
     it "raises the exception from the gds api" do
@@ -86,7 +86,7 @@ RSpec.describe Section::UpdateService do
     end
 
     it "does not save the draft" do
-      expect(manual).to_not receive(:save).with(user)
+      expect(manual).to_not receive(:save!).with(user)
 
       begin
         subject.call
@@ -131,7 +131,7 @@ RSpec.describe Section::UpdateService do
     end
 
     it "does not save the draft" do
-      expect(manual).to_not receive(:save).with(user)
+      expect(manual).to_not receive(:save!).with(user)
 
       begin
         subject.call
@@ -142,7 +142,7 @@ RSpec.describe Section::UpdateService do
 
     it "saves the draft manual to the publishing api" do
       expect(publishing_api_adapter)
-        .to receive(:save).with(manual, include_sections: false)
+        .to receive(:save_draft).with(manual, include_sections: false)
 
       begin
         subject.call
@@ -164,14 +164,14 @@ RSpec.describe Section::UpdateService do
     end
 
     it "saves the draft" do
-      expect(manual).to_not receive(:save)
+      expect(manual).to_not receive(:save!)
 
       subject.call
     end
 
     it "saves the draft manual to the publishing api" do
       expect(publishing_api_adapter)
-        .to_not receive(:save)
+        .to_not receive(:save_draft)
 
       subject.call
     end

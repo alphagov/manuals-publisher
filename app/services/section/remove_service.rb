@@ -30,7 +30,7 @@ class Section::RemoveService
 
       manual.remove_section(section_uuid)
       manual.save!(user)
-      Adapters.publishing.save(manual, include_sections: false)
+      Adapters.publishing.save_draft(manual, include_sections: false)
       Adapters.publishing.discard_section(section)
     end
 

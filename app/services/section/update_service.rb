@@ -15,7 +15,7 @@ class Section::UpdateService
 
     if section.valid?
       manual.draft
-      Adapters.publishing.save(manual, include_sections: false)
+      Adapters.publishing.save_draft(manual, include_sections: false)
       Adapters.publishing.save_section(section, manual)
       manual.save!(user)
     end
