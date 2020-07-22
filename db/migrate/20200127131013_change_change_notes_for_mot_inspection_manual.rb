@@ -35,8 +35,8 @@ class ChangeChangeNotesForMotInspectionManual < Mongoid::Migration
         raise StandardError, "Error: #{publication_log.errors}"
       end
 
-      publication_log.created_at = "2019-10-30T16:42:58Z".to_datetime
-      publication_log.updated_at = "2019-10-30T16:42:58Z".to_datetime
+      publication_log.created_at = "2019-10-30T16:42:58Z".to_time
+      publication_log.updated_at = "2019-10-30T16:42:58Z".to_time
       publication_log.save!(validate: false)
     end
 
