@@ -51,6 +51,7 @@ describe PublishingAdapter do
   let(:section_edition) do
     SectionEdition.new(
       slug: "manual-slug/section-slug",
+      section_uuid: section_uuid,
       title: "section-title",
       summary: "section-summary",
       body: "section-body",
@@ -570,6 +571,7 @@ describe PublishingAdapter do
     let(:removed_section_edition) do
       SectionEdition.new(
         slug: "manual-slug/removed-section-slug",
+        section_uuid: removed_section_uuid,
         title: "removed-section-title",
         summary: "removed-section-summary",
         body: "removed-section-body",

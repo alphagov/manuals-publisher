@@ -134,6 +134,7 @@ describe Section do
   describe "#exported_at" do
     it "returns the date and time that the section was marked as exported" do
       exported_at = Time.zone.now
+      subject.update!(title: "foo") # so the SectionEdtion is valid
       subject.mark_as_exported!(exported_at)
       expect(subject.exported_at).to eq(exported_at)
     end
