@@ -18,12 +18,12 @@ RSpec.describe Manual::PublishService do
 
   before do
     allow(Manual).to receive(:find) { manual }
-    allow(manual).to receive(:save)
+    allow(manual).to receive(:save!)
     allow(manual).to receive(:publish)
     allow(PublicationLogger).to receive(:new) { publication_logger }
     allow(Adapters).to receive(:publishing) { publishing_adapter }
     allow(publication_logger).to receive(:call)
-    allow(publishing_adapter).to receive(:save)
+    allow(publishing_adapter).to receive(:save_draft)
     allow(publishing_adapter).to receive(:publish)
   end
 
@@ -42,7 +42,7 @@ RSpec.describe Manual::PublishService do
 
     it "calls the publishing api draft exporter" do
       subject.call
-      expect(publishing_adapter).to have_received(:save).with(manual)
+      expect(publishing_adapter).to have_received(:save_draft).with(manual)
     end
 
     it "calls the new publishing api publisher" do
@@ -54,7 +54,7 @@ RSpec.describe Manual::PublishService do
       subject.call
 
       expect(publication_logger).to have_received(:call).ordered
-      expect(publishing_adapter).to have_received(:save).ordered
+      expect(publishing_adapter).to have_received(:save_draft).ordered
       expect(publishing_adapter).to have_received(:publish).ordered
     end
   end

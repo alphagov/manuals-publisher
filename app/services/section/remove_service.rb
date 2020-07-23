@@ -22,15 +22,15 @@ class Section::RemoveService
       minor_update: attributes.fetch(:minor_update, "0"),
       change_note: attributes.fetch(:change_note, ""),
     }
-    section.update(change_note_params)
+    section.update!(change_note_params)
 
     if section.valid?
       # Removing a section always makes the manual a draft
       manual.draft
 
       manual.remove_section(section_uuid)
-      manual.save(user)
-      Adapters.publishing.save(manual, include_sections: false)
+      manual.save!(user)
+      Adapters.publishing.save_draft(manual, include_sections: false)
       Adapters.publishing.discard_section(section)
     end
 

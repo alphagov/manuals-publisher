@@ -30,14 +30,14 @@ class ChangeChangeNotesForMotInspectionManual < Mongoid::Migration
       publication_log.change_note = change_note
       publication_log.slug = change_data[:slug]
       publication_log.version_number = PublicationLog.where(slug: change_data[:slug]).count + 1
-      publication_log.save
+      publication_log.save!
       if publication_log.errors.any?
         raise StandardError, "Error: #{publication_log.errors}"
       end
 
-      publication_log.created_at = "2019-10-30T16:42:58Z".to_datetime
-      publication_log.updated_at = "2019-10-30T16:42:58Z".to_datetime
-      publication_log.save(validate: false)
+      publication_log.created_at = "2019-10-30T16:42:58Z".to_time
+      publication_log.updated_at = "2019-10-30T16:42:58Z".to_time
+      publication_log.save!(validate: false)
     end
 
     logger = Logger.new(STDOUT)

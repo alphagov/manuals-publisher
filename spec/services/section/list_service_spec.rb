@@ -5,7 +5,7 @@ RSpec.describe Section::ListService do
     user = FactoryBot.build(:user, organisation_slug: "org-slug")
     manual = FactoryBot.build(:manual, organisation_slug: user.organisation_slug)
     section = manual.build_section(title: "section-title")
-    manual.save(user)
+    manual.save!(user)
 
     service = Section::ListService.new(user: user, manual_id: manual.id)
 

@@ -17,7 +17,7 @@ RSpec.describe SectionViewAdapter do
 
     it "returns true if section is first edition and published" do
       section.publish!
-      section.save
+      section.save!
 
       expect(subject).to be_published
       expect(subject).to be_first_edition
@@ -26,8 +26,8 @@ RSpec.describe SectionViewAdapter do
 
     it "returns true if section is not first edition and is draft" do
       section.publish!
-      section.save
-      section.update(title: "new-section-title")
+      section.save!
+      section.update!(title: "new-section-title")
 
       expect(subject).to be_draft
       expect(subject).to_not be_first_edition
@@ -36,8 +36,8 @@ RSpec.describe SectionViewAdapter do
 
     it "returns true if section is not first edition and is published" do
       section.publish!
-      section.save
-      section.update(title: "new-section-title")
+      section.save!
+      section.update!(title: "new-section-title")
       section.publish!
 
       expect(subject).to be_published

@@ -16,7 +16,7 @@ class Manual::WithdrawService
     manual.withdraw
 
     if manual.withdrawn?
-      manual.save(user)
+      manual.save!(user)
       Adapters.publishing.unpublish(manual)
     end
 

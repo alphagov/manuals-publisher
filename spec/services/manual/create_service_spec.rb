@@ -2,8 +2,8 @@ require "spec_helper"
 
 RSpec.describe Manual::CreateService do
   let(:user) { double(:user) }
-  let(:manual) { double(:manual, valid?: nil, save: nil) }
-  let(:publishing_api_adapter) { double(:publishing_api_adapter, save: nil) }
+  let(:manual) { double(:manual, valid?: nil, save!: nil) }
+  let(:publishing_api_adapter) { double(:publishing_api_adapter, save_draft: nil) }
 
   subject do
     described_class.new(
@@ -24,12 +24,12 @@ RSpec.describe Manual::CreateService do
     end
 
     it "saves the manual" do
-      expect(manual).to receive(:save)
+      expect(manual).to receive(:save!)
       subject.call
     end
 
     it "saves the manual to the Publishing API" do
-      expect(publishing_api_adapter).to receive(:save).with(manual)
+      expect(publishing_api_adapter).to receive(:save_draft).with(manual)
       subject.call
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe Manual::CreateService do
     before do
       allow(manual).to receive(:valid?).and_return(true)
       allow(publishing_api_adapter)
-        .to receive(:save).and_raise(gds_api_exception)
+        .to receive(:save_draft).and_raise(gds_api_exception)
     end
 
     it "raises the exception" do
@@ -48,7 +48,7 @@ RSpec.describe Manual::CreateService do
     end
 
     it "does not save the manual" do
-      expect(manual).to_not receive(:save)
+      expect(manual).to_not receive(:save!)
       begin
         subject.call
       rescue StandardError
@@ -63,12 +63,12 @@ RSpec.describe Manual::CreateService do
     end
 
     it "does not save the manual" do
-      expect(manual).to_not receive(:save)
+      expect(manual).to_not receive(:save!)
       subject.call
     end
 
     it "does not save the manual to the Publishing API" do
-      expect(publishing_api_adapter).to_not receive(:save).with(manual)
+      expect(publishing_api_adapter).to_not receive(:save_draft).with(manual)
       subject.call
     end
   end

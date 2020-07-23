@@ -19,7 +19,7 @@ class Manual::DiscardDraftService
         # publishing API and the next line will clean it up in our DB
       end
 
-      manual.destroy
+      manual.destroy!
       Result.success(manual)
     end
   end

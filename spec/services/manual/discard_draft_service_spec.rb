@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Manual::DiscardDraftService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual) { double(:manual, id: manual_id, has_ever_been_published?: has_ever_been_published, destroy: nil) }
+  let(:manual) { double(:manual, id: manual_id, has_ever_been_published?: has_ever_been_published, destroy!: nil) }
   let(:publishing_adapter) { double(:publishing_adapter) }
   let(:user) { double(:user) }
 
@@ -34,7 +34,7 @@ RSpec.describe Manual::DiscardDraftService do
 
     it "destroys the manual in the local db" do
       subject.call
-      expect(manual).to have_received(:destroy)
+      expect(manual).to have_received(:destroy!)
     end
   end
 
@@ -53,7 +53,7 @@ RSpec.describe Manual::DiscardDraftService do
 
     it "does not destroy the manual in the local db" do
       subject.call
-      expect(manual).not_to have_received(:destroy)
+      expect(manual).not_to have_received(:destroy!)
     end
   end
 end

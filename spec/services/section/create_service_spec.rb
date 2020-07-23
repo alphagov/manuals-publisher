@@ -26,7 +26,7 @@ RSpec.describe Section::CreateService do
       .and_return(new_section)
     allow(Adapters).to receive(:publishing)
       .and_return(publishing_api_adapter)
-    allow(publishing_api_adapter).to receive(:save)
+    allow(publishing_api_adapter).to receive(:save_draft)
     allow(publishing_api_adapter).to receive(:save_section)
   end
 
@@ -42,14 +42,14 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft" do
-      expect(manual).to receive(:save).with(user)
+      expect(manual).to receive(:save!).with(user)
 
       subject.call
     end
 
     it "saves the draft manual to the publishing api" do
       expect(publishing_api_adapter)
-        .to receive(:save).with(manual, include_sections: false)
+        .to receive(:save_draft).with(manual, include_sections: false)
 
       subject.call
     end
@@ -68,7 +68,7 @@ RSpec.describe Section::CreateService do
     before do
       allow(new_section).to receive(:valid?).and_return(true)
       allow(publishing_api_adapter)
-        .to receive(:save)
+        .to receive(:save_draft)
         .and_raise(gds_api_exception)
     end
 
@@ -87,7 +87,7 @@ RSpec.describe Section::CreateService do
     end
 
     it "does not save the manual" do
-      expect(manual).to_not receive(:save).with(user)
+      expect(manual).to_not receive(:save!).with(user)
 
       begin
         subject.call
@@ -133,7 +133,7 @@ RSpec.describe Section::CreateService do
     end
 
     it "does not save the manual" do
-      expect(manual).to_not receive(:save).with(user)
+      expect(manual).to_not receive(:save!).with(user)
 
       begin
         subject.call
@@ -144,7 +144,7 @@ RSpec.describe Section::CreateService do
 
     it "saves the draft manual to the publishing api" do
       expect(publishing_api_adapter)
-        .to receive(:save).with(manual, include_sections: false)
+        .to receive(:save_draft).with(manual, include_sections: false)
 
       begin
         subject.call
@@ -166,14 +166,14 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft" do
-      expect(manual).to_not receive(:save)
+      expect(manual).to_not receive(:save!)
 
       subject.call
     end
 
     it "saves the draft manual to the publishing api" do
       expect(publishing_api_adapter)
-        .to_not receive(:save)
+        .to_not receive(:save_draft)
 
       subject.call
     end

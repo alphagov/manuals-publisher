@@ -51,6 +51,7 @@ describe PublishingAdapter do
   let(:section_edition) do
     SectionEdition.new(
       slug: "manual-slug/section-slug",
+      section_uuid: section_uuid,
       title: "section-title",
       summary: "section-summary",
       body: "section-body",
@@ -79,7 +80,7 @@ describe PublishingAdapter do
       .and_return(publication_logs)
   end
 
-  describe "#save" do
+  describe "#save_draft" do
     before do
       manual.sections = [section]
 
@@ -101,7 +102,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save(manual)
+      subject.save_draft(manual)
     end
 
     it "saves links for manual to Publishing API with attributes which validate against links schema for manual" do
@@ -112,7 +113,7 @@ describe PublishingAdapter do
         ),
       )
 
-      subject.save(manual)
+      subject.save_draft(manual)
     end
 
     it "saves content for manual to Publishing API" do
@@ -171,7 +172,7 @@ describe PublishingAdapter do
         locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
-      subject.save(manual)
+      subject.save_draft(manual)
     end
 
     it "saves links for all manual's sections to Publishing API" do
@@ -184,7 +185,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save(manual)
+      subject.save_draft(manual)
     end
 
     it "saves links for all manual's sections to Publishing API with attributes which validate against links schema for section" do
@@ -195,7 +196,7 @@ describe PublishingAdapter do
         ),
       )
 
-      subject.save(manual)
+      subject.save_draft(manual)
     end
 
     it "saves content for all manual's sections to Publishing API" do
@@ -242,7 +243,7 @@ describe PublishingAdapter do
         locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
-      subject.save(manual)
+      subject.save_draft(manual)
     end
 
     context "when section does not need exporting" do
@@ -256,7 +257,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it "does not save content for section to Publishing API" do
@@ -265,7 +266,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       context "and action is republish" do
@@ -275,7 +276,7 @@ describe PublishingAdapter do
             anything,
           )
 
-          subject.save(manual, republish: true)
+          subject.save_draft(manual, republish: true)
         end
 
         it "saves content for section to Publishing API" do
@@ -284,7 +285,7 @@ describe PublishingAdapter do
             anything,
           )
 
-          subject.save(manual, republish: true)
+          subject.save_draft(manual, republish: true)
         end
       end
     end
@@ -303,7 +304,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with timestamps" do
@@ -315,7 +316,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       context "but Manual#use_originally_published_at_for_public_timestamp? is false" do
@@ -331,7 +332,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save(manual)
+          subject.save_draft(manual)
         end
 
         it "saves content for section to Publishing API without public timestamp" do
@@ -342,7 +343,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save(manual)
+          subject.save_draft(manual)
         end
       end
     end
@@ -355,7 +356,7 @@ describe PublishingAdapter do
             including(update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE),
           )
 
-          subject.save(manual, republish: true)
+          subject.save_draft(manual, republish: true)
         end
 
         it "saves content for section to Publishing API with republish update_type" do
@@ -364,7 +365,7 @@ describe PublishingAdapter do
             including(update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE),
           )
 
-          subject.save(manual, republish: true)
+          subject.save_draft(manual, republish: true)
         end
       end
     end
@@ -381,7 +382,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with major update_type" do
@@ -390,7 +391,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it_behaves_like "republishing overrides update_type"
@@ -408,7 +409,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with minor update_type" do
@@ -417,7 +418,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it_behaves_like "republishing overrides update_type"
@@ -435,7 +436,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with major update_type" do
@@ -444,7 +445,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
 
       it_behaves_like "republishing overrides update_type"
@@ -495,7 +496,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
     end
 
@@ -531,7 +532,7 @@ describe PublishingAdapter do
           )),
         )
 
-        subject.save(manual)
+        subject.save_draft(manual)
       end
     end
   end
@@ -570,6 +571,7 @@ describe PublishingAdapter do
     let(:removed_section_edition) do
       SectionEdition.new(
         slug: "manual-slug/removed-section-slug",
+        section_uuid: removed_section_uuid,
         title: "removed-section-title",
         summary: "removed-section-summary",
         body: "removed-section-body",

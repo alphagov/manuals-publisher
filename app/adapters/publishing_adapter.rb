@@ -4,7 +4,7 @@ require "securerandom"
 require "gds_api_constants"
 
 class PublishingAdapter
-  def save(manual, republish: false, include_sections: true, include_links: true)
+  def save_draft(manual, republish: false, include_sections: true, include_links: true)
     save_manual(manual, republish: republish, include_links: include_links)
 
     if include_sections

@@ -15,7 +15,7 @@ RSpec.describe "Checking broken links", type: :feature do
       end
 
       it "should display a link check in progress if the button has been clicked" do
-        create(:link_check_report, manual_id: manual.id)
+        FactoryBot.create(:link_check_report, manual_id: manual.id)
         visit "/manuals/#{manual.id}"
         expect(page).to have_content("Broken link report in progress.")
       end
@@ -23,7 +23,7 @@ RSpec.describe "Checking broken links", type: :feature do
 
     context "when a link check with no broken links exists" do
       it "should display that there are no broken links" do
-        create(:link_check_report, :completed, manual_id: manual.id)
+        FactoryBot.create(:link_check_report, :completed, manual_id: manual.id)
         visit "/manuals/#{manual.id}"
         expect(page).to have_content("This document contains no broken links.")
       end
@@ -31,7 +31,7 @@ RSpec.describe "Checking broken links", type: :feature do
 
     context "when a link check with broken links exists" do
       it "should display that there are broken links" do
-        create(:link_check_report, :completed, :with_broken_links, manual_id: manual.id)
+        FactoryBot.create(:link_check_report, :completed, :with_broken_links, manual_id: manual.id)
         visit "/manuals/#{manual.id}"
         expect(page).to have_content("See more details about this link")
       end
@@ -49,7 +49,7 @@ RSpec.describe "Checking broken links", type: :feature do
       end
 
       it "should display a link check in progress if the button has been clicked" do
-        create(:link_check_report, manual_id: manual.id, section_id: section.uuid)
+        FactoryBot.create(:link_check_report, manual_id: manual.id, section_id: section.uuid)
         visit "/manuals/#{manual.id}/sections/#{section.uuid}"
         expect(page).to have_content("Broken link report in progress.")
       end
@@ -57,7 +57,7 @@ RSpec.describe "Checking broken links", type: :feature do
 
     context "when a link check with no broken links exists" do
       it "should display that there are no broken links" do
-        create(:link_check_report, :completed, manual_id: manual.id, section_id: section.uuid)
+        FactoryBot.create(:link_check_report, :completed, manual_id: manual.id, section_id: section.uuid)
         visit "/manuals/#{manual.id}/sections/#{section.uuid}"
         expect(page).to have_content("This document contains no broken links.")
       end
@@ -65,7 +65,7 @@ RSpec.describe "Checking broken links", type: :feature do
 
     context "when a link check with broken links exists" do
       it "should display that there are broken links" do
-        create(:link_check_report, :completed, :with_broken_links, manual_id: manual.id, section_id: section.uuid)
+        FactoryBot.create(:link_check_report, :completed, :with_broken_links, manual_id: manual.id, section_id: section.uuid)
         visit "/manuals/#{manual.id}/sections/#{section.uuid}"
         expect(page).to have_content("See more details about this link")
       end

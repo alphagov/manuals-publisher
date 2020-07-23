@@ -11,9 +11,9 @@ class Attachment::UpdateService
     manual = Manual.find(manual_id, user)
     section = manual.find_section(section_uuid)
     attachment = section.find_attachment_by_id(attachment_id)
-    attachment.update(attributes.merge(filename: attributes[:file].original_filename))
+    attachment.update!(attributes.merge(filename: attributes[:file].original_filename))
 
-    manual.save(user)
+    manual.save!(user)
 
     [manual, section, attachment]
   end

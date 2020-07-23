@@ -11,13 +11,13 @@ class Section::UpdateService
   def call
     manual = Manual.find(manual_id, user)
     section = manual.find_section(section_uuid)
-    section.update(attributes)
+    section.update!(attributes)
 
     if section.valid?
       manual.draft
-      Adapters.publishing.save(manual, include_sections: false)
+      Adapters.publishing.save_draft(manual, include_sections: false)
       Adapters.publishing.save_section(section, manual)
-      manual.save(user)
+      manual.save!(user)
     end
 
     [manual, section]

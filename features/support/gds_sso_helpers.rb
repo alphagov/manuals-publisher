@@ -2,10 +2,9 @@ require "warden/test/helpers"
 
 module GdsSsoHelpers
   include Warden::Test::Helpers
-  include FactoryBot::Syntax::Methods
 
   def login_as(user_type)
-    user = create(user_type.to_sym)
+    user = FactoryBot.create(user_type.to_sym) # rubocop:disable Rails/SaveBang
     GDS::SSO.test_user = user
     super(user) # warden
   end
