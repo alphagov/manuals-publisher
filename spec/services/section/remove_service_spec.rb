@@ -78,7 +78,7 @@ RSpec.describe Section::RemoveService do
       double(
         uuid: section_uuid,
         published?: true,
-        update!: nil,
+        assign_attributes: nil,
         valid?: false,
       )
     end
@@ -94,7 +94,7 @@ RSpec.describe Section::RemoveService do
     end
 
     it "tries to save the change note to the section" do
-      expect(section).to have_received(:update!).with(change_note_params)
+      expect(section).to have_received(:assign_attributes).with(change_note_params)
     end
 
     it "does not removes the section" do
@@ -131,7 +131,7 @@ RSpec.describe Section::RemoveService do
         double(
           uuid: section_uuid,
           published?: true,
-          update!: nil,
+          assign_attributes: nil,
           valid?: true,
         )
       end
@@ -141,7 +141,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "saves the change note to the section" do
-        expect(section).to have_received(:update!).with(change_note_params)
+        expect(section).to have_received(:assign_attributes).with(change_note_params)
       end
 
       it "removes the section" do
@@ -170,7 +170,7 @@ RSpec.describe Section::RemoveService do
         double(
           uuid: section_uuid,
           published?: false,
-          update!: nil,
+          assign_attributes: nil,
           valid?: true,
         )
       end
@@ -180,7 +180,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "saves the change note to the section" do
-        expect(section).to have_received(:update!).with(minor_update: "0", change_note: "Make a change")
+        expect(section).to have_received(:assign_attributes).with(minor_update: "0", change_note: "Make a change")
       end
 
       it "removes the section" do
@@ -210,7 +210,7 @@ RSpec.describe Section::RemoveService do
         double(
           uuid: section_uuid,
           published?: true,
-          update!: nil,
+          assign_attributes: nil,
           valid?: true,
         )
       end
@@ -227,7 +227,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "only saves the change note params to the section ignoring others" do
-        expect(section).to have_received(:update!).with(change_note_params.slice(:change_note, :minor_update))
+        expect(section).to have_received(:assign_attributes).with(change_note_params.slice(:change_note, :minor_update))
       end
     end
   end

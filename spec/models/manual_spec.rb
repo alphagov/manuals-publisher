@@ -173,7 +173,7 @@ describe Manual do
       let(:new_state) { "new-manual-state" }
 
       it "updates with the given attributes" do
-        manual.update!(
+        manual.assign_attributes(
           title: new_title,
           summary: new_summary,
           organisation_slug: new_organisation_slug,
@@ -187,7 +187,7 @@ describe Manual do
       end
 
       it "doesn't nil out attributes not in list" do
-        manual.update!({})
+        manual.assign_attributes({})
 
         expect(manual.title).to eq(title)
         expect(manual.summary).to eq(summary)
@@ -201,7 +201,7 @@ describe Manual do
       let(:new_updated_at) { Time.zone.parse("2003-03-03") }
 
       it "does not update the attributes" do
-        manual.update!(
+        manual.assign_attributes(
           id: new_id,
           updated_at: new_updated_at,
         )

@@ -1,5 +1,4 @@
 require "spec_helper"
-require "manual_relocator"
 require "gds_api_constants"
 
 describe ManualRelocator do

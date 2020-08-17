@@ -63,10 +63,10 @@ private
 
         begin
           if old_sections_reused_in_new_manual.include? section_uuid
-            puts "Issuing gone for content item '/#{section_slug}' as it will be reused by a section in '#{new_manual.slug}'"
+            Rails.logger.debug "Issuing gone for content item '/#{section_slug}' as it will be reused by a section in '#{new_manual.slug}'"
             send_gone(section_uuid, section_slug)
           else
-            puts "Redirecting content item '/#{section_slug}' to '/#{old_manual.slug}'"
+            Rails.logger.debug "Redirecting content item '/#{section_slug}' to '/#{old_manual.slug}'"
             publishing_api.unpublish(
               section_uuid,
               type: "redirect",
@@ -75,7 +75,7 @@ private
             )
           end
         rescue GdsApi::HTTPNotFound
-          puts "Content item with section_uuid #{section_uuid} not present in the publishing API"
+          Rails.logger.debug "Content item with section_uuid #{section_uuid} not present in the publishing API"
         end
 
         # Destroy all the editons of this manual as it's going away
@@ -83,14 +83,14 @@ private
       end
     end
 
-    puts "Destroying old PublicationLogs for #{old_manual.slug}"
+    Rails.logger.debug "Destroying old PublicationLogs for #{old_manual.slug}"
     old_manual.publication_logs.each(&:destroy)
 
     # Destroy the manual record
-    puts "Destroying manual #{old_manual.id}"
+    logger.info "Destroying manual #{old_manual.id}"
     old_manual.destroy!
 
-    puts "Issuing gone for #{old_manual.id}"
+    Rails.logger.debug "Issuing gone for #{old_manual.id}"
     send_gone(old_manual.id, old_manual.slug)
   end
 
@@ -130,17 +130,17 @@ private
       sections = all_editions_of_section(section_uuid)
       sections.each do |section|
         new_section_slug = section.slug.gsub(from_slug, to_slug)
-        puts "Reslugging section '#{section.slug}' as '#{new_section_slug}'"
+        Rails.logger.debug "Reslugging section '#{section.slug}' as '#{new_section_slug}'"
         section.set(slug: new_section_slug)
       end
     end
 
     # Reslug the manual
-    puts "Reslugging manual '#{new_manual.slug}' as '#{to_slug}'"
+    Rails.logger.debug "Reslugging manual '#{new_manual.slug}' as '#{to_slug}'"
     new_manual.set(slug: to_slug)
 
     # Reslug the existing publication logs
-    puts "Reslugging publication logs for #{from_slug} to #{to_slug}"
+    Rails.logger.debug "Reslugging publication logs for #{from_slug} to #{to_slug}"
     new_manual.publication_logs.each do |publication_log|
       publication_log.set(slug: publication_log.slug.gsub(from_slug, to_slug))
     end
@@ -148,7 +148,7 @@ private
     # Clean up manual sections belonging to the temporary manual path
     new_section_uuids.each do |section_uuid|
       most_recent_edition = most_recent_edition_of_section(section_uuid)
-      puts "Redirecting #{section_uuid} to '#{most_recent_edition.slug}'"
+      Rails.logger.debug "Redirecting #{section_uuid} to '#{most_recent_edition.slug}'"
       publishing_api.unpublish(
         section_uuid,
         type: "redirect",
@@ -158,7 +158,7 @@ private
     end
 
     # Clean up the drafted manual in the Publishing API
-    puts "Redirecting #{new_manual.id} to '/#{to_slug}'"
+    Rails.logger.debug "Redirecting #{new_manual.id} to '/#{to_slug}'"
     publishing_api.unpublish(
       new_manual.id,
       type: "redirect",
@@ -174,10 +174,10 @@ private
       manual_to_publish = manual_versions[:published]
       send_draft(manual_to_publish)
 
-      puts "Publishing published edition of manual: #{manual_to_publish.id}"
+      Rails.logger.debug "Publishing published edition of manual: #{manual_to_publish.id}"
       publishing_api.publish(manual_to_publish.id, GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE)
       manual_to_publish.sections.each do |section|
-        puts "Publishing published edition of manual section: #{section.uuid}"
+        Rails.logger.debug "Publishing published edition of manual section: #{section.uuid}"
         publishing_api.publish(section.uuid, GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE)
       end
     end
@@ -186,7 +186,7 @@ private
   end
 
   def send_draft(manual)
-    puts "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
+    logger.info "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
     Adapters.publishing.save_draft(manual, include_links: false, republish: true)
   end
 

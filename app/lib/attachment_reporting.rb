@@ -12,7 +12,7 @@ class AttachmentReporting
     unique_owning_organisation_slugs = manuals.map(&:organisation_slug).uniq
 
     # Hash of organisation names mapped to three-element arrays of counts of PDFs, one count for each time period
-    organisation_published_pdfs_counts_hash = Hash[unique_owning_organisation_slugs.map { |o| [o, [0, 0, 0]] }]
+    organisation_published_pdfs_counts_hash = unique_owning_organisation_slugs.index_with { [0, 0, 0] }
 
     manuals.each do |manual|
       next unless manual.has_ever_been_published?

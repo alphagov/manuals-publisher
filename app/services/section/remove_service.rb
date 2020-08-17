@@ -22,7 +22,7 @@ class Section::RemoveService
       minor_update: attributes.fetch(:minor_update, "0"),
       change_note: attributes.fetch(:change_note, ""),
     }
-    section.update!(change_note_params)
+    section.assign_attributes(change_note_params)
 
     if section.valid?
       # Removing a section always makes the manual a draft

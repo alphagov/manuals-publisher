@@ -76,7 +76,7 @@ class Section
     uuid
   end
 
-  def update!(attributes)
+  def assign_attributes(attributes)
     if !published? && attributes.fetch(:title, false)
       attributes = attributes.merge(
         slug: slug_generator.call(attributes.fetch(:title)),

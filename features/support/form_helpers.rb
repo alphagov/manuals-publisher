@@ -26,4 +26,6 @@ module FormHelpers
     find(:xpath, ".//select[@id='#{base_dom_id}_5i']").select("")
   end
 end
+
 RSpec.configuration.include FormHelpers, type: :feature
+World(FormHelpers) if respond_to?(:World)

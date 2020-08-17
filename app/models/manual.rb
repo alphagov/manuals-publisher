@@ -113,7 +113,7 @@ class Manual
     @version_number = attributes.fetch(:version_number, 0)
     @ever_been_published = attributes.fetch(:ever_been_published, false).present?
 
-    update!(attributes)
+    assign_attributes(attributes)
 
     @summary ||= ""
     @body ||= ""
@@ -136,7 +136,7 @@ class Manual
     id.eql? other.id
   end
 
-  def update!(attributes)
+  def assign_attributes(attributes)
     @slug = attributes.fetch(:slug, slug)
     @title = attributes.fetch(:title, title)
     @summary = attributes.fetch(:summary, summary)
@@ -223,7 +223,7 @@ class Manual
       minor_update: false,
       change_note: "New section added.",
     }
-    section.update!(defaults.merge(attributes))
+    section.assign_attributes(defaults.merge(attributes))
 
     sections << section
 

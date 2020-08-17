@@ -1,4 +1,3 @@
-require "attachment_reporting"
 require "csv"
 
 desc "Generate content model PDF report"

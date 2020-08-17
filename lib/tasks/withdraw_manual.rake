@@ -1,4 +1,3 @@
-require "manual_withdrawer"
 require "logger"
 
 desc "Withdraw a manual"

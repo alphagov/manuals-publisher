@@ -1,5 +1,7 @@
 require_relative "boot"
 
+require "rails"
+
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "sprockets/railtie"
@@ -11,18 +13,17 @@ Bundler.require(*Rails.groups)
 module ManualsPublisher
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 5.1
+    config.load_defaults 6.0
 
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
 
-    # These paths are non-standard (they are subdirectories of
-    # app/models) so they need to be added to the autoload_paths
-    config.autoload_paths << Rails.root.join("app/exporters/formatters")
-    config.autoload_paths << Rails.root.join("app/models/validators")
-    config.autoload_paths << Rails.root.join("app/services/manual")
-    config.autoload_paths << Rails.root.join("app/services/section")
-    config.autoload_paths << Rails.root.join("app/services/attachment")
+    # Using a sass css compressor causes a scss file to be processed twice
+    # (once to build, once to compress) which breaks the usage of "unquote"
+    # to use CSS that has same function names as SCSS such as max.
+    # https://github.com/alphagov/govuk-frontend/issues/1350
+    config.assets.css_compressor = nil
   end
 end

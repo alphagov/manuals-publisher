@@ -6,4 +6,6 @@ module FileFixtureHelpers
     filepath
   end
 end
+
 RSpec.configuration.include FileFixtureHelpers, type: :feature
+World(FileFixtureHelpers) if respond_to?(:World)

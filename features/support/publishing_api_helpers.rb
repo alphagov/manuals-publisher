@@ -13,3 +13,4 @@ module PublishingAPIHelpers
 end
 
 RSpec.configuration.include PublishingAPIHelpers, type: :feature
+World(PublishingAPIHelpers) if respond_to?(:World)

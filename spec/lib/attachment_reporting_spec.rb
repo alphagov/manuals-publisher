@@ -1,5 +1,4 @@
 require "spec_helper"
-require "attachment_reporting"
 
 describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
   let(:start_date) { Date.parse("2015-01-01") }

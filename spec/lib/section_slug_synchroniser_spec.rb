@@ -1,6 +1,4 @@
 require "spec_helper"
-require "section_reslugger"
-require "section_slug_synchroniser"
 
 RSpec.describe SectionSlugSynchroniser do
   let(:logger) { double(:logger) }
