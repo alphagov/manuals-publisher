@@ -5,8 +5,8 @@ RSpec.describe "manual urls", type: :feature do
     login_as(:gds_editor)
   end
 
-  let!(:manual) { create_manual_without_ui(title: "A manual", summary: "A manual summary", body: "A manual body") }
-  let!(:section) { create_section_without_ui(manual, title: "Section 1", summary: "A section summary", body: "A section body") }
+  let!(:manual) { create_manual_without_ui({ title: "A manual", summary: "A manual summary", body: "A manual body" }) }
+  let!(:section) { create_section_without_ui(manual, { title: "Section 1", summary: "A section summary", body: "A section body" }) }
 
   it "should respond with 'OK'" do
     visit "/manuals"

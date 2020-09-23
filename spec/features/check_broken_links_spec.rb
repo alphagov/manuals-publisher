@@ -6,7 +6,7 @@ RSpec.describe "Checking broken links", type: :feature do
   end
 
   context "on manuals" do
-    let(:manual) { create_manual_without_ui(title: "A manual", summary: "A manual summary", body: "[link](http://www.example.com)") }
+    let(:manual) { create_manual_without_ui({ title: "A manual", summary: "A manual summary", body: "[link](http://www.example.com)" }) }
 
     context "when no link check report exists" do
       it "should display a link check button if there are links in the manual" do
@@ -39,8 +39,8 @@ RSpec.describe "Checking broken links", type: :feature do
   end
 
   context "on sections" do
-    let(:manual) { create_manual_without_ui(title: "A manual", summary: "A manual summary", body: "[link](http://www.example.com)") }
-    let(:section) { create_section_without_ui(manual, title: "A section", summary: "Section 1 summary", body: "[link](http://www.example.com)") }
+    let(:manual) { create_manual_without_ui({ title: "A manual", summary: "A manual summary", body: "[link](http://www.example.com)" }) }
+    let(:section) { create_section_without_ui(manual, { title: "A section", summary: "Section 1 summary", body: "[link](http://www.example.com)" }) }
 
     context "when no link check report exists" do
       it "should display a link check button if there are links in the manual" do

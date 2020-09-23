@@ -17,8 +17,8 @@ RSpec.describe "Publishing manuals", type: :feature do
       manual = create_manual_without_ui(manual_fields)
 
       @sections = [].tap do |sections|
-        sections << create_section_without_ui(manual, title: "Section 1 major", summary: "Section 1 summary", body: "Section body")
-        sections << create_section_without_ui(manual, title: "Section 1", summary: "Section 1 minor summary", body: "Section body minor update", minor_update: true)
+        sections << create_section_without_ui(manual, { title: "Section 1 major", summary: "Section 1 summary", body: "Section body" })
+        sections << create_section_without_ui(manual, { title: "Section 1", summary: "Section 1 minor summary", body: "Section body minor update", minor_update: true })
       end
 
       # Re-fetch manual to include sections
