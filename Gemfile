@@ -24,8 +24,9 @@ end
 
 group :development, :test do
   gem "awesome_print"
+  gem "govuk_test"
   gem "jasmine"
-  gem "jasmine_selenium_runner", require: false
+  gem "jasmine_selenium_runner"
   gem "pry-byebug"
 end
 
@@ -35,7 +36,6 @@ group :test do
   gem "database_cleaner-mongoid"
   gem "factory_bot_rails"
   gem "govuk-content-schema-test-helpers"
-  gem "govuk_test"
   gem "launchy"
   gem "rails-controller-testing"
   gem "rspec"
