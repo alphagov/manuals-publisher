@@ -125,6 +125,7 @@ describe PublishingAdapter do
         title: "manual-title",
         description: "manual-summary",
         update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
+        bulk_publishing: false,
         publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
         rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
         routes: [
@@ -208,6 +209,7 @@ describe PublishingAdapter do
         title: "section-title",
         description: "section-summary",
         update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
+        bulk_publishing: false,
         publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
         rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
         change_note: "change-note",
@@ -348,12 +350,15 @@ describe PublishingAdapter do
       end
     end
 
-    shared_examples_for "republishing overrides update_type" do
+    shared_examples_for "republishing overrides update_type and sets bulk_publishing" do
       context "when action is republish" do
         it "saves content for manual to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             manual_id,
-            including(update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE),
+            including(
+              update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
+              bulk_publishing: true,
+            ),
           )
 
           subject.save_draft(manual, republish: true)
@@ -362,7 +367,10 @@ describe PublishingAdapter do
         it "saves content for section to Publishing API with republish update_type" do
           expect(publishing_api).to receive(:put_content).with(
             section_uuid,
-            including(update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE),
+            including(
+              update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
+              bulk_publishing: true,
+            ),
           )
 
           subject.save_draft(manual, republish: true)
@@ -394,7 +402,7 @@ describe PublishingAdapter do
         subject.save_draft(manual)
       end
 
-      it_behaves_like "republishing overrides update_type"
+      it_behaves_like "republishing overrides update_type and sets bulk_publishing"
     end
 
     context "when manual & section version_type are minor" do
@@ -421,7 +429,7 @@ describe PublishingAdapter do
         subject.save_draft(manual)
       end
 
-      it_behaves_like "republishing overrides update_type"
+      it_behaves_like "republishing overrides update_type and sets bulk_publishing"
     end
 
     context "when manual & section version_type are major" do
@@ -448,7 +456,7 @@ describe PublishingAdapter do
         subject.save_draft(manual)
       end
 
-      it_behaves_like "republishing overrides update_type"
+      it_behaves_like "republishing overrides update_type and sets bulk_publishing"
     end
 
     context "when publication logs exist for section" do
