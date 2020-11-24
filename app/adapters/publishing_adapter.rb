@@ -117,6 +117,7 @@ private
       title: manual.title,
       description: manual.summary,
       update_type: update_type,
+      bulk_publishing: republish,
       publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
       rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
       routes: [
@@ -224,6 +225,7 @@ private
       title: section.title,
       description: section.summary,
       update_type: update_type,
+      bulk_publishing: republish,
       publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
       rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
       change_note: section.change_note,
