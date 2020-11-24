@@ -38,25 +38,28 @@ p.no-content-message {
 }
 
 .metadata-list {
-  width:100%;
+  width: 100%;
 
   dt {
     float: left;
     clear: both;
-    width:30%;
+    width: 30%;
   }
+
   dd {
     float: right;
-    width:70%;
+    width: 70%;
   }
 }
 
 .collapsable-heading a {
   color: inherit;
+
   small {
     color: $link-color;
   }
 }
+
 .action-link {
   @include core-19;
 }
