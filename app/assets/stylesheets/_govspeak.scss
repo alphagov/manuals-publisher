@@ -1,4 +1,6 @@
-@import "_shims";
+// stylelint-disable selector-no-qualifying-type, max-nesting-depth -- there
+// are a large number of violations of these two rules to resolve.
+@import "shims";
 
 .govspeak {
   h2:first-child,
@@ -13,7 +15,7 @@
     font-weight: bold;
     margin-top: $gutter-half;
     @include media(desktop) {
-      margin-top: $gutter*1.5;
+      margin-top: $gutter * 1.5;
     }
   }
 
@@ -208,7 +210,7 @@
   .call-to-action {
     margin: $gutter 0;
     background: $panel-colour none no-repeat 98% $gutter-two-thirds;
-    padding: $gutter-one-third ($gutter*2) $gutter-one-third $gutter-half;
+    padding: $gutter-one-third ($gutter * 2) $gutter-one-third $gutter-half;
     position: relative;
 
     p {
@@ -343,11 +345,11 @@
     padding-top: $gutter-one-third;
 
     ol {
-      margin-top: 0 !important;
+      margin-top: 0 !important; // stylelint-disable-line declaration-no-important
       padding-top: 0;
 
       li p {
-        margin: 10px 0 !important;
+        margin: 10px 0 !important; // stylelint-disable-line declaration-no-important
       }
     }
   }
