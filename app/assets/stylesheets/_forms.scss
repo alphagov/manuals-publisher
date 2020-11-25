@@ -1,5 +1,4 @@
 form {
-
   .select2-container {
     width: 100%;
   }
@@ -28,6 +27,7 @@ form {
     .error {
       color: $mellow-red;
     }
+
     li {
       padding-top: 3px;
       padding-bottom: 2px;
@@ -37,7 +37,7 @@ form {
   .preview {
     border: 1px solid $border-colour;
     padding: $gutter-half;
-    margin: 20px 0 0 0;
+    margin: 20px 0 0;
 
     .visuallyhidden {
       position: absolute;
@@ -52,15 +52,17 @@ form {
 
 .summary-length-info {
   text-align: right;
+
   &.warning {
-    color: #C09853;
+    color: #c09853;
   }
+
   .count {
     font-weight: bold;
   }
 }
 
-h2.with-actions {
+.with-actions {
   width: 50%;
   float: left;
 }
@@ -73,20 +75,20 @@ h2.with-actions {
 
   li {
     display: inline;
-    padding: 0 0em 0 1em;
+    padding: 0 0 0 1em;
     float: right;
   }
 }
 
 .actions {
   border-top: 1px solid #eeeeee;
-  padding-top:$gutter;
+  padding-top: $gutter;
   margin-top: $gutter;
   max-width: 600px;
 
   form {
     display: inline-block;
-    margin-right:$gutter-one-third;
+    margin-right: $gutter-one-third;
   }
 
   .panel {

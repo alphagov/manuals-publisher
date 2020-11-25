@@ -7,16 +7,16 @@
 //= require markdown_preview
 //= require toggle_display_with_checked_input
 
-function initPrimaryLinks(){
-  GOVUK.primaryLinks.init('.primary-item');
+function initPrimaryLinks () {
+  GOVUK.primaryLinks.init('.primary-item')
 }
-$(initPrimaryLinks);
-$(window).on('displayPreviewDone', initPrimaryLinks);
+$(initPrimaryLinks)
+$(window).on('displayPreviewDone', initPrimaryLinks)
 
-jQuery(function($) {
-  $(".js-length-counter").each(function(){
-    new GOVUK.LengthCounter({$el:$(this)});
+jQuery(function ($) {
+  $('.js-length-counter').each(function () {
+    new GOVUK.LengthCounter({ $el: $(this) }) // eslint-disable-line no-new
   })
 
-  $(".reorderable-document-list").sortable();
-});
+  $('.reorderable-document-list').sortable()
+})
