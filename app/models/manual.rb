@@ -49,11 +49,19 @@ class Manual
   end
 
   def self.all(user, load_associations: true)
-    collection = user.manual_records
+    user.manual_records
+      .includes(:editions)
+      .all_by_updated_at
+      .lazy
+      .map do |manual_record|
+        edition = manual_record.editions.max_by(&:version_number)
 
-    collection.all_by_updated_at.lazy.map do |manual_record|
-      build_manual_for(manual_record, load_associations: load_associations)
-    end
+        build_manual_for(
+          manual_record,
+          edition: edition,
+          load_associations: load_associations,
+        )
+      end
   end
 
   def slug_unique?(user)

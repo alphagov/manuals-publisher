@@ -22,7 +22,7 @@ RSpec.describe Manual::ListService do
   end
 
   it "returns all manuals" do
-    expect(subject.call).to eq([])
+    expect(subject.call.force).to eq([])
   end
 
   it "only returns 15 results" do
