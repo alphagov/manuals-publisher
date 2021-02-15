@@ -4,7 +4,7 @@ class Manual::ListService
   end
 
   def call
-    Manual.all(user, load_associations: false).first(25)
+    Manual.all(user, load_associations: false)
   end
 
 private

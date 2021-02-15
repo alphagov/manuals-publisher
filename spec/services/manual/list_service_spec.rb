@@ -24,13 +24,4 @@ RSpec.describe Manual::ListService do
   it "returns all manuals" do
     expect(subject.call.force).to eq([])
   end
-
-  it "only returns 15 results" do
-    manuals = (1..100).to_a
-    expected_manuals = (1..25).to_a
-
-    expect(Manual).to receive(:all).with(user, anything).and_return(manuals)
-
-    expect(subject.call).to eq(expected_manuals)
-  end
 end
