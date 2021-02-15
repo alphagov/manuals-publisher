@@ -51,7 +51,7 @@ class Manual
   def self.all(user, load_associations: true)
     collection = user.manual_records
 
-    collection.all_by_updated_at.lazy.map do |manual_record|
+    collection.all_by_updated_at.map do |manual_record|
       build_manual_for(manual_record, load_associations: load_associations)
     end
   end
