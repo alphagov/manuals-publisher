@@ -171,7 +171,7 @@ GEM
     generic_form_builder (0.13.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    govspeak (6.5.10)
+    govspeak (6.6.0)
       actionview (>= 5.0, < 7)
       addressable (>= 2.3.8, < 3)
       govuk_publishing_components (>= 23)
@@ -197,7 +197,7 @@ GEM
     govuk_frontend_toolkit (9.0.0)
       railties (>= 3.1.0)
       sass (>= 3.2.0)
-    govuk_publishing_components (23.6.0)
+    govuk_publishing_components (23.13.1)
       govuk_app_config
       kramdown
       plek
@@ -250,7 +250,7 @@ GEM
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
-    loofah (2.8.0)
+    loofah (2.9.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
@@ -280,7 +280,7 @@ GEM
     nokogiri (1.11.1)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    nokogumbo (2.0.2)
+    nokogumbo (2.0.4)
       nokogiri (~> 1.8, >= 1.8.4)
     null_logger (0.0.1)
     oauth2 (1.4.4)
@@ -372,7 +372,7 @@ GEM
       netrc (~> 0.8)
     rexml (3.2.4)
     rinku (2.0.6)
-    rouge (3.25.0)
+    rouge (3.26.0)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -423,7 +423,7 @@ GEM
     ruby2_keywords (0.0.4)
     rubyzip (2.3.0)
     safe_yaml (1.0.5)
-    sanitize (5.2.1)
+    sanitize (5.2.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.8.0)
       nokogumbo (~> 2.0)
