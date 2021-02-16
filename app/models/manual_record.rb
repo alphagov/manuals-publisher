@@ -80,6 +80,8 @@ private
     field :originally_published_at, type: Time
     field :use_originally_published_at_for_public_timestamp, type: Boolean
 
+    index manual_record_id: 1
+
     # We don't make use of the relationship but Mongoid can't save the
     # timestamps properly without it.
     belongs_to :manual_record
