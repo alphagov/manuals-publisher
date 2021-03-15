@@ -265,6 +265,7 @@ private
             web_url: organisation.web_url,
           },
         ],
+        visually_expanded: section.visually_expanded,
       },
       locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
     }

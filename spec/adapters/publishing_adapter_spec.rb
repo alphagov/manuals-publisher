@@ -241,6 +241,7 @@ describe PublishingAdapter do
               web_url: "organisation-web-url",
             },
           ],
+          visually_expanded: false,
         },
         locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )

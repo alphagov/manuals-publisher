@@ -11,11 +11,20 @@ describe SectionsController, type: :controller do
     end
 
     it "symbolizes the attribute keys" do
+      expected_keys = %i[title summary body change_note minor_update visually_expanded]
+      submitted_attributes = {
+        "title" => "title",
+        "summary" => "summary",
+        "body" => "body",
+        "change_note" => "change_note",
+        "minor_update" => true,
+        "visually_expanded" => false,
+      }
       expect(Section::CreateService).to receive(:new) { |args|
-        expect(args[:attributes].to_hash).to have_key(:title)
+        expect(args[:attributes].to_hash.keys).to eq(expected_keys)
       }.and_return(service)
 
-      post :create, params: { manual_id: "manual-id", id: "section-uuid", section: { "title" => "title" } }
+      post :create, params: { manual_id: "manual-id", id: "section-uuid", section: submitted_attributes }
     end
 
     it "removes attributes that are not permitted" do

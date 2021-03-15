@@ -35,6 +35,7 @@ class Section
            :change_note,
            :minor_update,
            :exported_at,
+           :visually_expanded,
            to: :latest_edition
 
   attr_reader :uuid
@@ -88,7 +89,7 @@ class Section
     else
       previous_edition_attributes = latest_edition.attributes
         .symbolize_keys
-        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update)
+        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update, :visually_expanded)
 
       attributes = previous_edition_attributes
         .merge(attributes)

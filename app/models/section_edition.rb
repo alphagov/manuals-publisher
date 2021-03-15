@@ -15,6 +15,7 @@ class SectionEdition
   field :state, type: String
   field :change_note, type: String
   field :minor_update, type: Boolean
+  field :visually_expanded, type: Boolean, default: false
   field :exported_at, type: Time
 
   validates :section_uuid, presence: true
