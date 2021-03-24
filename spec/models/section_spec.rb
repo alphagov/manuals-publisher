@@ -303,6 +303,19 @@ describe Section do
       context "with an existing draft edition" do
         let(:latest_edition) { draft_edition_v1 }
 
+        context "when visually expanding" do
+          it "recieves visually_expanded" do
+            section.assign_attributes(visually_expanded: false)
+
+            expect(draft_edition_v1).to have_received(:assign_attributes)
+              .with(
+                hash_including(
+                  visually_expanded: false,
+                ),
+              )
+          end
+        end
+
         context "when providing a title" do
           let(:new_title) { double(:new_title) }
           let(:slug)      { double(:slug) }

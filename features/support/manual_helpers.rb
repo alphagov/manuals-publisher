@@ -41,6 +41,19 @@ module ManualHelpers
     save_as_draft
   end
 
+  def create_expanded_section(manual_title, fields)
+    go_to_manual_page(manual_title)
+    click_on "Add section"
+
+    fill_in_fields(fields)
+
+    check "Remove collapsible content functionality (accordions)"
+
+    yield if block_given?
+
+    save_as_draft
+  end
+
   def create_section_without_ui(manual, fields, organisation_slug: "ministry-of-tea")
     user = FactoryBot.build(:generic_editor, organisation_slug: organisation_slug)
 

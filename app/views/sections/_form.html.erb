@@ -11,6 +11,11 @@
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
+      <div class="checkbox add-vertical-margins">
+        <%= f.check_box :visually_expanded, tag_type: :p, label: "Remove collapsible content functionality (accordions)", checked_value: section.visually_expanded %>
+        <p class="help-block">This manuals page will not have any collapsible sections. The formatting markdown ## will create a top level heading (H2) only, not a collapsible section.</p>
+      </div>
+
       <% if manual.has_ever_been_published? && section.accepts_minor_updates? %>
         <div class="checkbox add-vertical-margins">
           <%= f.radio_button :minor_update, 1, class: 'js-update-type-minor', tag_type: :p, label: 'Minor update', checked: section.minor_update %>

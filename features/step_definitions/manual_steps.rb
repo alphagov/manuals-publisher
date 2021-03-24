@@ -122,6 +122,21 @@ When(/^I create a section for the manual$/) do
   @section = most_recently_created_manual.sections.to_a.last
 end
 
+When(/^I create an expanded section for the manual$/) do
+  @section_title = "Created Section 1"
+  @section_slug = [@manual_slug, "created-section-1"].join("/")
+
+  @section_fields = {
+    section_title: @section_title,
+    section_summary: "Section 1 summary",
+    section_body: "Section 1 body",
+  }
+
+  create_expanded_section(@manual_fields.fetch(:title), @section_fields)
+
+  @section = most_recently_created_manual.sections.to_a.last
+end
+
 When(/^I create a section for the manual with a change note$/) do
   @section_title = "Created Section 1"
   @section_slug = [@manual_slug, "created-section-1"].join("/")
@@ -143,6 +158,16 @@ Then(/^I see the manual has the new section$/) do
   visit manuals_path
   click_on @manual_fields.fetch(:title)
   expect(page).to have_content(@section_fields.fetch(:section_title))
+end
+
+Then(/^I see the section isn't visually expanded$/) do
+  click_on @section_fields.fetch(:section_title)
+  expect(@section.visually_expanded).to eq(false)
+end
+
+Then(/^I see the section is visually expanded$/) do
+  click_on @section_fields.fetch(:section_title)
+  expect(@section.visually_expanded).to eq(true)
 end
 
 Then(/^the section and table of contents will have been sent to the draft publishing api$/) do

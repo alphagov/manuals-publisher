@@ -201,7 +201,7 @@ private
   def section_params
     params
       .require(:section)
-      .permit(:title, :summary, :body, :change_note, :minor_update)
+      .permit(:title, :summary, :body, :change_note, :minor_update, :visually_expanded)
       .to_h
       .symbolize_keys
   end

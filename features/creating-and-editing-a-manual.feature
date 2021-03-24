@@ -64,6 +64,14 @@ Feature: Creating and editing a manual
     Given a draft manual exists without any sections
     When I create a section for the manual
     Then I see the manual has the new section
+    And I see the section isn't visually expanded
+    And the section and table of contents will have been sent to the draft publishing api
+
+  Scenario: Add an expanded section to a manual
+    Given a draft manual exists without any sections
+    When I create an expanded section for the manual
+    Then I see the manual has the new section
+    And I see the section is visually expanded
     And the section and table of contents will have been sent to the draft publishing api
 
   Scenario: Edit a draft section on a manual
