@@ -5,6 +5,6 @@ if User.where(name: "Test user").blank?
     name: "Test user",
     permissions: %w[signin gds_editor],
     organisation_content_id: gds_organisation_id,
-    organisation_slug: "test-organisation",
+    organisation_slug: "government-digital-service",
   )
 end
