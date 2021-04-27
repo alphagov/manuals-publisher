@@ -42,11 +42,6 @@ Rails.application.routes.draw do
 
   root to: redirect("/manuals")
 
-  get "/healthcheck", to: GovukHealthcheck.rack_response(
-    GovukHealthcheck::Mongoid,
-    GovukHealthcheck::SidekiqRedis,
-  )
-
   get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
   get "/healthcheck/ready", to: GovukHealthcheck.rack_response(
     GovukHealthcheck::Mongoid,
