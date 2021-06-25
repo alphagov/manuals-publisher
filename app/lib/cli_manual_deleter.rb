@@ -1,7 +1,7 @@
 require "adapters"
 
 class CliManualDeleter
-  def initialize(manual_slug: nil, manual_id: nil, stdin: STDIN, stdout: STDOUT)
+  def initialize(manual_slug: nil, manual_id: nil, stdin: $stdin, stdout: $stdout)
     unless manual_slug || manual_id
       raise ArgumentError, "manual_slug or manual_id must be supplied"
     end
@@ -30,12 +30,11 @@ private
   end
 
   def find_manual
-    manual = if manual_id
-               Manual.find(manual_id, user)
-             else
-               Manual.find_by_slug!(manual_slug, user)
-             end
-    manual
+    if manual_id
+      Manual.find(manual_id, user)
+    else
+      Manual.find_by_slug!(manual_slug, user)
+    end
   end
 
   def complete_removal(manual)

@@ -28,7 +28,7 @@ class ManualRecord
   end
 
   def latest_edition
-    # NOTE - we cache this because .order_by is a mongoid method that will hit
+    # NOTE: we cache this because .order_by is a mongoid method that will hit
     # the server each time, also because it's a server command it doesn't look
     # at unsaved instances in the array (such as those created in
     # build_draft_edition below)

@@ -40,7 +40,7 @@ class ChangeChangeNotesForMotInspectionManual < Mongoid::Migration
       publication_log.save!(validate: false)
     end
 
-    logger = Logger.new(STDOUT)
+    logger = Logger.new($stdout)
     logger.formatter = Logger::Formatter.new
     user = User.find_by(email: "oscar.wyatt@digital.cabinet-office.gov.uk")
     manual = Manual.find("82676c67-7334-4d4d-90af-023e6237e4d9", user)

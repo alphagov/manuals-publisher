@@ -188,7 +188,7 @@ RSpec.describe Section::RemoveService do
       end
 
       it "marks the manual as a draft" do
-        # NOTE - this isn't neccesary really, but we do it to be consistent
+        # NOTE: this isn't neccesary really, but we do it to be consistent
         expect(manual).to have_received(:draft)
       end
 

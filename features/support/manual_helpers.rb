@@ -86,9 +86,7 @@ module ManualHelpers
       manual_id: manual.id,
       attributes: fields.merge(organisation_slug: organisation_slug),
     )
-    manual = service.call
-
-    manual
+    service.call
   end
 
   def edit_section(manual_title, section_title, new_fields)

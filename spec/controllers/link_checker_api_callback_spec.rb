@@ -5,7 +5,7 @@ RSpec.describe LinkCheckerApiCallbackController, type: :controller do
   include GdsApi::TestHelpers::LinkCheckerApi
 
   def generate_signature(body, key)
-    OpenSSL::HMAC.hexdigest(OpenSSL::Digest::SHA1.new, key, body)
+    OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("SHA1"), key, body)
   end
 
   def set_headers

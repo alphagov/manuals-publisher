@@ -25,7 +25,7 @@ describe ManualRelocator do
     let!(:temporary_publication_log) { FactoryBot.create(:publication_log, slug: "#{temp_slug}/slug-for-temp-section", change_note: "Hello from #{temp_manual_id}") }
 
     before do
-      allow(STDOUT).to receive(:puts)
+      allow($stdout).to receive(:puts)
       stub_organisations_api_has_organisation(temp_manual.organisation_slug)
       stub_any_publishing_api_publish
       stub_any_publishing_api_unpublish
