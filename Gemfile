@@ -8,7 +8,7 @@ gem "generic_form_builder"
 gem "govspeak"
 gem "govuk_admin_template"
 gem "govuk_app_config"
-gem "govuk_frontend_toolkit", "9.0.0" # we rely on this for correctly previewing govspeak (including interactive elements) - to help with that keep it in sync with the version used in manuals-frontend
+gem "govuk_frontend_toolkit"
 gem "govuk_sidekiq"
 gem "mongoid"
 gem "plek"
