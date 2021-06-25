@@ -5,11 +5,7 @@ class LinkCheckReport::CreateService
 
   CALLBACK_HOST = Plek.find("manuals-publisher")
 
-  class InvalidReport < RuntimeError
-    def initialize(original_error)
-      @message = original_error.message
-    end
-  end
+  class InvalidReport < RuntimeError; end
 
   def initialize(user:, manual_id:, section_id: nil)
     @user = user
@@ -35,7 +31,7 @@ class LinkCheckReport::CreateService
 
     report
   rescue Mongoid::Errors::Validations => e
-    raise InvalidReport, e
+    raise InvalidReport, e.message
   end
 
 private
