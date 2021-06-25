@@ -42,5 +42,6 @@ private
   attr_reader :user, :manual_id, :section_uuid, :attributes
 
   class ManualNotFoundError < StandardError; end
+
   class SectionNotFoundError < StandardError; end
 end

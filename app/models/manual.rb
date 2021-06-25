@@ -19,10 +19,10 @@ class Manual
     :use_originally_published_at_for_public_timestamp,
   )
 
-  attr_accessor :sections, :removed_sections
-  attr_accessor :publish_tasks
+  attr_accessor :sections, :removed_sections, :publish_tasks
 
   class NotFoundError < StandardError; end
+
   class AmbiguousSlugError < StandardError; end
 
   def self.find(id, user)
@@ -314,9 +314,10 @@ class Manual
   end
 
   def current_published_version(manual_record)
-    if manual_record.latest_edition.state == "published"
+    case manual_record.latest_edition.state
+    when "published"
       self.class.build_manual_for(manual_record)
-    elsif manual_record.latest_edition.state == "draft"
+    when "draft"
       previous_edition = manual_record.previous_edition
 
       # This means the previous edition is withdrawn so we shouldn't

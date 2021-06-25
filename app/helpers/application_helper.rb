@@ -99,9 +99,10 @@ module ApplicationHelper
       text = "<p>This manual has a duplicate slug and can't be published.</p>"
     else
       text = ""
-      if manual.version_type == :minor
+      case manual.version_type
+      when :minor
         text += "<p>You are about to publish a <strong>minor edit</strong>.</p>"
-      elsif manual.version_type == :major
+      when :major
         text += "<p><strong>You are about to publish a major edit with public change notes.</strong></p>"
       end
       text += if manual.use_originally_published_at_for_public_timestamp? && manual.originally_published_at.present?

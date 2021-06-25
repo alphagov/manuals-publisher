@@ -1,7 +1,7 @@
 class SectionSlugSynchroniser
   attr_reader :logger, :manual, :sections
 
-  def initialize(manual_slug, logger = STDOUT)
+  def initialize(manual_slug, logger = $stdout)
     @logger = logger
     @manual = Manual.find_by_slug!(manual_slug, User.gds_editor)
     @sections = manual.sections

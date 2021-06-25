@@ -1,5 +1,5 @@
 class DuplicateDocumentFinder
-  def initialize(io = STDOUT)
+  def initialize(io = $stdout)
     @io = io
   end
 

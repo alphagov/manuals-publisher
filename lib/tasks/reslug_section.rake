@@ -19,7 +19,7 @@ end
 
 def logger
   @logger ||= begin
-    logger = Logger.new(STDOUT)
+    logger = Logger.new($stdout)
     logger.formatter = Logger::Formatter.new
     logger
   end

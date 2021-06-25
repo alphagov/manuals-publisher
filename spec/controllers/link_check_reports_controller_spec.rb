@@ -135,7 +135,7 @@ private
       links: [{ uri: "http://www.example.com" }],
     )
 
-    stub_request(:post, %r{\A#{Plek.find('link-checker-api')}\/batch})
+    stub_request(:post, %r{\A#{Plek.find('link-checker-api')}/batch})
       .to_return(
         body: body.to_json,
         status: 202,

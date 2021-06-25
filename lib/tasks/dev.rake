@@ -1,7 +1,7 @@
 namespace :dev do
   desc "Ensure that a dev environment is setup correctly (create default user etc)"
   task setup: :environment do
-    logger = Logger.new(STDOUT)
+    logger = Logger.new($stdout)
     if User.count.zero?
       logger.info "No users exist, creating test user..."
       u = User.new

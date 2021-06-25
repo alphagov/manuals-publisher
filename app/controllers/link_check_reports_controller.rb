@@ -61,9 +61,10 @@ private
   end
 
   def redirect_to_reportable_path
-    if reportable_object.is_a?(Section)
+    case reportable_object
+    when Section
       redirect_to manual_section_path(reportable_object.manual.to_param, reportable_object.to_param)
-    elsif reportable_object.is_a?(Manual)
+    when Manual
       redirect_to manual_path(reportable_object.to_param)
     end
   end

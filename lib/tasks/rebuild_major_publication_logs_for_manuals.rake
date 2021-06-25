@@ -2,7 +2,7 @@ require "logger"
 
 desc "Rebuild major publication logs for manuals"
 task :rebuild_major_publication_logs_for_manuals, [:slug] => :environment do |_, args|
-  logger = Logger.new(STDOUT)
+  logger = Logger.new($stdout)
   logger.formatter = Logger::Formatter.new
 
   manuals = if args.key?(:slug)

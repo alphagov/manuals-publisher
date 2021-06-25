@@ -1,7 +1,7 @@
 require "services"
 
 class MarkedSectionDeleter
-  def initialize(logger = STDOUT)
+  def initialize(logger = $stdout)
     @logger = logger
   end
 

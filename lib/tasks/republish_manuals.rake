@@ -2,7 +2,7 @@ require "logger"
 
 desc "Republish manuals"
 task :republish_manuals, %i[user_email slug] => :environment do |_, args|
-  logger = Logger.new(STDOUT)
+  logger = Logger.new($stdout)
   logger.formatter = Logger::Formatter.new
 
   user = User.find_by(email: args[:user_email])
