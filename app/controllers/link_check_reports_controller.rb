@@ -63,7 +63,7 @@ private
   def redirect_to_reportable_path
     case reportable_object
     when Section
-      redirect_to manual_section_path(reportable_object.manual.to_param, reportable_object.to_param)
+      redirect_to manual_section_path(@report.manual_id, reportable_object.to_param)
     when Manual
       redirect_to manual_path(reportable_object.to_param)
     end
