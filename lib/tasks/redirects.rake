@@ -1,7 +1,7 @@
 require "logger"
 
 desc "Redirect a manual"
-task :redirect_manual, [:manual_id, :url] => :environment do |_, args|
+task :redirect_manual, %i[manual_id url] => :environment do |_, args|
   logger = Logger.new($stdout)
   logger.formatter = Logger::Formatter.new
 
