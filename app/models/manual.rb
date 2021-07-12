@@ -186,6 +186,16 @@ class Manual
     state == "published"
   end
 
+  def remove
+    @state = "removed" if state == "published"
+
+    self
+  end
+
+  def removed?
+    state == "removed"
+  end
+
   def withdraw
     @state = "withdrawn" if state == "published"
 
