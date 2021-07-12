@@ -22,6 +22,14 @@ class PublishingAdapter
     end
   end
 
+  def redirect(manual, alternative_path)
+    Services.publishing_api.unpublish(manual.id, type: "redirect", alternative_path: alternative_path)
+
+    manual.sections.each do |section|
+      Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: alternative_path)
+    end
+  end
+
   def publish(manual, republish: false)
     publish_manual(manual, republish: republish)
 
