@@ -28,6 +28,8 @@ updates:
         dependency-type: direct
       - dependency-name: jasmine-rails
         dependency-type: direct
+      - dependency-name: mongoid
+        dependency-type: direct
       - dependency-name: rails
         dependency-type: direct
       - dependency-name: rspec
