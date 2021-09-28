@@ -7,6 +7,7 @@ ManualsPublisher::Application.load_tasks
 
 task default: [
   "lint",
+  "assets:precompile",
   "jasmine:ci",
   "spec",
   "cucumber",
