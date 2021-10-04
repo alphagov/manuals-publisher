@@ -27,3 +27,17 @@ module ManualsPublisher
     config.assets.css_compressor = nil
   end
 end
+
+if defined?(Jasmine)
+  Jasmine.configure do |config|
+    # existing config here
+
+    if ENV["SELENIUM_URL"]
+      # require "socket"
+      # ip = Socket.ip_address_list
+      #   .detect(&:ipv4_private?)
+      #   .ip_address
+      config.host = "http://manuals-publisher.dev.gov.uk/"
+    end
+  end
+end
