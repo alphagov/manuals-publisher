@@ -2,9 +2,9 @@
   <div class="errors error-list">
     <h2>Please fix the following errors found in the form</h2>
     <ul class="errors">
-      <% object.errors.each do |field, errors| %>
+      <% object.errors.each do |errors| %>
         <% if errors %>
-          <li><%= field.to_s.humanize %> <%= [*errors].join(' and ')  %></li>
+          <li><%= errors.attribute.to_s.humanize %> <%= [*errors.message].join(' and ')  %></li>
         <% end %>
       <% end %>
     </ul>

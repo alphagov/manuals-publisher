@@ -13,7 +13,7 @@
 src_files:
   - "spec/javascripts/vendor/jquery-1.11.3.min.js"
   - "spec/javascripts/vendor/jasmine-jquery.js"
-  - "assets/application.js"
+  - "public/assets/*.js"
 
 # stylesheets
 #
@@ -27,7 +27,7 @@ src_files:
 #   - 'stylesheets/*.css'
 #
 stylesheets:
-  - "assets/application.css"
+  - "public/assets/*.css"
 
 # helpers
 #
