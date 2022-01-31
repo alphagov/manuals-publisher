@@ -10,7 +10,6 @@
 //= depend_on _document-list
 //= depend_on _forms
 //= depend_on _govspeak
-//= depend_on _govspeak-help
 //= depend_on _navbar
 
 // govuk_admin_template
@@ -26,7 +25,6 @@
 @import "document-list";
 @import "forms";
 @import "govspeak";
-@import "govspeak-help";
 @import "navbar";
 @import "header";
 @import "ordered_lists";
