@@ -1,3 +1,5 @@
+<% content_for :page_title, manual.title %>
+
 <% content_for :breadcrumbs do %>
   <li><%= link_to "Your manuals", manuals_path %></li>
   <li class='active'><%= manual.title %></li>
