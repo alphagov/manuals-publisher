@@ -43,6 +43,5 @@ group :test do
   gem "rubocop-govuk"
   gem "simplecov"
   gem "timecop"
-  gem "webdrivers"
   gem "webmock"
 end
