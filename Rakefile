@@ -5,10 +5,9 @@ require File.expand_path("config/application", __dir__)
 
 ManualsPublisher::Application.load_tasks
 
-task default: [
-  "lint",
-  "assets:precompile",
-  "jasmine",
-  "spec",
-  "cucumber",
+task default: %w[
+  lint
+  jasmine
+  spec
+  cucumber
 ]
