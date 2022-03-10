@@ -1,5 +1,12 @@
 log/*.log
 tmp
 coverage
-node_modules
 yarn-error.log
+.idea
+
+# Ignore JavaScript dependencies
+/node_modules
+
+# Ignore compiled assets
+/public/assets
+

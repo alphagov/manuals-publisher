@@ -25,8 +25,6 @@ end
 group :development, :test do
   gem "awesome_print"
   gem "govuk_test"
-  gem "jasmine"
-  gem "jasmine_selenium_runner"
   gem "pry-byebug"
 end
 
