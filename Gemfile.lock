@@ -121,7 +121,7 @@ GEM
       cucumber-messages (~> 12.4, >= 12.4.0)
     cucumber-messages (12.4.0)
       protobuf-cucumber (~> 3.10, >= 3.10.8)
-    cucumber-rails (2.5.0)
+    cucumber-rails (2.5.1)
       capybara (>= 2.18, < 4)
       cucumber (>= 3.2, < 8)
       mime-types (~> 3.3)
@@ -270,7 +270,7 @@ GEM
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
-    loofah (2.15.0)
+    loofah (2.16.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.1)
