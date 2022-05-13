@@ -14,6 +14,7 @@ gem "mongoid"
 gem "plek"
 gem "raindrops"
 gem "sass-rails"
+gem "sentry-sidekiq"
 gem "state_machine"
 gem "uglifier"
 
