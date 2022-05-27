@@ -259,7 +259,7 @@ module ManualHelpers
       attributes = {
         "schema_name" => GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME,
         "document_type" => GdsApiConstants::PublishingApi::MANUAL_DOCUMENT_TYPE,
-        "rendering_app" => "manuals-frontend",
+        "rendering_app" => "government-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)
       with_matcher = request_json_including(attributes)
@@ -286,7 +286,7 @@ module ManualHelpers
       attributes = {
         "schema_name" => GdsApiConstants::PublishingApi::SECTION_SCHEMA_NAME,
         "document_type" => GdsApiConstants::PublishingApi::SECTION_DOCUMENT_TYPE,
-        "rendering_app" => "manuals-frontend",
+        "rendering_app" => "government-frontend",
         "publishing_app" => "manuals-publisher",
       }.merge(extra_attributes)
       with_matcher = request_json_including(attributes)
