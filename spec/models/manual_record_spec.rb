@@ -28,6 +28,16 @@ describe ManualRecord, hits_db: true do
     end
   end
 
+  describe "#previous_edition" do
+    it "returns the edition with the second highest version number" do
+      record.editions.create!(state: "published", version_number: 2)
+      record.editions.create!(state: "draft", version_number: 3)
+      record.editions.create!(state: "published", version_number: 1)
+
+      expect(record.previous_edition.version_number).to eq(2)
+    end
+  end
+
   context "saving" do
     it "saves the latest edition if it needs saving" do
       new_draft = record.new_or_existing_draft_edition

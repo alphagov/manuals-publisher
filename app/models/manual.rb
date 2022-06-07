@@ -323,7 +323,7 @@ class Manual
       # This means the previous edition is withdrawn so we shouldn't
       # expose it as it's not actually published (we've got a new
       # draft waiting in the wings for a withdrawn manual)
-      return unless previous_edition.state == "published"
+      return unless previous_edition&.state == "published"
 
       self.class.build_manual_for(manual_record, edition: previous_edition, published: true)
     end
