@@ -36,7 +36,7 @@ class ManualRecord
   end
 
   def previous_edition
-    editions.order_by(%i[version_number desc]).limit(2).last
+    editions.order_by(%i[version_number desc]).second
   end
 
   def has_ever_been_published?
