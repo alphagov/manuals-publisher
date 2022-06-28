@@ -32,6 +32,19 @@ class PublishingAdapter
     end
   end
 
+  def unpublish_section(section, redirect:, republish: false, discard_drafts: true)
+    if !section.withdrawn? || republish
+      begin
+        Services.publishing_api.unpublish(
+          section.uuid, type: "redirect", alternative_path: redirect, discard_drafts: discard_drafts
+        )
+        section.withdraw_and_mark_as_exported! unless republish
+      rescue GdsApi::HTTPNotFound
+        Rails.logger.warn "Content item with section uuid #{section.uuid} not present in the publishing API"
+      end
+    end
+  end
+
   def unpublish(manual)
     Services.publishing_api.unpublish(manual.id, type: "gone")
 
@@ -302,19 +315,6 @@ private
     if section.needs_exporting? || republish
       Services.publishing_api.publish(section.uuid, update_type(republish))
       section.mark_as_exported! unless republish
-    end
-  end
-
-  def unpublish_section(section, redirect:, republish: false, discard_drafts: true)
-    if !section.withdrawn? || republish
-      begin
-        Services.publishing_api.unpublish(
-          section.uuid, type: "redirect", alternative_path: redirect, discard_drafts: discard_drafts
-        )
-        section.withdraw_and_mark_as_exported! unless republish
-      rescue GdsApi::HTTPNotFound
-        Rails.logger.warn "Content item with section uuid #{section.uuid} not present in the publishing API"
-      end
     end
   end
 
