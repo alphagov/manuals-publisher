@@ -8,6 +8,7 @@ RSpec.describe WithdrawAndRedirectSection do
   let(:redirect) { "/redirect/blah" }
   let(:discard_draft) { false }
   let(:state) { "published" }
+  let(:dry_run) { false }
 
   subject do
     described_class.new(
@@ -16,6 +17,7 @@ RSpec.describe WithdrawAndRedirectSection do
       section_path: manual.sections.last.slug,
       redirect: redirect,
       discard_draft: discard_draft,
+      dry_run: dry_run,
     )
   end
 
@@ -53,6 +55,15 @@ RSpec.describe WithdrawAndRedirectSection do
         .with(instance_of(Section),
               redirect: redirect,
               discard_drafts: discard_draft)
+    end
+  end
+
+  context "when a dry run is flagged" do
+    let(:dry_run) { true }
+
+    it "doesn't action the withdrawal" do
+      subject.execute
+      expect(publishing_adapter).to_not have_received(:unpublish_section)
     end
   end
 end
