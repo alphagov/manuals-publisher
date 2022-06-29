@@ -9,6 +9,7 @@ RSpec.describe WithdrawAndRedirectManual do
   let(:state) { "published" }
   let(:user) { User.gds_editor }
   let(:include_sections) { true }
+  let(:dry_run) { false }
 
   let(:discard_service) { double(:discard_service) }
   let(:publishing_adapter) { double(:publishing_adapter) }
@@ -20,6 +21,7 @@ RSpec.describe WithdrawAndRedirectManual do
       redirect: redirect,
       include_sections: include_sections,
       discard_drafts: discard_drafts,
+      dry_run: dry_run,
     )
   end
 
@@ -52,6 +54,15 @@ RSpec.describe WithdrawAndRedirectManual do
 
     it "raises an error" do
       expect { subject.execute }.to raise_error(WithdrawAndRedirectManual::ManualNotPublishedError)
+    end
+  end
+
+  context "when a dry run is flagged" do
+    let(:dry_run) { true }
+
+    it "doesn't action the withdrawal" do
+      subject.execute
+      expect(publishing_adapter).to_not have_received(:unpublish_and_redirect_manual_and_sections)
     end
   end
 end

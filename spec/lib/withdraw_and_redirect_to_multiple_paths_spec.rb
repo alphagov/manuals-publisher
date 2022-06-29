@@ -2,6 +2,8 @@ require "spec_helper"
 
 RSpec.describe WithdrawAndRedirectToMultiplePaths do
   let(:discard_drafts) { false }
+  let(:dry_run) { false }
+
   let(:withdraw_and_redirect_manual) { double(:withdraw_and_redirect_manual) }
   let(:withdraw_and_redirect_section) { double(:withdraw_and_redirect_section) }
 
@@ -9,6 +11,7 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
     described_class.new(
       csv_path: "spec/support/withdraw_and_redirect_to_multiple_paths.csv",
       discard_drafts: discard_drafts,
+      dry_run: dry_run,
     )
   end
 
@@ -29,6 +32,7 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
       redirect: "/guidance/redirect",
       include_sections: false,
       discard_drafts: false,
+      dry_run: false,
     )
 
     expect(withdraw_and_redirect_manual).to have_received(:execute)
@@ -43,6 +47,7 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
       section_path: "guidance/manual/just-a-section",
       redirect: "/guidance/section-blah",
       discard_draft: false,
+      dry_run: false,
     )
 
     expect(withdraw_and_redirect_section).to have_received(:execute)
@@ -68,5 +73,29 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
     expect { subject.execute }.to output(
       /\[ERROR\] Section not redirected due to not being in a published state: guidance\/manual\/just-a-section/,
     ).to_stdout
+  end
+
+  it "raises error if manual is not found" do
+    allow(withdraw_and_redirect_section).to receive(:execute).and_raise(Manual::NotFoundError)
+    expect { subject.execute }.to raise_error(Manual::NotFoundError)
+  end
+
+  it "raises error if section is not found" do
+    allow(withdraw_and_redirect_section).to receive(:execute)
+      .and_raise(Mongoid::Errors::DocumentNotFound.new(SectionEdition, anything))
+    expect { subject.execute }.to raise_error(Mongoid::Errors::DocumentNotFound)
+  end
+
+  context "when a dry run is flagged" do
+    let(:dry_run) { true }
+
+    it "generates a list of missing paths" do
+      allow(withdraw_and_redirect_manual).to receive(:execute).and_raise(Manual::NotFoundError)
+      allow(withdraw_and_redirect_section).to receive(:execute).and_raise(
+        Mongoid::Errors::DocumentNotFound.new(SectionEdition, anything),
+      )
+
+      expect(subject.execute).to eq({ manuals: ["guidance/published"], sections: ["guidance/manual/just-a-section"] })
+    end
   end
 end

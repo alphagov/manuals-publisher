@@ -1,16 +1,19 @@
 require "adapters"
 
 class WithdrawAndRedirectManual
-  def initialize(user:, manual_path:, redirect:, include_sections:, discard_drafts:)
+  def initialize(user:, manual_path:, redirect:, include_sections:, discard_drafts:, dry_run: false)
     @user = user
     @manual_path = manual_path
     @redirect = redirect
     @include_sections = include_sections
     @discard_drafts = discard_drafts
+    @dry_run = dry_run
   end
 
   def execute
     manual = Manual.find_by_slug!(manual_path, user)
+
+    return if dry_run
 
     published_manual = manual.current_versions[:published]
 
@@ -29,7 +32,7 @@ class WithdrawAndRedirectManual
 
 private
 
-  attr_reader :user, :manual_path, :redirect, :include_sections, :discard_drafts
+  attr_reader :user, :manual_path, :redirect, :include_sections, :discard_drafts, :dry_run
 
   class ManualNotPublishedError < StandardError; end
 end
