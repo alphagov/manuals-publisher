@@ -102,4 +102,29 @@ namespace :tmp_fix_manuals_in_incorrect_state do
       puts "Unpublished #{route[:content_id]} and redirected to #{route[:redirect]}"
     end
   end
+
+  desc "Mark sections as published (instead of draft) which represents Publishing API and the live site"
+  task tmp_mark_manuals_as_published: :environment do
+    sections_which_should_be_published = %w[
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/business-structure
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/inspections
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/new-farmers-and-young-farmers
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/more-information-and-contact
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/key-dates-and-what-s-changed-for-2016
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/making-an-application
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/land
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/land-in-more-than-one-part-of-the-uk-cross-border
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/land-what-is-eligible-for-bps
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/entitlements
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/who-can-claim-bps
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/eligible-crops-2016
+      guidance/the-basic-payment-scheme-bps-rules-for-2016/common-land-and-shared-grazing
+    ]
+
+    draft_paths = SectionEdition.in(slug: sections_which_should_be_published).where(state: "draft").pluck(:slug)
+
+    return unless draft_paths.sort == sections_which_should_be_published.sort
+
+    SectionEdition.in(slug: sections_which_should_be_published).where(state: "draft").update_all(state: "published")
+  end
 end
