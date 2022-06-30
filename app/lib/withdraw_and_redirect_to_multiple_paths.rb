@@ -24,9 +24,9 @@ class WithdrawAndRedirectToMultiplePaths
         end
 
       rescue WithdrawAndRedirectManual::ManualNotPublishedError
-        log "[ERROR] Manual not redirected due to not being in a published state: #{child['base_path']}"
+        log("[ERROR] Manual not redirected due to not being in a published state: #{child['base_path']}")
       rescue WithdrawAndRedirectSection::SectionNotPublishedError
-        log "[ERROR] Section not redirected due to not being in a published state: #{child['base_path']}"
+        log("[ERROR] Section not redirected due to not being in a published state: #{child['base_path']}")
       rescue Manual::NotFoundError
         dry_run ? missing_paths[:manuals] << child["base_path"] : raise
       rescue Mongoid::Errors::DocumentNotFound
@@ -64,7 +64,7 @@ private
       dry_run: dry_run,
     ).execute
 
-    log "Withdrawn manual '#{child['base_path']}' and redirected to '#{child['redirect']}'"
+    log("Withdrawn manual '#{child['base_path']}' and redirected to '#{child['redirect']}'") unless dry_run
   end
 
   def withdraw_and_redirect_section(child, manual_path)
@@ -77,7 +77,7 @@ private
       dry_run: dry_run,
     ).execute
 
-    log "Withdrawn section '#{child['base_path']}' and redirected to '#{child['redirect']}'"
+    log("Withdrawn section '#{child['base_path']}' and redirected to '#{child['redirect']}'") unless dry_run
   end
 
   def log(str)
