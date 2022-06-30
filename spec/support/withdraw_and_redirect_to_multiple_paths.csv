@@ -1,0 +1,4 @@
+base_path,redirect
+guidance/published,/guidance/redirect
+guidance/published/updates,/guidance/redirect/blah
+guidance/manual/just-a-section,/guidance/section-blah
