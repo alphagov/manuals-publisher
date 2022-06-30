@@ -11,12 +11,10 @@ namespace :tmp_fix_manuals_in_incorrect_state do
       { base_path: "guidance/civil-procedure-rules-parts-61-to-80/part-61-admiralty-claims", redirect: "/guidance/the-civil-procedure-rules/part-61-admiralty-claims" },
     ]
 
-    adapter = Adapters.new
-
     manual_routes.each do |route|
       manual = Manual.find_by_slug!(route[:base_path], User.gds_editor)
 
-      adapter.unpublish_and_redirect_manual_and_sections(
+      Adapters.publishing.unpublish_and_redirect_manual_and_sections(
         manual, redirect: route[:redirect], include_sections: false, discard_drafts: true
       )
 
@@ -28,7 +26,7 @@ namespace :tmp_fix_manuals_in_incorrect_state do
       manual = Manual.find_by_slug!(route[:base_path].split("/")[0..1].join("/"), User.gds_editor)
       section = Section.find(manual, section_edition.section_uuid)
 
-      adapter.unpublish_section(
+      Adapters.publishing.unpublish_section(
         section, redirect: route[:redirect], discard_drafts: true
       )
 
@@ -74,7 +72,7 @@ namespace :tmp_fix_manuals_in_incorrect_state do
     ]
 
     Services.publishing_api.unpublish(
-      manual.id,
+      "7e144535-482a-4866-aac2-bdf3af3563c0",
       type: "redirect",
       redirects: [
         {
