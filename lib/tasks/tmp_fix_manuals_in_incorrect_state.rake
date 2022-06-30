@@ -69,6 +69,7 @@ namespace :tmp_fix_manuals_in_incorrect_state do
       { content_id: "a62e496e-4b5a-4c90-9370-35097c5af8e4", redirect: "/guidance/social-care-common-inspection-framework-sccif-childrens-homes/9-notice" },
       { content_id: "e5745144-ae80-4bdf-bafe-8f21953cdc1b", redirect: "/guidance/social-care-common-inspection-framework-sccif-childrens-homes/download-pdf-version" },
       { content_id: "72fd0186-928d-4ca5-98b2-409bf3919dae", redirect: "/guidance/social-care-common-inspection-framework-sccif-childrens-homes" },
+      { content_id: "7a7f09d0-dcb1-45c0-ad8a-6ab1580782ae", redirect: "/guidance/social-care-common-inspection-framework-sccif-childrens-homes" },
     ]
 
     Services.publishing_api.unpublish(
