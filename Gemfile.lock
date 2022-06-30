@@ -248,6 +248,9 @@ GEM
     launchy (2.5.0)
       addressable (~> 2.7)
     link_header (0.0.8)
+    listen (3.7.1)
+      rb-fsevent (~> 0.10, >= 0.10.3)
+      rb-inotify (~> 0.9, >= 0.9.10)
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
@@ -356,6 +359,9 @@ GEM
     rainbow (3.1.1)
     raindrops (0.20.0)
     rake (13.0.6)
+    rb-fsevent (0.11.1)
+    rb-inotify (0.10.1)
+      ffi (~> 1.0)
     redis (4.5.1)
     redis-namespace (1.8.0)
       redis (>= 3.0.4)
@@ -526,6 +532,7 @@ DEPENDENCIES
   govuk_sidekiq
   govuk_test
   launchy
+  listen
   mongoid
   plek
   pry-byebug
