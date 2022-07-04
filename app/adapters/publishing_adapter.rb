@@ -14,6 +14,37 @@ class PublishingAdapter
     end
   end
 
+  def unpublish_and_redirect_manual_and_sections(manual, redirect:, include_sections:, discard_drafts:)
+    Services.publishing_api.unpublish(
+      manual.id,
+      type: "redirect",
+      redirects: [
+        { path: "/#{manual.slug}", type: "exact", destination: redirect },
+        { path: "/#{manual.slug}/updates", type: "exact", destination: redirect },
+      ],
+      discard_drafts: discard_drafts,
+    )
+
+    if include_sections
+      manual.sections.each do |section|
+        unpublish_section(section, redirect: redirect, discard_drafts: discard_drafts)
+      end
+    end
+  end
+
+  def unpublish_section(section, redirect:, republish: false, discard_drafts: true)
+    if !section.withdrawn? || republish
+      begin
+        Services.publishing_api.unpublish(
+          section.uuid, type: "redirect", alternative_path: redirect, discard_drafts: discard_drafts
+        )
+        section.withdraw_and_mark_as_exported! unless republish
+      rescue GdsApi::HTTPNotFound
+        Rails.logger.warn "Content item with section uuid #{section.uuid} not present in the publishing API"
+      end
+    end
+  end
+
   def unpublish(manual)
     Services.publishing_api.unpublish(manual.id, type: "gone")
 
@@ -30,7 +61,7 @@ class PublishingAdapter
     end
 
     manual.removed_sections.each do |section|
-      unpublish_section(section, manual, republish: republish)
+      unpublish_section(section, redirect: "/#{manual.slug}", republish: republish)
     end
   end
 
@@ -284,17 +315,6 @@ private
     if section.needs_exporting? || republish
       Services.publishing_api.publish(section.uuid, update_type(republish))
       section.mark_as_exported! unless republish
-    end
-  end
-
-  def unpublish_section(section, manual, republish:)
-    if !section.withdrawn? || republish
-      begin
-        Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: "/#{manual.slug}", discard_drafts: true)
-        section.withdraw_and_mark_as_exported! unless republish
-      rescue GdsApi::HTTPNotFound
-        Rails.logger.warn "Content item with section uuid #{section.uuid} not present in the publishing API"
-      end
     end
   end
 

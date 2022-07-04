@@ -41,6 +41,7 @@ FactoryBot.define do
     summary { "My summary" }
     body { "My body" }
     change_note { "New section added" }
+    state { "draft" }
   end
 
   factory :publication_log do
@@ -59,18 +60,22 @@ FactoryBot.define do
   end
 
   factory :manual_record do
-    slug { "slug" }
+    slug { "guidance/manual" }
     manual_id { "abc-123" }
     organisation_slug { "organisation_slug" }
 
-    after(:build) do |manual_record|
-      manual_record.editions << FactoryBot.build(:manual_record_edition)
+    transient do
+      state { "draft" }
+    end
+
+    after(:build) do |manual_record, evaluator|
+      manual_record.editions << FactoryBot.build(:manual_record_edition, state: evaluator.state)
     end
 
     trait :with_sections do
-      after(:build) do |manual_record|
+      after(:build) do |manual_record, evaluator|
         manual_record.editions.each do |edition|
-          section = FactoryBot.create(:section_edition)
+          section = FactoryBot.create(:section_edition, state: evaluator.state)
           edition.section_uuids = [section.section_uuid]
         end
       end
@@ -90,7 +95,7 @@ FactoryBot.define do
     title { "title" }
     summary { "summary" }
     body { "body" }
-    state { "state" }
+    state { "draft" }
     version_number { 1 }
     originally_published_at { Time.zone.now }
     use_originally_published_at_for_public_timestamp { true }

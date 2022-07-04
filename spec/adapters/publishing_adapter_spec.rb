@@ -546,6 +546,46 @@ describe PublishingAdapter do
     end
   end
 
+  describe "#unpublish_and_redirect_manual_and_sections" do
+    let(:redirect) { "/blah/redirect" }
+    let(:redirects) do
+      [
+        { path: "/#{manual.slug}", type: "exact", destination: redirect },
+        { path: "/#{manual.slug}/updates", type: "exact", destination: redirect },
+      ]
+    end
+
+    before do
+      allow(publishing_api).to receive(:unpublish)
+    end
+
+    it "unpublishes and redirects only manual via Publishing API" do
+      expect(publishing_api).to receive(:unpublish).with(
+        manual_id, type: "redirect", redirects: redirects, discard_drafts: true
+      )
+
+      subject.unpublish_and_redirect_manual_and_sections(
+        manual, redirect: redirect, include_sections: false, discard_drafts: true
+      )
+    end
+
+    it "unpublishes and redirects manual plus sections via Publishing API" do
+      manual.sections = [section]
+
+      expect(publishing_api).to receive(:unpublish).with(
+        manual_id, type: "redirect", redirects: redirects, discard_drafts: false
+      )
+
+      expect(publishing_api).to receive(:unpublish).with(
+        section.uuid, type: "redirect", discard_drafts: false, alternative_path: redirect
+      )
+
+      subject.unpublish_and_redirect_manual_and_sections(
+        manual, redirect: redirect, include_sections: true, discard_drafts: false
+      )
+    end
+  end
+
   describe "#unpublish" do
     before do
       manual.sections = [section]
