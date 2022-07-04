@@ -2,6 +2,7 @@ require "spec_helper"
 
 RSpec.describe Section::RemoveService do
   let(:section_uuid) { "123" }
+  let(:draft_section?) { true }
 
   let(:manual) do
     double(
@@ -26,6 +27,7 @@ RSpec.describe Section::RemoveService do
   before do
     allow(Manual).to receive(:find).and_return(manual)
     allow(manual).to receive(:save!)
+    allow(section).to receive(:draft?).and_return(draft_section?)
     allow(Adapters).to receive(:publishing).and_return(publishing_adapter)
   end
 
@@ -228,6 +230,26 @@ RSpec.describe Section::RemoveService do
 
       it "only saves the change note params to the section ignoring others" do
         expect(section).to have_received(:assign_attributes).with(change_note_params.slice(:change_note, :minor_update))
+      end
+    end
+
+    context "when section is not a draft" do
+      let(:draft_section?) { false }
+      let(:section) do
+        double(
+          uuid: section_uuid,
+          published?: true,
+          assign_attributes: nil,
+          valid?: false,
+        )
+      end
+
+      before do
+        service.call
+      end
+
+      it "doesn't try to discard draft from Publishing API" do
+        expect(publishing_adapter).to_not have_received(:discard_section)
       end
     end
   end
