@@ -35,7 +35,7 @@ group :test do
   gem "cucumber-rails", require: false
   gem "database_cleaner-mongoid"
   gem "factory_bot_rails"
-  gem "govuk-content-schema-test-helpers"
+  gem "govuk_schemas"
   gem "launchy"
   gem "rails-controller-testing"
   gem "rspec"
