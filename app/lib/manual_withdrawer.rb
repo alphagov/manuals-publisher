@@ -5,10 +5,11 @@ class ManualWithdrawer
     @logger = logger
   end
 
-  def execute(manual_id)
+  def execute(manual_id, redirect_path: nil)
     service = Manual::WithdrawService.new(
       user: User.gds_editor,
       manual_id: manual_id,
+      redirect_path: redirect_path
     )
     manual = service.call
 

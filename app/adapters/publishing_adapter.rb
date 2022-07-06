@@ -14,11 +14,19 @@ class PublishingAdapter
     end
   end
 
-  def unpublish(manual)
-    Services.publishing_api.unpublish(manual.id, type: "gone")
+  def unpublish(manual, redirect_path: nil)
+    if redirect_path
+      Services.publishing_api.unpublish(manual.id, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
 
-    manual.sections.each do |section|
-      Services.publishing_api.unpublish(section.uuid, type: "gone")
+      manual.sections.each do |section|
+        Services.publishing_api.unpublish(section.uuid, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
+      end
+    else
+      Services.publishing_api.unpublish(manual.id, type: "gone")
+
+      manual.sections.each do |section|
+        Services.publishing_api.unpublish(section.uuid, type: "gone")
+      end
     end
   end
 

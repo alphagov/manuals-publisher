@@ -1,9 +1,10 @@
 require "adapters"
 
 class Manual::WithdrawService
-  def initialize(user:, manual_id:)
+  def initialize(user:, manual_id:, redirect_path: nil)
     @user = user
     @manual_id = manual_id
+    @redirect_path = redirect_path
   end
 
   def call
@@ -17,7 +18,7 @@ class Manual::WithdrawService
 
     if manual.withdrawn?
       manual.save!(user)
-      Adapters.publishing.unpublish(manual)
+      Adapters.publishing.unpublish(manual, @redirect_path)
     end
 
     manual
