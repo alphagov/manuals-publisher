@@ -805,7 +805,7 @@ describe PublishingAdapter do
 private
 
   def attributes_valid_according_to_schema(schema_name)
-    be_valid_against_schema(schema_name)
+    be_valid_against_publisher_schema(schema_name)
   end
 
   def attributes_valid_according_to_links_schema(schema_name)
