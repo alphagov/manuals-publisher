@@ -73,7 +73,7 @@ namespace :tmp_fix_manuals_in_incorrect_state do
     ]
 
     Services.publishing_api.unpublish(
-      manual.id,
+      "7e144535-482a-4866-aac2-bdf3af3563c0",
       type: "redirect",
       redirects: [
         {
