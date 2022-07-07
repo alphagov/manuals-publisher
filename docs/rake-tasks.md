@@ -1,5 +1,49 @@
 # Rake tasks
 
+## Withdraw and redirect manuals
+
+A manual can be withdrawn and redirected to another page on www.gov.uk.
+
+There are a few rake tasks, depending on the requirements.
+
+### Withdraw and redirect a single manual which can include its sections
+
+The last two boolean arguments flag whether to include sections and discard
+drafts, respectively.
+
+```
+withdraw_and_redirect_manual[guidance/manual,/redirect/blah,true,true]
+```
+
+### Withdraw and redirect a single section
+
+The last boolean argument flags whether to discard drafts.
+
+```
+withdraw_and_redirect_section[guidance/manual,guidance/manual/section,/redirect/blah,true]
+```
+
+### Bulk withdraw and redirect multiple manuals and sections
+
+If multiple manuals need to be redirected, or there are multiple redirect
+destinations within manuals, e.g sections need to redirect to different places,
+then we can do this by uploading a CSV and running the below tasks. Example CSV
+PR: https://github.com/alphagov/manuals-publisher/pull/1895.
+
+**Dry-run (checks all manuals exist in Manuals Publisher)**
+
+```
+withdraw_and_redirect_manuals_to_multiple_paths:dry_run[lib/tasks/path_to_csv.csv]
+```
+
+**Run the task for real**
+
+The last boolean argument flags whether to discard drafts.
+
+```
+withdraw_and_redirect_manuals_to_multiple_paths:real[lib/tasks/path_to_csv.csv,true]
+```
+
 ## Deleting or removing draft manuals
 
 ### Deleting a draft manual
