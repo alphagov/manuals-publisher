@@ -72,6 +72,10 @@ FactoryBot.define do
       manual_record.editions << FactoryBot.build(:manual_record_edition, state: evaluator.state)
     end
 
+    after(:create) do |manual_record|
+      manual_record.editions.each(&:save!)
+    end
+
     trait :with_sections do
       after(:build) do |manual_record, evaluator|
         manual_record.editions.each do |edition|

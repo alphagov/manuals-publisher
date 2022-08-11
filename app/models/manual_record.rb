@@ -8,8 +8,7 @@ class ManualRecord
 
   has_many :editions,
            class_name: "ManualRecord::Edition",
-           dependent: :destroy,
-           autosave: true
+           dependent: :destroy
 
   def self.find_by(attributes)
     where(attributes).first
