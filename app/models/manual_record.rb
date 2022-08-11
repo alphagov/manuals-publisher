@@ -84,14 +84,5 @@ private
     # We don't make use of the relationship but Mongoid can't save the
     # timestamps properly without it.
     belongs_to :manual_record
-
-    after_save :touch_manual_record
-    before_destroy :touch_manual_record
-
-    def touch_manual_record
-      # Apparently touch is a Mongoid 3 thing, so we use the callback code
-      # from Mongoid::Timestamps::Updated
-      manual_record.set_updated_at if manual_record.able_to_set_updated_at?
-    end
   end
 end
