@@ -15,8 +15,8 @@ require "webmock/rspec"
 Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 Dir[Rails.root.join("features/support/**/*_helpers.rb")].sort.each { |f| require f }
 
-require "database_cleaner"
-DatabaseCleaner.strategy = :truncation
+require "database_cleaner/mongoid"
+DatabaseCleaner.strategy = :deletion
 DatabaseCleaner.clean
 
 RSpec.configure do |config|
