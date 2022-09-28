@@ -72,12 +72,6 @@ GEM
     autoprefixer-rails (10.4.7.0)
       execjs (~> 2)
     awesome_print (1.9.2)
-    better_errors (2.9.1)
-      coderay (>= 1.0.0)
-      erubi (>= 1.0.0)
-      rack (>= 0.9.0)
-    binding_of_caller (1.0.0)
-      debug_inspector (>= 0.0.1)
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
@@ -143,7 +137,6 @@ GEM
     database_cleaner-mongoid (2.0.1)
       database_cleaner-core (~> 2.0.0)
       mongoid
-    debug_inspector (1.1.0)
     diff-lcs (1.5.0)
     docile (1.4.0)
     domain_name (0.5.20190701)
@@ -529,8 +522,6 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
-  better_errors
-  binding_of_caller
   cucumber
   cucumber-rails (~> 2.5)
   database_cleaner-mongoid
