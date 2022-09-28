@@ -32,7 +32,7 @@ end
 
 group :test do
   gem "cucumber", require: false
-  gem "cucumber-rails", require: false
+  gem "cucumber-rails", "~> 2.5", require: false # specified to prevent regression via Cucumber 8
   gem "database_cleaner-mongoid"
   gem "factory_bot_rails"
   gem "govuk_schemas"
