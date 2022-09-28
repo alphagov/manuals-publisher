@@ -537,7 +537,6 @@ DEPENDENCIES
   pry-byebug
   rails (= 7.0.4)
   rails-controller-testing
-  raindrops
   rspec
   rspec-rails
   rubocop-govuk
