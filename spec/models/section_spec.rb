@@ -653,10 +653,9 @@ describe Section do
       end
 
       it "sets the exported_at date on the draft" do
-        time = Time.zone.now
-        Timecop.freeze(time) do
+        freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(draft_edition_v1).to have_received(:exported_at=).with(time)
+          expect(draft_edition_v1).to have_received(:exported_at=).with(Time.zone.now)
         end
       end
     end
@@ -673,10 +672,9 @@ describe Section do
       end
 
       it "only sets the exported_at date on the withdrawn edition" do
-        time = Time.zone.now
-        Timecop.freeze(time) do
+        freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(withdrawn_edition_v2).to have_received(:exported_at=).with(time)
+          expect(withdrawn_edition_v2).to have_received(:exported_at=).with(Time.zone.now)
 
           expect(published_edition_v1).not_to have_received(:exported_at=)
         end
@@ -694,10 +692,9 @@ describe Section do
       end
 
       it "only sets the exported_at date on the draft edition" do
-        time = Time.zone.now
-        Timecop.freeze(time) do
+        freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(draft_edition_v2).to have_received(:exported_at=).with(time)
+          expect(draft_edition_v2).to have_received(:exported_at=).with(Time.zone.now)
 
           expect(published_edition_v1).not_to have_received(:exported_at=)
         end
@@ -714,10 +711,9 @@ describe Section do
       end
 
       it "sets the exported_at date on the published edition" do
-        time = Time.zone.now
-        Timecop.freeze(time) do
+        freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(published_edition_v1).to have_received(:exported_at=).with(time)
+          expect(published_edition_v1).to have_received(:exported_at=).with(Time.zone.now)
         end
       end
     end
@@ -728,10 +724,9 @@ describe Section do
     let(:latest_edition) { draft_edition_v2 }
 
     it "sets the exported_at date on the latest edition" do
-      time = Time.zone.now
-      Timecop.freeze(time) do
+      freeze_time do
         section.mark_as_exported!
-        expect(draft_edition_v2).to have_received(:exported_at=).with(time).ordered
+        expect(draft_edition_v2).to have_received(:exported_at=).with(Time.zone.now).ordered
         expect(draft_edition_v2).to have_received(:save!).ordered
 
         expect(published_edition_v1).not_to have_received(:exported_at=)

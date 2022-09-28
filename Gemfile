@@ -35,6 +35,5 @@ group :test do
   gem "rspec-rails"
   gem "rubocop-govuk"
   gem "simplecov"
-  gem "timecop"
   gem "webmock"
 end
