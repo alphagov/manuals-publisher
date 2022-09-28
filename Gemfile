@@ -19,7 +19,6 @@ gem "state_machine"
 gem "uglifier"
 
 group :development, :test do
-  gem "awesome_print"
   gem "govuk_test"
   gem "listen"
   gem "pry-byebug"
