@@ -5,6 +5,9 @@ require File.expand_path("config/application", __dir__)
 
 ManualsPublisher::Application.load_tasks
 
+# clear existing default task before defining a new one to avoid extending it
+Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
+
 task default: %w[
   lint
   jasmine
