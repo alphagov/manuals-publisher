@@ -24,12 +24,6 @@ module ManualsPublisher
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
-    # Using a sass css compressor causes a scss file to be processed twice
-    # (once to build, once to compress) which breaks the usage of "unquote"
-    # to use CSS that has same function names as SCSS such as max.
-    # https://github.com/alphagov/govuk-frontend/issues/1350
-    config.assets.css_compressor = nil
-
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -37,5 +31,11 @@ module ManualsPublisher
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Using a sass css compressor causes a scss file to be processed twice
+    # (once to build, once to compress) which breaks the usage of "unquote"
+    # to use CSS that has same function names as SCSS such as max.
+    # https://github.com/alphagov/govuk-frontend/issues/1350
+    config.assets.css_compressor = nil
   end
 end
