@@ -5,7 +5,7 @@ def std_opts(default)
   "--format #{ENV['CUCUMBER_FORMAT'] || default} --strict --tags 'not @wip'"
 end
 %>
-default: <%= std_opts('pretty') %> features
-build: <%= std_opts('progress') %> features
-wip: --tags @wip:3 --wip features
-rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags 'not @wip'
+default: <%= std_opts('pretty') %> features --publish-quiet
+build: <%= std_opts('progress') %> features --publish-quiet
+wip: --tags @wip:3 --wip features --publish-quiet
+rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags 'not @wip' --publish-quiet
