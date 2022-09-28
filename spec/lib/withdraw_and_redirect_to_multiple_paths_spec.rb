@@ -24,7 +24,7 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
   end
 
   it "withdraws and redirects a manual" do
-    subject.execute
+    expect { subject.execute }.to output.to_stdout
 
     expect(WithdrawAndRedirectManual).to have_received(:new).with(
       user: instance_of(User),
@@ -39,7 +39,7 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
   end
 
   it "withdraws and redirects section" do
-    subject.execute
+    expect { subject.execute }.to output.to_stdout
 
     expect(WithdrawAndRedirectSection).to have_received(:new).with(
       user: instance_of(User),
@@ -77,13 +77,17 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
 
   it "raises error if manual is not found" do
     allow(withdraw_and_redirect_section).to receive(:execute).and_raise(Manual::NotFoundError)
-    expect { subject.execute }.to raise_error(Manual::NotFoundError)
+    expect { subject.execute }
+      .to output.to_stdout
+      .and raise_error(Manual::NotFoundError)
   end
 
   it "raises error if section is not found" do
     allow(withdraw_and_redirect_section).to receive(:execute)
       .and_raise(Mongoid::Errors::DocumentNotFound.new(SectionEdition, anything))
-    expect { subject.execute }.to raise_error(Mongoid::Errors::DocumentNotFound)
+    expect { subject.execute }
+      .to output.to_stdout
+      .and raise_error(Mongoid::Errors::DocumentNotFound)
   end
 
   context "when a dry run is flagged" do
