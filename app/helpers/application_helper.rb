@@ -77,11 +77,11 @@ module ApplicationHelper
   end
 
   def url_for_public_manual(manual)
-    "#{Plek.current.website_root}/#{manual.slug}"
+    "#{Plek.new.website_root}/#{manual.slug}"
   end
 
   def url_for_public_org(organisation_slug)
-    "#{Plek.current.website_root}/government/organisations/#{organisation_slug}"
+    "#{Plek.new.website_root}/government/organisations/#{organisation_slug}"
   end
 
   def content_preview_url(manual)
