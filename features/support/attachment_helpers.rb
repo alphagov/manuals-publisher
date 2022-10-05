@@ -1,6 +1,6 @@
 module AttachmentHelpers
   def test_asset_manager_base_url
-    Plek.current.find("asset-manager")
+    Plek.new.find("asset-manager")
   end
 
   def add_attachment_to_section(section_title, attachment_title)
