@@ -27,7 +27,7 @@ RSpec.describe "Republishing manuals", type: :feature do
     @manual = Manual.find(manual.id, User.gds_editor)
 
     if published
-      Timecop.freeze(original_publish_time) do
+      travel_to(original_publish_time) do
         publish_manual_without_ui(@manual)
       end
     end

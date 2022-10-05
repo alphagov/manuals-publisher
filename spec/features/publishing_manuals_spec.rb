@@ -24,7 +24,7 @@ RSpec.describe "Publishing manuals", type: :feature do
       # Re-fetch manual to include sections
       @manual = Manual.find(manual.id, User.gds_editor)
 
-      Timecop.freeze(publish_time) do
+      travel_to(publish_time) do
         publish_manual_without_ui(@manual)
       end
 

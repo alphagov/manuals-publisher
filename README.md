@@ -35,3 +35,7 @@ $ bundle exec rake
 [conventions]: https://docs.publishing.service.gov.uk/manual/conventions-for-rails-applications.html
 [govuk-docker]: https://github.com/alphagov/govuk-docker
 [docker-usage]: https://github.com/alphagov/govuk-docker#usage
+
+## Licence
+
+[MIT License](LICENCE)

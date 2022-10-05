@@ -20,7 +20,7 @@ DatabaseCleaner.strategy = :deletion
 DatabaseCleaner.clean
 
 RSpec.configure do |config|
-  # config.disable_monkey_patching!
+  config.include ActiveSupport::Testing::TimeHelpers
 
   config.expect_with :rspec do |c|
     c.syntax = :expect
