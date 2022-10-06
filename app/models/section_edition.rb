@@ -35,7 +35,7 @@ class SectionEdition
 
   scope :all_for_section,
         lambda { |section_uuid|
-          where(section_uuid: section_uuid)
+          where(section_uuid:)
         }
 
   scope :all_for_sections,

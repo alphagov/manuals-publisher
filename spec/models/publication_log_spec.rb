@@ -46,14 +46,14 @@ describe PublicationLog, hits_db: true do
       let!(:change_notes_for_first_doc) do
         [
           PublicationLog.create(
-            slug: slug,
+            slug:,
             title: "",
             change_note: "First note",
             version_number: 1,
             created_at: 10.seconds.ago,
           ),
           PublicationLog.create(
-            slug: slug,
+            slug:,
             title: "",
             change_note: "Second note",
             version_number: 2,
@@ -115,7 +115,7 @@ describe PublicationLog, hits_db: true do
       context "multiple publication logs exist for a particular edition version" do
         before do
           PublicationLog.create(
-            slug: slug,
+            slug:,
             title: "",
             change_note: "Duplicate note",
             version_number: 2,

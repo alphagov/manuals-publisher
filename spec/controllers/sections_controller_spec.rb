@@ -3,7 +3,7 @@ require "spec_helper"
 describe SectionsController, type: :controller do
   describe "#create" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
+    let(:section) { Section.new(manual:, uuid: "section-uuid") }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do
@@ -38,7 +38,7 @@ describe SectionsController, type: :controller do
 
   describe "#update" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
+    let(:section) { Section.new(manual:, uuid: "section-uuid") }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do
@@ -64,7 +64,7 @@ describe SectionsController, type: :controller do
 
   describe "#preview" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
+    let(:section) { Section.new(manual:, uuid: "section-uuid") }
     let(:service) { double(:service, call: section) }
 
     before do
@@ -95,7 +95,7 @@ describe SectionsController, type: :controller do
       before do
         login_as_stub_user
         allow_any_instance_of(PermissionChecker).to receive(:can_withdraw?).and_return(false)
-        post :withdraw, params: { manual_id: manual_id, id: section_uuid }
+        post :withdraw, params: { manual_id:, id: section_uuid }
       end
 
       after do
@@ -103,7 +103,7 @@ describe SectionsController, type: :controller do
       end
 
       it "redirects to the section's show page" do
-        expect(response).to redirect_to manual_section_path(manual_id: manual_id, id: section_uuid)
+        expect(response).to redirect_to manual_section_path(manual_id:, id: section_uuid)
       end
 
       it "sets a flash message" do
@@ -126,7 +126,7 @@ describe SectionsController, type: :controller do
         login_as_stub_user
         allow_any_instance_of(PermissionChecker).to receive(:can_withdraw?).and_return(false)
         allow(Section::RemoveService).to receive(:new).and_return(service)
-        delete :destroy, params: { manual_id: manual_id, id: section_uuid }
+        delete :destroy, params: { manual_id:, id: section_uuid }
       end
 
       after do
@@ -134,7 +134,7 @@ describe SectionsController, type: :controller do
       end
 
       it "redirects to the section's show page" do
-        expect(response).to redirect_to manual_section_path(manual_id: manual_id, id: section_uuid)
+        expect(response).to redirect_to manual_section_path(manual_id:, id: section_uuid)
       end
 
       it "sets a flash message" do
@@ -153,7 +153,7 @@ describe SectionsController, type: :controller do
 
   context "for a user that can withdraw" do
     let(:manual) { Manual.new }
-    let(:section) { Section.new(manual: manual, uuid: "section-uuid") }
+    let(:section) { Section.new(manual:, uuid: "section-uuid") }
     let(:service) { double(:service, call: [manual, section]) }
 
     before do

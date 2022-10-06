@@ -10,9 +10,9 @@ RSpec.describe Manual::PublishService do
 
   subject do
     Manual::PublishService.new(
-      user: user,
-      manual_id: manual_id,
-      version_number: version_number,
+      user:,
+      manual_id:,
+      version_number:,
     )
   end
 

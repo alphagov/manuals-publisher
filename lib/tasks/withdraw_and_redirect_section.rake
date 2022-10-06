@@ -7,7 +7,7 @@ task :withdraw_and_redirect_section, %i[manual_path section_path redirect discar
     manual_path: args.fetch(:manual_path),
     section_path: args.fetch(:section_path),
     redirect: args.fetch(:redirect),
-    discard_draft: discard_draft,
+    discard_draft:,
   )
 
   redirect_section.execute

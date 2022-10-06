@@ -72,7 +72,7 @@ private
     user = User.gds_editor
 
     service = Section::UpdateService.new(
-      user: user,
+      user:,
       manual_id: manual.id,
       section_uuid: old_section_edition.section_uuid,
       attributes: {
@@ -80,7 +80,7 @@ private
         summary: old_section_edition.summary,
         body: old_section_edition.body,
         minor_update: false,
-        change_note: change_note,
+        change_note:,
       },
     )
     _manual, section = service.call
@@ -93,7 +93,7 @@ private
 
   def publish_manual
     service = Manual::PublishService.new(
-      user: user,
+      user:,
       manual_id: manual.id,
       version_number: manual_version_number,
     )
@@ -123,7 +123,7 @@ private
   end
 
   def section_edition_in_database(slug)
-    SectionEdition.where(slug: slug).last
+    SectionEdition.where(slug:).last
   end
 
   def section_in_content_store(slug)

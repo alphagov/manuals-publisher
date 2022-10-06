@@ -19,7 +19,7 @@ RSpec.describe LinkCheckReport::LinkExtractorService do
 
   let(:website_root) { Plek.new.website_root }
 
-  subject { described_class.new(body: body).call }
+  subject { described_class.new(body:).call }
 
   it "should contain three full urls" do
     expected_result = %W[http://www.example.com http://www.gov.com #{website_root}/cais-trwydded-yrru-dros-dro]

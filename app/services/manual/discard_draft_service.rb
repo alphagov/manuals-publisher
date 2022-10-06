@@ -30,11 +30,11 @@ private
 
   class Result
     def self.success(manual)
-      new(successful: true, manual: manual)
+      new(successful: true, manual:)
     end
 
     def self.failure(manual)
-      new(successful: false, manual: manual)
+      new(successful: false, manual:)
     end
 
     def initialize(successful:, manual:)

@@ -22,7 +22,7 @@ class Section
     if editions.empty?
       raise KeyError, "key not found #{section_uuid}"
     else
-      Section.new(manual: manual, uuid: section_uuid, previous_edition: editions.first, latest_edition: editions.last)
+      Section.new(manual:, uuid: section_uuid, previous_edition: editions.first, latest_edition: editions.last)
     end
   end
 
@@ -96,8 +96,8 @@ class Section
         .merge(
           state: "draft",
           version_number: latest_edition.version_number + 1,
-          slug: slug,
-          attachments: attachments,
+          slug:,
+          attachments:,
         )
       @previous_edition = latest_edition
       @latest_edition = SectionEdition.new(attributes)

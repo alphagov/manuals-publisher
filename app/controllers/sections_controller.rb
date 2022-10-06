@@ -12,8 +12,8 @@ class SectionsController < ApplicationController
     render(
       :show,
       locals: {
-        manual: manual,
-        section: section,
+        manual:,
+        section:,
       },
     )
   end
@@ -131,7 +131,7 @@ class SectionsController < ApplicationController
       :reorder,
       locals: {
         manual: ManualViewAdapter.new(manual),
-        sections: sections,
+        sections:,
       },
     )
   end

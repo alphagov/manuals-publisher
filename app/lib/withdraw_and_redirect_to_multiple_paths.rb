@@ -56,12 +56,12 @@ private
 
   def withdraw_and_redirect_manual(child)
     WithdrawAndRedirectManual.new(
-      user: user,
+      user:,
       manual_path: child["base_path"],
       redirect: child["redirect"],
       include_sections: false,
-      discard_drafts: discard_drafts,
-      dry_run: dry_run,
+      discard_drafts:,
+      dry_run:,
     ).execute
 
     log("Withdrawn manual '#{child['base_path']}' and redirected to '#{child['redirect']}'") unless dry_run
@@ -69,12 +69,12 @@ private
 
   def withdraw_and_redirect_section(child, manual_path)
     WithdrawAndRedirectSection.new(
-      user: user,
-      manual_path: manual_path,
+      user:,
+      manual_path:,
       section_path: child["base_path"],
       redirect: child["redirect"],
       discard_draft: discard_drafts,
-      dry_run: dry_run,
+      dry_run:,
     ).execute
 
     log("Withdrawn section '#{child['base_path']}' and redirected to '#{child['redirect']}'") unless dry_run

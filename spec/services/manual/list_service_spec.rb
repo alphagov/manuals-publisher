@@ -5,7 +5,7 @@ RSpec.describe Manual::ListService do
 
   subject do
     Manual::ListService.new(
-      user: user,
+      user:,
     )
   end
 

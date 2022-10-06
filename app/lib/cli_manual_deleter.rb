@@ -38,7 +38,7 @@ private
   end
 
   def complete_removal(manual)
-    service = Manual::DiscardDraftService.new(user: user, manual_id: manual.id)
+    service = Manual::DiscardDraftService.new(user:, manual_id: manual.id)
 
     result = service.call
     if result.successful?

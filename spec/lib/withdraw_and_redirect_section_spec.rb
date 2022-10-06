@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe WithdrawAndRedirectSection do
-  let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state: state) }
+  let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state:) }
   let(:manual) { Manual.build_manual_for(manual_record) }
   let(:section) { manual.sections.last }
   let(:publishing_adapter) { double(:publishing_adapter) }
@@ -15,9 +15,9 @@ RSpec.describe WithdrawAndRedirectSection do
       user: User.gds_editor,
       manual_path: manual.slug,
       section_path: manual.sections.last.slug,
-      redirect: redirect,
-      discard_draft: discard_draft,
-      dry_run: dry_run,
+      redirect:,
+      discard_draft:,
+      dry_run:,
     )
   end
 
@@ -30,7 +30,7 @@ RSpec.describe WithdrawAndRedirectSection do
     subject.execute
     expect(publishing_adapter).to have_received(:unpublish_section)
       .with(instance_of(Section),
-            redirect: redirect,
+            redirect:,
             discard_drafts: discard_draft)
   end
 
@@ -53,7 +53,7 @@ RSpec.describe WithdrawAndRedirectSection do
       subject.execute
       expect(publishing_adapter).to have_received(:unpublish_section)
         .with(instance_of(Section),
-              redirect: redirect,
+              redirect:,
               discard_drafts: discard_draft)
     end
   end

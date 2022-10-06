@@ -8,7 +8,7 @@ class ManualWithdrawer
   def execute(manual_id)
     service = Manual::WithdrawService.new(
       user: User.gds_editor,
-      manual_id: manual_id,
+      manual_id:,
     )
     manual = service.call
 

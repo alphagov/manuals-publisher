@@ -37,7 +37,7 @@ class Manual
 
   def self.find_by_slug!(slug, user)
     collection = user.manual_records
-    manual_records = collection.where(slug: slug)
+    manual_records = collection.where(slug:)
     case manual_records.length
     when 0
       raise NotFoundError, "Manual slug not found: #{slug}"
@@ -58,8 +58,8 @@ class Manual
 
         build_manual_for(
           manual_record,
-          edition: edition,
-          load_associations: load_associations,
+          edition:,
+          load_associations:,
         )
       end
   end
@@ -84,12 +84,12 @@ class Manual
     manual_record.organisation_slug = organisation_slug
     edition = manual_record.new_or_existing_draft_edition
     edition.attributes = {
-      title: title,
-      summary: summary,
-      body: body,
-      state: state,
-      originally_published_at: originally_published_at,
-      use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
+      title:,
+      summary:,
+      body:,
+      state:,
+      originally_published_at:,
+      use_originally_published_at_for_public_timestamp:,
     }
 
     sections.each(&:save!)
@@ -281,7 +281,7 @@ class Manual
       )
 
       if load_associations
-        add_sections_to_manual(base_manual, edition, published: published)
+        add_sections_to_manual(base_manual, edition, published:)
         add_publish_tasks_to_manual(base_manual)
       end
       base_manual
@@ -289,7 +289,7 @@ class Manual
 
     def add_sections_to_manual(manual, edition, published: false)
       sections = Array(edition.section_uuids).map do |section_uuid|
-        Section.find(manual, section_uuid, published: published)
+        Section.find(manual, section_uuid, published:)
       end
 
       removed_sections = Array(edition.removed_section_uuids).map do |section_uuid|

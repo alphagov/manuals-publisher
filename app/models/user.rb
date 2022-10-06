@@ -28,7 +28,7 @@ class User
     if permission_checker.is_gds_editor?
       ManualRecord.all
     else
-      ManualRecord.where(organisation_slug: organisation_slug)
+      ManualRecord.where(organisation_slug:)
     end
   end
 end

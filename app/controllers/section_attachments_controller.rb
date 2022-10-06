@@ -12,7 +12,7 @@ class SectionAttachmentsController < ApplicationController
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
-        attachment: attachment,
+        attachment:,
       },
     )
   end
@@ -43,7 +43,7 @@ class SectionAttachmentsController < ApplicationController
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
-        attachment: attachment,
+        attachment:,
       },
     )
   end
@@ -66,7 +66,7 @@ class SectionAttachmentsController < ApplicationController
         locals: {
           manual: ManualViewAdapter.new(manual),
           section: SectionViewAdapter.new(manual, section),
-          attachment: attachment,
+          attachment:,
         },
       )
     end

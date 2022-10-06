@@ -14,7 +14,7 @@ class ManualsController < ApplicationController
 
   def show
     service = Manual::ShowService.new(
-      manual_id: manual_id,
+      manual_id:,
       user: current_user,
     )
     manual = service.call
@@ -28,9 +28,9 @@ class ManualsController < ApplicationController
     render(
       :show,
       locals: {
-        manual: manual,
-        slug_unique: slug_unique,
-        clashing_sections: clashing_sections,
+        manual:,
+        slug_unique:,
+        clashing_sections:,
       },
     )
   end
@@ -56,7 +56,7 @@ class ManualsController < ApplicationController
       render(
         :new,
         locals: {
-          manual: manual,
+          manual:,
         },
       )
     end
@@ -64,7 +64,7 @@ class ManualsController < ApplicationController
 
   def edit
     service = Manual::ShowService.new(
-      manual_id: manual_id,
+      manual_id:,
       user: current_user,
     )
     manual = service.call
@@ -75,7 +75,7 @@ class ManualsController < ApplicationController
   def update
     service = Manual::UpdateService.new(
       user: current_user,
-      manual_id: manual_id,
+      manual_id:,
       attributes: update_manual_params,
     )
     manual = service.call
@@ -87,7 +87,7 @@ class ManualsController < ApplicationController
       render(
         :edit,
         locals: {
-          manual: manual,
+          manual:,
         },
       )
     end
@@ -95,7 +95,7 @@ class ManualsController < ApplicationController
 
   def edit_original_publication_date
     service = Manual::ShowService.new(
-      manual_id: manual_id,
+      manual_id:,
       user: current_user,
     )
     manual = service.call
@@ -106,7 +106,7 @@ class ManualsController < ApplicationController
   def update_original_publication_date
     service = Manual::UpdateOriginalPublicationDateService.new(
       user: current_user,
-      manual_id: manual_id,
+      manual_id:,
       attributes: publication_date_manual_params,
     )
     manual = service.call
@@ -118,7 +118,7 @@ class ManualsController < ApplicationController
       render(
         :edit_original_publication_date,
         locals: {
-          manual: manual,
+          manual:,
         },
       )
     end
@@ -127,7 +127,7 @@ class ManualsController < ApplicationController
   def publish
     service = Manual::QueuePublishService.new(
       user: current_user,
-      manual_id: manual_id,
+      manual_id:,
     )
     manual = service.call
 
@@ -140,7 +140,7 @@ class ManualsController < ApplicationController
   def discard_draft
     service = Manual::DiscardDraftService.new(
       user: current_user,
-      manual_id: manual_id,
+      manual_id:,
     )
     result = service.call
 

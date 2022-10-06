@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Section do
   subject(:section) do
-    Section.new(manual: manual, uuid: section_uuid, previous_edition: previous_edition, latest_edition: latest_edition)
+    Section.new(manual:, uuid: section_uuid, previous_edition:, latest_edition:)
   end
 
   def key_classes_for(hash)
@@ -160,7 +160,7 @@ describe Section do
       end
 
       it "builds a section using the manual" do
-        expect(Section).to receive(:new).with(including(manual: manual))
+        expect(Section).to receive(:new).with(including(manual:))
         Section.find(manual, "section-id")
       end
 
@@ -170,12 +170,12 @@ describe Section do
       end
 
       it "builds a section using the previous edition" do
-        expect(Section).to receive(:new).with(including(previous_edition: previous_edition))
+        expect(Section).to receive(:new).with(including(previous_edition:))
         Section.find(manual, "section-id")
       end
 
       it "builds a section using the latest edition" do
-        expect(Section).to receive(:new).with(including(latest_edition: latest_edition))
+        expect(Section).to receive(:new).with(including(latest_edition:))
         Section.find(manual, "section-id")
       end
     end
@@ -197,7 +197,7 @@ describe Section do
     it "saves the previous and latest editions" do
       previous_edition = double(:previous_edition)
       latest_edition = double(:latest_edition)
-      section = Section.new(manual: manual, uuid: "section-id", previous_edition: previous_edition, latest_edition: latest_edition)
+      section = Section.new(manual:, uuid: "section-id", previous_edition:, latest_edition:)
 
       expect(previous_edition).to receive(:save!)
       expect(latest_edition).to receive(:save!)
@@ -211,12 +211,12 @@ describe Section do
 
     it "is considered the same as another section instance if they have the same uuid" do
       expect(section).to eql(section)
-      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, latest_edition: draft_edition_v1))
-      expect(section).not_to eql(Section.new(manual: manual, uuid: section.uuid.reverse, latest_edition: draft_edition_v1))
+      expect(section).to eql(Section.new(manual:, uuid: section.uuid, latest_edition: draft_edition_v1))
+      expect(section).not_to eql(Section.new(manual:, uuid: section.uuid.reverse, latest_edition: draft_edition_v1))
     end
 
     it "is considered the same as another section instance with the same uuid even if they have different version numbers" do
-      expect(section).to eql(Section.new(manual: manual, uuid: section.uuid, latest_edition: draft_edition_v2))
+      expect(section).to eql(Section.new(manual:, uuid: section.uuid, latest_edition: draft_edition_v2))
     end
   end
 
@@ -294,7 +294,7 @@ describe Section do
         expect(SectionEdition).to have_received(:new).with(
           version_number: 1,
           state: "draft",
-          section_uuid: section_uuid,
+          section_uuid:,
         )
       end
     end
@@ -333,7 +333,7 @@ describe Section do
               .with(
                 hash_including(
                   title: new_title,
-                  slug: slug,
+                  slug:,
                 ),
               )
           end
@@ -418,7 +418,7 @@ describe Section do
         section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new)
-          .with(hash_including(attachments: attachments))
+          .with(hash_including(attachments:))
       end
 
       it "presents the new edition" do
@@ -482,7 +482,7 @@ describe Section do
         section.assign_attributes(attributes)
 
         expect(SectionEdition).to have_received(:new)
-          .with(hash_including(attachments: attachments))
+          .with(hash_including(attachments:))
       end
 
       it "presents the new edition" do

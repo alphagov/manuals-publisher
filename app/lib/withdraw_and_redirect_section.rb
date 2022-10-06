@@ -21,9 +21,9 @@ class WithdrawAndRedirectSection
     raise SectionNotPublishedError, section.slug unless section.published?
 
     if discard_draft && section.draft?
-      Adapters.publishing.unpublish_section(section, redirect: redirect, discard_drafts: true)
+      Adapters.publishing.unpublish_section(section, redirect:, discard_drafts: true)
     else
-      Adapters.publishing.unpublish_section(section, redirect: redirect, discard_drafts: false)
+      Adapters.publishing.unpublish_section(section, redirect:, discard_drafts: false)
     end
   end
 

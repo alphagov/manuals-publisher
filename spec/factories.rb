@@ -132,7 +132,7 @@ FactoryBot.define do
       end
 
       links do
-        link_uris.map { |uri| FactoryBot.build(:link, :pending, uri: uri) }
+        link_uris.map { |uri| FactoryBot.build(:link, :pending, uri:) }
       end
     end
   end

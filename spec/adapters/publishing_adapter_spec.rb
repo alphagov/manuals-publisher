@@ -42,7 +42,7 @@ describe PublishingAdapter do
 
   let(:section) do
     Section.new(
-      manual: manual,
+      manual:,
       uuid: section_uuid,
       latest_edition: section_edition,
     )
@@ -51,7 +51,7 @@ describe PublishingAdapter do
   let(:section_edition) do
     SectionEdition.new(
       slug: "manual-slug/section-slug",
-      section_uuid: section_uuid,
+      section_uuid:,
       title: "section-title",
       summary: "section-summary",
       body: "section-body",
@@ -561,11 +561,11 @@ describe PublishingAdapter do
 
     it "unpublishes and redirects only manual via Publishing API" do
       expect(publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects: redirects, discard_drafts: true
+        manual_id, type: "redirect", redirects:, discard_drafts: true
       )
 
       subject.unpublish_and_redirect_manual_and_sections(
-        manual, redirect: redirect, include_sections: false, discard_drafts: true
+        manual, redirect:, include_sections: false, discard_drafts: true
       )
     end
 
@@ -573,7 +573,7 @@ describe PublishingAdapter do
       manual.sections = [section]
 
       expect(publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects: redirects, discard_drafts: false
+        manual_id, type: "redirect", redirects:, discard_drafts: false
       )
 
       expect(publishing_api).to receive(:unpublish).with(
@@ -581,7 +581,7 @@ describe PublishingAdapter do
       )
 
       subject.unpublish_and_redirect_manual_and_sections(
-        manual, redirect: redirect, include_sections: true, discard_drafts: false
+        manual, redirect:, include_sections: true, discard_drafts: false
       )
     end
   end
@@ -611,7 +611,7 @@ describe PublishingAdapter do
 
     let(:removed_section) do
       Section.new(
-        manual: manual,
+        manual:,
         uuid: removed_section_uuid,
         latest_edition: removed_section_edition,
       )
