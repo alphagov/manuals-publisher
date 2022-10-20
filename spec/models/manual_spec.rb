@@ -6,17 +6,17 @@ describe Manual do
   subject(:manual) do
     FactoryBot.build(
       :manual,
-      id: id,
-      slug: slug,
-      title: title,
-      summary: summary,
-      body: body,
-      organisation_slug: organisation_slug,
-      state: state,
-      updated_at: updated_at,
+      id:,
+      slug:,
+      title:,
+      summary:,
+      body:,
+      organisation_slug:,
+      state:,
+      updated_at:,
       version_number: 10,
-      originally_published_at: originally_published_at,
-      use_originally_published_at_for_public_timestamp: use_originally_published_at_for_public_timestamp,
+      originally_published_at:,
+      use_originally_published_at_for_public_timestamp:,
     )
   end
 
@@ -500,7 +500,7 @@ describe Manual do
 
     context "when the provided id refers to the first draft of a manual" do
       let(:manual_id) { SecureRandom.uuid }
-      let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
+      let(:manual_record) { ManualRecord.create(manual_id:, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 1, state: "draft") }
       let!(:section1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "draft") }
       let!(:section2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "draft") }
@@ -551,7 +551,7 @@ describe Manual do
 
     context "when the provided id refers to manual that has been published once" do
       let(:manual_id) { SecureRandom.uuid }
-      let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
+      let(:manual_record) { ManualRecord.create(manual_id:, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 1, state: "published") }
       let!(:section1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "published") }
       let!(:section2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "published") }
@@ -602,7 +602,7 @@ describe Manual do
 
     context "when the provided id refers to manual that has been withdrawn once" do
       let(:manual_id) { SecureRandom.uuid }
-      let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
+      let(:manual_record) { ManualRecord.create(manual_id:, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 1, state: "withdrawn") }
       let!(:section1) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-1", section_uuid: "12345", version_number: 1, state: "archived") }
       let!(:section2) { FactoryBot.create(:section_edition, slug: "#{manual_record.slug}/section-2", section_uuid: "67890", version_number: 1, state: "archived") }
@@ -626,7 +626,7 @@ describe Manual do
 
     context "when the provided id refers to manual that has been published once and has a new draft waiting" do
       let(:manual_id) { SecureRandom.uuid }
-      let(:manual_record) { ManualRecord.create(manual_id: manual_id, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
+      let(:manual_record) { ManualRecord.create(manual_id:, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
       let(:manual_published_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 1, state: "published") }
       let(:manual_draft_edition) { ManualRecord::Edition.new(section_uuids: %w[12345 67890], version_number: 2, state: "draft") }
 
@@ -986,7 +986,7 @@ describe Manual do
 
       let(:section1) do
         Section.new(
-          manual: manual,
+          manual:,
           uuid: "section-1",
           previous_edition: section1_edition1,
           latest_edition: section1_edition2,
@@ -995,7 +995,7 @@ describe Manual do
 
       let(:section2) do
         Section.new(
-          manual: manual,
+          manual:,
           uuid: "section-2",
           previous_edition: section2_edition1,
           latest_edition: section2_edition2,

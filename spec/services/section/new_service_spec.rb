@@ -6,7 +6,7 @@ RSpec.describe Section::NewService do
     manual = FactoryBot.build(:manual, organisation_slug: user.organisation_slug)
     manual.save!(user)
 
-    service = Section::NewService.new(user: user, manual_id: manual.id)
+    service = Section::NewService.new(user:, manual_id: manual.id)
 
     returned_manual, returned_section = service.call
 

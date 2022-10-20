@@ -34,7 +34,7 @@ RSpec.describe LinkCheckReport::CreateService do
 
     subject do
       described_class.new(
-        user: user,
+        user:,
         manual_id: manual.id,
       )
     end
@@ -132,7 +132,7 @@ RSpec.describe LinkCheckReport::CreateService do
 
     subject do
       described_class.new(
-        user: user,
+        user:,
         manual_id: manual.id,
         section_id: section.id,
       )

@@ -24,9 +24,9 @@ class WithdrawAndRedirectManual
 
     Adapters.publishing.unpublish_and_redirect_manual_and_sections(
       published_manual,
-      redirect: redirect,
-      include_sections: include_sections,
-      discard_drafts: discard_drafts,
+      redirect:,
+      include_sections:,
+      discard_drafts:,
     )
   end
 

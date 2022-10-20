@@ -7,7 +7,7 @@ RSpec.describe Manual::CreateService do
 
   subject do
     described_class.new(
-      user: user,
+      user:,
       attributes: {},
     )
   end

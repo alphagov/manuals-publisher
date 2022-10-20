@@ -21,7 +21,7 @@ this is my attachment [#{title}](#{file_url}) 28 Feb 2014
     }
   end
 
-  let(:doc) { double(:doc, body: unprocessed_body, attachments: attachments) }
+  let(:doc) { double(:doc, body: unprocessed_body, attachments:) }
 
   let(:attachments) { [lol, rofl] }
 
@@ -31,9 +31,9 @@ this is my attachment [#{title}](#{file_url}) 28 Feb 2014
   let(:rofl) do
     double(
       :attachment,
-      title: title,
+      title:,
       filename: "rofl.gif",
-      file_url: file_url,
+      file_url:,
       snippet: "[InlineAttachment:rofl.gif]",
     )
   end

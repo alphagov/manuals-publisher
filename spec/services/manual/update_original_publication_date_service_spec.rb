@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Manual::UpdateOriginalPublicationDateService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual) { double(:manual, id: manual_id, sections: sections) }
+  let(:manual) { double(:manual, id: manual_id, sections:) }
   let(:section1) { double(:section, assign_attributes: nil) }
   let(:section2) { double(:section, assign_attributes: nil) }
   let(:sections) { [section1, section2] }
@@ -12,10 +12,10 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
 
   subject do
     described_class.new(
-      user: user,
-      manual_id: manual_id,
+      user:,
+      manual_id:,
       attributes: {
-        originally_published_at: originally_published_at,
+        originally_published_at:,
         use_originally_published_at_for_public_timestamp: "1",
         title: "hats",
       },
@@ -35,7 +35,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
     subject.call
     expect(manual).to have_received(:assign_attributes)
       .with(
-        originally_published_at: originally_published_at,
+        originally_published_at:,
         use_originally_published_at_for_public_timestamp: "1",
       )
   end

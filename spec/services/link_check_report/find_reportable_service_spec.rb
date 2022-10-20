@@ -11,7 +11,7 @@ RSpec.describe LinkCheckReport::FindReportableService do
   context "when looking for a manual" do
     subject do
       described_class.new(
-        user: user,
+        user:,
         manual_id: manual.id,
       ).call
     end
@@ -30,7 +30,7 @@ RSpec.describe LinkCheckReport::FindReportableService do
 
     subject do
       described_class.new(
-        user: user,
+        user:,
         manual_id: manual.id,
         section_id: section.id,
       ).call

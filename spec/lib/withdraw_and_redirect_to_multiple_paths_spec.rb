@@ -10,8 +10,8 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
   subject do
     described_class.new(
       csv_path: "spec/support/withdraw_and_redirect_to_multiple_paths.csv",
-      discard_drafts: discard_drafts,
-      dry_run: dry_run,
+      discard_drafts:,
+      dry_run:,
     )
   end
 

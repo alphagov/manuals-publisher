@@ -80,7 +80,7 @@ Given(/^a draft manual exists belonging to "(.*?)"$/) do |organisation_slug|
   }
 
   stub_organisation_details(organisation_slug)
-  @manual = create_manual_without_ui(@manual_fields, organisation_slug: organisation_slug)
+  @manual = create_manual_without_ui(@manual_fields, organisation_slug:)
   WebMock::RequestRegistry.instance.reset!
 end
 

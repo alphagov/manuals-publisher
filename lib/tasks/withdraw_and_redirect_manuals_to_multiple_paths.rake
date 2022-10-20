@@ -4,7 +4,7 @@ namespace :withdraw_and_redirect_manuals_to_multiple_paths  do
     discard_drafts = args.fetch(:discard_drafts) == "true"
 
     WithdrawAndRedirectToMultiplePaths.new(
-      csv_path: args.fetch(:csv_path), discard_drafts: discard_drafts,
+      csv_path: args.fetch(:csv_path), discard_drafts:,
     ).execute
   end
 

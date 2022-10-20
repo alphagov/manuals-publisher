@@ -5,11 +5,11 @@ require "gds_api_constants"
 
 class PublishingAdapter
   def save_draft(manual, republish: false, include_sections: true, include_links: true)
-    save_manual(manual, republish: republish, include_links: include_links)
+    save_manual(manual, republish:, include_links:)
 
     if include_sections
       manual.sections.each do |section|
-        save_section(section, manual, republish: republish, include_links: include_links)
+        save_section(section, manual, republish:, include_links:)
       end
     end
   end
@@ -22,12 +22,12 @@ class PublishingAdapter
         { path: "/#{manual.slug}", type: "exact", destination: redirect },
         { path: "/#{manual.slug}/updates", type: "exact", destination: redirect },
       ],
-      discard_drafts: discard_drafts,
+      discard_drafts:,
     )
 
     if include_sections
       manual.sections.each do |section|
-        unpublish_section(section, redirect: redirect, discard_drafts: discard_drafts)
+        unpublish_section(section, redirect:, discard_drafts:)
       end
     end
   end
@@ -36,7 +36,7 @@ class PublishingAdapter
     if !section.withdrawn? || republish
       begin
         Services.publishing_api.unpublish(
-          section.uuid, type: "redirect", alternative_path: redirect, discard_drafts: discard_drafts
+          section.uuid, type: "redirect", alternative_path: redirect, discard_drafts:
         )
         section.withdraw_and_mark_as_exported! unless republish
       rescue GdsApi::HTTPNotFound
@@ -54,14 +54,14 @@ class PublishingAdapter
   end
 
   def publish(manual, republish: false)
-    publish_manual(manual, republish: republish)
+    publish_manual(manual, republish:)
 
     manual.sections.each do |section|
-      publish_section(section, republish: republish)
+      publish_section(section, republish:)
     end
 
     manual.removed_sections.each do |section|
-      unpublish_section(section, redirect: "/#{manual.slug}", republish: republish)
+      unpublish_section(section, redirect: "/#{manual.slug}", republish:)
     end
   end
 
@@ -75,7 +75,7 @@ class PublishingAdapter
   def save_section(section, manual, republish: false, include_links: true)
     if section.needs_exporting? || republish
       save_section_links(section, manual) if include_links
-      save_section_content(section, manual, republish: republish)
+      save_section_content(section, manual, republish:)
     end
   end
 
@@ -108,7 +108,7 @@ private
 
   def save_manual(manual, republish:, include_links:)
     save_manual_links(manual) if include_links
-    save_manual_content(manual, republish: republish)
+    save_manual_content(manual, republish:)
   end
 
   def save_manual_links(manual)
@@ -142,12 +142,12 @@ private
     updates_path = [base_path, GdsApiConstants::PublishingApi::UPDATES_PATH_SUFFIX].join("/")
 
     attributes = {
-      base_path: base_path,
+      base_path:,
       schema_name: GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME,
       document_type: GdsApiConstants::PublishingApi::MANUAL_DOCUMENT_TYPE,
       title: manual.title,
       description: manual.summary,
-      update_type: update_type,
+      update_type:,
       bulk_publishing: republish,
       publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
       rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
@@ -255,7 +255,7 @@ private
       document_type: GdsApiConstants::PublishingApi::SECTION_DOCUMENT_TYPE,
       title: section.title,
       description: section.summary,
-      update_type: update_type,
+      update_type:,
       bulk_publishing: republish,
       publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
       rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,

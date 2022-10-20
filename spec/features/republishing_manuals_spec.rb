@@ -21,7 +21,7 @@ RSpec.describe "Republishing manuals", type: :feature do
 
   def create_manual_with_sections(published: true)
     manual = create_manual_without_ui(manual_fields)
-    @sections = create_sections_for_manual_without_ui(manual: manual, count: 2)
+    @sections = create_sections_for_manual_without_ui(manual:, count: 2)
 
     # Re-fetch manual to include sections
     @manual = Manual.find(manual.id, User.gds_editor)

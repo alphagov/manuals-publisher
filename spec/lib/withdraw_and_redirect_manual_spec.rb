@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe WithdrawAndRedirectManual do
-  let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state: state) }
+  let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state:) }
   let(:manual) { Manual.build_manual_for(manual_record) }
   let(:section) { manual.sections.last }
   let(:redirect) { "/redirect/blah" }
@@ -16,12 +16,12 @@ RSpec.describe WithdrawAndRedirectManual do
 
   subject do
     described_class.new(
-      user: user,
+      user:,
       manual_path: manual.slug,
-      redirect: redirect,
-      include_sections: include_sections,
-      discard_drafts: discard_drafts,
-      dry_run: dry_run,
+      redirect:,
+      include_sections:,
+      discard_drafts:,
+      dry_run:,
     )
   end
 
@@ -44,9 +44,9 @@ RSpec.describe WithdrawAndRedirectManual do
     subject.execute
     expect(publishing_adapter).to have_received(:unpublish_and_redirect_manual_and_sections)
       .with(instance_of(Manual),
-            redirect: redirect,
-            include_sections: include_sections,
-            discard_drafts: discard_drafts)
+            redirect:,
+            include_sections:,
+            discard_drafts:)
   end
 
   context "when there is no published manual" do

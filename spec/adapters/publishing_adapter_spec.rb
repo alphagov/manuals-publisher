@@ -42,7 +42,7 @@ describe PublishingAdapter do
 
   let(:section) do
     Section.new(
-      manual: manual,
+      manual:,
       uuid: section_uuid,
       latest_edition: section_edition,
     )
@@ -51,7 +51,7 @@ describe PublishingAdapter do
   let(:section_edition) do
     SectionEdition.new(
       slug: "manual-slug/section-slug",
-      section_uuid: section_uuid,
+      section_uuid:,
       title: "section-title",
       summary: "section-summary",
       body: "section-body",
@@ -119,58 +119,60 @@ describe PublishingAdapter do
     it "saves content for manual to Publishing API" do
       expect(publishing_api).to receive(:put_content).with(
         manual_id,
-        base_path: "/manual-slug",
-        schema_name: publishing_api_schema_name_for_manual,
-        document_type: publishing_api_document_type_for_manual,
-        title: "manual-title",
-        description: "manual-summary",
-        update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
-        bulk_publishing: false,
-        publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
-        rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
-        routes: [
-          {
-            path: "/manual-slug",
-            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
+        {
+          base_path: "/manual-slug",
+          schema_name: publishing_api_schema_name_for_manual,
+          document_type: publishing_api_document_type_for_manual,
+          title: "manual-title",
+          description: "manual-summary",
+          update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
+          bulk_publishing: false,
+          publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+          rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
+          routes: [
+            {
+              path: "/manual-slug",
+              type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
+            },
+            {
+              path: "/manual-slug/#{GdsApiConstants::PublishingApi::UPDATES_PATH_SUFFIX}",
+              type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
+            },
+          ],
+          details: {
+            body: [
+              {
+                content_type: "text/govspeak",
+                content: "manual-body",
+              },
+              {
+                content_type: "text/html",
+                content: "<p>manual-body</p>\n",
+              },
+            ],
+            child_section_groups: [
+              {
+                title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
+                child_sections: [
+                  {
+                    title: "section-title",
+                    description: "section-summary",
+                    base_path: "/manual-slug/section-slug",
+                  },
+                ],
+              },
+            ],
+            change_notes: [],
+            organisations: [
+              {
+                title: "organisation-title",
+                abbreviation: "organisation-abbreviation",
+                web_url: "organisation-web-url",
+              },
+            ],
           },
-          {
-            path: "/manual-slug/#{GdsApiConstants::PublishingApi::UPDATES_PATH_SUFFIX}",
-            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
-          },
-        ],
-        details: {
-          body: [
-            {
-              content_type: "text/govspeak",
-              content: "manual-body",
-            },
-            {
-              content_type: "text/html",
-              content: "<p>manual-body</p>\n",
-            },
-          ],
-          child_section_groups: [
-            {
-              title: GdsApiConstants::PublishingApi::CHILD_SECTION_GROUP_TITLE,
-              child_sections: [
-                {
-                  title: "section-title",
-                  description: "section-summary",
-                  base_path: "/manual-slug/section-slug",
-                },
-              ],
-            },
-          ],
-          change_notes: [],
-          organisations: [
-            {
-              title: "organisation-title",
-              abbreviation: "organisation-abbreviation",
-              web_url: "organisation-web-url",
-            },
-          ],
+          locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
         },
-        locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
       subject.save_draft(manual)
@@ -203,47 +205,49 @@ describe PublishingAdapter do
     it "saves content for all manual's sections to Publishing API" do
       expect(publishing_api).to receive(:put_content).with(
         section_uuid,
-        base_path: "/manual-slug/section-slug",
-        schema_name: publishing_api_schema_name_for_section,
-        document_type: publishing_api_document_type_for_section,
-        title: "section-title",
-        description: "section-summary",
-        update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
-        bulk_publishing: false,
-        publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
-        rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
-        change_note: "change-note",
-        routes: [
-          {
-            path: "/manual-slug/section-slug",
-            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
-          },
-        ],
-        details: {
-          body: [
+        {
+          base_path: "/manual-slug/section-slug",
+          schema_name: publishing_api_schema_name_for_section,
+          document_type: publishing_api_document_type_for_section,
+          title: "section-title",
+          description: "section-summary",
+          update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE,
+          bulk_publishing: false,
+          publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+          rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
+          change_note: "change-note",
+          routes: [
             {
-              content_type: "text/govspeak",
-              content: "section-body",
-            },
-            {
-              content_type: "text/html",
-              content: "<p>section-body</p>\n",
+              path: "/manual-slug/section-slug",
+              type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
             },
           ],
-          attachments: [],
-          manual: {
-            base_path: "/manual-slug",
-          },
-          organisations: [
-            {
-              title: "organisation-title",
-              abbreviation: "organisation-abbreviation",
-              web_url: "organisation-web-url",
+          details: {
+            body: [
+              {
+                content_type: "text/govspeak",
+                content: "section-body",
+              },
+              {
+                content_type: "text/html",
+                content: "<p>section-body</p>\n",
+              },
+            ],
+            attachments: [],
+            manual: {
+              base_path: "/manual-slug",
             },
-          ],
-          visually_expanded: false,
+            organisations: [
+              {
+                title: "organisation-title",
+                abbreviation: "organisation-abbreviation",
+                web_url: "organisation-web-url",
+              },
+            ],
+            visually_expanded: false,
+          },
+          locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
         },
-        locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
       )
 
       subject.save_draft(manual)
@@ -561,11 +565,11 @@ describe PublishingAdapter do
 
     it "unpublishes and redirects only manual via Publishing API" do
       expect(publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects: redirects, discard_drafts: true
+        manual_id, type: "redirect", redirects:, discard_drafts: true
       )
 
       subject.unpublish_and_redirect_manual_and_sections(
-        manual, redirect: redirect, include_sections: false, discard_drafts: true
+        manual, redirect:, include_sections: false, discard_drafts: true
       )
     end
 
@@ -573,7 +577,7 @@ describe PublishingAdapter do
       manual.sections = [section]
 
       expect(publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects: redirects, discard_drafts: false
+        manual_id, type: "redirect", redirects:, discard_drafts: false
       )
 
       expect(publishing_api).to receive(:unpublish).with(
@@ -581,7 +585,7 @@ describe PublishingAdapter do
       )
 
       subject.unpublish_and_redirect_manual_and_sections(
-        manual, redirect: redirect, include_sections: true, discard_drafts: false
+        manual, redirect:, include_sections: true, discard_drafts: false
       )
     end
   end
@@ -611,7 +615,7 @@ describe PublishingAdapter do
 
     let(:removed_section) do
       Section.new(
-        manual: manual,
+        manual:,
         uuid: removed_section_uuid,
         latest_edition: removed_section_edition,
       )

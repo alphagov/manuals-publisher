@@ -22,8 +22,8 @@ class LinkCheckReport::CreateService
       batch_id: link_report.fetch(:id),
       completed_at: link_report.fetch(:completed_at),
       status: link_report.fetch(:status),
-      manual_id: manual_id,
-      section_id: section_id,
+      manual_id:,
+      section_id:,
       links: link_report.fetch(:links).map { |link| map_link_attrs(link) },
     )
 
@@ -40,9 +40,9 @@ private
 
   def reportable
     @reportable ||= LinkCheckReport::FindReportableService.new(
-      user: user,
-      manual_id: manual_id,
-      section_id: section_id,
+      user:,
+      manual_id:,
+      section_id:,
     ).call
   end
 

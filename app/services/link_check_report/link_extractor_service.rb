@@ -6,7 +6,7 @@ class LinkCheckReport::LinkExtractorService
   end
 
   def call
-    govspeak_document.extracted_links(website_root: website_root)
+    govspeak_document.extracted_links(website_root:)
   end
 
 private

@@ -16,7 +16,7 @@ RSpec.describe LinkCheckReport::UpdateService do
   let(:payload) do
     {
       status: "complete",
-      completed_at: completed_at,
+      completed_at:,
       links: links_payload,
     }.with_indifferent_access
   end
@@ -39,7 +39,7 @@ RSpec.describe LinkCheckReport::UpdateService do
   end
 
   subject do
-    described_class.new(report: link_check_report, payload: payload)
+    described_class.new(report: link_check_report, payload:)
   end
 
   it "should update the link check report" do

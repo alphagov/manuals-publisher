@@ -10,8 +10,8 @@ RSpec.describe Manual::RepublishService do
 
   subject do
     described_class.new(
-      user: user,
-      manual_id: manual_id,
+      user:,
+      manual_id:,
     )
   end
 

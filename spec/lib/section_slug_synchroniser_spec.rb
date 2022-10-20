@@ -26,7 +26,7 @@ RSpec.describe SectionSlugSynchroniser do
         # A common use-case is number-prefixed section titles
         # which get out of sync with their slugs on reordering.
         SectionEdition.create!(
-          section_uuid: section_uuid,
+          section_uuid:,
           slug: "manual-slug/#{section_slug_number}-section",
           title: "#{count}. Section",
           summary: "Section summary",
@@ -35,7 +35,7 @@ RSpec.describe SectionSlugSynchroniser do
       end
 
       manual_record.editions.create!(
-        section_uuids: section_uuids,
+        section_uuids:,
       )
     end
 
@@ -86,7 +86,7 @@ RSpec.describe SectionSlugSynchroniser do
         section_uuids << section_uuid
 
         SectionEdition.create!(
-          section_uuid: section_uuid,
+          section_uuid:,
           slug: "manual-slug/#{count}-section",
           title: "#{count}. Section",
           summary: "Section summary",
@@ -95,7 +95,7 @@ RSpec.describe SectionSlugSynchroniser do
       end
 
       manual_record.editions.create!(
-        section_uuids: section_uuids,
+        section_uuids:,
       )
     end
 
