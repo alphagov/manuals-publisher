@@ -17,7 +17,7 @@ RSpec.describe LinkCheckReport::LinkExtractorService do
     }
   end
 
-  let(:website_root) { Plek.new.website_root }
+  let(:website_root) { Plek.website_root }
 
   subject { described_class.new(body:).call }
 

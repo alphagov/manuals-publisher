@@ -208,12 +208,12 @@ module ManualHelpers
   end
 
   def check_content_preview_link(slug)
-    preview_url = "#{Plek.new.external_url_for('draft-origin')}/#{slug}"
+    preview_url = "#{Plek.external_url_for('draft-origin')}/#{slug}"
     expect(page).to have_link("Preview draft", href: preview_url)
   end
 
   def check_live_link(slug)
-    live_url = "#{Plek.new.website_root}/#{slug}"
+    live_url = "#{Plek.website_root}/#{slug}"
     expect(page).to have_link("View on website", href: live_url)
   end
 
