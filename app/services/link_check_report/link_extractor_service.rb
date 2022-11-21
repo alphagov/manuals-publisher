@@ -14,7 +14,7 @@ private
   attr_reader :body
 
   def website_root
-    @website_root ||= Plek.new.website_root
+    @website_root ||= Plek.website_root
   end
 
   def govspeak_document
