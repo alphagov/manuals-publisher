@@ -530,6 +530,7 @@ DEPENDENCIES
   govuk_sidekiq
   govuk_test
   listen
+  mail (~> 2.7.1)
   mongoid
   plek
   pry-byebug
