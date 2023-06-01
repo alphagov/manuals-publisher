@@ -9,7 +9,7 @@ task :update_manual_organisation, %i[manual_base_path organisation_slug] => :env
   organisation_slug = args[:organisation_slug] # e.g. "homes-england"
 
   logger.info "Looking up Manual content_id from base path (#{manual_base_path})"
-  manual_id = Services.publishing_api.lookup_content_id(base_path: manual_base_path)
+  manual_id = Services.publishing_api.lookup_content_id(base_path: manual_base_path, with_drafts: true)
   logger.info "- found: #{manual_base_path} => #{manual_id}"
 
   logger.info "Looking up organisation content_id from organisation slug (#{organisation_slug})"
