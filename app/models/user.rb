@@ -31,4 +31,13 @@ class User
       ManualRecord.where(organisation_slug:)
     end
   end
+
+  def can_preview_design_system?
+    has_permission?(Permissions::PREVIEW_DESIGN_SYSTEM)
+  end
+
+  def can_preview_next_release?
+    has_permission?(Permissions::PREVIEW_NEXT_RELEASE)
+  end
+
 end

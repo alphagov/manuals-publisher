@@ -14,6 +14,21 @@ class ApplicationController < ActionController::Base
     redirect_to(manuals_path, flash: { error: "Manual not found" })
   end
 
+  def preview_design_system?(next_release: false)
+    # Temporarily force this flag to 'on' for users in production, regardless of their permissions
+    return true if next_release && !Rails.env.test?
+
+    current_user.can_preview_design_system? || (next_release && current_user.can_preview_next_release?)
+  end
+  helper_method :preview_design_system?
+
+  def render_design_system(design_system_view, legacy_view, locals)
+    if get_layout == "design_system"
+      render design_system_view, locals: locals
+    else
+      render legacy_view, locals: locals
+    end
+  end
   def current_user_can_publish?
     permission_checker.can_publish?
   end

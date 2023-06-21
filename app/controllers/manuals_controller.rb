@@ -2,14 +2,14 @@ require "publish_manual_worker"
 
 class ManualsController < ApplicationController
   before_action :authorize_user_for_publishing, only: [:publish]
+  layout :get_layout
 
   def index
     service = Manual::ListService.new(
       user: current_user,
     )
     all_manuals = service.call
-
-    render(:index, locals: { manuals: all_manuals })
+    render_design_system(:index, :legacy_index, manuals: all_manuals )
   end
 
   def show
@@ -258,5 +258,13 @@ private
         flash: { error: "You don't have permission to publish." },
       )
     end
+  end
+end
+
+def get_layout
+  if preview_design_system?(next_release: true)
+    "design_system"
+  else
+    "application"
   end
 end
