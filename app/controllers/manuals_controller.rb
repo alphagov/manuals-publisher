@@ -9,7 +9,8 @@ class ManualsController < ApplicationController
       user: current_user,
     )
     all_manuals = service.call
-    render_design_system(:index, :legacy_index, manuals: all_manuals )
+
+    render(:index, locals: { manuals: all_manuals })
   end
 
   def show

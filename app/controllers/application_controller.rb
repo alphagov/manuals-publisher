@@ -24,11 +24,12 @@ class ApplicationController < ActionController::Base
 
   def render_design_system(design_system_view, legacy_view, locals)
     if get_layout == "design_system"
-      render design_system_view, locals: locals
+      render(design_system_view, locals:)
     else
-      render legacy_view, locals: locals
+      render legacy_view, locals:
     end
   end
+
   def current_user_can_publish?
     permission_checker.can_publish?
   end

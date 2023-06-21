@@ -33,11 +33,10 @@ class User
   end
 
   def can_preview_design_system?
-    has_permission?(Permissions::PREVIEW_DESIGN_SYSTEM)
+    has_permission?(PermissionChecker::PREVIEW_DESIGN_SYSTEM)
   end
 
   def can_preview_next_release?
-    has_permission?(Permissions::PREVIEW_NEXT_RELEASE)
+    has_permission?(PermissionChecker::PREVIEW_NEXT_RELEASE)
   end
-
 end
