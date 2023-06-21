@@ -1,0 +1,54 @@
+<% environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+
+<% content_for :head do %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= javascript_include_tag 'application' %>
+<% end %>
+
+<% content_for :page_title, " | Manuals Publisher" %>
+<% content_for :app_title, "GOV.UK Manuals Publisher" %>
+
+<% content_for :navbar_items do %>
+  <li><%= nav_link_to 'Manuals', '/manuals' %></li>
+<% end %>
+
+<% content_for :navbar_right do %>
+  Hello, <%= link_to current_user.name, Plek.external_url_for('signon') %>
+  &bull; <%= link_to 'Sign out', gds_sign_out_path %>
+<% end %>
+
+<% content_for :content do %>
+  <% flash.each do |type, msg| %>
+    <%= content_tag :div, msg, class: "alert #{bootstrap_class_for(type)}" %>
+  <% end -%>
+  <%= render(:partial => 'shared/breadcrumbs') %>
+  <%= yield %>
+  <script>
+      $(document).ready(function() {
+          <%= yield :document_ready %>
+      });
+  </script>
+<% end %>
+
+<%# use the govuk_admin_foundation layout %>
+<%= render :template => 'layouts/govuk_admin_template' %>
+
+<%= render "govuk_publishing_components/components/layout_footer", {
+  navigation: [
+    {
+      title: "Support and feedback",
+      items: [
+        {
+          href: Plek.external_url_for("support"),
+          text: "Raise a support request"
+        },
+        {
+          href: "https://www.gov.uk/government/content-publishing",
+          text: "How to write, publish, and improve content"
+        }
+      ]
+    }
+  ]
+} %>

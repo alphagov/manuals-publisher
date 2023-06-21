@@ -1,7 +1,8 @@
 class PermissionChecker
   GDS_EDITOR_PERMISSION = "gds_editor".freeze
   EDITOR_PERMISSION = "editor".freeze
-
+  PREVIEW_DESIGN_SYSTEM = "Preview design system".freeze
+  PREVIEW_NEXT_RELEASE = "Preview next release".freeze
   def initialize(user)
     @user = user
   end
