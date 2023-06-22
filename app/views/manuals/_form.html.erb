@@ -4,11 +4,21 @@
       <%= render partial: "shared/form_errors", locals: { object: manual } %>
 
       <%= f.text_field :title, class: 'form-control' %>
-      <%= f.text_area :summary, rows: 20, cols: 40, class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
+      <%= f.text_area :summary, rows: 20, cols: 40,
+                      class: 'form-control short-textarea js-length-counter js-paste-html-to-govspeak',
+                      data: {
+                        module: "paste-html-to-govspeak",
+                        :"count-message-threshold" => 280,
+                        :"count-message-selector" => ".summary-length-info"
+                      } %>
       <div class="summary-length-info" aria-live="polite">
         Summary text should be 280 characters or fewer. <span class="count"></span>
       </div>
-      <%= f.text_area :body, rows: 20, cols: 40, class: 'form-control' %>
+      <%= f.text_area :body, rows: 20, cols: 40, class: 'form-control js-paste-html-to-govspeak',
+                      data: {
+                        module: "paste-html-to-govspeak",
+                      }
+      %>
 
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
@@ -45,28 +55,28 @@
 
 <%= content_for :document_ready do %>
   window.MarkdownPreview.addPreviewFeature({
-    'url'             : '<%= preview_path_for_manual(manual) %>',
-    'insert_into'     : '.preview_container',
-    'insert_button'   : '.preview_button',
-    'render_to'       : '.preview .govspeak',
-    'data_target'     : function() {
-                          return {
-                            'manual' : {
-                              'body' : $('#manual_body').val()
-                            }
-                          };
-                        }
+  'url'             : '<%= preview_path_for_manual(manual) %>',
+  'insert_into'     : '.preview_container',
+  'insert_button'   : '.preview_button',
+  'render_to'       : '.preview .govspeak',
+  'data_target'     : function() {
+  return {
+  'manual' : {
+  'body' : $('#manual_body').val()
+  }
+  };
+  }
   });
 
   window.toggleDisplayWithCheckedInput({
-    $input: $("#manual_previously_published_0"),
-    $element: $("#manual_originally_published_at_1i").parent().parent(),
-    mode: 'hide'
+  $input: $("#manual_previously_published_0"),
+  $element: $("#manual_originally_published_at_1i").parent().parent(),
+  mode: 'hide'
   });
   window.toggleDisplayWithCheckedInput({
-    $input: $("#manual_previously_published_1"),
-    $element: $("#manual_originally_published_at_1i").parent().parent(),
-    mode: 'show'
+  $input: $("#manual_previously_published_1"),
+  $element: $("#manual_originally_published_at_1i").parent().parent(),
+  mode: 'show'
   });
   $('.js-hidden').hide();
 
