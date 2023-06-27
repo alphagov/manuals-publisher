@@ -6,7 +6,7 @@
       <%= f.text_field :title, label: 'Section title', class: 'form-control' %>
       <%= f.text_area :summary, rows: 20, cols: 40, label: 'Section summary', class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
       <div class="summary-length-info warning" aria-live="polite">Summary text should be 280 characters or fewer. <span class="count"></span></div>
-      <%= f.text_area :body, rows: 20, cols: 40, label: 'Section body', class: 'form-control' %>
+      <%= f.text_area :body, rows: 20, cols: 40, label: 'Section body', class: 'form-control js-paste-html-to-govspeak' %>
 
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
