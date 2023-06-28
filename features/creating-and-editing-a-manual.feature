@@ -51,6 +51,12 @@ Feature: Creating and editing a manual
     When I edit a manual
     Then the manual's sections won't have changed
 
+  @javascript
+  Scenario: Pasting HTML into a manual
+    When I start creating a new manual
+    And I paste HTML into the manual body
+    Then the manual body field contains govspeak
+
   Scenario: Try to create an invalid manual
     When I create a manual with an empty title
     Then I see errors for the title field
@@ -66,6 +72,13 @@ Feature: Creating and editing a manual
     Then I see the manual has the new section
     And I see the section isn't visually expanded
     And the section and table of contents will have been sent to the draft publishing api
+
+  @javascript
+  Scenario: Pasting HTML into a section
+    Given a draft manual exists without any sections
+    When I start creating a section for the manual
+    And I paste HTML into the section body
+    Then the section body field contains govspeak
 
   Scenario: Add an expanded section to a manual
     Given a draft manual exists without any sections
