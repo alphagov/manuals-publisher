@@ -51,6 +51,14 @@ Feature: Creating and editing a manual
     When I edit a manual
     Then the manual's sections won't have changed
 
+  @javascript
+  Scenario: Pasting HTML into a manual
+    When I start creating a new manual
+    And I paste HTML into the manual summary
+    And I paste HTML into the manual body
+    Then the manual summary field contains govspeak
+    And the manual body field contains govspeak
+
   Scenario: Try to create an invalid manual
     When I create a manual with an empty title
     Then I see errors for the title field
