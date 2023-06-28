@@ -44,6 +44,12 @@ Feature: Creating and editing a manual
     And I preview the manual
     Then I should see an error message about a "Body" field containing javascript
 
+  @javascript
+  Scenario: Pasting HTML into a manual
+    When I start creating a new manual
+    And I paste HTML into the manual body
+    Then the body field contains govspeak
+
   @regression
   Scenario: Create and edit a manual with sections
     Given a draft manual exists without any sections

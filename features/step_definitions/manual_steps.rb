@@ -683,6 +683,24 @@ When(/^I start creating a new manual with embedded javascript$/) do
   create_manual(@manual_fields, save: false)
 end
 
+When(/^I paste HTML into the manual body$/) do
+  fill_in_field(:body, "")
+  synthetic_paste = <<~JS
+    var event = new Event('paste')
+    event.clipboardData = {
+      getData: function() {
+        return '<h2>My header</h2>'
+      }
+    }
+    document.getElementById('manual_body').dispatchEvent(event)
+  JS
+  page.execute_script(synthetic_paste)
+end
+
+Then(/^the body field contains govspeak$/) do
+  expect(page).to have_field("manual_body", with: "## My header")
+end
+
 Then(/^I see a warning about section slug clash at publication$/) do
   check_for_clashing_section_slugs
 end
