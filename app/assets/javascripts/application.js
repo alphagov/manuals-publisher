@@ -1,3 +1,4 @@
+/* global pasteHtmlToGovspeak */
 //= require vendor/jquery-1.11.0.min
 //= require vendor/jquery-ui.min.js
 
@@ -13,7 +14,7 @@ jQuery(function ($) {
   })
 
   $('.js-paste-html-to-govspeak').each(function () {
-    this.addEventListener('paste', pasteHtmlToGovspeak.pasteListener) // eslint-disable-line no-undef
+    this.addEventListener('paste', pasteHtmlToGovspeak.pasteListener)
   })
 
   $('.reorderable-document-list').sortable()
