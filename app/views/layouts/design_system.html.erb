@@ -1,0 +1,27 @@
+<% environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+
+<%= render "govuk_publishing_components/components/layout_for_admin", {
+  environment: environment,
+  product_name: "Manuals Publisher",
+  browser_title: yield(:title)
+} do %>
+  <!-- You probably want to use the header, main & footer components here -->
+
+  <%= render "govuk_publishing_components/components/layout_footer", {
+    navigation: [
+      {
+        title: "Support and feedback",
+        items: [
+          {
+            href: Plek.external_url_for("support"),
+            text: "Raise a support request"
+          },
+          {
+            href: "https://www.gov.uk/government/content-publishing",
+            text: "How to write, publish, and improve content"
+          }
+        ]
+      }
+    ]
+  } %>
+<% end %>
