@@ -1,13 +1,14 @@
-<h1 class="page-header"><%= manual.title %>
-  <ul class='document-slug'>
-    <li title='<% if !manual.published? %>When published this manual will appear at this URL<% end %>'>
-      <%= manual.slug %>
-    </li>
-    <% if manual.published? %>
-      <li><%= link_to "View on website", public_url %></li>
-    <% end %>
-    <% if show_preview?(manual) %>
-      <li><%= link_to "Preview draft", content_preview_url(manual) %></li>
-    <% end %>
-  </ul>
-</h1>
+<%= render "govuk_publishing_components/components/title", {
+  title: manual.title
+} %>
+
+<div class="page-header">
+  <% if manual.published? %>
+    <%= link_to "View on website", public_url %>
+  <% else %>
+    <%= "When published this manual will appear at this URL - #{manual.slug}" %>
+  <% end %>
+  <% if show_preview?(manual) %>
+    <%= link_to "Preview draft", content_preview_url(manual) %>
+  <% end %>
+</div>
