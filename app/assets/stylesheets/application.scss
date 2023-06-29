@@ -16,6 +16,11 @@
 @import "ordered_lists";
 @import "broken-links-report";
 
+// Import comps
+@import "govuk_publishing_components/components/table";
+@import "govuk_publishing_components/components/title";
+@import "govuk_publishing_components/components/button";
+
 p.no-content-message { // stylelint-disable-line selector-no-qualifying-type
   @include core-19;
   color: $grey-1;
