@@ -4,21 +4,6 @@
       <%= render partial: "shared/form_errors", locals: { object: manual } %>
 
       <%= f.text_field :title, class: 'form-control' %>
-
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: "Title"
-        }
-      } %>
-
-      <%= render "govuk_publishing_components/components/textarea", {
-        label: {
-          text: "Summary"
-        },
-        class: 'form-control short-textarea js-length-counter',
-        data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" }
-      } %>
-
       <%= f.text_area :summary, rows: 20, cols: 40, class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
       <div class="summary-length-info" aria-live="polite">
         Summary text should be 280 characters or fewer. <span class="count"></span>
