@@ -2,7 +2,7 @@ require "publish_manual_worker"
 
 class ManualsController < ApplicationController
   before_action :authorize_user_for_publishing, only: [:publish]
-
+  layout "design_system"
   def index
     service = Manual::ListService.new(
       user: current_user,

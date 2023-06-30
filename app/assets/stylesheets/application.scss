@@ -23,6 +23,9 @@
 @import "govuk_publishing_components/components/breadcrumbs";
 @import "govuk_publishing_components/components/input";
 @import "govuk_publishing_components/components/textarea";
+@import "govuk_publishing_components/components/layout-for-admin";
+@import "govuk_publishing_components/components/layout-header";
+@import "govuk_publishing_components/components/layout-footer";
 
 p.no-content-message { // stylelint-disable-line selector-no-qualifying-type
   @include core-19;

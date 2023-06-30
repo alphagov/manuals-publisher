@@ -5,7 +5,24 @@
   product_name: "Manuals Publisher",
   browser_title: yield(:title)
 } do %>
-  <!-- You probably want to use the header, main & footer components here -->
+
+  <%
+    navigation_items = [
+      { text: "Manuals", href: manuals_path },
+      # { text: "What’s new", href: whats_new_path },
+    ]
+
+    if current_user
+      navigation_items += [
+        { text: current_user.name, href: Plek.external_url_for("signon") },
+        { text: "Log out", href: gds_sign_out_path },
+      ]
+    end
+  %>
+  <%= render "govuk_publishing_components/components/layout_header", {
+    environment: environment,
+    navigation_items: navigation_items,
+  } %>
 
   <%= render "govuk_publishing_components/components/layout_footer", {
     navigation: [
