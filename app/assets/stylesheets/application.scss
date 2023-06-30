@@ -20,6 +20,7 @@
 // Import comps
 @import "govuk_publishing_components/all_components";
 
+$govuk-compatibility-govukfrontendtoolkit: true;
 // design frontend style
 @import "govuk-frontend/govuk/all";
 
