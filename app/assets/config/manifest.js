@@ -1,2 +1,2 @@
+//= link frontend.js
 //= link application.js
-//= link application.css
