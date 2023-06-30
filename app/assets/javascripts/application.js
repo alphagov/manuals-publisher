@@ -6,8 +6,7 @@
 //= require length_counter
 //= require markdown_preview
 //= require toggle_display_with_checked_input
-//= require govuk_publishing_components/dependencies
-//= require govuk_publishing_components/all_components
+
 
 jQuery(function ($) {
   $('.js-length-counter').each(function () {

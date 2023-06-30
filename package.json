@@ -49,11 +49,5 @@
   "dependencies": {
     "dart-sass": "^1.25.0",
     "govuk-frontend": "^4.6.0"
-  },
-  "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "lib": "lib"
   }
 }

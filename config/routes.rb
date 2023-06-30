@@ -47,4 +47,5 @@ Rails.application.routes.draw do
     GovukHealthcheck::Mongoid,
     GovukHealthcheck::SidekiqRedis,
   )
+
 end

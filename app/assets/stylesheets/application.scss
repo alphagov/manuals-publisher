@@ -16,13 +16,11 @@
 @import "ordered_lists";
 @import "broken-links-report";
 
-
-// Import comps
-@import "govuk_publishing_components/all_components";
-
+// import frontend
+$govuk-use-legacy-palette: false;
 $govuk-compatibility-govukfrontendtoolkit: true;
-// design frontend style
 @import "govuk-frontend/govuk/all";
+@import "govuk_publishing_components/all_components";
 
 
 p.no-content-message { // stylelint-disable-line selector-no-qualifying-type
