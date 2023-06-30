@@ -16,6 +16,7 @@
 @import "ordered_lists";
 @import "broken-links-report";
 
+
 // Import comps
 @import "govuk_publishing_components/components/table";
 @import "govuk_publishing_components/components/title";
@@ -26,6 +27,10 @@
 @import "govuk_publishing_components/components/layout-for-admin";
 @import "govuk_publishing_components/components/layout-header";
 @import "govuk_publishing_components/components/layout-footer";
+
+// design frontend style
+@import "govuk-frontend/govuk/all";
+
 
 p.no-content-message { // stylelint-disable-line selector-no-qualifying-type
   @include core-19;

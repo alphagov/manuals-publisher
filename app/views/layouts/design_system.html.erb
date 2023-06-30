@@ -5,6 +5,8 @@
   product_name: "Manuals Publisher",
   browser_title: yield(:title)
 } do %>
+  <%= render "govuk_publishing_components/components/skip_link", {
+  } %>
 
   <%
     navigation_items = [
@@ -23,6 +25,11 @@
     environment: environment,
     navigation_items: navigation_items,
   } %>
+
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper " id="main-content" role="main">
+    </main>
+  </div>
 
   <%= render "govuk_publishing_components/components/layout_footer", {
     navigation: [
