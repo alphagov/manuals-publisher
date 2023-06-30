@@ -16,6 +16,24 @@
 @import "ordered_lists";
 @import "broken-links-report";
 
+// import frontend
+$govuk-compatibility-govukelements: true;
+$govuk-compatibility-govuktemplate: true;
+$govuk-compatibility-govukfrontendtoolkit: true;
+@import "govuk-frontend/govuk/base";
+@import "govuk-frontend/govuk/core/all";
+@import "govuk-frontend/govuk/objects/all";
+
+@import "govuk_publishing_components/components/contents-list";
+@import "govuk_publishing_components/components/heading";
+@import "govuk_publishing_components/components/title";
+@import "govuk_publishing_components/components/phase-banner";
+@import "govuk_publishing_components/components/skip-link";
+@import "govuk_publishing_components/components/layout-header";
+@import "govuk_publishing_components/components/layout-footer";
+@import "govuk_publishing_components/components/success-alert";
+@import "govuk_publishing_components/components/error-alert";
+
 p.no-content-message { // stylelint-disable-line selector-no-qualifying-type
   @include core-19;
   color: $grey-1;
@@ -52,4 +70,16 @@ p.no-content-message { // stylelint-disable-line selector-no-qualifying-type
   max-height: 500px;
   overflow: scroll;
   word-break: break-word;
+}
+
+.whats-new-text {
+  font-size: 19px;
+  text-size-adjust: 100%;
+  color: #0b0c0c;
+  font-family: "GDS Transport", arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+  line-height: 1.3158;
+  margin-bottom: 20px;
+  margin-top: 0;
 }

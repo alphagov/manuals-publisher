@@ -47,4 +47,5 @@ Rails.application.routes.draw do
     GovukHealthcheck::Mongoid,
     GovukHealthcheck::SidekiqRedis,
   )
+  get "/whats-new" => "whats_new#index", as: :whats_new
 end

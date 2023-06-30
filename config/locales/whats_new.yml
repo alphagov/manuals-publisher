@@ -1,0 +1,67 @@
+en:
+  whats_new:
+    show_banner: false
+    title: What’s new in Manuals Publisher
+    summary: |
+      Summary of updates
+    last_updated: Last updated 3 Jul 2023
+    our_roadmap:
+      heading: Our roadmap
+      body_govspeak: |
+        For now here’s the list of the features we’re working on, with a caveat that we may or may not get the time to deliver them all:
+      
+        - Moving all pages to the GOV.UK Design System
+        - Paste to Govspeak (applies to any body field / editor window)
+        - Toggle on/off markdown / editor preview
+        - Add internal notes to the Manual
+        - Status labels on draft sections (so you know what sections are in draft and not yet published)
+        - Confirm publish page (select “publish” and see any sections that will be published if you proceed or the chance to go back if you need to)
+      
+        We’re also aiming to add these things if we get time:
+      
+        - 2i and force publish for the Manual (same as Whitehall 2i)
+        - Adding images (same as Whitehall minus the cropping tool)
+        - Share preview (same as Whitehall)
+      
+        ## Take part in user research
+        
+        You can [sign up to take part in Manuals Publisher user research](https://docs.google.com/forms/d/e/1FAIpQLSci1Ff7YGLWnvDiuaoAVKzSO06q32kgjVYnSX9A5Kf7jliLaQ/viewform). If you cannot access Google Forms, email [publishing-service-research@digital.cabinet-office.gov.uk](mailto:publishing-service-research@digital.cabinet-office.gov.uk). Once you’ve signed up, you could be invited to feedback on new features and designs, user interviews or test products.
+    recent_changes:
+      heading: Recent changes
+      updates:
+        - heading: Paste to Govspeak
+          area: Creating and updating documents
+          type: improvement
+          date: 3 Jul 2023
+          body_govspeak: |
+            [Basecamp link](https://3.basecamp.com/4322319/buckets/15005645/messages/4948934112)
+            
+            You can now paste formatted text into the body field and Manuals publisher will try to convert it into GOV.UK’s version of [Markdown](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown), Govspeak. We hope this feature will save you time when editing content.
+  
+            This works best when copying and pasting from text editing software like Word or Google Docs. It is less likely to recognise formatting from PDFs.
+          
+            It will convert:
+          
+            - headings
+            - bullets
+            - numbered lists
+            - links
+            - email links
+            
+            Other formatting, such as tables, will be removed and only plain text pasted. You’ll need to write the Markdown for these separately.
+            
+            If you have any questions or feedback about publishing, you can reach us on [publishing-service-feedback@digital.cabinet-office.gov.uk](mailto:publishing-service-feedback@digital.cabinet-office.gov.uk). For any other type of support, you can [submit a request via Zendesk](https://support.publishing.service.gov.uk/).
+            
+            Thanks
+    guidance:
+      heading: Publishing guidance, updates and support
+      body_govspeak: |
+        For support using Manuals Publisher, read the guidance about:
+        
+        - [how to publish content on GOV.UK](https://www.gov.uk/guidance/how-to-publish-on-gov-uk)
+        - [planning, writing and managing content](https://www.gov.uk/guidance/content-design)
+        - [how to contact the Government Digital Service (GDS) to request or report something](https://www.gov.uk/guidance/contact-the-government-digital-service)
+        
+        The [GOV.UK style guide](https://www.gov.uk/guidance/style-guide) covers style, spelling and grammar conventions for content published on GOV.UK.
+        
+        Read the [Inside GOV.UK blog](https://insidegovuk.blog.gov.uk/) for updates about GOV.UK.
