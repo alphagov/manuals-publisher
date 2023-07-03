@@ -667,6 +667,24 @@ When(/^I start creating a new manual$/) do
   create_manual(@manual_fields, save: false)
 end
 
+When(/^I paste HTML into the manual (body|summary)$/) do |field|
+  fill_in_field(field, "")
+  synthetic_paste = <<~JS
+    var event = new Event('paste')
+    event.clipboardData = {
+      getData: function() {
+        return '<h2>Benefits of following this advice</h2>'
+      }
+    }
+    document.getElementById('#{"manual_#{field}"}').dispatchEvent(event)
+  JS
+  page.execute_script(synthetic_paste)
+end
+
+Then(/^the manual (body|summary) field contains govspeak$/) do |field|
+  expect(page).to have_field("manual_#{field}", with: "## Benefits of following this advice")
+end
+
 When(/^I preview the manual$/) do
   click_button("Preview")
 end
