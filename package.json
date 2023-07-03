@@ -49,5 +49,6 @@
   "dependencies": {
     "dart-sass": "^1.25.0",
     "govuk-frontend": "^4.6.0"
+    "paste-html-to-govspeak": "^0.3.0"
   }
 }
