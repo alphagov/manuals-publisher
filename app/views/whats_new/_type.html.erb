@@ -1,0 +1,12 @@
+<%
+  type_class = case type.downcase
+                when "new" then "govuk-tag--green"
+                when "improvement" then "govuk-tag--blue"
+                when "change" then "govuk-tag--red"
+                when "fix" then "govuk-tag--yellow"
+               end
+%>
+
+<strong class="govuk-tag <%= type_class %>">
+  <%= type %>
+</strong>

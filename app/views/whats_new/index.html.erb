@@ -1,0 +1,75 @@
+<% content_for :page_title, t('whats_new.title') %>
+<% content_for :title, t('whats_new.title') %>
+<% content_for :title_margin_bottom, 0 %>
+
+<%   def render_govspeak(content)
+       render "govuk_publishing_components/components/govspeak" do
+         raw(Govspeak::Document.new(content, sanitize: true).to_html)
+       end
+     end %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds govuk-!-font-size-19">
+    <%= render "govuk_publishing_components/components/title", {
+      title: t('whats_new.title')
+    } %>
+    <p class="govuk-body-l"><%= t('whats_new.summary') %></p>
+
+    <p class="govuk-body app-view-whats-new__last-updated font_size"><%= t('whats_new.last_updated') %></p>
+
+    <div id="content-list">
+      <%= render "govuk_publishing_components/components/contents_list", {
+        contents: [
+          {
+            href: "##{t('whats_new.our_roadmap.heading').parameterize(separator: '-')}",
+            text: t('whats_new.our_roadmap.heading'),
+          },
+          {
+            href: "##{t('whats_new.recent_changes.heading').parameterize(separator: '-')}",
+            text: t('whats_new.recent_changes.heading'),
+          },
+          {
+            href: "##{t('whats_new.guidance.heading').parameterize(separator: '-')}",
+            text: t('whats_new.guidance.heading'),
+          }
+        ].compact
+      } %>
+    </div>
+
+    <section class="app-view-whats-new__section whats-new-text" id="<%= t('whats_new.our_roadmap.heading').parameterize(separator:
+                                                                                                            '-')%>">
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t('whats_new.our_roadmap.heading'),
+        font_size: "m",
+        margin_bottom: 3,
+      } %>
+
+      <%= render_govspeak(t('whats_new.our_roadmap.body_govspeak')) %>
+      <%= render partial: "whats_new/back_to_top" %>
+    </section>
+
+
+    <section class="app-view-whats-new__section whats-new-text" id="<%= t('whats_new.recent_changes.heading').parameterize(separator: '-')%>">
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t('whats_new.recent_changes.heading'),
+        font_size: "m",
+        margin_bottom: 3,
+      } %>
+
+      <%= render(partial: "whats_new/updates", locals: { updates: t('whats_new.recent_changes.updates') }) %>
+      <%= render partial: "whats_new/back_to_top" %>
+    </section>
+
+    <section class="app-view-whats-new__section whats-new-text" id="<%= t('whats_new.guidance.heading').parameterize(separator:
+                                                                                                         '-')%>">
+      <%= render "govuk_publishing_components/components/heading", {
+        text: t('whats_new.guidance.heading'),
+        font_size: "m",
+        margin_bottom: 3,
+      } %>
+
+      <%= render_govspeak(t('whats_new.guidance.body_govspeak')) %>
+      <%= render partial: "whats_new/back_to_top" %>
+    </section>
+  </div>
+</div>

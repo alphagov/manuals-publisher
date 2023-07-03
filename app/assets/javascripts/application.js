@@ -8,6 +8,8 @@
 //= require markdown_preview
 //= require toggle_display_with_checked_input
 //= require paste-html-to-govspeak
+//= require govuk_publishing_components/dependencies
+//= require govuk_publishing_components/all_components
 jQuery(function ($) {
   $('.js-length-counter').each(function () {
     new GOVUK.LengthCounter({ $el: $(this) }) // eslint-disable-line no-new
