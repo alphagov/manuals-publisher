@@ -22,7 +22,6 @@ class WithdrawAndRedirectToMultiplePaths
         else
           withdraw_and_redirect_section(child, manual_path)
         end
-
       rescue WithdrawAndRedirectManual::ManualNotPublishedError
         log("[ERROR] Manual not redirected due to not being in a published state: #{child['base_path']}")
       rescue WithdrawAndRedirectSection::SectionNotPublishedError
