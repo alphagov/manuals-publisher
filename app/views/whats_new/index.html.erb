@@ -1,0 +1,17 @@
+<%
+  page_name ||= "What's new"
+%>
+
+<% content_for :title, page_name %>
+
+<%= render "govuk_publishing_components/components/title", {
+  title: page_name
+} %>
+
+<%= render "govuk_publishing_components/components/govspeak", {
+} do %>
+
+  <h2>Updates</h2>
+  <p>WIP</p>
+
+<% end %>
