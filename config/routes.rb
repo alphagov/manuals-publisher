@@ -47,4 +47,6 @@ Rails.application.routes.draw do
     GovukHealthcheck::Mongoid,
     GovukHealthcheck::SidekiqRedis,
   )
+
+  mount GovukPublishingComponents::Engine, at: "/component-guide" if Rails.env.development?
 end
