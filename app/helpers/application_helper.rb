@@ -41,10 +41,6 @@ module ApplicationHelper
     output.html_safe
   end
 
-  def nav_link_to(text, href)
-    link_to(text, href)
-  end
-
   def bootstrap_class_for(flash_type)
     case flash_type
     when :success
