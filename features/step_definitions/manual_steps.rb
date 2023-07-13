@@ -278,9 +278,9 @@ end
 When(/^I add another section and publish the manual later$/) do
   create_section(
     @manual.title,
-    section_title: "Another section so we can publish",
-    section_summary: "Another section so we can publish summary",
-    section_body: "Another section so we can publish body",
+    { section_title: "Another section so we can publish",
+      section_summary: "Another section so we can publish summary",
+      section_body: "Another section so we can publish body" },
   )
   go_to_manual_page(@manual.title)
   publish_manual
@@ -665,6 +665,24 @@ When(/^I start creating a new manual$/) do
   }
 
   create_manual(@manual_fields, save: false)
+end
+
+When(/^I start creating a section for the manual$/) do
+  create_section(@manual_fields.fetch(:title), {}, save: false)
+end
+
+When(/^I paste HTML into the manual body$/) do
+  fill_in_field("body", "")
+  page.execute_script(javascript_to_simulate_paste("manual_body", "<h2>Benefits of following this advice</h2>"))
+end
+
+When(/^I paste HTML into the section body$/) do
+  fill_in_field("section body", "")
+  page.execute_script(javascript_to_simulate_paste("section_body", "<h2>Benefits of following this advice</h2>"))
+end
+
+Then(/^the (manual|section) body field contains govspeak$/) do |content_type_name|
+  expect(page).to have_field("#{content_type_name}_body", with: "## Benefits of following this advice")
 end
 
 When(/^I preview the manual$/) do

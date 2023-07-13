@@ -30,7 +30,7 @@ module ManualHelpers
     Manual.find(manual.id, FactoryBot.build(:gds_editor))
   end
 
-  def create_section(manual_title, fields)
+  def create_section(manual_title, fields, save: true)
     go_to_manual_page(manual_title)
     click_on "Add section"
 
@@ -38,7 +38,7 @@ module ManualHelpers
 
     yield if block_given?
 
-    save_as_draft
+    save_as_draft if save
   end
 
   def create_expanded_section(manual_title, fields)
