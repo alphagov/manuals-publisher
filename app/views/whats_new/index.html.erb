@@ -1,17 +1,43 @@
-<%
-  page_name ||= "What's new"
-%>
-
+<% page_name = "What's new" %>
 <% content_for :title, page_name %>
+<%= render "govuk_publishing_components/components/title", { title: page_name } %>
 
-<%= render "govuk_publishing_components/components/title", {
-  title: page_name
-} %>
+<h2 class="govuk-heading-l">New Manuals Publisher features</h2>
 
-<%= render "govuk_publishing_components/components/govspeak", {
-} do %>
+<p class="govuk-body">Last updated 18 Jul 2023</p>
 
-  <h2>Updates</h2>
-  <p>WIP</p>
+<p class="govuk-body">We are delivering some enhancements for Manuals Publisher over the next couple of months.</p>
 
-<% end %>
+<p class="govuk-body">We’re doing this because we did user research earlier this year and discovered that Manuals users are lacking some
+  of the features that other publishing apps like Whitehall already have.</p>
+
+<p class="govuk-body">If you have any questions or feedback about publishing, you can reach us on
+  <a href="mailto:publishing-service-feedback@digital.cabinet-office.gov.uk" class="govuk-link">publishing-service-feedback@digital.cabinet-office.gov.uk</a>.
+  For any other type of support, you can <a href="https://support.publishing.service.gov.uk/" class="govuk-link">submit a request via
+  Zendesk</a>.</p>
+
+<h2 class="govuk-heading-l">Recent changes</h2>
+
+<h3 class="govuk-heading-m">Added Paste to Govspeak</h3>
+
+<p class="govuk-body">13 Jul 2023</p>
+
+<p class="govuk-body">You can now paste formatted text into the body field and Manuals publisher will try to convert it into GOV.UK’s
+  version of <a href="https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown" class="govuk-link">Markdown</a>, Govspeak. We hope
+  this feature will save you time when editing content.</p>
+
+<p class="govuk-body">This works best when copying and pasting from text editing software like Word or Google Docs. It is less likely to
+  recognise formatting from PDFs.</p>
+
+<p class="govuk-body">It will convert:</p>
+
+<ul class="govuk-list govuk-list--bullet">
+  <li>headings</li>
+  <li>bullets</li>
+  <li>numbered lists</li>
+  <li>links</li>
+  <li>email links</li>
+</ul>
+
+<p class="govuk-body">Other formatting, such as tables, will be removed and only plain text pasted. You’ll need to write the Markdown for
+  these separately.</p>
