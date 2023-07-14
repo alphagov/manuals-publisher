@@ -1,9 +1,12 @@
 module NavigationHelper
   def navigation_links_internal
-    [
+    links = [
       { text: "Manuals", href: manuals_path, active: request.path == manuals_path },
-      { text: "What's new", href: whats_new_path, active: request.path == whats_new_path },
     ]
+    if Time.zone.today < Date.new(2023, 11, 1)
+      links << { text: "What's new", href: whats_new_path, active: request.path == whats_new_path }
+    end
+    links
   end
 
   def navigation_links_auth
