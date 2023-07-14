@@ -1,8 +1,8 @@
 module NavigationHelper
   def navigation_links_internal
     [
-      { text: "Manuals", href: manuals_path },
-      { text: "What's new", href: whats_new_path },
+      { text: "Manuals", href: manuals_path, active: request.path == manuals_path },
+      { text: "What's new", href: whats_new_path, active: request.path == whats_new_path },
     ]
   end
 
