@@ -1,4 +1,4 @@
 class WhatsNewController < ApplicationController
-  layout "application" # using design system
+  layout "design_system"
   def index; end
 end
