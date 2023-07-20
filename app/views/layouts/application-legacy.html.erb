@@ -16,7 +16,7 @@
 
 <% content_for :navbar_right do %>
   <% navigation_links_auth.map { |link| %>
-    <%= link_to(link[:text], link[:href]) %>
+    <span class="navbar-bullet"><%= link_to(link[:text], link[:href]) %></span>
   <% } %>
 <% end %>
 

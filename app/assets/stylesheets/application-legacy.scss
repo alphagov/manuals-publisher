@@ -53,3 +53,7 @@ p.no-content-message { // stylelint-disable-line selector-no-qualifying-type
   overflow: scroll;
   word-break: break-word;
 }
+
+.navbar-bullet + .navbar-bullet:before {
+  content: "• ";
+}
