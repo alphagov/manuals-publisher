@@ -47,4 +47,8 @@ Rails.application.routes.draw do
     GovukHealthcheck::Mongoid,
     GovukHealthcheck::SidekiqRedis,
   )
+
+  get "/whats-new" => "whats_new#index", as: :whats_new
+
+  mount GovukPublishingComponents::Engine, at: "/component-guide" if Rails.env.development?
 end

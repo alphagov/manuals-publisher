@@ -1,20 +1,23 @@
 <% content_for :head do %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
-  <%= stylesheet_link_tag "application", :media => "all" %>
-  <%= javascript_include_tag 'application' %>
+  <%= stylesheet_link_tag "application-legacy", :media => "all" %>
+  <%= javascript_include_tag 'application-legacy' %>
 <% end %>
 
 <% content_for :page_title, " | Manuals Publisher" %>
 <% content_for :app_title, "GOV.UK Manuals Publisher" %>
 
 <% content_for :navbar_items do %>
-  <li><%= nav_link_to 'Manuals', '/manuals' %></li>
+  <% navigation_links_internal.map { |link| %>
+    <li><%= link_to(link[:text], link[:href]) %></li>
+  <% } %>
 <% end %>
 
 <% content_for :navbar_right do %>
-  Hello, <%= link_to current_user.name, Plek.external_url_for('signon') %>
-  &bull; <%= link_to 'Sign out', gds_sign_out_path %>
+  <% navigation_links_auth.map { |link| %>
+    <span class="navbar-bullet"><%= link_to(link[:text], link[:href]) %></span>
+  <% } %>
 <% end %>
 
 <% content_for :content do %>
