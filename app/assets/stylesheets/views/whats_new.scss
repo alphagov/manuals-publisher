@@ -1,3 +1,14 @@
 .app-view-whats-new__last-updated {
   color: $govuk-secondary-text-colour;
 }
+
+.app-view-whats-new__section {
+  @include govuk-responsive-padding(5, "top");
+  @include govuk-responsive-padding(5, "bottom");
+
+  border-bottom: 1px solid $govuk-border-colour;
+}
+
+.app-view-whats-new__section:last-child {
+  border-bottom: none;
+}
