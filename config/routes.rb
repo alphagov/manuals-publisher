@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     # This is for drafts that have never been published
     delete :discard_draft, on: :member
 
+    get :confirm_publish, on: :member
+
     get :original_publication_date, on: :member, action: :edit_original_publication_date
     put :original_publication_date, on: :member, action: :update_original_publication_date
   end
@@ -35,7 +37,7 @@ Rails.application.routes.draw do
 
   post "/link-checker-api-callback" => "link_checker_api_callback#callback", as: "link_checker_api_callback"
 
-  # This is for new manualss
+  # This is for new manuals
   post "manuals/preview" => "manuals#preview", as: "preview_new_manual"
   # This is for new sections
   post "manuals/:manual_id/sections/preview" => "sections#preview", as: "preview_new_section"

@@ -124,6 +124,22 @@ class ManualsController < ApplicationController
     end
   end
 
+  def confirm_publish
+    service = Manual::ShowService.new(
+      manual_id:,
+      user: current_user,
+    )
+    manual = service.call
+
+    render(
+      :confirm_publish,
+      layout: "design_system",
+      locals: {
+        manual:,
+      },
+    )
+  end
+
   def publish
     service = Manual::QueuePublishService.new(
       user: current_user,

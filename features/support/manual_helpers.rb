@@ -149,6 +149,8 @@ module ManualHelpers
 
   def publish_manual
     click_on "Publish manual"
+    page.should have_button("Publish")
+    click_on "Publish"
   end
 
   def stub_manual_publication_observers(organisation_slug)
