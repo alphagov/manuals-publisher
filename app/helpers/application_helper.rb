@@ -84,6 +84,10 @@ module ApplicationHelper
     "#{Plek.external_url_for('draft-origin')}/#{manual.slug}"
   end
 
+  def allow_publish?(manual, slug_unique)
+    manual.draft? && manual.sections.any? && current_user_can_publish? && slug_unique
+  end
+
   def publish_text(manual, slug_unique)
     if manual.state == "published"
       text = "<p>There are no changes to publish.</p>"

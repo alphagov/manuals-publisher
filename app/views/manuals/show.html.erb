@@ -90,7 +90,7 @@
           <div class="panel-heading"><h3>Publish manual</h3></div>
           <div class="panel-body">
             <%= publish_text(manual, slug_unique) %>
-            <% if manual.draft? && manual.sections.any? && current_user_can_publish? && slug_unique %>
+            <% if allow_publish?(manual, slug_unique) %>
               <%= link_to 'Publish manual', confirm_publish_manual_path(manual), class: 'btn btn-danger' %>
             <% end %>
           </div>

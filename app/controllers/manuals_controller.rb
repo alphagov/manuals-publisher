@@ -130,14 +130,22 @@ class ManualsController < ApplicationController
       user: current_user,
     )
     manual = service.call
+    slug_unique = manual.slug_unique?(current_user)
 
-    render(
-      :confirm_publish,
-      layout: "design_system",
-      locals: {
-        manual:,
-      },
-    )
+    if helpers.allow_publish?(manual, slug_unique)
+      render(
+        :confirm_publish,
+        layout: "design_system",
+        locals: {
+          manual:,
+        },
+      )
+    else
+      redirect_to(
+        manual_path(manual),
+        flash: { error: "You may not publish this manual" },
+      )
+    end
   end
 
   def publish
