@@ -1,0 +1,39 @@
+<% content_for :page_title, manual.title %>
+<% content_for :title, manual.title %>
+
+<% content_for :title_margin_bottom, 6 %>
+
+<%= render "govuk_publishing_components/components/breadcrumbs", {
+  collapse_on_mobile: true,
+  breadcrumbs: [
+    {
+      title: "Your manuals",
+      url: manuals_path
+    },
+    {
+      title: manual.title,
+      url: manual_path(manual)
+    },
+    {
+      title: "Publish"
+    },
+  ]
+} %>
+
+<%= render "govuk_publishing_components/components/title", {
+  title: "Publish #{manual.title}"
+} %>
+
+<p class="govuk-body govuk-!-margin-bottom-7">You are about to publish "<%= manual.title %>". All the sections which
+  are in draft status will be published.</p>
+
+<%= form_tag(publish_manual_path(manual), method: :post) do %>
+  <div class="govuk-button-group govuk-!-margin-bottom-6">
+    <%= render "govuk_publishing_components/components/button", {
+      text: "Publish",
+      name: "submit",
+    } %>
+
+    <%= link_to("Cancel", manual_path(manual), class: "govuk-link govuk-link--no-visited-state") %>
+  </div>
+<% end %>

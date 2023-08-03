@@ -275,6 +275,21 @@ When(/^I publish the manual$/) do
   publish_manual
 end
 
+When(/^I click the publish manual button$/) do
+  go_to_manual_page(@manual.title) if current_path != manual_path(@manual)
+  expect(page).to have_link("Publish manual", href: confirm_publish_manual_path(@manual))
+  click_on "Publish manual"
+end
+
+Then(/^I am asked to confirm the publishing$/) do
+  expect(page).to have_content("Publish #{@manual.title}")
+  expect(page).to have_button("Publish")
+end
+
+When(/^I confirm publishing the manual$/) do
+  click_on "Publish"
+end
+
 When(/^I add another section and publish the manual later$/) do
   create_section(
     @manual.title,

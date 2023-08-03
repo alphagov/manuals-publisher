@@ -43,13 +43,13 @@ module ApplicationHelper
 
   def bootstrap_class_for(flash_type)
     case flash_type
-    when :success
+    when "success"
       "alert-success" # Green
-    when :error
+    when "error"
       "alert-danger" # Red
-    when :alert
+    when "alert"
       "alert-warning" # Yellow
-    when :notice
+    when "notice"
       "alert-info" # Blue
     else
       flash_type.to_s
@@ -82,6 +82,10 @@ module ApplicationHelper
 
   def content_preview_url(manual)
     "#{Plek.external_url_for('draft-origin')}/#{manual.slug}"
+  end
+
+  def allow_publish?(manual, slug_unique)
+    manual.draft? && manual.sections.any? && current_user_can_publish? && slug_unique
   end
 
   def publish_text(manual, slug_unique)

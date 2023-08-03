@@ -124,6 +124,30 @@ class ManualsController < ApplicationController
     end
   end
 
+  def confirm_publish
+    service = Manual::ShowService.new(
+      manual_id:,
+      user: current_user,
+    )
+    manual = service.call
+    slug_unique = manual.slug_unique?(current_user)
+
+    if helpers.allow_publish?(manual, slug_unique)
+      render(
+        :confirm_publish,
+        layout: "design_system",
+        locals: {
+          manual:,
+        },
+      )
+    else
+      redirect_to(
+        manual_path(manual),
+        flash: { error: "You may not publish this manual" },
+      )
+    end
+  end
+
   def publish
     service = Manual::QueuePublishService.new(
       user: current_user,
