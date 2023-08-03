@@ -36,6 +36,7 @@ class Section
            :minor_update,
            :exported_at,
            :visually_expanded,
+           :state,
            to: :latest_edition
 
   attr_reader :uuid

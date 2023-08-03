@@ -69,6 +69,9 @@
         <ul class="document-list">
          <% manual.sections.each do |section| %>
             <li class="document">
+              <% if section.state == "draft" %>
+                <span class="label label-primary">draft</span>
+              <% end %>
               <%= link_to(section.title, manual_section_path(manual, section), class: 'document-title') %>
               <ul class="metadata">
                 <li class="text-muted">Updated <%= time_ago_in_words(section.updated_at) %> ago</li>
