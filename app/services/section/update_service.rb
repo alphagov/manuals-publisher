@@ -11,7 +11,7 @@ class Section::UpdateService
   def call
     manual = Manual.find(manual_id, user)
     section = manual.find_section(section_uuid)
-    section.assign_attributes(attributes)
+    section.assign_attributes(attributes.merge(last_updated_by: user.name))
 
     if section.valid?
       manual.draft

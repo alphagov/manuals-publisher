@@ -17,6 +17,7 @@ class SectionEdition
   field :minor_update, type: Boolean
   field :visually_expanded, type: Boolean, default: false
   field :exported_at, type: Time
+  field :last_updated_by, type: String
 
   validates :section_uuid, presence: true
   validates :slug, presence: true
