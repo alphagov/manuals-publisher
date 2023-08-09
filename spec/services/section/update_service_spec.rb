@@ -8,13 +8,14 @@ RSpec.describe Section::UpdateService do
   let(:section) do
     Section.new(manual:, uuid: section_uuid)
   end
+  let(:section_attributes) { { title: "" } }
 
   subject do
     described_class.new(
       user:,
       manual_id: manual.id,
       section_uuid:,
-      attributes: {},
+      attributes: section_attributes,
     )
   end
 
@@ -33,6 +34,17 @@ RSpec.describe Section::UpdateService do
   context "when the new section is valid" do
     before do
       allow(section).to receive(:valid?).and_return(true)
+    end
+
+    it "records the user who is updating the section" do
+      merged_attributes = double(:merged_attributes)
+      allow(section_attributes).to receive(:merge)
+        .with({ last_updated_by: user.name })
+        .and_return(merged_attributes)
+
+      expect(section).to receive(:assign_attributes).with(merged_attributes)
+
+      subject.call
     end
 
     it "marks the manual as draft" do

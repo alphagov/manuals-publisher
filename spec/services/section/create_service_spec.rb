@@ -22,17 +22,30 @@ RSpec.describe Section::CreateService do
       .to receive(:find).with(manual.id, user)
       .and_return(manual)
     allow(manual)
-      .to receive(:build_section).with(section_attributes)
+      .to receive(:build_section)
       .and_return(new_section)
     allow(Adapters).to receive(:publishing)
       .and_return(publishing_api_adapter)
     allow(publishing_api_adapter).to receive(:save_draft)
     allow(publishing_api_adapter).to receive(:save_section)
+    allow(section_attributes).to receive(:merge).and_return({})
+    allow(user).to receive(:name).and_return("Mr Testy")
   end
 
   context "when the new section is valid" do
     before do
       allow(new_section).to receive(:valid?).and_return(true)
+    end
+
+    it "records the user who is creating the section" do
+      merged_attributes = double(:merged_attributes)
+      allow(section_attributes).to receive(:merge)
+        .with({ last_updated_by: user.name })
+        .and_return(merged_attributes)
+
+      expect(manual).to receive(:build_section).with(merged_attributes)
+
+      subject.call
     end
 
     it "marks the manual as draft" do

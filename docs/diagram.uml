@@ -53,6 +53,7 @@ class SectionEdition << (M,#FF7700) Mongoid::Document >> {
   change_note
   minor_update
   exported_at
+  last_updated_by
 }
 
 class User << (M,#FF7700) Mongoid::Document >> {

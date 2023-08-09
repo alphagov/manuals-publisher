@@ -31,6 +31,7 @@ class Section
            :summary,
            :body,
            :updated_at,
+           :last_updated_by,
            :version_number,
            :change_note,
            :minor_update,
