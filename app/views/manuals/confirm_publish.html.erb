@@ -1,3 +1,5 @@
+<% draft_sections = manual.sections.select(&:draft?) %>
+
 <% content_for :page_title, manual.title %>
 <% content_for :title, manual.title %>
 
@@ -24,8 +26,36 @@
   title: "Publish #{manual.title}"
 } %>
 
-<p class="govuk-body govuk-!-margin-bottom-7">You are about to publish "<%= manual.title %>". All the sections which
-  are in draft status will be published.</p>
+<p class="govuk-body">You are about to publish "<%= manual.title %>".
+  <%= if draft_sections.any? then " All the following sections, which are in draft status, will be published." end %></p>
+
+<% if draft_sections.any? %>
+  <p class="govuk-body"></p>
+  <%= render "govuk_publishing_components/components/table", {
+    first_cell_is_header: true,
+    head: [
+      {
+        text: "Draft"
+      },
+      {
+        text: "Details"
+      }
+    ],
+    rows: draft_sections.map do |section|
+      [
+        {
+          text: tag.span("DRAFT", class: "govuk-tag govuk-tag--s govuk-tag--blue") <<
+            tag.span(section.title, class: "govuk-!-static-margin-2")
+        },
+        {
+          text: last_updated_text(section)
+        }
+      ]
+    end
+  } %>
+<% end %>
+
+<p class="govuk-body">Are you sure you want to publish this manual?</p>
 
 <%= form_tag(publish_manual_path(manual), method: :post) do %>
   <div class="govuk-button-group govuk-!-margin-bottom-6">
