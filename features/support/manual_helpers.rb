@@ -401,9 +401,13 @@ module ManualHelpers
     expect(page.body).to have_content(organisation_slug)
   end
 
-  def create_sections_for_manual(count:, manual_fields:)
+  def create_sections_for_manual(count:, manual_fields:, section_titles: [])
     attributes_for_sections = (1..count).map do |n|
-      title = "Section #{n}"
+      title = if n <= section_titles.length
+                section_titles[n - 1]
+              else
+                "Section #{n}"
+              end
 
       {
         title:,

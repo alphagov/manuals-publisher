@@ -7,9 +7,9 @@ Feature: Publishing a manual
     Given I am logged in as an editor
 
   Scenario: Publish a manual
-    Given a draft manual exists with some sections
+    Given a draft manual exists with a section titled "my test section"
     When I click the publish manual button
-    Then I am asked to confirm the publishing
+    Then I am asked to confirm the publishing of a section titled "my test section"
     When I confirm publishing the manual
     Then the manual and all its sections are published
     And I should see a link to the live manual
