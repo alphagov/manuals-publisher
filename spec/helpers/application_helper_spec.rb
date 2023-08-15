@@ -54,4 +54,42 @@ describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#last_updated_text" do
+    let(:section) { instance_double(Section, updated_at: Time.zone.now) }
+
+    context "when section is not in draft state" do
+      before do
+        allow(section).to receive(:draft?).and_return(false)
+      end
+
+      it "returns text without author" do
+        text = last_updated_text(section)
+
+        expect(text).to eq("Updated less than a minute ago")
+      end
+    end
+
+    context "when section is in draft state" do
+      before do
+        allow(section).to receive(:draft?).and_return(true)
+      end
+
+      it "returns text including author, when the author is known" do
+        allow(section).to receive(:last_updated_by).and_return("Test User")
+
+        text = last_updated_text(section)
+
+        expect(text).to eq("Updated less than a minute ago by Test User")
+      end
+
+      it "returns text without author, when the author is not known" do
+        allow(section).to receive(:last_updated_by).and_return(nil)
+
+        text = last_updated_text(section)
+
+        expect(text).to eq("Updated less than a minute ago")
+      end
+    end
+  end
 end

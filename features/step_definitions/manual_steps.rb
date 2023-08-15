@@ -70,6 +70,30 @@ Given(/^a draft manual exists with some sections$/) do
   WebMock::RequestRegistry.instance.reset!
 end
 
+Given(/^a draft manual exists with a section titled "(.*?)"$/) do |section_title|
+  @manual_slug = "guidance/example-manual-title"
+  @manual_title = "Example Manual Title"
+
+  @manual_fields = {
+    title: "Example Manual Title",
+    summary: "Nullam quis risus eget urna mollis ornare vel eu leo.",
+  }
+
+  create_manual(@manual_fields)
+
+  @attributes_for_sections = create_sections_for_manual(
+    manual_fields: @manual_fields,
+    section_titles: [section_title],
+    count: 2,
+  )
+
+  @manual = most_recently_created_manual
+  @sections = @manual.sections.to_a
+  @section = @sections.first
+
+  WebMock::RequestRegistry.instance.reset!
+end
+
 Given(/^a draft manual exists belonging to "(.*?)"$/) do |organisation_slug|
   @manual_slug = "guidance/example-manual-title"
   @manual_title = "Example Manual Title"
@@ -281,8 +305,9 @@ When(/^I click the publish manual button$/) do
   click_on "Publish manual"
 end
 
-Then(/^I am asked to confirm the publishing$/) do
+Then(/^I am asked to confirm the publishing of a section titled "(.*?)"$/) do |section_title|
   expect(page).to have_content("Publish #{@manual.title}")
+  expect(page).to have_content(section_title)
   expect(page).to have_button("Publish")
 end
 
