@@ -1,7 +1,6 @@
 <% draft_sections = manual.sections.select(&:draft?) %>
 
-<% content_for :page_title, manual.title %>
-<% content_for :title, manual.title %>
+<% content_for :title, "Publish #{manual.title}" %>
 
 <% content_for :title_margin_bottom, 6 %>
 
