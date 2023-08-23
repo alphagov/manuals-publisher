@@ -34,6 +34,48 @@ describe ManualsController, type: :controller do
     end
   end
 
+  describe "#confirm_discard" do
+    let(:manual_id) { "manual-1" }
+    let(:service) { double(Manual::ShowService, call: manual) }
+    let(:manual) { instance_double(Manual, title: manual_title) }
+    let(:manual_title) { "My manual title" }
+
+    before do
+      login_as_stub_user
+      allow(Manual::ShowService).to receive(:new).and_return(service)
+    end
+
+    context "when the manual has been previously published" do
+      before do
+        allow(manual).to receive(:has_ever_been_published?).and_return(true)
+        get :confirm_discard, params: { id: manual_id }
+      end
+
+      it "sets a flash message indicating failure" do
+        expect(flash[:error]).to include("#{manual_title} cannot be discarded as it has already been published")
+      end
+
+      it "redirects to the show page for the manual" do
+        expect(response).to redirect_to manual_path(manual_id)
+      end
+    end
+
+    context "when the manual has not been previously published" do
+      before do
+        allow(manual).to receive(:has_ever_been_published?).and_return(false)
+        get :confirm_discard, params: { id: manual_id }
+      end
+
+      it "renders the discard confirmation page" do
+        expect(response).to render_template(:confirm_discard)
+      end
+
+      it "renders with the design system layout" do
+        expect(response).to render_template("design_system")
+      end
+    end
+  end
+
   describe "#discard_draft" do
     let(:manual_id) { "manual-1" }
     let(:service) { double(Manual::DiscardDraftService, call: result) }
@@ -49,7 +91,7 @@ describe ManualsController, type: :controller do
       let(:discard_success) { true }
 
       it "sets a flash message indicating success" do
-        expect(flash[:notice]).to include("Discarded draft of My manual")
+        expect(flash[:success]).to include("Discarded draft of My manual")
       end
 
       it "redirects to the manuals index" do
@@ -61,7 +103,7 @@ describe ManualsController, type: :controller do
       let(:discard_success) { false }
 
       it "sets a flash message indicating failure" do
-        expect(flash[:notice]).to include("Unable to discard draft of My manual")
+        expect(flash[:error]).to include("Unable to discard draft of My manual")
       end
 
       it "redirects to the show page for the manual" do

@@ -29,3 +29,8 @@ end
 When(/^I discard the draft manual$/) do
   discard_draft_manual(@manual.title)
 end
+
+When(/^I confirm draft deletion$/) do
+  expect(page).to have_button("Discard manual")
+  click_on "Discard manual"
+end

@@ -16,6 +16,7 @@ Feature: Rake task to delete a manual
     Given a draft manual exists without any sections
     And a draft section exists for the manual
     When I discard the draft manual
+    And I confirm draft deletion
     Then the manual and its sections are deleted
 
   Scenario: Deleting a published manual

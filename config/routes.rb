@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     delete :discard_draft, on: :member
 
     get :confirm_publish, on: :member
+    get :confirm_discard, on: :member
 
     get :original_publication_date, on: :member, action: :edit_original_publication_date
     put :original_publication_date, on: :member, action: :update_original_publication_date
