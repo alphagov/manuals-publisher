@@ -29,3 +29,20 @@ end
 When(/^I discard the draft manual$/) do
   discard_draft_manual(@manual.title)
 end
+
+When(/^I confirm draft deletion$/) do
+  expect(page).to have_button("Discard manual")
+  click_on "Discard manual"
+end
+
+Then(/^I should not see the discard draft button$/) do
+  expect(page).not_to have_button("Discard manual")
+end
+
+When(/^I visit the confirm discard page directly$/) do
+  visit confirm_discard_manual_path(@manual)
+end
+
+Then(/^I am on the show page for that manual$/) do
+  expect(page).to have_content(@manual_fields[:summary])
+end

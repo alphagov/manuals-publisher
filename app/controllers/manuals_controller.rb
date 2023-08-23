@@ -161,6 +161,29 @@ class ManualsController < ApplicationController
     )
   end
 
+  def confirm_discard
+    service = Manual::ShowService.new(
+      manual_id:,
+      user: current_user,
+    )
+    manual = service.call
+
+    if !manual.has_ever_been_published?
+      render(
+        :confirm_discard,
+        layout: "design_system",
+        locals: {
+          manual:,
+        },
+      )
+    else
+      redirect_to(
+        manual_path(manual_id),
+        flash: { error: "#{manual.title} cannot be discarded as it has already been published" },
+      )
+    end
+  end
+
   def discard_draft
     service = Manual::DiscardDraftService.new(
       user: current_user,
@@ -171,12 +194,12 @@ class ManualsController < ApplicationController
     if result.successful?
       redirect_to(
         manuals_path,
-        flash: { notice: "Discarded draft of #{result.manual_title}" },
+        flash: { success: "Discarded draft of #{result.manual_title}" },
       )
     else
       redirect_to(
         manual_path(manual_id),
-        flash: { notice: "Unable to discard draft of #{result.manual_title}" },
+        flash: { error: "Unable to discard draft of #{result.manual_title}" },
       )
     end
   end

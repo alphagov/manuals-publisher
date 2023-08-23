@@ -49,7 +49,7 @@ describe ManualsController, type: :controller do
       let(:discard_success) { true }
 
       it "sets a flash message indicating success" do
-        expect(flash[:notice]).to include("Discarded draft of My manual")
+        expect(flash[:success]).to include("Discarded draft of My manual")
       end
 
       it "redirects to the manuals index" do
@@ -61,7 +61,7 @@ describe ManualsController, type: :controller do
       let(:discard_success) { false }
 
       it "sets a flash message indicating failure" do
-        expect(flash[:notice]).to include("Unable to discard draft of My manual")
+        expect(flash[:error]).to include("Unable to discard draft of My manual")
       end
 
       it "redirects to the show page for the manual" do
