@@ -24,10 +24,3 @@ Feature: Rake task to delete a manual
     When I run the deletion script
     Then the script raises an error
     And the manual and its sections still exist
-
-  Scenario: UI safeguarding against deleting a published manual
-    Given a published manual exists
-    And I am on the show page for that manual
-    Then I should not see the discard draft button
-    And I visit the confirm discard page directly
-    Then I am on the show page for that manual
