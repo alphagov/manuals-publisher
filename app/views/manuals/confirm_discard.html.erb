@@ -23,17 +23,23 @@
   title: "Discard #{manual.title}"
 } %>
 
-<p class="govuk-body">You are about to discard "<%= manual.title %>".</p>
-<p class="govuk-body">Are you sure you want to discard this draft manual?</p>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
 
-<%= form_tag(discard_draft_manual_path(manual), method: :delete) do %>
-  <div class="govuk-button-group govuk-!-margin-bottom-6">
-    <%= render "govuk_publishing_components/components/button", {
-      text: "Discard manual",
-      name: "submit",
-      destructive: true
-    } %>
+    <p class="govuk-body">You are about to discard "<%= manual.title %>".</p>
+    <p class="govuk-body">Are you sure you want to discard this draft manual?</p>
 
-    <%= link_to("Cancel", manual_path(manual), class: "govuk-link govuk-link--no-visited-state") %>
+    <%= form_tag(discard_draft_manual_path(manual), method: :delete) do %>
+      <div class="govuk-button-group govuk-!-margin-bottom-6">
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Discard manual",
+          name: "submit",
+          destructive: true
+        } %>
+
+        <%= link_to("Cancel", manual_path(manual), class: "govuk-link govuk-link--no-visited-state") %>
+      </div>
+    <% end %>
+
   </div>
-<% end %>
+</div>
