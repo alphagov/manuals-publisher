@@ -23,9 +23,16 @@
   } %>
 <% end %>
 
-<%= render "govuk_publishing_components/components/title", {
-  title: "Publish #{manual.title}"
-} %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/title", {
+      title: "Publish #{manual.title}",
+      margin_top: 0
+    } %>
+  </div>
+  <div class="govuk-grid-column-one-third app-grid-column--align-right">
+  </div>
+</div>
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
