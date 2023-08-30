@@ -17,8 +17,14 @@ describe NavigationHelper, type: :helper do
       end
     end
 
-    it "sets the link to the current page as active" do
+    it "sets the link to the manuals page as active when on the manuals index page" do
       request.path = manuals_path
+      expect(navigation_links_internal).to include(a_hash_including(text: "Manuals", active: true))
+    end
+
+    it "sets the link to the manuals page as active when on a manual's view page" do
+      manual = FactoryBot.build_stubbed(:manual)
+      request.path = manual_path(manual)
       expect(navigation_links_internal).to include(a_hash_including(text: "Manuals", active: true))
     end
   end
