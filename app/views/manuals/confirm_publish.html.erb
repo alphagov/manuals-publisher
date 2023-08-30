@@ -4,22 +4,24 @@
 
 <% content_for :title_margin_bottom, 6 %>
 
-<%= render "govuk_publishing_components/components/breadcrumbs", {
-  collapse_on_mobile: true,
-  breadcrumbs: [
-    {
-      title: "Your manuals",
-      url: manuals_path
-    },
-    {
-      title: manual.title,
-      url: manual_path(manual)
-    },
-    {
-      title: "Publish"
-    },
-  ]
-} %>
+<% content_for :breadcrumbs do %>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: manual.title,
+        url: manual_path(manual)
+      },
+      {
+        title: "Publish"
+      },
+    ]
+  } %>
+<% end %>
 
 <%= render "govuk_publishing_components/components/title", {
   title: "Publish #{manual.title}"
