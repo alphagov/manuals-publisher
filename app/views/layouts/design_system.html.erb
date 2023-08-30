@@ -16,13 +16,12 @@
   } %>
 
   <div class="govuk-width-container">
+    <%= yield(:breadcrumbs) %>
+
     <main class="govuk-main-wrapper" id="main-content" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          <%= yield %>
-        </div>
-      </div>
+      <%= yield %>
     </main>
+
   </div>
 
   <%= render "govuk_publishing_components/components/layout_footer", {
@@ -42,6 +41,5 @@
       }
     ]
   } %>
-
 
 <% end %>
