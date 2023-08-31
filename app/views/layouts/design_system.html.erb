@@ -46,6 +46,13 @@
 
     <main class="govuk-main-wrapper" id="main-content" role="main">
       <%= yield %>
+      <% if content_for?(:document_ready) %>
+        <script>
+          $(document).ready(function() {
+            <%= yield :document_ready %>
+          });
+        </script>
+      <% end %>
     </main>
 
   </div>

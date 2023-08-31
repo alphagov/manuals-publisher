@@ -70,7 +70,11 @@ class ManualsController < ApplicationController
     )
     manual = service.call
 
-    render(:edit, locals: { manual: manual_form(manual) })
+    render(
+      :edit,
+      layout: "design_system",
+      locals: { manual: manual_form(manual) },
+    )
   end
 
   def update
@@ -87,6 +91,7 @@ class ManualsController < ApplicationController
     else
       render(
         :edit,
+        layout: "design_system",
         locals: {
           manual:,
         },

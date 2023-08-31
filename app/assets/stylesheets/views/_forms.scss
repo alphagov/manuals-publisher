@@ -1,0 +1,11 @@
+form {
+  .preview {
+    border: 1px solid $govuk-border-colour;
+    padding: govuk-spacing(3);
+  }
+
+  .add-vertical-margins {
+    margin-top: govuk-spacing(4);
+    margin-bottom: govuk-spacing(4);
+  }
+}

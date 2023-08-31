@@ -5,7 +5,7 @@
 //= require govuk_toolkit
 //= require ajax_setup
 //= require length_counter
-//= require markdown_preview
+//= require legacy_markdown_preview
 //= require toggle_display_with_checked_input
 //= require paste-html-to-govspeak
 jQuery(function ($) {
