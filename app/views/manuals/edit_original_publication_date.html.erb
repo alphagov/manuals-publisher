@@ -11,7 +11,7 @@
 <div class="row">
   <div class="col-md-8">
     <%= form_for manual, url: original_publication_date_manual_path(manual), method: :put do |f| %>
-      <%= render partial: "shared/form_errors", locals: { object: manual } %>
+      <%= render partial: "shared/legacy_form_errors", locals: { object: manual } %>
       <%= f.label :originally_published_at, "First publication date:" %>
       <div class="form-inline add-vertical-margins">
         <%= f.datetime_select :originally_published_at, { include_blank: true, start_year: Date.today.year, end_year: 1945 }, { class: 'date form-control' } %>

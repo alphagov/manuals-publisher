@@ -7,7 +7,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_for manual do |f| %>
-      <%= render partial: "shared/form_errors", locals: { object: manual } %>
+      <%= render partial: "shared/legacy_form_errors", locals: { object: manual } %>
 
       <%= render "govuk_publishing_components/components/input", {
         label: {
