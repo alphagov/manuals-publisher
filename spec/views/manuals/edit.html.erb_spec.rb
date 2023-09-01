@@ -9,4 +9,28 @@ describe "manuals/edit", type: :view do
 
     expect(rendered).to have_title("Edit manual - GOV.UK Manuals Publisher")
   end
+
+  %w[title summary body].each do |attribute|
+    it "links an error summary message for the #{attribute} input field" do
+      invalid_manual = FactoryBot.build_stubbed(:manual, title: "", summary: "", body: "<script></script>")
+      invalid_manual.valid?
+      view_manual = ManualViewAdapter.new(invalid_manual)
+
+      render template: "manuals/edit", locals: { manual: view_manual }
+
+      expect(rendered).to have_link(href: "#manual_#{attribute}")
+      expect(rendered).to have_field("manual_#{attribute}")
+    end
+
+    it "does not render an error summary message for #{attribute} field when it is valid" do
+      valid_manual = FactoryBot.build_stubbed(:manual, title: "a", summary: "b", body: "")
+      valid_manual.valid?
+      view_manual = ManualViewAdapter.new(valid_manual)
+
+      render template: "manuals/edit", locals: { manual: view_manual }
+
+      expect(rendered).not_to have_link(href: "#manual_#{attribute}")
+      expect(rendered).to have_field("manual_#{attribute}")
+    end
+  end
 end

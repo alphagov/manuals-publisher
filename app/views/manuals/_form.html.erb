@@ -6,8 +6,8 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
-    <%= form_for manual do |f| %>
-      <%= render partial: "shared/legacy_form_errors", locals: { object: manual } %>
+    <%= form_for manual do %>
+      <%= render partial: "shared/form_errors", locals: { object: manual, attribute_id_prefix: "manual" } %>
 
       <%= render "govuk_publishing_components/components/input", {
         label: {
@@ -27,7 +27,8 @@
         id: "manual_title",
         heading_level: 2,
         heading_size: "l",
-        value: manual.title
+        value: manual.title,
+        error_items: errors_for(manual.errors, :title)
       } %>
       <%= render "govuk_publishing_components/components/character_count", {
         textarea: {
@@ -38,6 +39,7 @@
           name: "manual[summary]",
           value: manual.summary,
           rows: 4,
+          error_items: errors_for(manual.errors, :summary)
         },
         id: "manual_summary",
         maxlength: 280
@@ -51,7 +53,8 @@
         id: "manual_body",
         value: manual.body,
         rows: 20,
-        data: {module: "js-paste-html-to-govspeak"}
+        data: {module: "js-paste-html-to-govspeak"},
+        error_items: errors_for(manual.errors, :body)
       } %>
 
       <div class="preview_button add-vertical-margins"></div>
