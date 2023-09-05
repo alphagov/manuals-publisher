@@ -15,7 +15,7 @@ RSpec.describe "manual urls", type: :feature do
 
     click_on "A manual"
 
-    expect(page).to have_link("Edit manual", href: %r{/manuals/#{manual.id}/edit$})
+    expect(page).to have_link("Edit", href: %r{/manuals/#{manual.id}/edit$})
     expect(page).to have_link("Section 1", href: %r{/manuals/#{manual.id}/sections/#{section.uuid}$})
 
     click_on "Section 1"

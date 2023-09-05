@@ -27,6 +27,7 @@ class ManualsController < ApplicationController
 
     render(
       :show,
+      layout: "design_system",
       locals: {
         manual:,
         slug_unique:,

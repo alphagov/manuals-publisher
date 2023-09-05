@@ -15,6 +15,122 @@ module ApplicationHelper
     tag.span(state, class: classes).html_safe
   end
 
+  def state_label(manual)
+    state_text = manual.publication_state
+
+    if state_text == "published" && manual.draft?
+      state_text << " with new draft"
+    end
+
+    classes = "govuk-tag govuk-tag--s"
+    classes << if manual.draft?
+                 " govuk-tag--blue"
+               elsif manual.published?
+                 " govuk-tag--green"
+               else
+                 " govuk-tag--grey"
+               end
+
+    tag.span(state_text, class: classes).html_safe
+  end
+
+  def manual_metadata_rows(manual)
+    rows = [
+      {
+        key: "Status",
+        value: state_label(manual),
+      },
+    ]
+
+    if current_user_is_gds_editor?
+      rows << {
+        key: "From",
+        value: link_to(manual.organisation_slug, url_for_public_org(manual.organisation_slug)),
+      }
+    end
+
+    if manual.originally_published_at.present?
+      rows << {
+        key: "Originally published",
+        value: nice_time_format(manual.originally_published_at),
+      }
+    end
+
+    if manual.publish_tasks.any?
+      rows << {
+        key: "Last published",
+        value: publication_task_state(manual.publish_tasks.first),
+      }
+    end
+    rows
+  end
+
+  def manual_front_page_rows(manual)
+    rows = [
+      {
+        key: "Slug",
+        value: manual.slug,
+      },
+      {
+        key: "Title",
+        value: sanitize(manual.title),
+      },
+      {
+        key: "Summary",
+        value: sanitize(manual.summary),
+      },
+    ]
+
+    if manual.body.present?
+      rows << {
+        key: "Body",
+        value: simple_format(truncate(manual.body, length: 500, class: "govuk-!-margin-top-0")),
+      }
+    end
+
+    rows
+  end
+
+  def manual_sidebar_action_items(manual, slug_unique)
+    items = []
+
+    if allow_publish?(manual, slug_unique)
+      items << render("govuk_publishing_components/components/button", {
+        text: "Publish",
+        href: confirm_publish_manual_path(manual),
+      })
+    end
+
+    unless manual.has_ever_been_published?
+      items << render("govuk_publishing_components/components/button", {
+        text: "Discard",
+        destructive: true,
+      })
+    end
+
+    items
+  end
+
+  def manual_section_rows(manual)
+    manual.sections.map do |section|
+      row = {}
+
+      row[:key] = if section.draft?
+                    draft_tag = tag.span("DRAFT", class: "govuk-tag govuk-tag--s govuk-tag--blue")
+                    title_span = tag.span(section.title, class: "govuk-!-static-margin-2")
+                    draft_tag << title_span
+                  else
+                    tag.span(section.title)
+                  end
+      row[:value] = last_updated_text(section)
+      row[:actions] = [{
+        label: "View",
+        href: manual_section_path(manual, section),
+      }]
+      row
+    end
+  end
+
   def show_preview?(item)
     if item.respond_to?(:sections)
       item.draft? || item.sections.any?(&:draft?)
