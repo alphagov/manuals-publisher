@@ -2,13 +2,13 @@
   <% if !report.present? %>
     <section class="alert alert-info">
       <p>Check this document for broken links. The report will take a few moments to complete.</p>
-      <%= render 'admin/link_check_reports/form', reportable: reportable, button_text: 'Check for broken links' %>
+      <%= render 'admin/legacy_link_check_reports/form', reportable: reportable, button_text: 'Check for broken links' %>
     </section>
   <% elsif report.in_progress? %>
     <section class="alert alert-info">
       Broken link report in progress.<br />Please wait.
       <%= link_to "Refresh",
-                  link_check_report_path(report.id),
+                  legacy_link_check_report_path(report.id),
                   class: 'js-broken-links-refresh js-hidden',
                   remote: true %>
     </section>
@@ -33,12 +33,12 @@
           <% end %>
         </ul>
       <% end %>
-      <%= render 'admin/link_check_reports/form', reportable: reportable, button_text: 'Check again' %>
+      <%= render 'admin/legacy_link_check_reports/form', reportable: reportable, button_text: 'Check again' %>
     </section>
   <% else %>
     <section class='alert alert-success'>
       <p><span class="glyphicon glyphicon-ok add-right-margin"></span> This document contains no broken links.</p>
-      <%= render 'admin/link_check_reports/form', reportable: reportable, button_text: 'Check again' %>
+      <%= render 'admin/legacy_link_check_reports/form', reportable: reportable, button_text: 'Check again' %>
     </section>
   <% end %>
 </div>

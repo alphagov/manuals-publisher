@@ -1,4 +1,4 @@
-class LinkCheckReportsController < ApplicationController
+class LegacyLinkCheckReportsController < ApplicationController
   def create
     service = LinkCheckReport::CreateService.new(
       user: current_user,
@@ -13,7 +13,7 @@ class LinkCheckReportsController < ApplicationController
     @reportable = reportable_hash
 
     respond_to do |format|
-      format.js { render "admin/link_check_reports/create" }
+      format.js { render "admin/legacy_link_check_reports/create" }
       format.html { redirect_to_reportable_path }
     end
   end
@@ -26,7 +26,7 @@ class LinkCheckReportsController < ApplicationController
     @reportable = reportable_hash
 
     respond_to do |format|
-      format.js { render "admin/link_check_reports/show" }
+      format.js { render "admin/legacy_link_check_reports/show" }
       format.html { redirect_to_reportable_path }
     end
   end

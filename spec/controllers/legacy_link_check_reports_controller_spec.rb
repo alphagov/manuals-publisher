@@ -1,7 +1,7 @@
 require "spec_helper"
 require "gds_api/test_helpers/link_checker_api"
 
-describe LinkCheckReportsController, type: :controller do
+describe LegacyLinkCheckReportsController, type: :controller do
   include GdsApi::TestHelpers::LinkCheckerApi
 
   let(:user) { FactoryBot.create(:user) }
@@ -47,7 +47,7 @@ describe LinkCheckReportsController, type: :controller do
       it "AJAX POST renders the create template and creates a link check report" do
         post :create, xhr: true, params: { link_reportable: { manual_id: manual.id } }
 
-        expect(response).to render_template("admin/link_check_reports/create")
+        expect(response).to render_template("admin/legacy_link_check_reports/create")
         expect(LinkCheckReport.count).to eq(1)
       end
     end
@@ -64,7 +64,7 @@ describe LinkCheckReportsController, type: :controller do
       it "AJAX POST renders the create template and creates a link check report" do
         post :create, xhr: true, params: { link_reportable: { manual_id: manual.id, section_id: section_edition.id } }
 
-        expect(response).to render_template("admin/link_check_reports/create")
+        expect(response).to render_template("admin/legacy_link_check_reports/create")
         expect(LinkCheckReport.count).to eq(1)
       end
     end
@@ -91,7 +91,7 @@ describe LinkCheckReportsController, type: :controller do
       it "AJAX GET assigns the LinkCheckReport and renders the show template" do
         get :show, xhr: true, params: { id: link_check_report.id }
 
-        expect(response).to render_template("admin/link_check_reports/show")
+        expect(response).to render_template("admin/legacy_link_check_reports/show")
         expect(assigns(:report)).to eq(link_check_report)
         expect(assigns(:reportable)).to eq(manual_id: manual.id.to_s)
       end
@@ -118,7 +118,7 @@ describe LinkCheckReportsController, type: :controller do
       it "AJAX GET assigns the LinkCheckReport and renders the show template" do
         get :show, xhr: true, params: { id: link_check_report.id }
 
-        expect(response).to render_template("admin/link_check_reports/show")
+        expect(response).to render_template("admin/legacy_link_check_reports/show")
         expect(assigns(:report)).to eq(link_check_report)
         expect(assigns(:reportable)).to eq(manual_id: manual.id.to_s, section_id: section_edition.id.to_s)
       end
