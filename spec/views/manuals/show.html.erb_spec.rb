@@ -23,4 +23,25 @@ describe "manuals/show", type: :view do
 
     expect(rendered).to match(/Discard draft/)
   end
+
+  [
+    [:notice, ".govuk-notification-banner .govuk-notification-banner__content"],
+    [:success, ".govuk-notification-banner .govuk-notification-banner__content"],
+    [:error, ".gem-c-error-alert .gem-c-error-alert__message"],
+  ].each do |flash_type, msg_css_selector|
+    it "renders a #{flash_type} flash message" do
+      manual = FactoryBot.build_stubbed(:manual)
+      manual.publish_tasks = []
+      msg = "A flash message"
+      flash[flash_type] = msg
+      allow(view).to receive(:flash).and_return(flash)
+      allow(view).to receive(:current_user).and_return(FactoryBot.build_stubbed(:user))
+
+      render template: "manuals/show",
+             layout: "layouts/design_system",
+             locals: { manual:, slug_unique: true, clashing_sections: [] }
+
+      expect(rendered).to have_css(msg_css_selector, text: msg)
+    end
+  end
 end

@@ -1,117 +1,135 @@
-<% content_for :page_title, manual.title %>
+<% content_for :title, manual.title %>
 
 <% content_for :breadcrumbs do %>
-  <li><%= link_to "Your manuals", manuals_path %></li>
-  <li class='active'><%= manual.title %></li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: manual.title,
+        url: manual_path(manual)
+      },
+    ]
+  } %>
 <% end %>
 
-<%= render partial: "title", locals: { manual: manual, public_url: url_for_public_manual(manual) } %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl"><%= manual.title %></h1>
+  </div>
+</div>
 
-<div class="row">
-  <div class="col-md-8">
-    <div class="row">
-      <div class="col-md-12">
-        <% unless clashing_sections.empty? %>
-          <p>Warning: There are duplicate section slugs in this manual.</p>
-          <ul>
-            <% clashing_sections.each do |slug, sections| %>
-              <li><%= slug %></li>
-            <% end %>
-          </ul>
-        <% end %>
-      </div>
+<div class="govuk-grid-row">
+  <% unless clashing_sections.empty? %>
+    <%= render "govuk_publishing_components/components/warning_text", {
+      text: "Warning: There are duplicate section slugs in this manual."
+    } %>
+    <% clashing_sections_list = clashing_sections.map do |slug, sections|; slug; end %>
+    <%= render "govuk_publishing_components/components/list", {
+      visible_counters: true,
+      items: clashing_sections_list
+    } %>
+  <% end %>
 
-      <div class="col-md-12">
-        <h2>Summary</h2>
-        <p class="lead"><%= manual.summary %></p>
-      </div>
+  <div class="govuk-grid-column-two-thirds">
 
-      <% if manual.body.present? %>
-        <div class=" col-md-12">
-          <h2>Body</h2>
-          <pre class="body-pre add-bottom-margin"><%= manual.body %></pre>
-        </div>
-      <% end %>
+    <section class="app-view-manuals__section">
+      <%= render "shared/summary_card_component", {
+        title: "About this manual",
+        summary_card_actions: [
+          {
+            label: "Edit first publication date",
+            href: original_publication_date_manual_path(manual)
+          },
+        ],
+        rows: manual_metadata_rows(manual),
+      } %>
+    </section>
 
-      <div class="col-md-12 add-bottom-margin">
-        <h2>Metadata</h2>
-        <dl class="metadata-list">
-          <dt>State</dt>
-          <dd><%= state(manual) %></dd>
-        </dl>
-        <% if manual.publish_tasks.any? %>
-          <dl class="metadata-list">
-            <dt>Last published</dt>
-            <dd><%= publication_task_state(manual.publish_tasks.first) %></dd>
-          </dl>
-        <% end %>
-        <% if current_user_is_gds_editor? %>
-          <dl class="metadata-list">
-            <dt>From</dt>
-            <dd><%= link_to manual.organisation_slug, url_for_public_org(manual.organisation_slug) %></dd>
-          </dl>
-        <% end %>
-        <% if manual.originally_published_at.present? %>
-          <dl class="metadata-list">
-            <dt>Originally published</dt>
-            <dd><%= nice_time_format(manual.originally_published_at) %><% if manual.use_originally_published_at_for_public_timestamp? %><br/>This will be used as the public updated at timestamp on GOV.UK.<% end %></dd>
-          </dl>
-        <% end %>
-      </div>
-
-      <div class="col-md-12">
-        <h2>Sections</h2>
-        <div class="well add-bottom-margin">
-          <%= link_to 'Reorder sections', reorder_manual_sections_path(manual), class: 'btn btn-default add-right-margin' %>
-          <%= link_to 'Add section', new_manual_section_path(manual), class: 'btn btn-default' %>
-        </div>
-        <% if manual.sections.any? %>
-        <ul class="document-list">
-         <% manual.sections.each do |section| %>
-            <li class="document">
-              <% if section.state == "draft" %>
-                <span class="label label-primary">draft</span>
-              <% end %>
-              <%= link_to(section.title, manual_section_path(manual, section), class: 'document-title') %>
-              <ul class="metadata">
-                <li class="text-muted"><%= last_updated_text(section) %></li>
-              </ul>
-            </li>
-          <% end %>
-        </ul>
-        <% else %>
-          <p class='no-content-message'>You haven&rsquo;t added any sections to this manual yet.</p>
-        <% end %>
-
-        <h2>Actions</h2>
-        <div class="well">
-          <%= link_to 'Edit manual', edit_manual_path(manual), class: 'btn btn-success add-right-margin' %>
-          <%= link_to 'Edit first publication date', original_publication_date_manual_path(manual), class: 'btn btn-default' %>
-        </div>
-
-        <div class="panel panel-default">
-          <div class="panel-heading"><h3>Publish manual</h3></div>
-          <div class="panel-body">
-            <%= publish_text(manual, slug_unique) %>
-            <% if allow_publish?(manual, slug_unique) %>
-              <%= link_to 'Publish manual', confirm_publish_manual_path(manual), class: 'btn btn-danger' %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <% unless manual.has_ever_been_published? %>
-      <div class="panel panel-default">
-        <div class="panel-heading"><h3>Discard draft manual</h3></div>
-        <div class="panel-body">
-          <%= link_to 'Discard draft', confirm_discard_manual_path(manual), class: 'btn btn-danger' %>
-        </div>
-      </div>
+    <% if show_preview?(manual) %>
+      <section class="app-view-manuals__section">
+        <h2 class="govuk-heading-l">Preview</h2>
+        <p class="govuk-body">
+          <%= link_to "Preview on website (opens in new tab)", content_preview_url(manual), target: "_blank" %></p>
+      </section>
     <% end %>
+
+    <section class="app-view-manuals__section">
+      <%= render "shared/summary_card_component", {
+        title: "Front page",
+        summary_card_actions: [
+          {
+            label: "Edit",
+            href: edit_manual_path(manual)
+          }
+        ],
+        rows: manual_front_page_rows(manual),
+      } %>
+    </section>
+
+    <section class="app-view-manuals__section">
+      <%= render "shared/summary_card_component", {
+        title: "Sections",
+        summary_card_actions: [
+          {
+            label: "Reorder sections",
+            href: reorder_manual_sections_path(manual)
+          },
+          {
+            label: "Add section",
+            href: new_manual_section_path(manual)
+          },
+        ],
+        rows: manual_section_rows(manual),
+      } %>
+    </section>
   </div>
 
-  <div class="col-md-4">
-    <%= render "admin/legacy_link_check_reports/link_check_report", reportable: { manual_id: manual.to_param }, report: manual.link_check_report %>
+  <div class="govuk-grid-column-one-third">
+    <% if allow_publish?(manual, slug_unique) || !manual.has_ever_been_published? %>
+      <div class="app-view-manuals__sidebar-actions">
+        <ul class="govuk-list govuk-list--spaced">
+        <% if allow_publish?(manual, slug_unique) %>
+            <li>
+              <%= render("govuk_publishing_components/components/button", {
+                text: "Publish",
+                href: confirm_publish_manual_path(manual),
+              }) %>
+            </li>
+        <% end %>
+        <%# if false %><%# Comment out discard for now %>
+          <% unless manual.has_ever_been_published? %>
+            <li>
+              <%= render("govuk_publishing_components/components/button", {
+                text: "Discard draft",
+                href: confirm_discard_manual_path(manual),
+                destructive: true,
+              }) %>
+            </li>
+          <% end %>
+        <%# end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if manual.published? %>
+      <div class="app-view-manuals__sidebar-actions">
+        <p class="govuk-body">
+          <%= link_to "View on website (opens in new tab)", url_for_public_manual(manual), target: "_blank", class: "govuk-link" %></p>
+      </div>
+    <% end %>
+
+    <%= render "admin/link_check_reports/link_check_report", reportable: { manual_id: manual.to_param }, report: manual.link_check_report %>
+
+    <% if manual.draft? && manual.has_ever_been_published? %>
+      <div class="app-inset-prompt">
+        <p class="govuk-body">This is a new draft of a document that has already been published.</p>
+        <p class="govuk-body">
+          <%= link_to "Go to published edition", url_for_public_manual(manual), target: "_blank", class: "govuk-link" %></p>
+      </div>
+    <% end %>
   </div>
 </div>

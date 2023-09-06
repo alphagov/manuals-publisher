@@ -15,6 +15,32 @@
       navigation_items: navigation_links_internal + navigation_links_auth,
   } %>
 
+  <% unless flash.empty? %>
+    <div class="govuk-width-container">
+      <div class="govuk-grid-row app-flash-container">
+        <% flash.each do |type, msg| %>
+          <% if type == "notice" %>
+            <%= render "govuk_publishing_components/components/notice", {
+              description: msg,
+              margin_bottom: 0,
+            } %>
+          <% elsif type == "success" %>
+            <%= render "govuk_publishing_components/components/success_alert", {
+              message: msg,
+              margin_bottom: 0,
+            } %>
+          <% elsif type == "error" %>
+            <%= render "govuk_publishing_components/components/error_alert", {
+              message: msg,
+            } %>
+          <% else %>
+            <%= msg %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <div class="govuk-width-container">
     <%= yield(:breadcrumbs) %>
 

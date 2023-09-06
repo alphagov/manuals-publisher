@@ -91,7 +91,9 @@ module ManualHelpers
 
   def edit_section(manual_title, section_title, new_fields)
     go_to_manual_page(manual_title)
-    click_on section_title
+    within(:xpath, "//div[dt[span[.='#{section_title}']]]") do
+      click_on("View")
+    end
     click_on "Edit"
     fill_in_fields(new_fields)
 
@@ -148,7 +150,7 @@ module ManualHelpers
   end
 
   def publish_manual
-    click_on "Publish manual"
+    click_on "Publish"
     page.should have_button("Publish")
     click_on "Publish"
   end
@@ -202,7 +204,7 @@ module ManualHelpers
 
   def go_to_edit_page_for_manual(manual_title)
     go_to_manual_page(manual_title)
-    click_on("Edit manual")
+    click_on("Front page")
   end
 
   def check_for_errors_for_fields(field)
@@ -211,7 +213,7 @@ module ManualHelpers
 
   def check_content_preview_link(slug)
     preview_url = "#{Plek.external_url_for('draft-origin')}/#{slug}"
-    expect(page).to have_link("Preview draft", href: preview_url)
+    expect(page).to have_link("Preview on website (opens in new tab)", href: preview_url)
   end
 
   def check_live_link(slug)
