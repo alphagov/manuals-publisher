@@ -522,7 +522,7 @@ When(/^I create a section to preview$/) do
   }
 
   go_to_manual_page(@manual_fields[:title])
-  click_on "Add section"
+  click_on "Add Sections"
   fill_in_fields(@section_fields)
 end
 
@@ -599,7 +599,7 @@ end
 
 Then(/^I can see the change note form when adding a new section$/) do
   go_to_manual_page(@manual.title)
-  click_on "Add section"
+  click_on "Add Sections"
 
   check_that_change_note_fields_are_present(note_field_only: true, note: "New section added.")
 end
@@ -762,7 +762,7 @@ Then(/^the manual should still belong to "(.*?)"$/) do |organisation_slug|
 end
 
 When(/^I reorder the sections$/) do
-  click_on("Reorder sections")
+  click_on("Reorder Sections")
   # Using capybara drag_to doesn't work reliably with our jQuery sortable
   # therefore we have to take a manual approach to replicating the drag/drop
   inputs = page.all(".reorderable-document-list li.ui-sortable-handle input", visible: false)

@@ -32,7 +32,7 @@ module ManualHelpers
 
   def create_section(manual_title, fields, save: true)
     go_to_manual_page(manual_title)
-    click_on "Add section"
+    click_on "Add Sections"
 
     fill_in_fields(fields)
 
@@ -43,7 +43,7 @@ module ManualHelpers
 
   def create_expanded_section(manual_title, fields)
     go_to_manual_page(manual_title)
-    click_on "Add section"
+    click_on "Add Sections"
 
     fill_in_fields(fields)
 
