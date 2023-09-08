@@ -765,7 +765,7 @@ When(/^I reorder the sections$/) do
   click_on("Reorder Sections")
   # Using capybara drag_to doesn't work reliably with our jQuery sortable
   # therefore we have to take a manual approach to replicating the drag/drop
-  inputs = page.all(".reorderable-document-list li.ui-sortable-handle input", visible: false)
+  inputs = page.all(".gem-c-reorderable-list__item input", visible: false)
   values = inputs.map(&:value).reverse
   inputs.each_with_index { |input, index| input.execute_script("this.value = '#{values[index]}'") }
 

@@ -88,6 +88,32 @@ describe SectionsController, type: :controller do
     end
   end
 
+  describe "#update_order" do
+    let(:manual) { Manual.new }
+    let(:service) { double(:service) }
+    let(:params) { { manual_id: "manual-id", section_order: {} } }
+
+    before do
+      login_as_stub_user
+      params[:section_order] = {
+        item_2: "2",
+        item_1: "1",
+        item_11: "11",
+      }
+
+      allow(service).to receive(:call).and_return([manual, manual.sections])
+    end
+
+    it "correctly reorders over ten manuals" do
+      expected_section_order = %w[item_1 item_2 item_11]
+      expect(Section::ReorderService).to receive(:new) { |args|
+        expect(args[:section_order]).to eq(expected_section_order)
+      }.and_return(service)
+
+      post :update_order, params:
+    end
+  end
+
   describe "#withdraw" do
     context "for a user that cannot withdraw" do
       let(:manual_id) { "manual-1" }
