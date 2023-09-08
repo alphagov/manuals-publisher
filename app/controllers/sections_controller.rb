@@ -129,6 +129,7 @@ class SectionsController < ApplicationController
 
     render(
       :reorder,
+      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         sections:,
@@ -140,7 +141,7 @@ class SectionsController < ApplicationController
     service = Section::ReorderService.new(
       user: current_user,
       manual_id: params.fetch(:manual_id),
-      section_order: params.fetch(:section_order),
+      section_order: update_section_order_params,
     )
     manual, _sections = service.call
 
@@ -197,6 +198,14 @@ class SectionsController < ApplicationController
   end
 
 private
+
+  def update_section_order_params
+    params
+      .permit(section_order: {})[:section_order]
+      .to_h
+      .sort_by { |_key, value| value.to_i }
+      .map { |array| array[0] }
+  end
 
   def section_params
     params
