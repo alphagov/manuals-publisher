@@ -1,32 +1,62 @@
-<% content_for :page_title, "Summary" %>
+<% content_for :title, section.title %>
 
 <% content_for :breadcrumbs do %>
-  <li><%= link_to "Your manuals", manuals_path %></li>
-  <li><%= link_to manual.title, manual_path(manual) %></li>
-  <li class="active"><%= section.title %></li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: manual.title,
+        url: manual_path(manual)
+      },
+      {
+        title: section.title
+      },
+    ]
+  } %>
 <% end %>
 
-<h1 class="page-header">
-  <%= section.title %>
-</h1>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/heading", {
+      text: section.title,
+      heading_level: 1,
+      font_size: "xl",
+      margin_bottom: 8
+    } %>
+  </div>
+</div>
 
-<div class="row">
-  <div class="sidebar col-md-8">
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Summary</h2>
-        <p><%= section.summary %></p>
-      </div>
-      <div class="col-md-12">
-        <div class="actions well">
-          <%= link_to("Edit section", edit_manual_section_path(manual, section), class: "action-link btn btn-success") %>
-          <%= link_to("Withdraw section", withdraw_manual_section_path(manual, section), class: "action-link btn btn-danger") %>
-        </div>
-      </div>
-    </div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p class="govuk-body"><%= section.summary %></p>
   </div>
 
-  <div class="col-md-4">
-    <%= render "admin/legacy_link_check_reports/link_check_report", reportable: { manual_id: manual.to_param, section_id: section.to_param }, report: section.link_check_report %>
+  <div class="govuk-grid-column-one-third">
+    <div class="app-view-manuals__sidebar-actions">
+      <ul class="govuk-list govuk-list--spaced">
+        <li>
+          <%= render("govuk_publishing_components/components/button", {
+            text: "Edit section",
+            href: edit_manual_section_path(manual, section),
+          }) %>
+        </li>
+        <li>
+          <%= render("govuk_publishing_components/components/button", {
+            text: "Withdraw section",
+            href: withdraw_manual_section_path(manual, section),
+            destructive: true,
+          }) %>
+        </li>
+      </ul>
+    </div>
+
+    <%= render("admin/link_check_reports/link_check_report", {
+      reportable: { manual_id: manual.to_param, section_id: section.to_param },
+      report: section.link_check_report
+    }) %>
   </div>
 </div>

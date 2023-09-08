@@ -11,6 +11,7 @@ class SectionsController < ApplicationController
 
     render(
       :show,
+      layout: "design_system",
       locals: {
         manual:,
         section:,
