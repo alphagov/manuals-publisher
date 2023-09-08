@@ -1,41 +1,21 @@
-.broken-links-report {
-  .issue-summary {
-    font-weight: normal;
+.app-inset-prompt {
+  @include govuk-text-colour;
+  @include govuk-responsive-padding(4);
+  @include govuk-responsive-margin(6, "bottom");
+
+  border-left: $govuk-border-width-narrow solid govuk-colour("dark-grey");
+  background-color: govuk-colour("light-grey");
+
+  @include govuk-media-query($from: tablet) {
+    border-left: $govuk-border-width solid govuk-colour("dark-grey");
   }
 
-  .issue-list {
-    list-style: none;
-    padding-left: 0;
-
-    li {
-      margin-top: 5px;
-    }
+  &:focus {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
   }
+}
 
-  .issue-status-description {
-    margin-top: 10px;
-  }
-
-  .issue-list + .issue-status-description {
-    margin: 15px 0;
-  }
-
-  .display-issue-details {
-    display: block;
-    font-weight: bold;
-    padding-top: 5px;
-  }
-
-  .display-issue-details::-webkit-details-marker {
-    display: none;
-  }
-
-  .display-issue-details:before {
-    content: "\25B6";
-    padding-right: 3px;
-  }
-
-  details[open] > .display-issue-details:before {
-    content: "\25BC";
-  }
+.app-inset-prompt--error {
+  border-color: $govuk-error-colour;
+  background-color: govuk-tint($govuk-error-colour, 90%);
 }

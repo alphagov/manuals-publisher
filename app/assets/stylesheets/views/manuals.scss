@@ -1,0 +1,40 @@
+.app-view-manuals__section {
+  padding: govuk-spacing(3) 0;
+}
+
+.app-view-manuals__section:first-child {
+  padding-top: 0;
+}
+
+.app-view-manuals__sidebar-actions {
+  padding: govuk-spacing(3);
+  margin-bottom: govuk-spacing(6);
+  background-color: govuk-colour("light-grey");
+
+  .gem-c-button {
+    width: 100%;
+  }
+
+  .govuk-list {
+    margin-bottom: 0;
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.app-view-summary__sidebar-actions .govuk-list--spaced li:last-child div + .broken-links-report {
+  margin-top: govuk-spacing(6);
+}
+
+.app-flash-container {
+  .govuk-notification-banner {
+    margin-top: govuk-spacing(4);
+  }
+
+  .gem-c-error-alert {
+    margin-bottom: 0;
+    margin-top: govuk-spacing(4);
+  }
+}

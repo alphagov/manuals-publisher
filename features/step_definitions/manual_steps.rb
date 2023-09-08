@@ -301,8 +301,8 @@ end
 
 When(/^I click the publish manual button$/) do
   go_to_manual_page(@manual.title) if current_path != manual_path(@manual)
-  expect(page).to have_link("Publish manual", href: confirm_publish_manual_path(@manual))
-  click_on "Publish manual"
+  expect(page).to have_link("Publish", href: confirm_publish_manual_path(@manual))
+  click_on "Publish"
 end
 
 Then(/^I am asked to confirm the publishing of a section titled "(.*?)"$/) do |section_title|
@@ -522,7 +522,7 @@ When(/^I create a section to preview$/) do
   }
 
   go_to_manual_page(@manual_fields[:title])
-  click_on "Add section"
+  click_on "Add Sections"
   fill_in_fields(@section_fields)
 end
 
@@ -590,7 +590,7 @@ end
 Then(/^I can see the change note and update type form when editing existing sections$/) do
   @sections.each do |section|
     go_to_manual_page(@manual.title)
-    click_on section.title
+    click_link section.title, href: manual_section_path(@manual, section)
     click_on "Edit section"
 
     check_that_change_note_fields_are_present
@@ -599,7 +599,7 @@ end
 
 Then(/^I can see the change note form when adding a new section$/) do
   go_to_manual_page(@manual.title)
-  click_on "Add section"
+  click_on "Add Sections"
 
   check_that_change_note_fields_are_present(note_field_only: true, note: "New section added.")
 end
@@ -762,7 +762,7 @@ Then(/^the manual should still belong to "(.*?)"$/) do |organisation_slug|
 end
 
 When(/^I reorder the sections$/) do
-  click_on("Reorder sections")
+  click_on("Reorder Sections")
   # Using capybara drag_to doesn't work reliably with our jQuery sortable
   # therefore we have to take a manual approach to replicating the drag/drop
   inputs = page.all(".reorderable-document-list li.ui-sortable-handle input", visible: false)
@@ -778,7 +778,7 @@ end
 
 Then(/^the order of the sections in the manual should have been updated$/) do
   @reordered_section_attributes.map { |sec| sec[:title] }.each.with_index do |title, index|
-    expect(page).to have_css(".document-list li.document:nth-child(#{index + 1}) .document-title", text: title)
+    expect(page).to have_css(".govuk-summary-list .govuk-summary-list__row:nth-child(#{index + 1}) dt.govuk-summary-list__key", text: title)
   end
 end
 
@@ -812,5 +812,5 @@ Then(/^the manual is listed as (draft|published|published with new draft)$/) do 
 
   click_on @manual.title
 
-  expect(page).to have_selector(:xpath, "//dt[.='State']/following-sibling::dd[.='#{status}']")
+  expect(page).to have_selector(:xpath, "//dt[.='Status']/following-sibling::dd[.='#{status}']")
 end
