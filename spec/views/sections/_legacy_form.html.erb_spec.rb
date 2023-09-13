@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "sections/_form", type: :view do
+describe "sections/_legacy_form", type: :view do
   it "contains the elements required by the JavaScript that toggles the visibility of the change note field" do
     manual = FactoryBot.build(:manual, id: "manual-id")
     section = Section.new(manual:, uuid: "section-uuid")
