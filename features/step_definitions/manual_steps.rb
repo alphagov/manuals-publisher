@@ -721,7 +721,7 @@ When(/^I paste HTML into the manual body$/) do
 end
 
 When(/^I paste HTML into the section body$/) do
-  fill_in_field("section body", "")
+  fill_in_field("Section body (required)", "")
   page.execute_script(javascript_to_simulate_paste("section_body", "<h2>Benefits of following this advice</h2>"))
 end
 

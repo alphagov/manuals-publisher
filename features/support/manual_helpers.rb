@@ -311,7 +311,7 @@ module ManualHelpers
   end
 
   def check_for_document_body_preview(text)
-    within(".preview") do
+    within(".app-c-govspeak-editor__preview--show") do
       expect(page).to have_css("p", text:)
     end
   end
