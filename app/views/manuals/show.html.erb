@@ -102,15 +102,14 @@
     <% if allow_publish?(manual, slug_unique) || !manual.has_ever_been_published? %>
       <div class="app-view-manuals__sidebar-actions">
         <ul class="govuk-list govuk-list--spaced">
-        <% if allow_publish?(manual, slug_unique) %>
+          <% if allow_publish?(manual, slug_unique) %>
             <li>
               <%= render("govuk_publishing_components/components/button", {
                 text: "Publish",
                 href: confirm_publish_manual_path(manual),
               }) %>
             </li>
-        <% end %>
-        <%# if false %><%# Comment out discard for now %>
+          <% end %>
           <% unless manual.has_ever_been_published? %>
             <li>
               <%= render("govuk_publishing_components/components/button", {
@@ -120,7 +119,6 @@
               }) %>
             </li>
           <% end %>
-        <%# end %>
         </ul>
       </div>
     <% end %>
