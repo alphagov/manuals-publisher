@@ -57,9 +57,13 @@ module ApplicationHelper
     end
 
     if manual.publish_tasks.any?
+      value = publication_task_state(manual.publish_tasks.first)
+      if manual.use_originally_published_at_for_public_timestamp?
+        value += safe_join([tag.br, "This will be used as the public updated at timestamp on GOV.UK."])
+      end
       rows << {
         key: "Last published",
-        value: publication_task_state(manual.publish_tasks.first),
+        value:,
       }
     end
     rows

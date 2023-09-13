@@ -214,10 +214,16 @@ describe ApplicationHelper, type: :helper do
       expect(rows).not_to include(include(key: "Originally published"))
     end
 
-    it "returns a 'last published' row when the manual has publish tasks" do
-      manual = FactoryBot.build_stubbed(:manual)
-      allow_any_instance_of(ApplicationHelper).to receive(:publication_task_state).and_return("test publication task state")
-      manual.publish_tasks = [{ updated_at: Time.zone.now, state: "queued" }]
+    it "returns a 'last published' row with the most recent publication date when the manual has been published" do
+      manual = FactoryBot.build_stubbed(:manual, use_originally_published_at_for_public_timestamp: false)
+      most_recent_publish_task = { updated_at: Time.zone.now, state: "queued" }
+      manual.publish_tasks = [
+        most_recent_publish_task,
+        { updated_at: Time.zone.now - 10, state: "finished" },
+      ]
+      allow_any_instance_of(ApplicationHelper).to receive(:publication_task_state)
+                                                    .with(most_recent_publish_task)
+                                                    .and_return("test publication task state")
 
       rows = manual_metadata_rows(manual)
 
@@ -227,13 +233,26 @@ describe ApplicationHelper, type: :helper do
       )
     end
 
-    it "does not return an 'last published' row when the manual does not have publish tasks" do
+    it "does not return a 'last published' row when the manual has not been published" do
       manual = FactoryBot.build_stubbed(:manual)
       manual.publish_tasks = []
 
       rows = manual_metadata_rows(manual)
 
       expect(rows).not_to include(include(key: "Last published"))
+    end
+
+    it "indicates when 'originally published at' will be used as the public timestamp" do
+      manual = FactoryBot.build_stubbed(:manual, use_originally_published_at_for_public_timestamp: true)
+      allow_any_instance_of(ApplicationHelper).to receive(:publication_task_state).and_return("test publication task state")
+      manual.publish_tasks = [{ updated_at: Time.zone.now, state: "queued" }]
+
+      rows = manual_metadata_rows(manual)
+
+      expect(rows).to include(
+        { key: "Last published",
+          value: "test publication task state<br>This will be used as the public updated at timestamp on GOV.UK." },
+      )
     end
   end
 
