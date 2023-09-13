@@ -1,0 +1,132 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "vendor/jquery-1.11.0.min" %>
+  <%= javascript_include_tag "ajax_setup" %>
+  <%= javascript_include_tag "markdown_preview" %>
+<% end %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_for [manual, section] do |f| %>
+      <%= render partial: "shared/form_errors", locals: { object: section, attribute_id_prefix: "section" } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Section title (required)"
+        },
+        name: "section[title]",
+        id: "section_title",
+        heading_level: 2,
+        heading_size: "l",
+        value: section.title,
+        error_items: errors_for(section.errors, :title)
+      } %>
+      <%= render "govuk_publishing_components/components/character_count", {
+        textarea: {
+          label: {
+            text: "Section summary (required)",
+            heading_size: "l",
+          },
+          name: "section[summary]",
+          value: section.summary,
+          rows: 4,
+          error_items: errors_for(section.errors, :summary)
+        },
+        id: "section_summary",
+        maxlength: 280
+      } %>
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: "Section body (required)",
+          heading_size: "l",
+        },
+        name: "section[body]",
+        id: "section_body",
+        value: section.body,
+        rows: 20,
+        data: {module: "js-paste-html-to-govspeak"},
+        error_items: errors_for(section.errors, :body)
+      } %>
+
+      <div class="preview_button add-vertical-margins"></div>
+      <div class="preview_container add-vertical-margins" style="display: none;"></div>
+
+      <div class="add-vertical-margins">
+        <input name="section[visually_expanded]" type="hidden" value="0" autocomplete="off">
+        <%= render "govuk_publishing_components/components/checkboxes", {
+          name: "section[visually_expanded]",
+          id: "section_visually_expanded",
+          items: [
+            {
+              label: "Remove collapsible content functionality (accordions)",
+              value: 1,
+              checked: section.visually_expanded
+            }
+          ]
+        } %>
+        <%= render "govuk_publishing_components/components/inset_text", {
+          text: "This manuals page will not have any collapsible sections. The formatting markdown ## will create a top level heading (H2) only, not a collapsible section."
+        } %>
+      </div>
+
+      <div>
+        <p class="govuk-body">Major update</p>
+        <p class="help-block govuk-body">Adding a new section is always a major update</p>
+        <%= f.text_area :change_note, rows: 20, cols: 40, class: 'form-control short-textarea' %>
+        <p class="help-block govuk-body">This will be publically viewable on GOV.UK.</p>
+      </div>
+
+      <div class="govuk-button-group">
+        <%= render("govuk_publishing_components/components/button", {
+          text: "Save as draft",
+        }) %>
+        <%= link_to("Cancel", manual_path(manual), class: "govuk-link govuk-link--no-visited-state") %>
+      </div>
+    <% end %>
+  </div>
+
+<!--  <div class="col-md-4">-->
+
+    <%# content_for :format_specific_help do %>
+<!--      <h3><a data-toggle="collapse" data-target="#govspeak-collapsible">Collapsible</a></h3>-->
+<!--      <div class="collapse" id="govspeak-collapsible">-->
+<!--        <pre>## Section title-->
+<!--    body content to be collapsed.</pre>-->
+<!--      </div>-->
+    <%# end %>
+
+    <%#= render partial: "govuk_admin_template/govspeak_help" %>
+
+<!--    <h2>Attachments</h2>-->
+
+    <%# if section.persisted? %>
+      <%#= link_to "Add attachment", new_manual_section_attachment_path(manual, section) %>
+    <%# else %>
+<!--      <p>To add an attachment, please save the draft first.</p>-->
+    <%# end %>
+
+<!--    <ul class="attachments">-->
+      <%# section.attachments.each do |attachment| %>
+<!--        <li class="attachment">-->
+<!--          <span class="title"><%#= attachment.title %></span>-->
+<!--          <span class="snippet"><%#= attachment.snippet %></span>-->
+          <%#= link_to "edit", edit_manual_section_attachment_path(manual, section, attachment) %>
+<!--        </li>-->
+      <%# end %>
+<!--    </ul>-->
+<!--  </div>-->
+</div>
+<%= content_for :document_ready do %>
+  window.MarkdownPreview.addPreviewFeature({
+    'url'             : '<%= preview_path_for_section(manual, section) %>',
+    'insert_into'     : '.preview_container',
+    'insert_button'   : '.preview_button',
+    'render_to'       : '.preview .govspeak',
+    'data_target'     : function() {
+                          return {
+                            'section' : {
+                              'body' : $('#section_body').val()
+                            }
+                          };
+                        }
+  });
+<% end -%>
