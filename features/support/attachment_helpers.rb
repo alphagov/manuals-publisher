@@ -58,7 +58,7 @@ module AttachmentHelpers
   end
 
   def check_preview_contains_attachment_link(title)
-    within(".preview") do
+    within(".app-c-govspeak-editor__preview--show") do
       expect(page).to have_css("a", text: title)
     end
   end
@@ -67,7 +67,7 @@ module AttachmentHelpers
     attachment_li = page.find(".attachments li", text: attachment_title)
 
     within(attachment_li) do
-      click_link("edit")
+      click_link("Edit attachment")
     end
 
     fill_in "Title", with: new_attachment_title

@@ -68,6 +68,7 @@ class SectionsController < ApplicationController
 
     render(
       :edit,
+      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
@@ -89,6 +90,7 @@ class SectionsController < ApplicationController
     else
       render(
         :edit,
+        layout: "design_system",
         locals: {
           manual: ManualViewAdapter.new(manual),
           section: SectionViewAdapter.new(manual, section),
