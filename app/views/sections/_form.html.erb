@@ -69,10 +69,24 @@
       </div>
 
       <div>
-        <p class="govuk-body">Major update</p>
-        <p class="help-block govuk-body">Adding a new section is always a major update</p>
-        <%= f.text_area :change_note, rows: 20, cols: 40, class: 'form-control short-textarea' %>
-        <p class="help-block govuk-body">This will be publically viewable on GOV.UK.</p>
+        <%= render "govuk_publishing_components/components/heading", {
+          text: "Change note",
+          heading_level: 2,
+          font_size: "l",
+          margin_bottom: 3,
+        } %>
+        <%= render "govuk_publishing_components/components/textarea", {
+          label: {
+            text: "Major update",
+            heading_level: 3,
+            heading_size: "m",
+          },
+          hint: "Adding a new section is always a major update. This will be publicly viewable on GOV.UK.",
+          name: "section[change_note]",
+          id: "section_change_note",
+          value: section.change_note,
+          rows: 5,
+        } %>
       </div>
 
       <div class="govuk-button-group">
