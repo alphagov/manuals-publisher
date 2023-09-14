@@ -1,3 +1,7 @@
+<%
+  show_collapsible_help = show_collapsible_help || false
+%>
+
 <div class="govspeak-help">
   <%= render "govuk_publishing_components/components/heading", {
     text: "Formatting",
@@ -8,13 +12,25 @@
 
   <p class="govuk-body">For details, read the <%=link_to("guide to using Markdown", "https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown", class: "govuk-link") %>
 
+  <% if show_collapsible_help %>
     <%= render "govuk_publishing_components/components/details", {
-      title: "Paste and convert to Markdown",
+      title: "Collapsible",
       data_attributes: {
         track_category: "formatting-help",
-        track_action: "Paste and convert to Markdown",
+        track_action: "Collapsible",
       },
     } do %>
+      <pre class="govspeak-help__pre">## Section title<br />    body content to be collapsed.</pre>
+    <% end %>
+  <% end %>
+
+  <%= render "govuk_publishing_components/components/details", {
+    title: "Paste and convert to Markdown",
+    data_attributes: {
+      track_category: "formatting-help",
+      track_action: "Paste and convert to Markdown",
+    },
+  } do %>
     <p class='govuk-body'>You can paste formatted text into the body field and Manuals Publisher will try to convert it into GOV.UK’s version of Markdown, Govspeak.</p>
     <p class='govuk-body'>This works best when copy and pasting from text editing software like Word or Google Docs. It is less likely to recognise formatting from PDFs.</p>
     <p class='govuk-body'>It will convert:</p>
