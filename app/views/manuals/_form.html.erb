@@ -1,45 +1,77 @@
-<div class="row">
-  <div class="col-md-8">
-    <%= form_for manual do |f| %>
-      <%= render partial: "shared/form_errors", locals: { object: manual } %>
+<% content_for :head do %>
+  <%= javascript_include_tag "vendor/jquery-1.11.0.min" %>
+  <%= javascript_include_tag "ajax_setup" %>
+  <%= javascript_include_tag "markdown_preview" %>
+<% end %>
 
-      <%= f.text_field :title, class: 'form-control' %>
-      <%= f.text_area :summary, rows: 20, cols: 40, class: 'form-control short-textarea js-length-counter', data: { :"count-message-threshold" => 280, :"count-message-selector" => ".summary-length-info" } %>
-      <div class="summary-length-info" aria-live="polite">
-        Summary text should be 280 characters or fewer. <span class="count"></span>
-      </div>
-      <%= f.text_area :body, rows: 20, cols: 40, class: 'form-control js-paste-html-to-govspeak' %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= form_for manual do %>
+      <%= render partial: "shared/form_errors", locals: { object: manual, attribute_id_prefix: "manual" } %>
+
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Slug (read only)"
+        },
+        name: "slug",
+        heading_level: 2,
+        heading_size: "l",
+        value: manual.slug,
+        readonly: true
+      } %>
+      <%= render "govuk_publishing_components/components/input", {
+        label: {
+          text: "Title (required)"
+        },
+        name: "manual[title]",
+        id: "manual_title",
+        heading_level: 2,
+        heading_size: "l",
+        value: manual.title,
+        error_items: errors_for(manual.errors, :title)
+      } %>
+      <%= render "govuk_publishing_components/components/character_count", {
+        textarea: {
+          label: {
+            text: "Summary (required)",
+            heading_size: "l",
+          },
+          name: "manual[summary]",
+          value: manual.summary,
+          rows: 4,
+          error_items: errors_for(manual.errors, :summary)
+        },
+        id: "manual_summary",
+        maxlength: 280
+      } %>
+      <%= render "govuk_publishing_components/components/textarea", {
+        label: {
+          text: "Body",
+          heading_size: "l",
+        },
+        name: "manual[body]",
+        id: "manual_body",
+        value: manual.body,
+        rows: 20,
+        data: {module: "js-paste-html-to-govspeak"},
+        error_items: errors_for(manual.errors, :body)
+      } %>
 
       <div class="preview_button add-vertical-margins"></div>
       <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
-      <% unless manual.persisted? %>
-        <fieldset class="first-published-date well">
-          <label class="control-label">This manual</label>
-          <div class="checkbox add-vertical-margins">
-            <%= f.radio_button(:previously_published, 0, tag_type: :p, label: 'has never been published before. It is new.', checked: true) %>
-          </div>
-          <div class="checkbox add-vertical-margins">
-            <%= f.radio_button(:previously_published, 1, tag_type: :p, label: 'has previously been published on another website.', checked: false) %>
-          </div>
-          <div class="js-hidden">
-            <%= f.label :originally_published_at, "Its original publication date was" %>
-            <div class="form-inline">
-              <%= f.datetime_select :originally_published_at, { include_blank: true, start_year: Date.today.year, end_year: 1945 }, { class: 'date form-control' } %>
-            </div>
-            <%= f.hidden_field :use_originally_published_at_for_public_timestamp, value: 1 %>
-          </div>
-        </fieldset>
-      <% end %>
-
-      <div class='actions'>
-        <button name="draft" class="btn btn-success" data-disable-with="Saving...">Save as draft</button>
+      <div class="govuk-button-group">
+        <%= render("govuk_publishing_components/components/button", {
+          text: "Save as draft",
+        }) %>
+        <%= link_to("Cancel", manual_path(manual), class: "govuk-link govuk-link--no-visited-state") %>
       </div>
     <% end %>
   </div>
 
-  <div class="col-md-4">
-    <%= render partial: "govuk_admin_template/govspeak_help" %>
+  <div class="govuk-grid-column-one-third">
+    <%= render partial: "govspeak_help" %>
+    <%= render partial: "style_guidance" %>
   </div>
 </div>
 
@@ -57,17 +89,4 @@
                           };
                         }
   });
-
-  window.toggleDisplayWithCheckedInput({
-    $input: $("#manual_previously_published_0"),
-    $element: $("#manual_originally_published_at_1i").parent().parent(),
-    mode: 'hide'
-  });
-  window.toggleDisplayWithCheckedInput({
-    $input: $("#manual_previously_published_1"),
-    $element: $("#manual_originally_published_at_1i").parent().parent(),
-    mode: 'show'
-  });
-  $('.js-hidden').hide();
-
 <% end -%>

@@ -1,11 +1,33 @@
-<% content_for :page_title, "Edit manual" %>
+<% content_for :title, "Edit manual" %>
 
 <% content_for :breadcrumbs do %>
-  <li><%= link_to "Your manuals", manuals_path %></li>
-  <li><%= link_to manual.title, manual_path(manual) %></li>
-  <li class='active'>Edit manual</li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: manual.title,
+        url: manual_path(manual)
+      },
+      {
+        title: "Edit front page"
+      },
+    ]
+  } %>
 <% end %>
 
-<h1 class="page-header">Edit manual</h1>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/heading", {
+      text: "Edit front page",
+      heading_level: 1,
+      font_size: "xl",
+      margin_bottom: 8
+    } %>
+  </div>
+</div>
 
 <%= render 'form', manual: manual %>

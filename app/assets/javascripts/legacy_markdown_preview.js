@@ -50,7 +50,7 @@
     }
 
     function previewButton () {
-      return '<button name="preview" class="gem-c-button govuk-button gem-c-button--secondary-quiet">Preview</button>'
+      return '<button name="preview" class="btn btn-primary">Preview</button>'
     }
 
     function buttonSelector () {

@@ -1,12 +1,12 @@
 <% if object.errors.any? %>
-  <div class="errors error-list">
-    <h2>Please fix the following errors found in the form</h2>
-    <ul class="errors">
-      <% object.errors.each do |errors| %>
-        <% if errors %>
-          <li><%= errors.attribute.to_s.humanize %> <%= [*errors.message].join(' and ')  %></li>
-        <% end %>
-      <% end %>
-    </ul>
-  </div>
+  <%= render "govuk_publishing_components/components/error_summary", {
+    id: "error-summary",
+    title: "Please fix the following errors found in the form",
+    items: object.errors.map do |errors|
+      {
+        text: "#{errors.attribute.to_s.humanize} #{[*errors.message].join(' and ')}",
+        href: "##{attribute_id_prefix}_#{errors.attribute}"
+      }
+    end
+  } %>
 <% end %>
