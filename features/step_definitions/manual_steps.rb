@@ -617,7 +617,7 @@ Then(/^the change note form for the section contains my note$/) do
   click_on((@updated_section || @section).title)
   click_on "Edit section"
 
-  check_that_change_note_fields_are_present(note_field_only: true, note: @change_note)
+  check_that_major_change_note_field_is_present(note: @change_note)
 end
 
 When(/^I add another section to the manual$/) do

@@ -75,18 +75,49 @@
           font_size: "l",
           margin_bottom: 3,
         } %>
-        <%= render "govuk_publishing_components/components/textarea", {
-          label: {
-            text: "Major update",
-            heading_level: 3,
-            heading_size: "m",
-          },
-          hint: "Adding a new section is always a major update. This will be publicly viewable on GOV.UK.",
-          name: "section[change_note]",
-          id: "section_change_note",
-          value: section.change_note,
-          rows: 5,
-        } %>
+        <% if manual.has_ever_been_published? && section.accepts_minor_updates? %>
+          <%= render "govuk_publishing_components/components/radio", {
+            name: "section[minor_update]",
+            items: [
+              {
+                text: "Major update",
+                value: 0,
+                id: "section_minor_update_0",
+                hint_text: "This will be publicly viewable on GOV.UK.",
+                checked: !section.minor_update,
+                conditional: render("govuk_publishing_components/components/textarea", {
+                  label: {
+                    text: "Change note",
+                  },
+                  name: "section[change_note]",
+                  id: "section_change_note",
+                  value: section.change_note,
+                  rows: 5,
+                })
+              },
+              {
+                text: "Minor update",
+                value: 1,
+                id: "section_minor_update_1",
+                hint_text: "Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.",
+                checked: section.minor_update,
+              }
+            ]
+          } %>
+          <% else %>
+            <%= render "govuk_publishing_components/components/textarea", {
+              label: {
+                text: "Major update",
+                heading_level: 3,
+                heading_size: "m",
+              },
+              hint: "Adding a new section is always a major update. This will be publicly viewable on GOV.UK.",
+              name: "section[change_note]",
+              id: "section_change_note",
+              value: section.change_note,
+              rows: 5,
+            } %>
+          <% end %>
       </div>
 
       <div class="govuk-button-group">
@@ -107,7 +138,34 @@
       font_size: "l",
       margin_bottom: 6,
     } %>
-    <p class="govuk-body">To add an attachment, please save the draft first.</p>
+    <% if section.persisted? %>
+      <p class="govuk-body">
+        <%= link_to(
+          "Add attachment",
+          new_manual_section_attachment_path(manual, section),
+          class: "govuk-link govuk-link--no-visited-state") %>
+      </p>
+    <% else %>
+      <p class="govuk-body">To add an attachment, please save the draft first.</p>
+    <% end %>
+    <ul class="attachments">
+      <% section.attachments.each do |attachment| %>
+        <li class="attachment">
+          <p class="govuk-body">
+            <span class="title govuk-!-font-weight-bold">Title: </span><span><%= attachment.title %></span>
+          </p>
+          <p class="govuk-body">
+            <span class="title govuk-!-font-weight-bold">Attachment: </span><span class="snippet"><%= attachment.snippet %></span>
+          </p>
+          <p class="govuk-body">
+            <%= link_to(
+              "Edit attachment",
+              edit_manual_section_attachment_path(manual, section, attachment),
+              class: "govuk-link govuk-link--no-visited-state") %>
+          </p>
+        </li>
+      <% end %>
+    </ul>
   </div>
 </div>
 

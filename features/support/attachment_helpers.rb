@@ -67,7 +67,7 @@ module AttachmentHelpers
     attachment_li = page.find(".attachments li", text: attachment_title)
 
     within(attachment_li) do
-      click_link("edit")
+      click_link("Edit attachment")
     end
 
     fill_in "Title", with: new_attachment_title

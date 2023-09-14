@@ -1,0 +1,14 @@
+.attachments {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  .attachment {
+    border-top: 1px solid $govuk-border-colour;
+    padding: govuk-spacing(2) 0 0 0;
+  }
+
+  .attachment:first-child {
+    border-top: none;
+  }
+}
