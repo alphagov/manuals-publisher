@@ -348,6 +348,10 @@ module ManualHelpers
     expect(page).to have_field("Change note", with: note)
   end
 
+  def check_that_major_change_note_field_is_present(note: "")
+    expect(page).to have_field("Major update", with: note)
+  end
+
   def check_manual_can_be_created
     @manual_fields = {
       title: "Example Manual Title",

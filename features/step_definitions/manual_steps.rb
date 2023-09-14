@@ -170,7 +170,7 @@ When(/^I create a section for the manual with a change note$/) do
     section_title: @section_title,
     section_summary: "Section 1 summary",
     section_body: "Section 1 body",
-    change_note: @change_note,
+    major_update: @change_note,
   }
 
   create_section(@manual_fields.fetch(:title), @section_fields)
@@ -605,7 +605,7 @@ Then(/^I can see the change note form when adding a new section$/) do
   go_to_manual_page(@manual.title)
   click_on "Add Sections"
 
-  check_that_change_note_fields_are_present(note_field_only: true, note: "New section added.")
+  check_that_major_change_note_field_is_present(note: "New section added.")
 end
 
 Then(/^the change note form for the section is clear$/) do
