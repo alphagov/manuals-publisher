@@ -23,7 +23,7 @@ When(/^I tell the manual to stop using the previously published date as the publ
   WebMock::RequestRegistry.instance.reset!
 
   edit_manual_original_publication_date(@manual.title) do
-    choose("Change the first published date.")
+    choose("Change the first published date")
   end
 
   step %(I publish the manual)
@@ -35,7 +35,11 @@ When(/^I update the previously published date to a new one$/) do
   @new_originally_published_at = Time.zone.parse("25-Mar-#{Time.zone.now.year - 8} 12:57")
 
   edit_manual_original_publication_date(@manual.title) do
-    select_datetime @new_originally_published_at.to_s, from: "First publication date:"
+    fill_in "Year", with: @new_originally_published_at.year.to_s
+    fill_in "Month", with: @new_originally_published_at.mon.to_s
+    fill_in "Day", with: @new_originally_published_at.day.to_s
+    page.select @new_originally_published_at.hour.to_s, from: "Hour"
+    page.select @new_originally_published_at.min.to_s, from: "Minute"
   end
 
   step %(I publish the manual)
@@ -45,7 +49,11 @@ When(/^I update the manual to clear the previously published date$/) do
   WebMock::RequestRegistry.instance.reset!
 
   edit_manual_original_publication_date(@manual.title) do
-    clear_datetime "First publication date:"
+    fill_in "Year", with: ""
+    fill_in "Month", with: ""
+    fill_in "Day", with: ""
+    page.select "", from: "Hour"
+    page.select "", from: "Minute"
   end
 
   step %(I publish the manual)
@@ -55,7 +63,7 @@ When(/^I tell the manual to start using the previously published date as the pub
   WebMock::RequestRegistry.instance.reset!
 
   edit_manual_original_publication_date(@manual.title) do
-    choose("Change the first published and last updated date.")
+    choose("Change the first published and last updated date")
   end
 
   step %(I publish the manual)

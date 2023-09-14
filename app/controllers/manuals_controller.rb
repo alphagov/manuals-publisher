@@ -106,7 +106,13 @@ class ManualsController < ApplicationController
     )
     manual = service.call
 
-    render(:edit_original_publication_date, locals: { manual: manual_form(manual) })
+    render(
+      :edit_original_publication_date,
+      layout: "design_system",
+      locals: {
+        manual: manual_form(manual),
+      },
+    )
   end
 
   def update_original_publication_date
