@@ -95,21 +95,11 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
-    <%= render partial: "shared/govspeak_help" %>
+    <%= render partial: "shared/govspeak_help", locals: { show_collapsible_help: true } %>
     <%= render partial: "shared/style_guidance" %>
   </div>
 
 <!--  <div class="col-md-4">-->
-
-    <%# content_for :format_specific_help do %>
-<!--      <h3><a data-toggle="collapse" data-target="#govspeak-collapsible">Collapsible</a></h3>-->
-<!--      <div class="collapse" id="govspeak-collapsible">-->
-<!--        <pre>## Section title-->
-<!--    body content to be collapsed.</pre>-->
-<!--      </div>-->
-    <%# end %>
-
-    <%#= render partial: "govuk_admin_template/govspeak_help" %>
 
 <!--    <h2>Attachments</h2>-->
 
