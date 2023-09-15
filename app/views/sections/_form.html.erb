@@ -132,40 +132,7 @@
   <div class="govuk-grid-column-one-third">
     <%= render partial: "shared/govspeak_help", locals: { show_collapsible_help: true } %>
     <%= render partial: "shared/style_guidance" %>
-    <%= render "govuk_publishing_components/components/heading", {
-      text: "Attachments",
-      heading_level: 2,
-      font_size: "l",
-      margin_bottom: 6,
-    } %>
-    <% if section.persisted? %>
-      <p class="govuk-body">
-        <%= link_to(
-          "Add attachment",
-          new_manual_section_attachment_path(manual, section),
-          class: "govuk-link govuk-link--no-visited-state") %>
-      </p>
-    <% else %>
-      <p class="govuk-body">To add an attachment, please save the draft first.</p>
-    <% end %>
-    <ul class="attachments">
-      <% section.attachments.each do |attachment| %>
-        <li class="attachment">
-          <p class="govuk-body">
-            <span class="title govuk-!-font-weight-bold">Title: </span><span><%= attachment.title %></span>
-          </p>
-          <p class="govuk-body">
-            <span class="title govuk-!-font-weight-bold">Attachment: </span><span class="snippet"><%= attachment.snippet %></span>
-          </p>
-          <p class="govuk-body">
-            <%= link_to(
-              "Edit attachment",
-              edit_manual_section_attachment_path(manual, section, attachment),
-              class: "govuk-link govuk-link--no-visited-state") %>
-          </p>
-        </li>
-      <% end %>
-    </ul>
+    <%= render partial: 'attachments', locals: { manual:, section: }  %>
   </div>
 </div>
 
