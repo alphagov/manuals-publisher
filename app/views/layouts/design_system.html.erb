@@ -44,6 +44,8 @@
   <div class="govuk-width-container">
     <%= yield(:breadcrumbs) %>
 
+    <%= yield(:heading) %>
+
     <main class="govuk-main-wrapper" id="main-content" role="main">
       <%= yield %>
       <% if content_for?(:document_ready) %>

@@ -1,41 +1,87 @@
-<% content_for :page_title, "Withdraw section" %>
+<% content_for :title, "Withdraw section" %>
 
 <% content_for :breadcrumbs do %>
-  <li><%= link_to "Your manuals", manuals_path %></li>
-  <li><%= link_to manual.title, manual_path(manual) %></li>
-  <li><%= link_to section.title, manual_section_path(manual, section) %></li>
-  <li class='active'>Withdraw section</li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: manual.title,
+        url: manual_path(manual)
+      },
+      {
+        title: section.title,
+        url: manual_section_path(manual, section)
+      },
+      {
+        title: "Withdraw section"
+      }
+    ]
+  } %>
 <% end %>
 
-<h1 class="page-header">Withdraw section</h1>
+<% content_for :heading do %>
+  <%= render "govuk_publishing_components/components/title", {
+    title: "Withdraw section"
+  } %>
+<% end %>
 
-<div class='row'>
-  <div class="col-md-8">
-    <%= form_for [manual, section], method: :delete, class: 'panel panel-default' do |f| %>
-      <%= render partial: "shared/legacy_form_errors", locals: { object: section } %>
-
-      <div class="panel-body">
-        <p>This will remove this section from the manual.  This change will go
-          live when you publish the manual.  You will not be able to reinstate
-          it after you remove it.</p>
-
-        <div class="checkbox add-vertical-margins">
-          <%= f.radio_button :minor_update, 1, tag_type: :p, label: 'Minor update', checked: section.minor_update %>
-          <p class="help-block">Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.</p>
+<div>
+  <p class="govuk-body">This will remove this section from the manual. This change will go live when you publish the manual.
+  You will not be able to reinstate it after you remove it.</p>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <%= form_for [manual, section], method: :delete do |f| %>
+        <%= render partial: "shared/form_errors", locals: { object: section, attribute_id_prefix: "section" } %>
+          <%= render "govuk_publishing_components/components/heading", {
+            text: "Change note",
+            heading_level: 2,
+            font_size: "l",
+            margin_bottom: 3,
+          } %>
+          <%= render "govuk_publishing_components/components/radio", {
+            name: "section[minor_update]",
+            items: [
+              {
+                text: "Major update",
+                value: 0,
+                id: "section_minor_update_0",
+                hint_text: "This will be publicly viewable on GOV.UK.",
+                checked: !section.minor_update,
+                conditional: render("govuk_publishing_components/components/textarea", {
+                  label: {
+                    text: "Change note",
+                  },
+                  name: "section[change_note]",
+                  id: "section_change_note",
+                  value: section.change_note,
+                  rows: 5,
+                })
+              },
+              {
+                text: "Minor update",
+                value: 1,
+                id: "section_minor_update_1",
+                hint_text: "Only use for minor changes like fixes to typos, links, GOV.UK style or metadata.",
+                checked: section.minor_update,
+              }
+            ]
+          } %>
+        <%= render "govuk_publishing_components/components/warning_text", {
+          text: "Are you sure you want to proceed?"
+        } %>
+          <div class="govuk-button-group">
+            <%= render("govuk_publishing_components/components/button", {
+              text: "Withdraw section",
+            }) %>
+            <%= link_to("Cancel", manual_section_path(manual, section), class: "govuk-link govuk-link--no-visited-state") %>
+          </div>
         </div>
-        <div class="checkbox add-vertical-margins">
-          <%= f.radio_button :minor_update, 0, tag_type: :p, label: 'Major update', checked: !section.minor_update %>
-        </div>
-        <div class="js-change-note-container <%= section.minor_update ? 'js-hidden' : nil %>">
-          <%= f.text_area :change_note, rows: 20, cols: 40, class: 'form-control short-textarea' %>
-          <p class="help-block">This will be publically viewable on GOV.UK.</p>
-        </div>
-
-        <p>Are you sure you want to proceed?</p>
-        <button name='draft' class="btn btn-danger" data-disable-with="Withdrawing...">Yes</button>
-        <%= link_to "No", manual_section_path(manual, section), class: 'btn btn-default' %>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 </div>
 
