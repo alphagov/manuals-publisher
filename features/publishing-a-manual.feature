@@ -31,7 +31,8 @@ Feature: Publishing a manual
   Scenario: Add a change note
     Given a published manual exists
     When I create a section for the manual with a change note
-    And I publish the manual
+    Then I should see a pre-publish message
+    When I publish the manual
     Then the manual is published as a major update including a change note draft
 
   Scenario: Omit the change note

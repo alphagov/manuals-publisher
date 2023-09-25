@@ -101,6 +101,9 @@
   <div class="govuk-grid-column-one-third">
     <% if allow_publish?(manual, slug_unique) || !manual.has_ever_been_published? %>
       <div class="app-view-manuals__sidebar-actions">
+        <% publish_text(manual, slug_unique).each do |message| %>
+          <p class="govuk-body"> <%= message.html_safe %> </p>
+        <% end %>
         <ul class="govuk-list govuk-list--spaced">
           <% if allow_publish?(manual, slug_unique) %>
             <li>

@@ -178,6 +178,10 @@ When(/^I create a section for the manual with a change note$/) do
   @section = most_recently_created_manual.sections.to_a.last
 end
 
+Then(/^I should see a pre-publish message$/) do
+  expect(page).to have_css("strong", text: "You are about to publish a major edit with public change notes.")
+end
+
 Then(/^I see the manual has the new section$/) do
   visit manuals_path
   click_on @manual_fields.fetch(:title)

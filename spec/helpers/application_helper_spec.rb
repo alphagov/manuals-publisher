@@ -378,4 +378,69 @@ describe ApplicationHelper, type: :helper do
       expect(rows).to include(include(key: "<span>test title</span>"))
     end
   end
+
+  describe "#publish_text" do
+    it "returns correct text if the manual is published" do
+      manual = FactoryBot.build_stubbed(:manual, state: "published")
+      expect(publish_text(manual, "unique_slug")).to include("There are no changes to publish.")
+    end
+
+    it "returns correct text if the manual is withdrawn" do
+      manual = FactoryBot.build_stubbed(:manual, state: "withdrawn")
+      expect(publish_text(manual, "unique_slug")).to include("The manual is withdrawn. You need to create a new draft before it can be published.")
+    end
+
+    it "returns correct text if the current user cannot publish" do
+      manual = FactoryBot.build_stubbed(:manual, state: "draft")
+      allow_any_instance_of(ApplicationHelper).to receive(:current_user_can_publish?).and_return(false)
+      expect(publish_text(manual, "unique_slug")).to include("You don't have permission to publish this manual.")
+    end
+
+    it "returns correct text if the slug is not unique" do
+      manual = FactoryBot.build_stubbed(:manual, state: "draft")
+      allow_any_instance_of(ApplicationHelper).to receive(:current_user_can_publish?).and_return(true)
+      expect(publish_text(manual, false)).to include("This manual has a duplicate slug and can't be published.")
+    end
+
+    it "returns correct text if the change type is minor" do
+      manual = FactoryBot.build_stubbed(:manual, state: "draft", ever_been_published: true)
+      manual.build_section({ state: "draft", title: "test title", minor_update: true, version_number: 2 })
+      allow_any_instance_of(ApplicationHelper).to receive(:current_user_can_publish?).and_return(true)
+      expect(publish_text(manual, "slug_unique")).to include("You are about to publish a <strong>minor edit</strong>.")
+    end
+
+    it "returns correct text if the change type is major" do
+      manual = FactoryBot.build_stubbed(:manual, state: "draft", ever_been_published: true)
+      manual.build_section({ state: "draft", title: "test title", minor_update: false })
+      allow_any_instance_of(ApplicationHelper).to receive(:current_user_can_publish?).and_return(true)
+      expect(publish_text(manual, "slug_unique")).to include("<strong>You are about to publish a major edit with public change notes.</strong>")
+    end
+
+    it "returns correct text if the change type is major, use_originally_published_at_for_public_timestamp is true and originally_published_at is present" do
+      manual = FactoryBot.build_stubbed(:manual, state: "draft", ever_been_published: true, use_originally_published_at_for_public_timestamp: true, originally_published_at: Time.zone.now)
+      manual.build_section({ state: "draft", title: "test title", minor_update: false })
+      allow_any_instance_of(ApplicationHelper).to receive(:current_user_can_publish?).and_return(true)
+      expect(publish_text(manual, "slug_unique").length).to be(2)
+      expect(publish_text(manual, "slug_unique")).to include("<strong>You are about to publish a major edit with public change notes.</strong>")
+      expect(publish_text(manual, "slug_unique")).to include("The updated timestamp on GOV.UK will be set to the first publication date.")
+    end
+
+    it "returns correct text if the change type is minor, use_originally_published_at_for_public_timestamp is false and manual.version_type is minor" do
+      manual = FactoryBot.build_stubbed(:manual, state: "draft", ever_been_published: true, use_originally_published_at_for_public_timestamp: false)
+      manual.build_section({ state: "draft", title: "test title", minor_update: true, version_number: 2 })
+      allow_any_instance_of(ApplicationHelper).to receive(:current_user_can_publish?).and_return(true)
+      expect(publish_text(manual, "slug_unique").length).to be(2)
+      expect(publish_text(manual, "slug_unique")).to include("You are about to publish a <strong>minor edit</strong>.")
+      expect(publish_text(manual, "slug_unique")).to include("The updated timestamp on GOV.UK will not change.")
+    end
+
+    it "returns correct text if the change type is major, use_originally_published_at_for_public_timestamp is false and manual.version_type is minor" do
+      manual = FactoryBot.build_stubbed(:manual, state: "draft", ever_been_published: true, use_originally_published_at_for_public_timestamp: false)
+      manual.build_section({ state: "draft", title: "test title" })
+      allow_any_instance_of(ApplicationHelper).to receive(:current_user_can_publish?).and_return(true)
+      expect(publish_text(manual, "slug_unique").length).to be(2)
+      expect(publish_text(manual, "slug_unique")).to include("<strong>You are about to publish a major edit with public change notes.</strong>")
+      expect(publish_text(manual, "slug_unique")).to include("The updated timestamp on GOV.UK will be set to the time you press the publish button.")
+    end
+  end
 end
