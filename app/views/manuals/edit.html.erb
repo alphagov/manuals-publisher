@@ -19,15 +19,6 @@
   } %>
 <% end %>
 
-<div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
-    <%= render "govuk_publishing_components/components/heading", {
-      text: "Edit front page",
-      heading_level: 1,
-      font_size: "xl",
-      margin_bottom: 8
-    } %>
-  </div>
-</div>
+<% content_for :heading, "Edit front page" %>
 
 <%= render 'form', manual: manual %>
