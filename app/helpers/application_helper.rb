@@ -219,31 +219,29 @@ module ApplicationHelper
   end
 
   def publish_text(manual, slug_unique)
+    text = []
     if manual.state == "published"
-      text = "<p>There are no changes to publish.</p>"
+      text << "There are no changes to publish."
     elsif manual.state == "withdrawn"
-      text = "<p>The manual is withdrawn. You need to create a new draft before it can be published.</p>"
+      text << "The manual is withdrawn. You need to create a new draft before it can be published."
     elsif !current_user_can_publish?
-      text = "<p>You don't have permission to publish this manual.</p>"
+      text << "You don't have permission to publish this manual."
     elsif !slug_unique
-      text = "<p>This manual has a duplicate slug and can't be published.</p>"
+      text << "This manual has a duplicate slug and can't be published."
     else
-      text = ""
       case manual.version_type
       when :minor
-        text += "<p>You are about to publish a <strong>minor edit</strong>.</p>"
+        text << "You are about to publish a <strong>minor edit</strong>."
       when :major
-        text += "<p><strong>You are about to publish a major edit with public change notes.</strong></p>"
+        text << "<strong>You are about to publish a major edit with public change notes.</strong>"
       end
-      text += if manual.use_originally_published_at_for_public_timestamp? && manual.originally_published_at.present?
-                "<p>The updated timestamp on GOV.UK will be set to the first publication date.</p>"
+      text << if manual.use_originally_published_at_for_public_timestamp? && manual.originally_published_at.present?
+                "The updated timestamp on GOV.UK will be set to the first publication date."
               elsif manual.version_type == :minor
-                "<p>The updated timestamp on GOV.UK will not change.</p>"
+                "The updated timestamp on GOV.UK will not change."
               else
-                "<p>The updated timestamp on GOV.UK will be set to the time you press the publish button.</p>"
+                "The updated timestamp on GOV.UK will be set to the time you press the publish button."
               end
     end
-
-    (text || "").html_safe
   end
 end
