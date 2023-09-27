@@ -808,8 +808,7 @@ end
 Then(/^the manual is listed as (draft|published|published with new draft)$/) do |status|
   visit manuals_path
 
-  expect(page).to have_selector(:xpath, "//li[a[.='#{@manual.title}']]//span[contains(concat(' ', normalize-space(@class), ' '), ' label ')][.='#{status}']")
-
+  expect(page).to have_selector(:xpath, "//*/tbody/tr/td/span[.='#{status}']")
   click_on @manual.title
 
   expect(page).to have_selector(:xpath, "//dt[.='Status']/following-sibling::dd[.='#{status}']")

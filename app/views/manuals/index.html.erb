@@ -1,33 +1,56 @@
-<% content_for :page_title, "Your manuals" %>
+<% content_for :title, "Your manuals" %>
 
 <% content_for :breadcrumbs do %>
-  <li class='active'>Your manuals</li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+      },
+    ]
+  } %>
 <% end %>
 
-<h1 class="page-header">
-  Your manuals <small>(<%= manuals.count %>)</small>
-</h1>
+<% content_for :heading, "Your manuals (#{manuals.count})" %>
 
-<div class="row">
-  <div class="sidebar col-md-3">
-    <%= link_to "New manual", new_manual_path, class: 'action-link' %>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-one-third govuk-body">
+    <%= link_to "Create new manual", new_manual_path, class: 'govuk-link govuk-link--no-visited-state' -%>
   </div>
-  <div class="col-md-9">
-    <ul class="document-list">
-      <% manuals.each do |manual| %>
-        <li class="document">
-          <%= link_to manual.title, manual_path(manual), class: 'document-title' %>
-          <ul class="metadata">
-            <li class="text-muted">Updated <%= time_ago_in_words(manual.updated_at) %> ago</li>
-            <li>
-              <%= state(manual) %>
-            </li>
-            <% if current_user_is_gds_editor? %>
-              <li class="text-muted">From <%= link_to manual.organisation_slug, url_for_public_org(manual.organisation_slug) %></li>
-            <% end %>
-          </ul>
-        </li>
-      <% end %>
-    </ul>
+</div>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <%= render "govuk_publishing_components/components/table", {
+      head: [
+        {
+          text: "Title"
+        },
+        {
+          text: "Updated"
+        },
+        {
+          text: "Status"
+        },
+        {
+          text: tag.span("View", class: "govuk-visually-hidden")
+        }
+      ],
+      rows: manuals.map do |manual| [
+        {
+          text: tag.span(manual.title, class: "govuk-!-font-weight-bold")
+        },
+        {
+          text: tag.span("#{time_ago_in_words(manual.updated_at)} ago") <<
+            tag.span(tag.br + link_to(manual.organisation_slug, url_for_public_org(manual.organisation_slug)), class: "govuk-link")
+        },
+        {
+          text: state_label(manual)
+        },
+        {
+          text: link_to(sanitize("View #{tag.span(manual.title, class: 'govuk-visually-hidden')}"), manual_path(manual), class: "govuk-link"),
+        }
+      ]
+      end
+    } %>
   </div>
 </div>
