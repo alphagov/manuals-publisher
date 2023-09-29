@@ -1,9 +1,3 @@
-<% content_for :head do %>
-  <%= javascript_include_tag "vendor/jquery-1.11.0.min" %>
-  <%= javascript_include_tag "ajax_setup" %>
-  <%= javascript_include_tag "markdown_preview" %>
-<% end %>
-
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_for manual do %>
@@ -44,7 +38,7 @@
         id: "manual_summary",
         maxlength: 280
       } %>
-      <%= render "govuk_publishing_components/components/textarea", {
+      <%= render "shared/govspeak-editor", {
         label: {
           text: "Body",
           heading_size: "l",
@@ -53,12 +47,11 @@
         id: "manual_body",
         value: manual.body,
         rows: 20,
-        data: {module: "js-paste-html-to-govspeak"},
-        error_items: errors_for(manual.errors, :body)
+        error_items: errors_for(manual.errors, :body),
+        data_mod: {
+          module: "paste-html-to-govspeak"
+        }
       } %>
-
-      <div class="preview_button add-vertical-margins"></div>
-      <div class="preview_container add-vertical-margins" style="display: none;"></div>
 
       <div class="govuk-button-group">
         <%= render("govuk_publishing_components/components/button", {
@@ -74,19 +67,3 @@
     <%= render partial: "style_guidance" %>
   </div>
 </div>
-
-<%= content_for :document_ready do %>
-  window.MarkdownPreview.addPreviewFeature({
-    'url'             : '<%= preview_path_for_manual(manual) %>',
-    'insert_into'     : '.preview_container',
-    'insert_button'   : '.preview_button',
-    'render_to'       : '.preview .govspeak',
-    'data_target'     : function() {
-                          return {
-                            'manual' : {
-                              'body' : $('#manual_body').val()
-                            }
-                          };
-                        }
-  });
-<% end -%>

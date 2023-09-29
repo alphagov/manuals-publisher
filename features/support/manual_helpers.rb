@@ -375,9 +375,16 @@ module ManualHelpers
     fill_in_fields(fields)
   end
 
-  def check_for_manual_body_preview
+  def legacy_check_for_manual_body_preview
     expect(current_path).to match(%r{/manuals/([0-9a-f-]+|new)})
     within(".preview") do
+      expect(page).to have_css("p", text: "Body for preview")
+    end
+  end
+
+  def check_for_manual_body_preview
+    expect(current_path).to match(%r{/manuals/([0-9a-f-]+|new)})
+    within(".app-c-govspeak-editor__preview--show") do
       expect(page).to have_css("p", text: "Body for preview")
     end
   end

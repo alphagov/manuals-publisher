@@ -180,7 +180,7 @@ module ApplicationHelper
     if manual.persisted?
       preview_manual_path(manual)
     else
-      preview_new_manual_path
+      legacy_preview_new_manual_path
     end
   end
 

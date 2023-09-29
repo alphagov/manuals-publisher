@@ -733,6 +733,10 @@ When(/^I preview the manual$/) do
   click_button("Preview")
 end
 
+Then(/^I see the legacy manual body preview$/) do
+  legacy_check_for_manual_body_preview
+end
+
 Then(/^I see the manual body preview$/) do
   check_for_manual_body_preview
 end
