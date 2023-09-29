@@ -9,7 +9,13 @@ class ManualsController < ApplicationController
     )
     all_manuals = service.call
 
-    render(:index, locals: { manuals: all_manuals })
+    render(
+      :index,
+      layout: "design_system",
+      locals: {
+        manuals: all_manuals,
+      },
+    )
   end
 
   def show

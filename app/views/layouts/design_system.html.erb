@@ -45,6 +45,13 @@
     <%= yield(:breadcrumbs) %>
 
     <main class="govuk-main-wrapper" id="main-content" role="main">
+      <% if content_for?(:heading) %>
+        <%= render "govuk_publishing_components/components/title", {
+          title: yield(:heading),
+          margin_top: 0
+        } %>
+      <% end %>
+
       <%= yield %>
       <% if content_for?(:document_ready) %>
         <script>
