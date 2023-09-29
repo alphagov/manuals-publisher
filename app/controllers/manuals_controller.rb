@@ -222,11 +222,36 @@ class ManualsController < ApplicationController
     end
   end
 
-  def preview
+  def legacy_preview
     service = Manual::PreviewService.new(
       user: current_user,
       manual_id: params[:id],
       attributes: update_manual_params,
+    )
+    manual = ManualPresenter.new(service.call)
+
+    manual.valid? # Force validation check or errors will be empty
+
+    if manual.errors[:body].blank?
+      render json: { preview_html: manual.body }
+    else
+      render json: {
+        preview_html: render_to_string(
+          "shared/_preview_errors",
+          layout: false,
+          locals: {
+            errors: manual.errors[:body],
+          },
+        ),
+      }
+    end
+  end
+
+  def preview
+    service = Manual::PreviewService.new(
+      user: current_user,
+      manual_id: params[:id],
+      attributes: { body: params[:body] },
     )
     manual = ManualPresenter.new(service.call)
 

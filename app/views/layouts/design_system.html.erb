@@ -53,13 +53,6 @@
       <% end %>
 
       <%= yield %>
-      <% if content_for?(:document_ready) %>
-        <script>
-          $(document).ready(function() {
-            <%= yield :document_ready %>
-          });
-        </script>
-      <% end %>
     </main>
 
   </div>
