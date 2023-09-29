@@ -176,7 +176,7 @@ describe ApplicationHelper, type: :helper do
       rows = manual_metadata_rows(manual)
 
       expect(rows).to include(
-        { key: "From", value: link_to(manual.organisation_slug, "government/organisation_slug") },
+        { key: "From", value: link_to(manual.organisation_slug, "government/organisation_slug", class: "govuk-link") },
       )
     end
 

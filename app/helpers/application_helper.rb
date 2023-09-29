@@ -45,7 +45,7 @@ module ApplicationHelper
     if current_user_is_gds_editor?
       rows << {
         key: "From",
-        value: link_to(manual.organisation_slug, url_for_public_org(manual.organisation_slug)),
+        value: link_to(manual.organisation_slug, url_for_public_org(manual.organisation_slug), class: "govuk-link"),
       }
     end
 
