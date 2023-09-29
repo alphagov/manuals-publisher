@@ -11,7 +11,6 @@ Rails.application.routes.draw do
 
       # This is for persisted sections
       post :preview, on: :member
-      post :legacy_preview, on: :member
 
       get :reorder, on: :collection
       post :update_order, on: :collection
