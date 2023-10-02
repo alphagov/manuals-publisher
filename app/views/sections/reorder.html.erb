@@ -19,12 +19,7 @@
   } %>
 <% end %>
 
-<%= render "govuk_publishing_components/components/heading", {
-  text: "Reorder sections",
-  heading_level: 1,
-  font_size: "xl",
-  margin_bottom: 8
-} %>
+<% content_for :heading, "Reorder sections" %>
 
 <%= form_tag(update_order_manual_sections_path(manual), method: :post) do %>
   <%= render "govuk_publishing_components/components/reorderable_list", {
