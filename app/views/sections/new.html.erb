@@ -1,11 +1,29 @@
-<% content_for :page_title, "Add section" %>
+<% content_for :title, "Add section" %>
 
 <% content_for :breadcrumbs do %>
-  <li><%= link_to "Your manuals", manuals_path %></li>
-  <li><%= link_to manual.title, manual_path(manual) %></li>
-  <li class='active'>Add section</li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: manual.title,
+        url: manual_path(manual)
+      },
+      {
+        title: "Add section"
+      },
+    ]
+  } %>
 <% end %>
 
-<h1 class='page-header'>Add section</h1>
+<%= render "govuk_publishing_components/components/heading", {
+  text: "Add section",
+  heading_level: 1,
+  font_size: "xl",
+  margin_bottom: 8
+} %>
 
 <%= render "form", manual: manual, section: section %>

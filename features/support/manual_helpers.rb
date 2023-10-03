@@ -311,7 +311,7 @@ module ManualHelpers
   end
 
   def check_for_document_body_preview(text)
-    within(".preview") do
+    within(".app-c-govspeak-editor__preview--show") do
       expect(page).to have_css("p", text:)
     end
   end
@@ -346,6 +346,10 @@ module ManualHelpers
       choose("Major update") if minor_update
     end
     expect(page).to have_field("Change note", with: note)
+  end
+
+  def check_that_major_change_note_field_is_present(note: "")
+    expect(page).to have_field("Major update", with: note)
   end
 
   def check_manual_can_be_created
