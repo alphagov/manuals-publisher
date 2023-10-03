@@ -142,7 +142,7 @@ module ManualHelpers
       choose "Minor update"
     end
 
-    click_on "Yes"
+    click_on "Withdraw section"
   end
 
   def save_as_draft
