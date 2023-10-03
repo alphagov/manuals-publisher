@@ -62,32 +62,6 @@ describe SectionsController, type: :controller do
     end
   end
 
-  describe "#legacy_preview" do
-    let(:manual) { Manual.new }
-    let(:section) { Section.new(manual:, uuid: "section-uuid") }
-    let(:service) { double(:service, call: section) }
-
-    before do
-      login_as_stub_user
-    end
-
-    it "symbolizes the attribute keys" do
-      expect(Section::PreviewService).to receive(:new) { |args|
-        expect(args[:attributes].to_hash).to have_key(:title)
-      }.and_return(service)
-
-      post :legacy_preview, params: { manual_id: "manual-id", id: "section-uuid", section: { "title" => "title" } }
-    end
-
-    it "removes attributes that are not permitted" do
-      expect(Section::PreviewService).to receive(:new) { |args|
-        expect(args[:attributes].keys).not_to include(:key_that_is_not_allowed)
-      }.and_return(service)
-
-      post :legacy_preview, params: { manual_id: "manual-id", id: "section-uuid", section: { key_that_is_not_allowed: "o hai" } }
-    end
-  end
-
   describe "#update_order" do
     let(:manual) { Manual.new }
     let(:service) { double(:service) }

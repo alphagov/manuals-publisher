@@ -68,6 +68,7 @@ class SectionsController < ApplicationController
 
     render(
       :edit,
+      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
@@ -89,37 +90,12 @@ class SectionsController < ApplicationController
     else
       render(
         :edit,
+        layout: "design_system",
         locals: {
           manual: ManualViewAdapter.new(manual),
           section: SectionViewAdapter.new(manual, section),
         },
       )
-    end
-  end
-
-  def legacy_preview
-    service = Section::PreviewService.new(
-      user: current_user,
-      manual_id: params.fetch(:manual_id, nil),
-      section_uuid: params.fetch(:id, nil),
-      attributes: section_params,
-    )
-    section = SectionPresenter.new(service.call)
-
-    section.valid? # Force validation check or errors will be empty
-
-    if section.errors[:body].empty?
-      render json: { preview_html: section.body }
-    else
-      render json: {
-        preview_html: render_to_string(
-          "shared/_preview_errors",
-          layout: false,
-          locals: {
-            errors: section.errors[:body],
-          },
-        ),
-      }
     end
   end
 
