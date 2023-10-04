@@ -1,0 +1,24 @@
+<%= form_tag([manual, section, attachment], :multipart => true) do %>
+  <%= render "govuk_publishing_components/components/input", {
+    label: {
+      text: "Title"
+    },
+    name: "attachment[title]",
+    id: "attachment_title",
+    heading_size: "l"
+  } %>
+  <%= render "govuk_publishing_components/components/file_upload", {
+    label: {
+      text: "File",
+      heading_size: "l",
+    },
+    name: "attachment[file]",
+    id: "attachment_file",
+  } %>
+  <div class="govuk-button-group">
+    <%= render("govuk_publishing_components/components/button", {
+      text: "Save attachment",
+    }) %>
+    <%= link_to("Cancel", edit_manual_section_path(manual, section), class: "govuk-link govuk-link--no-visited-state") %>
+  </div>
+<% end %>

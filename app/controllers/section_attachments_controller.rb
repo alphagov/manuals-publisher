@@ -9,6 +9,7 @@ class SectionAttachmentsController < ApplicationController
 
     render(
       :new,
+      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
