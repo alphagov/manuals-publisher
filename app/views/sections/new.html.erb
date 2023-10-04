@@ -19,11 +19,6 @@
   } %>
 <% end %>
 
-<%= render "govuk_publishing_components/components/heading", {
-  text: "Add section",
-  heading_level: 1,
-  font_size: "xl",
-  margin_bottom: 8
-} %>
+<% content_for :heading, "Add section" %>
 
 <%= render "form", manual: manual, section: section %>
