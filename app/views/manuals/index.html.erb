@@ -35,14 +35,17 @@
           text: tag.span("View", class: "govuk-visually-hidden")
         }
       ],
-      rows: manuals.map do |manual| [
+      rows: manuals.map do |manual|
+        updated_text = tag.span("#{time_ago_in_words(manual.updated_at)} ago")
+        if current_user_is_gds_editor?
+          updated_text << tag.br << link_to(manual.organisation_slug, url_for_public_org(manual.organisation_slug), class: "govuk-link")
+        end
+        [
         {
           text: tag.span(manual.title, class: "govuk-!-font-weight-bold")
         },
         {
-          text: tag.span("#{time_ago_in_words(manual.updated_at)} ago") <<
-            tag.br <<
-            link_to(manual.organisation_slug, url_for_public_org(manual.organisation_slug), class: "govuk-link")
+          text: updated_text
         },
         {
           text: state_label(manual)
