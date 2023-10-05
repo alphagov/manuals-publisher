@@ -180,13 +180,13 @@ module ApplicationHelper
     if manual.persisted?
       preview_manual_path(manual)
     else
-      legacy_preview_new_manual_path
+      preview_new_manual_path
     end
   end
 
   def preview_path_for_section(manual, section)
     if section.persisted?
-      legacy_preview_manual_section_path(manual, section)
+      preview_manual_section_path(manual, section)
     else
       preview_new_section_path(manual)
     end

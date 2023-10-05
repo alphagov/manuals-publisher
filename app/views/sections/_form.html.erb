@@ -38,6 +38,7 @@
         value: section.body,
         rows: 20,
         error_items: errors_for(section.errors, :body),
+        preview_path: preview_path_for_section(manual, section),
         data_mod: {
           module: "paste-html-to-govspeak"
         }

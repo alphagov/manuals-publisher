@@ -10,6 +10,7 @@
   error_items ||= nil
   rows ||= 12
   right_to_left ||= false
+  preview_path ||= "preview"
 
   track_preview_toggle ||= false
   track_category ||= false
@@ -30,6 +31,7 @@
   preview_button_data_attributes["preview-toggle-tracking"] = "true" if track_preview_toggle
   preview_button_data_attributes["preview-toggle-track-category"] = track_category if track_category
   preview_button_data_attributes["preview-toggle-track-action"] = track_action if track_action
+  preview_button_data_attributes["preview-path"] = preview_path
 
   classes = "app-c-govspeak-editor govuk-form-group"
   classes << " govuk-form-group--error" if error_items

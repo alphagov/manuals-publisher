@@ -1,10 +1,20 @@
-<% content_for :page_title, "New manual" %>
+<% content_for :title, "New manual" %>
 
 <% content_for :breadcrumbs do %>
-  <li><%= link_to "Your manuals", manuals_path %></li>
-  <li class='active'>Create new manual</li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: "Create new manual"
+      },
+    ]
+  } %>
 <% end %>
 
-<h1 class="page-header">New manual</h1>
+<% content_for :heading, "New manual" %>
 
-<%= render 'legacy_form', manual: manual %>
+<%= render 'form', manual: manual %>

@@ -36,7 +36,7 @@ Feature: Creating and editing a manual
   Scenario: Previewing a new manual
     When I start creating a new manual
     And I preview the manual
-    Then I see the legacy manual body preview
+    Then I see the manual body preview
 
   @javascript
   Scenario: Previewing a manual with a body containing javascript

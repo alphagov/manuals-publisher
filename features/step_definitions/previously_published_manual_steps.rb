@@ -10,8 +10,12 @@ Given(/^I create a manual that was previously published elsewhere$/) do
   @originally_published_at = Time.zone.parse("14-Dec-#{Time.zone.now.year - 10} 09:30")
 
   create_manual(@manual_fields) do
-    choose("has previously been published on another website.")
-    select_datetime @originally_published_at.iso8601, from: "Its original publication date was"
+    choose("This document has previously been published on another website")
+    fill_in "Year", with: @originally_published_at.year.to_s
+    fill_in "Month", with: @originally_published_at.mon.to_s
+    fill_in "Day", with: @originally_published_at.day.to_s
+    page.select sprintf("%02d", @originally_published_at.hour), from: "Hour"
+    page.select sprintf("%02d", @originally_published_at.min.to_s), from: "Minute"
   end
 
   @manual = most_recently_created_manual
