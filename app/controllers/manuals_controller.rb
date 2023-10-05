@@ -175,7 +175,7 @@ class ManualsController < ApplicationController
 
     redirect_to(
       manual_path(manual),
-      flash: { notice: "Published #{manual.title}" },
+      flash: { success: "Published #{manual.title}" },
     )
   end
 

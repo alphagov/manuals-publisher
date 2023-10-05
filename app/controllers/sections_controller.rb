@@ -153,7 +153,7 @@ class SectionsController < ApplicationController
     redirect_to(
       manual_path(manual),
       flash: {
-        notice: "Order of sections saved for #{manual.title}",
+        success: "Order of sections saved for #{manual.title}",
       },
     )
   end
@@ -189,7 +189,7 @@ class SectionsController < ApplicationController
       redirect_to(
         manual_path(manual),
         flash: {
-          notice: "Section #{section.title} removed!",
+          success: "Section #{section.title} removed!",
         },
       )
     else
