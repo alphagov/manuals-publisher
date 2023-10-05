@@ -1,11 +1,14 @@
-<%= form_tag([manual, section, attachment], :multipart => true) do %>
+<% method = "patch" if attachment.persisted? %>
+
+<%= form_tag([manual, section, attachment], multipart: true, method: method) do %>
   <%= render "govuk_publishing_components/components/input", {
     label: {
       text: "Title"
     },
     name: "attachment[title]",
     id: "attachment_title",
-    heading_size: "l"
+    heading_size: "l",
+    value: attachment.title || ""
   } %>
   <%= render "govuk_publishing_components/components/file_upload", {
     label: {
