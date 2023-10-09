@@ -9,6 +9,7 @@ class SectionAttachmentsController < ApplicationController
 
     render(
       :new,
+      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
@@ -37,9 +38,9 @@ class SectionAttachmentsController < ApplicationController
       section_uuid: params.fetch(:section_id),
     )
     manual, section, attachment = service.call
-
     render(
       :edit,
+      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
@@ -63,6 +64,7 @@ class SectionAttachmentsController < ApplicationController
     else
       render(
         :edit,
+        layout: "design_system",
         locals: {
           manual: ManualViewAdapter.new(manual),
           section: SectionViewAdapter.new(manual, section),

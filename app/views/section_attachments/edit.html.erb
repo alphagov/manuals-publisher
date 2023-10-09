@@ -1,16 +1,32 @@
-<% content_for :page_title, "Edit attachment" %>
+<% content_for :title, "Edit attachment" %>
 
 <% content_for :breadcrumbs do %>
-  <li><%= link_to "Your manuals", manuals_path %></li>
-  <li><%= link_to manual.title, manual_path(manual) %></li>
-  <li><%= link_to section.title, manual_section_path(manual, section) %></li>
-  <li class='active'>Edit attachment</li>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: manual.title,
+        url: manual_path(manual)
+      },
+      {
+        title: section.title,
+        url: manual_section_path(manual, section)
+      },
+      {
+        title: "Edit attachment"
+      },
+    ]
+  } %>
 <% end %>
 
-<h1 class="page-header">Edit attachment</h1>
+<% content_for :heading, "Edit attachment" %>
 
 <%= render(partial: "form", locals: {
   manual: manual,
   section: section,
-  attachment: attachment,
+  attachment: attachment
 }) %>
