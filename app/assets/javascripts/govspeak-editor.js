@@ -15,9 +15,13 @@ window.GOVUK.Modules = window.GOVUK.Modules || {}
 
   GovspeakEditor.prototype.getRenderedGovspeak = function (body, callback) {
     const data = this.generateFormData(body)
+    const previewToggle = this.module.querySelector(
+      '.js-app-c-govspeak-editor__preview-button'
+    )
+    const previewUrl = previewToggle.getAttribute('data-preview-path')
 
     const request = new XMLHttpRequest()
-    request.open('POST', 'preview', false)
+    request.open('POST', previewUrl, false)
     request.setRequestHeader('X-CSRF-Token', this.getCsrfToken())
     request.onreadystatechange = callback
     request.send(data)

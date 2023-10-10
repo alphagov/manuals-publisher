@@ -33,4 +33,14 @@ describe "manuals/edit", type: :view do
       expect(rendered).to have_field("manual_#{attribute}")
     end
   end
+
+  it "links the cancel button to the manual's show page" do
+    manual = FactoryBot.build_stubbed(:manual, updated_at: Time.zone.now)
+    view_manual = ManualViewAdapter.new(manual)
+    allow(view).to receive(:current_user).and_return(FactoryBot.build_stubbed(:user))
+
+    render template: "manuals/new", layout: "layouts/design_system", locals: { manual: view_manual }
+
+    expect(rendered).to have_link("Cancel", href: "/manuals/#{manual.id}")
+  end
 end

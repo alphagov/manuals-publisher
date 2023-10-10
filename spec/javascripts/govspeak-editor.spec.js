@@ -20,6 +20,7 @@ describe('GOVUK.Modules.GovspeakEditor', function () {
       'pressed-preview-button'
     )
     previewButton.setAttribute('data-content-target', '#textarea_id')
+    previewButton.setAttribute('data-preview-path', 'preview/url')
     previewButton.innerText = 'Preview'
 
     // Textarea
@@ -179,7 +180,7 @@ describe('GOVUK.Modules.GovspeakEditor', function () {
     ].join('')
 
     jasmine.Ajax.stubRequest(
-      'preview',
+      'preview/url',
       null,
       'POST'
     ).andReturn({
@@ -205,7 +206,7 @@ describe('GOVUK.Modules.GovspeakEditor', function () {
     )
 
     jasmine.Ajax.stubRequest(
-      'preview',
+      'preview/url',
       null,
       'POST'
     ).andReturn({
@@ -262,7 +263,7 @@ describe('GOVUK.Modules.GovspeakEditor', function () {
     ].join('')
 
     jasmine.Ajax.stubRequest(
-      'preview',
+      'preview/url',
       null,
       'POST'
     ).andReturn({
@@ -292,7 +293,7 @@ describe('GOVUK.Modules.GovspeakEditor', function () {
     ].join('')
 
     jasmine.Ajax.stubRequest(
-      'preview',
+      'preview/url',
       null,
       'POST'
     ).andReturn({

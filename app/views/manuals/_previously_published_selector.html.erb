@@ -1,0 +1,55 @@
+<%= render "govuk_publishing_components/components/radio", {
+  name: "previously_published",
+  heading: "Document status",
+  heading_size: "l",
+  items: [
+    {
+      text: "This document has never been published before",
+      value: 0,
+      checked: true,
+    },
+    {
+      text: "This document has previously been published on another website",
+      value: 1,
+      checked: false,
+      conditional: render("datetime_fields", {
+        field_name: :originally_published_at,
+        error_items: [],
+        prefix: "manual",
+        date_heading: "Date",
+        date_hint: "For example, 01 08 2022",
+        time_hint: "For example, 09:30 or 19:30",
+        year: {
+          value: manual.originally_published_at&.year,
+          id: "manual_originally_published_at_1i",
+          name: "manual[originally_published_at(1i)]",
+          label: "Year",
+          width: 4,
+        },
+        month: {
+          value: manual.originally_published_at&.month,
+          id: "manual_originally_published_at_2i",
+          name: "manual[originally_published_at(2i)]",
+          label: "Month",
+          width: 2,
+        },
+        day: {
+          value: manual.originally_published_at&.day,
+          id: "manual_originally_published_at_3i",
+          name: "manual[originally_published_at(3i)]",
+          label: "Day",
+          width: 2,
+        },
+        hour: {
+          value: manual.originally_published_at&.hour,
+          id: "manual_originally_published_at_4i",
+        },
+        minute: {
+          value: manual.originally_published_at&.min,
+          id: "manual_originally_published_at_5i",
+        },
+      })
+    }
+  ]
+} %>
+

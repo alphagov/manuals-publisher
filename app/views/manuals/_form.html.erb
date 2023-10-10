@@ -1,18 +1,28 @@
+<%
+  cancel_link_href = if manual.persisted?
+                       manual_path(manual)
+                     else
+                       manuals_path
+                     end
+%>
+
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     <%= form_for manual do %>
       <%= render partial: "shared/form_errors", locals: { object: manual, attribute_id_prefix: "manual" } %>
 
-      <%= render "govuk_publishing_components/components/input", {
-        label: {
-          text: "Slug (read only)"
-        },
-        name: "slug",
-        heading_level: 2,
-        heading_size: "l",
-        value: manual.slug,
-        readonly: true
-      } %>
+      <% if manual.persisted? %>
+        <%= render "govuk_publishing_components/components/input", {
+          label: {
+            text: "Slug (read only)"
+          },
+          name: "slug",
+          heading_level: 2,
+          heading_size: "l",
+          value: manual.slug,
+          readonly: true
+        } %>
+      <% end %>
       <%= render "govuk_publishing_components/components/input", {
         label: {
           text: "Title (required)"
@@ -47,17 +57,22 @@
         id: "manual_body",
         value: manual.body,
         rows: 20,
+        preview_path: preview_path_for_manual(manual),
         error_items: errors_for(manual.errors, :body),
         data_mod: {
           module: "paste-html-to-govspeak"
         }
       } %>
 
+      <% unless manual.persisted? %>
+        <%= render partial: "previously_published_selector", locals: { manual: manual } %>
+      <% end %>
+
       <div class="govuk-button-group">
         <%= render("govuk_publishing_components/components/button", {
           text: "Save as draft",
         }) %>
-        <%= link_to("Cancel", manual_path(manual), class: "govuk-link govuk-link--no-visited-state") %>
+        <%= link_to("Cancel", cancel_link_href, class: "govuk-link govuk-link--no-visited-state") %>
       </div>
     <% end %>
   </div>

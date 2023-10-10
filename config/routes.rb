@@ -39,7 +39,7 @@ Rails.application.routes.draw do
   post "/link-checker-api-callback" => "link_checker_api_callback#callback", as: "link_checker_api_callback"
 
   # This is for new manuals
-  post "manuals/legacy_preview" => "manuals#legacy_preview", as: "legacy_preview_new_manual"
+  post "manuals/preview" => "manuals#preview", as: "preview_new_manual"
   # This is for new sections
   post "manuals/:manual_id/sections/preview" => "sections#preview", as: "preview_new_section"
 
