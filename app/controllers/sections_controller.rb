@@ -11,7 +11,6 @@ class SectionsController < ApplicationController
 
     render(
       :show,
-      layout: "design_system",
       locals: {
         manual:,
         section:,
@@ -28,7 +27,6 @@ class SectionsController < ApplicationController
 
     render(
       :new,
-      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
@@ -49,7 +47,6 @@ class SectionsController < ApplicationController
     else
       render(
         :new,
-        layout: "design_system",
         locals: {
           manual: ManualViewAdapter.new(manual),
           section: SectionViewAdapter.new(manual, section),
@@ -68,7 +65,6 @@ class SectionsController < ApplicationController
 
     render(
       :edit,
-      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
@@ -90,7 +86,6 @@ class SectionsController < ApplicationController
     else
       render(
         :edit,
-        layout: "design_system",
         locals: {
           manual: ManualViewAdapter.new(manual),
           section: SectionViewAdapter.new(manual, section),
@@ -134,7 +129,6 @@ class SectionsController < ApplicationController
 
     render(
       :reorder,
-      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         sections:,
@@ -168,7 +162,6 @@ class SectionsController < ApplicationController
 
     render(
       :withdraw,
-      layout: "design_system",
       locals: {
         manual: ManualViewAdapter.new(manual),
         section: SectionViewAdapter.new(manual, section),
@@ -195,7 +188,6 @@ class SectionsController < ApplicationController
     else
       render(
         :withdraw,
-        layout: "design_system",
         locals: {
           manual: ManualViewAdapter.new(manual),
           section: SectionViewAdapter.new(manual, section),

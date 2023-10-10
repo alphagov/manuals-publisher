@@ -1,20 +1,4 @@
 module ApplicationHelper
-  def state(manual)
-    state = manual.publication_state
-
-    if %w[published withdrawn].include?(state) && manual.draft?
-      state << " with new draft"
-    end
-
-    classes = if manual.draft?
-                "label label-primary"
-              else
-                "label label-default"
-              end
-
-    tag.span(state, class: classes).html_safe
-  end
-
   def state_label(manual)
     state_text = manual.publication_state
 
@@ -159,21 +143,6 @@ module ApplicationHelper
               end
 
     output.html_safe
-  end
-
-  def bootstrap_class_for(flash_type)
-    case flash_type
-    when "success"
-      "alert-success" # Green
-    when "error"
-      "alert-danger" # Red
-    when "alert"
-      "alert-warning" # Yellow
-    when "notice"
-      "alert-info" # Blue
-    else
-      flash_type.to_s
-    end
   end
 
   def preview_path_for_manual(manual)

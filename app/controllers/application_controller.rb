@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
   extend Forwardable
 
-  layout "legacy" # predating design system via govuk_publishing_components
+  layout "design_system"
 
   protect_from_forgery with: :exception
 

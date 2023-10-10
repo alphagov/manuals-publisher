@@ -11,7 +11,6 @@ class ManualsController < ApplicationController
 
     render(
       :index,
-      layout: "design_system",
       locals: {
         manuals: all_manuals,
       },
@@ -33,7 +32,6 @@ class ManualsController < ApplicationController
 
     render(
       :show,
-      layout: "design_system",
       locals: {
         manual:,
         slug_unique:,
@@ -48,7 +46,6 @@ class ManualsController < ApplicationController
 
     render(
       :new,
-      layout: "design_system",
       locals: {
         manual: manual_form(manual),
       },
@@ -85,7 +82,6 @@ class ManualsController < ApplicationController
 
     render(
       :edit,
-      layout: "design_system",
       locals: { manual: manual_form(manual) },
     )
   end
@@ -104,7 +100,6 @@ class ManualsController < ApplicationController
     else
       render(
         :edit,
-        layout: "design_system",
         locals: {
           manual:,
         },
@@ -121,7 +116,6 @@ class ManualsController < ApplicationController
 
     render(
       :edit_original_publication_date,
-      layout: "design_system",
       locals: {
         manual: manual_form(manual),
       },
@@ -160,7 +154,6 @@ class ManualsController < ApplicationController
     if helpers.allow_publish?(manual, slug_unique)
       render(
         :confirm_publish,
-        layout: "design_system",
         locals: {
           manual:,
         },
@@ -196,7 +189,6 @@ class ManualsController < ApplicationController
     if !manual.has_ever_been_published?
       render(
         :confirm_discard,
-        layout: "design_system",
         locals: {
           manual:,
         },

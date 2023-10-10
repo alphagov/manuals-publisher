@@ -78,17 +78,3 @@
     </div>
   </div>
 </div>
-
-<%= content_for :document_ready do %>
-  window.toggleDisplayWithCheckedInput({
-    $input: $("#section_minor_update_1"),
-    $element: $(".js-change-note-container"),
-    mode: 'hide'
-  });
-  window.toggleDisplayWithCheckedInput({
-    $input: $("#section_minor_update_0"),
-    $element: $(".js-change-note-container"),
-    mode: 'show'
-  });
-  $('.js-hidden').hide();
-<% end -%>
