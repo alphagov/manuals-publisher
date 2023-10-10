@@ -12,9 +12,12 @@ class Manual::UpdateService
 
     manual.draft
     manual.assign_attributes(attributes)
-    manual.save!(user)
-    reloaded_manual = Manual.find(manual.id, user)
-    Adapters.publishing.save_draft(reloaded_manual)
+
+    if manual.valid?
+      manual.save!(user)
+      reloaded_manual = Manual.find(manual.id, user)
+      Adapters.publishing.save_draft(reloaded_manual)
+    end
 
     manual
   end
