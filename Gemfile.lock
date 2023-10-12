@@ -167,7 +167,7 @@ GEM
     google-protobuf (3.24.4-x86_64-linux)
     googleapis-common-protos-types (1.9.0)
       google-protobuf (~> 3.18)
-    govspeak (8.2.1)
+    govspeak (8.3.0)
       actionview (>= 6)
       addressable (>= 2.3.8, < 3)
       govuk_publishing_components (>= 35.1)
@@ -234,7 +234,7 @@ GEM
     logstasher (2.1.5)
       activesupport (>= 5.2)
       request_store
-    loofah (2.21.3)
+    loofah (2.21.4)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.8.1)
@@ -261,7 +261,7 @@ GEM
     msgpack (1.6.0)
     multi_test (1.1.0)
     multi_xml (0.6.0)
-    net-imap (0.4.0)
+    net-imap (0.4.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -625,7 +625,7 @@ GEM
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
-    sanitize (6.0.2)
+    sanitize (6.1.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     sass-rails (6.0.0)
