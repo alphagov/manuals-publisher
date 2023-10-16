@@ -128,8 +128,7 @@ module ApplicationHelper
   end
 
   def publication_task_state(task)
-    zoned_time = time_with_local_zone(task.updated_at)
-    formatted_time = nice_time_format(zoned_time)
+    formatted_time = nice_time_format(task.updated_at)
 
     output =  case task.state
               when "queued", "processing"
