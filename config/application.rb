@@ -28,8 +28,10 @@ module ManualsPublisher
     #
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
+
+    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+    config.time_zone = "London"
+
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Using a sass css compressor causes a scss file to be processed twice
