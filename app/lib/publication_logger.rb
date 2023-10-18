@@ -14,7 +14,7 @@ class PublicationLogger
     end
 
     manual.removed_sections.each do |section|
-      next if section.withdrawn?
+      next unless section.published?
       next if section.minor_update?
       next if section.change_note.blank?
 
