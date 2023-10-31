@@ -14,7 +14,8 @@ gem "mongoid"
 gem "plek"
 gem "sass-rails"
 gem "sentry-sidekiq"
-gem "state_machine"
+gem "state_machines"
+gem "state_machines-mongoid"
 gem "uglifier"
 
 group :development, :test do

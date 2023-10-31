@@ -1,5 +1,3 @@
-require "state_machine"
-
 class ManualPublishTask
   include Mongoid::Document
   include Mongoid::Timestamps
