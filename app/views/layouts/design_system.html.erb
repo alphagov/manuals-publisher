@@ -1,5 +1,6 @@
 <% product_name = "Manuals Publisher" %>
 <% environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
+<% render "layouts/google_tag_manager" %>
 
 <%= render "govuk_publishing_components/components/layout_for_admin", {
   environment: environment,
