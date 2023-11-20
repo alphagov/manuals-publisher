@@ -1,7 +1,4 @@
-require "services"
-require "adapters"
 require "securerandom"
-require "gds_api_constants"
 
 class PublishingAdapter
   def save_draft(manual, republish: false, include_sections: true, include_links: true)

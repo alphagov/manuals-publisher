@@ -1,5 +1,3 @@
-require "services"
-
 class Attachment
   include Mongoid::Document
   include Mongoid::Timestamps

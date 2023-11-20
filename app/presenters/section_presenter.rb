@@ -1,5 +1,3 @@
-require "markdown_attachment_processor"
-
 class SectionPresenter
   def initialize(section)
     @section = section

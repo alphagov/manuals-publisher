@@ -1,5 +1,3 @@
-require "adapters"
-
 class Manual::CreateService
   def initialize(user:, attributes:)
     @user = user

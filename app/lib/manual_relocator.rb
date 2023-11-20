@@ -1,7 +1,3 @@
-require "services"
-require "adapters"
-require "gds_api_constants"
-
 class ManualRelocator
   attr_reader :from_slug, :to_slug
 

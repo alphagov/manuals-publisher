@@ -1,6 +1,5 @@
 require "spec_helper"
 require "gds_api/test_helpers/content_store"
-require "gds_api_constants"
 
 describe SectionReslugger do
   include GdsApi::TestHelpers::ContentStore

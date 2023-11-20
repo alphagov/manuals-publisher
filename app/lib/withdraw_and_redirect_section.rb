@@ -1,5 +1,3 @@
-require "adapters"
-
 class WithdrawAndRedirectSection
   def initialize(user:, manual_path:, section_path:, redirect:, discard_draft:, dry_run: false)
     @user = user

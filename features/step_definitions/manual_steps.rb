@@ -1,5 +1,3 @@
-require "gds_api_constants"
-
 When(/^I create a manual$/) do
   @manual_fields = {
     title: "Example Manual Title",

@@ -1,5 +1,3 @@
-require "adapters"
-
 class CliManualDeleter
   def initialize(manual_slug: nil, manual_id: nil, stdin: $stdin, stdout: $stdout)
     unless manual_slug || manual_id

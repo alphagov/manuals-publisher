@@ -1,5 +1,4 @@
 require "forwardable"
-require "permission_checker"
 
 class ApplicationController < ActionController::Base
   include GDS::SSO::ControllerMethods
