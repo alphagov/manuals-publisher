@@ -10,3 +10,10 @@ yarn-error.log
 # Ignore compiled assets
 /public/assets
 
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
