@@ -1,5 +1,3 @@
-require "adapters"
-
 class Manual::DiscardDraftService
   def initialize(user:, manual_id:)
     @user = user

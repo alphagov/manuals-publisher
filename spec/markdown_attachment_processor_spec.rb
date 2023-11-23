@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require "markdown_attachment_processor"
-
 describe MarkdownAttachmentProcessor do
   subject(:renderer) { MarkdownAttachmentProcessor.new(doc) }
 

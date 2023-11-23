@@ -1,5 +1,3 @@
-require "services"
-
 class OrganisationsAdapter
   def initialize
     @cache = {}

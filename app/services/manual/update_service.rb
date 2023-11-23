@@ -1,5 +1,3 @@
-require "adapters"
-
 class Manual::UpdateService
   def initialize(user:, manual_id:, attributes:)
     @user = user

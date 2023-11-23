@@ -1,5 +1,3 @@
-require "adapters"
-
 class Section::RemoveService
   def initialize(user:, manual_id:, section_uuid:, attributes:)
     @user = user

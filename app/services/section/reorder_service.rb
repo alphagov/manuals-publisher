@@ -1,5 +1,3 @@
-require "adapters"
-
 class Section::ReorderService
   def initialize(user:, manual_id:, section_order:)
     @user = user

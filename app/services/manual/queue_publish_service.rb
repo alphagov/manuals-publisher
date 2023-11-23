@@ -1,5 +1,3 @@
-require "manual_publish_task"
-
 class Manual::QueuePublishService
   def initialize(user:, manual_id:)
     @user = user

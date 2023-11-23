@@ -1,5 +1,3 @@
-require "adapters"
-
 class Manual::WithdrawService
   def initialize(user:, manual_id:)
     @user = user

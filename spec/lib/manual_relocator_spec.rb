@@ -1,5 +1,4 @@
 require "spec_helper"
-require "gds_api_constants"
 
 describe ManualRelocator do
   include GdsApi::TestHelpers::PublishingApi

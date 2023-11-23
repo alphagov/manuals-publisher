@@ -1,6 +1,4 @@
 require "gds_api/content_store"
-require "services"
-require "adapters"
 
 class SectionReslugger
   class Error < RuntimeError; end

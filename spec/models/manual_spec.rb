@@ -1,7 +1,5 @@
 require "spec_helper"
 
-require "manual"
-
 describe Manual do
   subject(:manual) do
     FactoryBot.build(

@@ -1,6 +1,4 @@
 require "spec_helper"
-require "services"
-require "gds_api_constants"
 
 describe PublishingAdapter do
   let(:publishing_api_schema_name_for_manual) do

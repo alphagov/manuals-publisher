@@ -1,5 +1,3 @@
-require "adapters"
-
 class Manual::UpdateOriginalPublicationDateService
   def initialize(user:, manual_id:, attributes:)
     @user = user

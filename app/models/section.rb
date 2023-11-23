@@ -1,6 +1,5 @@
 require "active_model/conversion"
 require "active_model/naming"
-require "slug_generator"
 
 class Section
   include ActiveModel::Validations

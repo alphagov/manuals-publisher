@@ -1,5 +1,3 @@
-require "cli_manual_deleter"
-
 When(/^I run the deletion script$/) do
   @stdin = double(:stdin)
   # If we cared about checking string output we'd make this a StringIO

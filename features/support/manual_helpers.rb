@@ -1,7 +1,3 @@
-require "manuals_republisher"
-require "manual_withdrawer"
-require "gds_api_constants"
-
 module ManualHelpers
   def entity_id_for(entity)
     entity.is_a?(Section) ? entity.uuid : entity.id
