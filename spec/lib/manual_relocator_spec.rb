@@ -426,7 +426,7 @@ describe ManualRelocator do
     lambda do |request|
       data = JSON.parse(request.body)
       unrendered_body = data["details"]["body"].detect { |api_body| api_body["content_type"] == "text/govspeak" }
-      (unrendered_body && unrendered_body["content"] == body)
+      unrendered_body && unrendered_body["content"] == body
     end
   end
 
