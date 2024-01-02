@@ -60,8 +60,7 @@ Feature: Removing a section from a manual
     Given I am logged in as a GDS editor
     And a published manual exists
     When I remove one of the sections from the manual
-    Then the section is removed from the manual
-    When I publish the manual
+    And I publish the manual
     Then the removed section is not published
     But the removed section is withdrawn with a redirect to the manual
     And the removed section is archived
@@ -70,8 +69,7 @@ Feature: Removing a section from a manual
     Given I am logged in as an editor
     And a published manual exists
     When I remove one of the sections from the manual
-    Then the section is removed from the manual
-    When I publish the manual
+    And I publish the manual
     Then the removed section is not published
     But the removed section is withdrawn with a redirect to the manual
     And the removed section is archived
@@ -87,14 +85,12 @@ Feature: Removing a section from a manual
     When I remove one of the sections from the manual with a major update omitting the note
     Then I see an error requesting that I provide a change note
     When I remove one of the sections from the manual with a major update
-    Then the section is removed from the manual
-    When I add another section and publish the manual later
+    And I add another section and publish the manual later
     Then the removed section change note is included
 
   Scenario: Removing a section with a minor update change notes
     Given I am logged in as a GDS editor
     And a published manual exists
     When I remove one of the sections from the manual with a minor update
-    Then the section is removed from the manual
-    When I add another section and publish the manual later
+    And I add another section and publish the manual later
     Then the removed section change note is not included

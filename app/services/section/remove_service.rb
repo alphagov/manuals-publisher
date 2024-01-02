@@ -20,6 +20,14 @@ class Section::RemoveService
       minor_update: attributes.fetch(:minor_update, "0"),
       change_note: attributes.fetch(:change_note, ""),
     }
+
+    # We need to capture the state of the section before assigning attributes.
+    # The Section#assign_attributes method always creates a new draft section if
+    # the latest edition is published.
+    # This causes Adapters.publishing.discard_section(section) to be called which
+    # blows up as there is no draft section in the Publishing API database.
+    draft_section = section.draft?
+
     section.assign_attributes(change_note_params)
 
     if section.valid?
@@ -30,7 +38,7 @@ class Section::RemoveService
       manual.save!(user)
       Adapters.publishing.save_draft(manual, include_sections: false)
 
-      if section.draft?
+      if draft_section
         Adapters.publishing.discard_section(section)
       end
     end
