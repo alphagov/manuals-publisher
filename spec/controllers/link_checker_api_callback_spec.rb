@@ -11,7 +11,7 @@ RSpec.describe LinkCheckerApiCallbackController, type: :controller do
   def set_headers
     headers = {
       "Content-Type": "application/json",
-      "X-LinkCheckerApi-Signature": generate_signature(post_body.to_json, Rails.application.secrets.link_checker_api_secret_token),
+      "X-LinkCheckerApi-Signature": generate_signature(post_body.to_json, Rails.application.credentials.link_checker_api_secret_token),
     }
 
     request.headers.merge! headers
