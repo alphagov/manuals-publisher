@@ -169,10 +169,10 @@ GEM
     generic_form_builder (0.13.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    google-protobuf (3.25.1)
-    google-protobuf (3.25.1-aarch64-linux)
-    google-protobuf (3.25.1-arm64-darwin)
-    google-protobuf (3.25.1-x86_64-linux)
+    google-protobuf (3.25.2)
+    google-protobuf (3.25.2-aarch64-linux)
+    google-protobuf (3.25.2-arm64-darwin)
+    google-protobuf (3.25.2-x86_64-linux)
     googleapis-common-protos-types (1.11.0)
       google-protobuf (~> 3.18)
     govspeak (8.3.2)
@@ -200,7 +200,7 @@ GEM
     govuk_personalisation (0.15.0)
       plek (>= 1.9.0)
       rails (>= 6, < 8)
-    govuk_publishing_components (37.1.1)
+    govuk_publishing_components (37.2.1)
       govuk_app_config
       govuk_personalisation (>= 0.7.0)
       kramdown
@@ -230,9 +230,9 @@ GEM
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.7.1)
-    irb (1.11.0)
+    irb (1.11.1)
       rdoc
-      reline (>= 0.3.8)
+      reline (>= 0.4.2)
     json (2.7.1)
     json-schema (4.1.1)
       addressable (>= 2.8)
@@ -275,14 +275,14 @@ GEM
     multi_test (1.1.0)
     multi_xml (0.6.0)
     mutex_m (0.2.0)
-    net-imap (0.4.8)
+    net-imap (0.4.9.1)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
     net-protocol (0.2.2)
       timeout
-    net-smtp (0.4.0)
+    net-smtp (0.4.0.1)
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.0)
@@ -509,7 +509,7 @@ GEM
       ast (~> 2.4.1)
       racc
     plek (5.0.0)
-    prometheus_exporter (2.0.8)
+    prometheus_exporter (2.1.0)
       webrick
     pry (0.14.2)
       coderay (~> 1.1)
@@ -579,7 +579,7 @@ GEM
     redis-namespace (1.11.0)
       redis (>= 4)
     regexp_parser (2.8.3)
-    reline (0.4.1)
+    reline (0.4.2)
       io-console (~> 0.5)
     request_store (1.5.1)
       rack (>= 1.4)
