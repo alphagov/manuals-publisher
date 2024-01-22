@@ -8,6 +8,8 @@ yarn-error.log
 /node_modules
 
 # Ignore compiled assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
 /public/assets
 
 # https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
