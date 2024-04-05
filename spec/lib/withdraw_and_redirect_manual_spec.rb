@@ -33,27 +33,40 @@ RSpec.describe WithdrawAndRedirectManual do
     allow(publishing_adapter).to receive(:unpublish_and_redirect_manual_and_sections)
   end
 
-  it "withdraws the manual" do
+  it "withdraws the manual and unpublishes" do
     subject.execute
 
     reloaded_manual = Manual.find(manual.id, user)
     expect(reloaded_manual.withdrawn?).to eq(true)
-  end
-
-  it "calls the publishing adapter to unpublish the manual" do
-    subject.execute
     expect(publishing_adapter).to have_received(:unpublish_and_redirect_manual_and_sections)
-      .with(instance_of(Manual),
-            redirect:,
-            include_sections:,
-            discard_drafts:)
+                                    .with(instance_of(Manual),
+                                          redirect:,
+                                          include_sections:,
+                                          discard_drafts:)
   end
 
-  context "when there is no published manual" do
+  context "when the manual is in draft" do
     let(:state) { "draft" }
 
     it "raises an error" do
       expect { subject.execute }.to raise_error(WithdrawAndRedirectManual::ManualNotPublishedError)
+    end
+  end
+
+  context "when the manual is withdrawn" do
+    it "withdraws and unpublishes the manual again" do
+      manual.withdraw
+      manual.save!(user)
+
+      subject.execute
+
+      reloaded_manual = Manual.find(manual.id, user)
+      expect(reloaded_manual.withdrawn?).to eq(true)
+      expect(publishing_adapter).to have_received(:unpublish_and_redirect_manual_and_sections)
+                                      .with(instance_of(Manual),
+                                            redirect:,
+                                            include_sections:,
+                                            discard_drafts:)
     end
   end
 

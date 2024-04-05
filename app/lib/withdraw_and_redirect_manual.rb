@@ -13,19 +13,17 @@ class WithdrawAndRedirectManual
 
     return if dry_run
 
-    published_manual = manual.current_versions[:published]
-
-    raise ManualNotPublishedError, manual.slug if published_manual.blank?
-
-    published_manual.withdraw
-    published_manual.save!(user)
+    raise ManualNotPublishedError, manual.slug unless manual.can_withdraw?
 
     Adapters.publishing.unpublish_and_redirect_manual_and_sections(
-      published_manual,
+      manual,
       redirect:,
       include_sections:,
       discard_drafts:,
     )
+
+    manual.withdraw
+    manual.save!(user)
   end
 
 private
