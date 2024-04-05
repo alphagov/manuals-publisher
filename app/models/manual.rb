@@ -196,6 +196,10 @@ class Manual
     state == "withdrawn"
   end
 
+  def can_withdraw?
+    current_versions[:published] || withdrawn?
+  end
+
   def has_ever_been_published?
     @ever_been_published
   end
