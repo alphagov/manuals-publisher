@@ -117,9 +117,9 @@
     <% end %>
 
     <% if manual.published? %>
-      <div class="app-view-manuals__sidebar-actions">
-        <p class="govuk-body">
-          <%= link_to "View on website (opens in new tab)", url_for_public_manual(manual), target: "_blank", class: "govuk-link" %></p>
+      <div class="app-view-manuals__sidebar-actions govuk-body">
+        <p><%= link_to "View on website (opens in new tab)", url_for_public_manual(manual), target: "_blank", class: "govuk-link" %></p>
+        <p><%= link_to "Change history", manual_change_history_index_path(manual) %></p>
       </div>
     <% end %>
 

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   end
 
   resources :manuals, except: :destroy do
+    resources :change_history, only: %i[index]
+
     resources :sections do
       resources :attachments, controller: :section_attachments, only: %i[new create edit update]
 
