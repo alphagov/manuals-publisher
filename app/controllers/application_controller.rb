@@ -25,6 +25,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user_can_withdraw?
 
+  def current_user_can_change_history?
+    permission_checker.can_change_history?
+  end
+  helper_method :current_user_can_change_history?
+
   def current_user_is_gds_editor?
     permission_checker.is_gds_editor?
   end

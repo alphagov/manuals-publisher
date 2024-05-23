@@ -1,6 +1,6 @@
 Feature: View and edit a manual's change history
   Background:
-    Given I am logged in as an editor
+    Given I am logged in as a GDS editor
 
   Scenario: Removing a change note from a manual's change history
     Given a published manual exists
