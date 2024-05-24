@@ -6,6 +6,10 @@ class ChangeHistoryController < ApplicationController
     @publication_logs = @manual.publication_logs.reverse
   end
 
+  def confirm_destroy
+    @publication_log = PublicationLog.find(params[:id])
+  end
+
 private
 
   def find_manual

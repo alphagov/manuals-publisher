@@ -19,6 +19,13 @@ describe ChangeHistoryController, type: :controller do
       expect(response).to render_template :index
       expect(assigns(:publication_logs)).to eq [publication_log2, publication_log1]
     end
+
+    it "renders confirm destroy template" do
+      get :confirm_destroy, params: { manual_id: manual.id, id: publication_log1.id }
+
+      expect(response.status).to eq 200
+      expect(response).to render_template :confirm_destroy
+    end
   end
 
   context "user does not have permissions" do

@@ -1,0 +1,44 @@
+<% content_for :title, @manual.title %>
+
+<% content_for :breadcrumbs do %>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: @manual.title,
+        url: manual_path(@manual)
+      },
+      {
+        title: "Change history",
+        url: manual_change_history_index_path(@manual)
+      },
+      {
+        title: "Delete change note",
+      },
+    ]
+  } %>
+<% end %>
+
+<% content_for :context, @manual.title %>
+<% content_for :heading, "Delete change note" %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <p class="govuk-body">Change published at: <%= @publication_log.created_at.strftime("%B %d, %Y %-l:%M%P") %></p>
+    <p class="govuk-body">Section title: <%= @publication_log.title %></p>
+    <p class="govuk-body">Current change note: <%= @publication_log.change_note %></p>
+
+    <div class="govuk-button-group">
+      <%= render "govuk_publishing_components/components/button", {
+        text: "Delete",
+        destructive: true,
+      } %>
+
+      <%= link_to("Cancel", manual_change_history_index_path(manual_id: @manual.id), class: "govuk-link govuk-link--no-visited-state") %>
+    </div>
+  </div>
+</div>

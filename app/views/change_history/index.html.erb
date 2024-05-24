@@ -49,7 +49,11 @@
             text: publication_log.change_note,
           },
           {
-            text: "Delete",
+            text: render("govuk_publishing_components/components/button", {
+              text: "Delete",
+              href: url_for(controller: "change_history", action: "confirm_destroy", manual_id: @manual.id, id: publication_log.id),
+              destructive: true,
+            }),
           },
         ]
       end,
