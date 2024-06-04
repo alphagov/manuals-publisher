@@ -1,10 +1,5 @@
 class Manual::RepublishService
-  def initialize(user:, manual_id:)
-    @user = user
-    @manual_id = manual_id
-  end
-
-  def call
+  def self.call(user:, manual_id:)
     manual_versions = Manual.find(manual_id, user).current_versions
 
     published_manual_version = manual_versions[:published]
@@ -21,8 +16,4 @@ class Manual::RepublishService
 
     manual_versions
   end
-
-private
-
-  attr_reader :user, :manual_id
 end

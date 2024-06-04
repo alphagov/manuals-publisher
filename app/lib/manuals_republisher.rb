@@ -12,11 +12,10 @@ class ManualsRepublisher
 
     manuals.to_a.each.with_index do |manual, i|
       logger.info("[ #{i} / #{count} ] id=#{manual.id} slug=#{manual.slug}]")
-      service = Manual::RepublishService.new(
+      Manual::RepublishService.call(
         user: User.gds_editor,
         manual_id: manual.id,
       )
-      service.call
     rescue Manual::RemovedSectionIdNotFoundError => e
       logger.error("Did not publish manual with id=#{manual.id} slug=#{manual.slug}. It has at least one removed document which was not found: #{e.message}")
       next
