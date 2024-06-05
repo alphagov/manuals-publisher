@@ -3,7 +3,7 @@ require "spec_helper"
 describe PermissionChecker do
   let(:generic_writer) { FactoryBot.build(:generic_writer) }
   let(:generic_editor) { FactoryBot.build(:generic_editor) }
-  let(:gds_editor)     { FactoryBot.build(:gds_editor) }
+  let(:gds_editor) { FactoryBot.build(:gds_editor) }
 
   describe "#can_publish?" do
     context "a user who is not an editor" do
@@ -66,6 +66,24 @@ describe PermissionChecker do
     it "is false for a non-GDS editor" do
       checker = PermissionChecker.new(generic_editor)
       expect(checker.is_gds_editor?).to be false
+    end
+  end
+
+  describe "#can_change_history?" do
+    context "a user who is not a gds editor" do
+      subject(:checker) { PermissionChecker.new(generic_writer) }
+
+      it "prevents changing history" do
+        expect(checker.can_change_history?).to be false
+      end
+    end
+
+    context "a gds editor" do
+      subject(:checker) { PermissionChecker.new(gds_editor) }
+
+      it "allows changing history" do
+        expect(checker.can_change_history?).to be true
+      end
     end
   end
 end

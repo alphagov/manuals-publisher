@@ -18,6 +18,10 @@ class PermissionChecker
     user.has_permission?(GDS_EDITOR_PERMISSION)
   end
 
+  def can_change_history?
+    is_gds_editor?
+  end
+
 private
 
   attr_reader :user

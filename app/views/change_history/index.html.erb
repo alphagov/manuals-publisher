@@ -1,0 +1,62 @@
+<% content_for :title, @manual.title %>
+
+<% content_for :breadcrumbs do %>
+  <%= render "govuk_publishing_components/components/breadcrumbs", {
+    collapse_on_mobile: true,
+    breadcrumbs: [
+      {
+        title: "Your manuals",
+        url: manuals_path
+      },
+      {
+        title: @manual.title,
+        url: manual_path(@manual)
+      },
+      {
+        title: "Change history"
+      }
+    ]
+  } %>
+<% end %>
+
+<% content_for :context, @manual.title %>
+<% content_for :heading, "Change history" %>
+
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <%= render "govuk_publishing_components/components/table", {
+      head: [
+        {
+          text: "Date",
+        },
+        {
+          text: "Section title",
+        },
+        {
+          text: "Change note",
+        },
+        {},
+      ],
+      rows: @publication_logs.map do |publication_log|
+        [
+          {
+            text: publication_log.created_at.strftime('%B %d, %Y %-l:%M%P'),
+          },
+          {
+            text: publication_log.title,
+          },
+          {
+            text: publication_log.change_note,
+          },
+          {
+            text: render("govuk_publishing_components/components/button", {
+              text: "Delete",
+              href: url_for(controller: "change_history", action: "confirm_destroy", manual_id: @manual.id, id: publication_log.id),
+              destructive: true,
+            }),
+          },
+        ]
+      end,
+    } %>
+  </div>
+</div>
