@@ -50,3 +50,10 @@ end
 And(/^I delete the change note$/) do
   click_on "Delete"
 end
+
+And(/^I can see that the change note has been deleted$/) do
+  within "tbody" do
+    expect(page).to have_selector "tr", count: @initial_publication_logs_count - 1
+  end
+  expect(page).not_to have_text @publication_log.title
+end

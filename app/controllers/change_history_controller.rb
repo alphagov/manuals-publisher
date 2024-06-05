@@ -10,6 +10,19 @@ class ChangeHistoryController < ApplicationController
     @publication_log = PublicationLog.find(params[:id])
   end
 
+  def destroy
+    @publication_log = PublicationLog.find(params[:id])
+    @publication_log.destroy!
+
+    Manual::RepublishService.call(
+      user: current_user,
+      manual_id: @manual.id,
+    )
+
+    flash[:success] = "Change note deleted."
+    redirect_to manual_change_history_index_path(manual_id: @manual.id)
+  end
+
 private
 
   def find_manual

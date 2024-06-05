@@ -14,3 +14,5 @@ Feature: View and edit a manual's change history
     When I click delete on a change note
     Then I am redirected to the confirmation page
     When I delete the change note
+    Then I am redirected to the Change history page
+    And I can see that the change note has been deleted

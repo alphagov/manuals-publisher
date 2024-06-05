@@ -32,13 +32,15 @@
     <p class="govuk-body">Section title: <%= @publication_log.title %></p>
     <p class="govuk-body">Current change note: <%= @publication_log.change_note %></p>
 
-    <div class="govuk-button-group">
-      <%= render "govuk_publishing_components/components/button", {
-        text: "Delete",
-        destructive: true,
-      } %>
+    <%= form_with url: manual_change_history_path(manual_id: @manual.id, id: @publication_log.id), method: :delete do %>
+      <div class="govuk-button-group">
+        <%= render "govuk_publishing_components/components/button", {
+          text: "Delete",
+          destructive: true,
+        } %>
 
-      <%= link_to("Cancel", manual_change_history_index_path(manual_id: @manual.id), class: "govuk-link govuk-link--no-visited-state") %>
-    </div>
+        <%= link_to("Cancel", manual_change_history_index_path(manual_id: @manual.id), class: "govuk-link govuk-link--no-visited-state") %>
+      </div>
+    <% end %>
   </div>
 </div>

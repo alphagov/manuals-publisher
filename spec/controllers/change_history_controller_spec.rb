@@ -26,6 +26,16 @@ describe ChangeHistoryController, type: :controller do
       expect(response.status).to eq 200
       expect(response).to render_template :confirm_destroy
     end
+
+    it "deletes a publication log" do
+      expect(Manual::RepublishService).to receive(:call).with(user: gds_editor, manual_id: manual.id)
+
+      delete :destroy, params: { manual_id: manual.id, id: publication_log1.id }
+
+      expect(manual.publication_logs.count).to eq 1
+      expect(flash[:success]).to include "Change note deleted."
+      expect(response.status).to redirect_to manual_change_history_index_path(manual.id)
+    end
   end
 
   context "user does not have permissions" do
