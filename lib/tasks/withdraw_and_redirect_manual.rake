@@ -7,7 +7,6 @@ task :withdraw_and_redirect_manual, %i[manual_path redirect discard_drafts] => :
     user: User.gds_editor,
     manual_path: args.fetch(:manual_path),
     redirect:,
-    include_sections: true,
     discard_drafts:,
   )
 

@@ -1,9 +1,8 @@
 class WithdrawAndRedirectManual
-  def initialize(user:, manual_path:, redirect:, include_sections:, discard_drafts:, dry_run: false)
+  def initialize(user:, manual_path:, redirect:, discard_drafts:, dry_run: false)
     @user = user
     @manual_path = manual_path
     @redirect = redirect
-    @include_sections = include_sections
     @discard_drafts = discard_drafts
     @dry_run = dry_run
   end
@@ -18,7 +17,6 @@ class WithdrawAndRedirectManual
     Adapters.publishing.unpublish_and_redirect_manual_and_sections(
       manual,
       redirect:,
-      include_sections:,
       discard_drafts:,
     )
 
@@ -28,7 +26,7 @@ class WithdrawAndRedirectManual
 
 private
 
-  attr_reader :user, :manual_path, :redirect, :include_sections, :discard_drafts, :dry_run
+  attr_reader :user, :manual_path, :redirect, :discard_drafts, :dry_run
 
   class ManualNotPublishedError < StandardError; end
 end
