@@ -11,7 +11,7 @@ class PublishingAdapter
     end
   end
 
-  def unpublish_and_redirect_manual_and_sections(manual, redirect:, include_sections:, discard_drafts:)
+  def unpublish_and_redirect_manual_and_sections(manual, redirect:, discard_drafts:)
     Services.publishing_api.unpublish(
       manual.id,
       type: "redirect",
@@ -22,10 +22,8 @@ class PublishingAdapter
       discard_drafts:,
     )
 
-    if include_sections
-      manual.sections.each do |section|
-        unpublish_section(section, redirect:, discard_drafts:)
-      end
+    manual.sections.each do |section|
+      unpublish_section(section, redirect:, discard_drafts:)
     end
   end
 

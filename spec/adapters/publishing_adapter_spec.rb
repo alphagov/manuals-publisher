@@ -561,16 +561,6 @@ describe PublishingAdapter do
       allow(publishing_api).to receive(:unpublish)
     end
 
-    it "unpublishes and redirects only manual via Publishing API" do
-      expect(publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects:, discard_drafts: true
-      )
-
-      subject.unpublish_and_redirect_manual_and_sections(
-        manual, redirect:, include_sections: false, discard_drafts: true
-      )
-    end
-
     it "unpublishes and redirects manual plus sections via Publishing API" do
       manual.sections = [section]
 
@@ -583,7 +573,7 @@ describe PublishingAdapter do
       )
 
       subject.unpublish_and_redirect_manual_and_sections(
-        manual, redirect:, include_sections: true, discard_drafts: false
+        manual, redirect:, discard_drafts: false
       )
     end
   end
