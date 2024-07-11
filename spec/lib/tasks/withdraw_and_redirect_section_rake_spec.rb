@@ -28,4 +28,16 @@ describe "withdraw and redirect section rake tasks", type: :rake_task do
       )
     end
   end
+
+  describe "bulk archive sections" do
+    let(:task) { Rake::Task["bulk_archive_sections"] }
+
+    it "sets state to archive for sections that exist and output an error line for ones that don't" do
+      FactoryBot.create(:section_edition, section_uuid: "1234", slug: "guidance/parent_path/existing_doc", state: "published")
+
+      expect { task.invoke("./spec/fixtures/bulk_test.csv") }.to output(/unable to archive guidance\/parent_path\/non_existing_doc/).to_stdout
+
+      expect(SectionEdition.find_by(slug: "guidance/parent_path/existing_doc").state).to eq("archived")
+    end
+  end
 end

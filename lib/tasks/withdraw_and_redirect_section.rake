@@ -30,6 +30,29 @@ task :bulk_withdraw_and_redirect_section_to_manual, %i[csv_path] => :environment
   end
 end
 
+desc "bulk archive sections, e.g bulk_archive_sections['lib/tasks/data/archive_sections.csv']"
+task :bulk_archive_sections, %i[csv_path] => :environment do |_, args|
+  section_count = CSV.read(args.fetch(:csv_path), headers: true).length
+  puts "Archiving #{section_count} sections..."
+
+  failures = {}
+  CSV.foreach(args.fetch(:csv_path), headers: true) do |row|
+    section_path = row["section_path"]
+    edition = SectionEdition.find_by(slug: section_path)
+    edition.state = "archived"
+    edition.save!
+    print "."
+  rescue StandardError => e
+    print "x"
+    failures[section_path] = e
+  end
+  puts "\ndone"
+
+  failures.each do |section_path, exception|
+    puts "unable to archive #{section_path} due to #{exception.message}"
+    puts "=" * 10
+  end
+end
 
 def redirect_section(manual_path, section_path, redirect, discard_draft)
   redirect_section = WithdrawAndRedirectSection.new(
