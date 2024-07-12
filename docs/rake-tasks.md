@@ -100,6 +100,14 @@ rake reslug_section[manual_slug,old_section_slug,new_section_slug]
 This task will update a single section slug, this performs an update within
 the Manual Publisher application database and the Publishing API.
 
+### Update organisation slug for manual records
+
+```
+rake reslug_organisation[old_slug,new_slug]
+```
+
+This is depended on by docs for [changing an organisation's slug](https://docs.publishing.service.gov.uk/manual/changing-organisation-slug.html#2-update-the-organisation-slug-in-manuals-publisher).
+
 ## Relocating Manuals
 
 NOTE. The behaviour of this script is a little confusing (essentially overwriting one published manual with another) so it's not entirely obvious that it's still required.
