@@ -25,6 +25,7 @@ describe "withdraw and redirect section rake tasks", type: :rake_task do
         "1234",
         type: "redirect",
         alternative_path: "/guidance/parent_path",
+        discard_drafts: true,
       )
     end
   end
