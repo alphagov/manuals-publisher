@@ -9,14 +9,12 @@ class WithdrawAndRedirectSection
   end
 
   def execute
-    section_uuid = SectionEdition.find_by(slug: section_path).section_uuid
+    section_uuid = SectionEdition.find_by(slug: section_path, state: "published").section_uuid
     manual = Manual.find_by_slug!(manual_path, user)
 
     return if dry_run
 
     section = Section.find(manual, section_uuid)
-
-    raise SectionNotPublishedError, section.slug unless section.published?
 
     Adapters.publishing.unpublish_section(section, redirect:, discard_drafts: discard_draft)
   end

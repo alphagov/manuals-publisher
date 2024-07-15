@@ -29,16 +29,16 @@ RSpec.describe WithdrawAndRedirectSection do
   it "calls the publishing adapter to unpublish the section" do
     subject.execute
     expect(publishing_adapter).to have_received(:unpublish_section)
-      .with(instance_of(Section),
-            redirect:,
-            discard_drafts: discard_draft)
+                                    .with(instance_of(Section),
+                                          redirect:,
+                                          discard_drafts: discard_draft)
   end
 
   context "when only a draft section exists" do
     let(:state) { "draft" }
 
     it "raises an error if section is not published" do
-      expect { subject.execute }.to raise_error(WithdrawAndRedirectSection::SectionNotPublishedError)
+      expect { subject.execute }.to raise_error(Mongoid::Errors::DocumentNotFound)
     end
   end
 
