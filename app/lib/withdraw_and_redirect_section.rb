@@ -8,13 +8,11 @@ class WithdrawAndRedirectSection
   end
 
   def execute
-    section_uuid = SectionEdition.find_by(slug: section_path).section_uuid
+    section_uuid = SectionEdition.find_by(slug: section_path, state: "published").section_uuid
 
     return if dry_run
 
     section = Section.find(section_uuid)
-
-    raise SectionNotPublishedError, section.slug unless section.published?
 
     if discard_draft && section.draft?
       PublishingAdapter.unpublish_section(section, redirect:, discard_drafts: true)
@@ -26,6 +24,4 @@ class WithdrawAndRedirectSection
 private
 
   attr_reader :user, :section_path, :redirect, :discard_draft, :dry_run
-
-  class SectionNotPublishedError < StandardError; end
 end
