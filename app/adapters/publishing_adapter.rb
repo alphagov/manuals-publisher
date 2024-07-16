@@ -95,17 +95,13 @@ class PublishingAdapter
     Services.publishing_api.discard_draft(section.uuid)
   end
 
-  def self.organisation_for(manual)
-    OrganisationsAdapter.find(manual.organisation_slug)
-  end
-
   def self.save_manual(manual, republish:, include_links:)
     save_manual_links(manual) if include_links
     save_manual_content(manual, republish:)
   end
 
   def self.save_manual_links(manual)
-    organisation = organisation_for(manual)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     Services.publishing_api.patch_links(
       manual.id,
@@ -118,7 +114,7 @@ class PublishingAdapter
   end
 
   def self.save_manual_content(manual, republish: false)
-    organisation = organisation_for(manual)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     update_type = case version_type(republish) || manual.version_type
                   when :new, :major
@@ -216,7 +212,7 @@ class PublishingAdapter
   end
 
   def self.save_section_links(section, manual)
-    organisation = organisation_for(manual)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     Services.publishing_api.patch_links(
       section.uuid,
@@ -229,7 +225,7 @@ class PublishingAdapter
   end
 
   def self.save_section_content(section, manual, republish: false)
-    organisation = organisation_for(manual)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     update_type = case version_type(republish) || section.version_type
                   when :new, :major
