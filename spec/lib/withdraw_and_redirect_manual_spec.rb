@@ -11,7 +11,6 @@ RSpec.describe WithdrawAndRedirectManual do
   let(:dry_run) { false }
 
   let(:discard_service) { double(:discard_service) }
-  let(:publishing_adapter) { double(:publishing_adapter) }
 
   subject do
     described_class.new(
@@ -27,8 +26,7 @@ RSpec.describe WithdrawAndRedirectManual do
     allow(Manual::DiscardDraftService).to receive(:new) { discard_service }
     allow(discard_service).to receive(:call)
 
-    allow(Adapters).to receive(:publishing) { publishing_adapter }
-    allow(publishing_adapter).to receive(:unpublish_and_redirect_manual_and_sections)
+    allow(PublishingAdapter).to receive(:unpublish_and_redirect_manual_and_sections)
   end
 
   it "withdraws the manual and unpublishes" do
@@ -36,7 +34,7 @@ RSpec.describe WithdrawAndRedirectManual do
 
     reloaded_manual = Manual.find(manual.id, user)
     expect(reloaded_manual.withdrawn?).to eq(true)
-    expect(publishing_adapter).to have_received(:unpublish_and_redirect_manual_and_sections)
+    expect(PublishingAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
                                     .with(instance_of(Manual),
                                           redirect:,
                                           discard_drafts:)
@@ -59,7 +57,7 @@ RSpec.describe WithdrawAndRedirectManual do
 
       reloaded_manual = Manual.find(manual.id, user)
       expect(reloaded_manual.withdrawn?).to eq(true)
-      expect(publishing_adapter).to have_received(:unpublish_and_redirect_manual_and_sections)
+      expect(PublishingAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
                                       .with(instance_of(Manual),
                                             redirect:,
                                             discard_drafts:)
@@ -71,7 +69,7 @@ RSpec.describe WithdrawAndRedirectManual do
 
     it "doesn't action the withdrawal" do
       subject.execute
-      expect(publishing_adapter).to_not have_received(:unpublish_and_redirect_manual_and_sections)
+      expect(PublishingAdapter).to_not have_received(:unpublish_and_redirect_manual_and_sections)
     end
   end
 end

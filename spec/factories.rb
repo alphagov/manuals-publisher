@@ -65,11 +65,12 @@ FactoryBot.define do
     organisation_slug { "organisation_slug" }
 
     transient do
+      section_uuids { [] }
       state { "draft" }
     end
 
     after(:build) do |manual_record, evaluator|
-      manual_record.editions << FactoryBot.build(:manual_record_edition, state: evaluator.state)
+      manual_record.editions << FactoryBot.build(:manual_record_edition, state: evaluator.state, section_uuids: evaluator.section_uuids)
     end
 
     after(:create) do |manual_record|

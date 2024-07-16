@@ -7,7 +7,6 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
   let(:section2) { double(:section, assign_attributes: nil) }
   let(:sections) { [section1, section2] }
   let(:originally_published_at) { 10.years.ago }
-  let(:publishing_adapter) { double(:publishing_adapter) }
   let(:user) { double(:user) }
 
   subject do
@@ -27,8 +26,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
     allow(manual).to receive(:draft)
     allow(manual).to receive(:assign_attributes)
     allow(manual).to receive(:save!)
-    allow(Adapters).to receive(:publishing) { publishing_adapter }
-    allow(publishing_adapter).to receive(:save_draft)
+    allow(PublishingAdapter).to receive(:save_draft)
   end
 
   it "updates the manual with only the originally_published_at and use_originally_published_at_for_public_timestamp attribtues" do
@@ -58,6 +56,6 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
     subject.call
 
     expect(manual).to have_received(:save!).with(user).ordered
-    expect(publishing_adapter).to have_received(:save_draft).with(manual).ordered
+    expect(PublishingAdapter).to have_received(:save_draft).with(manual).ordered
   end
 end
