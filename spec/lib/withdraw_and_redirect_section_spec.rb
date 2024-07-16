@@ -4,7 +4,6 @@ RSpec.describe WithdrawAndRedirectSection do
   let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state:) }
   let(:manual) { Manual.build_manual_for(manual_record) }
   let(:section) { manual.sections.last }
-  let(:publishing_adapter) { double(:publishing_adapter) }
   let(:redirect) { "/redirect/blah" }
   let(:discard_draft) { false }
   let(:state) { "published" }
@@ -22,13 +21,12 @@ RSpec.describe WithdrawAndRedirectSection do
   end
 
   before do
-    allow(Adapters).to receive(:publishing) { publishing_adapter }
-    allow(publishing_adapter).to receive(:unpublish_section)
+    allow(PublishingAdapter).to receive(:unpublish_section)
   end
 
   it "calls the publishing adapter to unpublish the section" do
     subject.execute
-    expect(publishing_adapter).to have_received(:unpublish_section)
+    expect(PublishingAdapter).to have_received(:unpublish_section)
       .with(instance_of(Section),
             redirect:,
             discard_drafts: discard_draft)
@@ -51,7 +49,7 @@ RSpec.describe WithdrawAndRedirectSection do
       manual.save!(User.gds_editor)
 
       subject.execute
-      expect(publishing_adapter).to have_received(:unpublish_section)
+      expect(PublishingAdapter).to have_received(:unpublish_section)
         .with(instance_of(Section),
               redirect:,
               discard_drafts: discard_draft)
@@ -63,7 +61,7 @@ RSpec.describe WithdrawAndRedirectSection do
 
     it "doesn't action the withdrawal" do
       subject.execute
-      expect(publishing_adapter).to_not have_received(:unpublish_section)
+      expect(PublishingAdapter).to_not have_received(:unpublish_section)
     end
   end
 end

@@ -1,9 +1,6 @@
 class OrganisationsAdapter
-  def initialize
-    @cache = {}
-  end
-
-  def find(slug)
+  def self.find(slug)
+    @cache ||= {}
     @cache.fetch(slug) do
       response = Services.organisations.organisation(slug)
       organisation = Organisation.new(

@@ -11,8 +11,8 @@ class Manual::PublishService
     if version_number == manual.version_number
       manual.publish
       PublicationLogger.new.call(manual)
-      Adapters.publishing.save_draft(manual)
-      Adapters.publishing.publish(manual)
+      PublishingAdapter.save_draft(manual)
+      PublishingAdapter.publish(manual)
       manual.save!(user)
     else
       raise VersionMismatchError,
