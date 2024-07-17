@@ -20,16 +20,12 @@ RSpec.describe WithdrawAndRedirectSection do
     )
   end
 
-  before do
-    allow(PublishingAdapter).to receive(:unpublish_section)
-  end
-
   it "calls the publishing adapter to unpublish the section" do
+    expect(PublishingAdapter).to receive(:unpublish_section)
+                                   .with(instance_of(Section),
+                                         redirect:,
+                                         discard_drafts: discard_draft)
     subject.execute
-    expect(PublishingAdapter).to have_received(:unpublish_section)
-      .with(instance_of(Section),
-            redirect:,
-            discard_drafts: discard_draft)
   end
 
   context "when only a draft section exists" do
@@ -40,19 +36,39 @@ RSpec.describe WithdrawAndRedirectSection do
     end
   end
 
-  context "when an accompanying drafts exists and discard_draft is flagged" do
-    let(:discard_draft) { true }
-
-    it "discards draft" do
+  context "when a new draft exists for a published section" do
+    before do
       manual.draft
       section.assign_attributes({})
       manual.save!(User.gds_editor)
+    end
 
-      subject.execute
-      expect(PublishingAdapter).to have_received(:unpublish_section)
-        .with(instance_of(Section),
-              redirect:,
-              discard_drafts: discard_draft)
+    context "when discard draft is true" do
+      let(:discard_draft) { true }
+
+      it "send discards draft in Publishing API and deletes the draft in manuals publisher" do
+        expect(Services.publishing_api).to receive(:unpublish)
+                                             .with(section.uuid,
+                                                   type: "redirect",
+                                                   alternative_path: redirect,
+                                                   discard_drafts: true)
+        subject.execute
+        expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(["archived"])
+      end
+    end
+
+    context "when discard_draft is false" do
+      let(:discard_draft) { false }
+
+      it "sends allow draft flag to publishing API and don't delete the draft in Manuals Publisher" do
+        expect(Services.publishing_api).to receive(:unpublish)
+                                             .with(section.uuid,
+                                                   type: "redirect",
+                                                   alternative_path: redirect,
+                                                   discard_drafts: false)
+        subject.execute
+        expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(["archived", "draft"])
+      end
     end
   end
 
@@ -60,8 +76,8 @@ RSpec.describe WithdrawAndRedirectSection do
     let(:dry_run) { true }
 
     it "doesn't action the withdrawal" do
+      expect(PublishingAdapter).to_not receive(:unpublish_section)
       subject.execute
-      expect(PublishingAdapter).to_not have_received(:unpublish_section)
     end
   end
 end

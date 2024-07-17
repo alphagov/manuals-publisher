@@ -4,7 +4,7 @@ describe Section do
   subject(:section) do
     Section.new(manual:, uuid: section_uuid, previous_edition:, latest_edition:)
   end
-
+  #TODO: Add tests to fix withdrawn? and archive!
   def key_classes_for(hash)
     hash.keys.map(&:class).uniq
   end

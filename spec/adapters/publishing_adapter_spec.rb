@@ -18,11 +18,8 @@ describe PublishingAdapter do
   end
 
   let(:timestamp) { Time.zone.parse("2017-01-01 00:00:00") }
-
   let(:publishing_api) { double(:publishing_api) }
-
   let(:manual_id) { "a55242ed-178f-4716-8bb3-5d4f82d38531" }
-
   let(:manual) do
     FactoryBot.build(
       :manual,
@@ -34,9 +31,7 @@ describe PublishingAdapter do
       body: "manual-body",
     )
   end
-
   let(:section_uuid) { "64dbf396-b637-40b7-ada4-f19ce460e5e9" }
-
   let(:section) do
     Section.new(
       manual:,
@@ -44,7 +39,6 @@ describe PublishingAdapter do
       latest_edition: section_edition,
     )
   end
-
   let(:section_edition) do
     SectionEdition.new(
       slug: "manual-slug/section-slug",
@@ -55,9 +49,7 @@ describe PublishingAdapter do
       change_note: "change-note",
     )
   end
-
   let(:organisation_content_id) { "afa741e9-c68e-4ade-bc8f-ceb1fced23a6" }
-
   let(:organisation) do
     Organisation.new(
       title: "organisation-title",
@@ -66,12 +58,10 @@ describe PublishingAdapter do
       web_url: "organisation-web-url",
     )
   end
-
   let(:publication_logs) { [] }
 
   before do
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
-
     allow(PublicationLog).to receive(:change_notes_for).with("manual-slug")
       .and_return(publication_logs)
   end
@@ -594,6 +584,11 @@ describe PublishingAdapter do
 
       PublishingAdapter.unpublish(manual)
     end
+  end
+
+  #TODO: Add tests to fix withdrawn? and archive!
+  describe "#unpublish_section" do
+
   end
 
   describe "#publish" do
