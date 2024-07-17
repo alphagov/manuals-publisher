@@ -1,16 +1,6 @@
 require "securerandom"
 
 class PublishingAdapter
-  def self.save_draft(manual, republish: false, include_sections: true, include_links: true)
-    save_manual(manual, republish:, include_links:)
-
-    if include_sections
-      manual.sections.each do |section|
-        save_section(section, manual, republish:, include_links:)
-      end
-    end
-  end
-
   def self.unpublish_and_redirect_manual_and_sections(manual, redirect:, discard_drafts:)
     Services.publishing_api.unpublish(
       manual.id,

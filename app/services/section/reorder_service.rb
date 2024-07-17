@@ -10,7 +10,7 @@ class Section::ReorderService
     manual.draft
     manual.reorder_sections(section_order)
     manual.save!(user)
-    PublishingAdapter.save_draft(manual, include_sections: false)
+    Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_sections: false)
 
     [manual, manual.sections]
   end

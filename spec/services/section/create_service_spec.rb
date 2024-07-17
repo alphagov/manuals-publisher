@@ -21,7 +21,7 @@ RSpec.describe Section::CreateService do
     allow(manual)
       .to receive(:build_section)
       .and_return(new_section)
-    allow(PublishingAdapter).to receive(:save_draft)
+    allow(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections)
     allow(PublishingAdapter).to receive(:save_section)
     allow(section_attributes).to receive(:fetch).with(:title).and_return("section-title")
     allow(section_attributes).to receive(:merge).and_return({})
@@ -57,8 +57,8 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(PublishingAdapter)
-        .to receive(:save_draft).with(manual, include_sections: false)
+      expect(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_manual_and_sections).with(manual, include_sections: false)
 
       subject.call
     end
@@ -76,8 +76,8 @@ RSpec.describe Section::CreateService do
 
     before do
       allow(new_section).to receive(:valid?).and_return(true)
-      allow(PublishingAdapter)
-        .to receive(:save_draft)
+      allow(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_manual_and_sections)
         .and_raise(gds_api_exception)
     end
 
@@ -152,8 +152,8 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(PublishingAdapter)
-        .to receive(:save_draft).with(manual, include_sections: false)
+      expect(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_manual_and_sections).with(manual, include_sections: false)
 
       begin
         subject.call
@@ -181,8 +181,8 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(PublishingAdapter)
-        .to_not receive(:save_draft)
+      expect(Publishing::DraftAdapter)
+        .to_not receive(:save_draft_for_manual_and_sections)
 
       subject.call
     end

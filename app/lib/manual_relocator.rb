@@ -183,7 +183,7 @@ private
 
   def send_draft(manual)
     logger.info "Sending a draft of manual #{manual.id} (version: #{manual.version_number}) and its sections"
-    PublishingAdapter.save_draft(manual, include_links: false, republish: true)
+    Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_links: false, republish: true)
   end
 
   def send_gone(section_uuid, slug)

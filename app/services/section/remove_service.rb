@@ -32,7 +32,7 @@ class Section::RemoveService
 
       manual.remove_section(section_uuid)
       manual.save!(user)
-      PublishingAdapter.save_draft(manual, include_sections: false)
+      Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_sections: false)
 
       if draft_section
         PublishingAdapter.discard_section(section)

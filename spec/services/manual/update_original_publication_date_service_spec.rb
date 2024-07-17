@@ -24,7 +24,7 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
     allow(manual).to receive(:draft)
     allow(manual).to receive(:assign_attributes)
     allow(manual).to receive(:save!)
-    allow(PublishingAdapter).to receive(:save_draft)
+    allow(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections)
   end
 
   it "updates the manual with only the originally_published_at and use_originally_published_at_for_public_timestamp attribtues" do
@@ -54,6 +54,6 @@ RSpec.describe Manual::UpdateOriginalPublicationDateService do
     subject.call
 
     expect(manual).to have_received(:save!).with(user).ordered
-    expect(PublishingAdapter).to have_received(:save_draft).with(manual).ordered
+    expect(Publishing::DraftAdapter).to have_received(:save_draft_for_manual_and_sections).with(manual).ordered
   end
 end

@@ -11,7 +11,7 @@ class Manual::PublishService
     if version_number == manual.version_number
       manual.publish
       PublicationLogger.new.call(manual)
-      PublishingAdapter.save_draft(manual)
+      Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual)
       PublishingAdapter.publish(manual)
       manual.save!(user)
     else
