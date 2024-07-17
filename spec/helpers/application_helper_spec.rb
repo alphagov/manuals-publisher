@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe ApplicationHelper, type: :helper do
   describe "#allow_publish?" do
     let(:manual) { instance_double(Manual) }

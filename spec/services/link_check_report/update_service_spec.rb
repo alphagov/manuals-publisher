@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe LinkCheckReport::UpdateService do
   let(:link_check_report) do
     FactoryBot.create(

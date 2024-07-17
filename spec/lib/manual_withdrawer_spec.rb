@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe ManualWithdrawer do
   let(:logger) { double(:logger) }
 

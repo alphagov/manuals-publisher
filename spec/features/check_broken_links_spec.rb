@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe "Checking broken links", type: :feature do
   before do
     login_as(:gds_editor)

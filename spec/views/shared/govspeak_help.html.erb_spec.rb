@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "shared/_govspeak_help", type: :view do
   it "renders the help without a collapsible help section by default" do
     render

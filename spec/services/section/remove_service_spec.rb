@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Section::RemoveService do
   let(:state) { "published" }
   let(:section_edition) { FactoryBot.create(:section_edition, state:) }

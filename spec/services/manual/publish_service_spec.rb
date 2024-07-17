@@ -1,4 +1,3 @@
-require "spec_helper"
 require "ostruct"
 
 RSpec.describe Manual::PublishService do

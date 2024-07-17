@@ -1,4 +1,3 @@
-require "spec_helper"
 require "gds-sso/lint/user_spec"
 
 describe User, type: :model do

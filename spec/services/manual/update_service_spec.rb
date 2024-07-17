@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::UpdateService do
   let(:user) { double(:user) }
   let(:manual) { instance_double(Manual, id: "1", draft: nil, assign_attributes: nil, save!: nil, organisation_slug: "org") }

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::DiscardDraftService do
   let(:manual_id) { double(:manual_id) }
   let(:manual) { double(:manual, id: manual_id, has_ever_been_published?: has_ever_been_published, destroy!: nil) }

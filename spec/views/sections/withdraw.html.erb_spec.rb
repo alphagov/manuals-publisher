@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "sections/withdraw", type: :view do
   it "contains the elements required by the JavaScript that toggles the visibility of the change note field" do
     manual = FactoryBot.build(:manual, id: "manual-id")

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe ManualPublicationLogFilter, "# delete_logs_and_rebuild_for_major_updates_only!" do
   let(:manual_slug) { "guidance/the-highway-code" }
   let!(:manual_record) { ManualRecord.create(slug: manual_slug) }

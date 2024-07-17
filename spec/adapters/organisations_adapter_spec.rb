@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe OrganisationsAdapter do
   let(:api) { double(:organisations_api) }
   let(:response) do

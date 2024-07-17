@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe SectionPresenter do
   let(:section) { double(:section, body: "", attachments: []) }
   subject { described_class.new(section) }

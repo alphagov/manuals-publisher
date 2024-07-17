@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe PermissionChecker do
   let(:generic_writer) { FactoryBot.build(:generic_writer) }
   let(:generic_editor) { FactoryBot.build(:generic_editor) }

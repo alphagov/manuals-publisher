@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe WithdrawAndRedirectSection do
   let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state:) }
   let(:manual) { Manual.build_manual_for(manual_record) }

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe LinkCheckReport::FindReportableService do
   let(:user) { FactoryBot.create(:user) }
   let(:manual) { double(:manual, id: 1, body: "[link](http://www.example.com)") }

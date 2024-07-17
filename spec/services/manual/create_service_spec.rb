@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::CreateService do
   let(:user) { double(:user) }
   let(:manual) { double(:manual, valid?: nil, save!: nil, organisation_slug: "org") }

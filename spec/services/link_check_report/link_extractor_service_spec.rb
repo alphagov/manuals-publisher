@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe LinkCheckReport::LinkExtractorService do
   let(:body) do
     %{

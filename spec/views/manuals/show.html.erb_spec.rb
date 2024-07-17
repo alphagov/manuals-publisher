@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "manuals/show", type: :view do
   before do
     allow(view).to receive(:current_user_is_gds_editor?).and_return(true)

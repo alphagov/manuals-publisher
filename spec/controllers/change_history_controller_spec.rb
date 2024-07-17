@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe ChangeHistoryController, type: :controller do
   let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state: "published") }
   let(:manual) { Manual.build_manual_for(manual_record) }

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe SectionsController, type: :controller do
   describe "#create" do
     let(:manual) { Manual.new }

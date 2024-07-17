@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe LinkCheckReport::CreateService do
   let(:user) { FactoryBot.create(:user) }
 

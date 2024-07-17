@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe PublishingAdapter do
   let(:publishing_api_schema_name_for_manual) do
     GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME

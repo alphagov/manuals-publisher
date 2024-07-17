@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe ErrorsHelper, type: :helper do
   describe "#errors_for" do
     before do

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe "manual urls", type: :feature do
   before do
     login_as(:gds_editor)

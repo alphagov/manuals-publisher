@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "manuals/index", type: :view do
   it "shows the organisation slug if the user is a gds editor" do
     manuals = [FactoryBot.build_stubbed(:manual, organisation_slug: "Test organisation", updated_at: Time.zone.now)]

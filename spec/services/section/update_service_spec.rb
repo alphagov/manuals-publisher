@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Section::UpdateService do
   let(:user) { User.gds_editor }
   let(:manual) { Manual.new(title: "manual-title") }

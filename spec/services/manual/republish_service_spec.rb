@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::RepublishService do
   let(:manual_id) { double(:manual_id) }
   let(:published_manual_version) { double(:manual) }

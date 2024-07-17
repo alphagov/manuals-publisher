@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe ManualRelocator do
   include GdsApi::TestHelpers::PublishingApi
   include GdsApi::TestHelpers::Organisations
