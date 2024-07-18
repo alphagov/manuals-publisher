@@ -76,7 +76,7 @@ describe Publishing::DraftAdapter do
     end
 
     it "saves content for manual to Publishing API" do
-      expect(Publishing::DraftAdapter).to receive(:save_section).twice
+      expect(Publishing::DraftAdapter).to receive(:save_draft_for_section).twice
       expect(publishing_api).to receive(:put_content).with(
         manual_id,
         {
@@ -144,13 +144,13 @@ describe Publishing::DraftAdapter do
     end
 
     it "saves all sections for manual to Publishing API" do
-      expect(Publishing::DraftAdapter).to receive(:save_section).with(section_one, manual, include_links: true, republish: false)
-      expect(Publishing::DraftAdapter).to receive(:save_section).with(section_two, manual, include_links: true, republish: false)
+      expect(Publishing::DraftAdapter).to receive(:save_draft_for_section).with(section_one, manual, include_links: true, republish: false)
+      expect(Publishing::DraftAdapter).to receive(:save_draft_for_section).with(section_two, manual, include_links: true, republish: false)
       Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual)
     end
 
     it "does not saves sections for manual to Publishing API when not include sections" do
-      expect(Publishing::DraftAdapter).to receive(:save_section).never
+      expect(Publishing::DraftAdapter).to receive(:save_draft_for_section).never
       Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_sections: false)
     end
 
@@ -320,11 +320,11 @@ describe Publishing::DraftAdapter do
     end
   end
 
-  describe "#save_section" do
+  describe "#save_draft_for_section" do
     it "does not patch links for section to Publishing API when not include linkes" do
       expect(publishing_api).to_not receive(:patch_links)
 
-      Publishing::DraftAdapter.save_section(section_one, manual, include_links: false)
+      Publishing::DraftAdapter.save_draft_for_section(section_one, manual, include_links: false)
     end
 
     it "patch links for section to Publishing API" do
@@ -337,7 +337,7 @@ describe Publishing::DraftAdapter do
         },
       )
 
-      Publishing::DraftAdapter.save_section(section_one, manual)
+      Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
     end
 
     it "patch links for section to Publishing API with attributes which validate against links schema for section" do
@@ -348,7 +348,7 @@ describe Publishing::DraftAdapter do
         ),
       )
 
-      Publishing::DraftAdapter.save_section(section_one, manual)
+      Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
     end
 
     it "saves content for section to Publishing API" do
@@ -399,7 +399,7 @@ describe Publishing::DraftAdapter do
         },
       )
 
-      Publishing::DraftAdapter.save_section(section_one, manual)
+      Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
     end
 
     context "when section does not need exporting" do
@@ -409,12 +409,12 @@ describe Publishing::DraftAdapter do
 
       it "does not save links for section to Publishing API" do
         expect(publishing_api).not_to receive(:patch_links)
-        Publishing::DraftAdapter.save_section(section_one, manual)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       it "does not save content for section to Publishing API" do
         expect(publishing_api).not_to receive(:put_content)
-        Publishing::DraftAdapter.save_section(section_one, manual)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       context "and action is republish" do
@@ -424,7 +424,7 @@ describe Publishing::DraftAdapter do
             anything,
           )
 
-          Publishing::DraftAdapter.save_section(section_one, manual, republish: true)
+          Publishing::DraftAdapter.save_draft_for_section(section_one, manual, republish: true)
         end
 
         it "saves content for section to Publishing API" do
@@ -433,7 +433,7 @@ describe Publishing::DraftAdapter do
             anything,
           )
 
-          Publishing::DraftAdapter.save_section(section_one, manual, republish: true)
+          Publishing::DraftAdapter.save_draft_for_section(section_one, manual, republish: true)
         end
       end
     end
@@ -452,7 +452,7 @@ describe Publishing::DraftAdapter do
           ),
         )
 
-        Publishing::DraftAdapter.save_section(section_one, manual)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       context "but Manual#use_originally_published_at_for_public_timestamp? is false" do
@@ -468,7 +468,7 @@ describe Publishing::DraftAdapter do
             ),
           )
 
-          Publishing::DraftAdapter.save_section(section_one, manual)
+          Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
         end
       end
     end
@@ -505,7 +505,7 @@ describe Publishing::DraftAdapter do
           )),
         )
 
-        Publishing::DraftAdapter.save_section(section_one, manual)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
     end
 
@@ -519,7 +519,7 @@ describe Publishing::DraftAdapter do
           section_one_uuid,
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
-        Publishing::DraftAdapter.save_section(section_one, manual)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       it "saves content for section to Publishing API with republish update_type when republishing is true" do
@@ -531,7 +531,7 @@ describe Publishing::DraftAdapter do
           ),
         )
 
-        Publishing::DraftAdapter.save_section(section_one, manual, republish: true)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual, republish: true)
       end
     end
 
@@ -546,7 +546,7 @@ describe Publishing::DraftAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
-        Publishing::DraftAdapter.save_section(section_one, manual)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       it "saves content for section to Publishing API with republish update_type when republishing is true" do
@@ -558,7 +558,7 @@ describe Publishing::DraftAdapter do
           ),
         )
 
-        Publishing::DraftAdapter.save_section(section_one, manual, republish: true)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual, republish: true)
       end
     end
 
@@ -573,7 +573,7 @@ describe Publishing::DraftAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        Publishing::DraftAdapter.save_section(section_one, manual)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       it "saves content for section to Publishing API with republish update_type when republishing is true" do
@@ -585,7 +585,7 @@ describe Publishing::DraftAdapter do
           ),
         )
 
-        Publishing::DraftAdapter.save_section(section_one, manual, republish: true)
+        Publishing::DraftAdapter.save_draft_for_section(section_one, manual, republish: true)
       end
     end
   end

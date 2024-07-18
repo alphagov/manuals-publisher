@@ -4,15 +4,15 @@ class Publishing::DraftAdapter
 
     if include_sections
       manual.sections.each do |section|
-        save_section(section, manual, republish:, include_links:)
+        save_draft_for_section(section, manual, republish:, include_links:)
       end
     end
   end
 
-  def self.save_section(section, manual, republish: false, include_links: true)
+  def self.save_draft_for_section(section, manual, republish: false, include_links: true)
     if section.needs_exporting? || republish
-      PublishingAdapter.save_section_links(section, manual) if include_links
-      PublishingAdapter.save_section_content(section, manual, republish:)
+      patch_links_for_section(section, manual) if include_links
+      put_content_for_section(section, manual, republish:)
     end
   end
 
@@ -126,6 +126,95 @@ class Publishing::DraftAdapter
     end
 
     Services.publishing_api.put_content(manual.id, attributes)
+  end
+
+  private_class_method def self.patch_links_for_section(section, manual)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
+
+    Services.publishing_api.patch_links(
+      section.uuid,
+      links: {
+        organisations: [organisation.content_id],
+        primary_publishing_organisation: [organisation.content_id],
+        manual: [manual.id],
+      },
+    )
+  end
+
+  private_class_method def self.put_content_for_section(section, manual, republish: false)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
+
+    update_type = case version_type(republish) || section.version_type
+                  when :new, :major
+                    GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE
+                  when :minor
+                    GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE
+                  when :republish
+                    GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE
+                  else
+                    raise "Unknown version type: #{section.version_type}"
+                  end
+
+    attributes = {
+      base_path: "/#{section.slug}",
+      schema_name: GdsApiConstants::PublishingApi::SECTION_SCHEMA_NAME,
+      document_type: GdsApiConstants::PublishingApi::SECTION_DOCUMENT_TYPE,
+      title: section.title,
+      description: section.summary,
+      update_type:,
+      bulk_publishing: republish,
+      publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+      rendering_app: GdsApiConstants::PublishingApi::RENDERING_APP,
+      change_note: section.change_note,
+      routes: [
+        {
+          path: "/#{section.slug}",
+          type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
+        },
+      ],
+      details: {
+        body: [
+          {
+            content_type: "text/govspeak",
+            content: section.body,
+          },
+          {
+            content_type: "text/html",
+            content: SectionPresenter.new(section).body,
+          },
+        ],
+        attachments: section.attachments.map do |attachment|
+          {
+            attachment_type: "file",
+            id: SecureRandom.uuid,
+            title: attachment.title,
+            url: attachment.file_url,
+            content_type: attachment.content_type,
+          }
+        end,
+        manual: {
+          base_path: "/#{manual.slug}",
+        },
+        organisations: [
+          {
+            title: organisation.title,
+            abbreviation: organisation.abbreviation || "",
+            web_url: organisation.web_url,
+          },
+        ],
+        visually_expanded: section.visually_expanded,
+      },
+      locale: GdsApiConstants::PublishingApi::EDITION_LOCALE,
+    }
+
+    if manual.originally_published_at.present?
+      attributes[:first_published_at] = manual.originally_published_at
+      if manual.use_originally_published_at_for_public_timestamp?
+        attributes[:public_updated_at] = manual.originally_published_at
+      end
+    end
+
+    Services.publishing_api.put_content(section.uuid, attributes)
   end
 
   private_class_method def self.version_type(republish)
