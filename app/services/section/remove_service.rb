@@ -7,11 +7,7 @@ class Section::RemoveService
   end
 
   def call
-    begin
-      manual = Manual.find(manual_id, user)
-    rescue KeyError
-      raise ManualNotFoundError, manual_id
-    end
+    manual = Manual.find(manual_id, user)
 
     section = manual.find_section(section_uuid)
     raise SectionNotFoundError, section_uuid if section.blank?
@@ -49,8 +45,6 @@ class Section::RemoveService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  class ManualNotFoundError < StandardError; end
 
   class SectionNotFoundError < StandardError; end
 end

@@ -20,6 +20,31 @@ RSpec.describe Section::RemoveService do
     allow(OrganisationsAdapter).to receive(:find).with(manual_record.organisation_slug)
   end
 
+  context "with a non-existant manual" do
+    context "with a section id that doesn't belong to the manual" do
+      let(:service) do
+        described_class.new(
+          user:,
+          manual_id: "non-existant-id",
+          section_uuid: section_edition.section_uuid,
+          attributes: change_note_params,
+        )
+      end
+
+      it "raises a an error and does not remove the section" do
+        expect(PublishingAdapter).to_not receive(:save_draft)
+        expect(PublishingAdapter).to_not receive(:discard_section)
+        expect {
+          service.call
+        }.to raise_error(Manual::NotFoundError, "Manual ID not found: non-existant-id")
+        manual = Manual.find(manual_record.manual_id, user)
+        expect(manual.sections.map(&:uuid)).to eq([section_edition.section_uuid])
+        expect(manual.removed_sections.map(&:uuid)).to eq([])
+        expect(manual.state).to eq("published")
+      end
+    end
+  end
+
   context "with a section id that doesn't belong to the manual" do
     let(:a_different_section) { FactoryBot.create(:section_edition) }
     let(:service) do
