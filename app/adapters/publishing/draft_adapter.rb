@@ -4,8 +4,15 @@ class Publishing::DraftAdapter
 
     if include_sections
       manual.sections.each do |section|
-        PublishingAdapter.save_section(section, manual, republish:, include_links:)
+        save_section(section, manual, republish:, include_links:)
       end
+    end
+  end
+
+  def self.save_section(section, manual, republish: false, include_links: true)
+    if section.needs_exporting? || republish
+      PublishingAdapter.save_section_links(section, manual) if include_links
+      PublishingAdapter.save_section_content(section, manual, republish:)
     end
   end
 

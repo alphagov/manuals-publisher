@@ -57,13 +57,6 @@ class PublishingAdapter
     Services.publishing_api.discard_draft(manual.id)
   end
 
-  def self.save_section(section, manual, republish: false, include_links: true)
-    if section.needs_exporting? || republish
-      save_section_links(section, manual) if include_links
-      save_section_content(section, manual, republish:)
-    end
-  end
-
   def self.redirect_section(section, to:)
     Services.publishing_api.put_content(
       SecureRandom.uuid,

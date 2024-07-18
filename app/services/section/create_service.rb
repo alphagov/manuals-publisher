@@ -15,7 +15,7 @@ class Section::CreateService
     if new_section.valid?
       manual.draft
       Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_sections: false)
-      PublishingAdapter.save_section(new_section, manual)
+      Publishing::DraftAdapter.save_section(new_section, manual)
       manual.save!(user)
     end
 
