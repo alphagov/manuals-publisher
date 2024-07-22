@@ -4,14 +4,12 @@ RSpec.describe Manual::RepublishService do
   let(:manual_id) { double(:manual_id) }
   let(:published_manual_version) { double(:manual) }
   let(:draft_manual_version) { double(:manual) }
-  let(:publishing_adapter) { double(:publishing_adapter) }
   let(:manual) { double(:manual) }
   let(:user) { double(:user) }
 
   before do
-    allow(Adapters).to receive(:publishing) { publishing_adapter }
-    allow(publishing_adapter).to receive(:save_draft)
-    allow(publishing_adapter).to receive(:publish)
+    allow(PublishingAdapter).to receive(:save_draft)
+    allow(PublishingAdapter).to receive(:publish)
     allow(Manual).to receive(:find).with(manual_id, user) { manual }
   end
 
@@ -26,17 +24,17 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the publishing api draft exporter" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).to have_received(:save_draft).with(published_manual_version, republish: true)
+      expect(PublishingAdapter).to have_received(:save_draft).with(published_manual_version, republish: true)
     end
 
     it "calls the new publishing api publisher" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).to have_received(:publish).with(published_manual_version, republish: true)
+      expect(PublishingAdapter).to have_received(:publish).with(published_manual_version, republish: true)
     end
 
     it "tells the draft listeners nothing" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).not_to have_received(:save_draft).with(draft_manual_version, republish: true)
+      expect(PublishingAdapter).not_to have_received(:save_draft).with(draft_manual_version, republish: true)
     end
   end
 
@@ -51,13 +49,13 @@ RSpec.describe Manual::RepublishService do
 
     it "tells the published listeners nothing" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).not_to have_received(:publish)
-      expect(publishing_adapter).not_to have_received(:save_draft).with(published_manual_version, republish: true)
+      expect(PublishingAdapter).not_to have_received(:publish)
+      expect(PublishingAdapter).not_to have_received(:save_draft).with(published_manual_version, republish: true)
     end
 
     it "tells the draft listeners to republish the draft version of the manual" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).to have_received(:save_draft).with(draft_manual_version, republish: true)
+      expect(PublishingAdapter).to have_received(:save_draft).with(draft_manual_version, republish: true)
     end
   end
 
@@ -72,17 +70,17 @@ RSpec.describe Manual::RepublishService do
 
     it "calls the publishing api draft exporter" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).to have_received(:save_draft).with(published_manual_version, republish: true)
+      expect(PublishingAdapter).to have_received(:save_draft).with(published_manual_version, republish: true)
     end
 
     it "calls the new publishing api publisher" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).to have_received(:publish).with(published_manual_version, republish: true)
+      expect(PublishingAdapter).to have_received(:publish).with(published_manual_version, republish: true)
     end
 
     it "tells the draft listeners to republish the draft version of the manual" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).to have_received(:save_draft).with(draft_manual_version, republish: true)
+      expect(PublishingAdapter).to have_received(:save_draft).with(draft_manual_version, republish: true)
     end
   end
 
@@ -96,8 +94,8 @@ RSpec.describe Manual::RepublishService do
 
     it "tells none of the listeners to do anything" do
       expect { described_class.call(user:, manual_id:) }.to raise_error arbitrary_exception
-      expect(publishing_adapter).not_to have_received(:save_draft)
-      expect(publishing_adapter).not_to have_received(:publish)
+      expect(PublishingAdapter).not_to have_received(:save_draft)
+      expect(PublishingAdapter).not_to have_received(:publish)
     end
   end
 
@@ -112,8 +110,8 @@ RSpec.describe Manual::RepublishService do
 
     it "tells none of the listeners to do anything" do
       described_class.call(user:, manual_id:)
-      expect(publishing_adapter).not_to have_received(:save_draft)
-      expect(publishing_adapter).not_to have_received(:publish)
+      expect(PublishingAdapter).not_to have_received(:save_draft)
+      expect(PublishingAdapter).not_to have_received(:publish)
     end
   end
 end

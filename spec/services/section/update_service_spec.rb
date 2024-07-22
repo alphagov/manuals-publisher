@@ -4,7 +4,6 @@ RSpec.describe Section::UpdateService do
   let(:user) { User.gds_editor }
   let(:manual) { Manual.new(title: "manual-title") }
   let(:section_uuid) { "section-uuid" }
-  let(:publishing_api_adapter) { double(:publishing_api) }
   let(:section) do
     Section.new(manual:, uuid: section_uuid)
   end
@@ -25,10 +24,8 @@ RSpec.describe Section::UpdateService do
     allow(Manual)
       .to receive(:find).with(manual.id, user)
       .and_return(manual)
-    allow(Adapters).to receive(:publishing)
-      .and_return(publishing_api_adapter)
-    allow(publishing_api_adapter).to receive(:save_draft)
-    allow(publishing_api_adapter).to receive(:save_section)
+    allow(PublishingAdapter).to receive(:save_draft)
+    allow(PublishingAdapter).to receive(:save_section)
   end
 
   context "when the new section is valid" do
@@ -60,14 +57,14 @@ RSpec.describe Section::UpdateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(publishing_api_adapter)
+      expect(PublishingAdapter)
         .to receive(:save_draft).with(manual, include_sections: false)
 
       subject.call
     end
 
     it "saves the new section to the publishing api" do
-      expect(publishing_api_adapter)
+      expect(PublishingAdapter)
         .to receive(:save_section).with(section, manual)
 
       subject.call
@@ -79,7 +76,7 @@ RSpec.describe Section::UpdateService do
 
     before do
       allow(section).to receive(:valid?).and_return(true)
-      allow(publishing_api_adapter)
+      allow(PublishingAdapter)
         .to receive(:save_draft).and_raise(gds_api_exception)
     end
 
@@ -108,7 +105,7 @@ RSpec.describe Section::UpdateService do
     end
 
     it "does not save the section to the publishing api" do
-      expect(publishing_api_adapter)
+      expect(PublishingAdapter)
         .to_not receive(:save_section).with(section, manual)
 
       begin
@@ -124,7 +121,7 @@ RSpec.describe Section::UpdateService do
 
     before do
       allow(section).to receive(:valid?).and_return(true)
-      allow(publishing_api_adapter)
+      allow(PublishingAdapter)
         .to receive(:save_section).and_raise(gds_api_exception)
     end
 
@@ -153,7 +150,7 @@ RSpec.describe Section::UpdateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(publishing_api_adapter)
+      expect(PublishingAdapter)
         .to receive(:save_draft).with(manual, include_sections: false)
 
       begin
@@ -182,14 +179,14 @@ RSpec.describe Section::UpdateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(publishing_api_adapter)
+      expect(PublishingAdapter)
         .to_not receive(:save_draft)
 
       subject.call
     end
 
     it "saves the new section to the publishing api" do
-      expect(publishing_api_adapter)
+      expect(PublishingAdapter)
         .to_not receive(:save_section)
 
       subject.call

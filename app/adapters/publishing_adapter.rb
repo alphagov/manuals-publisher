@@ -1,7 +1,7 @@
 require "securerandom"
 
 class PublishingAdapter
-  def save_draft(manual, republish: false, include_sections: true, include_links: true)
+  def self.save_draft(manual, republish: false, include_sections: true, include_links: true)
     save_manual(manual, republish:, include_links:)
 
     if include_sections
@@ -11,7 +11,7 @@ class PublishingAdapter
     end
   end
 
-  def unpublish_and_redirect_manual_and_sections(manual, redirect:, discard_drafts:)
+  def self.unpublish_and_redirect_manual_and_sections(manual, redirect:, discard_drafts:)
     Services.publishing_api.unpublish(
       manual.id,
       type: "redirect",
@@ -27,7 +27,7 @@ class PublishingAdapter
     end
   end
 
-  def unpublish_section(section, redirect:, republish: false, discard_drafts: true)
+  def self.unpublish_section(section, redirect:, republish: false, discard_drafts: true)
     if !section.withdrawn? || republish
       begin
         Services.publishing_api.unpublish(
@@ -40,7 +40,7 @@ class PublishingAdapter
     end
   end
 
-  def unpublish(manual)
+  def self.unpublish(manual)
     Services.publishing_api.unpublish(manual.id, type: "gone")
 
     manual.sections.each do |section|
@@ -48,7 +48,7 @@ class PublishingAdapter
     end
   end
 
-  def publish(manual, republish: false)
+  def self.publish(manual, republish: false)
     publish_manual(manual, republish:)
 
     manual.sections.each do |section|
@@ -60,21 +60,21 @@ class PublishingAdapter
     end
   end
 
-  def discard(manual)
+  def self.discard(manual)
     manual.sections.each do |section|
       discard_section(section)
     end
     Services.publishing_api.discard_draft(manual.id)
   end
 
-  def save_section(section, manual, republish: false, include_links: true)
+  def self.save_section(section, manual, republish: false, include_links: true)
     if section.needs_exporting? || republish
       save_section_links(section, manual) if include_links
       save_section_content(section, manual, republish:)
     end
   end
 
-  def redirect_section(section, to:)
+  def self.redirect_section(section, to:)
     Services.publishing_api.put_content(
       SecureRandom.uuid,
       document_type: "redirect",
@@ -91,23 +91,17 @@ class PublishingAdapter
     )
   end
 
-  def discard_section(section)
+  def self.discard_section(section)
     Services.publishing_api.discard_draft(section.uuid)
   end
 
-private
-
-  def organisation_for(manual)
-    Adapters.organisations.find(manual.organisation_slug)
-  end
-
-  def save_manual(manual, republish:, include_links:)
+  def self.save_manual(manual, republish:, include_links:)
     save_manual_links(manual) if include_links
     save_manual_content(manual, republish:)
   end
 
-  def save_manual_links(manual)
-    organisation = organisation_for(manual)
+  def self.save_manual_links(manual)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     Services.publishing_api.patch_links(
       manual.id,
@@ -119,8 +113,8 @@ private
     )
   end
 
-  def save_manual_content(manual, republish: false)
-    organisation = organisation_for(manual)
+  def self.save_manual_content(manual, republish: false)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     update_type = case version_type(republish) || manual.version_type
                   when :new, :major
@@ -213,12 +207,12 @@ private
     Services.publishing_api.put_content(manual.id, attributes)
   end
 
-  def publish_manual(manual, republish:)
+  def self.publish_manual(manual, republish:)
     Services.publishing_api.publish(manual.id, update_type(republish))
   end
 
-  def save_section_links(section, manual)
-    organisation = organisation_for(manual)
+  def self.save_section_links(section, manual)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     Services.publishing_api.patch_links(
       section.uuid,
@@ -230,8 +224,8 @@ private
     )
   end
 
-  def save_section_content(section, manual, republish: false)
-    organisation = organisation_for(manual)
+  def self.save_section_content(section, manual, republish: false)
+    organisation = OrganisationsAdapter.find(manual.organisation_slug)
 
     update_type = case version_type(republish) || section.version_type
                   when :new, :major
@@ -306,18 +300,18 @@ private
     Services.publishing_api.put_content(section.uuid, attributes)
   end
 
-  def publish_section(section, republish:)
+  def self.publish_section(section, republish:)
     if section.needs_exporting? || republish
       Services.publishing_api.publish(section.uuid, update_type(republish))
       section.mark_as_exported! unless republish
     end
   end
 
-  def update_type(republish)
+  def self.update_type(republish)
     republish ? GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE : nil
   end
 
-  def version_type(republish)
+  def self.version_type(republish)
     republish ? :republish : nil
   end
 end

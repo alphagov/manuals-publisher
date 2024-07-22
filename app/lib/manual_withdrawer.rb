@@ -19,7 +19,7 @@ class ManualWithdrawer
       logger.error "FAILURE: #{message}"
       raise message
     end
-  rescue Manual::WithdrawService::ManualNotFoundError
+  rescue Manual::NotFoundError
     message = "Manual not found for manual_id `#{manual_id}`"
     warn "ERROR: #{message}"
     raise message

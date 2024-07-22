@@ -20,7 +20,6 @@ describe PublishingAdapter do
   let(:timestamp) { Time.zone.parse("2017-01-01 00:00:00") }
 
   let(:publishing_api) { double(:publishing_api) }
-  let(:organisations) { double(:organisations_adapter) }
 
   let(:manual_id) { "a55242ed-178f-4716-8bb3-5d4f82d38531" }
 
@@ -72,7 +71,6 @@ describe PublishingAdapter do
 
   before do
     allow(Services).to receive(:publishing_api).and_return(publishing_api)
-    allow(Adapters).to receive(:organisations).and_return(organisations)
 
     allow(PublicationLog).to receive(:change_notes_for).with("manual-slug")
       .and_return(publication_logs)
@@ -85,7 +83,7 @@ describe PublishingAdapter do
       allow(manual).to receive(:version_type).and_return(:new)
       allow(section).to receive(:needs_exporting?).and_return(true)
 
-      allow(organisations).to receive(:find).with("organisation-slug").and_return(organisation)
+      allow(OrganisationsAdapter).to receive(:find).with("organisation-slug").and_return(organisation)
       allow(publishing_api).to receive(:patch_links).with(anything, anything)
       allow(publishing_api).to receive(:put_content).with(anything, anything)
     end
@@ -100,7 +98,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save_draft(manual)
+      PublishingAdapter.save_draft(manual)
     end
 
     it "saves links for manual to Publishing API with attributes which validate against links schema for manual" do
@@ -111,7 +109,7 @@ describe PublishingAdapter do
         ),
       )
 
-      subject.save_draft(manual)
+      PublishingAdapter.save_draft(manual)
     end
 
     it "saves content for manual to Publishing API" do
@@ -173,7 +171,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save_draft(manual)
+      PublishingAdapter.save_draft(manual)
     end
 
     it "saves links for all manual's sections to Publishing API" do
@@ -186,7 +184,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save_draft(manual)
+      PublishingAdapter.save_draft(manual)
     end
 
     it "saves links for all manual's sections to Publishing API with attributes which validate against links schema for section" do
@@ -197,7 +195,7 @@ describe PublishingAdapter do
         ),
       )
 
-      subject.save_draft(manual)
+      PublishingAdapter.save_draft(manual)
     end
 
     it "saves content for all manual's sections to Publishing API" do
@@ -248,7 +246,7 @@ describe PublishingAdapter do
         },
       )
 
-      subject.save_draft(manual)
+      PublishingAdapter.save_draft(manual)
     end
 
     context "when section does not need exporting" do
@@ -262,7 +260,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it "does not save content for section to Publishing API" do
@@ -271,7 +269,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       context "and action is republish" do
@@ -281,7 +279,7 @@ describe PublishingAdapter do
             anything,
           )
 
-          subject.save_draft(manual, republish: true)
+          PublishingAdapter.save_draft(manual, republish: true)
         end
 
         it "saves content for section to Publishing API" do
@@ -290,7 +288,7 @@ describe PublishingAdapter do
             anything,
           )
 
-          subject.save_draft(manual, republish: true)
+          PublishingAdapter.save_draft(manual, republish: true)
         end
       end
     end
@@ -309,7 +307,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with timestamps" do
@@ -321,7 +319,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       context "but Manual#use_originally_published_at_for_public_timestamp? is false" do
@@ -337,7 +335,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save_draft(manual)
+          PublishingAdapter.save_draft(manual)
         end
 
         it "saves content for section to Publishing API without public timestamp" do
@@ -348,7 +346,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save_draft(manual)
+          PublishingAdapter.save_draft(manual)
         end
       end
     end
@@ -364,7 +362,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save_draft(manual, republish: true)
+          PublishingAdapter.save_draft(manual, republish: true)
         end
 
         it "saves content for section to Publishing API with republish update_type" do
@@ -376,7 +374,7 @@ describe PublishingAdapter do
             ),
           )
 
-          subject.save_draft(manual, republish: true)
+          PublishingAdapter.save_draft(manual, republish: true)
         end
       end
     end
@@ -393,7 +391,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with major update_type" do
@@ -402,7 +400,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it_behaves_like "republishing overrides update_type and sets bulk_publishing"
@@ -420,7 +418,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with minor update_type" do
@@ -429,7 +427,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it_behaves_like "republishing overrides update_type and sets bulk_publishing"
@@ -447,7 +445,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it "saves content for section to Publishing API with major update_type" do
@@ -456,7 +454,7 @@ describe PublishingAdapter do
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
 
       it_behaves_like "republishing overrides update_type and sets bulk_publishing"
@@ -507,7 +505,7 @@ describe PublishingAdapter do
           ),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
     end
 
@@ -543,7 +541,7 @@ describe PublishingAdapter do
           )),
         )
 
-        subject.save_draft(manual)
+        PublishingAdapter.save_draft(manual)
       end
     end
   end
@@ -572,7 +570,7 @@ describe PublishingAdapter do
         section.uuid, type: "redirect", discard_drafts: false, alternative_path: redirect
       )
 
-      subject.unpublish_and_redirect_manual_and_sections(
+      PublishingAdapter.unpublish_and_redirect_manual_and_sections(
         manual, redirect:, discard_drafts: false
       )
     end
@@ -588,13 +586,13 @@ describe PublishingAdapter do
     it "unpublishes manual via Publishing API" do
       expect(publishing_api).to receive(:unpublish).with(manual_id, type: "gone")
 
-      subject.unpublish(manual)
+      PublishingAdapter.unpublish(manual)
     end
 
     it "unpublishes all manual's sections via Publishing API" do
       expect(publishing_api).to receive(:unpublish).with(section_uuid, type: "gone")
 
-      subject.unpublish(manual)
+      PublishingAdapter.unpublish(manual)
     end
   end
 
@@ -632,19 +630,19 @@ describe PublishingAdapter do
     it "publishes manual to Publishing API" do
       expect(publishing_api).to receive(:publish).with(manual_id, nil)
 
-      subject.publish(manual)
+      PublishingAdapter.publish(manual)
     end
 
     it "publishes all manual's sections to Publishing API" do
       expect(publishing_api).to receive(:publish).with(section_uuid, nil)
 
-      subject.publish(manual)
+      PublishingAdapter.publish(manual)
     end
 
     it "marks all manual's sections as exported" do
       expect(section).to receive(:mark_as_exported!)
 
-      subject.publish(manual)
+      PublishingAdapter.publish(manual)
     end
 
     it "unpublishes all manual's removed sections via Publishing API" do
@@ -655,13 +653,13 @@ describe PublishingAdapter do
         discard_drafts: true,
       )
 
-      subject.publish(manual)
+      PublishingAdapter.publish(manual)
     end
 
     it "withdraws & marks all manual's removed sections as exported" do
       expect(removed_section).to receive(:withdraw_and_mark_as_exported!)
 
-      subject.publish(manual)
+      PublishingAdapter.publish(manual)
     end
 
     context "when removed section is withdrawn" do
@@ -675,7 +673,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.publish(manual)
+        PublishingAdapter.publish(manual)
       end
     end
 
@@ -683,19 +681,19 @@ describe PublishingAdapter do
       it "publishes manual to Publishing API with update type set to republish" do
         expect(publishing_api).to receive(:publish).with(manual_id, "republish")
 
-        subject.publish(manual, republish: true)
+        PublishingAdapter.publish(manual, republish: true)
       end
 
       it "publishes all manual's sections to Publishing API with update type set to republish" do
         expect(publishing_api).to receive(:publish).with(section_uuid, "republish")
 
-        subject.publish(manual, republish: true)
+        PublishingAdapter.publish(manual, republish: true)
       end
 
       it "does not mark all manual's sections as exported" do
         expect(section).not_to receive(:mark_as_exported!)
 
-        subject.publish(manual, republish: true)
+        PublishingAdapter.publish(manual, republish: true)
       end
 
       it "unpublishes all manual's removed sections via Publishing API" do
@@ -704,13 +702,13 @@ describe PublishingAdapter do
           anything,
         )
 
-        subject.publish(manual, republish: true)
+        PublishingAdapter.publish(manual, republish: true)
       end
 
       it "does not mark all manual's removed sections as exported" do
         expect(removed_section).not_to receive(:withdraw_and_mark_as_exported!)
 
-        subject.publish(manual, republish: true)
+        PublishingAdapter.publish(manual, republish: true)
       end
 
       context "and removed section is withdrawn" do
@@ -724,7 +722,7 @@ describe PublishingAdapter do
             anything,
           )
 
-          subject.publish(manual, republish: true)
+          PublishingAdapter.publish(manual, republish: true)
         end
       end
     end
@@ -740,13 +738,13 @@ describe PublishingAdapter do
     it "discards draft manual via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(manual_id)
 
-      subject.discard(manual)
+      PublishingAdapter.discard(manual)
     end
 
     it "discards all manual's draft sections via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(section_uuid)
 
-      subject.discard(manual)
+      PublishingAdapter.discard(manual)
     end
   end
 
@@ -773,7 +771,7 @@ describe PublishingAdapter do
         ],
       )
 
-      subject.redirect_section(section, to: "/new-location")
+      PublishingAdapter.redirect_section(section, to: "/new-location")
     end
 
     it "redirects section via Publishing API with attributes which are valid according to redirect schema" do
@@ -782,7 +780,7 @@ describe PublishingAdapter do
         attributes_valid_according_to_schema("redirect"),
       )
 
-      subject.redirect_section(manual, to: "/new-location")
+      PublishingAdapter.redirect_section(manual, to: "/new-location")
     end
   end
 
@@ -790,7 +788,7 @@ describe PublishingAdapter do
     it "discards draft section via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(section_uuid)
 
-      subject.discard_section(section)
+      PublishingAdapter.discard_section(section)
     end
   end
 

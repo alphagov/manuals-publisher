@@ -7,11 +7,7 @@ class Section::RemoveService
   end
 
   def call
-    begin
-      manual = Manual.find(manual_id, user)
-    rescue KeyError
-      raise ManualNotFoundError, manual_id
-    end
+    manual = Manual.find(manual_id, user)
 
     section = manual.find_section(section_uuid)
     raise SectionNotFoundError, section_uuid if section.blank?
@@ -24,7 +20,7 @@ class Section::RemoveService
     # We need to capture the state of the section before assigning attributes.
     # The Section#assign_attributes method always creates a new draft section if
     # the latest edition is published.
-    # This causes Adapters.publishing.discard_section(section) to be called which
+    # This causes PublishingAdapter.discard_section(section) to be called which
     # blows up as there is no draft section in the Publishing API database.
     draft_section = section.draft?
 
@@ -36,10 +32,10 @@ class Section::RemoveService
 
       manual.remove_section(section_uuid)
       manual.save!(user)
-      Adapters.publishing.save_draft(manual, include_sections: false)
+      PublishingAdapter.save_draft(manual, include_sections: false)
 
       if draft_section
-        Adapters.publishing.discard_section(section)
+        PublishingAdapter.discard_section(section)
       end
     end
 
@@ -49,8 +45,6 @@ class Section::RemoveService
 private
 
   attr_reader :user, :manual_id, :section_uuid, :attributes
-
-  class ManualNotFoundError < StandardError; end
 
   class SectionNotFoundError < StandardError; end
 end
