@@ -21,7 +21,7 @@ RSpec.describe Manual::PublishService do
     allow(PublicationLogger).to receive(:new) { publication_logger }
     allow(publication_logger).to receive(:call)
     allow(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections)
-    allow(PublishingAdapter).to receive(:publish_manual_and_sections)
+    allow(Publishing::PublishAdapter).to receive(:publish_manual_and_sections)
   end
 
   context "when the version number is up to date" do
@@ -44,7 +44,7 @@ RSpec.describe Manual::PublishService do
 
     it "calls the new publishing api publisher" do
       subject.call
-      expect(PublishingAdapter).to have_received(:publish_manual_and_sections).with(manual)
+      expect(Publishing::PublishAdapter).to have_received(:publish_manual_and_sections).with(manual)
     end
 
     it "makes the calls to the collaborators in the correct order" do
@@ -52,7 +52,7 @@ RSpec.describe Manual::PublishService do
 
       expect(publication_logger).to have_received(:call).ordered
       expect(Publishing::DraftAdapter).to have_received(:save_draft_for_manual_and_sections).ordered
-      expect(PublishingAdapter).to have_received(:publish_manual_and_sections).ordered
+      expect(Publishing::PublishAdapter).to have_received(:publish_manual_and_sections).ordered
     end
   end
 
