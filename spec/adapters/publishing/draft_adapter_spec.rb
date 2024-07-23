@@ -590,6 +590,22 @@ describe Publishing::DraftAdapter do
     end
   end
 
+  describe "#discard_draft_for_manual" do
+    it "discards draft manual and its sections via Publishing API" do
+      expect(publishing_api).to receive(:discard_draft).with(manual_id)
+      expect(publishing_api).to receive(:discard_draft).with(section_one_uuid)
+      expect(publishing_api).to receive(:discard_draft).with(section_two_uuid)
+      Publishing::DraftAdapter.discard_draft_for_manual(manual)
+    end
+  end
+
+  describe "#discard_draft_for_section" do
+    it "discards draft section via Publishing API" do
+      expect(publishing_api).to receive(:discard_draft).with(section_one_uuid)
+      Publishing::DraftAdapter.discard_draft_for_section(section_one)
+    end
+  end
+
 private
 
   def attributes_valid_according_to_links_schema(schema_name)

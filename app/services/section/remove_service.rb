@@ -35,7 +35,7 @@ class Section::RemoveService
       Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_sections: false)
 
       if draft_section
-        PublishingAdapter.discard_draft_for_section(section)
+        Publishing::DraftAdapter.discard_draft_for_section(section)
       end
     end
 
