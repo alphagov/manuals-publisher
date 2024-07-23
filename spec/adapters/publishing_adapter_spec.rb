@@ -119,19 +119,19 @@ describe PublishingAdapter do
     it "publishes manual to Publishing API" do
       expect(publishing_api).to receive(:publish).with(manual_id, nil)
 
-      PublishingAdapter.publish(manual)
+      PublishingAdapter.publish_manual_and_sections(manual)
     end
 
     it "publishes all manual's sections to Publishing API" do
       expect(publishing_api).to receive(:publish).with(section_uuid, nil)
 
-      PublishingAdapter.publish(manual)
+      PublishingAdapter.publish_manual_and_sections(manual)
     end
 
     it "marks all manual's sections as exported" do
       expect(section).to receive(:mark_as_exported!)
 
-      PublishingAdapter.publish(manual)
+      PublishingAdapter.publish_manual_and_sections(manual)
     end
 
     it "unpublishes all manual's removed sections via Publishing API" do
@@ -142,13 +142,13 @@ describe PublishingAdapter do
         discard_drafts: true,
       )
 
-      PublishingAdapter.publish(manual)
+      PublishingAdapter.publish_manual_and_sections(manual)
     end
 
     it "withdraws & marks all manual's removed sections as exported" do
       expect(removed_section).to receive(:withdraw_and_mark_as_exported!)
 
-      PublishingAdapter.publish(manual)
+      PublishingAdapter.publish_manual_and_sections(manual)
     end
 
     context "when removed section is withdrawn" do
@@ -162,7 +162,7 @@ describe PublishingAdapter do
           anything,
         )
 
-        PublishingAdapter.publish(manual)
+        PublishingAdapter.publish_manual_and_sections(manual)
       end
     end
 
@@ -170,19 +170,19 @@ describe PublishingAdapter do
       it "publishes manual to Publishing API with update type set to republish" do
         expect(publishing_api).to receive(:publish).with(manual_id, "republish")
 
-        PublishingAdapter.publish(manual, republish: true)
+        PublishingAdapter.publish_manual_and_sections(manual, republish: true)
       end
 
       it "publishes all manual's sections to Publishing API with update type set to republish" do
         expect(publishing_api).to receive(:publish).with(section_uuid, "republish")
 
-        PublishingAdapter.publish(manual, republish: true)
+        PublishingAdapter.publish_manual_and_sections(manual, republish: true)
       end
 
       it "does not mark all manual's sections as exported" do
         expect(section).not_to receive(:mark_as_exported!)
 
-        PublishingAdapter.publish(manual, republish: true)
+        PublishingAdapter.publish_manual_and_sections(manual, republish: true)
       end
 
       it "unpublishes all manual's removed sections via Publishing API" do
@@ -191,13 +191,13 @@ describe PublishingAdapter do
           anything,
         )
 
-        PublishingAdapter.publish(manual, republish: true)
+        PublishingAdapter.publish_manual_and_sections(manual, republish: true)
       end
 
       it "does not mark all manual's removed sections as exported" do
         expect(removed_section).not_to receive(:withdraw_and_mark_as_exported!)
 
-        PublishingAdapter.publish(manual, republish: true)
+        PublishingAdapter.publish_manual_and_sections(manual, republish: true)
       end
 
       context "and removed section is withdrawn" do
@@ -211,7 +211,7 @@ describe PublishingAdapter do
             anything,
           )
 
-          PublishingAdapter.publish(manual, republish: true)
+          PublishingAdapter.publish_manual_and_sections(manual, republish: true)
         end
       end
     end

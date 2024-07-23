@@ -38,8 +38,8 @@ class PublishingAdapter
     end
   end
 
-  def self.publish(manual, republish: false)
-    publish_manual(manual, republish:)
+  def self.publish_manual_and_sections(manual, republish: false)
+    Services.publishing_api.publish(manual.id, update_type(republish))
 
     manual.sections.each do |section|
       publish_section(section, republish:)
@@ -65,10 +65,6 @@ class PublishingAdapter
         },
       ],
     )
-  end
-
-  def self.publish_manual(manual, republish:)
-    Services.publishing_api.publish(manual.id, update_type(republish))
   end
 
   def self.publish_section(section, republish:)
