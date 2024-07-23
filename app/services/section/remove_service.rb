@@ -20,7 +20,7 @@ class Section::RemoveService
     # We need to capture the state of the section before assigning attributes.
     # The Section#assign_attributes method always creates a new draft section if
     # the latest edition is published.
-    # This causes PublishingAdapter.discard_section(section) to be called which
+    # This causes PublishingAdapter.discard_draft_for_section(section) to be called which
     # blows up as there is no draft section in the Publishing API database.
     draft_section = section.draft?
 
@@ -35,7 +35,7 @@ class Section::RemoveService
       Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_sections: false)
 
       if draft_section
-        PublishingAdapter.discard_section(section)
+        PublishingAdapter.discard_draft_for_section(section)
       end
     end
 

@@ -50,9 +50,9 @@ class PublishingAdapter
     end
   end
 
-  def self.discard(manual)
+  def self.discard_draft_for_manual(manual)
     manual.sections.each do |section|
-      discard_section(section)
+      discard_draft_for_section(section)
     end
     Services.publishing_api.discard_draft(manual.id)
   end
@@ -74,7 +74,7 @@ class PublishingAdapter
     )
   end
 
-  def self.discard_section(section)
+  def self.discard_draft_for_section(section)
     Services.publishing_api.discard_draft(section.uuid)
   end
 

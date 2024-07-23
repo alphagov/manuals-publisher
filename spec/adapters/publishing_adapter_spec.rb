@@ -227,13 +227,13 @@ describe PublishingAdapter do
     it "discards draft manual via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(manual_id)
 
-      PublishingAdapter.discard(manual)
+      PublishingAdapter.discard_draft_for_manual(manual)
     end
 
     it "discards all manual's draft sections via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(section_uuid)
 
-      PublishingAdapter.discard(manual)
+      PublishingAdapter.discard_draft_for_manual(manual)
     end
   end
 
@@ -277,7 +277,7 @@ describe PublishingAdapter do
     it "discards draft section via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(section_uuid)
 
-      PublishingAdapter.discard_section(section)
+      PublishingAdapter.discard_draft_for_section(section)
     end
   end
 
