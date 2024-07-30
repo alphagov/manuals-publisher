@@ -16,7 +16,7 @@ class Publishing::DraftAdapter
     end
   end
 
-  def self.discard_draft_for_manual(manual)
+  def self.discard_draft_for_manual_and_sections(manual)
     manual.sections.each do |section|
       discard_draft_for_section(section)
     end

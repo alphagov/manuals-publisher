@@ -590,12 +590,12 @@ describe Publishing::DraftAdapter do
     end
   end
 
-  describe "#discard_draft_for_manual" do
+  describe "#discard_draft_for_manual_and_sections" do
     it "discards draft manual and its sections via Publishing API" do
       expect(publishing_api).to receive(:discard_draft).with(manual_id)
       expect(publishing_api).to receive(:discard_draft).with(section_one_uuid)
       expect(publishing_api).to receive(:discard_draft).with(section_two_uuid)
-      Publishing::DraftAdapter.discard_draft_for_manual(manual)
+      Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
     end
   end
 
