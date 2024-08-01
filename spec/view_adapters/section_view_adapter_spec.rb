@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe SectionViewAdapter do
   let(:manual) { Manual.new(title: "manual-title") }
-  let(:section) { manual.build_section(title: "section-title") }
+  let(:section) { manual.build_section(slug: "section-title") }
 
   subject do
     described_class.new(manual, section)

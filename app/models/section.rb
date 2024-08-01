@@ -9,7 +9,7 @@ class Section
   validates :body, presence: true, safe_html: true
   validate :change_note_ok
 
-  def self.find(manual, section_uuid, published: false)
+  def self.find(section_uuid, published: false)
     editions = SectionEdition
       .all_for_section(section_uuid)
       .order_by(%i[version_number desc])
@@ -21,7 +21,7 @@ class Section
     if editions.empty?
       raise KeyError, "key not found #{section_uuid}"
     else
-      Section.new(manual:, uuid: section_uuid, previous_edition: editions.first, latest_edition: editions.last)
+      Section.new(uuid: section_uuid, previous_edition: editions.first, latest_edition: editions.last)
     end
   end
 
@@ -41,8 +41,7 @@ class Section
 
   attr_reader :uuid
 
-  def initialize(manual:, uuid:, previous_edition: nil, latest_edition: nil)
-    @slug_generator = SlugGenerator.new(prefix: manual.slug)
+  def initialize(uuid:, previous_edition: nil, latest_edition: nil)
     @uuid = uuid
 
     @previous_edition = previous_edition
@@ -79,12 +78,6 @@ class Section
   end
 
   def assign_attributes(attributes)
-    if !published? && attributes.fetch(:title, false)
-      attributes = attributes.merge(
-        slug: slug_generator.call(attributes.fetch(:title)),
-      )
-    end
-
     if draft?
       latest_edition.assign_attributes(attributes)
     else
@@ -97,7 +90,6 @@ class Section
         .merge(
           state: "draft",
           version_number: latest_edition.version_number + 1,
-          slug:,
           attachments:,
         )
       @previous_edition = latest_edition
@@ -193,7 +185,7 @@ class Section
 
 private
 
-  attr_reader :slug_generator, :latest_edition, :previous_edition
+  attr_reader :latest_edition, :previous_edition
 
   def change_note_ok
     if change_note_required? && change_note.blank?

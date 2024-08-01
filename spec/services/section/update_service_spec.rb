@@ -5,9 +5,9 @@ RSpec.describe Section::UpdateService do
   let(:manual) { Manual.new(title: "manual-title") }
   let(:section_uuid) { "section-uuid" }
   let(:section) do
-    Section.new(manual:, uuid: section_uuid)
+    Section.new(uuid: section_uuid)
   end
-  let(:section_attributes) { { title: "" } }
+  let(:section_attributes) { { title: "updated-title" } }
 
   subject do
     described_class.new(
@@ -33,10 +33,10 @@ RSpec.describe Section::UpdateService do
       allow(section).to receive(:valid?).and_return(true)
     end
 
-    it "records the user who is updating the section" do
+    it "records the user who is updating the section and updates the slug" do
       merged_attributes = double(:merged_attributes)
       allow(section_attributes).to receive(:merge)
-        .with({ last_updated_by: user.name })
+        .with({ last_updated_by: user.name, slug: "#{manual.slug}/updated-title" })
         .and_return(merged_attributes)
 
       expect(section).to receive(:assign_attributes).with(merged_attributes)

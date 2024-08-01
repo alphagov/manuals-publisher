@@ -341,8 +341,8 @@ describe ApplicationHelper, type: :helper do
 
     it "returns a row for each section in the manual" do
       manual = FactoryBot.build_stubbed(:manual)
-      manual.build_section({})
-      manual.build_section({})
+      manual.build_section({ title: "test title" })
+      manual.build_section({ title: "test title" })
 
       rows = manual_section_rows(manual)
 

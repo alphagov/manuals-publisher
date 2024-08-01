@@ -248,8 +248,8 @@ module ManualHelpers
     check_section_is_unpublished_from_publishing_api(section.uuid, type: "redirect", alternative_path: redirect_path, discard_drafts: true)
   end
 
-  def check_section_is_archived_in_db(manual, section_uuid)
-    expect(Section.find(manual, section_uuid)).to be_withdrawn
+  def check_section_is_archived_in_db(section_uuid)
+    expect(Section.find(section_uuid)).to be_withdrawn
   end
 
   def check_manual_is_drafted_to_publishing_api(content_id, extra_attributes: {}, number_of_drafts: 1, with_matcher: nil)

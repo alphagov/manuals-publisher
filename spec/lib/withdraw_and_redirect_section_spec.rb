@@ -12,7 +12,6 @@ RSpec.describe WithdrawAndRedirectSection do
   subject do
     described_class.new(
       user: User.gds_editor,
-      manual_path: manual.slug,
       section_path: manual.sections.last.slug,
       redirect:,
       discard_draft:,
