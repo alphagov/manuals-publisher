@@ -7,7 +7,7 @@ class Publishing::PublishAdapter
     end
 
     manual.removed_sections.each do |section|
-      PublishingAdapter.unpublish_section(section, redirect: "/#{manual.slug}", republish:)
+      Publishing::UnpublishAdapter.unpublish_and_redirect_section(section, redirect: "/#{manual.slug}", republish:)
     end
   end
 

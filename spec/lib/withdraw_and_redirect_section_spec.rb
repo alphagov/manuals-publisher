@@ -18,12 +18,12 @@ RSpec.describe WithdrawAndRedirectSection do
   end
 
   before do
-    allow(PublishingAdapter).to receive(:unpublish_section)
+    allow(Publishing::UnpublishAdapter).to receive(:unpublish_and_redirect_section)
   end
 
   it "calls the publishing adapter to unpublish the section" do
     subject.execute
-    expect(PublishingAdapter).to have_received(:unpublish_section)
+    expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_section)
       .with(instance_of(Section),
             redirect:,
             discard_drafts: discard_draft)
@@ -46,7 +46,7 @@ RSpec.describe WithdrawAndRedirectSection do
       manual.save!(User.gds_editor)
 
       subject.execute
-      expect(PublishingAdapter).to have_received(:unpublish_section)
+      expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_section)
         .with(instance_of(Section),
               redirect:,
               discard_drafts: discard_draft)
@@ -58,7 +58,7 @@ RSpec.describe WithdrawAndRedirectSection do
 
     it "doesn't action the withdrawal" do
       subject.execute
-      expect(PublishingAdapter).to_not have_received(:unpublish_section)
+      expect(Publishing::UnpublishAdapter).to_not have_received(:unpublish_and_redirect_section)
     end
   end
 end
