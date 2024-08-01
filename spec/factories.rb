@@ -36,13 +36,14 @@ FactoryBot.define do
 
   factory :section do
     uuid { SecureRandom.uuid }
-    latest_edition { FactoryBot.build(:section_edition, section_uuid: uuid, state:) }
+    latest_edition { FactoryBot.build(:section_edition, section_uuid: uuid, state:, slug:) }
     initialize_with do
       Section.new(uuid:, latest_edition:)
     end
 
     transient do
       state { "draft" }
+      sequence(:slug) { |n| "test-section-edition-#{n}" }
     end
   end
 

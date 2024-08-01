@@ -10,7 +10,7 @@ class Manual::WithdrawService
 
     if manual.withdrawn?
       manual.save!(user)
-      PublishingAdapter.unpublish(manual)
+      Publishing::UnpublishAdapter.unpublish_manual_and_sections_as_gone(manual)
     end
 
     manual

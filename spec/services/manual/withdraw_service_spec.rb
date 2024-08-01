@@ -14,7 +14,7 @@ RSpec.describe Manual::WithdrawService do
   end
 
   it "withdraws published manuals" do
-    expect(PublishingAdapter).to receive(:unpublish).with(have_attributes(id: manual_record.manual_id)).once
+    expect(Publishing::UnpublishAdapter).to receive(:unpublish_manual_and_sections_as_gone).with(have_attributes(id: manual_record.manual_id)).once
     subject.call
     expect(manual_record.reload.latest_edition.state).to eq("withdrawn")
   end
@@ -22,7 +22,7 @@ RSpec.describe Manual::WithdrawService do
   context "for already withdrawn manuals" do
     let(:state) { "withdrawn" }
     it "unpublishes" do
-      expect(PublishingAdapter).to receive(:unpublish).with(have_attributes(id: manual_record.manual_id)).once
+      expect(Publishing::UnpublishAdapter).to receive(:unpublish_manual_and_sections_as_gone).with(have_attributes(id: manual_record.manual_id)).once
       subject.call
       expect(manual_record.reload.latest_edition.state).to eq("withdrawn")
     end
@@ -31,7 +31,7 @@ RSpec.describe Manual::WithdrawService do
   context "for archived manuals" do
     let(:state) { "archived" }
     it "does not unpublish archived manuals" do
-      expect(PublishingAdapter).to_not receive(:unpublish)
+      expect(Publishing::UnpublishAdapter).to_not receive(:unpublish_manual_and_sections_as_gone)
       subject.call
       expect(manual_record.reload.latest_edition.state).to eq("archived")
     end
@@ -40,7 +40,7 @@ RSpec.describe Manual::WithdrawService do
   context "for draft only manuals" do
     let(:state) { "draft" }
     it "does not unpublish" do
-      expect(PublishingAdapter).to_not receive(:unpublish)
+      expect(Publishing::UnpublishAdapter).to_not receive(:unpublish_manual_and_sections_as_gone)
       subject.call
       expect(manual_record.reload.latest_edition.state).to eq("draft")
     end
@@ -49,7 +49,7 @@ RSpec.describe Manual::WithdrawService do
   context "for published with draft manuals" do
     it "does not unpublish" do
       Manual.build_manual_for(manual_record).draft.save!(user)
-      expect(PublishingAdapter).to_not receive(:unpublish)
+      expect(Publishing::UnpublishAdapter).to_not receive(:unpublish_manual_and_sections_as_gone)
 
       subject.call
 

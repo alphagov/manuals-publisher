@@ -27,4 +27,12 @@ class Publishing::UnpublishAdapter
       end
     end
   end
+
+  def self.unpublish_manual_and_sections_as_gone(manual)
+    Services.publishing_api.unpublish(manual.id, type: "gone")
+
+    manual.sections.each do |section|
+      Services.publishing_api.unpublish(section.uuid, type: "gone")
+    end
+  end
 end

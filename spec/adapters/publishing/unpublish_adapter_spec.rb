@@ -86,4 +86,13 @@ describe Publishing::UnpublishAdapter do
       expect(section.state).to eq "archived"
     end
   end
+
+  describe "#unpublish_manual_and_sections_as_gone" do
+    it "unpublishes manual and sections via Publishing API" do
+      expect(Services.publishing_api).to receive(:unpublish).with(manual_id, type: "gone")
+      expect(Services.publishing_api).to receive(:unpublish).with(section_one_uuid, type: "gone")
+      expect(Services.publishing_api).to receive(:unpublish).with(section_two_uuid, type: "gone")
+      Publishing::UnpublishAdapter.unpublish_manual_and_sections_as_gone(manual)
+    end
+  end
 end

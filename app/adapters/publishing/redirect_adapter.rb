@@ -1,14 +1,6 @@
 require "securerandom"
 
-class PublishingAdapter
-  def self.unpublish(manual)
-    Services.publishing_api.unpublish(manual.id, type: "gone")
-
-    manual.sections.each do |section|
-      Services.publishing_api.unpublish(section.uuid, type: "gone")
-    end
-  end
-
+class Publishing::RedirectAdapter
   def self.redirect_section(section, to:)
     Services.publishing_api.put_content(
       SecureRandom.uuid,
