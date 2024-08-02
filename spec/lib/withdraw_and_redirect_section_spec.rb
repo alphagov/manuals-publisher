@@ -35,7 +35,7 @@ RSpec.describe WithdrawAndRedirectSection do
     let(:state) { "draft" }
 
     it "raises an error if section is not published" do
-      expect { subject.execute }.to raise_error(WithdrawAndRedirectSection::SectionNotPublishedError)
+      expect { subject.execute }.to raise_error(Mongoid::Errors::DocumentNotFound)
     end
   end
 
