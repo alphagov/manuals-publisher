@@ -7,7 +7,7 @@ describe LinkCheckReportsController, type: :controller do
   let(:user) { FactoryBot.create(:user) }
   let(:manual) { FactoryBot.build(:manual, id: 538, body: "[link](http://[www.example.com)") }
   let(:section_edition) { FactoryBot.create(:section_edition, id: 53_880, body: "[link](http://[www.example.com/section)") }
-  let(:section) { Section.new(manual:, uuid: "section-uuid", latest_edition: section_edition) }
+  let(:section) { Section.new(uuid: "section-uuid", latest_edition: section_edition) }
 
   before do
     login_as_stub_user

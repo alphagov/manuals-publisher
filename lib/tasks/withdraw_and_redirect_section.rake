@@ -1,9 +1,9 @@
 require "csv"
 
-desc "Withdraw and redirect section, e.g withdraw_and_redirect_section['guidance/manual,guidance/manual/section,/redirect/blah,true']"
-task :withdraw_and_redirect_section, %i[manual_path section_path redirect discard_draft] => :environment do |_, args|
+desc "Withdraw and redirect section, e.g withdraw_and_redirect_section['guidance/manual/section,/redirect/blah,true']"
+task :withdraw_and_redirect_section, %i[section_path redirect discard_draft] => :environment do |_, args|
   discard_draft = args.fetch(:discard_draft) == "true"
-  redirect_section(args.fetch(:manual_path), args.fetch(:section_path), args.fetch(:redirect), discard_draft)
+  redirect_section(args.fetch(:section_path), args.fetch(:redirect), discard_draft)
   puts "Section withdrawn and redirected to #{base_path}"
 end
 
@@ -16,7 +16,7 @@ task :bulk_withdraw_and_redirect_section_to_manual, %i[csv_path] => :environment
   CSV.foreach(args.fetch(:csv_path), headers: true) do |row|
     section_path = row["section_path"]
     base_path = section_path.split("/")[0..1].join("/")
-    redirect_section(base_path, section_path, "/#{base_path}", true)
+    redirect_section(section_path, "/#{base_path}", true)
     print "."
   rescue StandardError => e
     print "x"
@@ -54,10 +54,9 @@ task :bulk_archive_sections, %i[csv_path] => :environment do |_, args|
   end
 end
 
-def redirect_section(manual_path, section_path, redirect, discard_draft)
+def redirect_section(section_path, redirect, discard_draft)
   redirect_section = WithdrawAndRedirectSection.new(
     user: User.gds_editor,
-    manual_path:,
     section_path:,
     redirect:,
     discard_draft:,

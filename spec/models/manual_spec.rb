@@ -984,7 +984,6 @@ describe Manual do
 
       let(:section1) do
         Section.new(
-          manual:,
           uuid: "section-1",
           previous_edition: section1_edition1,
           latest_edition: section1_edition2,
@@ -993,7 +992,6 @@ describe Manual do
 
       let(:section2) do
         Section.new(
-          manual:,
           uuid: "section-2",
           previous_edition: section2_edition1,
           latest_edition: section2_edition2,

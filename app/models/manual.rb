@@ -229,7 +229,7 @@ class Manual
   end
 
   def build_section(attributes)
-    section = Section.new(manual: self, uuid: SecureRandom.uuid)
+    section = Section.new(uuid: SecureRandom.uuid)
 
     defaults = {
       minor_update: false,
@@ -293,11 +293,11 @@ class Manual
 
     def add_sections_to_manual(manual, edition, published: false)
       sections = Array(edition.section_uuids).map do |section_uuid|
-        Section.find(manual, section_uuid, published:)
+        Section.find(section_uuid, published:)
       end
 
       removed_sections = Array(edition.removed_section_uuids).map do |section_uuid|
-        Section.find(manual, section_uuid)
+        Section.find(section_uuid)
       rescue KeyError
         raise RemovedSectionIdNotFoundError, "No section found for UUID #{section_uuid}"
       end

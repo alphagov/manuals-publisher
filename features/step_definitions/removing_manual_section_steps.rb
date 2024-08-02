@@ -55,11 +55,11 @@ Then(/^the removed section is withdrawn with a redirect to the manual$/) do
 end
 
 Then(/^the removed section is archived$/) do
-  check_section_is_archived_in_db(@manual, @removed_section.uuid)
+  check_section_is_archived_in_db(@removed_section.uuid)
 end
 
 Then(/^the removed section change note is included$/) do
-  @removed_section = Section.find(@manual, @removed_section.uuid)
+  @removed_section = Section.find(@removed_section.uuid)
 
   check_manual_is_drafted_to_publishing_api(
     @manual.id,
@@ -69,7 +69,7 @@ Then(/^the removed section change note is included$/) do
 end
 
 Then(/^the removed section change note is not included$/) do
-  @removed_section = Section.find(@manual, @removed_section.uuid)
+  @removed_section = Section.find(@removed_section.uuid)
 
   check_manual_is_drafted_to_publishing_api(
     @manual.id,

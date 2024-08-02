@@ -12,7 +12,7 @@ class SectionReslugger
   def call
     validate
 
-    old_section = Section.find(manual, old_section_edition.section_uuid)
+    old_section = Section.find(old_section_edition.section_uuid)
 
     update_slug
     publish_manual
@@ -63,10 +63,6 @@ private
   end
 
   def update_slug
-    new_edition_for_slug_change.update_slug!(new_section_slug)
-  end
-
-  def new_edition_for_slug_change
     user = User.gds_editor
 
     service = Section::UpdateService.new(
@@ -81,8 +77,7 @@ private
         change_note:,
       },
     )
-    _manual, section = service.call
-    section
+    service.call
   end
 
   def change_note

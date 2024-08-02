@@ -9,7 +9,10 @@ class Section::UpdateService
   def call
     manual = Manual.find(manual_id, user)
     section = manual.find_section(section_uuid)
-    section.assign_attributes(attributes.merge(last_updated_by: user.name))
+    section.assign_attributes(attributes.merge(
+                                last_updated_by: user.name,
+                                slug: SlugGenerator.new(prefix: manual.slug).call(attributes.fetch(:title)),
+                              ))
 
     if section.valid?
       manual.draft

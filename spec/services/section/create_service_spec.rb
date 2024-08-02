@@ -5,7 +5,7 @@ RSpec.describe Section::CreateService do
   let(:manual) { Manual.new(title: "manual-title") }
   let(:section_attributes) { double(:section_attributes) }
   let(:new_section) do
-    Section.new(manual:, uuid: "uuid")
+    Section.new(uuid: "uuid")
   end
 
   subject do
@@ -25,6 +25,7 @@ RSpec.describe Section::CreateService do
       .and_return(new_section)
     allow(PublishingAdapter).to receive(:save_draft)
     allow(PublishingAdapter).to receive(:save_section)
+    allow(section_attributes).to receive(:fetch).with(:title).and_return("section-title")
     allow(section_attributes).to receive(:merge).and_return({})
     allow(user).to receive(:name).and_return("Mr Testy")
   end
@@ -34,10 +35,10 @@ RSpec.describe Section::CreateService do
       allow(new_section).to receive(:valid?).and_return(true)
     end
 
-    it "records the user who is creating the section" do
+    it "records the user who is creating the section and updates the slug" do
       merged_attributes = double(:merged_attributes)
       allow(section_attributes).to receive(:merge)
-        .with({ last_updated_by: user.name })
+        .with({ last_updated_by: user.name, slug: "#{manual.slug}/section-title" })
         .and_return(merged_attributes)
 
       expect(manual).to receive(:build_section).with(merged_attributes)

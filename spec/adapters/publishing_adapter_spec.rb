@@ -39,7 +39,6 @@ describe PublishingAdapter do
 
   let(:section) do
     Section.new(
-      manual:,
       uuid: section_uuid,
       latest_edition: section_edition,
     )
@@ -601,7 +600,6 @@ describe PublishingAdapter do
 
     let(:removed_section) do
       Section.new(
-        manual:,
         uuid: removed_section_uuid,
         latest_edition: removed_section_edition,
       )

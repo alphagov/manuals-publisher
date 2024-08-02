@@ -7,7 +7,10 @@ class Section::CreateService
 
   def call
     manual = Manual.find(manual_id, user)
-    new_section = manual.build_section(attributes.merge(last_updated_by: user.name))
+    new_section = manual.build_section(attributes.merge(
+                                         last_updated_by: user.name,
+                                         slug: SlugGenerator.new(prefix: manual.slug).call(attributes.fetch(:title)),
+                                       ))
 
     if new_section.valid?
       manual.draft
