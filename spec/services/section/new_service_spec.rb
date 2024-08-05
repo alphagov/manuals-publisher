@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Section::NewService do
   it "returns the manual and a new section" do
     user = FactoryBot.build(:user, organisation_slug: "org-slug")

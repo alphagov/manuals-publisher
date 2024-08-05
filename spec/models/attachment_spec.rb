@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Attachment do
   subject(:attachment) do
     Attachment.new(

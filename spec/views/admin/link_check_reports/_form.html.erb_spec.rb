@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "admin/link_check_reports/_form", type: :view do
   it "renders a button with the specified text" do
     allow(view).to receive(:reportable).and_return({})

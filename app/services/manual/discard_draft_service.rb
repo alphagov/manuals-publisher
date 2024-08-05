@@ -11,7 +11,7 @@ class Manual::DiscardDraftService
       Result.failure(manual)
     else
       begin
-        PublishingAdapter.discard(manual)
+        Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
       rescue GdsApi::HTTPNotFound
         # this is fine, the manual has already been discarded from the
         # publishing API and the next line will clean it up in our DB

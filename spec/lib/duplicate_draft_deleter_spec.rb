@@ -1,4 +1,3 @@
-require "spec_helper"
 require "gds_api/test_helpers/publishing_api"
 
 describe DuplicateDraftDeleter do

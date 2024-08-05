@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe MarkedSectionDeleter do
   subject do
     described_class.new(StringIO.new)

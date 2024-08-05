@@ -1,4 +1,3 @@
-require "spec_helper"
 require "govuk_sidekiq/testing"
 
 RSpec.describe PublishManualWorker do

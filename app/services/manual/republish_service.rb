@@ -6,12 +6,12 @@ class Manual::RepublishService
     draft_manual_version = manual_versions[:draft]
 
     if published_manual_version.present?
-      PublishingAdapter.save_draft(published_manual_version, republish: true)
+      Publishing::DraftAdapter.save_draft_for_manual_and_sections(published_manual_version, republish: true)
       PublishingAdapter.publish(published_manual_version, republish: true)
     end
 
     if draft_manual_version.present?
-      PublishingAdapter.save_draft(draft_manual_version, republish: true)
+      Publishing::DraftAdapter.save_draft_for_manual_and_sections(draft_manual_version, republish: true)
     end
 
     manual_versions

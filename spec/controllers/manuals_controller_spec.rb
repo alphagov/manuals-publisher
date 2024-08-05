@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe ManualsController, type: :controller do
   describe "#publish" do
     context "when the user lacks permission to publish" do

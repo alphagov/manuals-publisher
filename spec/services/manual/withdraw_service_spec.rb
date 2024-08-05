@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::WithdrawService do
   let(:user) { User.gds_editor }
   let(:state) { "published" }

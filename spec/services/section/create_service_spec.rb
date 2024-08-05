@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Section::CreateService do
   let(:user) { User.gds_editor }
   let(:manual) { Manual.new(title: "manual-title") }
@@ -23,8 +21,8 @@ RSpec.describe Section::CreateService do
     allow(manual)
       .to receive(:build_section)
       .and_return(new_section)
-    allow(PublishingAdapter).to receive(:save_draft)
-    allow(PublishingAdapter).to receive(:save_section)
+    allow(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections)
+    allow(Publishing::DraftAdapter).to receive(:save_draft_for_section)
     allow(section_attributes).to receive(:fetch).with(:title).and_return("section-title")
     allow(section_attributes).to receive(:merge).and_return({})
     allow(user).to receive(:name).and_return("Mr Testy")
@@ -59,15 +57,15 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(PublishingAdapter)
-        .to receive(:save_draft).with(manual, include_sections: false)
+      expect(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_manual_and_sections).with(manual, include_sections: false)
 
       subject.call
     end
 
     it "saves the new section to the publishing api" do
-      expect(PublishingAdapter)
-        .to receive(:save_section).with(new_section, manual)
+      expect(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_section).with(new_section, manual)
 
       subject.call
     end
@@ -78,8 +76,8 @@ RSpec.describe Section::CreateService do
 
     before do
       allow(new_section).to receive(:valid?).and_return(true)
-      allow(PublishingAdapter)
-        .to receive(:save_draft)
+      allow(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_manual_and_sections)
         .and_raise(gds_api_exception)
     end
 
@@ -108,8 +106,8 @@ RSpec.describe Section::CreateService do
     end
 
     it "does not save the section to the publishing api" do
-      expect(PublishingAdapter)
-        .to_not receive(:save_section)
+      expect(Publishing::DraftAdapter)
+        .to_not receive(:save_draft_for_section)
 
       begin
         subject.call
@@ -124,8 +122,8 @@ RSpec.describe Section::CreateService do
 
     before do
       allow(new_section).to receive(:valid?).and_return(true)
-      allow(PublishingAdapter)
-        .to receive(:save_section)
+      allow(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_section)
         .and_raise(gds_api_exception)
     end
 
@@ -154,8 +152,8 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(PublishingAdapter)
-        .to receive(:save_draft).with(manual, include_sections: false)
+      expect(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_manual_and_sections).with(manual, include_sections: false)
 
       begin
         subject.call
@@ -183,15 +181,15 @@ RSpec.describe Section::CreateService do
     end
 
     it "saves the draft manual to the publishing api" do
-      expect(PublishingAdapter)
-        .to_not receive(:save_draft)
+      expect(Publishing::DraftAdapter)
+        .to_not receive(:save_draft_for_manual_and_sections)
 
       subject.call
     end
 
     it "saves the new section to the publishing api" do
-      expect(PublishingAdapter)
-        .to_not receive(:save_section)
+      expect(Publishing::DraftAdapter)
+        .to_not receive(:save_draft_for_section)
 
       subject.call
     end

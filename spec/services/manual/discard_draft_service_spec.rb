@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::DiscardDraftService do
   let(:manual_id) { double(:manual_id) }
   let(:manual) { double(:manual, id: manual_id, has_ever_been_published?: has_ever_been_published, destroy!: nil) }
@@ -14,7 +12,7 @@ RSpec.describe Manual::DiscardDraftService do
 
   before do
     allow(Manual).to receive(:find) { manual }
-    allow(PublishingAdapter).to receive(:discard)
+    allow(Publishing::DraftAdapter).to receive(:discard_draft_for_manual_and_sections)
   end
 
   context "when the manual has never been published" do
@@ -27,7 +25,7 @@ RSpec.describe Manual::DiscardDraftService do
 
     it "discards the manual via the publishing-api" do
       subject.call
-      expect(PublishingAdapter).to have_received(:discard).with(manual)
+      expect(Publishing::DraftAdapter).to have_received(:discard_draft_for_manual_and_sections).with(manual)
     end
 
     it "destroys the manual in the local db" do
@@ -46,7 +44,7 @@ RSpec.describe Manual::DiscardDraftService do
 
     it "does not discard the manual via the publishing-api" do
       subject.call
-      expect(PublishingAdapter).not_to have_received(:discard).with(manual)
+      expect(Publishing::DraftAdapter).not_to have_received(:discard_draft_for_manual_and_sections).with(manual)
     end
 
     it "does not destroy the manual in the local db" do

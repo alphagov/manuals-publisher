@@ -34,6 +34,14 @@ FactoryBot.define do
     organisation_slug { "government-digital-service" }
   end
 
+  factory :section do
+    uuid { SecureRandom.uuid }
+    latest_edition { FactoryBot.build(:section_edition, section_uuid: uuid) }
+    initialize_with do
+      Section.new(uuid:, latest_edition:)
+    end
+  end
+
   factory :section_edition do
     section_uuid { SecureRandom.uuid }
     sequence(:slug) { |n| "test-section-edition-#{n}" }

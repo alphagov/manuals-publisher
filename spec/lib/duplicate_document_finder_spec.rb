@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe DuplicateDocumentFinder do
   subject do
     described_class.new(io)

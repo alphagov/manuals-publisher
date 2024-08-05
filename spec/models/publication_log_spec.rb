@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe PublicationLog, hits_db: true do
   describe "validation" do
     let(:attributes) do

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe AttachmentReporting, "#create_organisation_attachment_count_hash" do
   let(:start_date) { Date.parse("2015-01-01") }
   let(:last_time_period_days) { 30 }

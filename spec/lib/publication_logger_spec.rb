@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe PublicationLogger do
   describe "call" do
     it "creates a PublicationLog for each Section" do

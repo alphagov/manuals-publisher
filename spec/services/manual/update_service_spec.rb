@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::UpdateService do
   let(:user) { double(:user) }
   let(:manual) { instance_double(Manual, id: "1", draft: nil, assign_attributes: nil, save!: nil, organisation_slug: "org") }
@@ -18,7 +16,7 @@ RSpec.describe Manual::UpdateService do
 
   it "does not allow saving of an invalid manual" do
     allow(manual).to receive(:valid?).and_return(false)
-    expect(PublishingAdapter).not_to receive(:save_draft)
+    expect(Publishing::DraftAdapter).not_to receive(:save_draft_for_manual_and_sections)
 
     subject.call
 
@@ -27,7 +25,7 @@ RSpec.describe Manual::UpdateService do
 
   it "allows saving of a valid manual" do
     allow(manual).to receive(:valid?).and_return(true)
-    expect(PublishingAdapter).to receive(:save_draft)
+    expect(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections)
 
     subject.call
 

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "manuals/new", type: :view do
   it "links the cancel button to the 'Your manuals' page" do
     view_manual = ManualViewAdapter.new(FactoryBot.build(:manual))

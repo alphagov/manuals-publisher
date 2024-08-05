@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::CreateService do
   let(:user) { double(:user) }
   let(:manual) { double(:manual, valid?: nil, save!: nil, organisation_slug: "org") }
@@ -22,7 +20,7 @@ RSpec.describe Manual::CreateService do
 
     it "saves the manual" do
       expect(manual).to receive(:save!)
-      expect(PublishingAdapter).to receive(:save_draft).with(manual)
+      expect(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections).with(manual)
       subject.call
     end
   end
@@ -32,8 +30,8 @@ RSpec.describe Manual::CreateService do
 
     before do
       allow(manual).to receive(:valid?).and_return(true)
-      allow(PublishingAdapter)
-        .to receive(:save_draft).and_raise(gds_api_exception)
+      allow(Publishing::DraftAdapter)
+        .to receive(:save_draft_for_manual_and_sections).and_raise(gds_api_exception)
     end
 
     it "raises the exception and does not save manual" do
@@ -49,7 +47,7 @@ RSpec.describe Manual::CreateService do
 
     it "does not save the manual" do
       expect(manual).to_not receive(:save!)
-      expect(PublishingAdapter).to_not receive(:save_draft).with(manual)
+      expect(Publishing::DraftAdapter).to_not receive(:save_draft_for_manual_and_sections).with(manual)
       subject.call
     end
   end

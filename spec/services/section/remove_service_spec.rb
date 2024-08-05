@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Section::RemoveService do
   let(:state) { "published" }
   let(:section_edition) { FactoryBot.create(:section_edition, state:) }
@@ -32,8 +30,8 @@ RSpec.describe Section::RemoveService do
       end
 
       it "raises a an error and does not remove the section" do
-        expect(PublishingAdapter).to_not receive(:save_draft)
-        expect(PublishingAdapter).to_not receive(:discard_section)
+        expect(Publishing::DraftAdapter).to_not receive(:save_draft_for_manual_and_sections)
+        expect(Publishing::DraftAdapter).to_not receive(:discard_draft_for_section)
         expect {
           service.call
         }.to raise_error(Manual::NotFoundError, "Manual ID not found: non-existant-id")
@@ -57,8 +55,8 @@ RSpec.describe Section::RemoveService do
     end
 
     it "raises a SectionNotFoundError and does not remove the section" do
-      expect(PublishingAdapter).to_not receive(:save_draft)
-      expect(PublishingAdapter).to_not receive(:discard_section)
+      expect(Publishing::DraftAdapter).to_not receive(:save_draft_for_manual_and_sections)
+      expect(Publishing::DraftAdapter).to_not receive(:discard_draft_for_section)
       expect {
         service.call
       }.to raise_error(described_class::SectionNotFoundError, a_different_section.section_uuid)
@@ -78,8 +76,8 @@ RSpec.describe Section::RemoveService do
     end
 
     it "does not remove the section, does not save change note, but also does not output any warnings" do
-      expect(PublishingAdapter).to_not receive(:save_draft)
-      expect(PublishingAdapter).to_not receive(:discard_section)
+      expect(Publishing::DraftAdapter).to_not receive(:save_draft_for_manual_and_sections)
+      expect(Publishing::DraftAdapter).to_not receive(:discard_draft_for_section)
       service.call
       manual = Manual.find(manual_record.manual_id, user)
       expect(manual.sections.map(&:uuid)).to eq([section_edition.section_uuid])
@@ -103,8 +101,8 @@ RSpec.describe Section::RemoveService do
 
     context "when section is published with no draft" do
       it "removes the section, saves change notes as new draft, updates manual but does not discard section draft in publishing API" do
-        expect(PublishingAdapter).to receive(:save_draft).with(have_attributes(id: manual_record.manual_id), include_sections: false)
-        expect(PublishingAdapter).to_not receive(:discard_section)
+        expect(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections).with(have_attributes(id: manual_record.manual_id), include_sections: false)
+        expect(Publishing::DraftAdapter).to_not receive(:discard_draft_for_section)
         service.call
         manual = Manual.find(manual_record.manual_id, user)
         expect(manual.sections.map(&:uuid)).to eq([])
@@ -126,8 +124,8 @@ RSpec.describe Section::RemoveService do
       let!(:previous_published_section_edition) { FactoryBot.create(:section_edition, state: "published", version_number: 1, section_uuid: section_edition.section_uuid) }
 
       it "removes the section, updates change notes to draft, updates manual and discards section drafts in publishing API" do
-        expect(PublishingAdapter).to receive(:save_draft).with(have_attributes(id: manual_record.manual_id), include_sections: false)
-        expect(PublishingAdapter).to receive(:discard_section).with(have_attributes(uuid: section_edition.section_uuid))
+        expect(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections).with(have_attributes(id: manual_record.manual_id), include_sections: false)
+        expect(Publishing::DraftAdapter).to receive(:discard_draft_for_section).with(have_attributes(uuid: section_edition.section_uuid))
         service.call
         manual = Manual.find(manual_record.manual_id, user)
         expect(manual.sections.map(&:uuid)).to eq([])
@@ -148,8 +146,8 @@ RSpec.describe Section::RemoveService do
       let(:state) { "draft" }
 
       it "removes the section, updates change notes to draft, updates manual and discards section drafts in publishing API" do
-        expect(PublishingAdapter).to receive(:save_draft).with(have_attributes(id: manual_record.manual_id), include_sections: false)
-        expect(PublishingAdapter).to receive(:discard_section).with(have_attributes(uuid: section_edition.section_uuid))
+        expect(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections).with(have_attributes(id: manual_record.manual_id), include_sections: false)
+        expect(Publishing::DraftAdapter).to receive(:discard_draft_for_section).with(have_attributes(uuid: section_edition.section_uuid))
         service.call
         manual = Manual.find(manual_record.manual_id, user)
         expect(manual.sections.map(&:uuid)).to eq([])
@@ -174,8 +172,8 @@ RSpec.describe Section::RemoveService do
       end
 
       it "operates as usual and ignores any other parameters" do
-        expect(PublishingAdapter).to receive(:save_draft).with(have_attributes(id: manual_record.manual_id), include_sections: false)
-        expect(PublishingAdapter).to receive(:discard_section).with(have_attributes(uuid: section_edition.section_uuid))
+        expect(Publishing::DraftAdapter).to receive(:save_draft_for_manual_and_sections).with(have_attributes(id: manual_record.manual_id), include_sections: false)
+        expect(Publishing::DraftAdapter).to receive(:discard_draft_for_section).with(have_attributes(uuid: section_edition.section_uuid))
         service.call
         manual = Manual.find(manual_record.manual_id, user)
         expect(manual.sections.map(&:uuid)).to eq([])

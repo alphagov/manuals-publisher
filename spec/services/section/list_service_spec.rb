@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Section::ListService do
   it "returns the manual and its sections" do
     user = FactoryBot.build(:user, organisation_slug: "org-slug")

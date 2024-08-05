@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe "manuals/edit", type: :view do
   it "sets the page title" do
     view_manual = ManualViewAdapter.new(FactoryBot.build_stubbed(:manual, title: "a"))

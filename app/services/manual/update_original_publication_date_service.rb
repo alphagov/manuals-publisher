@@ -17,7 +17,7 @@ class Manual::UpdateOriginalPublicationDateService
     manual.save!(user)
     manual = Manual.find(manual_id, user)
 
-    PublishingAdapter.save_draft(manual)
+    Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual)
 
     manual
   end

@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Section do
   subject(:section) do
     Section.new(uuid: section_uuid, previous_edition:, latest_edition:)

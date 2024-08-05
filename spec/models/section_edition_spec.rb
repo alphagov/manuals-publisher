@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe SectionEdition do
   subject { SectionEdition.new }
 

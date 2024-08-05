@@ -1,4 +1,3 @@
-require "spec_helper"
 require "gds_api/test_helpers/link_checker_api"
 
 RSpec.describe LinkCheckerApiCallbackController, type: :controller do

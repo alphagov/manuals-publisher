@@ -1,4 +1,3 @@
-require "spec_helper"
 describe NavigationHelper, type: :helper do
   describe "#navigation_links_internal" do
     it "returns a link to the manuals page" do

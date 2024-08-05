@@ -1,5 +1,3 @@
-require "spec_helper"
-
 RSpec.describe Manual::ListService do
   let(:user) { FactoryBot.create(:gds_editor) }
 
