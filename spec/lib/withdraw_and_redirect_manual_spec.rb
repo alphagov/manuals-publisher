@@ -24,7 +24,7 @@ RSpec.describe WithdrawAndRedirectManual do
     allow(Manual::DiscardDraftService).to receive(:new) { discard_service }
     allow(discard_service).to receive(:call)
 
-    allow(PublishingAdapter).to receive(:unpublish_and_redirect_manual_and_sections)
+    allow(Publishing::UnpublishAdapter).to receive(:unpublish_and_redirect_manual_and_sections)
   end
 
   it "withdraws the manual and unpublishes" do
@@ -32,7 +32,7 @@ RSpec.describe WithdrawAndRedirectManual do
 
     reloaded_manual = Manual.find(manual.id, user)
     expect(reloaded_manual.withdrawn?).to eq(true)
-    expect(PublishingAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
+    expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
                                     .with(instance_of(Manual),
                                           redirect:,
                                           discard_drafts:)
@@ -55,7 +55,7 @@ RSpec.describe WithdrawAndRedirectManual do
 
       reloaded_manual = Manual.find(manual.id, user)
       expect(reloaded_manual.withdrawn?).to eq(true)
-      expect(PublishingAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
+      expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
                                       .with(instance_of(Manual),
                                             redirect:,
                                             discard_drafts:)
@@ -67,7 +67,7 @@ RSpec.describe WithdrawAndRedirectManual do
 
     it "doesn't action the withdrawal" do
       subject.execute
-      expect(PublishingAdapter).to_not have_received(:unpublish_and_redirect_manual_and_sections)
+      expect(Publishing::UnpublishAdapter).to_not have_received(:unpublish_and_redirect_manual_and_sections)
     end
   end
 end

@@ -14,7 +14,7 @@ class WithdrawAndRedirectManual
 
     raise ManualNotPublishedError, manual.slug unless manual.can_withdraw?
 
-    PublishingAdapter.unpublish_and_redirect_manual_and_sections(
+    Publishing::UnpublishAdapter.unpublish_and_redirect_manual_and_sections(
       manual,
       redirect:,
       discard_drafts:,

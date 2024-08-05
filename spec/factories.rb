@@ -36,9 +36,14 @@ FactoryBot.define do
 
   factory :section do
     uuid { SecureRandom.uuid }
-    latest_edition { FactoryBot.build(:section_edition, section_uuid: uuid) }
+    latest_edition { FactoryBot.build(:section_edition, section_uuid: uuid, state:, slug:) }
     initialize_with do
       Section.new(uuid:, latest_edition:)
+    end
+
+    transient do
+      state { "draft" }
+      sequence(:slug) { |n| "test-section-edition-#{n}" }
     end
   end
 
@@ -64,6 +69,10 @@ FactoryBot.define do
 
     initialize_with do
       Manual.new(attributes)
+    end
+
+    to_create do |manual|
+      manual.save!(User.gds_editor)
     end
   end
 

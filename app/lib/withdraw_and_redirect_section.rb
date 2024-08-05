@@ -15,9 +15,9 @@ class WithdrawAndRedirectSection
     section = Section.find(section_uuid)
 
     if discard_draft && section.draft?
-      PublishingAdapter.unpublish_section(section, redirect:, discard_drafts: true)
+      Publishing::UnpublishAdapter.unpublish_and_redirect_section(section, redirect:, discard_drafts: true)
     else
-      PublishingAdapter.unpublish_section(section, redirect:, discard_drafts: false)
+      Publishing::UnpublishAdapter.unpublish_and_redirect_section(section, redirect:, discard_drafts: false)
     end
   end
 

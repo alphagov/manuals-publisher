@@ -59,7 +59,7 @@ private
   end
 
   def redirect_section(section)
-    PublishingAdapter.redirect_section(section, to: "/#{new_section_slug}")
+    Publishing::RedirectAdapter.redirect_section(section, to: "/#{new_section_slug}")
   end
 
   def update_slug

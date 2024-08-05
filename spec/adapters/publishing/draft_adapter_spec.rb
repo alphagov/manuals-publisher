@@ -1,5 +1,4 @@
 describe Publishing::DraftAdapter do
-  let(:publishing_api) { double(:publishing_api) }
   let(:timestamp) { Time.zone.parse("2017-01-01 00:00:00") }
 
   let(:manual_id) { "a55242ed-178f-4716-8bb3-5d4f82d38531" }
@@ -30,12 +29,11 @@ describe Publishing::DraftAdapter do
   let(:publication_logs) { [] }
 
   before do
-    allow(Services).to receive(:publishing_api).and_return(publishing_api)
     allow(PublicationLog).to receive(:change_notes_for).with(manual.slug)
                                                        .and_return(publication_logs)
     allow(OrganisationsAdapter).to receive(:find).with(manual.organisation_slug).and_return(organisation)
-    allow(publishing_api).to receive(:patch_links).with(anything, anything)
-    allow(publishing_api).to receive(:put_content).with(anything, anything)
+    allow(Services.publishing_api).to receive(:patch_links).with(anything, anything)
+    allow(Services.publishing_api).to receive(:put_content).with(anything, anything)
 
     manual.sections = [section_one, section_two]
 
@@ -46,13 +44,13 @@ describe Publishing::DraftAdapter do
 
   describe "#save_draft_for_manual_and_sections" do
     it "does not patch links for manual to Publishing API when not include linkes" do
-      expect(publishing_api).to_not receive(:patch_links)
+      expect(Services.publishing_api).to_not receive(:patch_links)
 
       Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual, include_links: false)
     end
 
     it "patch links for manual to Publishing API" do
-      expect(publishing_api).to receive(:patch_links).with(
+      expect(Services.publishing_api).to receive(:patch_links).with(
         manual_id,
         links: {
           organisations: [organisation_content_id],
@@ -65,7 +63,7 @@ describe Publishing::DraftAdapter do
     end
 
     it "patch links for manual to Publishing API with attributes which validate against links schema for manual" do
-      expect(publishing_api).to receive(:patch_links).with(
+      expect(Services.publishing_api).to receive(:patch_links).with(
         manual_id,
         attributes_valid_according_to_links_schema(
           GdsApiConstants::PublishingApi::MANUAL_SCHEMA_NAME,
@@ -77,7 +75,7 @@ describe Publishing::DraftAdapter do
 
     it "saves content for manual to Publishing API" do
       expect(Publishing::DraftAdapter).to receive(:save_draft_for_section).twice
-      expect(publishing_api).to receive(:put_content).with(
+      expect(Services.publishing_api).to receive(:put_content).with(
         manual_id,
         {
           base_path: "/#{manual.slug}",
@@ -176,7 +174,7 @@ describe Publishing::DraftAdapter do
       let(:publication_logs) { [publication_log1, publication_log2] }
 
       it "saves content for manual to Publishing API including change notes" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(
             change_note: "section-title-2 - section-change-note",
@@ -209,7 +207,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for manual to Publishing API with timestamps" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(
             first_published_at: timestamp,
@@ -226,7 +224,7 @@ describe Publishing::DraftAdapter do
         end
 
         it "saves content for manual to Publishing API without public timestamp" do
-          expect(publishing_api).to receive(:put_content).with(
+          expect(Services.publishing_api).to receive(:put_content).with(
             manual_id,
             excluding(
               public_updated_at: timestamp,
@@ -244,7 +242,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for manual to Publishing API with major update_type" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
@@ -253,7 +251,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for manual to Publishing API with republish update_type when republishing is true" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(
             update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
@@ -271,7 +269,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for manual to Publishing API with minor update_type" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
@@ -280,7 +278,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for manual to Publishing API with republish update_type when republishing is true" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(
             update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
@@ -298,7 +296,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for manual to Publishing API with major update_type" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
@@ -307,7 +305,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for manual to Publishing API with republish update_type when republishing is true" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           manual_id,
           including(
             update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
@@ -322,13 +320,13 @@ describe Publishing::DraftAdapter do
 
   describe "#save_draft_for_section" do
     it "does not patch links for section to Publishing API when not include linkes" do
-      expect(publishing_api).to_not receive(:patch_links)
+      expect(Services.publishing_api).to_not receive(:patch_links)
 
       Publishing::DraftAdapter.save_draft_for_section(section_one, manual, include_links: false)
     end
 
     it "patch links for section to Publishing API" do
-      expect(publishing_api).to receive(:patch_links).with(
+      expect(Services.publishing_api).to receive(:patch_links).with(
         section_one_uuid,
         links: {
           organisations: [organisation_content_id],
@@ -341,7 +339,7 @@ describe Publishing::DraftAdapter do
     end
 
     it "patch links for section to Publishing API with attributes which validate against links schema for section" do
-      expect(publishing_api).to receive(:patch_links).with(
+      expect(Services.publishing_api).to receive(:patch_links).with(
         section_one_uuid,
         attributes_valid_according_to_links_schema(
           GdsApiConstants::PublishingApi::SECTION_SCHEMA_NAME,
@@ -352,7 +350,7 @@ describe Publishing::DraftAdapter do
     end
 
     it "saves content for section to Publishing API" do
-      expect(publishing_api).to receive(:put_content).with(
+      expect(Services.publishing_api).to receive(:put_content).with(
         section_one_uuid,
         {
           base_path: "/#{section_one.slug}",
@@ -408,18 +406,18 @@ describe Publishing::DraftAdapter do
       end
 
       it "does not save links for section to Publishing API" do
-        expect(publishing_api).not_to receive(:patch_links)
+        expect(Services.publishing_api).not_to receive(:patch_links)
         Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       it "does not save content for section to Publishing API" do
-        expect(publishing_api).not_to receive(:put_content)
+        expect(Services.publishing_api).not_to receive(:put_content)
         Publishing::DraftAdapter.save_draft_for_section(section_one, manual)
       end
 
       context "and action is republish" do
         it "saves links for section to Publishing API" do
-          expect(publishing_api).to receive(:patch_links).with(
+          expect(Services.publishing_api).to receive(:patch_links).with(
             section_one_uuid,
             anything,
           )
@@ -428,7 +426,7 @@ describe Publishing::DraftAdapter do
         end
 
         it "saves content for section to Publishing API" do
-          expect(publishing_api).to receive(:put_content).with(
+          expect(Services.publishing_api).to receive(:put_content).with(
             section_one_uuid,
             anything,
           )
@@ -444,7 +442,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API with timestamps" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(
             first_published_at: timestamp,
@@ -461,7 +459,7 @@ describe Publishing::DraftAdapter do
         end
 
         it "saves content for section to Publishing API without public timestamp" do
-          expect(publishing_api).to receive(:put_content).with(
+          expect(Services.publishing_api).to receive(:put_content).with(
             section_one_uuid,
             excluding(
               public_updated_at: timestamp,
@@ -492,7 +490,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API including attachments" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(details: including(
             attachments: [
@@ -515,7 +513,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API with major update_type" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
@@ -523,7 +521,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API with republish update_type when republishing is true" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(
             update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
@@ -541,7 +539,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API with minor update_type" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(update_type: GdsApiConstants::PublishingApi::MINOR_UPDATE_TYPE),
         )
@@ -550,7 +548,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API with republish update_type when republishing is true" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(
             update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
@@ -568,7 +566,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API with major update_type" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(update_type: GdsApiConstants::PublishingApi::MAJOR_UPDATE_TYPE),
         )
@@ -577,7 +575,7 @@ describe Publishing::DraftAdapter do
       end
 
       it "saves content for section to Publishing API with republish update_type when republishing is true" do
-        expect(publishing_api).to receive(:put_content).with(
+        expect(Services.publishing_api).to receive(:put_content).with(
           section_one_uuid,
           including(
             update_type: GdsApiConstants::PublishingApi::REPUBLISH_UPDATE_TYPE,
@@ -592,16 +590,16 @@ describe Publishing::DraftAdapter do
 
   describe "#discard_draft_for_manual_and_sections" do
     it "discards draft manual and its sections via Publishing API" do
-      expect(publishing_api).to receive(:discard_draft).with(manual_id)
-      expect(publishing_api).to receive(:discard_draft).with(section_one_uuid)
-      expect(publishing_api).to receive(:discard_draft).with(section_two_uuid)
+      expect(Services.publishing_api).to receive(:discard_draft).with(manual_id)
+      expect(Services.publishing_api).to receive(:discard_draft).with(section_one_uuid)
+      expect(Services.publishing_api).to receive(:discard_draft).with(section_two_uuid)
       Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
     end
   end
 
   describe "#discard_draft_for_section" do
     it "discards draft section via Publishing API" do
-      expect(publishing_api).to receive(:discard_draft).with(section_one_uuid)
+      expect(Services.publishing_api).to receive(:discard_draft).with(section_one_uuid)
       Publishing::DraftAdapter.discard_draft_for_section(section_one)
     end
   end
