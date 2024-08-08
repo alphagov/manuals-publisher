@@ -558,76 +558,63 @@ describe Section do
 
   describe "#withdraw_and_mark_as_exported!" do
     context "one draft" do
-      let(:latest_edition) { draft_edition_v1 }
+      let(:latest_edition) { FactoryBot.create(:section_edition, section_uuid:, state: "draft") }
 
-      it "archives the draft" do
-        section.withdraw_and_mark_as_exported!
-
-        expect(draft_edition_v1).to have_received(:archive)
-      end
-
-      it "sets the exported_at date on the draft" do
+      it "archives the draft and sets exported at" do
         freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(draft_edition_v1).to have_received(:exported_at=).with(Time.zone.now)
+          expect(latest_edition.reload.state).to eq "archived"
+          expect(latest_edition.reload.exported_at).to eq Time.zone.now
         end
       end
     end
 
     context "one published and one withdrawn" do
-      let(:previous_edition) { published_edition_v1 }
-      let(:latest_edition) { withdrawn_edition_v2 }
+      let(:previous_edition) { FactoryBot.create(:section_edition, section_uuid:, state: "published", version_number: 1) }
+      let(:latest_edition) { FactoryBot.create(:section_edition, section_uuid:, state: "archived", version_number: 2) }
 
       it "does nothing to the states of the editions" do
         section.withdraw_and_mark_as_exported!
-
-        expect(published_edition_v1).not_to have_received(:archive)
-        expect(withdrawn_edition_v2).not_to have_received(:archive)
+        expect(previous_edition.reload.state).to eq "published"
+        expect(latest_edition.reload.state).to eq "archived"
       end
 
-      it "only sets the exported_at date on the withdrawn edition" do
+      it "does not set the exported_at date on the withdrawn edition" do
         freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(withdrawn_edition_v2).to have_received(:exported_at=).with(Time.zone.now)
-
-          expect(published_edition_v1).not_to have_received(:exported_at=)
+          expect(previous_edition.reload.exported_at).to be nil
+          expect(latest_edition.reload.exported_at).to eq nil
         end
       end
     end
 
     context "one published and one draft edition" do
-      let(:previous_edition) { published_edition_v1 }
-      let(:latest_edition) { draft_edition_v2 }
+      let(:previous_edition) { FactoryBot.create(:section_edition, section_uuid:, state: "published", version_number: 1) }
+      let(:latest_edition) { FactoryBot.create(:section_edition, section_uuid:, state: "draft", version_number: 2) }
 
       it "sets the draft edition's state to withdrawn" do
         section.withdraw_and_mark_as_exported!
-
-        expect(draft_edition_v2).to have_received(:archive)
+        expect(previous_edition.reload.state).to eq "published"
+        expect(latest_edition.reload.state).to eq "archived"
       end
 
       it "only sets the exported_at date on the draft edition" do
         freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(draft_edition_v2).to have_received(:exported_at=).with(Time.zone.now)
-
-          expect(published_edition_v1).not_to have_received(:exported_at=)
+          expect(previous_edition.reload.exported_at).to be nil
+          expect(latest_edition.reload.exported_at).to eq Time.zone.now
         end
       end
     end
 
     context "one published edition" do
-      let(:latest_edition) { published_edition_v1 }
+      let(:latest_edition) { FactoryBot.create(:section_edition, section_uuid:, state: "published", version_number: 2) }
 
-      it "sets the published edition's state to withdrawn" do
-        section.withdraw_and_mark_as_exported!
-
-        expect(published_edition_v1).to have_received(:archive)
-      end
-
-      it "sets the exported_at date on the published edition" do
+      it "archives published edition and sets exported at date" do
         freeze_time do
           section.withdraw_and_mark_as_exported!
-          expect(published_edition_v1).to have_received(:exported_at=).with(Time.zone.now)
+          expect(latest_edition.reload.state).to eq "archived"
+          expect(latest_edition.reload.exported_at).to eq Time.zone.now
         end
       end
     end
