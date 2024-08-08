@@ -25,11 +25,15 @@ $ bundle exec rake
 
 ## Documentation
 
-* [History of the development of the application](docs/history.md)
-* [Current state of the application](docs/current-state.md)
-* [Information about Rake tasks](docs/rake-tasks.md)
-* [Possible next steps for development](docs/next-steps.md)
-* [Notes on investigation into fully migrating app with respect to Publishing API](docs/fully-migrated-spike.md)
+No current documentation available yet. We are producing some new documentation to reflect the current state of the application.
+
+## 2017 Migration Project Archive
+
+* [History of the development of the application](docs/2017-migration-project-archive/history.md)
+* [Current state of the application](docs/2017-migration-project-archive/current-state.md)
+* [Information about Rake tasks](docs/2017-migration-project-archive/rake-tasks.md)
+* [Possible next steps for development](docs/2017-migration-project-archive/next-steps.md)
+* [Notes on investigation into fully migrating app with respect to Publishing API](docs/2017-migration-project-archive/fully-migrated-spike.md)
 
 [The Highway Code]: https://www.gov.uk/guidance/the-highway-code
 [conventions]: https://docs.publishing.service.gov.uk/manual/conventions-for-rails-applications.html
