@@ -31,7 +31,7 @@ We have captured these and other improvements in the [Testing](https://github.co
 
 There are some [Rake Tasks](../lib/tasks/) which can be replaced with features in the User Interface. This would allow an organisation editor (or a admin role) to achieve their aim without having to involve a developer. The following Rake tasks are suitable candidates for converting to features:
 
-- [delete_draft_manual.rake](../lib/tasks/delete_draft_manual.rake)
-- [relocate_manual.rake](../lib/tasks/relocate_manual.rake)
-- [reslug_section.rake](../lib/tasks/reslug_section.rake)
-- [withdraw_manual.rake](../lib/tasks/withdraw_manual.rake)
+- [delete_draft_manual.rake](../../lib/tasks/delete_draft_manual.rake)
+- [relocate_manual.rake](../../lib/tasks/relocate_manual.rake)
+- [reslug_section.rake](../../lib/tasks/reslug_section.rake)
+- [withdraw_manual.rake](../../lib/tasks/withdraw_manual.rake)
