@@ -25,10 +25,12 @@ $ bundle exec rake
 
 ## Documentation
 
-No current documentation available yet. We are producing some new documentation to reflect the current state of the application.
+* [Manuals Publisher Data Model](docs/data-model.md)
+* [Manual and Section Edition Workflow](docs/edition-workflow.md)
 
 ## 2017 Migration Project Archive
 
+* [Introduction](docs/2017-migration-project-archive/start-here.md)
 * [History of the development of the application](docs/2017-migration-project-archive/history.md)
 * [Current state of the application](docs/2017-migration-project-archive/current-state.md)
 * [Information about Rake tasks](docs/2017-migration-project-archive/rake-tasks.md)
