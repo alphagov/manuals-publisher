@@ -37,6 +37,8 @@ class Section
            :exported_at,
            :visually_expanded,
            :state,
+           :reload,
+           :draft?,
            to: :latest_edition
 
   attr_reader :uuid
@@ -104,8 +106,6 @@ class Section
       (previous_edition && previous_edition.published?)
   end
 
-  delegate :draft?, to: :latest_edition
-
   def add_attachment(attributes)
     latest_edition.build_attachment(attributes)
   end
@@ -140,8 +140,6 @@ class Section
   def needs_exporting?
     latest_edition.exported_at.nil?
   end
-
-  delegate :reload, to: :latest_edition
 
   def mark_as_exported!(exported_at = Time.zone.now)
     latest_edition.exported_at = exported_at

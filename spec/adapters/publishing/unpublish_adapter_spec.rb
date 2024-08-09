@@ -76,7 +76,7 @@ describe Publishing::UnpublishAdapter do
     it "marks a section as archived" do
       allow(Services.publishing_api).to receive(:unpublish)
       Publishing::UnpublishAdapter.unpublish_and_redirect_section(section_one, redirect:)
-      expect(section_one.state).to eq "archived"
+      expect(section_one.reload.state).to eq "archived"
     end
 
     it "does not unpublish and redirect section if section is already archived" do

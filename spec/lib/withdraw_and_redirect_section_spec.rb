@@ -1,64 +1,94 @@
 RSpec.describe WithdrawAndRedirectSection do
-  let(:manual_record) { FactoryBot.create(:manual_record, :with_sections, state:) }
-  let(:manual) { Manual.build_manual_for(manual_record) }
-  let(:section) { manual.sections.last }
-  let(:redirect) { "/redirect/blah" }
-  let(:discard_draft) { false }
+  let(:user) { User.gds_editor }
+  let(:section) { FactoryBot.create(:section, state:) }
+  let(:section_path) { section.slug }
   let(:state) { "published" }
-  let(:dry_run) { false }
-
-  subject do
-    described_class.new(
-      user: User.gds_editor,
-      section_path: manual.sections.last.slug,
-      redirect:,
-      discard_draft:,
-      dry_run:,
-    )
-  end
-
-  before do
-    allow(Publishing::UnpublishAdapter).to receive(:unpublish_and_redirect_section)
-  end
-
-  it "calls the publishing adapter to unpublish the section" do
-    subject.execute
-    expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_section)
-      .with(instance_of(Section),
-            redirect:,
-            discard_drafts: discard_draft)
-  end
+  let(:redirect) { "/redirect/blah" }
 
   context "when only a draft section exists" do
     let(:state) { "draft" }
 
     it "raises an error if section is not published" do
-      expect { subject.execute }.to raise_error(Mongoid::Errors::DocumentNotFound)
+      expect {
+        WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: false).execute
+      }.to raise_error(WithdrawAndRedirectSection::SectionNotPublishedError, "Unable to find a published Section Edition for this slug.")
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[draft])
     end
   end
 
-  context "when an accompanying drafts exists and discard_draft is flagged" do
-    let(:discard_draft) { true }
+  context "when multiple published sections" do
+    let(:state) { "published" }
 
-    it "discards draft" do
-      manual.draft
-      section.assign_attributes({})
-      manual.save!(User.gds_editor)
+    it "raises an error if slug returns multiple published sections with differing section_uuids" do
+      FactoryBot.create(:section_edition, state:, slug: section.slug, section_uuid: "new-one")
+      expect {
+        WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: false).execute
+      }.to raise_error(
+        WithdrawAndRedirectSection::SlugsWithMultiplePublishedSectionUUIDError,
+        /The slug lookup returned multiple published editions with different Section UUIDs/,
+      )
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[published])
+    end
 
-      subject.execute
-      expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_section)
-        .with(instance_of(Section),
-              redirect:,
-              discard_drafts: discard_draft)
+    it "allows multiple published sections and archive last one if they have the same section_uuids" do
+      FactoryBot.create(:section_edition, state:, slug: section.slug, section_uuid: section.uuid)
+      expect(Services.publishing_api).to receive(:unpublish)
+      WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: false).execute
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[published archived])
+    end
+  end
+
+  context "when section published with no draft" do
+    it "unpublishes the section with discard_draft false to discard any leftover draft in publishing API" do
+      expect(Services.publishing_api).to receive(:unpublish)
+                                           .with(section.uuid,
+                                                 type: "redirect",
+                                                 alternative_path: redirect,
+                                                 discard_drafts: false)
+      WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: false).execute
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[archived])
+    end
+
+    it "unpublishes the section with discard_draft false even if sent a force discard draft flag cause this shouldn't be a draft" do
+      expect(Services.publishing_api).to receive(:unpublish)
+                                           .with(section.uuid,
+                                                 type: "redirect",
+                                                 alternative_path: redirect,
+                                                 discard_drafts: false)
+      WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: true).execute
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[archived])
+    end
+  end
+
+  context "when section published with new draft" do
+    before { FactoryBot.create(:section_edition, section_uuid: section.uuid, state: "draft", slug: section.slug) }
+
+    it "sends discard_draft false and archives published edition and latest draft when not sent a discard_draft flag" do
+      expect(Services.publishing_api).to receive(:unpublish)
+                                           .with(section.uuid,
+                                                 type: "redirect",
+                                                 alternative_path: redirect,
+                                                 discard_drafts: false)
+      WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: false).execute
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[published archived])
+    end
+
+    it "sends discard_draft true and archives published edition and latest draft when sent a discard_draft flag" do
+      expect(Services.publishing_api).to receive(:unpublish)
+                                           .with(section.uuid,
+                                                 type: "redirect",
+                                                 alternative_path: redirect,
+                                                 discard_drafts: true)
+      WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: true).execute
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[published archived])
     end
   end
 
   context "when a dry run is flagged" do
-    let(:dry_run) { true }
-
     it "doesn't action the withdrawal" do
-      subject.execute
-      expect(Publishing::UnpublishAdapter).to_not have_received(:unpublish_and_redirect_section)
+      expect(Services.publishing_api).to_not receive(:unpublish)
+      WithdrawAndRedirectSection.new(user:, section_path:, redirect:, discard_draft: false, dry_run: true).execute
+      expect(SectionEdition.where(section_uuid: section.uuid).pluck(:state)).to eq(%w[published])
     end
   end
 end
