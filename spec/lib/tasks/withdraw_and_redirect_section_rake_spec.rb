@@ -34,7 +34,9 @@ describe "withdraw and redirect section rake tasks", type: :rake_task do
             destination: "/guidance/parent_path",
           },
         ],
+        update_type: "major",
       )
+      assert_publishing_api_publish("some-random-uuid")
     end
   end
 end
