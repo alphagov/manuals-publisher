@@ -51,6 +51,7 @@ FactoryBot.define do
     section_uuid { SecureRandom.uuid }
     sequence(:slug) { |n| "test-section-edition-#{n}" }
     sequence(:title) { |n| "Test Section Edition #{n}" }
+    sequence(:version_number)
     summary { "My summary" }
     body { "My body" }
     change_note { "New section added" }

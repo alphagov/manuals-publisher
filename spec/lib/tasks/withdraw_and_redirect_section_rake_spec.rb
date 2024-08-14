@@ -11,32 +11,30 @@ describe "withdraw and redirect section rake tasks", type: :rake_task do
     stub_any_publishing_api_call
   end
 
-  describe "bulk withdraw sections" do
-    let(:task) { Rake::Task["bulk_withdraw_and_redirect_section_to_manual"] }
+  describe "bulk_redirect_section_to_manual" do
+    let(:task) { Rake::Task["bulk_redirect_section_to_manual"] }
 
-    it "withdraws sections that exist and output an error line for ones that don't" do
+    it "redirect sections that exist and output an error line for ones that don't" do
       FactoryBot.create(:manual_record, slug: "guidance/parent_path", state: "withdrawn")
       FactoryBot.create(:section_edition, section_uuid: "1234", slug: "guidance/parent_path/existing_doc", state: "published")
+      allow(SecureRandom).to receive(:uuid).and_return("some-random-uuid")
 
-      expect { task.invoke("./spec/fixtures/bulk_test.csv") }.to output(/unable to withdraw guidance\/parent_path\/non_existing_doc/).to_stdout
+      expect { task.invoke("./spec/fixtures/bulk_test.csv") }.to output(/unable to redirect guidance\/parent_path\/non_existing_doc/).to_stdout
 
-      assert_publishing_api_unpublish(
-        "1234",
-        type: "redirect",
-        alternative_path: "/guidance/parent_path",
+      assert_publishing_api_put_content(
+        "some-random-uuid",
+        document_type: "redirect",
+        schema_name: "redirect",
+        publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
+        base_path: "/guidance/parent_path/existing_doc",
+        redirects: [
+          {
+            path: "/guidance/parent_path/existing_doc",
+            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
+            destination: "/guidance/parent_path",
+          },
+        ],
       )
-    end
-  end
-
-  describe "bulk archive sections" do
-    let(:task) { Rake::Task["bulk_archive_sections"] }
-
-    it "sets state to archive for sections that exist and output an error line for ones that don't" do
-      FactoryBot.create(:section_edition, section_uuid: "1234", slug: "guidance/parent_path/existing_doc", state: "published")
-
-      expect { task.invoke("./spec/fixtures/bulk_test.csv") }.to output(/unable to archive guidance\/parent_path\/non_existing_doc/).to_stdout
-
-      expect(SectionEdition.find_by(slug: "guidance/parent_path/existing_doc").state).to eq("archived")
     end
   end
 end
