@@ -11,32 +11,21 @@ describe "withdraw and redirect section rake tasks", type: :rake_task do
     stub_any_publishing_api_call
   end
 
-  describe "bulk_redirect_section_to_manual" do
-    let(:task) { Rake::Task["bulk_redirect_section_to_manual"] }
+  describe "#withdraw_and_redirect_section" do
+    let(:task) { Rake::Task["withdraw_and_redirect_section"] }
 
-    it "redirect sections that exist and output an error line for ones that don't" do
-      FactoryBot.create(:manual_record, slug: "guidance/parent_path", state: "withdrawn")
-      FactoryBot.create(:section_edition, section_uuid: "1234", slug: "guidance/parent_path/existing_doc", state: "published")
-      allow(SecureRandom).to receive(:uuid).and_return("some-random-uuid")
+    it "withdraws and redirects a given section via slug" do
+      manual_record = FactoryBot.create(:manual_record, slug: "guidance/parent_path", state: "withdrawn")
+      section_edition = FactoryBot.create(:section_edition, section_uuid: "1234", slug: "guidance/parent_path/existing_doc", state: "published")
 
-      expect { task.invoke("./spec/fixtures/bulk_test.csv") }.to output(/unable to redirect guidance\/parent_path\/non_existing_doc/).to_stdout
+      expect { task.invoke(section_edition.slug, manual_record.slug, true) }.to output("Section withdrawn and redirected to #{manual_record.slug}\n").to_stdout
 
-      assert_publishing_api_put_content(
-        "some-random-uuid",
-        document_type: "redirect",
-        schema_name: "redirect",
-        publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
-        base_path: "/guidance/parent_path/existing_doc",
-        redirects: [
-          {
-            path: "/guidance/parent_path/existing_doc",
-            type: GdsApiConstants::PublishingApi::EXACT_ROUTE_TYPE,
-            destination: "/guidance/parent_path",
-          },
-        ],
-        update_type: "major",
+      assert_publishing_api_unpublish(
+        section_edition.section_uuid,
+        type: "redirect",
+        alternative_path: manual_record.slug,
       )
-      assert_publishing_api_publish("some-random-uuid")
+      expect(section_edition.reload.state).to eq "archived"
     end
   end
 end
