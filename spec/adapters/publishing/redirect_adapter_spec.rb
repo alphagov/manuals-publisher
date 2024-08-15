@@ -22,7 +22,9 @@ describe Publishing::RedirectAdapter do
             destination: "/new-location",
           },
         ],
+        update_type: "major",
       )
+      expect(Services.publishing_api).to receive(:publish).with(redirect_content_id)
       Publishing::RedirectAdapter.redirect_section(section, to: "/new-location")
     end
 
@@ -31,6 +33,7 @@ describe Publishing::RedirectAdapter do
         redirect_content_id,
         be_valid_against_publisher_schema("redirect"),
       )
+      expect(Services.publishing_api).to receive(:publish).with(redirect_content_id)
       Publishing::RedirectAdapter.redirect_section(section, to: "/new-location")
     end
 
@@ -49,7 +52,9 @@ describe Publishing::RedirectAdapter do
             destination: "/new-location",
           },
         ],
+        update_type: "major",
       )
+      expect(Services.publishing_api).to receive(:publish).with(redirect_content_id)
       Publishing::RedirectAdapter.redirect_section(manual, to: "/new-location")
     end
   end

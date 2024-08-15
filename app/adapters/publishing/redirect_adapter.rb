@@ -2,8 +2,9 @@ require "securerandom"
 
 class Publishing::RedirectAdapter
   def self.redirect_section(section, to:)
+    redirect_content_id = SecureRandom.uuid
     Services.publishing_api.put_content(
-      SecureRandom.uuid,
+      redirect_content_id,
       document_type: "redirect",
       schema_name: "redirect",
       publishing_app: GdsApiConstants::PublishingApi::PUBLISHING_APP,
@@ -15,6 +16,8 @@ class Publishing::RedirectAdapter
           destination: to,
         },
       ],
+      update_type: "major",
     )
+    Services.publishing_api.publish(redirect_content_id)
   end
 end
