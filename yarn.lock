@@ -2167,7 +2167,7 @@ __metadata:
     jasmine-browser-runner: "npm:^2.5.0"
     jasmine-core: "npm:^5.2.0"
     paste-html-to-govspeak: "npm:^0.4.0"
-    postcss: "npm:^8.4.39"
+    postcss: "npm:^8.4.41"
     standardx: "npm:^7.0.0"
     stylelint: "npm:^16.8.2"
     stylelint-config-gds: "npm:^2.0.0"
