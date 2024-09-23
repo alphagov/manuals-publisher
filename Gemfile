@@ -16,7 +16,7 @@ gem "plek"
 gem "sentry-sidekiq"
 gem "state_machines"
 gem "state_machines-mongoid"
-gem "uglifier"
+gem "terser"
 
 group :development, :test do
   gem "govuk_test"
