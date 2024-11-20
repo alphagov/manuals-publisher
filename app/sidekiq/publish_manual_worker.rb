@@ -1,5 +1,5 @@
 class PublishManualWorker
-  include Sidekiq::Worker
+  include Sidekiq::Job
 
   sidekiq_options(
     # This is required to retry in the case of a FailedToPublishError
