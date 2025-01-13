@@ -103,7 +103,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    cucumber (9.2.0)
+    cucumber (9.2.1)
       builder (~> 3.2)
       cucumber-ci-environment (> 9, < 11)
       cucumber-core (> 13, < 14)
@@ -157,10 +157,10 @@ GEM
       faraday-net_http (>= 2.0, < 3.2)
     faraday-net_http (3.1.0)
       net-http
-    ffi (1.17.0)
-    ffi (1.17.0-aarch64-linux-gnu)
-    ffi (1.17.0-arm64-darwin)
-    ffi (1.17.0-x86_64-linux-gnu)
+    ffi (1.17.1)
+    ffi (1.17.1-aarch64-linux-gnu)
+    ffi (1.17.1-arm64-darwin)
+    ffi (1.17.1-x86_64-linux-gnu)
     gds-api-adapters (98.2.0)
       addressable
       link_header
