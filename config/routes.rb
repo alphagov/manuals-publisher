@@ -56,5 +56,5 @@ Rails.application.routes.draw do
 
   get "/whats-new" => "whats_new#index", as: :whats_new
 
-  mount GovukPublishingComponents::Engine, at: "/component-guide" if Rails.env.development?
+  mount GovukPublishingComponents::Engine, at: "/component-guide"
 end
