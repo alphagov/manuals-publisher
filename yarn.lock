@@ -2344,7 +2344,7 @@ __metadata:
   dependencies:
     jasmine-browser-runner: "npm:^3.0.0"
     jasmine-core: "npm:^5.6.0"
-    paste-html-to-govspeak: "npm:^0.4.0"
+    paste-html-to-govspeak: "npm:^0.5.0"
     postcss: "npm:^8.5.3"
     standardx: "npm:^7.0.0"
     stylelint: "npm:^16.14.1"
@@ -2783,10 +2783,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"paste-html-to-govspeak@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "paste-html-to-govspeak@npm:0.4.0"
-  checksum: 0b7ded326d9fd3da62d1d63d68637eca5daefb3eb87b863d9a3e210e9406e0eaf663b5d3168899e3d2c860024565a60c59ad604416fce402d5bed3de0d23af17
+"paste-html-to-govspeak@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "paste-html-to-govspeak@npm:0.5.0"
+  checksum: ce5ca3ef5a7599f9d84669650919e18589e72a8af6025f1213a1b8035d9d6b8b71583b8b7ee7509b5ed2eeda4dd9d80c066ff9a92fd2e7c09850f9cd401f87e2
   languageName: node
   linkType: hard
 
