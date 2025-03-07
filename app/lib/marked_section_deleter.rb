@@ -33,9 +33,7 @@ class MarkedSectionDeleter
     end
   end
 
-  def publishing_api
-    Services.publishing_api
-  end
+  delegate :publishing_api, to: :Services
 
   def in_publishing_api?(content_id)
     publishing_api.get_content(content_id).present?
