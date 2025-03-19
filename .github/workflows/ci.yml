@@ -68,6 +68,15 @@ jobs:
       - name: Setup Redis
         uses: alphagov/govuk-infrastructure/.github/actions/setup-redis@main
 
+      - name: Remove image-bundled Chrome
+        run: sudo apt-get purge google-chrome-stable
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@c785b87e244131f27c9f19c1a33e2ead956ab7ce # v1.7.3
+        with:
+          chrome-version: 135
+          install-chromedriver: true
+
       - name: Checkout repository
         uses: actions/checkout@v3
 

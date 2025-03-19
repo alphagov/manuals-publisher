@@ -57,3 +57,15 @@ end
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
 Cucumber::Rails::Database.javascript_strategy = :truncation
+
+Capybara.register_driver :headless_chrome do |app|
+  chrome_options = GovukTest.headless_chrome_selenium_options
+  chrome_options.add_argument("--no-sandbox")
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    options: chrome_options,
+  )
+end
+Capybara.javascript_driver = :headless_chrome
