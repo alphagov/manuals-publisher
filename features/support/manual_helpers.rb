@@ -219,6 +219,7 @@ module ManualHelpers
 
   def go_to_manual_page(manual_title)
     visit manuals_path
+    sleep 5
     click_link manual_title
   end
 
