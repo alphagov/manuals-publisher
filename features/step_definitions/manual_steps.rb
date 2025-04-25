@@ -39,6 +39,7 @@ Given(/^a draft manual exists without any sections$/) do
   }
 
   create_manual(@manual_fields)
+  expect(page).to have_link("Discard draft")
 
   @manual = most_recently_created_manual
 
@@ -55,6 +56,7 @@ Given(/^a draft manual exists with some sections$/) do
   }
 
   create_manual(@manual_fields)
+  expect(page).to have_link("Discard draft")
 
   @attributes_for_sections = create_sections_for_manual(
     manual_fields: @manual_fields,
