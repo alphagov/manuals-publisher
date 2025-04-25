@@ -424,6 +424,7 @@ module ManualHelpers
 
     attributes_for_sections.each do |attributes|
       create_section(manual_fields.fetch(:title), attributes[:fields])
+      expect(page).to have_link("Discard draft")
     end
 
     attributes_for_sections
