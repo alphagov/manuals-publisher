@@ -3,6 +3,7 @@
 
 //= require govuk_publishing_components/components/govspeak
 //= require govuk_publishing_components/components/reorderable-list
+//= require govuk_publishing_components/components/service-navigation
 //= require govuk_publishing_components/components/table
 
 //= require govspeak-editor.js
