@@ -434,7 +434,7 @@ describe ManualRelocator do
       routes = data["routes"]
       unrendered_body = data["details"]["body"].detect { |api_body| api_body["content_type"] == "text/govspeak" }
       unrendered_body && unrendered_body["content"] == body &&
-        (data["base_path"] == path) && (routes.any? { |route| route["path"] == path })
+        (data["base_path"] == path) && routes.any? { |route| route["path"] == path }
     end
   end
 
@@ -442,7 +442,7 @@ describe ManualRelocator do
     lambda do |request|
       data = JSON.parse(request.body)
       routes = data["routes"]
-      (data["base_path"] == path) && (routes.any? { |route| route["path"] == path })
+      (data["base_path"] == path) && routes.any? { |route| route["path"] == path }
     end
   end
 end
