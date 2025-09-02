@@ -96,7 +96,7 @@ GEM
       xpath (~> 3.2)
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.3)
+    connection_pool (2.5.4)
     crack (1.0.0)
       bigdecimal
       rexml
@@ -122,13 +122,13 @@ GEM
       bigdecimal
     cucumber-gherkin (27.0.0)
       cucumber-messages (>= 19.1.4, < 23)
-    cucumber-html-formatter (21.8.0)
-      cucumber-messages (> 19, < 27)
+    cucumber-html-formatter (21.14.0)
+      cucumber-messages (> 19, < 28)
     cucumber-messages (22.0.0)
-    cucumber-rails (3.1.1)
-      capybara (>= 3.11, < 4)
-      cucumber (>= 5, < 10)
-      railties (>= 5.2, < 9)
+    cucumber-rails (4.0.0)
+      capybara (>= 3.25, < 4)
+      cucumber (>= 7, < 11)
+      railties (>= 6.1, < 9)
     cucumber-tag-expressions (6.1.2)
     dartsass-rails (0.5.1)
       railties (>= 6.0.0)
@@ -158,10 +158,10 @@ GEM
       logger
     faraday-net_http (3.4.1)
       net-http (>= 0.5.0)
-    ffi (1.17.1)
-    ffi (1.17.1-aarch64-linux-gnu)
-    ffi (1.17.1-arm64-darwin)
-    ffi (1.17.1-x86_64-linux-gnu)
+    ffi (1.17.2)
+    ffi (1.17.2-aarch64-linux-gnu)
+    ffi (1.17.2-arm64-darwin)
+    ffi (1.17.2-x86_64-linux-gnu)
     gds-api-adapters (101.0.0)
       addressable
       link_header
@@ -283,7 +283,8 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.4)
-    matrix (0.4.2)
+    matrix (0.4.3)
+    memoist3 (1.0.0)
     method_source (1.1.0)
     mime-types (3.7.0)
       logger
@@ -775,8 +776,9 @@ GEM
       state_machines-activemodel (>= 0.5.0)
     statsd-ruby (1.5.0)
     stringio (3.1.7)
-    sys-uname (1.3.1)
+    sys-uname (1.4.1)
       ffi (~> 1.1)
+      memoist3 (~> 1.0.0)
     terser (1.2.6)
       execjs (>= 0.3.0, < 3)
     thor (1.4.0)
@@ -816,7 +818,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   cucumber
-  cucumber-rails (~> 3.1)
+  cucumber-rails (~> 4.0)
   dartsass-rails
   database_cleaner-mongoid
   factory_bot_rails
