@@ -1,6 +1,16 @@
 <% product_name = "Manuals Publisher" %>
 <% environment = GovukPublishingComponents::AppHelpers::Environment.current_acceptance_environment %>
-<% render "layouts/google_tag_manager" %>
+
+<% content_for :head do %>
+  <meta name="govuk:components_gem_version" content="<%= GovukPublishingComponents::VERSION %>">
+  <% unless Rails.env.test? %>
+    <meta name="govuk:user-created-at" content="<%= current_user&._id&.generation_time&.to_date %>">
+    <meta name="govuk:user-id" content="<%= current_user&.anonymous_user_id %>">
+    <meta name="govuk:content-id" content="<%= params[:id] %>">
+  <% end %>
+  <%= javascript_include_tag "domain-config" %>
+  <%= javascript_include_tag "govuk_publishing_components/load-analytics" %>
+<% end %>
 
 <%= render "govuk_publishing_components/components/layout_for_admin", {
   environment: environment,
