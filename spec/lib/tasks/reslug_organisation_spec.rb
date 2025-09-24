@@ -1,4 +1,5 @@
 require "rake"
+require "thor"
 
 describe "reslug_organisation" do
   before :all do
@@ -8,6 +9,7 @@ describe "reslug_organisation" do
   before :each do
     task.reenable # without this, calling `invoke` does nothing after first test
     allow($stdout).to receive(:puts) # supress Rake task output
+    allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(true)
   end
   let(:task) { Rake::Task["reslug_organisation"] }
 
