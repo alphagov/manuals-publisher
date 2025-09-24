@@ -8,3 +8,7 @@
 
 //= require govspeak-editor.js
 //= require paste-html-to-govspeak.js
+
+'use strict'
+window.GOVUK.approveAllCookieTypes()
+window.GOVUK.cookie('cookies_preferences_set', 'true', { days: 365 })
