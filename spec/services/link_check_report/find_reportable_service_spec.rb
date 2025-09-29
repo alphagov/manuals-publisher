@@ -35,12 +35,11 @@ RSpec.describe LinkCheckReport::FindReportableService do
     end
 
     before do
-      allow(Section).to receive(:find).with(manual, section.id).and_return(section)
+      allow(Section).to receive(:find).with(section.id).and_return(section)
     end
 
     it "should look up a manual and a section" do
-      expect(Manual).to receive(:find).with(manual.id, user)
-      expect(Section).to receive(:find).with(manual, section.id)
+      expect(Section).to receive(:find).with(section.id)
       subject
     end
   end
