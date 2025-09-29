@@ -138,7 +138,7 @@ RSpec.describe LinkCheckReport::CreateService do
 
     before do
       allow(Manual).to receive(:find).with(manual.id, user).and_return(manual)
-      allow(Section).to receive(:find).with(manual, section.id).and_return(section)
+      allow(Section).to receive(:find).with(section.id).and_return(section)
     end
 
     context "when the link checker api is called" do
