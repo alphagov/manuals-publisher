@@ -63,6 +63,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@csstools/css-syntax-patches-for-csstree@npm:^1.0.19":
+  version: 1.0.19
+  resolution: "@csstools/css-syntax-patches-for-csstree@npm:1.0.19"
+  checksum: c713104ee9e013b38f408973b57d0d18e03e8dc140c5a17791c2f2ac95bcdbb3740fa654b627524655860ec432fcf9fa8f302799388d37ee258b8c3b65be6ae6
+  languageName: node
+  linkType: hard
+
 "@csstools/css-tokenizer@npm:^3.0.4":
   version: 3.0.4
   resolution: "@csstools/css-tokenizer@npm:3.0.4"
@@ -1380,7 +1387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-entry-cache@npm:^11.1.0":
+"file-entry-cache@npm:^11.1.1":
   version: 11.1.1
   resolution: "file-entry-cache@npm:11.1.1"
   dependencies:
@@ -2367,7 +2374,7 @@ __metadata:
     paste-html-to-govspeak: "npm:^0.5.0"
     postcss: "npm:^8.5.6"
     standardx: "npm:^7.0.0"
-    stylelint: "npm:^16.26.0"
+    stylelint: "npm:^16.26.1"
     stylelint-config-gds: "npm:^2.0.0"
   languageName: unknown
   linkType: soft
@@ -3772,11 +3779,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint@npm:^16.26.0":
-  version: 16.26.0
-  resolution: "stylelint@npm:16.26.0"
+"stylelint@npm:^16.26.1":
+  version: 16.26.1
+  resolution: "stylelint@npm:16.26.1"
   dependencies:
     "@csstools/css-parser-algorithms": "npm:^3.0.5"
+    "@csstools/css-syntax-patches-for-csstree": "npm:^1.0.19"
     "@csstools/css-tokenizer": "npm:^3.0.4"
     "@csstools/media-query-list-parser": "npm:^4.0.3"
     "@csstools/selector-specificity": "npm:^5.0.0"
@@ -3789,7 +3797,7 @@ __metadata:
     debug: "npm:^4.4.3"
     fast-glob: "npm:^3.3.3"
     fastest-levenshtein: "npm:^1.0.16"
-    file-entry-cache: "npm:^11.1.0"
+    file-entry-cache: "npm:^11.1.1"
     global-modules: "npm:^2.0.0"
     globby: "npm:^11.1.0"
     globjoin: "npm:^0.1.4"
@@ -3816,7 +3824,7 @@ __metadata:
     write-file-atomic: "npm:^5.0.1"
   bin:
     stylelint: bin/stylelint.mjs
-  checksum: 6f501ff051aee4fc7713635c98bf6837f889b22fe86152cfed20365ffeee0acf9d751f94ff265433b532b2a1ab7a228fc1fda3f507859acb57a689268939553d
+  checksum: 3805dfe868abdcc5a62e5726eebe5e950432cfadfc5b47c2f103ef4dede8ee1eb8a1247c9ceb01a1739c0aba68865d79899d33a707256365bb2004664524908b
   languageName: node
   linkType: hard
 
