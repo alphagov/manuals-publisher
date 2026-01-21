@@ -69,6 +69,10 @@ class ManualsController < ApplicationController
         },
       )
     end
+  rescue GdsApi::HTTPUnprocessableEntity => e
+    manual = manual_form(Manual.new(create_manual_params))
+    manual.errors.add(:base, "Error saving to Publishing API: #{e.error_details['error']['message']}")
+    render :new, layout: "design_system", locals: { manual: }, status: :unprocessable_entity
   end
 
   def edit
