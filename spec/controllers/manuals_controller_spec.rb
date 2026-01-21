@@ -32,7 +32,7 @@ describe ManualsController, type: :controller do
       allow(controller).to receive(:manual_form).with(rescued_manual).and_return(form)
       allow(form).to receive(:errors).and_return(errors)
 
-      expect(errors).to receive(:add).with(:base, /Error saving to Publishing API/i)
+      expect(errors).to receive(:add).with(:base, /Try changing the title. There was an error saving to Publishing API/i)
 
       post :create, params: { manual: create_params }
 
