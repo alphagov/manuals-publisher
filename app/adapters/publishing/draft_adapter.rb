@@ -28,8 +28,8 @@ class Publishing::DraftAdapter
   end
 
   private_class_method def self.save_draft_for_manual(manual, republish:, include_links:)
-    patch_links_for_manual(manual) if include_links
     put_content_for_manual(manual, republish:)
+    patch_links_for_manual(manual) if include_links
   end
 
   private_class_method def self.patch_links_for_manual(manual)

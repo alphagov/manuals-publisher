@@ -1,4 +1,46 @@
 describe ManualsController, type: :controller do
+  describe "#create" do
+    let(:service) { instance_double(Manual::CreateService) }
+    let(:manual)  { instance_double(Manual, id: 123, to_param: "123") }
+    let(:form)    { instance_double("ManualForm", valid?: true, id: 123, to_param: "123") }
+
+    let(:create_params) { { title: "New Manual", organisation_slug: "org-slug" } }
+
+    before do
+      login_as_stub_user
+      allow(Manual::CreateService).to receive(:new).and_return(service)
+      allow(service).to receive(:call).and_return(manual)
+      allow(controller).to receive(:manual_form).with(manual).and_return(form)
+    end
+
+    it "redirects to the manual's show page on successful creation" do
+      post :create, params: { manual: create_params }
+      expect(response).to redirect_to(manual_path(form))
+    end
+
+    it "shows error messages when creation fails" do
+      allow(service).to receive(:call).and_raise(
+        GdsApi::HTTPUnprocessableEntity.new(
+          422,
+          "Unprocessable Entity",
+          { "error" => { "message" => "Nope" } },
+        ),
+      )
+      rescued_manual = instance_double(Manual)
+      errors = instance_double(ActiveModel::Errors)
+      allow(Manual).to receive(:new).and_return(rescued_manual)
+      allow(controller).to receive(:manual_form).with(rescued_manual).and_return(form)
+      allow(form).to receive(:errors).and_return(errors)
+
+      expect(errors).to receive(:add).with(:base, /Try changing the title. There was an error saving to Publishing API/i)
+
+      post :create, params: { manual: create_params }
+
+      expect(response).to render_template(:new)
+      expect(response).to have_http_status(:unprocessable_entity)
+    end
+  end
+
   describe "#publish" do
     context "when the user lacks permission to publish" do
       let(:manual_id) { "manual-1" }

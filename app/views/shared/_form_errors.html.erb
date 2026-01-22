@@ -2,11 +2,18 @@
   <%= render "govuk_publishing_components/components/error_summary", {
     id: "error-summary",
     title: "Please fix the following errors found in the form",
-    items: object.errors.map do |errors|
-      {
-        text: "#{errors.attribute.to_s.humanize} #{[*errors.message].join(' and ')}",
-        href: "##{attribute_id_prefix}_#{errors.attribute}"
-      }
+    items: object.errors.map do |error|
+      if error.attribute == :base
+        {
+          text: error.message,
+          href: "#error-summary",
+        }
+      else
+        {
+          text: "#{error.attribute.to_s.humanize} #{error.message}",
+          href: "##{attribute_id_prefix}_#{error.attribute}",
+        }
+      end
     end
   } %>
 <% end %>
