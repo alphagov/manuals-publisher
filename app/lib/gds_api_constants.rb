@@ -1,7 +1,7 @@
 module GdsApiConstants
   module PublishingApi
     PUBLISHING_APP = "manuals-publisher".freeze
-    RENDERING_APP = "government-frontend".freeze
+    RENDERING_APP = "frontend".freeze
 
     MANUAL_SCHEMA_NAME = "manual".freeze
     MANUAL_DOCUMENT_TYPE = "manual".freeze
