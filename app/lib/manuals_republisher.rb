@@ -19,6 +19,9 @@ class ManualsRepublisher
     rescue Manual::RemovedSectionIdNotFoundError => e
       logger.error("Did not publish manual with id=#{manual.id} slug=#{manual.slug}. It has at least one removed document which was not found: #{e.message}")
       next
+    rescue KeyError => e
+      logger.error("Did not publish manual with id=#{manual.id} slug=#{manual.slug}. It may be missing a published section: #{e.message}")
+      next
     end
 
     logger.info "Republishing of #{count} manuals complete."
