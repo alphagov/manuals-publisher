@@ -1,5 +1,5 @@
 class Publishing::UnpublishAdapter
-  def self.unpublish_and_redirect_manual_and_sections(manual, redirect:, discard_drafts:)
+  def self.unpublish_and_redirect_manual_and_sections(manual, redirect:, include_sections:, discard_drafts:)
     Services.publishing_api.unpublish(
       manual.id,
       type: "redirect",
@@ -7,11 +7,14 @@ class Publishing::UnpublishAdapter
         { path: "/#{manual.slug}", type: "exact", destination: redirect },
         { path: "/#{manual.slug}/updates", type: "exact", destination: redirect },
       ],
+      include_sections:,
       discard_drafts:,
     )
 
-    manual.sections.each do |section|
-      unpublish_and_redirect_section(section, redirect:, discard_drafts:)
+    if include_sections
+      manual.sections.each do |section|
+        unpublish_and_redirect_section(section, redirect:, discard_drafts:)
+      end
     end
   end
 
