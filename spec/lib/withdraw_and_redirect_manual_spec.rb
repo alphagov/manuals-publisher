@@ -6,6 +6,7 @@ RSpec.describe WithdrawAndRedirectManual do
   let(:discard_drafts) { false }
   let(:state) { "published" }
   let(:user) { User.gds_editor }
+  let(:include_sections) { true }
   let(:dry_run) { false }
 
   let(:discard_service) { double(:discard_service) }
@@ -15,6 +16,7 @@ RSpec.describe WithdrawAndRedirectManual do
       user:,
       manual_path: manual.slug,
       redirect:,
+      include_sections:,
       discard_drafts:,
       dry_run:,
     )
@@ -35,6 +37,7 @@ RSpec.describe WithdrawAndRedirectManual do
     expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
                                     .with(instance_of(Manual),
                                           redirect:,
+                                          include_sections:,
                                           discard_drafts:)
   end
 
@@ -58,6 +61,7 @@ RSpec.describe WithdrawAndRedirectManual do
       expect(Publishing::UnpublishAdapter).to have_received(:unpublish_and_redirect_manual_and_sections)
                                       .with(instance_of(Manual),
                                             redirect:,
+                                            include_sections:,
                                             discard_drafts:)
     end
   end
