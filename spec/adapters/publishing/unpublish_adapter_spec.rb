@@ -21,7 +21,7 @@ describe Publishing::UnpublishAdapter do
 
     it "unpublishes and redirects manual plus sections via Publishing API with discard draft false" do
       expect(Services.publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects:, include_sections: true, discard_drafts: false
+        manual_id, type: "redirect", redirects:, discard_drafts: false
       )
 
       expect(Services.publishing_api).to receive(:unpublish).with(
@@ -36,7 +36,7 @@ describe Publishing::UnpublishAdapter do
 
     it "unpublishes and redirects manual plus sections via Publishing API with discard_draft true" do
       expect(Services.publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects:, include_sections: true, discard_drafts: true
+        manual_id, type: "redirect", redirects:, discard_drafts: true
       )
 
       expect(Services.publishing_api).to receive(:unpublish).with(
@@ -57,7 +57,7 @@ describe Publishing::UnpublishAdapter do
 
     it "unpublishes and redirects manual without sections via Publishing API with include_sections false" do
       expect(Services.publishing_api).to receive(:unpublish).with(
-        manual_id, type: "redirect", redirects:, include_sections: false, discard_drafts: false
+        manual_id, type: "redirect", redirects:, discard_drafts: false
       )
 
       expect(Services.publishing_api).to_not receive(:unpublish).with(

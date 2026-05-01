@@ -7,7 +7,6 @@ class Publishing::UnpublishAdapter
         { path: "/#{manual.slug}", type: "exact", destination: redirect },
         { path: "/#{manual.slug}/updates", type: "exact", destination: redirect },
       ],
-      include_sections:,
       discard_drafts:,
     )
 
