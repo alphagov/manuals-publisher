@@ -6,20 +6,44 @@ A manual can be withdrawn and redirected to another page on www.gov.uk.
 
 There are a few rake tasks, depending on the requirements.
 
-### Withdraw and redirect a single manual which can include its sections
+### Withdraw the manual and all its sections as gone
 
-The last two boolean arguments flag whether to include sections and discard
-drafts, respectively.
+This rake task will unpublish the manual and all the sections as `gone`.
 
 ```
+# Definition
+task :withdraw_manual, [:manual_id]
+
+# Run
+withdraw_manual[manual-id]
+```
+
+### Withdraw and redirect a single manual which can include its sections
+
+This rake task will unpublish and redirect the manual and, optionally, all its sections. The last two boolean arguments flag whether to include sections and discard drafts, respectively. 
+
+For most manuals, you will likely want to include the sections, i.e. redirect them to the same destination as the manual.
+
+
+```
+# Definition
+task :withdraw_and_redirect_manual, %i[manual_path redirect include_sections discard_drafts] 
+
+# Run
 withdraw_and_redirect_manual[guidance/manual,/redirect/blah,true,true]
 ```
 
 ### Withdraw and redirect a single section
 
-The last boolean argument flags whether to discard drafts.
+This rake task will unpublish and redirect a single section. The last boolean argument flags whether to discard drafts.
+
+Run this if a single section needs to be redirected on a live manual. You can also use multiple calls to this task to redirect all the individual sections of a manual to different destinations, if needed, when the manual is being withdrawn.
 
 ```
+# Definition
+task :withdraw_and_redirect_section, %i[section_path redirect discard_draft]
+
+# Run
 withdraw_and_redirect_section[guidance/manual,guidance/manual/section,/redirect/blah,true]
 ```
 
