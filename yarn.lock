@@ -2217,7 +2217,7 @@ __metadata:
     jasmine-browser-runner: "npm:^4.0.0"
     jasmine-core: "npm:^6.2.0"
     paste-html-to-govspeak: "npm:^0.5.0"
-    postcss: "npm:^8.5.10"
+    postcss: "npm:^8.5.14"
     standardx: "npm:^7.0.0"
     stylelint: "npm:^17.8.0"
     stylelint-config-gds: "npm:^2.0.0"
@@ -2824,7 +2824,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.5.10, postcss@npm:^8.5.9":
+"postcss@npm:^8.5.14":
+  version: 8.5.14
+  resolution: "postcss@npm:8.5.14"
+  dependencies:
+    nanoid: "npm:^3.3.11"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 48138207cf5ef5581be1bfe2cb65ccfe0ac75e43888ba045afc8ed6043d7b56aeb3b9a9fe5b353ff554be943cd0cc15d826ccb991525159175971e5ee8ab0237
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.5.9":
   version: 8.5.10
   resolution: "postcss@npm:8.5.10"
   dependencies:
