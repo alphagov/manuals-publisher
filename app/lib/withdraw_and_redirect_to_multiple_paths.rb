@@ -20,7 +20,7 @@ class WithdrawAndRedirectToMultiplePaths
         if manual_path == child["base_path"]
           withdraw_and_redirect_manual(child)
         else
-          withdraw_and_redirect_section(child, manual_path)
+          withdraw_and_redirect_section(child)
         end
       rescue WithdrawAndRedirectManual::ManualNotPublishedError
         log("[ERROR] Manual not redirected due to not being in a published state: #{child['base_path']}")
@@ -66,10 +66,9 @@ private
     log("Withdrawn manual '#{child['base_path']}' and redirected to '#{child['redirect']}'") unless dry_run
   end
 
-  def withdraw_and_redirect_section(child, manual_path)
+  def withdraw_and_redirect_section(child)
     WithdrawAndRedirectSection.new(
       user:,
-      manual_path:,
       section_path: child["base_path"],
       redirect: child["redirect"],
       discard_draft: discard_drafts,

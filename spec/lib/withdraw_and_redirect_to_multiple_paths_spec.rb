@@ -43,7 +43,6 @@ RSpec.describe WithdrawAndRedirectToMultiplePaths do
 
     expect(WithdrawAndRedirectSection).to have_received(:new).with(
       user: instance_of(User),
-      manual_path: "guidance/manual",
       section_path: "guidance/manual/just-a-section",
       redirect: "/guidance/section-blah",
       discard_draft: false,
