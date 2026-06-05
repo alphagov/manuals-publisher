@@ -36,12 +36,16 @@ withdraw_and_redirect_section[guidance/manual,guidance/manual/section,/redirect/
 
 ### Bulk withdraw and redirect multiple manuals and sections
 
-If multiple manuals need to be redirected, or there are multiple redirect
-destinations within manuals, e.g. sections need to redirect to different places,
-then we can do this by uploading a CSV and running the below tasks. Example CSV
-PR: https://github.com/alphagov/manuals-publisher/pull/1895.
+Use this comprehensive rake task if multiple manuals need to be redirected, or there are multiple redirect destinations within manuals, e.g. sections need to redirect to different places.
 
-**Dry-run (checks all manuals exist in Manuals Publisher)**
+You will need to make the CSV file available to the rake task, by running:
+```
+kubectl cp -n apps ~/<local path>/<filename>.csv manuals-publisher-<pod ID>:/tmp/
+```
+
+**Dry-run (checks all manuals and sections exist in Manuals Publisher)**
+
+Note: If you're working with an older CSV, some of the paths might error if they have since been reslugged. The error will read: `[ERROR] Section not redirected due to not being in a published state`. In order to fix this, follow the section's redirect, and update the CSV with the new path, then rerun the task in dry-run mode.
 
 ```
 withdraw_and_redirect_manuals_to_multiple_paths:dry_run[lib/tasks/path_to_csv.csv]
