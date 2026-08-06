@@ -4,7 +4,7 @@
   margin: 0;
 
   .attachment {
-    border-top: 1px solid $govuk-border-colour;
+    border-top: 1px solid govuk-functional-colour(border);
     padding: govuk-spacing(2) 0 0;
   }
 
