@@ -11,7 +11,7 @@ gem "govspeak"
 gem "govuk_app_config"
 gem "govuk_publishing_components"
 gem "govuk_sidekiq"
-gem "mongo", "~> 2.23.0"
+gem "mongo", "~> 2.25.0"
 gem "mongoid"
 gem "plek"
 # TODO: remove after next version of Puma is released
