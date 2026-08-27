@@ -6,7 +6,7 @@
   @include govuk-responsive-padding(5, "top");
   @include govuk-responsive-padding(5, "bottom");
 
-  border-bottom: 1px solid $govuk-border-colour;
+  border-bottom: 1px solid govuk-functional-colour(border);
 }
 
 .app-view-whats-new__section:last-child {
