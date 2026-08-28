@@ -7,13 +7,13 @@
   "cssFiles": [
     "application-*.css"
   ],
-  "specDir": "spec/javascripts",
+  "specDir": ".",
   "specFiles": [
-    "**/*[sS]pec.js"
+    "spec/javascripts/**/*[sS]pec.js"
   ],
   "helpers": [
-    "https://unpkg.com/jasmine-ajax@4.0.0/lib/mock-ajax.js",
-    "helpers/*.js"
+    "node_modules/jasmine-ajax/lib/mock-ajax.js",
+    "spec/javascripts/helpers/*.js"
   ],
   "browser": "headlessChrome"
 }
