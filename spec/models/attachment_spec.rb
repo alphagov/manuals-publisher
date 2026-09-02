@@ -69,6 +69,23 @@ describe Attachment do
     end
   end
 
+  describe "#publish_file" do
+    it "makes the asset public" do
+      attachment.file_id = "some_file_id"
+
+      expect(Services.attachment_api).to receive(:update_asset)
+        .with("some_file_id", draft: false)
+
+      attachment.publish_file
+    end
+
+    it "does nothing when no file has been uploaded" do
+      expect(Services.attachment_api).not_to receive(:update_asset)
+
+      attachment.publish_file
+    end
+  end
+
   describe "#content_type" do
     before do
       attachment.file_url = file_url

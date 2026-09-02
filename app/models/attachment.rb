@@ -43,6 +43,12 @@ class Attachment
     errors.add(:file_id, "could not be uploaded")
   end
 
+  def publish_file
+    return if file_id.blank?
+
+    Services.attachment_api.update_asset(file_id, draft: false)
+  end
+
   def content_type
     return unless file_url
 

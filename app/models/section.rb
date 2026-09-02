@@ -110,6 +110,10 @@ class Section
     latest_edition.attachments.to_a
   end
 
+  def publish_attachment_assets!
+    attachments.each(&:publish_file)
+  end
+
   def publish!
     unless latest_edition.published?
       if previous_edition && previous_edition.published?

@@ -864,4 +864,24 @@ describe Section do
       expect(section.all_editions).to eq([latest_edition])
     end
   end
+
+  describe "#publish_attachment_assets!" do
+    let(:first_attachment) { double(:attachment, publish_file: nil) }
+    let(:second_attachment) { double(:attachment, publish_file: nil) }
+    let(:latest_edition) { double(:latest_edition, attachments: [first_attachment, second_attachment]) }
+
+    it "publishes the asset for every attachment" do
+      section.publish_attachment_assets!
+
+      expect(first_attachment).to have_received(:publish_file)
+      expect(second_attachment).to have_received(:publish_file)
+    end
+
+    it "propagates a missing asset error and stops publishing attachments" do
+      allow(first_attachment).to receive(:publish_file).and_raise(GdsApi::HTTPNotFound.new(404))
+
+      expect { section.publish_attachment_assets! }.to raise_error(GdsApi::HTTPNotFound)
+      expect(second_attachment).not_to have_received(:publish_file)
+    end
+  end
 end
