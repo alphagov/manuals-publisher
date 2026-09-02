@@ -37,15 +37,19 @@ module AttachmentHelpers
     "513a0efbed915d425e000002"
   end
 
-  def asset_manager_response
+  def replacement_asset_id
+    "513a0efbed915d425e000003"
+  end
+
+  def asset_manager_response(id = asset_id, name = "greenpaper.pdf")
     {
       "_response_info" => {
         "status" => "ok",
       },
       "content_type" => "image/jpeg",
-      "file_url" => "https://stubbed-asset-manager.alphagov.co.uk/media/#{asset_id}/greenpaper.pdf",
-      "id" => "https://stubbed-asset-manager.alphagov.co.uk/assets/#{asset_id}",
-      "name" => "greenpaper.pdf",
+      "file_url" => "https://stubbed-asset-manager.alphagov.co.uk/media/#{id}/#{name}",
+      "id" => "https://stubbed-asset-manager.alphagov.co.uk/assets/#{id}",
+      "name" => name,
       "state" => "clean",
     }
   end
@@ -72,6 +76,12 @@ module AttachmentHelpers
 
     fill_in "Title", with: new_attachment_title
     attach_file "File", fixture_filepath(new_attachment_file_name)
+
+    stub_request(:post, "#{test_asset_manager_base_url}/assets")
+      .to_return(
+        body: JSON.dump(asset_manager_response(replacement_asset_id, new_attachment_file_name)),
+        status: 201,
+      )
 
     stub_request(:put, "#{test_asset_manager_base_url}/assets/#{asset_id}")
       .to_return(

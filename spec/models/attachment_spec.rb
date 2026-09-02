@@ -50,21 +50,53 @@ describe Attachment do
 
     context "when a file has already been uploaded" do
       before do
-        attachment.file_id = "some_file_id"
+        attachment.file_id = "old_file_id"
       end
 
-      it "updates the uploaded file on the Attachment" do
-        expect(Services.attachment_api).to receive(:update_asset)
-          .with("some_file_id", file: upload_file)
-          .and_return("file_url" => "some/file/url", "id" => "some_file_id")
+      it "never sends a file to an existing asset" do
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return("file_url" => "some/new/url", "id" => "new_file_id")
+        allow(Services.attachment_api).to receive(:update_asset)
 
         attachment.file = upload_file
-        expect(attachment.file_has_changed?).to be true
-
         attachment.save!
 
-        expect(attachment.file_id).to eq("some_file_id")
-        expect(attachment.file_url).to eq("some/file/url")
+        expect(Services.attachment_api).not_to have_received(:update_asset)
+          .with(anything, hash_including(:file))
+      end
+
+      it "uploads a new draft asset and points the superseded one at it" do
+        expect(Services.attachment_api).to receive(:create_asset)
+          .with(file: upload_file, draft: true)
+          .and_return("file_url" => "some/new/url", "id" => "new_file_id")
+        expect(Services.attachment_api).to receive(:update_asset)
+          .with("old_file_id", replacement_id: "new_file_id")
+
+        attachment.file = upload_file
+        attachment.save!
+
+        expect(attachment.file_id).to eq("new_file_id")
+        expect(attachment.file_url).to eq("some/new/url")
+      end
+
+      it "points each superseded asset at its replacement when replaced repeatedly" do
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return(
+            { "file_url" => "some/new/url", "id" => "new_file_id" },
+            { "file_url" => "some/newer/url", "id" => "newer_file_id" },
+          )
+
+        expect(Services.attachment_api).to receive(:update_asset)
+          .with("old_file_id", replacement_id: "new_file_id")
+        expect(Services.attachment_api).to receive(:update_asset)
+          .with("new_file_id", replacement_id: "newer_file_id")
+
+        attachment.file = upload_file
+        attachment.save!
+        attachment.file = upload_file
+        attachment.save!
+
+        expect(attachment.file_id).to eq("newer_file_id")
       end
     end
   end

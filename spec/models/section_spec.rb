@@ -535,6 +535,70 @@ describe Section do
         )
       end
     end
+
+    context "when the published edition is persisted" do
+      let!(:published_edition) do
+        FactoryBot.create(
+          :section_edition,
+          section_uuid:,
+          state: "published",
+          version_number: 1,
+          exported_at: Time.zone.now,
+        )
+      end
+      let!(:published_attachment) do
+        published_edition.attachments.create!(
+          title: "Published attachment",
+          filename: "published.pdf",
+          file_id: "published-file-id",
+          file_url: "https://assets.example/published-file-id/published.pdf",
+        )
+      end
+      let(:section) { Section.find(section_uuid) }
+      let(:replacement_file) { double(:replacement_file) }
+
+      before do
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return(
+            "id" => "https://asset-manager.example/assets/replacement-file-id",
+            "file_url" => "https://assets.example/replacement-file-id/replacement.pdf",
+          )
+        allow(Services.attachment_api).to receive(:update_asset)
+      end
+
+      it "uploads the replacement once and leaves the published edition pointing at its own asset" do
+        section.update_attachment(
+          published_attachment.id.to_s,
+          {
+            title: "Replacement attachment",
+            filename: "replacement.pdf",
+            file: replacement_file,
+          },
+        )
+        section.save!
+
+        editions = SectionEdition.all_for_section(section_uuid).order_by(version_number: :asc).to_a
+        persisted_published_attachment = editions.first.attachments.first
+        persisted_draft_attachment = editions.second.attachments.first
+
+        expect(Services.attachment_api).to have_received(:create_asset)
+          .with(file: replacement_file, draft: true)
+          .once
+        expect(Services.attachment_api).to have_received(:update_asset)
+          .with("published-file-id", replacement_id: "replacement-file-id")
+          .once
+        expect(editions.map(&:state)).to eq(%w[published draft])
+        expect(persisted_published_attachment).to have_attributes(
+          filename: "published.pdf",
+          file_id: "published-file-id",
+        )
+        expect(persisted_draft_attachment).to have_attributes(
+          filename: "replacement.pdf",
+          file_id: "replacement-file-id",
+        )
+        expect(editions.second.exported_at).to be_nil
+      end
+    end
   end
 
   describe "#attachments" do
