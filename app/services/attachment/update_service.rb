@@ -10,9 +10,12 @@ class Attachment::UpdateService
   def call
     manual = Manual.find(manual_id, user)
     section = manual.find_section(section_uuid)
-    attachment = section.find_attachment_by_id(attachment_id)
-    attachment.update!(attributes.merge(filename: attributes[:file].original_filename))
+    attachment = section.update_attachment(
+      attachment_id,
+      attributes.merge(filename: attributes[:file].original_filename),
+    )
 
+    manual.draft
     manual.save!(user)
 
     [manual, section, attachment]
