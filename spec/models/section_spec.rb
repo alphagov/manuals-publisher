@@ -472,6 +472,69 @@ describe Section do
 
       expect(draft_edition_v2).to have_received(:build_attachment).with(attributes)
     end
+
+    context "when the latest edition is published" do
+      let(:previous_edition) { nil }
+      let(:latest_edition) { published_edition_v1 }
+
+      before do
+        allow(SectionEdition).to receive(:new).and_return(new_edition)
+        allow(new_edition).to receive(:build_attachment)
+      end
+
+      it "builds the attachment on a new draft edition rather than the published one" do
+        section.add_attachment(attributes)
+
+        expect(new_edition).to have_received(:build_attachment).with(attributes)
+        expect(published_edition_v1).not_to have_received(:build_attachment)
+      end
+
+      it "does not carry the published edition's change note over" do
+        section.add_attachment(attributes)
+
+        expect(SectionEdition).to have_received(:new).with(
+          hash_including(change_note: nil, minor_update: false),
+        )
+      end
+    end
+  end
+
+  describe "#update_attachment" do
+    let(:attachment) { double(:attachment, id: double(to_s: "attachment-id"), assign_attributes: nil) }
+    let(:attachments) { [attachment] }
+    let(:attributes) { { title: "A new title" } }
+
+    context "with a draft edition" do
+      let(:latest_edition) { draft_edition_v2 }
+
+      it "updates the attachment and returns it" do
+        expect(section.update_attachment("attachment-id", attributes)).to eq(attachment)
+        expect(attachment).to have_received(:assign_attributes).with(attributes)
+      end
+    end
+
+    context "when the latest edition is published" do
+      let(:latest_edition) { published_edition_v1 }
+
+      before do
+        allow(SectionEdition).to receive(:new).and_return(new_edition)
+        allow(new_edition).to receive(:attachments).and_return(attachments_proxy)
+      end
+
+      it "builds a draft edition carrying the attachments over" do
+        section.update_attachment("attachment-id", attributes)
+
+        expect(SectionEdition).to have_received(:new).with(hash_including(attachments:))
+      end
+
+      it "does not carry the published edition's change note over" do
+        section.update_attachment("attachment-id", attributes)
+
+        expect(SectionEdition).to have_received(:new).with(
+          hash_including(change_note: nil, minor_update: false),
+        )
+      end
+    end
   end
 
   describe "#attachments" do

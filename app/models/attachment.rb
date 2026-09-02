@@ -36,6 +36,7 @@ class Attachment
       response = Services.attachment_api.update_asset(file_id, file: @uploaded_file)
     end
     self.file_url = response["file_url"]
+    @file_has_changed = false
   rescue GdsApi::HTTPNotFound => e
     raise "Error uploading file. Is the Asset Manager service available?\n#{e.message}"
   rescue StandardError
