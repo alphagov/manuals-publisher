@@ -110,6 +110,14 @@ class Section
     latest_edition.attachments.to_a
   end
 
+  def publish_attachment_assets!
+    attachments.each do |attachment|
+      attachment.publish_file
+    rescue GdsApi::HTTPNotFound => e
+      Rails.logger.warn("#{self.class.name}: #{e}")
+    end
+  end
+
   def publish!
     unless latest_edition.published?
       if previous_edition && previous_edition.published?

@@ -34,9 +34,9 @@ describe Attachment do
       attachment.section_edition = edition
     end
 
-    it "uploads a file before saving" do
+    it "uploads a file as a draft before saving" do
       expect(Services.attachment_api).to receive(:create_asset)
-        .with(file: upload_file)
+        .with(file: upload_file, draft: true)
         .and_return("file_url" => "some/file/url", "id" => "some_file_id")
 
       attachment.file = upload_file
@@ -66,6 +66,23 @@ describe Attachment do
         expect(attachment.file_id).to eq("some_file_id")
         expect(attachment.file_url).to eq("some/file/url")
       end
+    end
+  end
+
+  describe "#publish_file" do
+    it "makes the asset public" do
+      attachment.file_id = "some_file_id"
+
+      expect(Services.attachment_api).to receive(:update_asset)
+        .with("some_file_id", draft: false)
+
+      attachment.publish_file
+    end
+
+    it "does nothing when no file has been uploaded" do
+      expect(Services.attachment_api).not_to receive(:update_asset)
+
+      attachment.publish_file
     end
   end
 
