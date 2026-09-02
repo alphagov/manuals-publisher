@@ -13,6 +13,7 @@ class Manual::PublishService
       PublicationLogger.new.call(manual)
       Publishing::DraftAdapter.save_draft_for_manual_and_sections(manual)
       Publishing::PublishAdapter.publish_manual_and_sections(manual)
+      manual.publish_attachment_assets!
       manual.save!(user)
     else
       raise VersionMismatchError,

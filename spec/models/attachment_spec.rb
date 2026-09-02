@@ -34,9 +34,9 @@ describe Attachment do
       attachment.section_edition = edition
     end
 
-    it "uploads a file before saving" do
+    it "uploads a file as a draft before saving" do
       expect(Services.attachment_api).to receive(:create_asset)
-        .with(file: upload_file)
+        .with(file: upload_file, draft: true)
         .and_return("file_url" => "some/file/url", "id" => "some_file_id")
 
       attachment.file = upload_file
