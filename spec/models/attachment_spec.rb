@@ -11,12 +11,13 @@ describe Attachment do
   end
 
   context "#upload_file" do
-    it "raises an informative exception if the asset manager service can't be found" do
+    it "propagates errors from Asset Manager" do
       client = double("client")
-      allow(client).to receive(:create_asset).and_raise(GdsApi::HTTPNotFound.new(404))
+      error = GdsApi::HTTPNotFound.new(404)
+      allow(client).to receive(:create_asset).and_raise(error)
       allow(Services).to receive(:attachment_api).and_return(client)
       attachment = Attachment.new
-      expect { attachment.upload_file }.to raise_error(/Error uploading file. Is the Asset Manager service available\?/)
+      expect { attachment.upload_file }.to raise_error(error)
     end
   end
 
@@ -77,6 +78,25 @@ describe Attachment do
 
         expect(attachment.file_id).to eq("new_file_id")
         expect(attachment.file_url).to eq("some/new/url")
+      end
+
+      it "does not persist the new asset when linking the replacement fails" do
+        attachment.file_url = "some/old/url"
+        attachment.save!
+
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return("file_url" => "some/new/url", "id" => "new_file_id")
+        allow(Services.attachment_api).to receive(:update_asset)
+          .with("old_file_id", replacement_id: "new_file_id")
+          .and_raise(GdsApi::HTTPServerError.new(500))
+
+        attachment.file = upload_file
+
+        expect { attachment.save! }.to raise_error(GdsApi::HTTPServerError)
+        expect(attachment.reload).to have_attributes(
+          file_id: "old_file_id",
+          file_url: "some/old/url",
+        )
       end
 
       it "points each superseded asset at its replacement when replaced repeatedly" do
