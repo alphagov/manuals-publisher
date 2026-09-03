@@ -80,6 +80,25 @@ describe Attachment do
         expect(attachment.file_url).to eq("some/new/url")
       end
 
+      it "does not persist the new asset when linking the replacement fails" do
+        attachment.file_url = "some/old/url"
+        attachment.save!
+
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return("file_url" => "some/new/url", "id" => "new_file_id")
+        allow(Services.attachment_api).to receive(:update_asset)
+          .with("old_file_id", replacement_id: "new_file_id")
+          .and_raise(GdsApi::HTTPServerError.new(500))
+
+        attachment.file = upload_file
+
+        expect { attachment.save! }.to raise_error(GdsApi::HTTPServerError)
+        expect(attachment.reload).to have_attributes(
+          file_id: "old_file_id",
+          file_url: "some/old/url",
+        )
+      end
+
       it "keeps the attachment on the last file uploaded when it is replaced twice before publishing" do
         allow(Services.attachment_api).to receive(:create_asset)
           .and_return(
