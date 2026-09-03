@@ -472,6 +472,133 @@ describe Section do
 
       expect(draft_edition_v2).to have_received(:build_attachment).with(attributes)
     end
+
+    context "when the latest edition is published" do
+      let(:previous_edition) { nil }
+      let(:latest_edition) { published_edition_v1 }
+
+      before do
+        allow(SectionEdition).to receive(:new).and_return(new_edition)
+        allow(new_edition).to receive(:build_attachment)
+      end
+
+      it "builds the attachment on a new draft edition rather than the published one" do
+        section.add_attachment(attributes)
+
+        expect(new_edition).to have_received(:build_attachment).with(attributes)
+        expect(published_edition_v1).not_to have_received(:build_attachment)
+      end
+
+      it "does not carry the published edition's change note over" do
+        section.add_attachment(attributes)
+
+        expect(SectionEdition).to have_received(:new).with(
+          hash_including(change_note: nil, minor_update: false),
+        )
+      end
+    end
+  end
+
+  describe "#update_attachment" do
+    let(:attachment) { double(:attachment, id: double(to_s: "attachment-id"), assign_attributes: nil) }
+    let(:attachments) { [attachment] }
+    let(:attributes) { { title: "A new title" } }
+
+    context "with a draft edition" do
+      let(:latest_edition) { draft_edition_v2 }
+
+      it "updates the attachment and returns it" do
+        expect(section.update_attachment("attachment-id", attributes)).to eq(attachment)
+        expect(attachment).to have_received(:assign_attributes).with(attributes)
+      end
+    end
+
+    context "when the latest edition is published" do
+      let(:latest_edition) { published_edition_v1 }
+
+      before do
+        allow(SectionEdition).to receive(:new).and_return(new_edition)
+        allow(new_edition).to receive(:attachments).and_return(attachments_proxy)
+      end
+
+      it "builds a draft edition carrying the attachments over" do
+        section.update_attachment("attachment-id", attributes)
+
+        expect(SectionEdition).to have_received(:new).with(hash_including(attachments:))
+      end
+
+      it "does not carry the published edition's change note over" do
+        section.update_attachment("attachment-id", attributes)
+
+        expect(SectionEdition).to have_received(:new).with(
+          hash_including(change_note: nil, minor_update: false),
+        )
+      end
+    end
+
+    context "when the published edition is persisted" do
+      let!(:published_edition) do
+        FactoryBot.create(
+          :section_edition,
+          section_uuid:,
+          state: "published",
+          version_number: 1,
+          exported_at: Time.zone.now,
+        )
+      end
+      let!(:published_attachment) do
+        published_edition.attachments.create!(
+          title: "Published attachment",
+          filename: "published.pdf",
+          file_id: "published-file-id",
+          file_url: "https://assets.example/published-file-id/published.pdf",
+        )
+      end
+      let(:section) { Section.find(section_uuid) }
+      let(:replacement_file) { double(:replacement_file) }
+
+      before do
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return(
+            "id" => "https://asset-manager.example/assets/replacement-file-id",
+            "file_url" => "https://assets.example/replacement-file-id/replacement.pdf",
+          )
+        allow(Services.attachment_api).to receive(:update_asset)
+      end
+
+      it "uploads the replacement once and leaves the published edition pointing at its own asset" do
+        section.update_attachment(
+          published_attachment.id.to_s,
+          {
+            title: "Replacement attachment",
+            filename: "replacement.pdf",
+            file: replacement_file,
+          },
+        )
+        section.save!
+
+        editions = SectionEdition.all_for_section(section_uuid).order_by(version_number: :asc).to_a
+        persisted_published_attachment = editions.first.attachments.first
+        persisted_draft_attachment = editions.second.attachments.first
+
+        expect(Services.attachment_api).to have_received(:create_asset)
+          .with(file: replacement_file, draft: true)
+          .once
+        expect(Services.attachment_api).to have_received(:update_asset)
+          .with("published-file-id", replacement_id: "replacement-file-id")
+          .once
+        expect(editions.map(&:state)).to eq(%w[published draft])
+        expect(persisted_published_attachment).to have_attributes(
+          filename: "published.pdf",
+          file_id: "published-file-id",
+        )
+        expect(persisted_draft_attachment).to have_attributes(
+          filename: "replacement.pdf",
+          file_id: "replacement-file-id",
+        )
+        expect(editions.second.exported_at).to be_nil
+      end
+    end
   end
 
   describe "#attachments" do
@@ -799,6 +926,26 @@ describe Section do
 
     it "returns all editions for section" do
       expect(section.all_editions).to eq([latest_edition])
+    end
+  end
+
+  describe "#publish_attachment_assets!" do
+    let(:first_attachment) { double(:attachment, publish_file: nil) }
+    let(:second_attachment) { double(:attachment, publish_file: nil) }
+    let(:latest_edition) { double(:latest_edition, attachments: [first_attachment, second_attachment]) }
+
+    it "publishes the asset for every attachment" do
+      section.publish_attachment_assets!
+
+      expect(first_attachment).to have_received(:publish_file)
+      expect(second_attachment).to have_received(:publish_file)
+    end
+
+    it "carries on when an asset is missing from Asset Manager" do
+      allow(first_attachment).to receive(:publish_file).and_raise(GdsApi::HTTPNotFound.new(404))
+
+      expect { section.publish_attachment_assets! }.not_to raise_error
+      expect(second_attachment).to have_received(:publish_file)
     end
   end
 end

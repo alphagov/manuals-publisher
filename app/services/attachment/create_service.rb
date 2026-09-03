@@ -11,6 +11,7 @@ class Attachment::CreateService
     section = manual.find_section(section_uuid)
     attachment = section.add_attachment(attributes)
 
+    manual.draft
     manual.save!(user)
 
     [manual, section, attachment]

@@ -168,6 +168,12 @@ class Manual
     self
   end
 
+  def publish_attachment_assets!
+    sections.each(&:publish_attachment_assets!)
+
+    self
+  end
+
   def draft?
     state == "draft"
   end

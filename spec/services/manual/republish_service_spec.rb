@@ -1,6 +1,6 @@
 RSpec.describe Manual::RepublishService do
   let(:manual_id) { double(:manual_id) }
-  let(:published_manual_version) { double(:manual) }
+  let(:published_manual_version) { double(:manual, publish_attachment_assets!: nil) }
   let(:draft_manual_version) { double(:manual) }
   let(:manual) { double(:manual) }
   let(:user) { double(:user) }
@@ -33,6 +33,11 @@ RSpec.describe Manual::RepublishService do
     it "tells the draft listeners nothing" do
       described_class.call(user:, manual_id:)
       expect(Publishing::DraftAdapter).not_to have_received(:save_draft_for_manual_and_sections).with(draft_manual_version, republish: true)
+    end
+
+    it "does not publish attachment assets, which may belong to an unpublished replacement" do
+      described_class.call(user:, manual_id:)
+      expect(published_manual_version).not_to have_received(:publish_attachment_assets!)
     end
   end
 

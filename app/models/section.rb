@@ -83,19 +83,7 @@ class Section
     if draft?
       latest_edition.assign_attributes(attributes)
     else
-      previous_edition_attributes = latest_edition.attributes
-        .symbolize_keys
-        .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update, :visually_expanded)
-
-      attributes = previous_edition_attributes
-        .merge(attributes)
-        .merge(
-          state: "draft",
-          version_number: latest_edition.version_number + 1,
-          attachments:,
-        )
-      @previous_edition = latest_edition
-      @latest_edition = SectionEdition.new(attributes)
+      build_draft_edition(attributes)
     end
 
     nil
@@ -107,11 +95,27 @@ class Section
   end
 
   def add_attachment(attributes)
+    build_draft_edition(change_note: nil, minor_update: false)
     latest_edition.build_attachment(attributes)
+  end
+
+  def update_attachment(attachment_id, attributes)
+    build_draft_edition(change_note: nil, minor_update: false)
+    attachment = find_attachment_by_id(attachment_id)
+    attachment.assign_attributes(attributes)
+    attachment
   end
 
   def attachments
     latest_edition.attachments.to_a
+  end
+
+  def publish_attachment_assets!
+    attachments.each do |attachment|
+      attachment.publish_file
+    rescue GdsApi::HTTPNotFound => e
+      Rails.logger.warn("#{self.class.name}: #{e}")
+    end
   end
 
   def publish!
@@ -184,6 +188,24 @@ class Section
 private
 
   attr_reader :latest_edition, :previous_edition
+
+  def build_draft_edition(attributes = {})
+    return if draft?
+
+    previous_edition_attributes = latest_edition.attributes
+      .symbolize_keys
+      .slice(:section_uuid, :version_number, :title, :slug, :summary, :body, :state, :change_note, :minor_update, :visually_expanded)
+
+    attributes = previous_edition_attributes
+      .merge(attributes)
+      .merge(
+        state: "draft",
+        version_number: latest_edition.version_number + 1,
+        attachments:,
+      )
+    @previous_edition = latest_edition
+    @latest_edition = SectionEdition.new(attributes)
+  end
 
   def change_note_ok
     if change_note_required? && change_note.blank?

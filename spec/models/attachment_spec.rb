@@ -11,12 +11,13 @@ describe Attachment do
   end
 
   context "#upload_file" do
-    it "raises an informative exception if the asset manager service can't be found" do
+    it "propagates errors from Asset Manager" do
       client = double("client")
-      allow(client).to receive(:create_asset).and_raise(GdsApi::HTTPNotFound.new(404))
+      error = GdsApi::HTTPNotFound.new(404)
+      allow(client).to receive(:create_asset).and_raise(error)
       allow(Services).to receive(:attachment_api).and_return(client)
       attachment = Attachment.new
-      expect { attachment.upload_file }.to raise_error(/Error uploading file. Is the Asset Manager service available\?/)
+      expect { attachment.upload_file }.to raise_error(error)
     end
   end
 
@@ -34,9 +35,9 @@ describe Attachment do
       attachment.section_edition = edition
     end
 
-    it "uploads a file before saving" do
+    it "uploads a file as a draft before saving" do
       expect(Services.attachment_api).to receive(:create_asset)
-        .with(file: upload_file)
+        .with(file: upload_file, draft: true)
         .and_return("file_url" => "some/file/url", "id" => "some_file_id")
 
       attachment.file = upload_file
@@ -50,22 +51,90 @@ describe Attachment do
 
     context "when a file has already been uploaded" do
       before do
-        attachment.file_id = "some_file_id"
+        attachment.file_id = "old_file_id"
       end
 
-      it "updates the uploaded file on the Attachment" do
-        expect(Services.attachment_api).to receive(:update_asset)
-          .with("some_file_id", file: upload_file)
-          .and_return("file_url" => "some/file/url", "id" => "some_file_id")
+      it "never sends a file to an existing asset" do
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return("file_url" => "some/new/url", "id" => "new_file_id")
+        allow(Services.attachment_api).to receive(:update_asset)
 
         attachment.file = upload_file
-        expect(attachment.file_has_changed?).to be true
-
         attachment.save!
 
-        expect(attachment.file_id).to eq("some_file_id")
-        expect(attachment.file_url).to eq("some/file/url")
+        expect(Services.attachment_api).not_to have_received(:update_asset)
+          .with(anything, hash_including(:file))
       end
+
+      it "uploads a new draft asset and points the superseded one at it" do
+        expect(Services.attachment_api).to receive(:create_asset)
+          .with(file: upload_file, draft: true)
+          .and_return("file_url" => "some/new/url", "id" => "new_file_id")
+        expect(Services.attachment_api).to receive(:update_asset)
+          .with("old_file_id", replacement_id: "new_file_id")
+
+        attachment.file = upload_file
+        attachment.save!
+
+        expect(attachment.file_id).to eq("new_file_id")
+        expect(attachment.file_url).to eq("some/new/url")
+      end
+
+      it "does not persist the new asset when linking the replacement fails" do
+        attachment.file_url = "some/old/url"
+        attachment.save!
+
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return("file_url" => "some/new/url", "id" => "new_file_id")
+        allow(Services.attachment_api).to receive(:update_asset)
+          .with("old_file_id", replacement_id: "new_file_id")
+          .and_raise(GdsApi::HTTPServerError.new(500))
+
+        attachment.file = upload_file
+
+        expect { attachment.save! }.to raise_error(GdsApi::HTTPServerError)
+        expect(attachment.reload).to have_attributes(
+          file_id: "old_file_id",
+          file_url: "some/old/url",
+        )
+      end
+
+      it "points each superseded asset at its replacement when replaced repeatedly" do
+        allow(Services.attachment_api).to receive(:create_asset)
+          .and_return(
+            { "file_url" => "some/new/url", "id" => "new_file_id" },
+            { "file_url" => "some/newer/url", "id" => "newer_file_id" },
+          )
+
+        expect(Services.attachment_api).to receive(:update_asset)
+          .with("old_file_id", replacement_id: "new_file_id")
+        expect(Services.attachment_api).to receive(:update_asset)
+          .with("new_file_id", replacement_id: "newer_file_id")
+
+        attachment.file = upload_file
+        attachment.save!
+        attachment.file = upload_file
+        attachment.save!
+
+        expect(attachment.file_id).to eq("newer_file_id")
+      end
+    end
+  end
+
+  describe "#publish_file" do
+    it "makes the asset public" do
+      attachment.file_id = "some_file_id"
+
+      expect(Services.attachment_api).to receive(:update_asset)
+        .with("some_file_id", draft: false)
+
+      attachment.publish_file
+    end
+
+    it "does nothing when no file has been uploaded" do
+      expect(Services.attachment_api).not_to receive(:update_asset)
+
+      attachment.publish_file
     end
   end
 
