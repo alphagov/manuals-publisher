@@ -11,12 +11,13 @@ describe Attachment do
   end
 
   context "#upload_file" do
-    it "raises an informative exception if the asset manager service can't be found" do
+    it "propagates errors from Asset Manager" do
       client = double("client")
-      allow(client).to receive(:create_asset).and_raise(GdsApi::HTTPNotFound.new(404))
+      error = GdsApi::HTTPNotFound.new(404)
+      allow(client).to receive(:create_asset).and_raise(error)
       allow(Services).to receive(:attachment_api).and_return(client)
       attachment = Attachment.new
-      expect { attachment.upload_file }.to raise_error(/Error uploading file. Is the Asset Manager service available\?/)
+      expect { attachment.upload_file }.to raise_error(error)
     end
   end
 
