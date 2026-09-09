@@ -107,6 +107,26 @@ describe Manual do
     end
   end
 
+  describe "#publish_attachment_assets!" do
+    let(:section1) { double(:section, publish_attachment_assets!: nil) }
+    let(:section2) { double(:section, publish_attachment_assets!: nil) }
+
+    before do
+      manual.sections = [section1, section2]
+    end
+
+    it "returns self" do
+      expect(manual.publish_attachment_assets!).to be(manual)
+    end
+
+    it "calls publish_attachment_assets! on each section" do
+      manual.publish_attachment_assets!
+
+      expect(section1).to have_received(:publish_attachment_assets!)
+      expect(section2).to have_received(:publish_attachment_assets!)
+    end
+  end
+
   describe "#version_number" do
     it "comes from the initializer attributes" do
       expect(manual.version_number).to eq 10

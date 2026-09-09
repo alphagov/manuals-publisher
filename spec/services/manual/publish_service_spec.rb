@@ -2,7 +2,7 @@ require "ostruct"
 
 RSpec.describe Manual::PublishService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual) { double(:manual, id: manual_id, version_number: 3) }
+  let(:manual) { double(:manual, id: manual_id, version_number: 3, publish_attachment_assets!: nil) }
   let(:publication_logger) { double(:publication_logger) }
   let(:user) { double(:user) }
 
@@ -47,12 +47,25 @@ RSpec.describe Manual::PublishService do
       expect(Publishing::PublishAdapter).to have_received(:publish_manual_and_sections).with(manual)
     end
 
+    it "publishes the attachment assets" do
+      subject.call
+      expect(manual).to have_received(:publish_attachment_assets!)
+    end
+
     it "makes the calls to the collaborators in the correct order" do
       subject.call
 
       expect(publication_logger).to have_received(:call).ordered
       expect(Publishing::DraftAdapter).to have_received(:save_draft_for_manual_and_sections).ordered
       expect(Publishing::PublishAdapter).to have_received(:publish_manual_and_sections).ordered
+      expect(manual).to have_received(:publish_attachment_assets!).ordered
+    end
+
+    it "does not make an asset public before the content item is published" do
+      allow(Publishing::PublishAdapter).to receive(:publish_manual_and_sections).and_raise(StandardError)
+
+      expect { subject.call }.to raise_error(StandardError)
+      expect(manual).not_to have_received(:publish_attachment_assets!)
     end
   end
 
