@@ -1,6 +1,15 @@
 RSpec.describe Manual::DiscardDraftService do
   let(:manual_id) { double(:manual_id) }
-  let(:manual) { double(:manual, id: manual_id, has_ever_been_published?: has_ever_been_published, destroy!: nil) }
+  let(:manual) do
+    double(
+      :manual,
+      id: manual_id,
+      draft?: draft,
+      has_ever_been_published?: has_ever_been_published,
+      destroy!: nil,
+      destroy_draft!: nil,
+    )
+  end
   let(:user) { double(:user) }
 
   subject do
@@ -16,6 +25,7 @@ RSpec.describe Manual::DiscardDraftService do
   end
 
   context "when the manual has never been published" do
+    let(:draft) { true }
     let(:has_ever_been_published) { false }
 
     it "returns a successful result" do
@@ -34,7 +44,33 @@ RSpec.describe Manual::DiscardDraftService do
     end
   end
 
-  context "when the manual has been published" do
+  context "when the manual has been published and has a new draft" do
+    let(:draft) { true }
+    let(:has_ever_been_published) { true }
+
+    it "returns a successful result" do
+      result = subject.call
+      expect(result).to be_successful
+    end
+
+    it "discards the draft via the publishing-api" do
+      subject.call
+      expect(Publishing::DraftAdapter).to have_received(:discard_draft_for_manual_and_sections).with(manual)
+    end
+
+    it "discards only the draft in the local db" do
+      subject.call
+      expect(manual).to have_received(:destroy_draft!)
+    end
+
+    it "does not destroy the manual in the local db" do
+      subject.call
+      expect(manual).not_to have_received(:destroy!)
+    end
+  end
+
+  context "when the manual has been published and has no draft" do
+    let(:draft) { false }
     let(:has_ever_been_published) { true }
 
     it "returns a failure result" do
@@ -47,9 +83,10 @@ RSpec.describe Manual::DiscardDraftService do
       expect(Publishing::DraftAdapter).not_to have_received(:discard_draft_for_manual_and_sections).with(manual)
     end
 
-    it "does not destroy the manual in the local db" do
+    it "does not change the manual in the local db" do
       subject.call
       expect(manual).not_to have_received(:destroy!)
+      expect(manual).not_to have_received(:destroy_draft!)
     end
   end
 end
