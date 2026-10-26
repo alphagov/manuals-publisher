@@ -595,6 +595,16 @@ describe Publishing::DraftAdapter do
       expect(Services.publishing_api).to receive(:discard_draft).with(section_two_uuid)
       Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
     end
+
+    it "does not discard sections that have no draft" do
+      published_section = FactoryBot.build(:section, uuid: section_two_uuid, state: "published")
+      manual.sections = [section_one, published_section]
+
+      expect(Services.publishing_api).to receive(:discard_draft).with(manual_id)
+      expect(Services.publishing_api).to receive(:discard_draft).with(section_one_uuid)
+      expect(Services.publishing_api).not_to receive(:discard_draft).with(section_two_uuid)
+      Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
+    end
   end
 
   describe "#discard_draft_for_section" do
