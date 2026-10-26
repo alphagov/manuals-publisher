@@ -360,7 +360,7 @@ class Manual
     end
 
     manual_record = ManualRecord.find_by(manual_id: id)
-    manual_record.latest_edition.destroy if manual_record.latest_edition.state == "draft"
+    manual_record.latest_edition.destroy! if manual_record.latest_edition.state == "draft"
   end
 
   def editions
