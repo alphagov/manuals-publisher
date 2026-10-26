@@ -28,6 +28,14 @@ Feature: Rake task to delete a manual
     Then the draft of the manual and the edited section are discarded
     And the manual is listed as published
 
+  Scenario: Discarding the draft of a published manual from the UI
+    Given a published manual exists
+    And I edit one of the manual's sections
+    When I discard the draft manual
+    And I confirm draft deletion
+    Then the draft of the manual and the edited section are discarded
+    And the manual is listed as published
+
   Scenario: Deleting a published manual without a draft
     Given a published manual exists
     When I run the deletion script

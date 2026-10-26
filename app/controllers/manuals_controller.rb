@@ -188,7 +188,7 @@ class ManualsController < ApplicationController
     )
     manual = service.call
 
-    if !manual.has_ever_been_published?
+    if manual.draft?
       render(
         :confirm_discard,
         locals: {
@@ -198,7 +198,7 @@ class ManualsController < ApplicationController
     else
       redirect_to(
         manual_path(manual_id),
-        flash: { error: "#{manual.title} cannot be discarded as it has already been published" },
+        flash: { error: "#{manual.title} cannot be discarded as it has no draft" },
       )
     end
   end

@@ -89,7 +89,7 @@
   </div>
 
   <div class="govuk-grid-column-one-third">
-    <% if allow_publish?(manual, slug_unique) || !manual.has_ever_been_published? %>
+    <% if allow_publish?(manual, slug_unique) || manual.draft? %>
       <div class="app-view-manuals__sidebar-actions">
         <% publish_text(manual, slug_unique).each do |message| %>
           <p class="govuk-body"> <%= message.html_safe %> </p>
@@ -103,7 +103,7 @@
               }) %>
             </li>
           <% end %>
-          <% unless manual.has_ever_been_published? %>
+          <% if manual.draft? %>
             <li>
               <%= render("govuk_publishing_components/components/button", {
                 text: "Discard draft",

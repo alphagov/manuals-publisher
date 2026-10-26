@@ -27,6 +27,9 @@
   <div class="govuk-grid-column-two-thirds">
 
     <p class="govuk-body">You are about to discard "<%= manual.title %>".</p>
+    <% if manual.has_ever_been_published? %>
+      <p class="govuk-body">This manual has been published before. Discarding this draft will revert it to the version currently on GOV.UK.</p>
+    <% end %>
     <p class="govuk-body">Are you sure you want to discard this draft manual?</p>
 
     <%= form_tag(discard_draft_manual_path(manual), method: :delete) do %>

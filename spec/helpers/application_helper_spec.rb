@@ -323,8 +323,16 @@ describe ApplicationHelper, type: :helper do
       expect(items).to include(include("Discard"))
     end
 
-    it "does not return a 'discard' button when the manual has been published" do
-      manual = FactoryBot.build_stubbed(:manual, ever_been_published: true)
+    it "returns a 'discard' button when the manual has been published and has a new draft" do
+      manual = FactoryBot.build_stubbed(:manual, ever_been_published: true, state: "draft")
+
+      items = manual_sidebar_action_items(manual, true)
+
+      expect(items).to include(include("Discard"))
+    end
+
+    it "does not return a 'discard' button when the manual has been published and has no draft" do
+      manual = FactoryBot.build_stubbed(:manual, ever_been_published: true, state: "published")
 
       items = manual_sidebar_action_items(manual, true)
 
