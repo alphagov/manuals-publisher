@@ -18,13 +18,21 @@ class Publishing::DraftAdapter
 
   def self.discard_draft_for_manual_and_sections(manual)
     manual.sections.select(&:draft?).each do |section|
-      discard_draft_for_section(section)
+      discard_draft_unless_missing(section.uuid)
     end
-    Services.publishing_api.discard_draft(manual.id)
+    discard_draft_unless_missing(manual.id)
   end
 
   def self.discard_draft_for_section(section)
     Services.publishing_api.discard_draft(section.uuid)
+  end
+
+  private_class_method def self.discard_draft_unless_missing(content_id)
+    Services.publishing_api.discard_draft(content_id)
+  rescue GdsApi::HTTPUnprocessableEntity => e
+    # A local draft may never have reached Publishing API (e.g. adding an
+    # attachment doesn't send the section), or a previous discard partly failed
+    raise unless e.error_details&.dig("error", "error_code") == "no_draft_to_discard"
   end
 
   private_class_method def self.save_draft_for_manual(manual, republish:, include_links:)
