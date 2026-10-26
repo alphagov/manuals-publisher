@@ -1081,6 +1081,37 @@ describe Manual do
       end
     end
 
+    context "when a section was added and removed before the manual was published" do
+      # Publishing doesn't archive a removed section that was never published,
+      # so its draft edition is left behind and carried in removed_section_uuids
+      let(:manual_published_edition) { ManualRecord::Edition.new(section_uuids: %w[12345], removed_section_uuids: %w[never-published], version_number: 1, state: "published") }
+      let(:manual_draft_edition) { ManualRecord::Edition.new(section_uuids: %w[12345], removed_section_uuids: %w[never-published], version_number: 2, state: "draft") }
+
+      let!(:section_published) { FactoryBot.create(:section_edition, section_uuid: "12345", version_number: 1, state: "published") }
+      let!(:section_draft) { FactoryBot.create(:section_edition, section_uuid: "12345", version_number: 2, state: "draft") }
+      let!(:never_published_draft) { FactoryBot.create(:section_edition, section_uuid: "never-published", version_number: 1, state: "draft") }
+
+      before do
+        manual_record.editions << manual_published_edition
+        manual_record.editions << manual_draft_edition
+      end
+
+      it "keeps the removed section's draft edition, which the published edition still refers to" do
+        destroy_draft
+
+        expect(SectionEdition.where(id: never_published_draft.id)).to be_present
+        expect(SectionEdition.where(id: section_draft.id)).to be_empty
+      end
+
+      it "can still load the published edition" do
+        destroy_draft
+
+        manual = Manual.find(manual_id, User.gds_editor)
+        expect(manual).to be_published
+        expect(manual.removed_sections.map(&:uuid)).to eq(%w[never-published])
+      end
+    end
+
     context "when the manual has been withdrawn and has a new draft" do
       let(:manual_published_edition) { ManualRecord::Edition.new(section_uuids: %w[12345], version_number: 1, state: "published") }
       let(:manual_withdrawn_edition) { ManualRecord::Edition.new(section_uuids: %w[12345], version_number: 2, state: "withdrawn") }
