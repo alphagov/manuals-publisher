@@ -1031,6 +1031,95 @@ describe Manual do
     end
   end
 
+  describe "#destroy_draft!" do
+    let(:manual_id) { SecureRandom.uuid }
+    let(:manual_record) { ManualRecord.create(manual_id:, slug: "guidance/my-amazing-manual", organisation_slug: "cabinet-office") }
+
+    def destroy_draft
+      Manual.find(manual_id, User.gds_editor).destroy_draft!
+    end
+
+    context "when the manual has been published and has a new draft" do
+      let(:manual_published_edition) { ManualRecord::Edition.new(section_uuids: %w[edited unchanged removed], version_number: 1, state: "published") }
+      let(:manual_draft_edition) { ManualRecord::Edition.new(section_uuids: %w[edited unchanged added], removed_section_uuids: %w[removed], version_number: 2, state: "draft") }
+
+      let!(:edited_published) { FactoryBot.create(:section_edition, section_uuid: "edited", version_number: 1, state: "published") }
+      let!(:edited_draft) { FactoryBot.create(:section_edition, section_uuid: "edited", version_number: 2, state: "draft") }
+      let!(:unchanged_published) { FactoryBot.create(:section_edition, section_uuid: "unchanged", version_number: 1, state: "published") }
+      let!(:added_draft) { FactoryBot.create(:section_edition, section_uuid: "added", version_number: 1, state: "draft") }
+      let!(:removed_published) { FactoryBot.create(:section_edition, section_uuid: "removed", version_number: 1, state: "published") }
+      let!(:removed_draft) { FactoryBot.create(:section_edition, section_uuid: "removed", version_number: 2, state: "draft") }
+
+      before do
+        manual_record.editions << manual_published_edition
+        manual_record.editions << manual_draft_edition
+      end
+
+      it "does not destroy the manual record" do
+        destroy_draft
+
+        expect(ManualRecord.find_by(manual_id:)).to be_present
+      end
+
+      it "destroys only the draft manual and section editions" do
+        destroy_draft
+
+        expect(ManualRecord::Edition.where(id: manual_published_edition.id)).to be_present
+        expect(ManualRecord::Edition.where(id: manual_draft_edition.id)).to be_empty
+        expect(SectionEdition.where(:id.in => [edited_published, unchanged_published, removed_published].map(&:id)).count).to eq(3)
+        expect(SectionEdition.where(:id.in => [edited_draft, added_draft, removed_draft].map(&:id))).to be_empty
+      end
+
+      it "reverts the manual to its published edition" do
+        destroy_draft
+
+        manual = Manual.find(manual_id, User.gds_editor)
+        expect(manual).to be_published
+        expect(manual.version_number).to eq(1)
+        expect(manual.sections.map(&:uuid)).to eq(%w[edited unchanged removed])
+        expect(manual.sections).to all(be_published)
+      end
+    end
+
+    context "when the manual has been withdrawn and has a new draft" do
+      let(:manual_published_edition) { ManualRecord::Edition.new(section_uuids: %w[12345], version_number: 1, state: "published") }
+      let(:manual_withdrawn_edition) { ManualRecord::Edition.new(section_uuids: %w[12345], version_number: 2, state: "withdrawn") }
+      let(:manual_draft_edition) { ManualRecord::Edition.new(section_uuids: %w[12345], version_number: 3, state: "draft") }
+
+      let!(:section_archived) { FactoryBot.create(:section_edition, section_uuid: "12345", version_number: 1, state: "archived") }
+      let!(:section_draft) { FactoryBot.create(:section_edition, section_uuid: "12345", version_number: 2, state: "draft") }
+
+      before do
+        manual_record.editions << manual_published_edition
+        manual_record.editions << manual_withdrawn_edition
+        manual_record.editions << manual_draft_edition
+      end
+
+      it "does not destroy the manual record" do
+        destroy_draft
+
+        expect(ManualRecord.find_by(manual_id:)).to be_present
+      end
+
+      it "destroys only the draft manual and section editions" do
+        destroy_draft
+
+        expect(ManualRecord::Edition.where(:id.in => [manual_published_edition, manual_withdrawn_edition].map(&:id)).count).to eq(2)
+        expect(ManualRecord::Edition.where(id: manual_draft_edition.id)).to be_empty
+        expect(SectionEdition.where(id: section_archived.id)).to be_present
+        expect(SectionEdition.where(id: section_draft.id)).to be_empty
+      end
+
+      it "reverts the manual to its withdrawn edition" do
+        destroy_draft
+
+        manual = Manual.find(manual_id, User.gds_editor)
+        expect(manual).to be_withdrawn
+        expect(manual.sections).to all(be_withdrawn)
+      end
+    end
+  end
+
   describe ".find_by_slug!" do
     let(:user) { FactoryBot.create(:gds_editor) }
 
