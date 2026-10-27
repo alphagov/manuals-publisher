@@ -7,18 +7,22 @@ class Manual::DiscardDraftService
   def call
     manual = Manual.find(manual_id, user)
 
-    if manual.has_ever_been_published?
-      Result.failure(manual)
-    else
+    if manual.draft?
       begin
         Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
       rescue GdsApi::HTTPNotFound
         # this is fine, the manual has already been discarded from the
-        # publishing API and the next line will clean it up in our DB
+        # publishing API and the next lines will clean it up in our DB
       end
 
-      manual.destroy!
+      if manual.has_ever_been_published?
+        manual.destroy_draft!
+      else
+        manual.destroy!
+      end
       Result.success(manual)
+    else
+      Result.failure(manual)
     end
   end
 

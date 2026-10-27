@@ -4,13 +4,23 @@ describe "manuals/show", type: :view do
     allow(view).to receive(:current_user_can_publish?).and_return(true)
   end
 
-  it "does not render the discard button for a published manual" do
-    manual = FactoryBot.build_stubbed(:manual, ever_been_published: true)
+  it "does not render the discard button for a published manual without a draft" do
+    manual = FactoryBot.build_stubbed(:manual, ever_been_published: true, state: "published")
     manual.publish_tasks = []
+    allow(view).to receive(:current_user_can_change_history?).and_return(false)
 
     render template: "manuals/show", locals: { manual:, slug_unique: true, clashing_sections: [] }
 
     expect(rendered).not_to match(/Discard draft/)
+  end
+
+  it "renders the discard button for a published manual with a new draft" do
+    manual = FactoryBot.build_stubbed(:manual, ever_been_published: true, state: "draft")
+    manual.publish_tasks = []
+
+    render template: "manuals/show", locals: { manual:, slug_unique: true, clashing_sections: [] }
+
+    expect(rendered).to match(/Discard draft/)
   end
 
   it "renders the discard button for an unpublished manual" do

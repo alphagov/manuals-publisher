@@ -89,7 +89,7 @@ module ApplicationHelper
       })
     end
 
-    unless manual.has_ever_been_published?
+    if manual.draft?
       items << render("govuk_publishing_components/components/button", {
         text: "Discard",
         destructive: true,

@@ -40,10 +40,10 @@ private
 
     result = service.call
     if result.successful?
-      log "Manual destroyed."
+      log "Draft discarded."
       log "--------------------------------------------------------"
     else
-      raise "Cannot delete; is published or has been previously published."
+      raise "Cannot delete; manual has no draft to discard."
     end
   end
 

@@ -352,6 +352,24 @@ class Manual
     manual_record.destroy!
   end
 
+  # Reverts a previously published manual to its last non-draft edition,
+  # keeping the manual record and all of its non-draft editions.
+  def destroy_draft!
+    manual_record = ManualRecord.find_by(manual_id: id)
+
+    # Sections removed before this draft may still have a draft edition (if
+    # they were never published) which the previous edition refers to
+    previously_removed_uuids = Array(manual_record.previous_edition&.removed_section_uuids)
+
+    (sections + removed_sections).each do |section|
+      next if previously_removed_uuids.include?(section.uuid)
+
+      section.all_editions.where(state: "draft").each(&:destroy)
+    end
+
+    manual_record.latest_edition.destroy! if manual_record.latest_edition.state == "draft"
+  end
+
   def editions
     manual_record = ManualRecord.find_by(manual_id: id)
     manual_record.editions

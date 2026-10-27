@@ -85,14 +85,14 @@ describe ManualsController, type: :controller do
       allow(Manual::ShowService).to receive(:new).and_return(service)
     end
 
-    context "when the manual has been previously published" do
+    context "when the manual has no draft" do
       before do
-        allow(manual).to receive(:has_ever_been_published?).and_return(true)
+        allow(manual).to receive(:draft?).and_return(false)
         get :confirm_discard, params: { id: manual_id }
       end
 
       it "sets a flash message indicating failure" do
-        expect(flash[:error]).to include("#{manual_title} cannot be discarded as it has already been published")
+        expect(flash[:error]).to include("#{manual_title} cannot be discarded as it has no draft")
       end
 
       it "redirects to the show page for the manual" do
@@ -100,9 +100,9 @@ describe ManualsController, type: :controller do
       end
     end
 
-    context "when the manual has not been previously published" do
+    context "when the manual has a draft" do
       before do
-        allow(manual).to receive(:has_ever_been_published?).and_return(false)
+        allow(manual).to receive(:draft?).and_return(true)
         get :confirm_discard, params: { id: manual_id }
       end
 

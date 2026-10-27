@@ -595,6 +595,34 @@ describe Publishing::DraftAdapter do
       expect(Services.publishing_api).to receive(:discard_draft).with(section_two_uuid)
       Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
     end
+
+    it "does not discard sections that have no draft" do
+      published_section = FactoryBot.build(:section, uuid: section_two_uuid, state: "published")
+      manual.sections = [section_one, published_section]
+
+      expect(Services.publishing_api).to receive(:discard_draft).with(manual_id)
+      expect(Services.publishing_api).to receive(:discard_draft).with(section_one_uuid)
+      expect(Services.publishing_api).not_to receive(:discard_draft).with(section_two_uuid)
+      Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
+    end
+
+    it "carries on when Publishing API has no draft to discard" do
+      no_draft_error = GdsApi::HTTPUnprocessableEntity.new(422, "No draft", { "error" => { "error_code" => "no_draft_to_discard" } })
+      allow(Services.publishing_api).to receive(:discard_draft).with(section_one_uuid).and_raise(no_draft_error)
+      allow(Services.publishing_api).to receive(:discard_draft).with(manual_id).and_raise(no_draft_error)
+
+      expect(Services.publishing_api).to receive(:discard_draft).with(section_two_uuid)
+      Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
+    end
+
+    it "raises other unprocessable entity errors" do
+      other_error = GdsApi::HTTPUnprocessableEntity.new(422, "Something else", { "error" => { "error_code" => "something_else" } })
+      allow(Services.publishing_api).to receive(:discard_draft).with(section_one_uuid).and_raise(other_error)
+
+      expect {
+        Publishing::DraftAdapter.discard_draft_for_manual_and_sections(manual)
+      }.to raise_error(other_error)
+    end
   end
 
   describe "#discard_draft_for_section" do
