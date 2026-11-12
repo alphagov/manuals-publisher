@@ -1,5 +1,4 @@
 require "rake"
-require "thor"
 
 describe "republish_all_manuals" do
   before :all do
@@ -10,7 +9,6 @@ describe "republish_all_manuals" do
   before :each do
     task.reenable
     allow($stdout).to receive(:puts)
-    allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(true)
   end
 
   let(:task) { Rake::Task["republish_all_manuals"] }
@@ -39,17 +37,5 @@ describe "republish_all_manuals" do
 
     expect(ManualRecord).to have_received(:all)
     expect(republisher).to have_received(:execute)
-  end
-
-  context "when the user aborts" do
-    before do
-      allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(false)
-    end
-
-    it "does not republish any manuals" do
-      task.invoke
-
-      expect(republisher).not_to have_received(:execute)
-    end
   end
 end

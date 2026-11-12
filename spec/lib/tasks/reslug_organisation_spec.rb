@@ -1,5 +1,4 @@
 require "rake"
-require "thor"
 
 describe "reslug_organisation" do
   before :all do
@@ -9,7 +8,6 @@ describe "reslug_organisation" do
   before :each do
     task.reenable # without this, calling `invoke` does nothing after first test
     allow($stdout).to receive(:puts) # supress Rake task output
-    allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(true)
   end
   let(:task) { Rake::Task["reslug_organisation"] }
 
@@ -59,23 +57,5 @@ describe "reslug_organisation" do
     task.invoke("foo", "bar")
 
     expect(manual_record_to_ignore.reload[:organisation_slug]).to eq("leave-me-alone")
-  end
-
-  it "does not update any manual records if the user aborts the confirmation prompt" do
-    FactoryBot.create(:manual_record, organisation_slug: "foo")
-    FactoryBot.create(:manual_record, organisation_slug: "foo")
-
-    allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(false)
-
-    expected_output = <<~OUTPUT
-      Updating the `organisation_slug` of 2 manual records from 'foo' to 'bar'
-      Aborted
-    OUTPUT
-
-    expect { task.invoke("foo", "bar") }.to output(expected_output).to_stdout
-
-    # Ensure no records were updated
-    expect(ManualRecord.where(organisation_slug: "foo").count).to eq(2)
-    expect(ManualRecord.where(organisation_slug: "bar").count).to eq(0)
   end
 end
