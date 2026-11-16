@@ -1,5 +1,4 @@
 require "rake"
-require "thor"
 
 describe "reslug_manual" do
   before :all do
@@ -16,31 +15,15 @@ describe "reslug_manual" do
     allow(ManualReslugger).to receive(:new).and_return(reslugger)
   end
 
-  it "shows the old and new slugs before asking for confirmation" do
-    allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(true)
-
+  it "shows the old and new slugs" do
     expect { task.invoke("guidance/old-manual", "guidance/new-manual") }
       .to output(%r{guidance/old-manual.*guidance/new-manual}m).to_stdout
   end
 
-  context "when the user confirms" do
-    before { allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(true) }
+  it "reslugs the manual" do
+    task.invoke("guidance/old-manual", "guidance/new-manual")
 
-    it "reslugs the manual" do
-      task.invoke("guidance/old-manual", "guidance/new-manual")
-
-      expect(ManualReslugger).to have_received(:new).with("guidance/old-manual", "guidance/new-manual")
-      expect(reslugger).to have_received(:call)
-    end
-  end
-
-  context "when the user aborts" do
-    before { allow_any_instance_of(Thor::Shell::Basic).to receive(:yes?).and_return(false) }
-
-    it "does not reslug the manual" do
-      task.invoke("guidance/old-manual", "guidance/new-manual")
-
-      expect(reslugger).not_to have_received(:call)
-    end
+    expect(ManualReslugger).to have_received(:new).with("guidance/old-manual", "guidance/new-manual")
+    expect(reslugger).to have_received(:call)
   end
 end
