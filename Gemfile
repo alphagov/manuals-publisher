@@ -18,6 +18,7 @@ gem "plek"
 # See https://github.com/puma/puma/pull/3532
 # `require: false` is needed because you can't actually `require "rackup"`
 # due to a different bug: https://github.com/rack/rackup/commit/d03e1789
+gem "csv"
 gem "rackup", "2.3.1", require: false
 gem "sentry-sidekiq"
 gem "state_machines"

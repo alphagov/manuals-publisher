@@ -109,6 +109,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.8)
+    csv (3.3.5)
     cucumber (11.1.1)
       base64 (~> 0.2)
       builder (~> 3.2)
@@ -301,7 +302,6 @@ GEM
       mime-types-data (~> 3.2025, >= 3.2025.0507)
     mime-types-data (3.2026.0701)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.9)
     minitest (6.1.0)
       drb (~> 2.0)
       prism (>= 1.5, < 3)
@@ -331,9 +331,6 @@ GEM
       net-protocol
     netrc (0.11.0)
     nio4r (2.7.5)
-    nokogiri (1.19.7)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.19.7-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.19.7-arm64-darwin)
@@ -793,11 +790,11 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin
-  ruby
   x86_64-linux
 
 DEPENDENCIES
   bootsnap
+  csv
   cucumber
   cucumber-rails (~> 4.1)
   dartsass-rails
