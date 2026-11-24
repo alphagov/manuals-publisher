@@ -1,4 +1,6 @@
-@import "datetime-fields";
+@use "govuk_publishing_components/base" as *;
+
+@use "datetime-fields";
 
 .app-view-edit-original-publication-date__change-applicability-radios {
   border-top: 1px solid govuk-functional-colour(border);

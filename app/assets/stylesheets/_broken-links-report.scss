@@ -1,3 +1,5 @@
+@use "govuk_publishing_components/base" as *;
+
 .app-inset-prompt {
   @include govuk-text-colour;
   @include govuk-responsive-padding(4);
