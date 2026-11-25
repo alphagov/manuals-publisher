@@ -131,16 +131,16 @@ module ApplicationHelper
     zoned_time = time_with_local_zone(task.updated_at)
     formatted_time = nice_time_format(zoned_time)
 
-    output =  case task.state
-              when "queued", "processing"
-                %(This manual was sent for publishing at #{formatted_time}.
+    output = case task.state
+             when "queued", "processing"
+               %(This manual was sent for publishing at #{formatted_time}.
                   It should be published shortly.)
-              when "finished"
-                %(This manual was last published at #{formatted_time}.)
-              when "aborted"
-                %(This manual was sent for publishing at #{formatted_time},
+             when "finished"
+               %(This manual was last published at #{formatted_time}.)
+             when "aborted"
+               %(This manual was sent for publishing at #{formatted_time},
                   but something went wrong. Our team has been notified.)
-              end
+             end
 
     output.html_safe
   end
